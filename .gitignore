@@ -1,0 +1,10 @@
+node_modules/
+
+# Game-derived art (meshes + textures) is NOT committed — it is the game's copyrighted
+# material. Populate it locally from your OWN game export with `npm run gather`.
+# (If you have the right to redistribute these assets, delete this line.)
+public/game/
+
+# headless screenshots
+shot*.png
+*.shot.png

@@ -1,0 +1,171 @@
+{
+ "card": "PK_10_000040_00",
+ "locale": "jp",
+ "mega": false,
+ "canvasWH": [
+  734,
+  1024
+ ],
+ "elements": [
+  {
+   "go": "ex_rule_ttl_txt_jp",
+   "kind": "image",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_pla_rule_txt_jp.png",
+   "box": {
+    "l": 0.3692,
+    "r": 0.515,
+    "t": 0.9077,
+    "b": 0.9302
+   },
+   "sprite": "card_pla_rule_txt_jp",
+   "color": [
+    0.925,
+    0.765,
+    0.0,
+    1.0
+   ],
+   "order": 220,
+   "fit": "stretch"
+  },
+  {
+   "go": "frm",
+   "kind": "image",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_pla_rule_txt_bg.png",
+   "box": {
+    "l": 0.3229,
+    "r": 0.9932,
+    "t": 0.9004,
+    "b": 0.9668
+   },
+   "sprite": "card_pla_rule_txt_bg",
+   "color": null,
+   "order": 218,
+   "fit": "stretch"
+  },
+  {
+   "go": "Outline",
+   "kind": "image",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat8x8/card_icn_attribute_outline.png",
+   "box": {
+    "l": 0.8774,
+    "r": 0.951,
+    "t": 0.0352,
+    "b": 0.0879
+   },
+   "sprite": "card_icn_attribute_outline",
+   "color": null,
+   "order": 23,
+   "fit": "stretch"
+  },
+  {
+   "go": "source_img",
+   "kind": "preevo",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Pokemon/FUSHIGISOU/FUSHIGISOU.png",
+   "box": {
+    "l": 0.0383,
+    "r": 0.1582,
+    "t": 0.0732,
+    "b": 0.1592
+   },
+   "color": null,
+   "order": 64,
+   "fit": "contain"
+  },
+  {
+   "go": "frm_bg_shadow",
+   "kind": "image",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_pla_rule_bg_shadow.png",
+   "box": {
+    "l": 0.3229,
+    "r": 0.9932,
+    "t": 0.9004,
+    "b": 0.9668
+   },
+   "sprite": "card_pla_rule_bg_shadow",
+   "color": null,
+   "order": 216,
+   "fit": "stretch"
+  },
+  {
+   "go": "frm_bg",
+   "kind": "image",
+   "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_pla_rule_bg.png",
+   "box": {
+    "l": 0.3229,
+    "r": 0.9932,
+    "t": 0.9004,
+    "b": 0.9668
+   },
+   "sprite": "card_pla_rule_bg",
+   "color": null,
+   "order": 217,
+   "fit": "stretch"
+  }
+ ],
+ "dropped": [
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "frm_bg",
+   "why": "mega variant (card is not mega)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "frm_bg_shadow",
+   "why": "mega variant (card is not mega)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "frm_icon_white",
+   "why": "mega variant (card is not mega)"
+  },
+  {
+   "go": "ImgExOutline",
+   "why": "name-ex glyph (placed dynamically)"
+  },
+  {
+   "go": "frm_icon_bg",
+   "why": "mega variant (card is not mega)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "ub_txt_img_jp",
+   "why": "regulation/era mark (card has no regulation)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  },
+  {
+   "go": "future_txt_img_jp_mask",
+   "why": "regulation/era mark (card has no regulation)"
+  },
+  {
+   "go": "ImgEx",
+   "why": "name-ex glyph (placed dynamically)"
+  },
+  {
+   "go": "ub_txt_img_shadow",
+   "why": "regulation/era mark (card has no regulation)"
+  },
+  {
+   "go": "icn_gra_img",
+   "why": "energy/type icon (runtime-set placeholder — needs per-type resolution, deferred)"
+  }
+ ]
+}

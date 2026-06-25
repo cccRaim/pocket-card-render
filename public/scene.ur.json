@@ -1,0 +1,1974 @@
+{
+ "card": {
+  "id": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+  "name": "IIBUINOBAKKU",
+  "rarityToken": "UR"
+ },
+ "prefabGlb": "/game/Assets/PrefabHierarchyObject/cTR_20_000670_00_IIBUINOBAKKU_UR_L.glb",
+ "materials": {
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFM1": {
+   "shader": "Effect",
+   "queue": 2500,
+   "clip": "card",
+   "stencil": 0,
+   "go": "01",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AnglePower": 1,
+    "_BlendMode": 1,
+    "_CullMode": 0,
+    "_DepthOffset": 0,
+    "_DstFactor": 1,
+    "_DstFactorA": 1,
+    "_Edge": 0.800000011920929,
+    "_Layer": 0,
+    "_MainPower": 1,
+    "_MaskPower": 3,
+    "_Progress": 0.8999999761581421,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_Stencil": 0,
+    "_UseGradationMap": 1,
+    "_UseViewMask": 1,
+    "_ZTest": 4,
+    "_ZWriteParam": 0
+   },
+   "colors": {},
+   "keywords": [
+    "_LAYER_EFF1",
+    "_UseGradationMap",
+    "_UseViewMask"
+   ],
+   "textures": {
+    "_GradationMap": {
+     "name": "UR_EFF01_GradationMap",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF01_GradationMap.png"
+    },
+    "_MainTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF.png"
+    }
+   }
+  },
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFM2": {
+   "shader": "Effect",
+   "queue": 2500,
+   "clip": "card",
+   "stencil": 0,
+   "go": "02",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AnglePower": 1,
+    "_BlendMode": 1,
+    "_CullMode": 0,
+    "_DepthOffset": 0,
+    "_DstFactor": 1,
+    "_DstFactorA": 1,
+    "_Edge": 0.30000001192092896,
+    "_Layer": 1,
+    "_MainPower": 1.5,
+    "_MaskPower": 1,
+    "_Progress": 0.8999999761581421,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_Stencil": 0,
+    "_UseGradationMap": 1,
+    "_UseViewMask": 1,
+    "_ZTest": 4,
+    "_ZWriteParam": 0
+   },
+   "colors": {},
+   "keywords": [
+    "_LAYER_EFF2",
+    "_UseGradationMap",
+    "_UseViewMask"
+   ],
+   "textures": {
+    "_GradationMap": {
+     "name": "UR_EFF02_GradationMap",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF02_GradationMap.png"
+    },
+    "_MainTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF.png"
+    }
+   }
+  },
+  "L_UR_Trainer_LensFlare_Back": {
+   "shader": "Card_UR_LensFlare",
+   "queue": 2650,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Card_LensFlare_Back",
+   "floats": {
+    "_Adjust": 1,
+    "_AdjustX": 1,
+    "_AdjustY": 1,
+    "_AlphaClip": 0,
+    "_BaseColorRGBIntensity": 1.5,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_CornerPower": 37.47999954223633,
+    "_Cull": 2,
+    "_Cutoff": 0.5,
+    "_DepthOcclusionTestZBias": -0.0010000000474974513,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DstBlend": 0,
+    "_EmissivePattern": 1,
+    "_EndFadeinDistanceWorldUnit": 0.5,
+    "_EnvironmentReflections": 1,
+    "_FlickResultIntensityLowestPoint": 0.460999995470047,
+    "_FlickerAnimSpeed": 2.5,
+    "_FlickerTimeDelay": 0,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_IsBack": 1,
+    "_IsFront": 0,
+    "_LightSourceViewSpaceRadius": 0.029999999329447746,
+    "_MapScale": 0,
+    "_Metallic": 0,
+    "_NotCornerOffset": 0.25,
+    "_OcclusionStrength": 1,
+    "_Offset": 0.36000001430511475,
+    "_Parallax": 0.004999999888241291,
+    "_QueueOffset": 0,
+    "_ReceiveShadows": 1,
+    "_RemoveTextureArtifact": 0,
+    "_ScaleX": 0.8650000095367432,
+    "_ScaleY": 0.8650000095367432,
+    "_ShouldDoFlicker": 1,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SrcBlend": 1,
+    "_StartFadeinDistanceWorldUnit": 0.05000000074505806,
+    "_Surface": 0,
+    "_TestRad": 0,
+    "_TexPixelsX": 1024,
+    "_TexPixelsY": 1024,
+    "_TexScale": 0.47999998927116394,
+    "_TiltFlickerAnimSpeed": 3,
+    "_TiltPower": 2,
+    "_TiltThreshold": 0.949999988079071,
+    "_UsePreMultiplyAlpha": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 0.9500200748443604,
+     "b": 0.6084905862808228,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_EmissiveColor": {
+     "r": 0.699999988079071,
+     "g": 0.564397931098938,
+     "b": 0.2455497533082962,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseMap": {
+     "name": "UR_LensFlare_texture",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlare_texture.png"
+    },
+    "_FlareVAT": {
+     "name": "UR_LensFlareVAT",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlareVAT.png"
+    }
+   }
+  },
+  "L_UR_Trainer_LensFlare_Front": {
+   "shader": "Card_UR_LensFlare",
+   "queue": 2650,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Card_LensFlare_Front",
+   "floats": {
+    "_Adjust": 1,
+    "_AdjustX": 1,
+    "_AdjustY": 1,
+    "_AlphaClip": 0,
+    "_BaseColorRGBIntensity": 1.5,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_CornerPower": 11.899999618530273,
+    "_Cull": 2,
+    "_Cutoff": 0.5,
+    "_DepthOcclusionTestZBias": -0.0010000000474974513,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DstBlend": 0,
+    "_EmissivePattern": 1,
+    "_EndFadeinDistanceWorldUnit": 0.5,
+    "_EnvironmentReflections": 1,
+    "_FlickResultIntensityLowestPoint": 0.8500000238418579,
+    "_FlickerAnimSpeed": 3,
+    "_FlickerTimeDelay": 1,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_IsBack": 0,
+    "_IsFront": 0,
+    "_LightSourceViewSpaceRadius": 0.029999999329447746,
+    "_MapScale": 0,
+    "_Metallic": 0,
+    "_NotCornerOffset": 0.2280000001192093,
+    "_OcclusionStrength": 1,
+    "_Offset": 0.36000001430511475,
+    "_Parallax": 0.004999999888241291,
+    "_QueueOffset": 0,
+    "_ReceiveShadows": 1,
+    "_RemoveTextureArtifact": 0,
+    "_ScaleX": 0.8899999856948853,
+    "_ScaleY": 0.8600000143051147,
+    "_ShouldDoFlicker": 1,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SrcBlend": 1,
+    "_StartFadeinDistanceWorldUnit": 0.05000000074505806,
+    "_Surface": 0,
+    "_TestRad": 0,
+    "_TexPixelsX": 1024,
+    "_TexPixelsY": 1024,
+    "_TexScale": 0.8799999952316284,
+    "_TiltFlickerAnimSpeed": 3,
+    "_TiltPower": 1.6799999475479126,
+    "_TiltThreshold": 0.8299999833106995,
+    "_UsePreMultiplyAlpha": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 0.9314590096473694,
+     "b": 0.5801799893379211,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_EmissiveColor": {
+     "r": 0.699999988079071,
+     "g": 0.5350785255432129,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseMap": {
+     "name": "UR_LensFlare_texture",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlare_texture.png"
+    },
+    "_FlareVAT": {
+     "name": "UR_LensFlareVAT",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlareVAT.png"
+    }
+   }
+  },
+  "Bg_GoldPlate_Hologram": {
+   "shader": "Card_Parallax_Hologram_UR_New",
+   "queue": 1915,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Card_BgGoldPlate_Hologram",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 1,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 12,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_FakeSpecularCornerPower": 0,
+    "_FakeSpecularEnabled": 1,
+    "_FakeSpecularIntensity": 1.2999999523162842,
+    "_FakeSpecularMaskScale": 0.699999988079071,
+    "_FakeSpecularNotCornerOffset": 0,
+    "_FakeSpecularPower": 1,
+    "_Height": -0.5,
+    "_HeightPower": 0.25,
+    "_Layer1BaseColorIntensity": 0.800000011920929,
+    "_Layer1DiffractionIntensity": 0.4000000059604645,
+    "_Layer1DiffractionPower": 70,
+    "_Layer1Shininess": 2,
+    "_Layer1SpecularIntensity": 0.20000000298023224,
+    "_OrientationU": 0.550000011920929,
+    "_OrientationV": -1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.11100000143051147,
+    "_RampOffset2": 0,
+    "_RampRepeat": 4,
+    "_RampSpeed": 1.5,
+    "_Scale": 1.2999999523162842,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_StencilRef": 1,
+    "_UseGradationMap": 0,
+    "_UseUv2": 0,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 1,
+     "g": 0.900419294834137,
+     "b": 0.551886796951294,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.7263787388801575,
+     "b": 0.2588235139846802,
+     "a": 0
+    },
+    "_HologramBaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_Uzumaki_BgPlate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Uzumaki_BgPlate.png"
+    },
+    "_HologramMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_BgPlate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_BgPlate.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_BgPlate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_BgPlate.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_BGplate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_BGplate.png"
+    }
+   }
+  },
+  "InnerStencil_Trainers": {
+   "shader": "InnerStencil",
+   "queue": 1000,
+   "clip": "card",
+   "stencil": null,
+   "go": "InnerStencil_Trainers",
+   "floats": {
+    "_AlphaThreshold": 0.35199999809265137
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_inner_stencil_mask_trainers",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers.png"
+    }
+   }
+  },
+  "L_Card_R_M": {
+   "shader": "Side&Back",
+   "queue": 100000,
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_EnableFog": 1,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 48,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularIntensity": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.5,
+     "g": 0.5,
+     "b": 0.5,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 0.8726415038108826,
+     "g": 0.9632075428962708,
+     "b": 1,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "Card_Back",
+     "url": "/game/Assets/Texture2D/Card_Back.png"
+    }
+   }
+  },
+  "L_Card_S_M": {
+   "shader": "Side&Back",
+   "queue": 100000,
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_DiffuseSmooth": 0.34299999475479126,
+    "_DiffuseStep": 0,
+    "_EnableFog": 0,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 10,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularEnabled": 1,
+    "_SpecularIntensity": 1,
+    "_SpecularSmooth": 0.36500000953674316,
+    "_SpecularStep": 0.4050000011920929,
+    "_UseMask": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.43396228551864624,
+     "g": 0.43396228551864624,
+     "b": 0.43396228551864624,
+     "a": 1
+    },
+    "_Color": {
+     "r": 0.7529411911964417,
+     "g": 0.7529411911964417,
+     "b": 0.7529411911964417,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_LightDir": {
+     "r": -1,
+     "g": -3.700000047683716,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecularColor": {
+     "r": 0.09251514077186584,
+     "g": 0.10015178471803665,
+     "b": 0.10377359390258789,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "SimpleCard_Side02",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png"
+    }
+   }
+  },
+  "L_FullFace_Holo_UR_Goods": {
+   "shader": "Transparent_Hologram_Tuning",
+   "queue": 2800,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Hologram_UR_Goods",
+   "floats": {
+    "_AlphaBlend": 0.30000001192092896,
+    "_BaseColorIntensity": 0.6000000238418579,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1.100000023841858,
+    "_DiffractionPower": 11,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.09000000357627869,
+    "_RampRepeat": 3,
+    "_RampSpeed": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.10000000149011612,
+    "_UseDynamicUI": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_HologramMaskTex": {
+     "name": "mask_white 1",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white 1.png"
+    },
+    "_PhaseTex": {
+     "name": "Phase_UR_TrainersUI",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UR_TrainersUI.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_SB_Uzumaki",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Uzumaki.png"
+    },
+    "_RampTex": {
+     "name": "UR-TR_RMP_Goods_UI",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR-TR_RMP_Goods_UI.png"
+    }
+   }
+  },
+  "L_RaremarkFlame_a": {
+   "shader": "Simple-Opaque",
+   "queue": 2801,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_RareMark_Crown_a",
+   "floats": {
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "card_rarity_outline",
+     "url": "/game/Assets/Texture2D/card_rarity_outline.png"
+    }
+   }
+  },
+  "L_Raremark_Crown_Goods": {
+   "shader": "Opaque_Hologram_Tuning",
+   "queue": 2800,
+   "clip": "card",
+   "stencil": 0,
+   "go": "L_UI_RareMark_Crown_a",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 16,
+    "_DiffuseIntensity": 0.75,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.5,
+    "_RampRepeat": 2,
+    "_RampSpeed": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75,
+    "_Stencil": 0,
+    "_UseMask": 0,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_OutlineColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_HologramMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_MainTex": {
+     "name": "card_rarity_crown_a",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_crown_a.png"
+    },
+    "_PhaseTex": {
+     "name": "Phase_Rarity_Star",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png"
+    },
+    "_RampMaskTex": {
+     "name": "RMP_MASK_RareMark",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png"
+    },
+    "_RampTex": {
+     "name": "ALL_RMP_RareMark_Crown_Goods",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Crown_Goods.png"
+    }
+   }
+  },
+  "L_UR_Glitter_FlowMaps_Trainer": {
+   "shader": "Card_UR_Glitter_FlowMaps",
+   "queue": 1920,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Card_Glitter_FLowMaps",
+   "floats": {
+    "_AlphaClip": 0,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_Cull": 2,
+    "_Cutoff": 0.5,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DstBlend": 0,
+    "_EmitThreshold": 0.07999999821186066,
+    "_EnvironmentReflections": 1,
+    "_FadeDuration": 0.20000000298023224,
+    "_FakeCameraHeight": 0,
+    "_FakeCameraHeightB": 0,
+    "_FlowAPower": 0.10000000149011612,
+    "_FlowASpeed": 1,
+    "_FlowBPower": 0.10000000149011612,
+    "_FlowBSpeed": 1,
+    "_FlowPower": 0.20000000298023224,
+    "_FlowScale": 1.350000023841858,
+    "_FlowScaleB": 1.350000023841858,
+    "_FlowSpeed": 1,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_Height": 0,
+    "_HeightB": 0,
+    "_HeightPower": 0.6000000238418579,
+    "_HeightPowerB": 0.5,
+    "_LightSpeed": 1,
+    "_LightTime": 0.05999999865889549,
+    "_Metallic": 0,
+    "_OcclusionStrength": 1,
+    "_Parallax": 0.004999999888241291,
+    "_QueueOffset": 0,
+    "_ReceiveShadows": 1,
+    "_RotateSpeedA": 0.20000000298023224,
+    "_RotateSpeedB": -0.15000000596046448,
+    "_Scale": 0.675000011920929,
+    "_ScaleB": 0.6000000238418579,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SrcBlend": 1,
+    "_StencilRef": 0,
+    "_Surface": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_LightColor": {
+     "r": 1,
+     "g": 0.9749374985694885,
+     "b": 0.7688679099082947,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ABaseTex": {
+     "name": "Glitter_A_TexBase_9000_sca19_1024",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexBase_9000_sca19_1024.png"
+    },
+    "_ALightTex": {
+     "name": "Glitter_A_TexLight_9000_sca19_1024",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexLight_9000_sca19_1024.png"
+    },
+    "_BBaseTex": {
+     "name": "Glitter_B_TexBase_10000_sca17_1024",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexBase_10000_sca17_1024.png"
+    },
+    "_BLightTex": {
+     "name": "Glitter_B_TexLight_10000_sca17_1024",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexLight_10000_sca17_1024.png"
+    },
+    "_FlowAMap": {
+     "name": "Glitter_A_FlowMap",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_FlowMap.png"
+    },
+    "_FlowBMap": {
+     "name": "Glitter_B_FlowMap",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_FlowMap.png"
+    }
+   }
+  },
+  "Layer_Metal": {
+   "shader": "Card_Parallax_Metal",
+   "queue": 1910,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Trainers_Full_Metal",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 16,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": -0.5,
+    "_HeightPower": 0.25,
+    "_Layer1BaseColorIntensity": 0.800000011920929,
+    "_Layer1DiffractionIntensity": 0.4000000059604645,
+    "_Layer1DiffractionPower": 70,
+    "_Layer1Shininess": 2,
+    "_Layer1SpecularIntensity": 0.20000000298023224,
+    "_MetalMaskIntensity": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_RampOffset2": 0,
+    "_Scale": 1.2999999523162842,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_StencilRef": 1,
+    "_UseGradationMap": 0,
+    "_UseUv": 0,
+    "_UseUv2": 0,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_HologramBaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    }
+   }
+  },
+  "Layer_Parallax_UR_Trainer": {
+   "shader": "Card_Parallax_UR",
+   "queue": 1900,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Trainers_Full_Parallax",
+   "floats": {
+    "_AlphaClip": 0,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_Cull": 2,
+    "_Cutoff": 0.5,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DstBlend": 0,
+    "_EnvironmentReflections": 1,
+    "_FakeCameraHeight": 0,
+    "_FakeSpecularCornerPower": 0,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 2.559999942779541,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularNotCornerOffset": 0,
+    "_FakeSpecularPower": 114,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_Height": -0.4000000059604645,
+    "_HeightPower": 0.28999999165534973,
+    "_Metallic": 0,
+    "_OcclusionStrength": 1,
+    "_Parallax": 0.004999999888241291,
+    "_QueueOffset": 0,
+    "_ReceiveShadows": 1,
+    "_Scale": 1.2999999523162842,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SrcBlend": 1,
+    "_StencilRef": 1,
+    "_Surface": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0.2924528121948242,
+     "g": 0.1676085740327835,
+     "b": 0.0427643246948719,
+     "a": 0
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "UR_Bg_GoldPlate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_Bg_GoldPlate.png"
+    }
+   }
+  },
+  "OuterStencil": {
+   "shader": "OuterStencil",
+   "queue": 1000,
+   "clip": "card",
+   "stencil": null,
+   "go": "OuterStencil",
+   "floats": {},
+   "colors": {},
+   "keywords": [],
+   "textures": {}
+  },
+  "Panel_Trainers_Goods_UR": {
+   "shader": "Frame-Holo-UR-New",
+   "queue": 2600,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Panel_Trainers",
+   "floats": {
+    "_BaseColorIntensity": 0.75,
+    "_ChangeSpeed": 5.599999904632568,
+    "_CullMode": 0,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 1.2999999523162842,
+    "_DiffractionPower": 14,
+    "_DiffuseIntensity": 1,
+    "_EmissivePattern": 1,
+    "_FakeSpecularCornerPower": 0,
+    "_FakeSpecularEnabled": 1,
+    "_FakeSpecularIntensity": 1.4500000476837158,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularNotCornerOffset": 0,
+    "_FakeSpecularPower": 1.7000000476837158,
+    "_OrientationU": 1,
+    "_OrientationV": -0.08699999749660492,
+    "_RampInterval": 0,
+    "_RampMaskRotation": 1.0800000429153442,
+    "_RampMaskScale": 0.6600000262260437,
+    "_RampOffset": 0.15800000727176666,
+    "_RampRepeat": 2.200000047683716,
+    "_RampSpeed": 1,
+    "_RemoveMetalic": 0.8270000219345093,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75,
+    "_UseSimpleRampMaskAndRotation": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 0.7452830076217651,
+     "g": 0.7233788371086121,
+     "b": 0.650364875793457,
+     "a": 0
+    },
+    "_EmissiveColor": {
+     "r": 0.38679248094558716,
+     "g": 0.3474433422088623,
+     "b": 0.23171058297157288,
+     "a": 1
+    },
+    "_FakeSpecularColor": {
+     "r": 0.4433962106704712,
+     "g": 0.40198469161987305,
+     "b": 0.2739853858947754,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_trainers_panel_support_UR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_support_UR.png"
+    },
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_EX",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_EX.png"
+    },
+    "_HologramMaskTex": {
+     "name": "card_trainers_panel_support_URgoods_mask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_trainers_panel_support_URgoods_mask.png"
+    },
+    "_PhaseMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Border_Goods_38do",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border_Goods_38do.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_38do",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_38do.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_SB_Border_GoodsUR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Border_GoodsUR.png"
+    }
+   }
+  },
+  "Panel_Trainers_Rule_Goods_UR": {
+   "shader": "Frame-2Layer-UR",
+   "queue": 2600,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Panel_Trainers_Rule_UR",
+   "floats": {
+    "_BaseColorIntensity": 0.8999999761581421,
+    "_ChangeSpeed": 5.599999904632568,
+    "_CullMode": 0,
+    "_DarknessOffset": 0,
+    "_DarknessOffset1": 0,
+    "_DarknessOffset2": 0,
+    "_DiffractionIntensity": 0.8399999737739563,
+    "_DiffractionIntensity2": 0.30000001192092896,
+    "_DiffractionPower": 25,
+    "_DiffractionPower2": 28,
+    "_DiffuseIntensity": 1,
+    "_EmissivePattern": 1,
+    "_FakeSpecularCornerPower": 0,
+    "_FakeSpecularCornerPower2": 0,
+    "_FakeSpecularIntensity": 1.7999999523162842,
+    "_FakeSpecularIntensity2": 0.6600000262260437,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularMaskScale2": 1,
+    "_FakeSpecularNotCornerOffset": 0,
+    "_FakeSpecularNotCornerOffset2": 0,
+    "_FakeSpecularPower": 1.2999999523162842,
+    "_FakeSpecularPower2": 1.2999999523162842,
+    "_OrientationU": 1,
+    "_OrientationV": -0.08699999749660492,
+    "_RampInterval": 0,
+    "_RampInterval2": 0,
+    "_RampMaskRotation": 0.5199999809265137,
+    "_RampMaskRotation2": 0.9100000262260437,
+    "_RampMaskScale": 0.7599999904632568,
+    "_RampMaskScale2": 0.5799999833106995,
+    "_RampOffset": -0.1120000034570694,
+    "_RampOffset2": -0.10000000149011612,
+    "_RampRepeat": 2,
+    "_RampRepeat2": 1.7999999523162842,
+    "_RampSpeed": 1,
+    "_RampSpeed2": 1,
+    "_RemoveMetallic": 0.9100000262260437,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_Tilt": 5.688111055641141e-16,
+    "_UseSimpleRampMaskAndRotation": 1,
+    "_UseSimpleRampMaskAndRotation2": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 0.9245283007621765,
+     "g": 0.8217337131500244,
+     "b": 0.6846742630004883,
+     "a": 0
+    },
+    "_DarknessColor1": {
+     "r": 0.6499999761581421,
+     "g": 0.5709944367408752,
+     "b": 0.4381215274333954,
+     "a": 0
+    },
+    "_DarknessColor2": {
+     "r": 0.47901174426078796,
+     "g": 0.6317999362945557,
+     "b": 0.7019999623298645,
+     "a": 0
+    },
+    "_EmissiveColor": {
+     "r": 1,
+     "g": 0.8727542757987976,
+     "b": 0.47641509771347046,
+     "a": 1
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.8588235378265381,
+     "b": 0.5333333611488342,
+     "a": 0
+    },
+    "_FakeSpecularColor2": {
+     "r": 1,
+     "g": 0.8820168375968933,
+     "b": 0.6100000143051147,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_trainers_rule_frame_goods_UR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_goods_UR.png"
+    },
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Border.png"
+    },
+    "_LayerMaskTex": {
+     "name": "UR_Goods_Rule_Mask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/UR_Goods_Rule_Mask.png"
+    },
+    "_PhaseMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Goods_SB_Underber",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Underber.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_under",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_under.png"
+    },
+    "_RampMaskTex2": {
+     "name": "UR_RMPmask_under",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_under.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_SB_Underbare_GoodsUR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_GoodsUR.png"
+    },
+    "_RampTex2": {
+     "name": "UR_RMP_UR_SB_Underbare_blue_GoodsUR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_blue_GoodsUR.png"
+    }
+   }
+  },
+  "Trainers_Base_SideLine_Support_UR": {
+   "shader": "Card_Illust",
+   "queue": 2150,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Trainers_Full_TrainersType_BG",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 16,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": -0.4000000059604645,
+    "_Height1": -0.4000000059604645,
+    "_Height2": -0.20000000298023224,
+    "_HeightPower": 0.4000000059604645,
+    "_HeightPower1": 0.4000000059604645,
+    "_HeightPower2": 0,
+    "_Layer1BaseColorIntensity": 0.800000011920929,
+    "_Layer1DiffractionIntensity": 0.5,
+    "_Layer1DiffractionPower": 64,
+    "_Layer1Shininess": 2,
+    "_Layer1SpecularIntensity": 0.20000000298023224,
+    "_Layer2BlendMode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_RampOffset2": 0,
+    "_Scale": 1.5499999523162842,
+    "_Scale1": 1.5499999523162842,
+    "_Scale2": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_StencilRef": 0,
+    "_UseUv": 0,
+    "_ZTest": 8,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_HologramBaseColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "card_bg_sideline_support_UR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_sideline_support_UR.png"
+    }
+   }
+  },
+  "Trainers_Frame_UR": {
+   "shader": "Frame-Holo-UR-New",
+   "queue": 2200,
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_AlphaClip": 0,
+    "_BaseColorIntensity": 0.8999999761581421,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ChangeSpeed": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_Cull": 2,
+    "_Cutoff": 0.5,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DiffractionIntensity": 1.5,
+    "_DiffractionPower": 25,
+    "_DstBlend": 0,
+    "_EmissivePattern": 1,
+    "_EnvironmentReflections": 1,
+    "_FakeSpecularCornerPower": 0,
+    "_FakeSpecularEnabled": 1,
+    "_FakeSpecularIntensity": 4,
+    "_FakeSpecularMaskScale": 0.8999999761581421,
+    "_FakeSpecularNotCornerOffset": 0,
+    "_FakeSpecularPower": 1.2999999523162842,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_Metallic": 0,
+    "_OcclusionStrength": 1,
+    "_OrientationU": 0.5,
+    "_OrientationV": -0.699999988079071,
+    "_Parallax": 0.004999999888241291,
+    "_QueueOffset": 0,
+    "_RampInterval": 0,
+    "_RampMaskRotation": 0,
+    "_RampMaskScale": 1,
+    "_RampOffset": 0.5,
+    "_RampRepeat": 1,
+    "_RampSpeed": 1,
+    "_ReceiveShadows": 1,
+    "_RemoveMetalic": 0.699999988079071,
+    "_Shininess": 2,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SpecularIntensity": 0.5,
+    "_SrcBlend": 1,
+    "_Surface": 0,
+    "_UseSimpleRampMaskAndRotation": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0.6792452931404114,
+     "g": 0.6705945134162903,
+     "b": 0.6504094004631042,
+     "a": 0
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_EmissiveColor": {
+     "r": 0.6792452931404114,
+     "g": 0.5178176164627075,
+     "b": 0.29156285524368286,
+     "a": 1
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.8579445481300354,
+     "b": 0.5333333611488342,
+     "a": 0
+    },
+    "_OutlineColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_pokemon_base_ur",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_ur.png"
+    },
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Border.png"
+    },
+    "_HologramMaskTex": {
+     "name": "card_frame_mask_UR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_UR.png"
+    },
+    "_PhaseMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_Border.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_Border.png"
+    }
+   }
+  },
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_SBM1": {
+   "shader": "Opaque-UR-Oklab",
+   "queue": 2100,
+   "clip": "window",
+   "stencil": 2,
+   "go": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_SB",
+   "floats": {
+    "_BaseColorIntensity": 1,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 1,
+    "_DiffractionIntensity2": 0.30000001192092896,
+    "_DiffractionPower": 11,
+    "_DiffractionPower2": 35,
+    "_FakeSpecularCornerPower": 10,
+    "_FakeSpecularEnabled": 1,
+    "_FakeSpecularIntensity": 0.6000000238418579,
+    "_FakeSpecularIntensity_Outline": 1.899999976158142,
+    "_FakeSpecularMaskScale": 1.149999976158142,
+    "_FakeSpecularMaskScale_Outline": 1.5,
+    "_FakeSpecularNotCornerOffset": 0.8240000009536743,
+    "_FakeSpecularPower": 1,
+    "_FakeSpecularPower_Outline": 1,
+    "_Hologram2Enabled": 1,
+    "_RampInterval": 0,
+    "_RampInterval2": 0,
+    "_RampOffset": -0.2199999988079071,
+    "_RampOffset2": -0.30000001192092896,
+    "_RampRepeat": 1,
+    "_RampRepeat2": 2,
+    "_RampSpeed": 1.5,
+    "_RampSpeed2": 2,
+    "_RefTiltEnabled": 1,
+    "_RefTiltIntensity": 0.8399999737739563,
+    "_RefTiltOffset": 1,
+    "_RefTiltPower": 1,
+    "_ReflectionCenterAdjust": 1,
+    "_ReflectionEnabled": 1,
+    "_ReflectionIntensity": 2.859999895095825,
+    "_ReflectionPower": 2.0299999713897705,
+    "_RemoveBase": 0.1899999976158142,
+    "_Shininess": 45,
+    "_SpecularIntensity": 1,
+    "_Stencil": 2,
+    "_Tilt": 0,
+    "_TiltIntensity2": 1,
+    "_TiltOffset2": 0,
+    "_TiltPower2": 4,
+    "_UsePositionAsUV": 1
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 0.8509804606437683,
+     "g": 0.760784387588501,
+     "b": 0.6352941393852234,
+     "a": 0
+    },
+    "_EmissiveColor": {
+     "r": 1,
+     "g": 0.988235354423523,
+     "b": 0.729411780834198,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.9450981020927429,
+     "b": 0.572549045085907,
+     "a": 0
+    },
+    "_FakeSpecularColor_Outline": {
+     "r": 1,
+     "g": 0.9529412388801575,
+     "b": 0.6470588445663452,
+     "a": 0
+    },
+    "_Front": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_OutlineColor": {
+     "r": 0.1411764770746231,
+     "g": 0.11372549831867218,
+     "b": 0.0784313753247261,
+     "a": 0
+    },
+    "_ReflectionColor": {
+     "r": 0.8627451658248901,
+     "g": 0.8784314393997192,
+     "b": 0.1764705926179886,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [
+    "_DARKNESSENABLED_ON",
+    "_FAKESPECULARENABLED_ON",
+    "_HOLOGRAM2ENABLED_ON",
+    "_REFLECTIONENABLED_ON"
+   ],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_PokemonBody",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_PokemonBody.png"
+    },
+    "_HologramMaskTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM.png"
+    },
+    "_MainTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM.png"
+    },
+    "_NormalMap2": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Goods_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Outline.png"
+    },
+    "_PhaseTex2": {
+     "name": "UR_Phase_UR_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_SB.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png"
+    },
+    "_RampMaskTex2": {
+     "name": "UR_RMPmask_UR_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_SB_Outline_01",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Outline_01.png"
+    },
+    "_RampTex2": {
+     "name": "UR_RMP_UR_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB.png"
+    }
+   }
+  },
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_SBM2": {
+   "shader": "Opaque-UR-Oklab",
+   "queue": 2400,
+   "clip": "card",
+   "stencil": 1,
+   "go": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_SB",
+   "floats": {
+    "_BaseColorIntensity": 1,
+    "_DarknessEnabled": 1,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 1,
+    "_DiffractionIntensity2": 0.30000001192092896,
+    "_DiffractionPower": 11,
+    "_DiffractionPower2": 35,
+    "_FakeSpecularCornerPower": 10,
+    "_FakeSpecularEnabled": 1,
+    "_FakeSpecularIntensity": 0.6000000238418579,
+    "_FakeSpecularIntensity_Outline": 1.899999976158142,
+    "_FakeSpecularMaskScale": 1.149999976158142,
+    "_FakeSpecularMaskScale_Outline": 1.5,
+    "_FakeSpecularNotCornerOffset": 0.8240000009536743,
+    "_FakeSpecularPower": 1,
+    "_FakeSpecularPower_Outline": 1,
+    "_Hologram2Enabled": 1,
+    "_RampInterval": 0,
+    "_RampInterval2": 0,
+    "_RampOffset": -0.2199999988079071,
+    "_RampOffset2": -0.30000001192092896,
+    "_RampRepeat": 1,
+    "_RampRepeat2": 2,
+    "_RampSpeed": 1.5,
+    "_RampSpeed2": 2,
+    "_RefTiltEnabled": 1,
+    "_RefTiltIntensity": 0.8399999737739563,
+    "_RefTiltOffset": 1,
+    "_RefTiltPower": 1,
+    "_ReflectionCenterAdjust": 1,
+    "_ReflectionEnabled": 1,
+    "_ReflectionIntensity": 2.859999895095825,
+    "_ReflectionPower": 2.0299999713897705,
+    "_RemoveBase": 0.1899999976158142,
+    "_Shininess": 45,
+    "_SpecularIntensity": 1,
+    "_Stencil": 1,
+    "_Tilt": 0,
+    "_TiltIntensity2": 1,
+    "_TiltOffset2": 0,
+    "_TiltPower2": 4,
+    "_UsePositionAsUV": 1
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 0.8509804606437683,
+     "g": 0.760784387588501,
+     "b": 0.6352941393852234,
+     "a": 0
+    },
+    "_EmissiveColor": {
+     "r": 1,
+     "g": 0.988235354423523,
+     "b": 0.729411780834198,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.9450981020927429,
+     "b": 0.572549045085907,
+     "a": 0
+    },
+    "_FakeSpecularColor_Outline": {
+     "r": 1,
+     "g": 0.9529412388801575,
+     "b": 0.6470588445663452,
+     "a": 0
+    },
+    "_Front": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_OutlineColor": {
+     "r": 0.1411764770746231,
+     "g": 0.11372549831867218,
+     "b": 0.0784313753247261,
+     "a": 0
+    },
+    "_ReflectionColor": {
+     "r": 0.8627451658248901,
+     "g": 0.8784314393997192,
+     "b": 0.1764705926179886,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [
+    "_DARKNESSENABLED_ON",
+    "_FAKESPECULARENABLED_ON",
+    "_HOLOGRAM2ENABLED_ON",
+    "_REFLECTIONENABLED_ON"
+   ],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_PokemonBody",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_PokemonBody.png"
+    },
+    "_HologramMaskTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM.png"
+    },
+    "_MainTex": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM.png"
+    },
+    "_NormalMap2": {
+     "name": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM",
+     "url": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Goods_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Outline.png"
+    },
+    "_PhaseTex2": {
+     "name": "UR_Phase_UR_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_SB.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png"
+    },
+    "_RampMaskTex2": {
+     "name": "UR_RMPmask_UR_SB_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_SB_Outline_01",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Outline_01.png"
+    },
+    "_RampTex2": {
+     "name": "UR_RMP_UR_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB.png"
+    }
+   }
+  },
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_Uzumaki": {
+   "shader": "Card_UR_Plate",
+   "queue": 1940,
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Card_Uzumaki_Plate",
+   "floats": {
+    "_BaseColorIntensity": 1,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 13,
+    "_FakeCameraHeight": 0.10000000149011612,
+    "_FakeSpecularCornerPower": 15,
+    "_FakeSpecularIntensity": 0.800000011920929,
+    "_FakeSpecularMaskScale": 0.7400000095367432,
+    "_FakeSpecularNotCornerOffset": 0.800000011920929,
+    "_FakeSpecularPower": 1,
+    "_Height": 0,
+    "_HeightPower": 0.25,
+    "_RampInterval": 0,
+    "_RampOffset": 0.1860000044107437,
+    "_RampRepeat": 1,
+    "_RampSpeed": 1.5,
+    "_RemoveMetalic": 0.75,
+    "_Scale": 1.2899999618530273,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.20000000298023224,
+    "_StencilRef": 1,
+    "_UseUv2": 0,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_DarknessColor": {
+     "r": 0.8000000715255737,
+     "g": 0.7686275243759155,
+     "b": 0.6980392336845398,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 1,
+     "g": 0.9294118285179138,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+    },
+    "_FakeSpecularMask": {
+     "name": "UR_LensFlare_Uzumaki_BgPlate",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Uzumaki_BgPlate.png"
+    },
+    "_HologramMaskTex": {
+     "name": "UR_UzumakiPlate_D_mask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D_mask.png"
+    },
+    "_MainTex": {
+     "name": "UR_UzumakiPlate_D",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D.png"
+    },
+    "_PhaseMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+    },
+    "_PhaseTex": {
+     "name": "UR_Phase_UR_Uzumaki",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Uzumaki.png"
+    },
+    "_RampMaskTex": {
+     "name": "UR_RMPmask_UR_SB_Uzumaki",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Uzumaki.png"
+    },
+    "_RampTex": {
+     "name": "UR_RMP_UR_uzumaki",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_uzumaki.png"
+    }
+   }
+  }
+ },
+ "textures": {
+  "UR_EFF01_GradationMap": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF01_GradationMap.png",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF.png",
+  "UR_EFF02_GradationMap": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF02_GradationMap.png",
+  "UR_LensFlare_texture": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlare_texture.png",
+  "UR_LensFlareVAT": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlareVAT.png",
+  "UR_LensFlare_Uzumaki_BgPlate": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Uzumaki_BgPlate.png",
+  "mask_white": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+  "UR_Phase_UR_BgPlate": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_BgPlate.png",
+  "UR_RMPmask_UR_BgPlate": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_BgPlate.png",
+  "UR_RMP_UR_BGplate": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_BGplate.png",
+  "card_inner_stencil_mask_trainers": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers.png",
+  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+  "mask_white 1": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white 1.png",
+  "Phase_UR_TrainersUI": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UR_TrainersUI.png",
+  "UR_RMPmask_UR_SB_Uzumaki": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Uzumaki.png",
+  "UR-TR_RMP_Goods_UI": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR-TR_RMP_Goods_UI.png",
+  "card_rarity_outline": "/game/Assets/Texture2D/card_rarity_outline.png",
+  "card_rarity_crown_a": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_crown_a.png",
+  "Phase_Rarity_Star": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+  "RMP_MASK_RareMark": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+  "ALL_RMP_RareMark_Crown_Goods": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Crown_Goods.png",
+  "Glitter_A_TexBase_9000_sca19_1024": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexBase_9000_sca19_1024.png",
+  "Glitter_A_TexLight_9000_sca19_1024": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexLight_9000_sca19_1024.png",
+  "Glitter_B_TexBase_10000_sca17_1024": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexBase_10000_sca17_1024.png",
+  "Glitter_B_TexLight_10000_sca17_1024": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexLight_10000_sca17_1024.png",
+  "Glitter_A_FlowMap": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_FlowMap.png",
+  "Glitter_B_FlowMap": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_FlowMap.png",
+  "L_001_ENV": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+  "UR_Bg_GoldPlate": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_Bg_GoldPlate.png",
+  "card_trainers_panel_support_UR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_support_UR.png",
+  "UR_LensFlare_EX": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_EX.png",
+  "card_trainers_panel_support_URgoods_mask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_trainers_panel_support_URgoods_mask.png",
+  "UR_Phase_UR_Border_Goods_38do": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border_Goods_38do.png",
+  "UR_RMPmask_38do": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_38do.png",
+  "UR_RMP_UR_SB_Border_GoodsUR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Border_GoodsUR.png",
+  "card_trainers_rule_frame_goods_UR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_goods_UR.png",
+  "UR_LensFlare_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Border.png",
+  "UR_Goods_Rule_Mask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/UR_Goods_Rule_Mask.png",
+  "UR_Phase_UR_Goods_SB_Underber": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Underber.png",
+  "UR_RMPmask_under": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_under.png",
+  "UR_RMP_UR_SB_Underbare_GoodsUR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_GoodsUR.png",
+  "UR_RMP_UR_SB_Underbare_blue_GoodsUR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_blue_GoodsUR.png",
+  "card_bg_sideline_support_UR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_sideline_support_UR.png",
+  "card_pokemon_base_ur": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_ur.png",
+  "card_frame_mask_UR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_UR.png",
+  "UR_Phase_UR_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border.png",
+  "UR_RMPmask_UR_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_Border.png",
+  "UR_RMP_UR_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_Border.png",
+  "UR_LensFlare_PokemonBody": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_PokemonBody.png",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM.png",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM.png",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM": "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM.png",
+  "UR_Phase_UR_Goods_SB_Outline": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Outline.png",
+  "UR_Phase_UR_SB": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_SB.png",
+  "UR_RMPmask_UR_SB_Outline": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png",
+  "UR_RMP_UR_SB_Outline_01": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Outline_01.png",
+  "UR_RMP_UR_SB": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB.png",
+  "UR_UzumakiPlate_D_mask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D_mask.png",
+  "UR_UzumakiPlate_D": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D.png",
+  "UR_Phase_UR_Uzumaki": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Uzumaki.png",
+  "UR_RMP_UR_uzumaki": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_uzumaki.png"
+ },
+ "alphaMode": {
+  "UR_EFF01_GradationMap": "opaque",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF": "premult",
+  "UR_EFF02_GradationMap": "opaque",
+  "UR_LensFlare_texture": "opaque",
+  "UR_LensFlareVAT": "opaque",
+  "UR_LensFlare_Uzumaki_BgPlate": "opaque",
+  "mask_white": "opaque",
+  "UR_Phase_UR_BgPlate": "opaque",
+  "UR_RMPmask_UR_BgPlate": "opaque",
+  "UR_RMP_UR_BGplate": "opaque",
+  "card_inner_stencil_mask_trainers": "opaque",
+  "Card_Back": "opaque",
+  "SimpleCard_Side02": "opaque",
+  "mask_white 1": "opaque",
+  "Phase_UR_TrainersUI": "opaque",
+  "UR_RMPmask_UR_SB_Uzumaki": "opaque",
+  "UR-TR_RMP_Goods_UI": "opaque",
+  "card_rarity_outline": "opaque",
+  "card_rarity_crown_a": "straight",
+  "Phase_Rarity_Star": "opaque",
+  "RMP_MASK_RareMark": "opaque",
+  "ALL_RMP_RareMark_Crown_Goods": "opaque",
+  "Glitter_A_TexBase_9000_sca19_1024": "straight",
+  "Glitter_A_TexLight_9000_sca19_1024": "opaque",
+  "Glitter_B_TexBase_10000_sca17_1024": "straight",
+  "Glitter_B_TexLight_10000_sca17_1024": "opaque",
+  "Glitter_A_FlowMap": "opaque",
+  "Glitter_B_FlowMap": "opaque",
+  "L_001_ENV": "opaque",
+  "UR_Bg_GoldPlate": "opaque",
+  "card_trainers_panel_support_UR": "straight",
+  "UR_LensFlare_EX": "opaque",
+  "card_trainers_panel_support_URgoods_mask": "opaque",
+  "UR_Phase_UR_Border_Goods_38do": "opaque",
+  "UR_RMPmask_38do": "opaque",
+  "UR_RMP_UR_SB_Border_GoodsUR": "opaque",
+  "card_trainers_rule_frame_goods_UR": "premult",
+  "UR_LensFlare_Border": "opaque",
+  "UR_Goods_Rule_Mask": "premult",
+  "UR_Phase_UR_Goods_SB_Underber": "opaque",
+  "UR_RMPmask_under": "opaque",
+  "UR_RMP_UR_SB_Underbare_GoodsUR": "opaque",
+  "UR_RMP_UR_SB_Underbare_blue_GoodsUR": "opaque",
+  "card_bg_sideline_support_UR": "straight",
+  "card_pokemon_base_ur": "premult",
+  "card_frame_mask_UR": "opaque",
+  "UR_Phase_UR_Border": "opaque",
+  "UR_RMPmask_UR_Border": "opaque",
+  "UR_RMP_UR_Border": "opaque",
+  "UR_LensFlare_PokemonBody": "opaque",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM": "opaque",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM": "straight",
+  "cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM": "opaque",
+  "UR_Phase_UR_Goods_SB_Outline": "opaque",
+  "UR_Phase_UR_SB": "opaque",
+  "UR_RMPmask_UR_SB_Outline": "opaque",
+  "UR_RMP_UR_SB_Outline_01": "opaque",
+  "UR_RMP_UR_SB": "opaque",
+  "UR_UzumakiPlate_D_mask": "opaque",
+  "UR_UzumakiPlate_D": "straight",
+  "UR_Phase_UR_Uzumaki": "opaque",
+  "UR_RMP_UR_uzumaki": "opaque"
+ },
+ "_missing": []
+}

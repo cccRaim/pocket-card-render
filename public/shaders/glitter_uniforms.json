@@ -1,0 +1,64 @@
+{
+ "_78": {
+  "13": [
+   "_FakeCameraHeight",
+   "_Height",
+   "_HeightPower",
+   "_Scale"
+  ],
+  "15": [
+   "__rotA",
+   "__rotB",
+   0,
+   0
+  ],
+  "16": [
+   "_FlowScale",
+   "_FakeCameraHeightB",
+   "_HeightB",
+   "_HeightPowerB"
+  ],
+  "17": [
+   "_ScaleB",
+   "_FlowScaleB",
+   0,
+   0
+  ]
+ },
+ "_37": {
+  "0": [
+   "__time",
+   "__time",
+   "__time",
+   "__time"
+  ],
+  "2": [
+   "_EmitThreshold",
+   "_FlowAPower",
+   "_FlowBPower",
+   0
+  ],
+  "3": [
+   "_LightColor.r",
+   "_LightColor.g",
+   "_LightColor.b",
+   1
+  ]
+ },
+ "samplers": [
+  "_13",
+  "_205",
+  "_404",
+  "_644",
+  "_690",
+  "_843"
+ ],
+ "sampler_slots": [
+  "_FlowAMap",
+  "_ALightTex",
+  "_ABaseTex",
+  "_FlowBMap",
+  "_BLightTex",
+  "_BBaseTex"
+ ]
+}

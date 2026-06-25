@@ -1,0 +1,17 @@
+{
+ "card": "PK_10_000040_00",
+ "default": "zh_TW",
+ "_fonts_note": "Free OFL substitutes for the game's proprietary fonts. Loaded via a Google Fonts <link> in index.html (handles CJK unicode-range splitting); fontFiles is empty so loadFonts() is a no-op. name=heavy, body=regular, num=Jost (a free geometric face ~ Futura).",
+ "fontFiles": {},
+ "locales": [
+  { "lc": "zh_TW", "short": "zh", "label": "繁體中文", "fonts": { "name": "Noto Sans TC", "body": "Noto Sans TC", "num": "Jost" }, "weights": { "name": 900, "body": 400, "num": 700 } },
+  { "lc": "ja_JP", "short": "jp", "label": "日本語",   "fonts": { "name": "Noto Sans JP", "body": "Noto Sans JP", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "ko_KR", "short": "ko", "label": "한국어",   "fonts": { "name": "Noto Sans KR", "body": "Noto Sans KR", "num": "Jost" }, "weights": { "name": 700, "body": 500, "num": 700 } },
+  { "lc": "en_US", "short": "en", "label": "English",   "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "de_DE", "short": "de", "label": "Deutsch",   "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "fr_FR", "short": "fr", "label": "Français",  "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "it_IT", "short": "it", "label": "Italiano",  "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "pt_BR", "short": "pt", "label": "Português", "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } },
+  { "lc": "es_ES", "short": "es", "label": "Español",   "fonts": { "name": "Noto Sans", "body": "Noto Sans", "num": "Jost" }, "weights": { "name": 800, "body": 500, "num": 700 } }
+ ]
+}

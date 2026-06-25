@@ -1,0 +1,16 @@
+{
+  "name": "pocket-card-render",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Data-driven, byte-faithful in-browser renderer of Pokémon TCG Pocket card faces (three.js).",
+  "license": "MIT",
+  "scripts": {
+    "serve": "node server.mjs",
+    "gather": "node build/gather.mjs",
+    "shot": "node build/shot.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0",
+    "pngjs": "^7.0.0"
+  }
+}

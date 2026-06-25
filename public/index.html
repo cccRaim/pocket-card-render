@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>card_render — Venusaur ex RR</title>
+<style>
+  html,body{margin:0;height:100%;background:#14161c;overflow:hidden;font:12px ui-monospace,monospace;color:#9fb}
+  #c{display:block;width:100vw;height:100vh}
+  #err{position:fixed;left:8px;top:8px;white-space:pre;pointer-events:none;text-shadow:0 1px 2px #000}
+  /* full-screen loader for the (heavy) initial load: model + textures + fonts */
+  #loading{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#14161c;color:#aef;transition:opacity .45s ease}
+  #loading.hidden{opacity:0;pointer-events:none}
+  .spinner{width:40px;height:40px;border:3px solid #2a3340;border-top-color:#6cf;border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  #loading-txt{font:13px ui-monospace,monospace;opacity:.85;letter-spacing:.3px}
+  /* small non-blocking spinner for language switches (card stays visible) */
+  #busy{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:11;display:none;align-items:center;gap:8px;font:12px sans-serif;color:#aef;background:rgba(0,0,0,.55);padding:5px 11px;border-radius:14px}
+  #busy.on{display:flex}
+  #busy .spinner{width:15px;height:15px;border-width:2px;animation-duration:.7s}
+</style>
+<!-- Free OFL fonts substituting the game's proprietary type (see locales/manifest.json). Google Fonts
+     handles CJK unicode-range splitting so canvas text gets full coverage from a single family name. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@700&family=Noto+Sans:wght@500;800&family=Noto+Sans+JP:wght@500;800&family=Noto+Sans+KR:wght@500;700&family=Noto+Sans+TC:wght@400;900&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="err"></div>
+<div id="busy"><div class="spinner"></div><span id="busy-txt">Switching…</span></div>
+<div id="loading"><div class="spinner"></div><div id="loading-txt">Loading…</div></div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
