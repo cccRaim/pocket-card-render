@@ -71,6 +71,12 @@ Say a new rarity **SAR** introduces one novel shader `Card_SAR_Prism` plus some 
    Reuse an existing `kind` instead if the shader is just a renamed family member (roles are read from
    the data — which mesh + texture slots — not the shader name).
 
+   > **Where the fragment GLSL comes from.** It is byte-traced from the real shader — the only step that
+   > needs **AssetStudio** (the rest of the pipeline is AssetRipper + UnityPy). Extract the shader's
+   > compiled blob with AssetStudio *Export Raw* (the `Shader` asset's SMOL-V `m_SubProgramBlob`), decode
+   > SMOL-V → SPIR-V, then `spirv-cross --version 300 --es` → GLSL, and port that. The shaders already in
+   > this repo were produced this way; you only need AssetStudio when a rarity introduces a *new* shader.
+
 2. **Register the module** — add one line to [`materials/index.js`](public/render/materials/index.js):
 
    ```js

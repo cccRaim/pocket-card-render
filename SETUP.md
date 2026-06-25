@@ -26,6 +26,9 @@ Two paths:
 The **runtime has zero npm dependencies**; `npm install` only pulls dev tools (playwright/pngjs) used
 for headless screenshots.
 
+> **AssetStudio is _not_ part of this pipeline.** Geometry = AssetRipper, materials = UnityPy. AssetStudio
+> is only used to byte-trace a brand-new shader when adding a rarity — see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ---
 
 ## Path A — run the sample cards

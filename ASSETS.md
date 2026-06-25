@@ -71,9 +71,11 @@ Two tools, because **no single one provides everything** (verified by execution)
 | **AssetRipper** (.NET, free) | the *composed* glb geometry + textures | Settings as above. It instantiates the prefab hierarchy (the per-card Face prefab + the shared Template prefab) into one glb with every material as a named sub-mesh — geometry no other tool here reproduces. |
 | **UnityPy** (Python) | the **material recipe** (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) | Loads the **decrypted** Unity material bundles (`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`), resolves cross-bundle PPtrs, and writes the per-layer recipe in the schema above. The renderer needs this; the glb has only material *names*. |
 
-> **AssetStudio was evaluated and does not fit here.** Its CLI cannot dump `Material` objects — Material
-> is not an exportable type (`-m dump` only emits Mesh / Texture2D / MonoBehaviour / Shader), so it
-> cannot supply the recipe. Use UnityPy for materials.
+> **Do you need AssetStudio? Normally no.** Geometry comes from AssetRipper, materials from UnityPy —
+> AssetStudio's CLI can't even dump `Material` (`-m dump` only emits Mesh / Texture2D / MonoBehaviour /
+> Shader). Its **one** role is **shader-bytecode extraction** when reverse-engineering a *new* shader:
+> *Export Raw* → the shader's SMOL-V blob → SPIR-V → SPIRV-Cross → GLSL. The byte-traced shaders shipped
+> here were produced that way; you only need it when adding a brand-new effect (see CONTRIBUTING.md).
 
 Both prep tools run against **your own** decrypted game data and live **outside this repo**; this repo
 only ever consumes the resulting `scene.json` + `public/game/` art. (Decryption is an upstream,
