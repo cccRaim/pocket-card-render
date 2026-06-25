@@ -1,5 +1,7 @@
 # Asset contract — bring your own game data
 
+> **English** · [简体中文](ASSETS.zh-CN.md)
+
 This renderer ships **no game assets**. To render a card you provide two things, both derived from
 **your own** copy of the game:
 

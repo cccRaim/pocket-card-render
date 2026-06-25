@@ -1,5 +1,7 @@
 # Contributing — the render architecture & how to add a rarity
 
+> **English** · [简体中文](CONTRIBUTING.zh-CN.md)
+
 The renderer is **data-driven** and **byte-faithful**: every layer's look is reconstructed from the
 game's own material data + shader bytecode. No eyeballed magic numbers. Two rules:
 
