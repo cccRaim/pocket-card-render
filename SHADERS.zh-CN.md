@@ -1,0 +1,79 @@
+# 反编译卡片着色器
+
+> [English](SHADERS.md) · **简体中文**
+
+这就是本仓库里 GLSL 的来历(`render/materials/*.js` 里的内联着色器 + `public/shaders/glitter.*.glsl`)。
+**只有新增一个着色器**(某个新稀有度的效果)时才需要它——已有着色器都已作为 GLSL 提交。
+
+游戏的着色器是 Unity sub-program blob:**lz4 压缩 → SMOL-V → SPIR-V**,且**uniform 名被抹掉**。
+工具链:提取 SPIR-V → 转译成 GLSL → 恢复被抹掉的名字 → 移植。
+
+## 工具
+
+| 工具 | 安装 | 作用 |
+|------|------|------|
+| Python + UnityPy + lz4 | `pip install UnityPy lz4` | 读着色器 bundle,lz4 解压 |
+| SMOL-V 解码器 | 已随仓库:`build/shaderdec/smolv.py`(纯 Python) | SMOL-V → SPIR-V |
+| **SPIRV-Cross** | [Vulkan SDK](https://vulkan.lunarg.com/) 或[独立版](https://github.com/KhronosGroup/SPIRV-Cross) | SPIR-V → GLSL(Khronos 官方权威转译器) |
+
+你还需要**解密后的** `Common/Shader` bundle(`<DECRYPTED>` —— 见 [SETUP.zh-CN.md](SETUP.zh-CN.md) 第 1 步)。
+
+## 第 1 步 —— 提取 SPIR-V
+
+在 recipe 里找到着色器名(`scene.json` → `materials[*].shader`,如 `Frame-Holo-UR-New`),然后:
+
+```bash
+pip install UnityPy lz4
+python build/shaderdec/dump_shader.py "Frame-Holo-UR-New" frameur \
+    --shaders "<DECRYPTED>/Common/Shader" --out shaders_spv
+# → shaders_spv/frameur_frag.spv  (+ frameur_vert.spv)
+```
+
+## 第 2 步 —— SPIR-V → GLSL(用 SPIRV-Cross)
+
+```bash
+spirv-cross shaders_spv/frameur_frag.spv --version 300 --es --flatten-ubo > frameur_frag.glsl
+```
+
+- `--flatten-ubo` 把常量缓冲变成按**字节偏移**索引的 `uniform vec4 _NN[k]`。
+- 采样器按**绑定顺序**出现(`_13`、`_205`… → 对应各自槽位的 `_FlowAMap`、`_ALightTex`…)。
+
+## 第 3 步 —— 恢复被抹掉的 uniform 名
+
+SPIRV-Cross 只能吐出匿名的 `_NN[k]`(因为名字被抹了)。通过读一个**保留了反射信息的同族**着色器变体,
+把偏移映射回真实参数名:
+
+```bash
+python build/shaderdec/reflect.py "<同族着色器后缀>" --shaders "<DECRYPTED>/Common/Shader"
+# 打印  @84 _SpecularIntensity   @88 _DiffractionIntensity   @96 _DiffractionPower  …
+```
+
+把这些字节偏移与第 2 步的 `_NN[k]` 布局交叉对照,即可标注每个参数(再去 recipe 的 `r.floats` /
+`r.colors` 里取值)。若**没有**同族变体保留名字,那个参数就静态不可恢复——但先确认它对你的卡是否真的
+生效。
+
+## 第 4 步 —— 把 GLSL 移植进材质策略
+
+SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
+
+- 别名化属性(`position` / `normal` / `uv`),`gl_Position` 用 `projectionMatrix * modelViewMatrix`;
+- 用 `inverse(modelMatrix) * cameraPosition` 算相机相对基底(见 `render/glsl.js` 的共享 `VIEW_BASIS_VS`,
+  就是干这个的);
+- 去掉 `SV_Target1` / Unity 专有输出;
+- 从 recipe 经 [RenderContext](public/render/context.js) 接 uniform(`ctx.layerTex(r, slot)`、`r.floats`、
+  `r.colors`);
+- 包成 `defineMaterial(kind, { requires, build })` —— 见 [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md)。
+
+**仓库里现成的范例:**
+
+- `render/materials/ur.js` → `plate` 是从 `urplate_frag.spv` 字节追踪来的(注释标了来源)。
+- `render/materials/holo.js` → `frameHolo` 是 `framh_frag.spv` 的完整 SSA 追踪(名字按第 3 步从同族恢复)。
+- `public/shaders/glitter.*.glsl` 是**唯一**原样保留的着色器(SPIRV-Cross → three.js GLSL3,作为
+  `RawShaderMaterial` 运行)——一个完整的端到端范例。
+
+## 现实提醒(别手调)
+
+- 小着色器从 SPIRV-Cross 几乎能 1:1 移植。大的那些(Frame-Holo ≈ 1219 条指令、ShadowBox ≈ 1306)**加上**
+  名字被抹,是真的难——这正是 `render/materials/` 里那些策略存在的原因,直接复用。
+- **靠数值验证,不靠眼睛。** 给真实 `.spv` 和你的 GLSL 喂相同输入再 diff 输出;用常量贴图能让对比变成
+  纯算术。每个常量都必须能追溯到 recipe 或字节追踪——绝不拍脑袋。

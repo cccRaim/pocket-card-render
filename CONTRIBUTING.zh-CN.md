@@ -71,10 +71,9 @@ const mat = strat.build(r, ctx);                  // 返回 three.js 材质
    如果该着色器只是某个家族的改名版,**复用已有的 `kind`** 即可（角色由数据——哪个网格 + 哪些贴图槽
    ——决定,而非着色器名）。
 
-   > **片段 GLSL 从哪来。** 它是对真实着色器的字节追踪——**唯一需要 AssetStudio 的一步**(其余流水线
-   > 是 AssetRipper + UnityPy)。用 AssetStudio *Export Raw* 提取着色器的编译 blob(`Shader` 资产的
-   > SMOL-V `m_SubProgramBlob`),解码 SMOL-V → SPIR-V,再 `spirv-cross --version 300 --es` → GLSL,然后
-   > 移植。本仓库已有的着色器就是这么做的;只有某个稀有度引入*新*着色器时才需要 AssetStudio。
+   > **片段 GLSL 从哪来** —— 对真实着色器的字节追踪。用 `build/shaderdec/dump_shader.py`(UnityPy)提取
+   > 它的 SPIR-V,用 SPIRV-Cross 转译,恢复被抹掉的 uniform 名,然后移植。完整步骤见
+   > **[SHADERS.zh-CN.md](SHADERS.zh-CN.md)**。本仓库已有的着色器就是这么来的。
 
 2. **注册模块** —— 在 [`materials/index.js`](public/render/materials/index.js) 加一行:
 

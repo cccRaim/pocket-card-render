@@ -24,8 +24,8 @@
 
 **运行时零 npm 依赖**;`npm install` 只拉开发工具(playwright/pngjs,用于无头截图)。
 
-> **AssetStudio 不在本流水线里。** 几何 = AssetRipper,材质 = UnityPy。AssetStudio 仅用于新增稀有度时
-> 字节追踪一个全新着色器——见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+> **AssetStudio 这里完全不用。** 几何 = AssetRipper;材质*和*着色器 = UnityPy。
+> (新增稀有度时反编译着色器同样是 UnityPy + SPIRV-Cross——见 [SHADERS.zh-CN.md](SHADERS.zh-CN.md)。)
 
 ---
 

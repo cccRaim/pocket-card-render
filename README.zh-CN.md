@@ -95,7 +95,9 @@ server.mjs                 零依赖静态服务器,服务 public/ 与 public/ga
 - **样例之外的卡** —— 用你自己的数据构建它的 scene,再 `gather` 它的美术。见 [ASSETS.md](ASSETS.md)
   (scene/资产契约 + recipe 步骤)。
 - **某个新稀有度的渲染逻辑** —— 加一个策略模块 + 一条稀有度数据,渲染器核心不动。逐步说明见
-  [CONTRIBUTING.md](CONTRIBUTING.md)。
+  [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md)。
+- **反编译一个新着色器**(拿到新效果需要的 GLSL)—— 提取 → SPIRV-Cross → 移植,工具在
+  `build/shaderdec/`。完整流程见 [SHADERS.zh-CN.md](SHADERS.zh-CN.md)。
 
 ## 许可
 

@@ -101,6 +101,8 @@ mouse-tilt, the DynamicUI text canvas); all per-material shading lives in `rende
   See [ASSETS.md](ASSETS.md) (the scene/asset contract + the recipe step).
 - **A new rarity's render logic** — add a strategy module + a rarity entry; the renderer core is
   untouched. Step-by-step in [CONTRIBUTING.md](CONTRIBUTING.md).
+- **Decompiling a new shader** (to get the GLSL a new effect needs) — extract → SPIRV-Cross → port,
+  with the tools shipped under `build/shaderdec/`. Full workflow in [SHADERS.md](SHADERS.md).
 
 ## License
 
