@@ -59,12 +59,22 @@ node build/build.mjs <illId> "" scene.<tag>.json
 ```
 
 The material recipe (per-material `m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) is the
-one piece that comes from the **decrypted Unity material bundles**, not the AssetRipper glb (the glb
-carries geometry + material *names* only). Generating it is a data-prep step outside this repo; commit
-the resulting `scene.*.json` here and `gather` its art. See the project notes for the recipe tool.
+one piece that does **not** come from the AssetRipper glb (the glb carries geometry + material *names*
+only). It is produced separately — see the toolchain below — then committed here as part of `scene.*.json`.
 
-## Why two tools
+## The data-preparation toolchain
 
-The composed glb (geometry) comes from **AssetRipper**; the material parameters come from the
-**decrypted material bundles**. Neither source alone is sufficient — this is by design, verified, and
-intentional. The renderer here only ever consumes the resulting `scene.json` + `public/game/` art.
+Two tools, because **no single one provides everything** (verified by execution):
+
+| Tool | Produces | Notes |
+|------|----------|-------|
+| **AssetRipper** (.NET, free) | the *composed* glb geometry + textures | Settings as above. It instantiates the prefab hierarchy (the per-card Face prefab + the shared Template prefab) into one glb with every material as a named sub-mesh — geometry no other tool here reproduces. |
+| **UnityPy** (Python) | the **material recipe** (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) | Loads the **decrypted** Unity material bundles (`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`), resolves cross-bundle PPtrs, and writes the per-layer recipe in the schema above. The renderer needs this; the glb has only material *names*. |
+
+> **AssetStudio was evaluated and does not fit here.** Its CLI cannot dump `Material` objects — Material
+> is not an exportable type (`-m dump` only emits Mesh / Texture2D / MonoBehaviour / Shader), so it
+> cannot supply the recipe. Use UnityPy for materials.
+
+Both prep tools run against **your own** decrypted game data and live **outside this repo**; this repo
+only ever consumes the resulting `scene.json` + `public/game/` art. (Decryption is an upstream,
+game-specific step, also not included here.)

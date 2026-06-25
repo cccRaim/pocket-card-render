@@ -55,12 +55,20 @@ scene 是渲染器消费的“每次绘制调用”清单。结构如下:
 node build/build.mjs <illId> "" scene.<标签>.json
 ```
 
-材质 recipe（每材质的 `m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列）是唯一来自**解密后的
-Unity 材质 bundle** 的那块,而不是来自 AssetRipper glb（glb 只带几何 + 材质*名称*）。生成它是本仓库
-之外的一个数据准备步骤;把生成好的 `scene.*.json` 提交到这里,再 `gather` 它的美术。详见项目笔记里的
-recipe 工具说明。
+材质 recipe（每材质的 `m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列）是**唯一不来自** AssetRipper
+glb 的那块（glb 只带几何 + 材质*名称*）。它单独生成——见下面的工具链——再作为 `scene.*.json` 的一部分提交到这里。
 
-## 为什么需要两个工具
+## 数据准备工具链
 
-合成好的 glb（几何）来自 **AssetRipper**;材质参数来自**解密后的材质 bundle**。两者单独都不够——这是
-刻意为之、经过验证、有意的设计。本仓库的渲染器自始至终只消费产出的 `scene.json` + `public/game/` 美术。
+需要两个工具,因为**单独任何一个都不够**(经执行验证):
+
+| 工具 | 产出 | 说明 |
+|------|------|------|
+| **AssetRipper**（.NET,免费） | **合成好的** glb 几何 + 贴图 | 设置同上。它把预制件层级（每卡的 Face prefab + 共享的 Template prefab）实例化成一个 glb,每个材质都是命名子网格——这是其它工具复刻不出来的几何。 |
+| **UnityPy**（Python） | **材质 recipe**（`m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列） | 加载**解密后的** Unity 材质 bundle（`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`),解析跨 bundle 的 PPtr,按上面的 schema 写出每层 recipe。渲染器需要它;glb 只有材质*名称*。 |
+
+> **AssetStudio 评估过,不适用于这里。** 它的 CLI 无法 dump `Material` 对象——Material 不是可导出类型
+> (`-m dump` 只产出 Mesh / Texture2D / MonoBehaviour / Shader),所以拿不到 recipe。材质请用 UnityPy。
+
+两个准备工具都针对**你自己的**解密游戏数据运行,且都在**本仓库之外**;本仓库自始至终只消费产出的
+`scene.json` + `public/game/` 美术。(解密是上游、与具体游戏相关的步骤,同样不包含在此。)
