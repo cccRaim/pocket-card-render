@@ -37,6 +37,9 @@ npm run serve                        # → http://127.0.0.1:8011
 `public/scene.*.json`,**只**复制它们引用到的 `/game/...` 文件,所以你只需准备样例需要的那部分。
 (游戏美术被 git 忽略、从不提交——见 [ASSETS.md](ASSETS.md)。)
 
+> 📖 **完整端到端指南** —— 依赖版本、AssetRipper 精确导出配置、期望目录结构、以及如何为一张全新卡
+> 生成数据:**[SETUP.zh-CN.md](SETUP.zh-CN.md)**。
+
 ## 样例卡
 
 三张场景已预置好(只含渲染 recipe + 文本,美术在本地收集):

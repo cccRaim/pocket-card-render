@@ -42,6 +42,9 @@ reads the prebuilt `public/scene.*.json` and copies **only** the `/game/...` fil
 you stage just what the samples need. (Game art is git-ignored and never committed — see
 [ASSETS.md](ASSETS.md).)
 
+> 📖 **Full end-to-end guide** — dependency versions, the exact AssetRipper export config, the expected
+> directory layout, and how to generate data for a brand-new card: **[SETUP.md](SETUP.md)**.
+
 ## Sample cards
 
 Three scenes ship prebuilt (the render recipe + text only — art is gathered locally):

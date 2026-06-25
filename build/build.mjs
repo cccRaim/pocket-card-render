@@ -83,7 +83,11 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   // Some layers have renderQueue=-1 in the manifest (not captured). Resolve those from the shader's
   // real queue (card_shader_state.json) so the frame (Frame-Holo-Tuning = Transparent-800 = 2200)
   // sits UNDER the illustration/SB instead of being forced to the top.
-  const shaderState = JSON.parse(readFileSync(join(OUTPUT, "card_shader_state.json"), "utf8"));
+  // optional: most recipes already carry a real renderQueue; without this file those resolve via the
+  // shader-name queue tag or fall to the end. (It is a shared, one-off upstream artifact — see SETUP.md.)
+  let shaderState = {};
+  try { shaderState = JSON.parse(readFileSync(join(OUTPUT, "card_shader_state.json"), "utf8")); }
+  catch { console.warn("card_shader_state.json not found — resolving queues from the recipe only"); }
   const BASEQ = { Background: 1000, Geometry: 2000, AlphaTest: 2450, Transparent: 3000, Overlay: 4000 };
   const parseQ = (str) => {
     const m = (str || "").match(/^([A-Za-z]+)([+-]\d+)?$/);
