@@ -1,5 +1,7 @@
 # pocket-card-render
 
+> **English** · [简体中文](README.zh-CN.md)
+
 A data-driven, **byte-faithful** in-browser renderer for **Pokémon TCG Pocket** card faces, built on
 [three.js](https://threejs.org/). Every layer — parallax foil, holo diffraction, metal specular,
 glitter, the stencil window, the rare-mark, the holographic frame — is reconstructed from the game's
