@@ -123,9 +123,16 @@ function glitterMaterialExact(r, ctx) {
   _78[15].set(0, 0, 0, 0);   // engine-bound field-rotation angle; fed the real Unity _Time per frame (see loop)
   _78[16].set(f._FlowScale ?? 1.35, f._FakeCameraHeightB ?? 0, f._HeightB ?? 0, f._HeightPowerB ?? 0.5);
   _78[17].set(f._ScaleB ?? 0.6, f._FlowScaleB ?? 1.35, 0, 0);
+  // fragment cbuffer (declaration order, anchored by _LightColor at byte @48 = _37[3]):
+  //   _37[2] = (_FadeDuration, _FlowAPower, _FlowBPower)   @32/36/40
+  //   _37[3] = _LightColor                                 @48
+  //   _37[4] = (_LightTime, _EmitThreshold)                @64/68
+  // _37[4].x = _LightTime is the twinkle PULSE half-width (frag: _133 = _37[4].x*0.5; emit where |phase|<_133).
+  // It was previously UNSET (=0) → the pulse window was zero → no sparkle flashes at all (the missing twinkle).
   const _37 = Array.from({ length: 5 }, () => V4(0, 0, 0, 0));
-  _37[2].set(f._EmitThreshold ?? 0.08, f._FlowAPower ?? 0.1, f._FlowBPower ?? 0.1, 0);
+  _37[2].set(f._FadeDuration ?? 0.2, f._FlowAPower ?? 0.1, f._FlowBPower ?? 0.1, 0);
   _37[3].set(lc.r, lc.g, lc.b, 1);
+  _37[4].set(f._LightTime ?? 0.06, f._EmitThreshold ?? 0.08, 0, 0);
   const m = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
     uniforms: {
@@ -136,7 +143,11 @@ function glitterMaterialExact(r, ctx) {
     vertexShader: ctx.exactGlit.vert, fragmentShader: ctx.exactGlit.frag,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
   });
-  ctx.exactGlitMats.push(m);   // per-frame: _37[0] and _78[15] = the real Unity _Time (drives flow + rotation)
+  // _78[15] (vertex byte @240) is read by the shader as the two flow-field rotation angles (sin/cos), but it
+  // is an UNDECLARED cbuffer slot (not a shader Property; _RotateSpeedA/B exist in the material's m_Floats but
+  // are NOT in this shader's Properties → vestigial). Undeclared ⇒ reads 0 in-game ⇒ identity rotation ⇒ NO
+  // field rotation. It stays at its initial (0,0,0,0); the twinkle is the fragment flow + pulse, not rotation.
+  ctx.exactGlitMats.push(m);   // per-frame: only _37[0] (flow time) is animated — see app.js loop
   return m;
 }
 // hand port (used when the SPIRV-Cross shader is absent) — base_rgb × light.GREEN, two layers B-over-A,

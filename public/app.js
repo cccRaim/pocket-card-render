@@ -686,11 +686,12 @@ async function main() {
     // rotation) so the diorama stays on the card; the per-layer parallax (different z) is preserved.
     // cardGroup.scale.x=-1 flips X. `?dcomp=` tunes the strength (0=off, default 1; negative to flip).
     for (const am of animMats) am.uniforms.uTime.value = (t || 0) * 0.001;
-    for (const em of exactGlitMats) {                    // exact glitter: feed the REAL Unity _Time = (t/20,t,2t,3t)
-      const s = (t || 0) * 0.001;                        // elapsed seconds; the shader picks its own _Time component
-      const T = [s / 20, s, s * 2, s * 3];               // (no _RotateSpeed/×0.1 fudge — the data-faithful engine time)
-      em.uniforms._37.value[0].set(T[0], T[1], T[2], T[3]);
-      em.uniforms._78.value[15].set(T[0], T[1], T[2], T[3]);
+    for (const em of exactGlitMats) {
+      const s = (t || 0) * 0.001;                        // elapsed seconds
+      // ONLY the flow time animates (_37[0]); the flow-map scroll + the _37[4] pulse window = the twinkle.
+      // _78[15] (the flow-field rotation angle) is left at 0 — it is an undeclared cbuffer slot that reads 0
+      // in-game (identity rotation = no spin). Animating it is what produced the bogus rotation.
+      em.uniforms._37.value[0].set(s / 20, s, s * 2, s * 3);
     }
     const bg = window.__bg;   // set in the FBX callback for UR cards (gold-foil background RT pass); else undefined
     if (bg) {
