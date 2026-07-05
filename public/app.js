@@ -24,6 +24,7 @@ const log = (m) => { errEl.textContent = m; console.log(m); };
 const loadingEl = document.getElementById("loading");
 const loadingTxt = document.getElementById("loading-txt");
 const busyEl = document.getElementById("busy"), busyTxt = document.getElementById("busy-txt");
+const controlsEl = document.getElementById("controls");
 const setLoading = (t) => { if (loadingTxt && t) loadingTxt.textContent = t; };
 const hideLoading = () => loadingEl && loadingEl.classList.add("hidden");
 const busy = (on, t) => { if (!busyEl) return; if (t && busyTxt) busyTxt.textContent = t; busyEl.classList.toggle("on", on); };
@@ -314,6 +315,18 @@ function buildDynamicUITexture(cardUI, face) {
   });
 }
 
+function compactCardName(name) {
+  return String(name || "").replace(/ex$/i, " ex").replace(/_/g, " ");
+}
+
+function sceneLabel(scene, repeatedIds, lc) {
+  const localized = scene.names && scene.names[lc];
+  const bits = [localized || compactCardName(scene.name)];
+  if (scene.rarityToken) bits.push(scene.rarityToken);
+  if (repeatedIds.has(scene.id || scene.name)) bits.push(scene.file.replace(/\.json$/i, ""));
+  return bits.filter(Boolean).join(" · ") || scene.file;
+}
+
 async function main() {
   // ?scene=scene.tr.json renders an alternate card (e.g. a trainer) built by build.mjs into its own scene file.
   // debug URL params (for headless screenshots): ?only=<substr> solos layers, ?nohud hides the overlays.
@@ -326,9 +339,15 @@ async function main() {
   if (qp.has("preview")) window.__preview = true;
   if (qp.has("nohud")) { window.__nohud = true; if (errEl) errEl.style.display = "none"; }
   const scene_data = await fetch(sceneSrc).then((r) => r.json());
+  const currentSceneFile = cardParam ? "" : sceneSrc.replace(/^\.?\//, "");
+  const sceneList = await fetch("/scenes")
+    .then((r) => r.ok ? r.json() : null)
+    .then((j) => (j && Array.isArray(j.scenes)) ? j.scenes : [])
+    .catch(() => []);
   // ── locale: load per-language content + fonts from locales/manifest.json (falls back to the legacy single files) ──
   const manifest = await fetch("locales/manifest.json").then((r) => r.json()).catch(() => null);
-  let curLoc = (manifest && manifest.default) || "zh_TW";
+  let curLoc = qp.get("lc") || (manifest && manifest.default) || "zh_TW";
+  if (manifest && manifest.locales && !manifest.locales.some((l) => l.lc === curLoc)) curLoc = manifest.default || "zh_TW";
   async function loadLocaleData(lc) {
     const ui = await fetch(`locales/card_ui.${lc}.json`).then((r) => r.json()).catch(() => null);
     const face = await fetch(`locales/card_face.${lc}.json`).then((r) => r.json()).catch(() => null);
@@ -606,6 +625,14 @@ async function main() {
     // ── LANGUAGE SWITCH: rebuild only the DynamicUI canvas (content + fonts) and swap the textures in place ──
     // its own font download + canvas rebuild takes a beat, so show the small busy spinner and lock the dropdown.
     let switching = false;
+    let cardSel = null, repeatedSceneIds = new Set();
+    function refreshCardSelectLabels() {
+      if (!cardSel) return;
+      for (const op of cardSel.options) {
+        const sceneInfo = sceneList.find((s) => s.file === op.value);
+        if (sceneInfo) op.textContent = sceneLabel(sceneInfo, repeatedSceneIds, curLoc);
+      }
+    }
     async function switchLocale(lc, selEl) {
       if (switching) return;
       switching = true; busy(true, "Switching…"); if (selEl) selEl.disabled = true;
@@ -615,18 +642,53 @@ async function main() {
         if (t && dynUIMat) { dynUIMat.map = t.ui; dynUIMat.needsUpdate = true; }
         if (t) for (const m of exHoloMats) { m.uniforms.dynUI.value = t.ui; m.uniforms.foilMask.value = t.foil; }
         curLoc = lc;
+        refreshCardSelectLabels();
       } catch (e) { console.warn("switchLocale", e); }
-      finally { switching = false; busy(false); if (selEl) selEl.disabled = false; }
+      finally {
+        switching = false; busy(false); if (selEl) selEl.disabled = false;
+        const next = new URL(location.href);
+        next.searchParams.set("lc", curLoc);
+        history.replaceState(null, "", next);
+      }
+    }
+    if (controlsEl && sceneList.length > 1) {
+      const counts = new Map();
+      for (const s of sceneList) {
+        const key = s.id || s.name || s.file;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+      repeatedSceneIds = new Set([...counts].filter(([, n]) => n > 1).map(([k]) => k));
+      const sel = document.createElement("select");
+      cardSel = sel;
+      sel.setAttribute("aria-label", "Card");
+      for (const s of sceneList) {
+        const op = document.createElement("option"); op.value = s.file; op.textContent = sceneLabel(s, repeatedSceneIds, curLoc);
+        if (s.file === currentSceneFile) op.selected = true; sel.appendChild(op);
+      }
+      if (cardParam) {
+        const op = document.createElement("option"); op.value = ""; op.textContent = compactCardName(scene_data.card.name) || cardParam;
+        op.selected = true; sel.prepend(op);
+      }
+      sel.onchange = () => {
+        if (!sel.value || sel.value === currentSceneFile) return;
+        busy(true, "Loading…");
+        const next = new URL(location.href);
+        next.searchParams.delete("card");
+        next.searchParams.set("scene", sel.value);
+        next.searchParams.set("lc", curLoc);
+        location.href = next;
+      };
+      controlsEl.appendChild(sel);
     }
     if (manifest && manifest.locales && manifest.locales.length > 1) {
       const sel = document.createElement("select");
-      sel.style.cssText = "position:fixed;right:8px;top:8px;z-index:10;font:13px sans-serif;padding:4px 6px;border-radius:4px";
+      sel.setAttribute("aria-label", "Language");
       for (const l of manifest.locales) {
         const op = document.createElement("option"); op.value = l.lc; op.textContent = l.label;
         if (l.lc === curLoc) op.selected = true; sel.appendChild(op);
       }
       sel.onchange = () => switchLocale(sel.value, sel);
-      document.body.appendChild(sel);
+      (controlsEl || document.body).appendChild(sel);
     }
 
     // ── DEBUG MODE: isolate layers to find which RESOURCE has an artifact (the face lines, AM, ILL …) ──

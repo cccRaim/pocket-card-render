@@ -151,16 +151,18 @@ function exHoloMaterial(r, ctx) {
   const m = new THREE.ShaderMaterial({
     uniforms: {
       dynUI: { value: ctx.dynUITex }, foilMask: { value: ctx.foilTex },
-      phase: { value: ctx.layerTex(r, "_PhaseTex") }, rampMask: { value: ctx.layerTex(r, "_RampMaskTex") }, ramp: { value: ctx.layerTex(r, "_RampTex") }, envCube: { value: ctx.envCubeTex },
+      phase: { value: ctx.layerTex(r, "_PhaseTex") }, rampMask: { value: ctx.layerTex(r, "_RampMaskTex") }, ramp: { value: ctx.layerTex(r, "_RampTex") },
+      holoMask: { value: ctx.layerTex(r, "_HologramMaskTex") }, envCube: { value: ctx.envCubeTex },
       uDiffPow: { value: f._DiffractionPower ?? 20 }, uDiffInt: { value: f._DiffractionIntensity ?? 0.8 },
       uRepeat: { value: f._RampRepeat ?? 3 }, uOffset: { value: f._RampOffset ?? 0.216 }, uSpeed: { value: f._RampSpeed ?? 1 }, uInterval: { value: f._RampInterval ?? 0 },
-      uShin: { value: f._Shininess ?? 2 }, uSpec: { value: f._SpecularIntensity ?? 0.75 }, uBaseInt: { value: f._BaseColorIntensity ?? 0.75 },
+      uShin: { value: f._Shininess ?? 2 }, uSpec: { value: f._SpecularIntensity ?? 0.75 }, uDiffuse: { value: f._DiffuseIntensity ?? f._BaseColorIntensity ?? 0.75 },
+      uAlphaBlend: { value: f._AlphaBlend ?? 0 }, uHasEnv: { value: ctx.envCubeTex ? 1 : 0 }, uHasMask: { value: ctx.layerTex(r, "_HologramMaskTex") ? 1 : 0 },
     },
     vertexShader: VIEW_BASIS_WORLD_VS,
     fragmentShader: `
-      uniform sampler2D dynUI, foilMask, phase, rampMask, ramp;
+      uniform sampler2D dynUI, foilMask, phase, rampMask, ramp, holoMask;
       uniform samplerCube envCube;
-      uniform float uDiffPow, uDiffInt, uRepeat, uOffset, uSpeed, uInterval, uShin, uSpec, uBaseInt;
+      uniform float uDiffPow, uDiffInt, uRepeat, uOffset, uSpeed, uInterval, uShin, uSpec, uDiffuse, uAlphaBlend, uHasEnv, uHasMask;
       varying vec2 vUv; varying vec3 vVdO; varying vec3 vNrm; varying vec3 vVdW; varying vec3 vNrmW;
       void main() {
         float m = texture2D(foilMask, vUv).a;         // ex glyph + rule banner coverage
@@ -176,7 +178,13 @@ function exHoloMaterial(r, ctx) {
         float U = clamp(fract((dot(Rn * uSpeed, Rv) - texture2D(rampMask, vUv).x) * uRepeat + uOffset) * (uInterval + 1.0) - uInterval * 0.5, 0.0, 1.0);
         vec3 rainbow = texture2D(ramp, vec2(U, 0.5)).rgb * diffraction * uDiffInt;
         vec3 base = ui.rgb;
-        vec3 outc = base * (1.0 + uBaseInt) + rainbow;
+        vec3 R = reflect(-normalize(vVdW), normalize(vNrmW));
+        vec3 env = textureCube(envCube, R).rgb * uHasEnv;
+        float spec = pow(clamp(-R.x, 0.0, 1.0), uShin) * uSpec;
+        vec3 litBase = base * (env * spec + vec3(uDiffuse));
+        vec3 shaded = litBase * (1.0 - uAlphaBlend * diffraction) + rainbow;
+        float hm = mix(1.0, texture2D(holoMask, vUv).r, uHasMask);
+        vec3 outc = mix(base, shaded, hm);
         gl_FragColor = vec4(outc * m, m);              // premultiplied over → replaces the dim 2900 gold
         #include <colorspace_fragment>
       }`,
@@ -186,7 +194,7 @@ function exHoloMaterial(r, ctx) {
   return m;
 }
 defineMaterial("exHolo", {
-  requires: (r, ctx) => !!ctx.foilTex,                // no DynamicUI foil/text mask → can't place the sheen
+  requires: (r, ctx) => !!(ctx.dynUITex && ctx.foilTex && ctx.layerTex(r, "_PhaseTex") && ctx.layerTex(r, "_RampMaskTex") && ctx.layerTex(r, "_RampTex")),
   build: exHoloMaterial,
 });
 
@@ -240,13 +248,16 @@ function sbHoloMaterial(r, ctx) {
       phase: { value: ctx.layerTex(r, "_PhaseTex") }, rampMask: { value: ctx.layerTex(r, "_RampMaskTex") || ctx.layerTex(r, "_RampMaskTex2") }, ramp: { value: ctx.layerTex(r, "_RampTex") },
       uDiffPow: { value: f._DiffractionPower ?? 20 }, uDiffInt: { value: f._DiffractionIntensity ?? 4 },
       uRepeat: { value: f._RampRepeat ?? 2 }, uOffset: { value: f._RampOffset ?? -0.5 }, uSpeed: { value: f._RampSpeed ?? 3 }, uInterval: { value: f._RampInterval ?? 0 },
-      uUseMask: { value: ctx.layerTex(r, "_HologramMaskTex") ? (f._UseMask ?? 1) : 0 },
+      uUseMask: { value: (ctx.layerTex(r, "_HologramMaskTex") || ctx.layerTex(r, "_MaskTex")) ? (f._UseMask ?? 1) : 0 },
+      uSrSB: { value: (r.shader === "Opaque-Hologram_Tuning" && ctx.layerTex(r, "_MaskTex") && ctx.layerTex(r, "_PhaseTex2") && ctx.layerTex(r, "_RampTex2")) ? 1 : 0 },
+      uOrient: { value: new THREE.Vector2(f._OrientationU ?? 1, f._OrientationV ?? 1) },
       uDual: { value: f._Hologram2Enabled ? 1 : 0 },
       normalMap: { value: ctx.layerTex(r, "_NormalMap") }, uHasNM: { value: ctx.layerTex(r, "_NormalMap") ? 1 : 0 },
       phase2: { value: ctx.layerTex(r, "_PhaseTex2") }, ramp2: { value: ctx.layerTex(r, "_RampTex2") }, rampMask2: { value: ctx.layerTex(r, "_RampMaskTex2") },
       uDiffPow2: { value: f._DiffractionPower2 ?? 30 }, uDiffInt2: { value: f._DiffractionIntensity2 ?? 0.5 },
       uRepeat2: { value: f._RampRepeat2 ?? 3 }, uOffset2: { value: f._RampOffset2 ?? 0.2 }, uSpeed2: { value: f._RampSpeed2 ?? 2 }, uInterval2: { value: f._RampInterval2 ?? 0 },
       uOutColor: { value: V3(r.colors && r.colors._FakeSpecularColor_Outline, new THREE.Vector3(1, 0.95, 0.65)) },
+      uMaskColor: { value: V3(r.colors && r.colors._OutlineColor, new THREE.Vector3(0, 0, 0)) },
       uOutInt: { value: (f._FakeSpecularEnabled && f._FakeSpecularIntensity_Outline != null) ? f._FakeSpecularIntensity_Outline : 0 },
       uOutCorner: { value: f._FakeSpecularCornerPower ?? 10 }, uOutScale: { value: f._FakeSpecularMaskScale_Outline ?? 1.5 }, uOutPow: { value: f._FakeSpecularPower_Outline ?? 1 },
       envCube: { value: ctx.envCubeTex },
@@ -256,9 +267,10 @@ function sbHoloMaterial(r, ctx) {
     vertexShader: VIEW_BASIS_VS,
     fragmentShader: `
       uniform sampler2D mainTex, mask, phase, rampMask, ramp, phase2, ramp2, rampMask2, normalMap;
-      uniform float uDiffPow, uDiffInt, uRepeat, uOffset, uSpeed, uInterval, uUseMask, uDual, uHasNM;
+      uniform float uDiffPow, uDiffInt, uRepeat, uOffset, uSpeed, uInterval, uUseMask, uSrSB, uDual, uHasNM;
+      uniform vec2 uOrient;
       uniform float uDiffPow2, uDiffInt2, uRepeat2, uOffset2, uSpeed2, uInterval2;
-      uniform vec3 uOutColor; uniform float uOutInt, uOutCorner, uOutScale, uOutPow;
+      uniform vec3 uOutColor, uMaskColor; uniform float uOutInt, uOutCorner, uOutScale, uOutPow;
       uniform samplerCube envCube; uniform float uReflInt, uReflPow, uHasRefl;
       varying vec2 vUv; varying vec3 vVdO; varying vec3 vNrm;
       vec3 holoLayer(sampler2D phaseT, sampler2D rampT, sampler2D rampMaskT, float diffPow, float diffInt,
@@ -275,16 +287,25 @@ function sbHoloMaterial(r, ctx) {
         if (base.a < 0.5) discard;                       // AM coverage (opaque cutout)
         vec3 Rn = vNrm * 0.5 + 0.5, Rv = vVdO * 0.5 + 0.5;
         float s = dot(Rn.xy, Rv.xy);
-        float m = mix(1.0, texture2D(mask, vUv).r, uUseMask);   // Pokémon: eyes mask gates; trainer: 1
+        float maskVal = texture2D(mask, vUv).r;
+        float m = mix(1.0, maskVal, uUseMask);   // Pokémon: eyes mask gates; SR ShadowBox: HM outline mask
         float nm = mix(0.5, texture2D(normalMap, vUv).x, uHasNM);
         vec3 h1 = holoLayer(phase, ramp, rampMask, uDiffPow, uDiffInt, uRepeat, uOffset, uSpeed, uInterval, Rn, Rv, s) * m;
+        float edgePhase = texture2D(phase, vUv).x * 0.5 + 0.25;
+        float edge = pow(1.0 - min(abs(dot(Rn.xy, vec2(0.5)) - edgePhase), 1.0), uDiffPow) * m;
+        float edgeU = fract(dot(vUv, uOrient) + dot(Rn, vec3(uSpeed)) + uOffset);
+        vec3 srOutline = texture2D(ramp, vec2(edgeU, 0.5)).rgb * edge * uDiffInt;
+        h1 = mix(h1, srOutline, uSrSB);
         vec3 h2 = holoLayer(phase2, ramp2, rampMask2, uDiffPow2, uDiffInt2, uRepeat2, uOffset2, uSpeed2, uInterval2, Rn, Rv, s);
-        vec3 foil = mix(h1, h1 * nm + h2 * (1.0 - nm), uDual);
+        vec3 foilNormal = h1 * nm + h2 * (1.0 - nm);
+        vec3 foilSr = h1 + h2 * (1.0 - maskVal);
+        vec3 foil = mix(h1, mix(foilNormal, foilSr, uSrSB), uDual);
         float grazing = pow(1.0 - abs(dot(vNrm, vVdO)), uOutCorner);
         vec3 outline = uOutColor * uOutInt * pow(clamp(grazing * uOutScale, 0.0, 1.0), uOutPow);
         vec3 env = textureCube(envCube, reflect(-vVdO, vNrm)).rgb;
         float refl = pow(clamp(1.0 - abs(dot(vNrm, vVdO)), 0.0, 1.0), uReflPow) * uReflInt;
-        gl_FragColor = vec4(base.rgb * (1.0 + foil) + outline + env * refl * uHasRefl, base.a);
+        vec3 baseRgb = mix(base.rgb, mix(base.rgb, uMaskColor, maskVal), uSrSB);
+        gl_FragColor = vec4(baseRgb * (1.0 + foil) + outline + env * refl * uHasRefl, base.a);
         #include <colorspace_fragment>
       }`,
     side: THREE.DoubleSide, toneMapped: false,

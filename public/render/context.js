@@ -25,8 +25,11 @@ export const REGION = { card: 1, window: 2 };
  * @param {{vert:string,frag:string}|null} exactGlit   the SPIRV-Cross glitter shader (or null → hand port)
  * @param {THREE.Material[]} animMats        materials wanting a per-frame uTime
  * @param {THREE.Material[]} exactGlitMats   exact-glitter materials wanting per-frame Unity _Time
+ * @param {THREE.Texture|null} dynUITex       composited DynamicUI canvas for _UseDynamicUI materials
+ * @param {THREE.Texture|null} foilTex        alpha mask for UI foil-only regions
+ * @param {THREE.Material[]} exHoloMats       EX/UI holo materials whose DynamicUI textures can be swapped
  */
-export function makeRenderContext({ texInfo, envCubeTex, exactGlit, animMats, exactGlitMats }) {
+export function makeRenderContext({ texInfo, envCubeTex, exactGlit, animMats, exactGlitMats, dynUITex, foilTex, exHoloMats }) {
   const layerTex = (L, slot) => {
     const n = L.textures?.[slot]?.name;
     return n && texInfo.has(n) ? texInfo.get(n).tex : null;
@@ -37,7 +40,7 @@ export function makeRenderContext({ texInfo, envCubeTex, exactGlit, animMats, ex
     const c = t.clone(); c.wrapS = c.wrapT = THREE.RepeatWrapping; c.needsUpdate = true; return c;
   };
   const texStraight = (name) => !!(name && texInfo.has(name) && texInfo.get(name).straight);
-  return { THREE, layerTex, layerTexRepeat, texStraight, envCubeTex, exactGlit, animMats, exactGlitMats };
+  return { THREE, layerTex, layerTexRepeat, texStraight, envCubeTex, exactGlit, animMats, exactGlitMats, dynUITex, foilTex, exHoloMats };
 }
 
 // ── render state applied to a built material by the dispatcher ──

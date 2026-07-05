@@ -17,6 +17,9 @@
   #busy{position:fixed;left:50%;top:12px;transform:translateX(-50%);z-index:11;display:none;align-items:center;gap:8px;font:12px sans-serif;color:#aef;background:rgba(0,0,0,.55);padding:5px 11px;border-radius:14px}
   #busy.on{display:flex}
   #busy .spinner{width:15px;height:15px;border-width:2px;animation-duration:.7s}
+  #controls{position:fixed;right:8px;top:8px;z-index:10;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  #controls select{max-width:min(320px,calc(100vw - 16px));font:13px sans-serif;color:#e9f7ff;background:rgba(18,22,30,.86);border:1px solid rgba(170,220,255,.35);border-radius:4px;padding:5px 28px 5px 8px;outline:none}
+  #controls select:focus{border-color:#8fd7ff;box-shadow:0 0 0 2px rgba(106,204,255,.18)}
 </style>
 <!-- Free OFL fonts substituting the game's proprietary type (see locales/manifest.json). Google Fonts
      handles CJK unicode-range splitting so canvas text gets full coverage from a single family name. -->
@@ -33,6 +36,7 @@
 <body>
 <canvas id="c"></canvas>
 <div id="err"></div>
+<div id="controls"></div>
 <div id="busy"><div class="spinner"></div><span id="busy-txt">Switching…</span></div>
 <div id="loading"><div class="spinner"></div><div id="loading-txt">Loading…</div></div>
 <script type="module" src="./app.js"></script>
