@@ -5,7 +5,7 @@
 This renderer ships **no game assets**. To render a card you provide two things, both derived from
 **your own** copy of the game:
 
-1. a **scene recipe** — `public/scene.<tag>.json`
+1. a **scene recipe** — `public/scene.<cardId>.json`
 2. the **art** it references — meshes + textures under `public/game/`
 
 ## 1. The scene recipe (`scene.*.json`)
@@ -55,8 +55,11 @@ stage what you need.
 AssetRipper glb + textures:
 
 ```bash
-node build/build.mjs <illId> "" scene.<tag>.json
+node build/build.mjs <illId>
 ```
+
+By default this writes `public/scene.<illId>.json`. Pass a third argument only when you intentionally
+want a non-canonical output filename.
 
 The material recipe (per-material `m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) is the
 one piece that does **not** come from the AssetRipper glb (the glb carries geometry + material *names*
@@ -77,5 +80,5 @@ Two tools, because **no single one provides everything** (verified by execution)
 > transpiled by SPIRV-Cross — see [SHADERS.md](SHADERS.md). AssetStudio is not part of the pipeline.
 
 Both prep tools run against **your own** decrypted game data and live **outside this repo**; this repo
-only ever consumes the resulting `scene.json` + `public/game/` art. (Decryption is an upstream,
+only ever consumes the resulting `scene.<cardId>.json` + `public/game/` art. (Decryption is an upstream,
 game-specific step, also not included here.)

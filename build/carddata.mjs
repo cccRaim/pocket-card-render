@@ -3,16 +3,28 @@
 // Pure JSON joins — the masterdata is plain decrypted JSON and the locale is the pre-extracted locale_<lc>.json,
 // so this needs no UnityPy/Python. Handles Pokémon (PokemonCard/Pokemon) AND Trainers (TrainerCard/Trainer).
 // Usage (server-side): import { buildCardData } from "./carddata.mjs"; buildCardData("TR_20_000230_00","zh_TW").
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const MD = process.env.PTCG_MASTERDATA
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/masterdata";
-const OUTDIR = join(import.meta.dirname, "..", "..", "apks", "output");   // locale_<lc>.json lives here
+function firstExistingDir(paths) {
+  return paths.find((p) => p && existsSync(p)) || paths[0];
+}
+
+const MD = firstExistingDir([
+  process.env.PTCG_MASTERDATA,
+  "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData",
+  "D:/DevProjectes/ptcgp-tools-master/pokemon-tcgp-dumped-masterdata/exported",
+  "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/masterdata",
+]);
+const OUTDIR = process.env.PCR_RECIPES || firstExistingDir([
+  join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "output"),
+  join(import.meta.dirname, "..", "..", "apks", "output"),
+]);   // locale_<lc>.json lives here
 
 const ENERGY = { 1: "Colorless", 2: "Grass", 3: "Fire", 4: "Water", 5: "Lightning", 6: "Psychic",
                  7: "Fighting", 8: "Darkness", 9: "Metal", 10: "Dragon", 11: "Fairy" };
 const TRAINER_TYPE = { 1: "TRAINER_TYPE_SUPPORT", 2: "TRAINER_TYPE_GOODS", 3: "TRAINER_TYPE_EQUIPMENT" };
+const TRAINER_FOOTER = { 1: "support_description", 2: "goods_description", 3: "equipment_description" };
 
 const _cache = {};
 const load = (n) => (_cache[n] ??= JSON.parse(readFileSync(join(MD, n + ".json"), "utf8")));
@@ -68,8 +80,7 @@ export function buildCardData(cardId, lc = "zh_TW") {
       rarity: tc.Rarity,
       illustrationId: tc.IllustrationID,
       illustrator: (tc.IllustratorNameMSIDs || []).map((x) => M[x] || "").filter(Boolean).join(" / "),
-      // Supporter-only footer rule (only one Supporter card may be played per turn); other trainer types have none.
-      ui: { footer: tr.TrainerType === 1 ? resolve(UI.support_description || "") : "" },
+      ui: { footer: resolve(UI[TRAINER_FOOTER[tr.TrainerType]] || "") },
     };
   }
 

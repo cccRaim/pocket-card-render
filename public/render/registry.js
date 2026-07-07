@@ -10,7 +10,7 @@
 //     build:    (r, ctx) => new THREE.ShaderMaterial({ ... }), // returns the three.js material
 //   })
 //
-// `r`   = the material recipe from scene.json.materials[name] (shader/queue/floats/colors/textures).
+// `r`   = the material recipe from scene_data.materials[name] (shader/queue/floats/colors/textures).
 // `ctx` = the RenderContext (see context.js): layerTex/texStraight/envCubeTex/animMats/… runtime deps.
 
 const REGISTRY = new Map();

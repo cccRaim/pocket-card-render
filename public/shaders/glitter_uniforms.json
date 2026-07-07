@@ -33,7 +33,7 @@
    "__time"
   ],
   "2": [
-   "_EmitThreshold",
+   "_FadeDuration",
    "_FlowAPower",
    "_FlowBPower",
    0
@@ -43,6 +43,12 @@
    "_LightColor.g",
    "_LightColor.b",
    1
+  ],
+  "4": [
+   "_LightTime",
+   "_EmitThreshold",
+   0,
+   0
   ]
  },
  "samplers": [

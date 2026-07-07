@@ -1,0 +1,5 @@
+{
+  "shader": "Frame/Simple-Opaque/Simple-Transparent",
+  "samplers": ["_13"],
+  "sampler_slots": ["_MainTex"]
+}

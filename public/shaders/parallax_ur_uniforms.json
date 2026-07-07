@@ -1,0 +1,15 @@
+{
+  "shader": "Card_Parallax_UR",
+  "samplers": ["_242"],
+  "sampler_slots": ["_MainTex"],
+  "floats": {
+    "_FakeCameraHeight": "_FakeCameraHeight",
+    "_Height": "_Height",
+    "_HeightPower": "_HeightPower",
+    "_Scale": "_Scale",
+    "_DarknessOffset": "_DarknessOffset"
+  },
+  "colors": {
+    "_DarknessColor": "_DarknessColor"
+  }
+}

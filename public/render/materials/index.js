@@ -5,4 +5,5 @@
 // `defineMaterial` and registers its kinds, then add one import line here. Nothing else changes.
 import "./base.js";
 import "./holo.js";
+import "./frame2layer-ur.js";
 import "./ur.js";

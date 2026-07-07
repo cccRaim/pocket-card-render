@@ -1,0 +1,17 @@
+{
+  "shader": "Effect",
+  "samplers": ["_MainTex", "_GradationMap"],
+  "sampler_slots": ["_MainTex", "_GradationMap"],
+  "floats": {
+    "_Layer": "_Layer",
+    "_UseGradationMap": "_UseGradationMap",
+    "_UseViewMask": "_UseViewMask",
+    "_MainPower": "_MainPower",
+    "_MaskPower": "_MaskPower",
+    "_AnglePower": "_AnglePower",
+    "_Edge": "_Edge",
+    "_Progress": "_Progress",
+    "_AlphaBlend": "_AlphaBlend",
+    "uDepthOffset": "_DepthOffset"
+  }
+}

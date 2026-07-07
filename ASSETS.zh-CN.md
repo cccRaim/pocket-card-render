@@ -4,7 +4,7 @@
 
 本渲染器**不附带任何游戏素材**。要渲染一张卡,你需要提供两样东西,两者都源自**你自己**的游戏数据:
 
-1. 一份 **scene recipe** —— `public/scene.<标签>.json`
+1. 一份 **scene recipe** —— `public/scene.<cardId>.json`
 2. 它引用到的**美术** —— `public/game/` 下的网格 + 贴图
 
 ## 1. scene recipe（`scene.*.json`）
@@ -52,8 +52,10 @@ scene 是渲染器消费的“每次绘制调用”清单。结构如下:
 `build/build.mjs` 从一份**材质 recipe**（`<illId>_render_full.json`）+ AssetRipper glb + 贴图构建 scene:
 
 ```bash
-node build/build.mjs <illId> "" scene.<标签>.json
+node build/build.mjs <illId>
 ```
+
+默认会写出 `public/scene.<illId>.json`。只有在你明确需要非规范文件名时,才传第三个参数覆盖输出名。
 
 材质 recipe（每材质的 `m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列）是**唯一不来自** AssetRipper
 glb 的那块（glb 只带几何 + 材质*名称*）。它单独生成——见下面的工具链——再作为 `scene.*.json` 的一部分提交到这里。
@@ -73,4 +75,4 @@ glb 的那块（glb 只带几何 + 材质*名称*）。它单独生成——见�
 > [SHADERS.zh-CN.md](SHADERS.zh-CN.md)。AssetStudio 不在本流水线里。
 
 两个准备工具都针对**你自己的**解密游戏数据运行,且都在**本仓库之外**;本仓库自始至终只消费产出的
-`scene.json` + `public/game/` 美术。(解密是上游、与具体游戏相关的步骤,同样不包含在此。)
+`scene.<cardId>.json` + `public/game/` 美术。(解密是上游、与具体游戏相关的步骤,同样不包含在此。)

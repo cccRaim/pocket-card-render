@@ -25,6 +25,22 @@ const EXTRA = [
 ];
 const rels = new Set(EXTRA);
 
+const COMMON_UI_DIRS = [
+  "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat8x8",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUITrainersFormat5x5",
+];
+
+function addPngDir(relDir) {
+  const abs = join(SRC, relDir);
+  if (!existsSync(abs)) return;
+  for (const e of readdirSync(abs, { withFileTypes: true })) {
+    if (e.isFile() && e.name.toLowerCase().endsWith(".png")) rels.add(`${relDir}/${e.name}`);
+  }
+}
+
+COMMON_UI_DIRS.forEach(addPngDir);
+
 // walk every .json under public/ (except public/game) and regex out /game/<rel> references
 const GAME_RE = /\/game\/([^"'\\]+?\.(?:png|glb|gltf|jpg|jpeg|tif|tiff))/gi;
 function scanJson(dir) {

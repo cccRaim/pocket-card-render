@@ -5,7 +5,7 @@
 渲染器是**数据驱动**且**字节级忠实**的:每一层的外观都从游戏自身的材质数据 + 着色器字节码还原而来。
 没有拍脑袋的魔法数字。两条规则:
 
-1. **对着数据验证,不靠感觉。** 新材质的常量来自 recipe（`scene.json`）或对着色器的字节追踪——
+1. **对着数据验证,不靠感觉。** 新材质的常量来自 scene JSON recipe 或对着色器的字节追踪——
    绝不手调。在注释里写明来源。
 2. **不许回归。** 任何渲染改动后,对三张样例卡做截图像素 diff(见下方*验证*)。
 
@@ -35,7 +35,7 @@ const mat = strat.build(r, ctx);                  // 返回 three.js 材质
 
 **策略(strategy)** 是纯函数——接收 `(r, ctx)`,返回一个 `THREE.Material`:
 
-- `r` —— 材质 recipe（`scene.json.materials[name]`）:`shader`、`queue`、`floats`、`colors`、
+- `r` —— 材质 recipe（`scene_data.materials[name]`）:`shader`、`queue`、`floats`、`colors`、
   `textures`、`keywords`、`clip`。
 - `ctx` —— [RenderContext](public/render/context.js):`layerTex(r, slot)`、`layerTexRepeat`、
   `texStraight(name)`、`envCubeTex`、`exactGlit`、`animMats`、`exactGlitMats`、`dynUITex`、`foilTex`、
@@ -103,9 +103,9 @@ const mat = strat.build(r, ctx);                  // 返回 three.js 材质
 ```bash
 npm run gather -- <你的导出根目录>           # 确保 public/game 已填充
 node server.mjs 8011 &
-node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.pk.json&nohud" before.png
+node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json&nohud" before.png
 # … 做你的改动 …
-node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.pk.json&nohud" after.png
+node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json&nohud" after.png
 ```
 
 一次忠实的改动会让你没碰到的卡保持**像素一致**(SR 卡没有动画层 → diff 应为 0%;UR 闪粉 + CJK 文本

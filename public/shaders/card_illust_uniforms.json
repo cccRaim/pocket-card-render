@@ -1,0 +1,13 @@
+{
+  "shader": "Card_Illust",
+  "samplers": ["_13"],
+  "sampler_slots": ["_MainTex"],
+  "floats": {
+    "_UseUv": "_UseUv"
+  },
+  "unity_uniform_block": {
+    "_21._m0": "model matrix in official bytecode, mapped to three.js modelViewMatrix",
+    "_21._m1": "view-projection matrix in official bytecode, mapped to three.js projectionMatrix",
+    "_21._m2": "_UseUv"
+  }
+}

@@ -108,13 +108,15 @@ async function serveScenes(_req, res) {
 }
 
 // /scene?card=<illustrationId> — DYNAMICALLY build a card's 3D scene (materials/textures/glb from the cached
-// runtime manifest + AssetRipper export). Replaces the static scene.json/scene.tr.json; any card by id.
+// runtime manifest + AssetRipper export). Replaces the static scene.<cardId>.json files; any card by id.
 async function serveScene(req, res) {
   const card = new URL(req.url, "http://x").searchParams.get("card");
   try {
-    const { buildScene } = await import(`./build/build.mjs?t=${Date.now()}`);
+    const { buildScene, sceneFileName } = await import(`./build/build.mjs?t=${Date.now()}`);
     const body = JSON.stringify(buildScene(card));
-    res.writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-cache" });
+    const headers = { "content-type": "application/json; charset=utf-8", "cache-control": "no-cache" };
+    if (card) headers["x-scene-filename"] = sceneFileName(card);
+    res.writeHead(200, headers);
     res.end(body);
   } catch (e) { res.writeHead(500, { "content-type": "application/json" }).end(JSON.stringify({ error: String(e) })); }
 }
@@ -129,4 +131,4 @@ createServer(async (req, res) => {
     if (p.startsWith("/game/")) return void serveFrom(GAME, p.slice("/game/".length), res);
     return void serveFrom(PUB, p, res);
   } catch (e) { res.writeHead(500).end(String(e)); }
-}).listen(PORT, () => console.log(`pocket-card-render  http://127.0.0.1:${PORT}/   (?scene=scene.pk.json | scene.sr.json | scene.ur.json)`));
+}).listen(PORT, () => console.log(`pocket-card-render  http://127.0.0.1:${PORT}/   (?scene=scene.<cardId>.json)`));

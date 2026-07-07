@@ -51,9 +51,9 @@ Three scenes ship prebuilt (the render recipe + text only — art is gathered lo
 
 | URL | Card | Rarity |
 |-----|------|--------|
-| `/` or `?scene=scene.pk.json` | Venusaur ex | RR |
-| `?scene=scene.sr.json` | Leaf | SR |
-| `?scene=scene.ur.json` | Eevee's Bag | UR |
+| `/` or `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` | Venusaur ex | RR |
+| `?scene=scene.cTR_20_000230_00_LEAF_SR.json` | Leaf | SR |
+| `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | Eevee's Bag | UR |
 
 Useful query params: `?scene=<file>` picks a card · `?only=<materialName>` solos one layer ·
 `?nohud` hides the debug overlay · the language dropdown (top-right) switches locale.

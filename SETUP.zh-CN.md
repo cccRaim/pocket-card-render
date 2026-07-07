@@ -45,7 +45,7 @@ npm run gather -- /path/to/AssetRipper-export   # 把网格+贴图复制进 publ
 npm run serve                                    # → http://127.0.0.1:8011
 ```
 
-打开 <http://127.0.0.1:8011>,再加 `?scene=scene.pk.json` / `scene.sr.json` / `scene.ur.json`。
+打开 <http://127.0.0.1:8011>,再加 `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`。
 
 ---
 
@@ -58,11 +58,11 @@ npm run serve                                    # → http://127.0.0.1:8011
         └─► UnityPy      ──► <illId>_render_full.json  材质 recipe   (dump_recipe.py)
                  │
                  ▼
-          build/build.mjs  ──►  public/scene.<标签>.json
+          build/build.mjs  ──►  public/scene.<illId>.json
           build/gather.mjs ──►  public/game/…  (scene 引用的美术)
                  │
                  ▼
-            npm run serve  ──►  ?scene=scene.<标签>.json
+            npm run serve  ──►  ?scene=scene.<illId>.json
 ```
 
 ### 1. 解密 bundle(由你提供)
@@ -122,15 +122,16 @@ python build/dump_recipe.py \
 
 ### 5. 构建 scene
 
-`build.mjs` 把 recipe + AssetRipper glb + 贴图合成为一个 `scene.json`。用环境变量指向你的两个根目录:
+`build.mjs` 把 recipe + AssetRipper glb + 贴图合成为 `scene.<illId>.json`。用环境变量指向你的两个根目录:
 
 ```bash
 PCR_GAME_SRC="<export-root>" PCR_RECIPES="recipes" \
-  node build/build.mjs <illId> "" scene.<标签>.json
+  node build/build.mjs <illId>
 ```
 
 (`PCR_GAME_SRC` = AssetRipper 导出根,`PCR_RECIPES` = 放 `<illId>_render_full.json` 的目录;
 默认指向同级的 `../ptcg-apk-parser/apks/...` 检出。)
+只有在你明确需要非规范输出名时,才传第三个参数覆盖。
 
 ### 6. 把 scene 的美术收集进 `public/game`
 
@@ -147,7 +148,7 @@ node build/gather.mjs "<export-root>"      # 只复制 scene 引用到的 /game/
 ### 8. 启动
 
 ```bash
-npm run serve            # → http://127.0.0.1:8011/?scene=scene.<标签>.json
+npm run serve            # → http://127.0.0.1:8011/?scene=scene.<illId>.json
 ```
 
 ---

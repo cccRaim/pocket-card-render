@@ -5,7 +5,7 @@
 The renderer is **data-driven** and **byte-faithful**: every layer's look is reconstructed from the
 game's own material data + shader bytecode. No eyeballed magic numbers. Two rules:
 
-1. **Verify against data, not vibes.** A new material's constants come from the recipe (`scene.json`)
+1. **Verify against data, not vibes.** A new material's constants come from the scene JSON recipe
    or a byte-trace of the shader — never hand-tuned. Cite the source in a comment.
 2. **No regressions.** After any render change, diff the three sample cards (see *Verifying* below).
 
@@ -35,7 +35,7 @@ const mat = strat.build(r, ctx);                  // returns the three.js materi
 
 A **strategy** is pure — it takes `(r, ctx)` and returns a `THREE.Material`:
 
-- `r`   — the material recipe (`scene.json.materials[name]`): `shader`, `queue`, `floats`, `colors`,
+- `r`   — the material recipe (`scene_data.materials[name]`): `shader`, `queue`, `floats`, `colors`,
   `textures`, `keywords`, `clip`.
 - `ctx` — the [RenderContext](public/render/context.js): `layerTex(r, slot)`, `layerTexRepeat`,
   `texStraight(name)`, `envCubeTex`, `exactGlit`, `animMats`, `exactGlitMats`, `dynUITex`, `foilTex`,
@@ -105,9 +105,9 @@ pixel-diff:
 ```bash
 npm run gather -- <your-export-root>          # ensure public/game is populated
 node server.mjs 8011 &
-node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.pk.json&nohud" before.png
+node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json&nohud" before.png
 # … make your change …
-node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.pk.json&nohud" after.png
+node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json&nohud" after.png
 ```
 
 A faithful change leaves the cards you didn't touch **pixel-identical** (the SR card has no animated

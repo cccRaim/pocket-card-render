@@ -48,7 +48,7 @@ npm run gather -- /path/to/AssetRipper-export   # copies the meshes+textures int
 npm run serve                                    # → http://127.0.0.1:8011
 ```
 
-Open <http://127.0.0.1:8011>, then `?scene=scene.pk.json` / `scene.sr.json` / `scene.ur.json`.
+Open <http://127.0.0.1:8011>, then `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`.
 
 ---
 
@@ -61,11 +61,11 @@ Open <http://127.0.0.1:8011>, then `?scene=scene.pk.json` / `scene.sr.json` / `s
         └─► UnityPy      ──► <illId>_render_full.json  material recipe      (dump_recipe.py)
                  │
                  ▼
-          build/build.mjs  ──►  public/scene.<tag>.json
+          build/build.mjs  ──►  public/scene.<illId>.json
           build/gather.mjs ──►  public/game/…  (the art the scene references)
                  │
                  ▼
-            npm run serve  ──►  ?scene=scene.<tag>.json
+            npm run serve  ──►  ?scene=scene.<illId>.json
 ```
 
 ### 1. Decrypt the bundles (you provide this)
@@ -127,16 +127,17 @@ transform). The `--shared` dirs let cross-bundle texture/shader pointers resolve
 
 ### 5. Build the scene
 
-`build.mjs` joins the recipe + the AssetRipper glb + textures into a `scene.json`. Point it at your
+`build.mjs` joins the recipe + the AssetRipper glb + textures into `scene.<illId>.json`. Point it at your
 two roots via env vars:
 
 ```bash
 PCR_GAME_SRC="<export-root>" PCR_RECIPES="recipes" \
-  node build/build.mjs <illId> "" scene.<tag>.json
+  node build/build.mjs <illId>
 ```
 
 (`PCR_GAME_SRC` = the AssetRipper export root, `PCR_RECIPES` = the dir holding
 `<illId>_render_full.json`. They default to a sibling `../ptcg-apk-parser/apks/...` checkout.)
+Pass an explicit third argument only when you intentionally want a non-canonical output filename.
 
 ### 6. Gather the scene's art into `public/game`
 
@@ -153,7 +154,7 @@ step; without it the card renders **without** the name/HP/attacks overlay (the a
 ### 8. Run
 
 ```bash
-npm run serve            # → http://127.0.0.1:8011/?scene=scene.<tag>.json
+npm run serve            # → http://127.0.0.1:8011/?scene=scene.<illId>.json
 ```
 
 ---

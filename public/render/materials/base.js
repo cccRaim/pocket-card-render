@@ -2,25 +2,128 @@
 // sparkles, and the ShadowBox frame-outline ring. Shared by every rarity.
 import * as THREE from "three";
 import { defineMaterial } from "../registry.js";
-import { SIMPLE_VS } from "../glsl.js";
 
 const mainTexName = (r) => r.textures?._MainTex?.name || r.textures?._BaseTex?.name;
-const hasMainTex = (r, ctx) => !!(ctx.layerTex(r, "_MainTex") || ctx.layerTex(r, "_BaseTex"));
+const mainTex = (r, ctx) => ctx.layerTexDefault(r, "_MainTex") || ctx.layerTexDefault(r, "_BaseTex");
+const hasMainTex = (r, ctx) => !!mainTex(r, ctx);
 
-// ── textured: a plain albedo quad (Card_Illust / Simple-Transparent / Frame) ──
+function texturedExactMaterial(r, ctx, shaderName, straight) {
+  const exact = ctx.exactShaders?.[shaderName];
+  if (!exact) return null;
+  const tex = mainTex(r, ctx);
+  if (!tex) return null;
+  const m = new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: { _13: { value: tex } },
+    vertexShader: exact.vert,
+    fragmentShader: exact.frag,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  m.userData.straight = straight;
+  m.userData.exactShader = shaderName;
+  return m;
+}
+
+// ── textured: a plain albedo quad (Frame and other premult/simple layers) ──
 defineMaterial("textured", {
   requires: hasMainTex,
   build(r, ctx) {
-    const tex = ctx.layerTex(r, "_MainTex") || ctx.layerTex(r, "_BaseTex");
+    const exact = r.shader === "Frame" ? texturedExactMaterial(r, ctx, "Frame", ctx.texStraight(mainTexName(r))) : null;
+    if (exact) return exact;
+    const tex = mainTex(r, ctx);
     const m = new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, toneMapped: false });
     m.userData.straight = ctx.texStraight(mainTexName(r));
     return m;
   },
 });
 
+// Card_Illust's official shader only samples _MainTex/_BaseTex, but its render state is
+// SrcAlpha/OneMinusSrcAlpha and the vertex path can select UV0 or UV1 with _UseUv.
+defineMaterial("illustTextured", {
+  requires: hasMainTex,
+  build(r, ctx) {
+    const tex = mainTex(r, ctx);
+    const exact = ctx.exactShaders?.Card_Illust;
+    if (exact) {
+      const m = new THREE.RawShaderMaterial({
+        glslVersion: THREE.GLSL3,
+        uniforms: {
+          _13: { value: tex },
+          _UseUv: { value: r.floats?._UseUv ?? 0 },
+        },
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.straight = true;
+      m.userData.exactShader = "Card_Illust";
+      return m;
+    }
+    const m = new THREE.ShaderMaterial({
+      uniforms: {
+        map: { value: tex },
+        uUseUv: { value: r.floats?._UseUv ?? 0 },
+      },
+      vertexShader: `
+        uniform float uUseUv;
+        attribute vec2 uv2;
+        varying vec2 vUv;
+        void main() {
+          vUv = mix(uv, uv2, step(0.5, uUseUv));
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: `
+        uniform sampler2D map;
+        varying vec2 vUv;
+        void main() {
+          gl_FragColor = texture2D(map, vUv);
+          #include <colorspace_fragment>
+        }`,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.straight = true;
+    return m;
+  },
+});
+
+// ── simpleTransparent (Simple-Transparent): official fragment samples _MainTex and premultiplies RGB
+// by alpha before the One/OneMinusSrcAlpha blend.
+defineMaterial("simpleTransparent", {
+  requires: hasMainTex,
+  build(r, ctx) {
+    const exact = texturedExactMaterial(r, ctx, "Simple-Transparent", false);
+    if (exact) return exact;
+    const tex = mainTex(r, ctx);
+    const m = new THREE.ShaderMaterial({
+      uniforms: { map: { value: tex } },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: `
+        uniform sampler2D map;
+        varying vec2 vUv;
+        void main() {
+          vec4 t = texture2D(map, vUv);
+          gl_FragColor = vec4(t.rgb * t.a, t.a);
+          #include <colorspace_fragment>
+        }`,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.straight = false;
+    return m;
+  },
+});
+
 // ── depthParallax (Card_Parallax): per-layer virtual-depth parallax (decompiled from parallax_vert
 // SPIR-V). Each quad is flat but the vertex shader offsets its UV along the tangent-space view direction
-// scaled by _Height·_HeightPower·_Scale, so when the card tilts the layers shift at different depths
+// scaled by _HeightPower * (_Height - 0.5), so when the card tilts the layers shift at different depths
 // (the window's 2.5D). At frontal view the offset is ~0 (view dir ≈ +Z). ──
 defineMaterial("depthParallax", {
   requires: hasMainTex,
@@ -28,35 +131,44 @@ defineMaterial("depthParallax", {
     const f = r.floats;
     const m = new THREE.ShaderMaterial({
       uniforms: {
-        map: { value: ctx.layerTex(r, "_MainTex") || ctx.layerTex(r, "_BaseTex") },
-        uHeight: { value: f._Height ?? 0 }, uHeightPower: { value: f._HeightPower ?? 0 },
-        uScale: { value: f._Scale ?? 1 }, uFakeH: { value: f._FakeCameraHeight ?? 0.19 },
+        map: { value: mainTex(r, ctx) },
+        uHeight: { value: f._Height ?? -1 }, uHeightPower: { value: f._HeightPower ?? 0 },
+        uScale: { value: f._Scale ?? 1 }, uFakeH: { value: f._FakeCameraHeight ?? 0 },
+        uUseUv: { value: f._UseUv ?? 0 },
+        uAspectY: { value: (f._UVAspectRatio ?? 0) === 0 ? 1 : 1.6087000370025635 },
       },
       vertexShader: `
-        uniform float uHeight, uHeightPower, uScale, uFakeH;
+        uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv, uAspectY;
+        attribute vec4 tangent;
+        attribute vec2 uv2;
         varying vec2 vUv;
         void main() {
-          vec4 wp = modelMatrix * vec4(position, 1.0);
-          vec3 vdW = normalize(cameraPosition - wp.xyz);
-          vec3 vdO = normalize((inverse(modelMatrix) * vec4(vdW, 0.0)).xyz);  // object/tangent space
-          // offset magnitude = _Height·_HeightPower·_Scale (byte-traced). _HeightPower=0 → amt=0 → flat (sticks).
-          float amt = uHeight * uHeightPower * uScale;
-          vec2 off = (vdO.xy / (vdO.z * uScale + uFakeH + 0.42)) * amt;
-          vUv = uv + off;
+          vec3 camObj = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
+          camObj.y += uFakeH;
+          vec3 viewObj = normalize(camObj - position);
+          vec3 n = normalize(normal);
+          vec3 t = normalize(tangent.xyz);
+          vec3 b = normalize(cross(n, t) * tangent.w);
+          vec3 tv = normalize(vec3(dot(t, viewObj), dot(b, viewObj), dot(n, viewObj)));
+          // Official vertex path: select UV0/UV1, scale around center, then add tangent-view offset.
+          vec2 off = (tv.xy / (tv.z + 0.41999998688697815)) * (uHeightPower * (uHeight - 0.5));
+          off.y *= uAspectY;
+          vec2 srcUv = mix(uv, uv2, step(0.5, uUseUv));
+          vUv = (((srcUv * 2.0) - 1.0) / uScale) * 0.5 + off + 0.5;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }`,
       fragmentShader: `
         uniform sampler2D map;
         varying vec2 vUv;
         void main() {
-          // The real Card_Parallax FRAGMENT has NO discard (parx_frag.spv: OpKill 0) — sample the offset UV
-          // with ClampToEdge and let the STENCIL clip the window (a UV-bounds discard = the window black border).
-          gl_FragColor = texture2D(map, clamp(vUv, 0.0, 1.0));
+          // Official fragment: no discard; sample the offset UV and premultiply before One/OneMinusSrcAlpha.
+          vec4 t = texture2D(map, clamp(vUv, 0.0, 1.0));
+          gl_FragColor = vec4(t.rgb * t.a, t.a);
           #include <colorspace_fragment>
         }`,
       side: THREE.DoubleSide, toneMapped: false,
     });
-    m.userData.straight = ctx.texStraight(mainTexName(r));
+    m.userData.straight = false;
     return m;
   },
 });
@@ -65,31 +177,99 @@ defineMaterial("depthParallax", {
 // _LAYER_EFF1/2/3 keyword selects the channel, then _GradationMap (128×1 ramp) recolours it. Pokémon cards
 // instead carry a separate full-colour EFF texture → drawn direct (plain textured). ──
 defineMaterial("effect", {
-  requires: (r, ctx) => !!ctx.layerTex(r, "_MainTex"),
+  requires: (r, ctx) => !!ctx.layerTexDefault(r, "_MainTex"),
   build(r, ctx) {
-    if (!ctx.layerTex(r, "_GradationMap")) {                 // Pokémon: full-colour EFF, draw direct
-      const m = new THREE.MeshBasicMaterial({ map: ctx.layerTex(r, "_MainTex"), side: THREE.DoubleSide, toneMapped: false });
-      m.userData.straight = ctx.texStraight(r.textures?._MainTex?.name);
+    const f = r.floats || {};
+    const kw = r.keywords || [];
+    const layer = f._Layer != null ? f._Layer : (kw.includes("_LAYER_EFF2") ? 1 : kw.includes("_LAYER_EFF3") ? 2 : 0);
+    const grad = ctx.layerTexDefault(r, "_GradationMap");
+    const useGrad = f._UseGradationMap != null ? f._UseGradationMap : (r.textures?._GradationMap ? 1 : 0);
+    const exact = ctx.exactShaders?.Effect;
+    if (exact) {
+      const m = new THREE.RawShaderMaterial({
+        glslVersion: THREE.GLSL3,
+        uniforms: {
+          _MainTex: { value: ctx.layerTexDefault(r, "_MainTex") },
+          _GradationMap: { value: grad || ctx.layerTexDefault(r, "_MainTex") },
+          _Layer: { value: layer },
+          _UseGradationMap: { value: useGrad },
+          _UseViewMask: { value: f._UseViewMask ?? (kw.includes("_UseViewMask") ? 1 : 0) },
+          _MainPower: { value: f._MainPower ?? 1 },
+          _MaskPower: { value: f._MaskPower ?? 0 },
+          _AnglePower: { value: f._AnglePower ?? 0 },
+          _Edge: { value: f._Edge ?? 0 },
+          _Progress: { value: f._Progress ?? 0 },
+          _AlphaBlend: { value: f._AlphaBlend ?? 1 },
+          uDepthOffset: { value: f._DepthOffset ?? 0 },
+        },
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.exactShader = "Effect";
       return m;
     }
-    const kw = r.keywords || [];
-    const ch = kw.includes("_LAYER_EFF2") ? 1 : kw.includes("_LAYER_EFF3") ? 2 : 0;   // EFF1→R, EFF2→G, EFF3→B
     return new THREE.ShaderMaterial({
       uniforms: {
-        effTex: { value: ctx.layerTex(r, "_MainTex") }, gradMap: { value: ctx.layerTex(r, "_GradationMap") },
-        uChannel: { value: ch }, uPower: { value: r.floats._MainPower ?? 1 },
+        effTex: { value: ctx.layerTexDefault(r, "_MainTex") },
+        gradMap: { value: grad || ctx.layerTexDefault(r, "_MainTex") },
+        uLayer: { value: layer },
+        uUseGrad: { value: useGrad },
+        uUseViewMask: { value: f._UseViewMask ?? (kw.includes("_UseViewMask") ? 1 : 0) },
+        uMainPower: { value: f._MainPower ?? 1 },
+        uMaskPower: { value: f._MaskPower ?? 0 },
+        uAnglePower: { value: f._AnglePower ?? 0 },
+        uEdge: { value: f._Edge ?? 0 },
+        uProgress: { value: f._Progress ?? 0 },
+        uAlphaBlend: { value: f._AlphaBlend ?? 1 },
+        uDepthOffset: { value: f._DepthOffset ?? 0 },
       },
-      vertexShader: SIMPLE_VS,
+      vertexShader: `
+        uniform float uDepthOffset;
+        attribute vec4 tangent;
+        varying vec2 vUv;
+        varying vec3 vView;
+        void main() {
+          vUv = uv;
+          vec3 camObj = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
+          vec3 n = normalize(normal);
+          vec3 t = normalize(tangent.xyz);
+          vec3 b = normalize(cross(n, t) * tangent.w);
+          vec3 viewObj = normalize(camObj);
+          vView = vec3(dot(t, viewObj), dot(b, viewObj), dot(n, viewObj));
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          mvPosition.z -= uDepthOffset;
+          gl_Position = projectionMatrix * mvPosition;
+        }`,
       fragmentShader: `
         uniform sampler2D effTex, gradMap;
-        uniform float uChannel, uPower;
+        uniform float uLayer, uUseGrad, uUseViewMask, uMainPower, uMaskPower, uAnglePower, uEdge, uProgress, uAlphaBlend;
         varying vec2 vUv;
+        varying vec3 vView;
+        float layerValue(vec4 s) {
+          return uLayer < 0.5 ? s.r : (uLayer < 1.5 ? s.g : s.b);
+        }
+        float edgeProgress(float raw) {
+          float denom = max(abs(uEdge * 2.0), 0.000001);
+          float t = (raw - uProgress + 2.0 * uEdge * (1.0 - uProgress)) / denom;
+          t = clamp(t, 0.0, 1.0);
+          return t * t * (3.0 - 2.0 * t);
+        }
         void main() {
           vec4 e = texture2D(effTex, vUv);
-          float v = uChannel < 0.5 ? e.r : (uChannel < 1.5 ? e.g : e.b);   // _LAYER_EFFx → channel
-          v = pow(clamp(v, 0.0, 1.0), uPower);
-          vec3 col = texture2D(gradMap, vec2(v, 0.5)).rgb;                  // gradation ramp colours the sparkle
-          gl_FragColor = vec4(col * v, v);                                 // premultiplied; additive
+          float raw = mix(e.a, layerValue(e), step(0.5, uUseGrad));
+          float shaped = edgeProgress(raw);
+          float gradU = mix(raw, shaped, step(0.5, uUseViewMask));
+          vec3 baseRgb = mix(e.rgb, texture2D(gradMap, vec2(gradU, 0.5)).rgb, step(0.5, uUseGrad));
+          vec3 poweredRgb = baseRgb * uMainPower;
+          float poweredAlpha = raw * uMainPower;
+          float alphaCore = poweredAlpha;
+          if (uUseViewMask > 0.5) {
+            float viewMask = texture2D(effTex, vUv + vView.xy * uAnglePower).a * uMaskPower;
+            alphaCore = mix(shaped, poweredAlpha, viewMask);
+          }
+          gl_FragColor = vec4(poweredRgb * alphaCore, alphaCore * uAlphaBlend);
           #include <colorspace_fragment>
         }`,
       side: THREE.DoubleSide, toneMapped: false,
@@ -97,12 +277,13 @@ defineMaterial("effect", {
   },
 });
 
-// ── frameOutline (Simple-Opaque): the rare-mark FLAME ring. ShadowBox shader whose visible colour is the
-// BLACK secondary target (not the white placeholder) → render the ring black, masked by the texture coverage.
-// The ring SHAPE is the mesh geometry; alphaTest (cfg-driven) cuts the atlas. ──
+// ── frameOutline (Simple-Opaque): official fragment outputs _MainTex directly; this shared white texture
+// gets its shape from the mesh geometry (the secondary MRT output is zero). ──
 defineMaterial("frameOutline", {
   build(r, ctx) {
+    const exact = texturedExactMaterial(r, ctx, "Simple-Opaque", false);
+    if (exact) return exact;
     const ft = ctx.layerTex(r, "_MainTex");
-    return new THREE.MeshBasicMaterial({ color: 0x000000, map: ft, side: THREE.DoubleSide, toneMapped: false });
+    return new THREE.MeshBasicMaterial({ map: ft, side: THREE.DoubleSide, toneMapped: false });
   },
 });

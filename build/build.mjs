@@ -1,4 +1,4 @@
-// pocket-card-render — build a card's scene.json (the per-draw-call render recipe the browser consumes).
+// pocket-card-render — build a card's scene file (the per-draw-call render recipe the browser consumes).
 //
 // ADVANCED / BYO-data tool. The DEFAULT demo uses the prebuilt public/scene.*.json, so most users never
 // run this. To build a scene for a NEW card you need TWO inputs from your OWN game data (see ASSETS.md):
@@ -9,7 +9,7 @@
 //   PCR_GAME_SRC  = AssetRipper export root (contains Assets/…)   [default ../ptcg-apk-parser/apks/assets]
 //   PCR_RECIPES   = dir holding <illId>_render_full.json + card_shader_state.json + tex_alpha_modes.json
 //                                                                  [default ../ptcg-apk-parser/apks/output]
-// Output: public/scene.json  { card, prefabGlb, materials{}, textures{name:/game/url}, alphaMode }
+// Output: public/scene.<cardId>.json  { card, prefabGlb, materials{}, textures{name:/game/url}, alphaMode }
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname, relative } from "node:path";
@@ -30,6 +30,7 @@ const SKIP_GO = new Set(["L_UI_Dynamic_Text"]);
 const SKIP_SHADER = new Set(["Text", "Text_Alpha"]);
 const short = (s) => (s || "").split("/").pop();
 const toUrl = (abs) => "/game/" + relative(ASSETS, abs).replace(/\\/g, "/");
+export const sceneFileName = (cardId) => `scene.${cardId}.json`;
 
 // the per-card material recipe (<illId>_render_full.json under PCR_RECIPES). Must be pre-generated from
 // the decrypted material bundles (see ASSETS.md) — there is no Node Unity-bundle parser, so it is NOT
@@ -99,6 +100,7 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   const resolveQueue = (l) => (l.renderQueue && l.renderQueue > 0) ? l.renderQueue : (shaderQ[short(l.shader)] ?? 100000);
 
   const texUrls = {};
+  const texSlots = new Map();
   const missing = new Set();
   function useTexture(name) {
     if (!name || name.startsWith("pptr:")) { if (name) missing.add(name); return null; }
@@ -125,6 +127,8 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
       if (!nm || nm.startsWith("pptr:")) continue;
       const url = useTexture(nm);
       textures[slot] = { name: nm, url };   // url=null if missing (renderer/validator can flag)
+      if (!texSlots.has(nm)) texSlots.set(nm, new Set());
+      texSlots.get(nm).add(slot);
     }
     // stencil region: the material's _Stencil float is the authority (==2 → the inner/window region, e.g. the
     // trainer's EFM3/SBM1). Fall back to the prefab GO name ("…Window…" → window) which is how the Pokémon
@@ -144,8 +148,10 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   const alphaMode = {};
   for (const name of Object.keys(texUrls)) alphaMode[name] = alphaCache.modeFor(name, pngByName.get(name.toLowerCase()));
   alphaCache.flush();
+  const textureColorSpace = {};
+  for (const name of Object.keys(texUrls)) textureColorSpace[name] = textureColorSpaceFor(pngByName.get(name.toLowerCase()), texSlots.get(name));
 
-  return { card, prefabGlb: toUrl(glbAbs), materials, textures: texUrls, alphaMode, _missing: [...missing] };
+  return { card, prefabGlb: toUrl(glbAbs), materials, textures: texUrls, alphaMode, textureColorSpace, _missing: [...missing] };
 }
 
 function findFile(dir, baseName) {
@@ -156,11 +162,30 @@ function findFile(dir, baseName) {
   return null;
 }
 
-// CLI: node build.mjs <CARD_ID> [recipe.json] [outName.json]  → writes public/<outName> (back-compat)
+const LINEAR_TEXTURE_SLOTS = new Set([
+  "_MaskTex", "_HologramMaskTex", "_HologramFrontMaskTex", "_LayerMaskTex", "_PhaseTex", "_PhaseTex2", "_PhaseMaskTex",
+  "_RampMaskTex", "_RampMaskTex2", "_NormalMap", "_NormalMap2", "_FakeSpecularMask", "_ReflectionMask",
+  "_MetalMaskTex", "_ViewMask", "_ALightTex", "_BLightTex", "_FlowAMap", "_FlowBMap", "_FlareVAT",
+]);
+
+function textureColorSpaceFor(pngPath, slots = []) {
+  if (!pngPath) return 1;
+  const meta = pngPath.replace(/\.(png|jpe?g|tiff?)$/i, ".json");
+  if (existsSync(meta)) {
+    try {
+      const v = JSON.parse(readFileSync(meta, "utf8")).m_ColorSpace;
+      return v === 0 ? 0 : 1;
+    } catch {}
+  }
+  return [...slots].some((slot) => LINEAR_TEXTURE_SLOTS.has(slot)) ? 0 : 1;
+}
+
+// CLI: node build.mjs <CARD_ID> [recipe.json] [outName.json]  → writes public/<outName>.
+// If outName is omitted, the canonical name is scene.<CARD_ID>.json.
 if (process.argv[1] && process.argv[1].endsWith("build.mjs")) {
   const cardId = process.argv[2] || "cPK_10_000040_00_FUSHIGIBANAex_RR";
   const recipe = process.argv[3] || recipeFor(cardId);
-  const outName = process.argv[4] || "scene.json";
+  const outName = process.argv[4] || sceneFileName(cardId);
   mkdirSync(PUB, { recursive: true });
   const scene = buildScene(cardId, recipe);
   writeFileSync(join(PUB, outName), JSON.stringify(scene, null, 1));

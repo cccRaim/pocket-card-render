@@ -8,3 +8,4 @@ public/game/
 # headless screenshots
 shot*.png
 *.shot.png
+.idea

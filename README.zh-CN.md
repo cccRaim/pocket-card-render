@@ -46,9 +46,9 @@ npm run serve                        # → http://127.0.0.1:8011
 
 | 网址 | 卡片 | 稀有度 |
 |-----|------|--------|
-| `/` 或 `?scene=scene.pk.json` | 妙蛙花 ex（Venusaur ex） | RR |
-| `?scene=scene.sr.json` | 叶子（Leaf） | SR |
-| `?scene=scene.ur.json` | 伊布的背包（Eevee's Bag） | UR |
+| `/` 或 `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` | 妙蛙花 ex（Venusaur ex） | RR |
+| `?scene=scene.cTR_20_000230_00_LEAF_SR.json` | 叶子（Leaf） | SR |
+| `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | 伊布的背包（Eevee's Bag） | UR |
 
 常用查询参数:`?scene=<文件>` 选卡 · `?only=<材质名>` 单独显示某一层 · `?nohud` 隐藏调试浮层 ·
 右上角下拉菜单切换语言。
