@@ -2,10 +2,10 @@
 
 > **English** · [简体中文](README.zh-CN.md)
 
-A data-driven, **byte-faithful** in-browser renderer for **Pokémon TCG Pocket** card faces, built on
-[three.js](https://threejs.org/). Every layer — parallax foil, holo diffraction, metal specular,
-glitter, the stencil window, the rare-mark, the holographic frame — is reconstructed from the game's
-own material data and decompiled shader bytecode. **No eyeballed magic numbers.**
+An official-data-driven research renderer for **Pokémon TCG Pocket** card faces, built on
+[three.js](https://threejs.org/). It reconstructs card layers from extracted material data and
+decompiled shader bytecode. Shader-source coverage, renderer-pipeline parity, and final visual parity
+are tracked separately; see [Rendering Fidelity](FIDELITY.md). **No eyeballed magic numbers.**
 
 > **Educational / research project.** It ships **no game assets**. The meshes, textures, fonts, card
 > text, names and imagery are the property of The Pokémon Company / Nintendo / Creatures / GAME FREAK /
@@ -15,8 +15,8 @@ own material data and decompiled shader bytecode. **No eyeballed magic numbers.*
 
 ## Features
 
-- **Faithful, not approximate.** Per-material shader constants come from the card's recipe or a
-  byte-trace of the real shader — never hand-tuned.
+- **Traceable inputs.** Per-material constants come from the card's recipe or an official-shader
+  byte trace, and the evidence level is reported without turning coverage into a visual-fidelity score.
 - **Material-name keyed.** Each glb mesh is matched to its recipe by `material.name`, then dispatched to
   a material **strategy** by a single table lookup — no fragile node-name guessing, no per-shader `if`s.
 - **View-dependent effects** — holographic diffraction, metallic env reflection, glitter twinkle, the

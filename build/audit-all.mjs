@@ -1,4 +1,4 @@
-// Run the complete fidelity audit matrix with strict defaults.
+// Run the complete renderer-evidence audit matrix with strict defaults.
 //
 // Individual audits stay useful while iterating, but this command is the
 // single gate for "does the current scene/shader data still line up with the
@@ -11,6 +11,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const verbose = process.argv.includes("--verbose");
 
 const AUDITS = [
+  ["render-claim-contract", "build/audit-render-claim-contract.mjs"],
   ["scene-assets", "build/audit-scene-assets.mjs"],
   ["dynamic-ui-layout", "build/audit-dynamic-ui-layout.mjs"],
   ["postprocess-assumptions", "build/audit-postprocess-assumptions.mjs"],
@@ -42,9 +43,9 @@ const AUDITS = [
   ["official-flat-core", "build/audit-official-flat-core.mjs"],
   ["official-holo-core", "build/audit-official-holo-core.mjs"],
   ["official-ur-remainder-core", "build/audit-official-ur-remainder-core.mjs"],
-  ["exact-shader-assets", "build/audit-exact-shader-assets.mjs"],
-  ["fidelity-threshold", "build/audit-fidelity-threshold.mjs"],
-  ["exact-threshold", "build/audit-exact-threshold.mjs"],
+  ["official-program-assets", "build/audit-official-program-assets.mjs"],
+  ["evidence-threshold", "build/audit-evidence-threshold.mjs"],
+  ["official-program-threshold", "build/audit-official-program-threshold.mjs"],
 ];
 
 const interesting = /^(BAD|WARN)\b|issue\(s\) found|mismatch|missing|not found|TypeError|SyntaxError|Error:/i;

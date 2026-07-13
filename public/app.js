@@ -8,7 +8,7 @@
 //
 // Pipeline status: visible card-face layers are dispatched by shader strategy; render state, texture
 // defaults, MRT usage, and high-impact UR constants are audited against official assets. Remaining
-// fidelity work is shader-math equivalence and postprocess parity, not missing layer dispatch.
+// Layer dispatch is implementation coverage; official-runtime and visual parity need separate evidence.
 
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -507,10 +507,16 @@ async function main() {
       vertexShader: vs,
       fragmentShader: `
         uniform sampler2D rt, bloom; uniform float uBloom; varying vec2 vUv;
+        vec3 pcrLinearToSrgb(vec3 c) {
+          c = max(c, vec3(0.0));
+          vec3 lo = c * 12.9200000763;
+          vec3 hi = pow(c, vec3(0.4166666567)) * 1.0549999475 - 0.055;
+          return mix(lo, hi, step(vec3(0.0031308001), c));
+        }
         void main() {
           vec4 base = texture2D(rt, vUv);
           vec3 glow = texture2D(bloom, vUv).rgb * uBloom;
-          gl_FragColor = vec4(base.rgb + glow, base.a);
+          gl_FragColor = vec4(pcrLinearToSrgb(base.rgb + glow), base.a);
         }`,
       depthTest: false, depthWrite: false, toneMapped: false,
     });
@@ -539,7 +545,7 @@ async function main() {
       const img = new Image(); img.crossOrigin = "anonymous";
       img.onload = () => {
         const tex = new THREE.Texture(img);
-        tex.colorSpace = THREE.NoColorSpace;
+        tex.colorSpace = scene_data.textureColorSpace?.[name] === 1 ? THREE.SRGBColorSpace : THREE.NoColorSpace;
         tex.flipY = false; tex.anisotropy = 4;
         tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping; tex.needsUpdate = true;
         texInfo.set(name, { tex, straight: alphaMode[name] === "straight" });

@@ -1,9 +1,7 @@
-// Summarize current reference-scene renderer evidence coverage.
+// Report traceable implementation evidence for the reference scenes.
 //
-// This is not a pixel/visual fidelity score. It only says how many visible
-// reference layers are dispatched and backed by an exact shader port or a
-// bytecode-anchored audit. Visual parity still needs screenshots or stronger
-// renderer-pipeline equivalence checks.
+// Coverage is intentionally not collapsed into a "game fidelity" percentage.
+// Static source evidence cannot prove renderer-pipeline or final visual parity.
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -17,7 +15,7 @@ export const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
 
 const IGNORED_SHADERS = new Set(["OuterStencil", "InnerStencil"]);
 const RUNTIME_SPECIAL_MATERIALS = new Set(["L_FullFace_Text", "DefaultMaterial"]);
-const EXACT_SHADER = new Set([
+const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Card_Illust",
   "Frame",
   "Simple-Opaque",
@@ -91,7 +89,7 @@ export function pct(n, d) {
   return d ? `${(n / d * 100).toFixed(1)}%` : "n/a";
 }
 
-export function collectFidelityRows() {
+export function collectEvidenceRows() {
   const rows = [];
   for (const sceneName of sceneNames) {
     const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
@@ -109,7 +107,7 @@ export function collectFidelityRows() {
         shader,
         kind: cfg?.kind || "",
         dispatched: !!(cfg && cfg.kind),
-        exact: EXACT_SHADER.has(shader),
+        transpiledProgram: TRANSPILED_OFFICIAL_PROGRAM.has(shader),
         urGuarded: UR_CORE_GUARDED.has(shader),
         urRemainderGuarded: UR_REMAINDER_GUARDED.has(shader),
         effectGuarded: EFFECT_GUARDED.has(shader),
@@ -123,12 +121,17 @@ export function collectFidelityRows() {
   return rows;
 }
 
-export function summarizeRows(rows) {
+export function summarizeEvidenceRows(rows) {
   const total = rows.length;
+  const partialByteGuarded = rows.filter((r) => !r.transpiledProgram && (
+    r.urGuarded || r.urRemainderGuarded || r.effectGuarded ||
+    r.parallaxGuarded || r.flatGuarded || r.holoGuarded
+  )).length;
   return {
     total,
     dispatched: rows.filter((r) => r.dispatched).length,
-    exact: rows.filter((r) => r.exact).length,
+    transpiledProgram: rows.filter((r) => r.transpiledProgram).length,
+    partialByteGuarded,
     urGuarded: rows.filter((r) => r.urGuarded).length,
     urRemainderGuarded: rows.filter((r) => r.urRemainderGuarded).length,
     effectGuarded: rows.filter((r) => r.effectGuarded).length,
@@ -136,15 +139,16 @@ export function summarizeRows(rows) {
     flatGuarded: rows.filter((r) => r.flatGuarded).length,
     holoGuarded: rows.filter((r) => r.holoGuarded).length,
     mrtGuarded: rows.filter((r) => r.mrtGuarded).length,
-    anyByteGuarded: rows.filter((r) => r.exact || r.urGuarded || r.urRemainderGuarded || r.effectGuarded || r.parallaxGuarded || r.flatGuarded || r.holoGuarded).length,
+    anyOfficialEvidence: rows.filter((r) => r.transpiledProgram || r.urGuarded || r.urRemainderGuarded || r.effectGuarded || r.parallaxGuarded || r.flatGuarded || r.holoGuarded).length,
   };
 }
 
-export function printReport(rows = collectFidelityRows()) {
+export function buildEvidenceReport(rows = collectEvidenceRows()) {
   const {
     total,
     dispatched,
-    exact,
+    transpiledProgram,
+    partialByteGuarded,
     urGuarded,
     urRemainderGuarded,
     effectGuarded,
@@ -152,13 +156,61 @@ export function printReport(rows = collectFidelityRows()) {
     flatGuarded,
     holoGuarded,
     mrtGuarded,
-    anyByteGuarded,
-  } = summarizeRows(rows);
+    anyOfficialEvidence,
+  } = summarizeEvidenceRows(rows);
 
-  console.log("Renderer evidence report for reference scene visible layers");
+  return {
+    definitionVersion: 1,
+    scope: {
+      referenceScenes: sceneNames,
+      visibleLayers: total,
+    },
+    implementationEvidence: {
+      dispatched: { layers: dispatched, total },
+      transpiledOfficialProgram: { layers: transpiledProgram, total },
+      partialBytecodeGuards: { layers: partialByteGuarded, total },
+      anyOfficialSourceEvidence: { layers: anyOfficialEvidence, total },
+    },
+    rendererPipelineParity: {
+      status: "not-proven",
+      reason: "Repository audits protect current assumptions but do not prove equivalence to the official runtime color, MRT, blend, precision, and postprocess pipeline.",
+    },
+    controlledVisualParity: {
+      status: "unmeasured",
+      officialCaptureCorpus: 0,
+      reason: "No controlled official per-pose capture corpus is available to this repository.",
+    },
+    gameFidelity: {
+      score: null,
+      status: "not-claimable",
+      reason: "A fidelity score is forbidden until renderer-pipeline parity and controlled official-output comparisons are both evidenced.",
+    },
+    rows,
+  };
+}
+
+export function printReport(rows = collectEvidenceRows()) {
+  const report = buildEvidenceReport(rows);
+  const {
+    total,
+    dispatched,
+    transpiledProgram,
+    partialByteGuarded,
+    urGuarded,
+    urRemainderGuarded,
+    effectGuarded,
+    parallaxGuarded,
+    flatGuarded,
+    holoGuarded,
+    mrtGuarded,
+    anyOfficialEvidence,
+  } = summarizeEvidenceRows(rows);
+
+  console.log("Renderer implementation evidence (not a game-fidelity score)");
   console.log(`visible layers:       ${total}`);
   console.log(`strategy dispatched:  ${dispatched}/${total} (${pct(dispatched, total)})`);
-  console.log(`exact shader layers:  ${exact}/${total} (${pct(exact, total)})`);
+  console.log(`official programs:    ${transpiledProgram}/${total} (${pct(transpiledProgram, total)})  transpiled official shader programs`);
+  console.log(`partial byte guards:  ${partialByteGuarded}/${total} (${pct(partialByteGuarded, total)})  hand ports with selected bytecode invariants`);
   console.log(`UR byte-guarded:      ${urGuarded}/${total} (${pct(urGuarded, total)})`);
   console.log(`UR remainder guarded: ${urRemainderGuarded}/${total} (${pct(urRemainderGuarded, total)})`);
   console.log(`Effect byte-guarded:  ${effectGuarded}/${total} (${pct(effectGuarded, total)})`);
@@ -166,13 +218,16 @@ export function printReport(rows = collectFidelityRows()) {
   console.log(`Flat/simple guarded:  ${flatGuarded}/${total} (${pct(flatGuarded, total)})`);
   console.log(`Holo byte-guarded:    ${holoGuarded}/${total} (${pct(holoGuarded, total)})`);
   console.log(`RGB MRT guarded:      ${mrtGuarded}/${total} (${pct(mrtGuarded, total)})`);
-  console.log(`any byte/exact guard: ${anyByteGuarded}/${total} (${pct(anyByteGuarded, total)})`);
-  console.log("note: this is evidence coverage, not visual/pixel fidelity");
+  console.log(`any official evidence:${String(anyOfficialEvidence).padStart(3)}/${total} (${pct(anyOfficialEvidence, total)})`);
+  console.log(`pipeline parity:      ${report.rendererPipelineParity.status}`);
+  console.log(`controlled visual:    ${report.controlledVisualParity.status}`);
+  console.log("game fidelity score:  NOT CLAIMABLE");
+  console.log("reason: static layer evidence does not prove official runtime or final pixels");
   console.log("");
 
   const grouped = new Map();
   for (const row of rows) {
-    const key = `${row.shader}|${row.kind}|${row.dispatched}|${row.exact}|${row.urGuarded}|${row.urRemainderGuarded}|${row.effectGuarded}|${row.parallaxGuarded}|${row.flatGuarded}|${row.holoGuarded}|${row.mrtGuarded}`;
+    const key = `${row.shader}|${row.kind}|${row.dispatched}|${row.transpiledProgram}|${row.urGuarded}|${row.urRemainderGuarded}|${row.effectGuarded}|${row.parallaxGuarded}|${row.flatGuarded}|${row.holoGuarded}|${row.mrtGuarded}`;
     if (!grouped.has(key)) grouped.set(key, { ...row, count: 0, scenes: new Set(), examples: [] });
     const g = grouped.get(key);
     g.count += 1;
@@ -183,7 +238,7 @@ export function printReport(rows = collectFidelityRows()) {
   for (const g of [...grouped.values()].sort((a, b) => b.count - a.count || a.shader.localeCompare(b.shader))) {
     const flags = [
       g.dispatched ? "strategy" : "missing",
-      g.exact ? "exact" : null,
+      g.transpiledProgram ? "official-program" : null,
       g.urGuarded ? "ur-byte-guard" : null,
       g.urRemainderGuarded ? "ur-remainder-byte-guard" : null,
       g.effectGuarded ? "effect-byte-guard" : null,
@@ -198,5 +253,9 @@ export function printReport(rows = collectFidelityRows()) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  printReport();
+  if (process.argv.includes("--json")) {
+    console.log(JSON.stringify(buildEvidenceReport(), null, 2));
+  } else {
+    printReport();
+  }
 }

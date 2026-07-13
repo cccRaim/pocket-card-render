@@ -2,8 +2,9 @@
 
 > **English** · [简体中文](CONTRIBUTING.zh-CN.md)
 
-The renderer is **data-driven** and **byte-faithful**: every layer's look is reconstructed from the
-game's own material data + shader bytecode. No eyeballed magic numbers. Two rules:
+The renderer is driven by official material data and shader bytecode. Evidence coverage is not the
+same as official-runtime or visual parity; use the definitions in [Rendering Fidelity](FIDELITY.md).
+No eyeballed magic numbers. Two rules:
 
 1. **Verify against data, not vibes.** A new material's constants come from the scene JSON recipe
    or a byte-trace of the shader — never hand-tuned. Cite the source in a comment.
@@ -110,6 +111,7 @@ node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGI
 node build/shot.mjs "http://127.0.0.1:8011/?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json&nohud" after.png
 ```
 
-A faithful change leaves the cards you didn't touch **pixel-identical** (the SR card has no animated
+A non-regressing change leaves the cards you didn't touch **pixel-identical** (the SR card has no animated
 layers → expect 0% diff; UR glitter + CJK text antialiasing produce a sub-percent diff that is timing,
-not logic). Use `?only=<materialName>` to isolate a single layer and `?nohud` for clean shots.
+not logic). This only checks regression against this renderer's previous output; it does not prove
+official visual parity. Use `?only=<materialName>` to isolate a single layer and `?nohud` for clean shots.

@@ -1127,8 +1127,8 @@ function sbHoloMaterial(r, ctx) {
         float darkMix = (1.0 - clamp(specDarkGate - uDarkOffset, 0.0, 1.0)) * uTilt;
         vec3 baseOklab = oklabToLinear(mix(baseLab, darkLab, darkMix));
         baseLit = mix(baseLit, baseOklab, uUseOklab);
+        vec3 finalColor = baseLit + spec + reflRgb;
         vec3 reflSrgb = mix(reflRgb, linearToSrgb(reflRgb), uUseOklab);
-        vec3 finalColor = mix(baseLit + spec + reflRgb, linearToSrgb(baseLit) + specSrgb + reflSrgb, uUseOklab);
         vec3 emissive = (specSrgb * maskVal + reflSrgb) * uEmissiveColor.rgb * uUseOklab;
         if (uBloomOnly > 0.5) { gl_FragColor = vec4(emissive, 1.0); return; }
         gl_FragColor = vec4(finalColor, base.a);

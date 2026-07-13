@@ -10,6 +10,9 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
 
 const issues = [];
+const compositeStart = app.indexOf("const composite = new THREE.ShaderMaterial");
+const compositeEnd = app.indexOf("const resize =", compositeStart);
+const compositeBlock = compositeStart >= 0 && compositeEnd > compositeStart ? app.slice(compositeStart, compositeEnd) : "";
 
 if (/uBloom:\s*\{\s*value:\s*0\.32\s*\}/.test(app)) {
   issues.push("public/app.js: bloom composite still uses the old hand-tuned 0.32 gain");
@@ -26,8 +29,8 @@ if (!/renderer\.outputColorSpace\s*=\s*THREE\.LinearSRGBColorSpace/.test(app)) {
 if (!/const rtColorSpace\s*=\s*cardTargetColorSpace/.test(app)) {
   issues.push("public/app.js: card scene/bloom render targets must preserve raw shader output");
 }
-if (!/tex\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
-  issues.push("public/app.js: scene textures must be sampled as raw shader inputs; official UR/Oklab shaders do their own sRGB/linear conversion");
+if (!/tex\.colorSpace\s*=\s*scene_data\.textureColorSpace\?\.\[name\]\s*===\s*1\s*\?\s*THREE\.SRGBColorSpace\s*:\s*THREE\.NoColorSpace/.test(app)) {
+  issues.push("public/app.js: scene textures must use exported textureColorSpace; manual UR/Oklab paths request raw clones explicitly");
 }
 if (!/bgRT\.texture\.colorSpace\s*=\s*cardTargetColorSpace/.test(app)) {
   issues.push("public/app.js: UR background render target must preserve raw shader output before it is sampled back");
@@ -38,11 +41,11 @@ if (!/window\.__post\s*=\s*makeBloomPass\(hasOfficialEmissive\)/.test(app)) {
 if (!/bgQuad\s*=\s*new THREE\.Mesh[\s\S]+#include <colorspace_fragment>/.test(app)) {
   issues.push("public/app.js: UR background quad must pass through colorspace_fragment when sampling bgRT");
 }
-if (!/const composite\s*=\s*new THREE\.ShaderMaterial[\s\S]+gl_FragColor\s*=\s*vec4\(base\.rgb\s*\+\s*glow,\s*base\.a\)/.test(app)) {
-  issues.push("public/app.js: postprocess composite must preserve raw shader output; final sRGB conversion is owned by the official shader ports");
+if (!/pcrLinearToSrgb\(base\.rgb\s*\+\s*glow\)/.test(compositeBlock)) {
+  issues.push("public/app.js: postprocess composite must perform the single final display encode after raw RT compositing");
 }
-if (/pcrLinearToSrgb|linearToSrgb\(base\.rgb\s*\+\s*glow\)/.test(app)) {
-  issues.push("public/app.js: postprocess composite still applies an extra display encode");
+if (/#include <colorspace_fragment>/.test(compositeBlock)) {
+  issues.push("public/app.js: postprocess composite must not add a second colorspace_fragment encode");
 }
 
 if (issues.length) {

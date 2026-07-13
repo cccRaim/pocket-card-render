@@ -1,6 +1,6 @@
-// Verify that scenes using exact official shader ports cannot silently fall back to hand ports.
-// This keeps high-fidelity paths data-driven: if a scene needs an exact port, its SPIRV-Cross
-// GLSL and uniform map must be present and structurally match the runtime bindings.
+// Verify that scenes using transpiled official shader programs cannot silently
+// fall back to hand ports. Presence and wiring are structural evidence only;
+// they do not prove official-runtime or final-pixel parity.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -242,6 +242,6 @@ for (const row of rows) {
 
 const bad = rows.filter((r) => !r.ok);
 if (bad.length) {
-  console.error(`\n${bad.length} exact shader asset issue(s) found.`);
+  console.error(`\n${bad.length} official program asset issue(s) found.`);
   process.exitCode = 1;
 }

@@ -1,7 +1,7 @@
 // Verify that scene manifests reference complete local assets.
 //
 // Missing texture URLs, absent public/game files, or stale material->texture
-// links otherwise fall through to default textures and make shader fidelity
+// links otherwise fall through to default textures and invalidate render evidence
 // debugging meaningless. This audit keeps the reference scenes reproducible.
 import fs from "node:fs";
 import path from "node:path";

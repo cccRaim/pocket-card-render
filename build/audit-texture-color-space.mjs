@@ -1,6 +1,6 @@
 // Verify exported texture color-space metadata and the shader ports that must bypass automatic sampler
-// conversion. The metadata remains part of the scene audit, but runtime sampling stays raw because the
-// decompiled card shaders do their own sRGB/linear conversion around the code paths that need it.
+// conversion. Most official shaders rely on the sampler's sRGB decode for color textures; only the
+// hand-ported Oklab/manual-conversion paths request raw clones explicitly.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,6 +27,17 @@ function sceneId(sceneName) {
 
 const rows = [];
 const buildSource = fs.readFileSync(path.join(ROOT, "build", "build.mjs"), "utf8");
+const appSource = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
+rows.push({
+  ok: /scene_data\.textureColorSpace\?\.\[name\]\s*===\s*1\s*\?\s*THREE\.SRGBColorSpace\s*:\s*THREE\.NoColorSpace/.test(appSource),
+  scene: "(runtime)",
+  shader: "",
+  mat: "preloadTextures",
+  slot: "(all)",
+  texture: "",
+  colorSpace: "scene_data.textureColorSpace",
+  reason: "runtime uploads color textures as sRGB and data textures as raw",
+});
 for (const slot of DATA_SLOTS) {
   rows.push({
     ok: buildSource.includes(`"${slot}"`),
