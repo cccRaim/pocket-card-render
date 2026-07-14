@@ -23,6 +23,31 @@ Percentages are allowed only for coverage within a named dimension, for example 
 programs cover 26 of 64 reference layers.” That number must not be renamed, averaged, or presented as
 “game fidelity.”
 
+## Advancement cost
+
+Cost is reported as a work class plus remaining scope, never as an unsupported calendar estimate:
+
+- `maintenance`: the dimension is complete for the current reference scope; only regression upkeep remains.
+- `renderer-integration`: missing layer dispatch or runtime binding work.
+- `source-tracing-and-bytecode-audit`: official provenance or bytecode evidence is missing.
+- `shader-reverse-engineering`: extract/decompile an official program, recover bindings, port it, and add guards.
+- `runtime-pipeline-research`: establish shared official-runtime behavior such as formats, MRT, precision, or display transfer.
+- `excluded-by-policy`: deliberately outside automatic auditing.
+
+For the current 64-layer reference scope, the report produces:
+
+| Dimension | Current state | Advancement cost | Remaining scope |
+|---|---:|---|---:|
+| Layer dispatch | 64/64 | `maintenance` | 0 layers |
+| Transpiled official programs | 26/64 | `shader-reverse-engineering` | 38 layers / 15 shader families |
+| Promote partial guards from E1 to E2 | 38 E1 layers | `shader-reverse-engineering` | Same 38 layers / 15 families; not additive to the row above |
+| Any official source evidence | 64/64 | `maintenance` | 0 layers |
+| Renderer-pipeline parity | `not-proven` | `runtime-pipeline-research` | 11 shared stages affecting all 64 layers |
+| Visual parity | `not-evaluated` | `excluded-by-policy` | 0 automated work units |
+
+The counts are generated from the loaded reference scenes. Adding scenes or promoting a shader changes
+them automatically in `report:evidence` and `audit:official-equivalence`.
+
 ## Shader evidence levels
 
 - `E0 dispatch-only`: the layer is recognized and rendered, with no official-bytecode equivalence claim.
@@ -84,7 +109,7 @@ node build/audit-official-equivalence.mjs --json
 ```
 
 The command runs the complete static audit matrix and reports dispatch coverage, transpiled official
-program coverage, and partial bytecode-guard coverage as separate dimensions. It also reports renderer
+program coverage, partial bytecode-guard coverage, and advancement cost as separate dimensions. It also reports renderer
 pipeline parity as `not-proven` while official runtime evidence is incomplete, and visual parity as
 `not-evaluated`. A passing command means the declared source/data/bytecode invariants hold; it does not
 mean the final image has a numeric fidelity score.

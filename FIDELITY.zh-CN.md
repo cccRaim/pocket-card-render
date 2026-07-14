@@ -21,6 +21,31 @@
 百分比只能用于某个明确维度的覆盖率，例如“官方程序转译覆盖 64 个参考 layer 中的 26 个”。不能把
 这个数字改名、加权或宣传成“游戏还原度”。
 
+## 推进成本
+
+成本由“工作类型 + 剩余范围”表示，不给没有依据的日历时间估算：
+
+- `maintenance`：当前参考范围已经完成，只剩回归维护。
+- `renderer-integration`：补齐 layer 分发或运行时绑定。
+- `source-tracing-and-bytecode-audit`：补齐官方来源或 bytecode 证据。
+- `shader-reverse-engineering`：提取/反编译官方程序、恢复绑定、移植并增加约束审计。
+- `runtime-pipeline-research`：证明 format、MRT、精度、显示 transfer 等共享官方运行时行为。
+- `excluded-by-policy`：明确不进入自动审计。
+
+当前 64 个可见 layer 的报告结果为：
+
+| 维度 | 当前状态 | 推进成本 | 剩余范围 |
+|---|---:|---|---:|
+| Layer 分发 | 64/64 | `maintenance` | 0 layer |
+| 官方程序转译 | 26/64 | `shader-reverse-engineering` | 38 layer / 15 个 Shader family |
+| E1 局部约束推进到 E2 | 38 个 E1 layer | `shader-reverse-engineering` | 与上一行相同的 38 layer / 15 family，不能重复相加 |
+| 任意官方源证据 | 64/64 | `maintenance` | 0 layer |
+| 渲染管线一致性 | `not-proven` | `runtime-pipeline-research` | 11 个共享阶段，影响全部 64 layer |
+| 视觉一致性 | `not-evaluated` | `excluded-by-policy` | 0 个自动工作单元 |
+
+这些数字由当前加载的参考 scene 自动生成；新增 scene 或把某个 Shader 提升到 E2 后，`report:evidence`
+和 `audit:official-equivalence` 会自动更新成本。
+
 ## Shader 证据等级
 
 - `E0 dispatch-only`：识别并渲染了该 layer，不声称与官方 bytecode 等价。
@@ -74,6 +99,6 @@ npm run audit:official-equivalence
 node build/audit-official-equivalence.mjs --json
 ```
 
-命令会运行完整静态审计矩阵，并分别报告 layer 分发覆盖、官方程序转译覆盖和局部 bytecode 约束覆盖。
+命令会运行完整静态审计矩阵，并分别报告 layer 分发覆盖、官方程序转译覆盖、局部 bytecode 约束覆盖和推进成本。
 只要官方运行时证据还不完整，渲染管线就报告为 `not-proven`，视觉一致性固定报告为 `not-evaluated`。
 命令通过只表示已声明的数据、源码和 bytecode 不变量成立，不代表最终画面存在一个可计算的还原度百分比。

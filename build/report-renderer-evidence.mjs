@@ -54,6 +54,19 @@ const HOLO_GUARDED = new Set([
   "Simple-Opaque-Hologram_Tuning",
   "Card_Parallax_Hologram_Tuning",
 ]);
+const PIPELINE_PARITY_STAGES = [
+  "texture-color-space",
+  "alpha-convention",
+  "sampler-state",
+  "render-target-formats",
+  "mrt-routing",
+  "blend-stencil-depth",
+  "shader-precision",
+  "camera-transforms",
+  "animation-timing",
+  "bloom-tone-mapping",
+  "display-transfer",
+];
 
 export function sceneId(sceneName) {
   return sceneName.replace(/^scene\.|\.json$/g, "");
@@ -143,6 +156,61 @@ export function summarizeEvidenceRows(rows) {
   };
 }
 
+function shaderFamilies(rows, predicate) {
+  return [...new Set(rows.filter(predicate).map((row) => row.shader))].sort();
+}
+
+export function buildAdvancementCosts(rows = collectEvidenceRows()) {
+  const summary = summarizeEvidenceRows(rows);
+  const undispatched = rows.filter((row) => !row.dispatched);
+  const notTranspiled = rows.filter((row) => !row.transpiledProgram);
+  const withoutOfficialEvidence = rows.filter((row) => !(
+    row.transpiledProgram || row.urGuarded || row.urRemainderGuarded ||
+    row.effectGuarded || row.parallaxGuarded || row.flatGuarded || row.holoGuarded
+  ));
+  return {
+    model: {
+      unit: "work-class-plus-remaining-scope",
+      note: "Cost classes describe the required work type; remaining layer/family/stage counts describe scale. They are not time estimates.",
+    },
+    dispatched: {
+      class: undispatched.length ? "renderer-integration" : "maintenance",
+      remainingLayers: undispatched.length,
+      remainingShaderFamilies: shaderFamilies(undispatched, () => true),
+    },
+    transpiledOfficialProgram: {
+      class: notTranspiled.length ? "shader-reverse-engineering" : "maintenance",
+      remainingLayers: notTranspiled.length,
+      remainingShaderFamilies: shaderFamilies(notTranspiled, () => true),
+      target: "E2 transpiled-official-program",
+    },
+    partialBytecodeGuards: {
+      class: summary.partialByteGuarded ? "shader-reverse-engineering" : "maintenance",
+      layersToPromote: summary.partialByteGuarded,
+      shaderFamiliesToPromote: shaderFamilies(rows, (row) => !row.transpiledProgram && (
+        row.urGuarded || row.urRemainderGuarded || row.effectGuarded ||
+        row.parallaxGuarded || row.flatGuarded || row.holoGuarded
+      )),
+      target: "promote E1 partial guards to E2 programs",
+    },
+    anyOfficialSourceEvidence: {
+      class: withoutOfficialEvidence.length ? "source-tracing-and-bytecode-audit" : "maintenance",
+      remainingLayers: withoutOfficialEvidence.length,
+      remainingShaderFamilies: shaderFamilies(withoutOfficialEvidence, () => true),
+    },
+    rendererPipelineParity: {
+      class: "runtime-pipeline-research",
+      remainingSharedStages: PIPELINE_PARITY_STAGES,
+      affectedVisibleLayers: summary.total,
+    },
+    visualParity: {
+      class: "excluded-by-policy",
+      remainingAutomatedWork: 0,
+      reason: "Screenshot and image-derived auditing is intentionally outside the automatic audit.",
+    },
+  };
+}
+
 export function buildEvidenceReport(rows = collectEvidenceRows()) {
   const {
     total,
@@ -159,26 +227,29 @@ export function buildEvidenceReport(rows = collectEvidenceRows()) {
     anyOfficialEvidence,
   } = summarizeEvidenceRows(rows);
 
+  const advancementCost = buildAdvancementCosts(rows);
   return {
-    definitionVersion: 1,
+    definitionVersion: 2,
     scope: {
       referenceScenes: sceneNames,
       visibleLayers: total,
     },
     implementationEvidence: {
-      dispatched: { layers: dispatched, total },
-      transpiledOfficialProgram: { layers: transpiledProgram, total },
-      partialBytecodeGuards: { layers: partialByteGuarded, total },
-      anyOfficialSourceEvidence: { layers: anyOfficialEvidence, total },
+      dispatched: { layers: dispatched, total, advancementCost: advancementCost.dispatched },
+      transpiledOfficialProgram: { layers: transpiledProgram, total, advancementCost: advancementCost.transpiledOfficialProgram },
+      partialBytecodeGuards: { layers: partialByteGuarded, total, advancementCost: advancementCost.partialBytecodeGuards },
+      anyOfficialSourceEvidence: { layers: anyOfficialEvidence, total, advancementCost: advancementCost.anyOfficialSourceEvidence },
     },
     rendererPipelineParity: {
       status: "not-proven",
       reason: "Repository audits protect current assumptions but do not prove equivalence to the official runtime color, MRT, blend, precision, and postprocess pipeline.",
+      advancementCost: advancementCost.rendererPipelineParity,
     },
     controlledVisualParity: {
       status: "unmeasured",
       officialCaptureCorpus: 0,
       reason: "No controlled official per-pose capture corpus is available to this repository.",
+      advancementCost: advancementCost.visualParity,
     },
     gameFidelity: {
       score: null,
@@ -186,6 +257,7 @@ export function buildEvidenceReport(rows = collectEvidenceRows()) {
       reason: "A fidelity score is forbidden until renderer-pipeline parity and controlled official-output comparisons are both evidenced.",
     },
     rows,
+    costModel: advancementCost.model,
   };
 }
 
@@ -223,6 +295,14 @@ export function printReport(rows = collectEvidenceRows()) {
   console.log(`controlled visual:    ${report.controlledVisualParity.status}`);
   console.log("game fidelity score:  NOT CLAIMABLE");
   console.log("reason: static layer evidence does not prove official runtime or final pixels");
+  console.log("");
+  console.log("advancement cost (work type + remaining scope)");
+  console.log(`dispatch:             ${report.implementationEvidence.dispatched.advancementCost.class} · ${report.implementationEvidence.dispatched.advancementCost.remainingLayers} layers`);
+  console.log(`official programs:    ${report.implementationEvidence.transpiledOfficialProgram.advancementCost.class} · ${report.implementationEvidence.transpiledOfficialProgram.advancementCost.remainingLayers} layers / ${report.implementationEvidence.transpiledOfficialProgram.advancementCost.remainingShaderFamilies.length} shader families`);
+  console.log(`partial → E2:         ${report.implementationEvidence.partialBytecodeGuards.advancementCost.class} · ${report.implementationEvidence.partialBytecodeGuards.advancementCost.layersToPromote} layers / ${report.implementationEvidence.partialBytecodeGuards.advancementCost.shaderFamiliesToPromote.length} shader families`);
+  console.log(`source evidence:      ${report.implementationEvidence.anyOfficialSourceEvidence.advancementCost.class} · ${report.implementationEvidence.anyOfficialSourceEvidence.advancementCost.remainingLayers} layers`);
+  console.log(`pipeline parity:      ${report.rendererPipelineParity.advancementCost.class} · ${report.rendererPipelineParity.advancementCost.remainingSharedStages.length} shared stages / ${report.rendererPipelineParity.advancementCost.affectedVisibleLayers} affected layers`);
+  console.log(`visual parity:        ${report.controlledVisualParity.advancementCost.class}`);
   console.log("");
 
   const grouped = new Map();

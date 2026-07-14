@@ -19,6 +19,23 @@ for (const key of [
   if (!report[key]) issues.push(`evidence report is missing ${key}`);
 }
 
+for (const key of [
+  "dispatched",
+  "transpiledOfficialProgram",
+  "partialBytecodeGuards",
+  "anyOfficialSourceEvidence",
+]) {
+  if (!report.implementationEvidence?.[key]?.advancementCost?.class) {
+    issues.push(`implementationEvidence.${key} must declare advancement cost`);
+  }
+}
+if (!report.rendererPipelineParity?.advancementCost?.remainingSharedStages?.length) {
+  issues.push("renderer pipeline parity must list remaining shared-stage cost");
+}
+if (report.controlledVisualParity?.advancementCost?.class !== "excluded-by-policy") {
+  issues.push("visual parity must remain excluded from automatic audit cost");
+}
+
 const score = report.gameFidelity?.score;
 if (score !== null) {
   if (!Number.isFinite(score)) issues.push("gameFidelity.score must be null or a finite number");

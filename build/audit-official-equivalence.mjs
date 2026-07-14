@@ -29,15 +29,16 @@ const result = {
   },
   officialEvidenceAudit: {
     status: staticStatus,
-    dispatched: { layers: summary.dispatched, total: summary.total },
-    transpiledOfficialProgram: { layers: summary.transpiledProgram, total: summary.total },
-    partialBytecodeGuards: { layers: summary.partialByteGuarded, total: summary.total },
-    anyOfficialSourceEvidence: { layers: summary.anyOfficialEvidence, total: summary.total },
+    dispatched: evidence.implementationEvidence.dispatched,
+    transpiledOfficialProgram: evidence.implementationEvidence.transpiledOfficialProgram,
+    partialBytecodeGuards: evidence.implementationEvidence.partialBytecodeGuards,
+    anyOfficialSourceEvidence: evidence.implementationEvidence.anyOfficialSourceEvidence,
   },
   rendererPipelineParity: evidence.rendererPipelineParity,
   visualParity: {
     status: "not-evaluated",
     reason: "Automatic auditing intentionally excludes screenshots and image-derived thresholds.",
+    advancementCost: evidence.controlledVisualParity.advancementCost,
   },
   gameFidelity: {
     score: null,
@@ -64,6 +65,14 @@ if (jsonMode) {
   console.log(`pipeline parity:      ${result.rendererPipelineParity.status}`);
   console.log(`visual parity:        ${result.visualParity.status}`);
   console.log("game fidelity score:  NOT CLAIMABLE");
+  console.log("");
+  console.log("advancement cost (work type + remaining scope)");
+  console.log(`dispatch:             ${result.officialEvidenceAudit.dispatched.advancementCost.class} · ${result.officialEvidenceAudit.dispatched.advancementCost.remainingLayers} layers`);
+  console.log(`official programs:    ${result.officialEvidenceAudit.transpiledOfficialProgram.advancementCost.class} · ${result.officialEvidenceAudit.transpiledOfficialProgram.advancementCost.remainingLayers} layers / ${result.officialEvidenceAudit.transpiledOfficialProgram.advancementCost.remainingShaderFamilies.length} shader families`);
+  console.log(`partial → E2:         ${result.officialEvidenceAudit.partialBytecodeGuards.advancementCost.class} · ${result.officialEvidenceAudit.partialBytecodeGuards.advancementCost.layersToPromote} layers / ${result.officialEvidenceAudit.partialBytecodeGuards.advancementCost.shaderFamiliesToPromote.length} shader families`);
+  console.log(`source evidence:      ${result.officialEvidenceAudit.anyOfficialSourceEvidence.advancementCost.class} · ${result.officialEvidenceAudit.anyOfficialSourceEvidence.advancementCost.remainingLayers} layers`);
+  console.log(`pipeline parity:      ${result.rendererPipelineParity.advancementCost.class} · ${result.rendererPipelineParity.advancementCost.remainingSharedStages.length} shared stages / ${result.rendererPipelineParity.advancementCost.affectedVisibleLayers} affected layers`);
+  console.log(`visual parity:        ${result.visualParity.advancementCost.class}`);
   if (staticStatus === "fail") {
     console.log("");
     console.log(result.officialEvidenceAudit.output);
