@@ -3,7 +3,7 @@
 > **English** · [简体中文](SHADERS.zh-CN.md)
 
 This is the exact workflow that produced the GLSL in this repo (the inline shaders in
-`render/materials/*.js` and `public/shaders/glitter.*.glsl`). You only need it to add a **new** shader
+`render/materials/*.js` and the exact ports in `public/shaders/*.glsl`). You only need it to add a **new** shader
 (a new rarity's effect) — existing shaders already ship as GLSL.
 
 The game's shaders are Unity sub-program blobs: **lz4-compressed → SMOL-V → SPIR-V**, with the **uniform
@@ -84,8 +84,10 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `render/materials/ur.js` → `plate` is byte-traced from `urplate_frag.spv` (comment cites the trace).
 - `render/materials/holo.js` → `frameHolo` is the full SSA trace of `framh_frag.spv` (names recovered
   from a sibling, per step 3).
-- `public/shaders/glitter.*.glsl` is the **one** shader kept verbatim (SPIRV-Cross → three.js GLSL3,
-  run as a `RawShaderMaterial`) — a complete end-to-end example.
+- `public/shaders/glitter.*.glsl` preserves the large anonymous constant-buffer layout in a
+  `RawShaderMaterial`.
+- `public/shaders/card_parallax*.glsl` shows smaller official programs adapted to named three.js
+  uniforms, including exact keyword-variant selection and cube-map bindings.
 
 ## Reality check (don't hand-tune)
 

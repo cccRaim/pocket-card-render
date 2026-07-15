@@ -2,7 +2,7 @@
 
 > [English](SHADERS.md) · **简体中文**
 
-这就是本仓库里 GLSL 的来历(`render/materials/*.js` 里的内联着色器 + `public/shaders/glitter.*.glsl`)。
+这就是本仓库里 GLSL 的来历(`render/materials/*.js` 里的内联着色器 + `public/shaders/*.glsl` 的 exact port)。
 **只有新增一个着色器**(某个新稀有度的效果)时才需要它——已有着色器都已作为 GLSL 提交。
 
 游戏的着色器是 Unity sub-program blob:**lz4 压缩 → SMOL-V → SPIR-V**,且**uniform 名被抹掉**。
@@ -78,8 +78,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 
 - `render/materials/ur.js` → `plate` 是从 `urplate_frag.spv` 字节追踪来的(注释标了来源)。
 - `render/materials/holo.js` → `frameHolo` 是 `framh_frag.spv` 的完整 SSA 追踪(名字按第 3 步从同族恢复)。
-- `public/shaders/glitter.*.glsl` 是**唯一**原样保留的着色器(SPIRV-Cross → three.js GLSL3,作为
-  `RawShaderMaterial` 运行)——一个完整的端到端范例。
+- `public/shaders/glitter.*.glsl` 展示了在 `RawShaderMaterial` 中保留大型匿名 constant buffer 布局。
+- `public/shaders/card_parallax*.glsl` 展示了把较小的官方程序适配成具名 three.js uniform，
+  包括精确选择 keyword variant 和绑定 cube map。
 
 ## 现实提醒(别手调)
 

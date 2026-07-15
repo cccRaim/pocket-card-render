@@ -1,0 +1,19 @@
+{
+  "shader": "Card_Parallax_Metal",
+  "samplers": ["_CubeMap", "_MetalMaskTex"],
+  "sampler_slots": ["_CubeMap", "_MetalMaskTex"],
+  "floats": {
+    "_FakeCameraHeight": "_FakeCameraHeight",
+    "_Height": "_Height",
+    "_HeightPower": "_HeightPower",
+    "_Scale": "_Scale",
+    "_UseUv": "_UseUv",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_Shininess": "_Shininess",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_MetalMaskIntensity": "_MetalMaskIntensity"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  }
+}

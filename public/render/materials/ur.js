@@ -471,6 +471,32 @@ defineMaterial("metal", {
   build(r, ctx) {
     const f = r.floats || {};
     const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
+    const exact = ctx.exactShaders?.Card_Parallax_Metal;
+    if (exact && ctx.envCubeTex && ctx.layerTexDefault(r, "_MetalMaskTex")) {
+      const m = new THREE.RawShaderMaterial({
+        glslVersion: THREE.GLSL3,
+        uniforms: {
+          _CubeMap: { value: ctx.envCubeTex },
+          _MetalMaskTex: { value: ctx.layerTexDefault(r, "_MetalMaskTex") },
+          _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
+          _Height: { value: f._Height ?? -1 },
+          _HeightPower: { value: f._HeightPower ?? 0 },
+          _Scale: { value: f._Scale ?? 1 },
+          _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
+          _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+          _Shininess: { value: f._Shininess ?? 32 },
+          _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+          _MetalMaskIntensity: { value: f._MetalMaskIntensity ?? 1 },
+          _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+        },
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.exactShader = "Card_Parallax_Metal";
+      return m;
+    }
     return new THREE.ShaderMaterial({
       uniforms: {
         envCube: { value: ctx.envCubeTex }, uHasEnv: { value: (ctx.envCubeTex && r.textures && r.textures._CubeMap) ? 1 : 0 },

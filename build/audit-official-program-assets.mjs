@@ -135,6 +135,37 @@ const EXACT_PORTS = {
       /userData\.exactVariant\s*=\s*"_UVASPECTRATIO_SQUARE"/,
     ],
   },
+  Card_Parallax_Metal: {
+    name: "card_parallax_metal",
+    vert: "shaders/card_parallax_metal.vert.glsl",
+    frag: "shaders/card_parallax_metal.frag.glsl",
+    uniforms: "shaders/card_parallax_metal_uniforms.json",
+    requiredVert: [
+      /in\s+vec4\s+tangent\b/,
+      /in\s+vec2\s+uv2\b/,
+      /uniform\s+int\s+_UseUv\b/,
+      /tv\.z\s*\+\s*0\.41999998688697815/,
+      /float\(_UseUv\)\s*\*\s*\(\(-uv\)\s*\+\s*uv2\)/,
+      /transpose\(inverse\(mat3\(modelMatrix\)\)\)\s*\*\s*normal/,
+    ],
+    requiredFrag: [
+      /uniform\s+mediump\s+samplerCube\s+_CubeMap\b/,
+      /uniform\s+mediump\s+sampler2D\s+_MetalMaskTex\b/,
+      /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/,
+      /environment\s*\*\s*grazing\s*\*\s*_SpecularIntensity\s*\+\s*vec3\(_BaseColorIntensity\)/,
+      /texture\(_MetalMaskTex,\s*vs_TEXCOORD0\)\.r\s*\*\s*_MetalMaskIntensity/,
+      /_305\s*=\s*vec4\(0\.0\)/,
+    ],
+    samplers: ["_CubeMap", "_MetalMaskTex"],
+    samplerSlots: ["_CubeMap", "_MetalMaskTex"],
+    samplerTypes: { _CubeMap: "samplerCube" },
+    runtimeFiles: ["app.js", "render/materials/ur.js"],
+    runtimePatterns: [
+      /Card_Parallax_Metal:\s*\{\s*vert:\s*"shaders\/card_parallax_metal\.vert\.glsl",\s*frag:\s*"shaders\/card_parallax_metal\.frag\.glsl"\s*\}/,
+      /exactShaders\?\.Card_Parallax_Metal/,
+      /userData\.exactShader\s*=\s*"Card_Parallax_Metal"/,
+    ],
+  },
   Card_Parallax_UR: {
     name: "parallax_ur",
     vert: "shaders/parallax_ur.vert.glsl",
@@ -241,7 +272,8 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
       rows.push({ ok: re.test(frag), shader, asset: cfg.frag, reason: `fragment pattern ${re}`, refs });
     }
     for (const sampler of cfg.samplers) {
-      const re = new RegExp(`uniform\\s+mediump\\s+sampler2D\\s+${sampler}\\b`);
+      const samplerType = cfg.samplerTypes?.[sampler] || "sampler2D";
+      const re = new RegExp(`uniform\\s+mediump\\s+${samplerType}\\s+${sampler}\\b`);
       rows.push({ ok: re.test(frag), shader, asset: cfg.frag, reason: `fragment sampler ${sampler}`, refs });
     }
   }

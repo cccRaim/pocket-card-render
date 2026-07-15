@@ -64,6 +64,8 @@ try {
 const baseSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/base.js"), "utf8");
 const urSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/ur.js"), "utf8");
 const exactDepthSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax.vert.glsl"), "utf8");
+const exactMetalVertSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax_metal.vert.glsl"), "utf8");
+const exactMetalFragSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax_metal.frag.glsl"), "utf8");
 const localDepth = blockFrom(baseSrc, 'defineMaterial("depthParallax"');
 const localMetal = blockFrom(urSrc, 'defineMaterial("metal"');
 
@@ -115,6 +117,18 @@ const checks = [
   {
     ok: !/off\.y\s*\*=/.test(localMetal) && !/uAspectY/.test(localMetal),
     msg: "local metal must not inherit depthParallax vertical aspect correction",
+  },
+  {
+    ok: /tv\.z\s*\+\s*0\.41999998688697815/.test(exactMetalVertSrc) && !/1\.608700037/.test(exactMetalVertSrc),
+    msg: "local exact Card_Parallax_Metal vertex must preserve the official parallax core without aspect correction",
+  },
+  {
+    ok: /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/.test(exactMetalFragSrc),
+    msg: "local exact Card_Parallax_Metal fragment must preserve the official -reflect.z grazing power",
+  },
+  {
+    ok: /_305\s*=\s*vec4\(0\.0\)/.test(exactMetalFragSrc),
+    msg: "local exact Card_Parallax_Metal fragment must preserve the official zero MRT1 output",
   },
   {
     ok: /pow\(clamp\(-R\.z,\s*0\.0,\s*1\.0\),\s*uSpecPow\)/.test(localMetal),
