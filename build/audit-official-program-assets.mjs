@@ -105,6 +105,36 @@ const EXACT_PORTS = {
     samplers: ["_MainTex", "_GradationMap"],
     samplerSlots: ["_MainTex", "_GradationMap"],
   },
+  Card_Parallax: {
+    name: "card_parallax",
+    vert: "shaders/card_parallax.vert.glsl",
+    frag: "shaders/card_parallax.frag.glsl",
+    uniforms: "shaders/card_parallax_uniforms.json",
+    requiredKeyword: "_UVASPECTRATIO_SQUARE",
+    requiredVert: [
+      /in\s+vec4\s+tangent\b/,
+      /in\s+vec2\s+uv2\b/,
+      /uniform\s+int\s+_UseUv\b/,
+      /tv\.z\s*\+\s*0\.41999998688697815/,
+      /float\(_UseUv\)\s*\*\s*\(\(-uv\)\s*\+\s*uv2\)/,
+      /vs_TEXCOORD0\s*=\s*\(\(\(sourceUv\s*\*\s*2\.0\)\s*-\s*1\.0\)\s*\/\s*_Scale\)/,
+      /^((?!1\.608700037).)*$/s,
+    ],
+    requiredFrag: [
+      /uniform\s+mediump\s+sampler2D\s+_13\b/,
+      /sampled\.rgb\s*\*\s*sampled\.a/,
+      /_40\s*=\s*vec4\(0\.0\)/,
+    ],
+    samplers: ["_13"],
+    samplerSlots: ["_MainTex"],
+    runtimeFiles: ["app.js", "render/materials/base.js"],
+    runtimePatterns: [
+      /Card_Parallax:\s*\{\s*vert:\s*"shaders\/card_parallax\.vert\.glsl",\s*frag:\s*"shaders\/card_parallax\.frag\.glsl"\s*\}/,
+      /exactShaders\?\.Card_Parallax/,
+      /userData\.exactShader\s*=\s*"Card_Parallax"/,
+      /userData\.exactVariant\s*=\s*"_UVASPECTRATIO_SQUARE"/,
+    ],
+  },
   Card_Parallax_UR: {
     name: "parallax_ur",
     vert: "shaders/parallax_ur.vert.glsl",
@@ -160,7 +190,10 @@ function findSceneUsers() {
     for (const [matName, mat] of Object.entries(scene.materials || {})) {
       if (!EXACT_PORTS[mat.shader]) continue;
       if (!users.has(mat.shader)) users.set(mat.shader, []);
-      users.get(mat.shader).push(`${sceneId(sceneName)}:${matName}`);
+      users.get(mat.shader).push({
+        ref: `${sceneId(sceneName)}:${matName}`,
+        keywords: mat.keywords || [],
+      });
     }
   }
   return users;
@@ -169,8 +202,9 @@ function findSceneUsers() {
 const rows = [];
 const users = findSceneUsers();
 for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
-  const refs = users.get(shader) || [];
-  if (!refs.length) {
+  const sceneUsers = users.get(shader) || [];
+  const refs = sceneUsers.map((user) => user.ref);
+  if (!sceneUsers.length) {
     rows.push({ ok: true, shader, asset: cfg.name, reason: "unused by current scenes", refs });
     continue;
   }
@@ -181,6 +215,21 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
   rows.push({ ok: !!vert, shader, asset: cfg.vert, reason: vert ? "present" : "missing", refs });
   rows.push({ ok: !!frag, shader, asset: cfg.frag, reason: frag ? "present" : "missing", refs });
   rows.push({ ok: !!uniformsRaw, shader, asset: cfg.uniforms, reason: uniformsRaw ? "present" : "missing", refs });
+  if (cfg.requiredKeyword) {
+    rows.push({
+      ok: sceneUsers.every((user) => user.keywords.includes(cfg.requiredKeyword)),
+      shader,
+      asset: "scene.*.json",
+      reason: `all scene users select variant ${cfg.requiredKeyword}`,
+      refs,
+    });
+  }
+  if (cfg.runtimeFiles && cfg.runtimePatterns) {
+    const runtimeSource = cfg.runtimeFiles.map((file) => readText(file) || "").join("\n");
+    for (const re of cfg.runtimePatterns) {
+      rows.push({ ok: re.test(runtimeSource), shader, asset: cfg.runtimeFiles.join(","), reason: `runtime wiring ${re}`, refs });
+    }
+  }
 
   if (vert) {
     for (const re of cfg.requiredVert) {
@@ -213,6 +262,15 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
         reason: "sampler slot order",
         refs,
       });
+      if (cfg.requiredKeyword) {
+        rows.push({
+          ok: uniforms.variant === cfg.requiredKeyword,
+          shader,
+          asset: cfg.uniforms,
+          reason: `uniform manifest variant ${cfg.requiredKeyword}`,
+          refs,
+        });
+      }
       if (shader === "Card_UR_Glitter_FlowMaps") {
         rows.push({
           ok: uniforms._78?.["15"]?.[0] === "__rotA" && uniforms._78?.["15"]?.[1] === "__rotB",

@@ -31,6 +31,18 @@ python build/shaderdec/dump_shader.py "Frame-Holo-UR-New" frameur \
 # → shaders_spv/frameur_frag.spv  (+ frameur_vert.spv)
 ```
 
+If the material enables a compiled shader keyword, select that exact sub-program instead of relying on
+the default largest-module heuristic:
+
+```bash
+python build/shaderdec/dump_shader.py Card_Parallax card_parallax \
+    --keyword _UVASPECTRATIO_SQUARE \
+    --shaders "<DECRYPTED>/Common/Shader" --out shaders_spv
+```
+
+The keyword must come from the material recipe. Different variants can contain different math even
+when they share the same shader name.
+
 ## Step 2 — SPIR-V → GLSL with SPIRV-Cross
 
 ```bash

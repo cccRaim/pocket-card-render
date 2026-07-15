@@ -21,6 +21,7 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Simple-Opaque",
   "Simple-Transparent",
   "Effect",
+  "Card_Parallax",
   "Card_Parallax_UR",
   "Card_UR_Glitter_FlowMaps",
 ]);

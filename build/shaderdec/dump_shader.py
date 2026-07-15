@@ -66,6 +66,7 @@ def main():
     ap.add_argument("--shaders", default=os.environ.get("PCR_SHADERS", "decrypted/Common/Shader"),
                     help="decrypted Common/Shader dir")
     ap.add_argument("--out", default="shaders_spv", help="output dir for the .spv files")
+    ap.add_argument("--keyword", help="select the exact compiled keyword variant instead of the largest module")
     args = ap.parse_args()
 
     d = find_shader(args.suffix, args.shaders)
@@ -86,13 +87,49 @@ def main():
                     continue
 
     allspv = []
+    decoded_slots = []
     for dec in all_decompressed():
         for _, spv in smolv.find_and_decode(dec):
+            decoded_slots.append(spv)
             if spv and len(spv) >= 20 and struct.unpack_from("<I", spv, 0)[0] == smolv.SPIRV_MAGIC:
                 allspv.append(spv)
 
-    verts = [trim_to_last_function_end(s) for s in allspv if execmodel(s) == 0]
-    frags = [trim_to_last_function_end(s) for s in allspv if execmodel(s) == 4]
+    selected = allspv
+    if args.keyword:
+        parsed = d.get("m_ParsedForm", {})
+        keyword_names = parsed.get("m_KeywordNames", [])
+        if args.keyword not in keyword_names:
+            sys.exit(f"keyword {args.keyword!r} not found; available: {', '.join(keyword_names)}")
+        keyword_index = keyword_names.index(args.keyword)
+        variants = None
+        for subshader in parsed.get("m_SubShaders", []):
+            for shader_pass in subshader.get("m_Passes", []):
+                for stage_name in ("progVertex", "progFragment"):
+                    stage = shader_pass.get(stage_name, {})
+                    for player_group in stage.get("m_PlayerSubPrograms", []):
+                        if player_group and any(keyword_index in p.get("m_KeywordIndices", []) for p in player_group):
+                            variants = player_group
+                            break
+                    if variants: break
+                if variants: break
+            if variants: break
+        if not variants:
+            sys.exit(f"no compiled sub-program uses keyword {args.keyword!r}")
+        matching = [i for i, p in enumerate(variants) if keyword_index in p.get("m_KeywordIndices", [])]
+        if len(matching) != 1:
+            sys.exit(f"keyword {args.keyword!r} matched {len(matching)} variants; exact selection is ambiguous")
+        if len(decoded_slots) % len(variants) != 0:
+            sys.exit(f"cannot map {len(decoded_slots)} decoded module slots onto {len(variants)} keyword variants")
+        stride = len(decoded_slots) // len(variants)
+        variant_index = matching[0]
+        group = decoded_slots[variant_index * stride:(variant_index + 1) * stride]
+        selected = [s for s in group if s and len(s) >= 20 and struct.unpack_from("<I", s, 0)[0] == smolv.SPIRV_MAGIC]
+        print(f"variant: {args.keyword} (index {variant_index}, {stride} module slots)")
+
+    verts = [trim_to_last_function_end(s) for s in selected if execmodel(s) == 0]
+    frags = [trim_to_last_function_end(s) for s in selected if execmodel(s) == 4]
+    if args.keyword and (not verts or not frags):
+        sys.exit(f"selected keyword variant {args.keyword!r} did not yield both vertex and fragment modules")
     os.makedirs(args.out, exist_ok=True)
     if verts: open(os.path.join(args.out, f"{args.prefix}_vert.spv"), "wb").write(max(verts, key=len))
     if frags: open(os.path.join(args.out, f"{args.prefix}_frag.spv"), "wb").write(max(frags, key=len))

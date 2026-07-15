@@ -129,6 +129,28 @@ defineMaterial("depthParallax", {
   requires: hasMainTex,
   build(r, ctx) {
     const f = r.floats;
+    const exact = ctx.exactShaders?.Card_Parallax;
+    if (exact && (r.keywords || []).includes("_UVASPECTRATIO_SQUARE")) {
+      const m = new THREE.RawShaderMaterial({
+        glslVersion: THREE.GLSL3,
+        uniforms: {
+          _13: { value: mainTex(r, ctx) },
+          _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
+          _Height: { value: f._Height ?? -1 },
+          _HeightPower: { value: f._HeightPower ?? 0 },
+          _Scale: { value: f._Scale ?? 1 },
+          _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
+        },
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.straight = false;
+      m.userData.exactShader = "Card_Parallax";
+      m.userData.exactVariant = "_UVASPECTRATIO_SQUARE";
+      return m;
+    }
     const m = new THREE.ShaderMaterial({
       uniforms: {
         map: { value: mainTex(r, ctx) },

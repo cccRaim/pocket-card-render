@@ -29,6 +29,16 @@ python build/shaderdec/dump_shader.py "Frame-Holo-UR-New" frameur \
 # → shaders_spv/frameur_frag.spv  (+ frameur_vert.spv)
 ```
 
+如果材质启用了编译期 Shader keyword，必须选择对应 sub-program，不能继续依赖“取最大 module”的默认规则：
+
+```bash
+python build/shaderdec/dump_shader.py Card_Parallax card_parallax \
+    --keyword _UVASPECTRATIO_SQUARE \
+    --shaders "<DECRYPTED>/Common/Shader" --out shaders_spv
+```
+
+keyword 必须来自该材质 recipe。同一个 Shader 名下的不同 variant 也可能包含不同数学逻辑。
+
 ## 第 2 步 —— SPIR-V → GLSL(用 SPIRV-Cross)
 
 ```bash

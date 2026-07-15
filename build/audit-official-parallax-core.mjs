@@ -1,7 +1,6 @@
 // Guard the shared parallax families against drifting away from official
-// bytecode. `Card_Parallax` and `Card_Parallax_Metal` share the same tangent
-// view-depth offset, but only the plain parallax shader applies the 1.6087
-// vertical aspect correction. That difference is easy to "clean up" by mistake.
+// bytecode. Card_Parallax's aspect correction is a compiled keyword variant:
+// SQUARE has no correction, while CARDWINDOW applies 1.6087.
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -12,11 +11,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
 
-function dump(shader) {
+function dump(shader, keyword = null) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-parallax-"));
   try {
     const prefix = shader.replace(/[^A-Za-z0-9_]/g, "_");
-    execFileSync("python", [
+    const dumpArgs = [
       "build/shaderdec/dump_shader.py",
       shader,
       prefix,
@@ -24,7 +23,9 @@ function dump(shader) {
       shaderRoot,
       "--out",
       tmp,
-    ], { cwd: ROOT, shell: true, stdio: ["ignore", "ignore", "ignore"] });
+    ];
+    if (keyword) dumpArgs.push("--keyword", keyword);
+    execFileSync("python", dumpArgs, { cwd: ROOT, shell: true, stdio: ["ignore", "ignore", "ignore"] });
     const vert = execFileSync("spirv-cross", [path.join(tmp, `${prefix}_vert.spv`), "--version", "300", "--es"], { encoding: "utf8" });
     const frag = execFileSync("spirv-cross", [path.join(tmp, `${prefix}_frag.spv`), "--version", "300", "--es"], { encoding: "utf8" });
     return { vert, frag };
@@ -50,9 +51,11 @@ function blockFrom(source, marker) {
 
 const issues = [];
 let parallax = { vert: "", frag: "" };
+let parallaxWindow = { vert: "", frag: "" };
 let metal = { vert: "", frag: "" };
 try {
-  parallax = dump("Card_Parallax");
+  parallax = dump("Card_Parallax", "_UVASPECTRATIO_SQUARE");
+  parallaxWindow = dump("Card_Parallax", "_UVASPECTRATIO_CARDWINDOW");
   metal = dump("Card_Parallax_Metal");
 } catch (err) {
   issues.push(`official parallax shader dump failed: ${err.message.split(/\r?\n/)[0]}`);
@@ -60,6 +63,7 @@ try {
 
 const baseSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/base.js"), "utf8");
 const urSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/ur.js"), "utf8");
+const exactDepthSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax.vert.glsl"), "utf8");
 const localDepth = blockFrom(baseSrc, 'defineMaterial("depthParallax"');
 const localMetal = blockFrom(urSrc, 'defineMaterial("metal"');
 
@@ -69,8 +73,12 @@ const checks = [
     msg: "official parallax shaders must use the 0.42 tangent-view denominator bias",
   },
   {
-    ok: /1\.608700037002563/.test(parallax.vert),
-    msg: "official Card_Parallax must apply the 1.608700037 vertical aspect correction",
+    ok: !/1\.608700037002563/.test(parallax.vert),
+    msg: "official Card_Parallax SQUARE variant must not apply vertical aspect correction",
+  },
+  {
+    ok: /1\.608700037002563/.test(parallaxWindow.vert),
+    msg: "official Card_Parallax CARDWINDOW variant must apply the 1.608700037 correction",
   },
   {
     ok: !/1\.608700037002563/.test(metal.vert),
@@ -87,6 +95,14 @@ const checks = [
   {
     ok: /tv\.z\s*\+\s*0\.41999998688697815/.test(localDepth),
     msg: "local depthParallax must keep the official 0.42 tangent-view denominator bias",
+  },
+  {
+    ok: /exactShaders\?\.Card_Parallax/.test(localDepth) && /_UVASPECTRATIO_SQUARE/.test(localDepth),
+    msg: "local depthParallax exact path must be gated to the selected SQUARE keyword variant",
+  },
+  {
+    ok: /tv\.z\s*\+\s*0\.41999998688697815/.test(exactDepthSrc) && !/1\.608700037/.test(exactDepthSrc),
+    msg: "local exact Card_Parallax vertex must match the official SQUARE aspect path",
   },
   {
     ok: /off\.y\s*\*=\s*uAspectY/.test(localDepth) && /1\.6087000370025635/.test(localDepth),

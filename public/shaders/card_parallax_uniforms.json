@@ -1,0 +1,13 @@
+{
+  "shader": "Card_Parallax",
+  "variant": "_UVASPECTRATIO_SQUARE",
+  "samplers": ["_13"],
+  "sampler_slots": ["_MainTex"],
+  "floats": {
+    "_FakeCameraHeight": "_FakeCameraHeight",
+    "_Height": "_Height",
+    "_HeightPower": "_HeightPower",
+    "_Scale": "_Scale",
+    "_UseUv": "_UseUv"
+  }
+}
