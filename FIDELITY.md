@@ -20,7 +20,7 @@ Every fidelity statement must name its dimension and scope:
 | Controlled visual parity | The rendered layer/card matches controlled official captures at fixed poses and times | Generalization to cards and states outside the capture corpus |
 
 Percentages are allowed only for coverage within a named dimension, for example “transpiled official
-programs cover 59 of 64 reference layers.” That number must not be renamed, averaged, or presented as
+programs cover 61 of 64 reference layers.” That number must not be renamed, averaged, or presented as
 “game fidelity.”
 
 ## Advancement cost
@@ -39,8 +39,8 @@ For the current 64-layer reference scope, the report produces:
 | Dimension | Current state | Advancement cost | Remaining scope |
 |---|---:|---|---:|
 | Layer dispatch | 64/64 | `maintenance` | 0 layers |
-| Transpiled official programs | 59/64 | `shader-reverse-engineering` | 5 layers / 4 shader families |
-| Promote partial guards from E1 to E2 | 5 E1 layers | `shader-reverse-engineering` | Same 5 layers / 4 families; not additive to the row above |
+| Transpiled official programs | 61/64 | `shader-reverse-engineering` | 3 layers / 3 shader families |
+| Promote partial guards from E1 to E2 | 3 E1 layers | `shader-reverse-engineering` | Same 3 layers / 3 families; not additive to the row above |
 | Any official source evidence | 64/64 | `maintenance` | 0 layers |
 | Renderer-pipeline parity | `not-proven` | `runtime-pipeline-research` | 11 shared stages affecting all 64 layers |
 | Visual parity | `not-evaluated` | `excluded-by-policy` | 0 automated work units |

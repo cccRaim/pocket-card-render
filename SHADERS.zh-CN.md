@@ -101,6 +101,8 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `npm run build:exact-ur-bg-hologram` 会重新生成只有一套 program 的
   `Card_Parallax_Hologram_UR_New`，并核对全部 6 个 compiled texture binding、两个 UBO layout，
   以及恒为零的第二 MRT 输出。
+- `npm run build:exact-ur-plate` 会重新生成 `Card_UR_Plate`，包括 8 个 compiled texture binding、
+  材质自身的 Cubemap 语义、两个 UBO layout，以及恒为零的第二 MRT 输出。
 
 ## 现实提醒(别手调)
 

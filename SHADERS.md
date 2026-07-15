@@ -109,6 +109,8 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `npm run build:exact-ur-bg-hologram` regenerates the single-program
   `Card_Parallax_Hologram_UR_New` shader and verifies all six compiled texture bindings, both UBO
   layouts, and its zero-valued secondary MRT output.
+- `npm run build:exact-ur-plate` regenerates `Card_UR_Plate`, including its eight compiled texture
+  bindings, material-local Cubemap semantics, both UBO layouts, and zero-valued secondary MRT output.
 
 ## Reality check (don't hand-tune)
 

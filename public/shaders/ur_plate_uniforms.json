@@ -1,0 +1,53 @@
+{
+  "shader": "Card_UR_Plate",
+  "generated_by": "build/build-exact-ur-plate.mjs",
+  "official_spirv_sha256": {
+    "vertex": "3f61767d51c8525ef8e6b1f184890c3a9af1083741d8e24a7ea79aae040bbda0",
+    "fragment": "a28632318e353e752a8f583b2bbc3b61597d4b834a3e6892da94ba2f7b5f551a"
+  },
+  "samplers": [
+    "_594",
+    "_555",
+    "_413",
+    "_483",
+    "_341",
+    "_393",
+    "_615",
+    "_219"
+  ],
+  "sampler_slots": [
+    "_MainTex",
+    "_CubeMap",
+    "_PhaseTex",
+    "_PhaseMaskTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_HologramMaskTex",
+    "_FakeSpecularMask"
+  ],
+  "compiled_texture_bindings": {
+    "_MainTex": 0,
+    "_CubeMap": 1,
+    "_PhaseTex": 2,
+    "_PhaseMaskTex": 3,
+    "_RampMaskTex": 4,
+    "_RampTex": 5,
+    "_HologramMaskTex": 6,
+    "_FakeSpecularMask": 7
+  },
+  "implicit_defaults": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_MainTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black",
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_603",
+    "secondary": "_658",
+    "secondary_value": "zero"
+  }
+}

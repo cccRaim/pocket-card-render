@@ -21,6 +21,52 @@ const flareVAT = (r, ctx) => ctx.layerTexDefaultRepeat(r, "_FlareVAT");
 function plateMaterial(r, ctx) {
   const f = r.floats || {};
   const tex = plateTex(r, ctx);
+  const exact = ctx.exactShaders?.Card_UR_Plate;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _594: { value: tex },
+        _555: { value: ctx.layerCubeDefault(r) },
+        _413: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _483: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
+        _341: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _393: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _615: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _219: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
+        _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
+        _Height: { value: f._Height ?? -1 },
+        _HeightPower: { value: f._HeightPower ?? 0 },
+        _Scale: { value: f._Scale ?? 1 },
+        _UseUv2: { value: Math.trunc(f._UseUv2 ?? 0) },
+        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
+        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
+        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
+        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
+        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
+        _Shininess: { value: f._Shininess ?? 32 },
+        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _RemoveMetalic: { value: f._RemoveMetalic ?? f._RemoveMetallic ?? 1 },
+        _FakeSpecularColor: { value: V3(r.colors?._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessColor: { value: V3(r.colors?._DarknessColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.straight = ctx.texStraight(mainTexName(r));
+    m.userData.exactShader = "Card_UR_Plate";
+    return m;
+  }
   const m = new THREE.ShaderMaterial({
     uniforms: {
       mainTex: { value: tex },

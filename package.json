@@ -20,6 +20,8 @@
     "audit:exact-opaque-ur-oklab": "node build/build-exact-opaque-ur-oklab.mjs --check",
     "build:exact-ur-bg-hologram": "node build/build-exact-ur-bg-hologram.mjs",
     "audit:exact-ur-bg-hologram": "node build/build-exact-ur-bg-hologram.mjs --check",
+    "build:exact-ur-plate": "node build/build-exact-ur-plate.mjs",
+    "audit:exact-ur-plate": "node build/build-exact-ur-plate.mjs --check",
     "report:evidence": "node build/report-renderer-evidence.mjs",
     "audit:official-equivalence": "node build/audit-official-equivalence.mjs",
     "audit:claim-contract": "node build/audit-render-claim-contract.mjs",
