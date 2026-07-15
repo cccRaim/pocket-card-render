@@ -31,6 +31,37 @@ const hasFakeSpec = (r, ctx) => {
 function holoMaterial(L, ctx, overOpacity = 0) {
   const f = L.floats || {};
   const rot = L.colors?._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = ctx.exactShaders?.Card_Parallax_Hologram_Tuning;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _256: { value: ctx.layerTexDefault(L, "_PhaseTex") },
+        _323: { value: ctx.layerTexDefault(L, "_RampMaskTex") },
+        _382: { value: ctx.layerTexDefault(L, "_RampTex") },
+        _397: { value: ctx.layerTexDefault(L, "_HologramMaskTex") },
+        _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
+        _Height: { value: f._Height ?? -1 },
+        _HeightPower: { value: f._HeightPower ?? 0 },
+        _Scale: { value: f._Scale ?? 1 },
+        _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
+        _UseMaskUv: { value: Math.trunc(f._UseMaskUv ?? 0) },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.exactShader = "Card_Parallax_Hologram_Tuning";
+    return m;
+  }
   const m = new THREE.ShaderMaterial({
     uniforms: {
       uOver: { value: overOpacity },
@@ -119,6 +150,45 @@ defineMaterial("holo", {
 function frameHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = r.shader === "Card_Hologram_Tuning" && ctx.exactShaders?.Card_Hologram_Tuning;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _13: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _488: { value: ctx.layerTexDefaultRepeat(r, "_PhaseTex") },
+        _386: { value: ctx.layerTexDefaultRepeat(r, "_RampMaskTex") },
+        _458: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _595: { value: ctx.layerTexDefault(r, "_HologramFrontMaskTex") },
+        _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
+        _UseMaskUv: { value: Math.trunc(f._UseMaskUv ?? 0) },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _RampUVOffset: { value: f._RampUVOffset ?? 0 },
+        _RampUVTiltOffset: { value: f._RampUVTiltOffset ?? 0 },
+        _RampScale: { value: f._RampScale ?? 1 },
+        _PhaseScale: { value: f._PhaseScale ?? 1 },
+        _RampRotate: { value: f._RampRotate ?? 0 },
+        _PhaseRotate: { value: f._PhaseRotate ?? 0 },
+        _AlphaBlend: { value: f._AlphaBlend ?? 0 },
+        _MaskPower: { value: f._MaskPower ?? 64 },
+        _CutOut: { value: f._CutOut ?? 0.009999999776482582 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+        _UseAlphaAsAlphaBlendMask: { value: Math.trunc(f._UseAlphaAsAlphaBlendMask ?? 0) },
+        _UseReflectionAlpha: { value: Math.trunc(f._UseReflectionAlpha ?? 1) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.exactShader = "Card_Hologram_Tuning";
+    return m;
+  }
   const specOn = hasFakeSpec(r, ctx);
   const rep = (slot) => ctx.layerTexDefaultRepeat(r, slot);
   const phaseMask = ctx.layerTexDefault(r, "_PhaseMaskTex") || ctx.layerTexDefault(r, "_PhaseTex") || ctx.layerTex(r, "_BaseTex") || ctx.layerTex(r, "_HologramMaskTex") || ctx.layerTex(r, "_LayerMaskTex");

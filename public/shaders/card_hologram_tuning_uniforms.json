@@ -1,0 +1,51 @@
+{
+  "shader": "Card_Hologram_Tuning",
+  "generated_by": "build/build-exact-basic-holograms.mjs",
+  "official_spirv_sha256": {
+    "vertex": "889e3e0ad89c44498eeeb66406ab63bea881d61cce1e2c82d7afe61783b952c3",
+    "fragment": "849da6480e0acf23a42c98ff315ce1c97b7e927f3a674d4cd5af2526299ffc2b"
+  },
+  "samplers": [
+    "_13",
+    "_488",
+    "_386",
+    "_458",
+    "_595"
+  ],
+  "sampler_slots": [
+    "_HologramMaskTex",
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_HologramFrontMaskTex"
+  ],
+  "floats": {
+    "_UseUv": "_UseUv",
+    "_UseMaskUv": "_UseMaskUv",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval",
+    "_RampUVOffset": "_RampUVOffset",
+    "_RampUVTiltOffset": "_RampUVTiltOffset",
+    "_RampScale": "_RampScale",
+    "_PhaseScale": "_PhaseScale",
+    "_RampRotate": "_RampRotate",
+    "_PhaseRotate": "_PhaseRotate",
+    "_AlphaBlend": "_AlphaBlend",
+    "_MaskPower": "_MaskPower",
+    "_CutOut": "_CutOut",
+    "_UseAlphaAsAlphaBlendMask": "_UseAlphaAsAlphaBlendMask",
+    "_UseReflectionAlpha": "_UseReflectionAlpha"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  },
+  "mrt": {
+    "primary": "_678",
+    "secondary": "_680",
+    "secondary_value": "zero"
+  }
+}

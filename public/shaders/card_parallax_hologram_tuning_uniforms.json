@@ -1,0 +1,42 @@
+{
+  "shader": "Card_Parallax_Hologram_Tuning",
+  "generated_by": "build/build-exact-basic-holograms.mjs",
+  "official_spirv_sha256": {
+    "vertex": "089d575ef8fef77e7a968bbf409a32b02d2d0644a1d834fde5d4b63b8e4e4abc",
+    "fragment": "6ec969b57b0ffe26c7560771865a148fd65e1a617b196152b25e75ffee5b8e3f"
+  },
+  "samplers": [
+    "_256",
+    "_323",
+    "_382",
+    "_397"
+  ],
+  "sampler_slots": [
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_HologramMaskTex"
+  ],
+  "floats": {
+    "_FakeCameraHeight": "_FakeCameraHeight",
+    "_Height": "_Height",
+    "_HeightPower": "_HeightPower",
+    "_Scale": "_Scale",
+    "_UseUv": "_UseUv",
+    "_UseMaskUv": "_UseMaskUv",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  },
+  "mrt": {
+    "primary": "_409",
+    "secondary": "_415",
+    "secondary_value": "zero"
+  }
+}

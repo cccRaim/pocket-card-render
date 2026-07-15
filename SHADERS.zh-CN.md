@@ -89,6 +89,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
   `npm run audit:exact-frame-holo-ur` 会逐字节核对仓库文件与重新生成的结果。
 - `npm run build:exact-transparent-hologram-tuning` 会重新生成 DynamicUI 全息程序，同时保留
   location 1 的 alpha-only mask 输出和 Unity 隐式灰色 Cubemap 默认值。
+- `npm run build:exact-basic-holograms` 会重新生成 `Card_Parallax_Hologram_Tuning` 和
+  `Card_Hologram_Tuning`，覆盖完整 UBO 布局、sampler 绑定、顶点属性和 MRT 输出；
+  `npm run audit:exact-basic-holograms` 会核对仓库内程序与官方 bundle 的重新生成结果。
 
 ## 现实提醒(别手调)
 

@@ -96,6 +96,9 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
   `npm run audit:exact-frame-holo-ur` verifies the checked-in files byte-for-byte against regeneration.
 - `npm run build:exact-transparent-hologram-tuning` regenerates the DynamicUI hologram program while
   preserving its alpha-only location-1 mask output and Unity's implicit gray Cubemap default.
+- `npm run build:exact-basic-holograms` regenerates `Card_Parallax_Hologram_Tuning` and
+  `Card_Hologram_Tuning`, including their complete UBO layouts, sampler bindings, vertex attributes,
+  and MRT outputs; `npm run audit:exact-basic-holograms` verifies the checked-in programs.
 
 ## Reality check (don't hand-tune)
 
