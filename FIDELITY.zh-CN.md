@@ -18,7 +18,7 @@
 | 渲染管线一致性 | texture transfer、精度、RT、MRT、blend、stencil、相机和后处理与官方运行时一致 | 没有官方对照图时就能证明卡面正确 |
 | 受控视觉一致性 | 固定姿态、固定时间下的 layer 或整卡与官方采集结果一致 | 对采集范围之外的卡和状态也成立 |
 
-百分比只能用于某个明确维度的覆盖率，例如“官方程序转译覆盖 64 个参考 layer 中的 61 个”。不能把
+百分比只能用于某个明确维度的覆盖率，例如“官方程序转译覆盖 64 个参考 layer 中的 64 个”。不能把
 这个数字改名、加权或宣传成“游戏还原度”。
 
 ## 推进成本
@@ -37,14 +37,18 @@
 | 维度 | 当前状态 | 推进成本 | 剩余范围 |
 |---|---:|---|---:|
 | Layer 分发 | 64/64 | `maintenance` | 0 layer |
-| 官方程序转译 | 61/64 | `shader-reverse-engineering` | 3 layer / 3 个 Shader family |
-| E1 局部约束推进到 E2 | 3 个 E1 layer | `shader-reverse-engineering` | 与上一行相同的 3 layer / 3 family，不能重复相加 |
+| 官方程序转译 | 64/64 | `maintenance` | 0 layer |
+| E1 局部约束推进到 E2 | 0 个 E1 layer | `maintenance` | 0 layer |
 | 任意官方源证据 | 64/64 | `maintenance` | 0 layer |
 | 渲染管线一致性 | `not-proven` | `runtime-pipeline-research` | 11 个共享阶段，影响全部 64 layer |
-| 视觉一致性 | `not-evaluated` | `excluded-by-policy` | 0 个自动工作单元 |
+| 视觉一致性 | `unmeasured` | `excluded-by-policy` | 0 个自动工作单元 |
 
 这些数字由当前加载的参考 scene 自动生成；新增 scene 或把某个 Shader 提升到 E2 后，`report:evidence`
 和 `audit:official-equivalence` 会自动更新成本。
+
+渲染管线这一行还会拆成 11 个机器可读阶段。每个阶段分别报告 `proven`、`partial` 或 `not-proven`、
+使用的官方证据、剩余子范围和相对推进成本。Shader 程序完整并不会自动证明外围 sampler、RT、相机、
+时间或后处理也与官方一致。
 
 ## Shader 证据等级
 
@@ -96,9 +100,22 @@ npm run report:evidence -- --json
 
 ```bash
 npm run audit:official-equivalence
+npm run audit:official-player-pipeline
+npm run audit:official-texture-samplers
+npm run audit:official-animation-timing
+npm run audit:official-postprocess
+npm run test:runtime
 node build/audit-official-equivalence.mjs --json
 ```
 
 命令会运行完整静态审计矩阵，并分别报告 layer 分发覆盖、官方程序转译覆盖、局部 bytecode 约束覆盖和推进成本。
-只要官方运行时证据还不完整，渲染管线就报告为 `not-proven`，视觉一致性固定报告为 `not-evaluated`。
+只要官方运行时证据还不完整，渲染管线就报告为 `not-proven`，视觉一致性固定报告为 `unmeasured`。
 命令通过只表示已声明的数据、源码和 bytecode 不变量成立，不代表最终画面存在一个可计算的还原度百分比。
+
+sampler、动画和后处理命令直接从官方序列化对象、ARM64 原生代码和 Shader bytecode 提取证据。
+`test:runtime` 在同一个浏览器进程内依次加载四张参考卡、推进确定性帧，并检查 console、网络和 mesh 数，
+不生成截图。
+
+`audit:official-player-pipeline` 会从官方 APKM 直接读取 `globalgamemanagers` 和 ARM64 `libil2cpp.so`
+（可用 `PCR_APKM` 指定路径）。当前它证明 Unity Gamma 工作流、HDR/质量设置和卡片 RT 构造参数；
+研究审计需要 Python 包 `UnityPy` 与 `capstone`，不会把派生 recipe 当作权威来源。

@@ -20,7 +20,7 @@ Every fidelity statement must name its dimension and scope:
 | Controlled visual parity | The rendered layer/card matches controlled official captures at fixed poses and times | Generalization to cards and states outside the capture corpus |
 
 Percentages are allowed only for coverage within a named dimension, for example “transpiled official
-programs cover 61 of 64 reference layers.” That number must not be renamed, averaged, or presented as
+programs cover 64 of 64 reference layers.” That number must not be renamed, averaged, or presented as
 “game fidelity.”
 
 ## Advancement cost
@@ -39,14 +39,19 @@ For the current 64-layer reference scope, the report produces:
 | Dimension | Current state | Advancement cost | Remaining scope |
 |---|---:|---|---:|
 | Layer dispatch | 64/64 | `maintenance` | 0 layers |
-| Transpiled official programs | 61/64 | `shader-reverse-engineering` | 3 layers / 3 shader families |
-| Promote partial guards from E1 to E2 | 3 E1 layers | `shader-reverse-engineering` | Same 3 layers / 3 families; not additive to the row above |
+| Transpiled official programs | 64/64 | `maintenance` | 0 layers |
+| Promote partial guards from E1 to E2 | 0 E1 layers | `maintenance` | 0 layers |
 | Any official source evidence | 64/64 | `maintenance` | 0 layers |
 | Renderer-pipeline parity | `not-proven` | `runtime-pipeline-research` | 11 shared stages affecting all 64 layers |
-| Visual parity | `not-evaluated` | `excluded-by-policy` | 0 automated work units |
+| Visual parity | `unmeasured` | `excluded-by-policy` | 0 automated work units |
 
 The counts are generated from the loaded reference scenes. Adding scenes or promoting a shader changes
 them automatically in `report:evidence` and `audit:official-equivalence`.
+
+The renderer-pipeline row is further split into 11 machine-readable stages. Each stage reports
+`proven`, `partial`, or `not-proven`, the official artifacts used as evidence, remaining subscopes, and
+a relative advancement cost. A complete official shader program does not promote its surrounding
+sampler, render-target, camera, timing, or postprocess stages.
 
 ## Shader evidence levels
 
@@ -105,11 +110,26 @@ backend, exposure, and display processing make them unstable evidence.
 
 ```bash
 npm run audit:official-equivalence
+npm run audit:official-player-pipeline
+npm run audit:official-texture-samplers
+npm run audit:official-animation-timing
+npm run audit:official-postprocess
+npm run test:runtime
 node build/audit-official-equivalence.mjs --json
 ```
 
 The command runs the complete static audit matrix and reports dispatch coverage, transpiled official
 program coverage, partial bytecode-guard coverage, and advancement cost as separate dimensions. It also reports renderer
 pipeline parity as `not-proven` while official runtime evidence is incomplete, and visual parity as
-`not-evaluated`. A passing command means the declared source/data/bytecode invariants hold; it does not
+`unmeasured`. A passing command means the declared source/data/bytecode invariants hold; it does not
 mean the final image has a numeric fidelity score.
+
+The sampler, animation, and postprocess commands extract their evidence from official serialized
+objects, native ARM64 code, and shader bytecode. `test:runtime` loads all four reference scenes in one
+browser process, advances deterministic frames, and checks console, network, and mesh counts without
+capturing screenshots.
+
+`audit:official-player-pipeline` reads `globalgamemanagers` and ARM64 `libil2cpp.so` directly from the
+official APKM (override its path with `PCR_APKM`). It currently proves the Unity Gamma workflow, HDR and
+quality state, and the card render-target constructor. This research audit needs Python packages
+`UnityPy` and `capstone`; derived recipes are not accepted as authority.

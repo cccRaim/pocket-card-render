@@ -3,6 +3,7 @@
 // (A self-contained example of "one rarity's materials in one file" — see CONTRIBUTING.md.)
 import * as THREE from "three";
 import { defineMaterial } from "../registry.js";
+import { createGlitterFlowState } from "../glitter-flow.js";
 import { SIMPLE_VS } from "../glsl.js";
 
 const mainTexName = (r) => r.textures?._MainTex?.name || r.textures?._BaseTex?.name;
@@ -657,7 +658,7 @@ function glitterMaterialExact(r, ctx) {
   const V4 = (x, y, z, w) => new THREE.Vector4(x, y, z, w);
   const _78 = Array.from({ length: 18 }, () => V4(0, 0, 0, 0));
   _78[13].set(f._FakeCameraHeight ?? 0, f._Height ?? -1, f._HeightPower ?? 0, f._Scale ?? 1);
-  _78[15].set(0, 0, 0, 0);   // undeclared flow-field rotation angles; official cbuffer leaves them at identity
+  _78[15].set(0, 0, 0, 0);   // populated from official FlowParams[1] before each rendered frame
   _78[16].set(f._FlowScale ?? 1.4, f._FakeCameraHeightB ?? 0, f._HeightB ?? -1, f._HeightPowerB ?? 0);
   _78[17].set(f._ScaleB ?? 1, f._FlowScaleB ?? 1.4, 0, 0);
   // fragment cbuffer (declaration order, anchored by _LightColor at byte @48 = _37[3]):
@@ -680,11 +681,10 @@ function glitterMaterialExact(r, ctx) {
     vertexShader: ctx.exactGlit.vert, fragmentShader: ctx.exactGlit.frag,
     transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
   });
-  // _78[15] (vertex byte @240) is read by the shader as the two flow-field rotation angles (sin/cos), but it
-  // is an UNDECLARED cbuffer slot (not a shader Property; _RotateSpeedA/B exist in the material's m_Floats but
-  // are NOT in this shader's Properties → vestigial). Undeclared ⇒ reads 0 in-game ⇒ identity rotation ⇒ NO
-  // field rotation. It stays at its initial (0,0,0,0); the twinkle is the fragment flow + pulse, not rotation.
-  ctx.exactGlitMats.push(m);   // per-frame: only _37[0] (flow time) is animated — see app.js loop
+  // Native GlitterFlowMaps writes two vectors through Material.SetVectorArray("_FlowParams"). SPIR-V maps
+  // them to fragment _37[0] (offsets/light phase) and vertex _78[15] (flow rotations).
+  m.userData.glitterFlow = createGlitterFlowState();
+  ctx.exactGlitMats.push(m);
   return m;
 }
 // hand port (used when the SPIRV-Cross shader is absent) — base_rgb × light.GREEN, two layers B-over-A,

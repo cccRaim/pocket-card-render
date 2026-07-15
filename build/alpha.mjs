@@ -1,12 +1,9 @@
-// Per-texture alpha-mode classifier (node port of build/detect_alpha.py) — so the DYNAMIC /scene path
-// produces the same `alphaMode` map the renderer needs (no Python post-step). The renderer picks blend
-// factors by mode: straight-alpha (colour stored at alpha=0, e.g. the illustration / card_bg_gra) blends
-// SrcAlpha/…; premultiplied (colour stored black at alpha=0) blends One/…. Getting this wrong makes
-// straight textures bleed/over-expose (the illustration blows out yellow).
+// Per-texture stored-pixel classifier (node port of build/detect_alpha.py). This is diagnostic metadata,
+// never render-state authority: official material/pass state and fragment output control blending.
 //
 //   opaque   : <2% of pixels have alpha < 250 (effectively no transparency)
 //   straight : ≥2% of pixels have max(rgb) > alpha+40 (impossible for premultiplied)
-//   premult  : has transparency but never rgb > alpha+40
+//   premult  : premultiplied candidate; has transparency but never rgb > alpha+40
 //
 // Reads the PNG's TRUE stored RGB (a browser <canvas> zeroes transparent pixels' RGB, so it can't classify).
 // Results are memoised to apks/output/tex_alpha_modes.json keyed by texture name (content is static), so only

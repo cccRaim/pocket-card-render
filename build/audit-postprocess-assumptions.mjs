@@ -29,8 +29,11 @@ if (!/renderer\.outputColorSpace\s*=\s*THREE\.LinearSRGBColorSpace/.test(app)) {
 if (!/const rtColorSpace\s*=\s*cardTargetColorSpace/.test(app)) {
   issues.push("public/app.js: card scene/bloom render targets must preserve raw shader output");
 }
-if (!/tex\.colorSpace\s*=\s*scene_data\.textureColorSpace\?\.\[name\]\s*===\s*1\s*\?\s*THREE\.SRGBColorSpace\s*:\s*THREE\.NoColorSpace/.test(app)) {
-  issues.push("public/app.js: scene textures must use exported textureColorSpace; manual UR/Oklab paths request raw clones explicitly");
+if (!/tex\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
+  issues.push("public/app.js: official Gamma workflow requires raw scene texture samples");
+}
+if (!/tex\.premultiplyAlpha\s*=\s*false/.test(app)) {
+  issues.push("public/app.js: texture upload must explicitly preserve unpremultiplied stored RGB");
 }
 if (!/bgRT\.texture\.colorSpace\s*=\s*cardTargetColorSpace/.test(app)) {
   issues.push("public/app.js: UR background render target must preserve raw shader output before it is sampled back");
@@ -41,8 +44,11 @@ if (!/window\.__post\s*=\s*makeBloomPass\(hasOfficialEmissive\)/.test(app)) {
 if (!/bgQuad\s*=\s*new THREE\.Mesh[\s\S]+#include <colorspace_fragment>/.test(app)) {
   issues.push("public/app.js: UR background quad must pass through colorspace_fragment when sampling bgRT");
 }
-if (!/pcrLinearToSrgb\(base\.rgb\s*\+\s*glow\)/.test(compositeBlock)) {
-  issues.push("public/app.js: postprocess composite must perform the single final display encode after raw RT compositing");
+if (!/gl_FragColor\s*=\s*vec4\(base\.rgb\s*\+\s*glow,\s*base\.a\)/.test(compositeBlock)) {
+  issues.push("public/app.js: Gamma-workflow postprocess must composite raw scene and glow values directly");
+}
+if (/pcrLinearToSrgb|linearToSrgb/i.test(compositeBlock)) {
+  issues.push("public/app.js: Gamma-workflow composite must not add a display transfer");
 }
 if (/#include <colorspace_fragment>/.test(compositeBlock)) {
   issues.push("public/app.js: postprocess composite must not add a second colorspace_fragment encode");

@@ -15,6 +15,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { SHADER, isBackgroundLayer } from "./render/rarities.js";
 import { getMaterial } from "./render/registry.js";
 import { makeRenderContext, setBlend, applyDepthState, applyCullState, applyStencilState, stencilWriter, applyClip, REGION } from "./render/context.js";
+import { updateGlitterFlow } from "./render/glitter-flow.js";
 import "./render/materials/index.js";   // registers every material strategy (side effect)
 
 const errEl = document.getElementById("err");
@@ -78,7 +79,33 @@ const isFoilSprite = (e) => typeof e.sprite === "string" && e.sprite.startsWith(
 // reflection vector — NOT a flat 2D matcap (which plastered the env photo on = the "mirror" artifact).
 // L_001_ENV ships as a 128×768 VERTICAL STRIP = 6 stacked 128×128 cube faces (+X,-X,+Y,-Y,+Z,-Z, the
 // three.js CubeTexture order). Slice it into a CubeTexture so the reflection moves with the surface.
-function loadEnvCube(url) {
+const WRAP_MODE = {
+  0: THREE.RepeatWrapping,
+  1: THREE.ClampToEdgeWrapping,
+  2: THREE.MirroredRepeatWrapping,
+};
+
+function applyOfficialSampler(tex, state) {
+  const filterMode = state?.filterMode ?? 1;
+  const mipCount = state?.mipCount ?? 1;
+  const point = filterMode === 0;
+  tex.magFilter = point ? THREE.NearestFilter : THREE.LinearFilter;
+  if (mipCount > 1) {
+    tex.generateMipmaps = true;
+    tex.minFilter = point
+      ? THREE.NearestMipmapNearestFilter
+      : filterMode === 2 ? THREE.LinearMipmapLinearFilter : THREE.LinearMipmapNearestFilter;
+  } else {
+    tex.generateMipmaps = false;
+    tex.minFilter = point ? THREE.NearestFilter : THREE.LinearFilter;
+  }
+  tex.wrapS = WRAP_MODE[state?.wrapU] || THREE.ClampToEdgeWrapping;
+  tex.wrapT = WRAP_MODE[state?.wrapV] || THREE.ClampToEdgeWrapping;
+  tex.anisotropy = Math.max(1, state?.anisotropy ?? 1);
+  tex.userData.officialSampler = state || null;
+}
+
+function loadEnvCube(url, samplerState) {
   return new Promise((res) => {
     const img = new Image(); img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -90,7 +117,9 @@ function loadEnvCube(url) {
         faces.push(c);
       }
       const cube = new THREE.CubeTexture(faces);
-      cube.colorSpace = THREE.NoColorSpace; cube.needsUpdate = true;
+      cube.colorSpace = THREE.NoColorSpace;
+      applyOfficialSampler(cube, samplerState);
+      cube.needsUpdate = true;
       res(cube);
     };
     img.onerror = () => { console.warn("env cube fail", url); res(null); };
@@ -324,7 +353,7 @@ function buildDynamicUITexture(cardUI, face) {
       faceEls.filter((e) => e.kind === "icon").forEach((e) => drawSprite({ ...e, fit: e.fit || "contain" }, imap.get(e.url)));
       faceEls.filter((e) => e.kind === "text").forEach((e) => drawText(e, imap));
       faceEls.filter((e) => e.kind === "hp").forEach((e) => drawHP(e));
-      const mk = (canvas) => { const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.NoColorSpace; t.flipY = window.__uiflipy ?? false; t.anisotropy = 4; return t; };
+      const mk = (canvas) => { const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.NoColorSpace; t.flipY = window.__uiflipy ?? false; t.anisotropy = 1; return t; };
       return { ui: mk(cv), holo: mk(makeHoloDynamicCanvas(cv)), foil: mk(foilCv) };
     });
   });
@@ -373,6 +402,10 @@ async function main() {
   window.__frameInterval = Number.isFinite(frameCap) && frameCap > 0 ? 1000 / frameCap : 0;
   if (qp.has("nohud")) { window.__nohud = true; if (errEl) errEl.style.display = "none"; }
   const scene_data = await fetch(sceneSrc).then((r) => r.json());
+  const officialSamplerMap = await fetch("texture-samplers.json")
+    .then((r) => r.ok ? r.json() : null)
+    .then((data) => data?.textures || {})
+    .catch(() => ({}));
   const hasOfficialEmissive = !qp.has("nobloom") && Object.values(scene_data.materials || {}).some((m) => {
     const p = m.floats?._EmissivePattern ?? 0;
     const e = m.colors?._EmissiveColor;
@@ -426,7 +459,7 @@ async function main() {
   const foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
   // real environment cubemap for the holo/foil reflections (samplerCube, not a 2D matcap)
   const envCubeUrl = (Object.values(scene_data.materials).find((m) => m.textures && m.textures._CubeMap) || {}).textures?._CubeMap?.url;
-  const envCubeTex = envCubeUrl ? await loadEnvCube(envCubeUrl) : null;
+  const envCubeTex = envCubeUrl ? await loadEnvCube(envCubeUrl, officialSamplerMap[envCubeUrl]) : null;
 
   // EXACT glitter: the REAL game vertex+fragment bytecode transpiled by SPIRV-Cross (tools/render/build_exact_
   // glitter.py), run verbatim as a three.js RawShaderMaterial. Loaded once; null if absent → falls back to the hand
@@ -470,15 +503,15 @@ async function main() {
     "Frame-2Layer-UR": { vert: "shaders/frame_2layer_ur.vert.glsl", frag: "shaders/frame_2layer_ur.frag.glsl" },
     "Transparent-UR-New": { vert: "shaders/transparent_ur_new.vert.glsl", frag: "shaders/transparent_ur_new.frag.glsl" },
   });
-  const exactGlitMats = [];   // RawShaderMaterials needing per-frame time/rotation
+  const exactGlitMats = [];   // RawShaderMaterials driven by the native GlitterFlowMaps state machine
 
   const canvas = document.getElementById("c");
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, stencil: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, stencil: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(innerWidth, innerHeight);
-  // The decompiled card shaders do their own color-domain work (UR/Oklab paths explicitly call
-  // srgbToLinear/linearToSrgb around Oklab math), so texture samples must arrive as the same raw values the
-  // shader bytecode expects. Keep the card-sheet RT/blit path raw as well; display conversion is shader-owned.
+  // The official Android player uses Unity's Gamma color-space workflow. In that workflow texture samples,
+  // render targets, and the display framebuffer stay in their stored gamma domain without automatic sRGB
+  // decode/encode. The decompiled programs therefore receive and emit raw values.
   const cardTargetColorSpace = THREE.NoColorSpace;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor(0x14161c, 1);
@@ -491,7 +524,7 @@ async function main() {
     const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
     const w = Math.max(1, ds.x || innerWidth), h = Math.max(1, ds.y || innerHeight);
     const bw = Math.max(1, Math.floor(w / 2)), bh = Math.max(1, Math.floor(h / 2));
-    const sceneRT = new THREE.WebGLRenderTarget(w, h, { stencilBuffer: true, samples: 4 });
+    const sceneRT = new THREE.WebGLRenderTarget(w, h, { stencilBuffer: true });
     const emissiveRT = new THREE.WebGLRenderTarget(bw, bh, { stencilBuffer: true });
     const bloomA = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
     const bloomB = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
@@ -522,16 +555,10 @@ async function main() {
       vertexShader: vs,
       fragmentShader: `
         uniform sampler2D rt, bloom; uniform float uBloom; varying vec2 vUv;
-        vec3 pcrLinearToSrgb(vec3 c) {
-          c = max(c, vec3(0.0));
-          vec3 lo = c * 12.9200000763;
-          vec3 hi = pow(c, vec3(0.4166666567)) * 1.0549999475 - 0.055;
-          return mix(lo, hi, step(vec3(0.0031308001), c));
-        }
         void main() {
           vec4 base = texture2D(rt, vUv);
           vec3 glow = texture2D(bloom, vUv).rgb * uBloom;
-          gl_FragColor = vec4(pcrLinearToSrgb(base.rgb + glow), base.a);
+          gl_FragColor = vec4(base.rgb + glow, base.a);
         }`,
       depthTest: false, depthWrite: false, toneMapped: false,
     });
@@ -546,10 +573,8 @@ async function main() {
     return { sceneRT, emissiveRT, bloomA, bloomB, postScene, postCamera, quad, blur, composite, resize, hasBloom };
   }
 
-  // ── texture preload with straight/premultiplied detection ──
-  // We never rely on GPU premultiply (flaky). Instead we detect each texture's alpha mode and
-  // pick blend factors: straight-alpha (transparent stored bright, e.g. L_AM) -> SrcAlpha/…,
-  // already-premultiplied (transparent stored black, e.g. L_ILL) -> One/…. Same over result.
+  // Texture alpha classification is retained as source diagnostics only. Official pass/material state
+  // controls blending; an input texture's stored RGB cannot rewrite the shader output convention.
   // alpha mode comes from the build (build/detect_alpha.py with PIL — reliable, unlike canvas).
   const alphaMode = scene_data.alphaMode || {};
   const texInfo = new Map();                 // name -> { tex, straight }
@@ -560,9 +585,13 @@ async function main() {
       const img = new Image(); img.crossOrigin = "anonymous";
       img.onload = () => {
         const tex = new THREE.Texture(img);
-        tex.colorSpace = scene_data.textureColorSpace?.[name] === 1 ? THREE.SRGBColorSpace : THREE.NoColorSpace;
-        tex.flipY = false; tex.anisotropy = 4;
-        tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping; tex.needsUpdate = true;
+        // m_ActiveColorSpace=Gamma makes Unity ignore per-texture sRGB conversion at runtime.
+        // Keep textureColorSpace in the scene as source metadata, but upload every sample as raw.
+        tex.colorSpace = THREE.NoColorSpace;
+        tex.flipY = false;
+        tex.premultiplyAlpha = false;
+        applyOfficialSampler(tex, officialSamplerMap[url]);
+        tex.needsUpdate = true;
         texInfo.set(name, { tex, straight: alphaMode[name] === "straight" });
         tick(); res();
       };
@@ -748,7 +777,7 @@ async function main() {
     let bgRT = null, bgQuad = null;
     if (bgPass) {
       const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
-      bgRT = new THREE.WebGLRenderTarget(ds.x || 1024, ds.y || 1434, { stencilBuffer: true, samples: 4 });
+      bgRT = new THREE.WebGLRenderTarget(ds.x || 1024, ds.y || 1434, { stencilBuffer: true });
       bgRT.texture.colorSpace = cardTargetColorSpace;
       bgQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
         uniforms: { rt: { value: bgRT.texture } },
@@ -887,8 +916,11 @@ async function main() {
     my = ((e.clientY - r.top) / r.height) * 2 - 1;
   });
   const targetQ = new THREE.Quaternion(), euler = new THREE.Euler();
+  const cardForward = new THREE.Vector3();
   const HM_PV = new THREE.Matrix4(), HM_R = new THREE.Matrix4();
   let lastRender = -Infinity;
+  let previousAnimationTime = null;
+  let gameTime = 0;
   function renderFrame(t) {
     let rx = my * MAX, ry = mx * MAX;
     if (window.__preview) { rx = 0; ry = 0; }          // PREVIEW mode: flat, no tilt (debug)
@@ -898,13 +930,20 @@ async function main() {
     // Depth diorama: cancel the CENTRE's lateral swing (a point at depth z0 swings ≈ z0·tilt under the
     // rotation) so the diorama stays on the card; the per-layer parallax (different z) is preserved.
     // cardGroup.scale.x=-1 flips X. `?dcomp=` tunes the strength (0=off, default 1; negative to flip).
-    for (const am of animMats) am.uniforms.uTime.value = (t || 0) * 0.001;
+    const now = Number.isFinite(t) ? t : 0;
+    const deltaTime = previousAnimationTime == null ? 0 : Math.max(0, (now - previousAnimationTime) * 0.001);
+    previousAnimationTime = now;
+    gameTime += deltaTime;
+    for (const am of animMats) am.uniforms.uTime.value = gameTime;
+    cardForward.set(0, 0, 1);
+    if (window.__tilt) cardForward.applyQuaternion(window.__tilt.quaternion);
     for (const em of exactGlitMats) {
-      const s = (t || 0) * 0.001;                        // elapsed seconds
-      // ONLY the flow time animates (_37[0]); the flow-map scroll + the _37[4] pulse window = the twinkle.
-      // _78[15] (the flow-field rotation angle) is left at 0 — it is an undeclared cbuffer slot that reads 0
-      // in-game (identity rotation = no spin). Animating it is what produced the bogus rotation.
-      em.uniforms._37.value[0].set(s / 20, s, s * 2, s * 3);
+      const flow = updateGlitterFlow(em.userData.glitterFlow, {
+        forward: [cardForward.x, cardForward.y, cardForward.z],
+        deltaTime,
+      });
+      em.uniforms._37.value[0].set(...flow[0]);
+      em.uniforms._78.value[15].set(...flow[1]);
     }
     function renderCard(target) {
       const bg = window.__bg;   // set in the FBX callback for UR cards (gold-foil background RT pass); else undefined
@@ -1001,6 +1040,10 @@ async function main() {
   }
   if (shotMode) renderFrame(performance.now());
   else requestAnimationFrame(loop);
+
+  addEventListener("visibilitychange", () => {
+    if (document.hidden) previousAnimationTime = null;
+  });
 
   addEventListener("resize", () => {
     renderer.setSize(innerWidth, innerHeight);

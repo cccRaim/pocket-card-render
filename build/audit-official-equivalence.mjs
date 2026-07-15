@@ -63,6 +63,7 @@ if (jsonMode) {
   console.log(`partial byte guards:  ${summary.partialByteGuarded}/${summary.total} (${pct(summary.partialByteGuarded, summary.total)})`);
   console.log(`official evidence:    ${summary.anyOfficialEvidence}/${summary.total} (${pct(summary.anyOfficialEvidence, summary.total)})`);
   console.log(`pipeline parity:      ${result.rendererPipelineParity.status}`);
+  console.log(`pipeline stages:      ${result.rendererPipelineParity.counts.proven} proven / ${result.rendererPipelineParity.counts.partial} partial / ${result.rendererPipelineParity.counts["not-proven"]} not-proven`);
   console.log(`visual parity:        ${result.visualParity.status}`);
   console.log("game fidelity score:  NOT CLAIMABLE");
   console.log("");
@@ -73,6 +74,9 @@ if (jsonMode) {
   console.log(`source evidence:      ${result.officialEvidenceAudit.anyOfficialSourceEvidence.advancementCost.class} · ${result.officialEvidenceAudit.anyOfficialSourceEvidence.advancementCost.remainingLayers} layers`);
   console.log(`pipeline parity:      ${result.rendererPipelineParity.advancementCost.class} · ${result.rendererPipelineParity.advancementCost.remainingSharedStages.length} shared stages / ${result.rendererPipelineParity.advancementCost.affectedVisibleLayers} affected layers`);
   console.log(`visual parity:        ${result.visualParity.advancementCost.class}`);
+  for (const stage of result.rendererPipelineParity.stages) {
+    console.log(`  ${stage.id.padEnd(24)} ${stage.status.padEnd(11)} cost=${stage.advancementCost.relative} remaining=${stage.advancementCost.remainingSubscopes}/${stage.totalSubscopes}`);
+  }
   if (staticStatus === "fail") {
     console.log("");
     console.log(result.officialEvidenceAudit.output);

@@ -7,6 +7,8 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { readOfficialPlayerPipeline } from "./official-player-pipeline.mjs";
+import { readOfficialPostprocess } from "./official-postprocess.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
@@ -82,6 +84,190 @@ const PIPELINE_PARITY_STAGES = [
   "bloom-tone-mapping",
   "display-transfer",
 ];
+
+const PIPELINE_STAGE_RESEARCH = {
+  "texture-color-space": ["official-player-config-and-runtime-wiring", "low"],
+  "alpha-convention": ["asset-import-and-blend-research", "high"],
+  "sampler-state": ["asset-sampler-state-extraction", "high"],
+  "render-target-formats": ["il2cpp-render-target-disassembly", "medium"],
+  "mrt-routing": ["multi-attachment-pass-reconstruction", "high"],
+  "blend-stencil-depth": ["runtime-gl-state-verification", "medium"],
+  "shader-precision": ["gpu-precision-contract-verification", "medium"],
+  "camera-transforms": ["il2cpp-camera-transform-disassembly", "medium"],
+  "animation-timing": ["il2cpp-animation-clock-disassembly", "high"],
+  "bloom-tone-mapping": ["official-postprocess-pass-reconstruction", "very-high"],
+  "display-transfer": ["official-player-config-and-runtime-wiring", "low"],
+};
+
+function officialPlayerEvidence() {
+  try {
+    return { value: readOfficialPlayerPipeline(), error: null };
+  } catch (error) {
+    return { value: null, error: String(error?.message || error) };
+  }
+}
+
+function officialPostprocessEvidence() {
+  try {
+    return { value: readOfficialPostprocess(), error: null };
+  } catch (error) {
+    return { value: null, error: String(error?.message || error) };
+  }
+}
+
+export function buildPipelineParityStages(rows = collectEvidenceRows()) {
+  const total = rows.length;
+  const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
+  const context = fs.readFileSync(path.join(ROOT, "public", "render", "context.js"), "utf8");
+  const officialResult = officialPlayerEvidence();
+  const official = officialResult.value;
+  const postprocessResult = officialPostprocessEvidence();
+  const postprocess = postprocessResult.value;
+  const gamma = official?.playerSettings?.activeColorSpaceValue === 0;
+  const rawTextures = /tex\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(app)
+    && !/tex\.colorSpace\s*=\s*scene_data\.textureColorSpace/.test(app);
+  const rawDisplay = /renderer\.outputColorSpace\s*=\s*THREE\.LinearSRGBColorSpace/.test(app)
+    && /gl_FragColor\s*=\s*vec4\(base\.rgb\s*\+\s*glow,\s*base\.a\)/.test(app)
+    && !/pcrLinearToSrgb/.test(app);
+  const cardRT = official?.asset3DRenderer?.createRenderTexture;
+  const cardRTMatched = cardRT?.renderTextureFormat === "ARGB32"
+    && cardRT?.depthBits === 24
+    && cardRT?.antiAliasing === 1
+    && /antialias:\s*false/.test(app)
+    && !/samples:\s*[1-9]/.test(app);
+  const samplerMapPath = path.join(ROOT, "public", "texture-samplers.json");
+  const samplerMap = fs.existsSync(samplerMapPath)
+    ? JSON.parse(fs.readFileSync(samplerMapPath, "utf8"))
+    : null;
+  const samplerRuntime = samplerMap?.schemaVersion === 1
+    && Object.keys(samplerMap.textures || {}).length > 0
+    && /applyOfficialSampler\(tex, officialSamplerMap\[url\]\)/.test(app)
+    && !/anisotropy\s*=\s*4/.test(app);
+  const officialBlendRuntime = !/if\s*\(straight\s*&&\s*sf\s*===\s*1\)/.test(context)
+    && /else if \(mode === "over"\) \[src, dst\] = \[5, 10\]/.test(context)
+    && /tex\.premultiplyAlpha\s*=\s*false/.test(app);
+  const officialMrt = postprocess?.native?.mrt;
+  const officialMrtKnown = officialMrt?.colorAttachmentCount === 2
+    && officialMrt?.colorFormat === "ARGB32"
+    && officialMrt?.depthBufferBits === 24
+    && officialMrt?.opaqueAndTransparentBindMrt === true;
+  const officialBloomKnown = postprocess?.bloomShader?.moduleCount === 12
+    && postprocess?.native?.bloomExecuteSequence?.map((item) => item.pass).join(",") === "0,1,2,3,3,4,5";
+  const animationRuntime = /updateGlitterFlow\(em\.userData\.glitterFlow/.test(app)
+    && /gameTime\s*\+=\s*deltaTime/.test(app)
+    && fs.existsSync(path.join(ROOT, "public", "render", "glitter-flow.js"));
+
+  const definitions = {
+    "texture-color-space": {
+      status: gamma && rawTextures ? "partial" : "not-proven",
+      coveredSubscopes: gamma && rawTextures ? 2 : 0,
+      totalSubscopes: 3,
+      evidence: [
+        "official APKM globalgamemanagers PlayerSettings.m_ActiveColorSpace",
+        "public/app.js raw texture upload",
+      ],
+      remaining: gamma && rawTextures
+        ? ["browser GPU internal texture-format conversion"]
+        : ["official color-space value and browser sampler wiring", "browser GPU internal texture-format conversion"],
+    },
+    "alpha-convention": {
+      status: "partial",
+      coveredSubscopes: officialBlendRuntime ? 2 : 1,
+      totalSubscopes: 4,
+      evidence: ["official pass blend factors", "runtime preserves factors and requests unpremultiplied upload"],
+      remaining: ["official upload hidden-RGB behavior", "MRT attachment alpha semantics"],
+    },
+    "sampler-state": {
+      status: samplerRuntime ? "partial" : "not-proven",
+      coveredSubscopes: samplerRuntime ? 2 : 0,
+      totalSubscopes: 3,
+      evidence: samplerRuntime ? ["official Texture2D/Cubemap serialized sampler fields", "runtime per-texture filter/wrap/aniso/mip wiring"] : [],
+      remaining: samplerRuntime ? ["official stored mip-level pixels and device descriptor mapping"] : ["filter mode", "wrap modes", "mip and anisotropy state"],
+    },
+    "render-target-formats": {
+      status: cardRTMatched ? "partial" : "not-proven",
+      coveredSubscopes: cardRTMatched ? (officialMrtKnown ? 2 : 1) : 0,
+      totalSubscopes: 4,
+      evidence: cardRTMatched ? ["official Asset3DRenderer.CreateRenderTexture ARM64 body", "official RendererData.GetTemporary MRT allocation"] : [],
+      remaining: ["browser simultaneous MRT allocation", "bloom intermediate physical formats"],
+    },
+    "mrt-routing": {
+      status: "partial",
+      coveredSubscopes: officialMrtKnown ? 2 : 1,
+      totalSubscopes: 4,
+      evidence: ["official SPIR-V location 0/1 outputs", "official opaque/transparent dual-attachment binding"],
+      remaining: ["browser simultaneous attachment writes", "per-attachment blend and alpha routing"],
+    },
+    "blend-stencil-depth": {
+      status: "partial",
+      coveredSubscopes: 2,
+      totalSubscopes: 3,
+      evidence: ["official ShaderLab pass state", "audit:render-state source mapping"],
+      remaining: ["captured WebGL draw-state verification"],
+    },
+    "shader-precision": {
+      status: "partial",
+      coveredSubscopes: 1,
+      totalSubscopes: 2,
+      evidence: ["SPIRV-Cross precision qualifiers preserved in exact programs"],
+      remaining: ["target-GPU precision behavior"],
+    },
+    "camera-transforms": {
+      status: "partial",
+      coveredSubscopes: 1,
+      totalSubscopes: 3,
+      evidence: ["official IL2CPP constants CameraDistance=1.911506 and Fov=35"],
+      remaining: ["UpdateCameraSettings method", "root/flip/gyro transform order"],
+    },
+    "animation-timing": {
+      status: animationRuntime ? "partial" : "not-proven",
+      coveredSubscopes: animationRuntime ? 2 : 0,
+      totalSubscopes: 4,
+      evidence: animationRuntime ? ["official GlitterFlowMaps ARM64 methods and prefab fields", "SPIR-V FlowParams binding and browser state-machine wiring"] : [],
+      remaining: ["pointer/gyro transform.forward mapping", "global pause/timeScale and remaining shader clocks"],
+    },
+    "bloom-tone-mapping": {
+      status: officialBloomKnown ? "partial" : "not-proven",
+      coveredSubscopes: officialBloomKnown ? 2 : 1,
+      totalSubscopes: 5,
+      evidence: ["official HDR display/tier disabled", ...(officialBloomKnown ? ["official Bloom pass graph and SPIR-V math"] : [])],
+      remaining: ["material MRT1 formulas", "Bloom volume/sheet/final blend", "browser pass-graph implementation and tone mapping outside Bloom"],
+    },
+    "display-transfer": {
+      status: gamma && rawDisplay ? "partial" : "not-proven",
+      coveredSubscopes: gamma && rawDisplay ? 2 : 0,
+      totalSubscopes: 3,
+      evidence: [
+        "official APKM globalgamemanagers PlayerSettings.m_ActiveColorSpace",
+        "public/app.js raw final composite",
+      ],
+      remaining: gamma && rawDisplay
+        ? ["browser compositor and OS display color management"]
+        : ["official display transfer and browser output wiring", "browser compositor and OS display color management"],
+    },
+  };
+
+  return PIPELINE_PARITY_STAGES.map((id) => {
+    const [workClass, relativeCost] = PIPELINE_STAGE_RESEARCH[id];
+    const stage = definitions[id];
+    return {
+      id,
+      ...stage,
+      affectedVisibleLayers: total,
+      advancementCost: {
+        class: stage.status === "proven" ? "maintenance" : workClass,
+        relative: stage.status === "proven" ? "low" : relativeCost,
+        remainingSubscopes: stage.totalSubscopes - stage.coveredSubscopes,
+      },
+      sourceError: [
+        official ? null : officialResult.error,
+        (["render-target-formats", "mrt-routing", "bloom-tone-mapping"].includes(id) && !postprocess)
+          ? postprocessResult.error
+          : null,
+      ].filter(Boolean).join("; ") || null,
+    };
+  });
+}
 
 export function sceneId(sceneName) {
   return sceneName.replace(/^scene\.|\.json$/g, "");
@@ -175,7 +361,7 @@ function shaderFamilies(rows, predicate) {
   return [...new Set(rows.filter(predicate).map((row) => row.shader))].sort();
 }
 
-export function buildAdvancementCosts(rows = collectEvidenceRows()) {
+export function buildAdvancementCosts(rows = collectEvidenceRows(), pipelineStages = buildPipelineParityStages(rows)) {
   const summary = summarizeEvidenceRows(rows);
   const undispatched = rows.filter((row) => !row.dispatched);
   const notTranspiled = rows.filter((row) => !row.transpiledProgram);
@@ -214,9 +400,10 @@ export function buildAdvancementCosts(rows = collectEvidenceRows()) {
       remainingShaderFamilies: shaderFamilies(withoutOfficialEvidence, () => true),
     },
     rendererPipelineParity: {
-      class: "runtime-pipeline-research",
-      remainingSharedStages: PIPELINE_PARITY_STAGES,
+      class: pipelineStages.every((stage) => stage.status === "proven") ? "maintenance" : "runtime-pipeline-research",
+      remainingSharedStages: pipelineStages.filter((stage) => stage.status !== "proven").map((stage) => stage.id),
       affectedVisibleLayers: summary.total,
+      stages: pipelineStages,
     },
     visualParity: {
       class: "excluded-by-policy",
@@ -242,9 +429,14 @@ export function buildEvidenceReport(rows = collectEvidenceRows()) {
     anyOfficialEvidence,
   } = summarizeEvidenceRows(rows);
 
-  const advancementCost = buildAdvancementCosts(rows);
+  const pipelineStages = buildPipelineParityStages(rows);
+  const advancementCost = buildAdvancementCosts(rows, pipelineStages);
+  const pipelineCounts = Object.fromEntries(["proven", "partial", "not-proven"].map((status) => [
+    status,
+    pipelineStages.filter((stage) => stage.status === status).length,
+  ]));
   return {
-    definitionVersion: 2,
+    definitionVersion: 3,
     scope: {
       referenceScenes: sceneNames,
       visibleLayers: total,
@@ -256,8 +448,10 @@ export function buildEvidenceReport(rows = collectEvidenceRows()) {
       anyOfficialSourceEvidence: { layers: anyOfficialEvidence, total, advancementCost: advancementCost.anyOfficialSourceEvidence },
     },
     rendererPipelineParity: {
-      status: "not-proven",
-      reason: "Repository audits protect current assumptions but do not prove equivalence to the official runtime color, MRT, blend, precision, and postprocess pipeline.",
+      status: pipelineCounts.proven === pipelineStages.length ? "proven" : "not-proven",
+      reason: "Each shared stage is tracked separately; program equivalence cannot substitute for unresolved runtime pipeline stages.",
+      counts: pipelineCounts,
+      stages: pipelineStages,
       advancementCost: advancementCost.rendererPipelineParity,
     },
     controlledVisualParity: {
@@ -318,6 +512,11 @@ export function printReport(rows = collectEvidenceRows()) {
   console.log(`source evidence:      ${report.implementationEvidence.anyOfficialSourceEvidence.advancementCost.class} · ${report.implementationEvidence.anyOfficialSourceEvidence.advancementCost.remainingLayers} layers`);
   console.log(`pipeline parity:      ${report.rendererPipelineParity.advancementCost.class} · ${report.rendererPipelineParity.advancementCost.remainingSharedStages.length} shared stages / ${report.rendererPipelineParity.advancementCost.affectedVisibleLayers} affected layers`);
   console.log(`visual parity:        ${report.controlledVisualParity.advancementCost.class}`);
+  console.log("");
+  console.log("pipeline stages (status | relative cost | remaining subscopes)");
+  for (const stage of report.rendererPipelineParity.stages) {
+    console.log(`${stage.id.padEnd(24)} ${stage.status.padEnd(11)} | ${stage.advancementCost.relative.padEnd(9)} | ${stage.advancementCost.remainingSubscopes}/${stage.totalSubscopes}`);
+  }
   console.log("");
 
   const grouped = new Map();

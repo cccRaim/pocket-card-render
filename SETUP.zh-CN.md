@@ -16,13 +16,18 @@
 | **Node.js** | **18 LTS 或更新**(实测 20.19) | 运行渲染器的静态服务器 + 构建脚本 |
 | npm | 随 Node 自带 | — |
 | **Python** | **3.10 – 3.12**(实测 3.11) | 仅 recipe 步骤需要(路径 B) |
-| **UnityPy** | 最新(`pip install UnityPy`) | 读取解密后的 Unity bundle |
+| **UnityPy** | 最新(`pip install UnityPy`) | 读取 Unity bundle 和官方 PlayerSettings |
+| **capstone** | 最新(`pip install capstone`) | 为管线审计解码官方 ARM64 渲染方法 |
+| **lz4** | 最新(`pip install lz4`) | 解压官方序列化 Bloom Shader 数据块 |
 | **AssetRipper** | 最新稳定版 GUI | 导出合成几何 + 贴图(路径 B) |
 | .NET | 仅当你的 AssetRipper 是“依赖框架”版 → **.NET 8 运行时** | 多数 AssetRipper 发行版是自包含的 |
 | three.js | 0.165.0 —— **经 CDN import map 固定,无需安装** | 见 `public/index.html` |
 | 浏览器 | 任意较新的 Chrome / Edge / Firefox / Safari | 需 WebGL2 + import maps |
 
-**运行时零 npm 依赖**;`npm install` 只拉开发工具(playwright/pngjs,用于无头截图)。
+**运行时零 npm 依赖**；`npm install` 只拉开发工具（playwright/pngjs，用于无头截图与无截图运行时 smoke test）。
+
+可选的官方运行时审计还需要你自己游戏安装包中的 APKM。设置 `PCR_APKM=/path/to/package.apkm` 后运行
+`npm run audit:official-player-pipeline`；该命令直接读取安装包，不把生成的 recipe 当作渲染器证据。
 
 > **AssetStudio 这里完全不用。** 几何 = AssetRipper;材质*和*着色器 = UnityPy。
 > (新增稀有度时反编译着色器同样是 UnityPy + SPIRV-Cross——见 [SHADERS.zh-CN.md](SHADERS.zh-CN.md)。)

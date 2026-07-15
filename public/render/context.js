@@ -33,7 +33,7 @@ export const REGION = { card: 1, window: 3 };
  * @param {THREE.CubeTexture|null} envCubeTex   the env cubemap (L_001_ENV) for holo/metal reflections
  * @param {{vert:string,frag:string}|null} exactGlit   the SPIRV-Cross glitter shader (or null → hand port)
  * @param {THREE.Material[]} animMats        materials wanting a per-frame uTime
- * @param {THREE.Material[]} exactGlitMats   exact-glitter materials wanting per-frame Unity _Time
+ * @param {THREE.Material[]} exactGlitMats   exact-glitter materials driven by native FlowParams state
  * @param {THREE.Texture|null} dynUITex       composited DynamicUI canvas for _UseDynamicUI materials
  * @param {THREE.Texture|null} dynHoloTex     DynamicUI encoded like the game's holo RT (alpha = 1 - coverage)
  * @param {THREE.Texture|null} foilTex        alpha mask for UI foil-only regions
@@ -83,10 +83,10 @@ export function makeRenderContext({ texInfo, envCubeTex, exactGlit, exactShaders
     const def = SHADER_TEXTURE_DEFAULTS[L.shader]?.[slot];
     return def ? defaultTex[def] : null;
   };
-  // a repeat-wrapped clone (for shaders that TILE a shared ClampToEdge base texture)
+  // Legacy helper name retained for material strategies. Sampler wrap is texture-object data, so a slot
+  // must not override the official per-texture state recovered by app.js.
   const layerTexRepeat = (L, slot) => {
-    const t = layerTex(L, slot); if (!t) return null;
-    const c = t.clone(); c.wrapS = c.wrapT = THREE.RepeatWrapping; c.needsUpdate = true; return c;
+    return layerTex(L, slot);
   };
   const layerTexDefaultRepeat = (L, slot) => layerTexRepeat(L, slot) || layerTexDefault(L, slot);
   // Unity's empty Cubemap property default is a built-in gray cube. A material without an explicit
@@ -102,17 +102,15 @@ export function makeRenderContext({ texInfo, envCubeTex, exactGlit, exactShaders
 // (renderOrder) order; "opaque" layers stay crisp via alphaTest. (three.js's opaque-before-transparent
 // pass split would otherwise violate the queue order.) Blend factors come from the material data when
 // present (the Effect shader carries _SrcFactor/_DstFactor), else from the mode.
-export function setBlend(mat, mode, straight, floats) {
+export function setBlend(mat, mode, _straight, floats) {
   mat.transparent = true; mat.depthTest = false; mat.depthWrite = false;
   if (floats && floats._SrcFactor != null && floats._DstFactor != null) {
     mat.blending = THREE.CustomBlending; mat.blendEquation = THREE.AddEquation;
-    // these factors assume the SHADER premultiplied colour by alpha; our textured materials output RAW
-    // texels, so a One source factor on a STRAIGHT texture must become SrcAlpha (premultiply) or the
-    // fully-transparent RGB adds at full and whites out the card. Premult textures keep One.
-    let sf = floats._SrcFactor;
-    if (straight && sf === 1) sf = 5;
-    mat.blendSrc = BF[sf]; mat.blendDst = BF[floats._DstFactor];
-    mat.blendSrcAlpha = BF[floats._SrcFactorA ?? sf]; mat.blendDstAlpha = BF[floats._DstFactorA ?? floats._DstFactor];
+    // Blend factors are material/pass state. Texture-storage heuristics cannot rewrite them: the exact
+    // fragment program decides whether its output is straight or premultiplied before this stage.
+    mat.blendSrc = BF[floats._SrcFactor]; mat.blendDst = BF[floats._DstFactor];
+    mat.blendSrcAlpha = BF[floats._SrcFactorA ?? floats._SrcFactor];
+    mat.blendDstAlpha = BF[floats._DstFactorA ?? floats._DstFactor];
     return;
   }
   if (mode === "opaque") {
@@ -128,7 +126,8 @@ export function setBlend(mat, mode, straight, floats) {
   let src, dst;
   if (mode === "multiply") [src, dst] = [2, 0];
   else if (mode === "add_a") [src, dst] = [5, 1];
-  else [src, dst] = [straight ? 5 : 1, 10];   // premult/over → SrcAlpha|One / OneMinusSrcAlpha
+  else if (mode === "over") [src, dst] = [5, 10];
+  else [src, dst] = [1, 10];                  // premult → One / OneMinusSrcAlpha
   mat.blendSrc = BF[src]; mat.blendDst = BF[dst];
   mat.blendSrcAlpha = BF[0];
   mat.blendDstAlpha = BF[mode === "add_a" || mode === "multiply" ? 1 : 10];

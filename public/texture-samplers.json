@@ -1,0 +1,1322 @@
+{
+  "schemaVersion": 1,
+  "authority": "official decrypted Unity Texture2D/Cubemap serialized objects",
+  "referenceSceneHashes": {
+    "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json": "23afa997b2e13e7110fc414f9c44bdcae6302cfa363fe0463cefb8ce1b8c62af",
+    "scene.cPK_20_008900_02_HOUOUex_UR.json": "f7f7bbf965d897b54f47660a8d5e46c0729cd7d1415f2030e2fef4f381e178b3",
+    "scene.cTR_20_000230_00_LEAF_SR.json": "5c320a726779f6f8ca0043f62524c54033cf9c86c69199efd6a85e77a986a1bb",
+    "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json": "476d428bf335625071a714ed1db9002000c8e85a16d45d607b1ce1e56ec3ed5c"
+  },
+  "textures": {
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/UR_Goods_Rule_Mask.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_ur.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_ur_base.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_ur_stage2_mask.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_base_sr-80.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_support.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_support_UR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_goods_UR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_support.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_gra.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_sideline_support.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_sideline_support_UR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/GradationMap/R5_L_SEFF1_GM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/GradationMap/R5_L_SEFF2_GM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/GradationMap/R5_L_SEFF3_GM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_UR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 11,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_BgPlate.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Border_Goods_38do.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Outline.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Goods_SB_Underber.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_SB_Outline.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_UI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Phase/UR_Phase_UR_Uzumaki.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_trainers_panel_support_URgoods_mask.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white 1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_EX.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Crown_Goods.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Crown_Pokemon.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR-TR_RMP_Border_01_1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR-TR_RMP_Border_02_1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR-TR_RMP_SB_Outline.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR-TR_RMP_UI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 10
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR-TR_RMP_Goods_UI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_BGplate.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Border_GoodsUR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Outline_01.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Outline_04.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_GoodsUR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_SB_Underbare_blue_GoodsUR.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_UI_Panel.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/UR_RMP_UR_uzumaki.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_38do.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_BgPlate.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Outline.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_SB_Uzumaki.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_UR_UI_Panel.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/UR_RMPmask_under.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_TRBorder_01.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_TRBorder_02.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_TrainersUI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UR_TrainersUI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_crown_a.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_Bg_GoldPlate.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_BgPlate_Uzumaki/UR_UzumakiPlate_D_mask.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF01_GradationMap.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Eff_GradientMap/UR_EFF02_GradationMap.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Border.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_EX.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_PokemonBody.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_UI.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_FakeSpecularReflection/UR_LensFlare_Uzumaki_BgPlate.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_FlowMap.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexBase_9000_sca19_1024.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_A_TexLight_9000_sca19_1024.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_FlowMap.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexBase_10000_sca17_1024.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_Glitter/Glitter_B_TexLight_10000_sca17_1024.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlareVAT.png": {
+      "filterMode": 0,
+      "filter": "Point",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UR/UR_LensFlare/UR_LensFlare_texture.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/Card_Back.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF2.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF3.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_ILL.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_MASK.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 11
+    },
+    "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_20_008900_02_HOUOUex_UR_L_AM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_20_008900_02_HOUOUex_UR_L_EFF.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_20_008900_02_HOUOUex_UR_L_HM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_20_008900_02_HOUOUex_UR_L_NM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cPK_20_008900_02_HOUOUex_UR_L_TM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 11
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_AM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_EFF.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_HM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_HPH.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_NM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000230_00_LEAF_SR_L_PAR1.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_AM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFF.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_HM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 1,
+      "wrapV": 1,
+      "wrapW": 1,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/cTR_20_000670_00_IIBUINOBAKKU_UR_L_NM.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 0,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 1
+    },
+    "/game/Assets/Texture2D/card_rarity_outline.png": {
+      "filterMode": 1,
+      "filter": "Bilinear",
+      "anisotropy": 1,
+      "mipBias": 0,
+      "wrapU": 0,
+      "wrapV": 0,
+      "wrapW": 0,
+      "mipCount": 6
+    }
+  }
+}

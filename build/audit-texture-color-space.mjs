@@ -1,6 +1,5 @@
-// Verify exported texture color-space metadata and the shader ports that must bypass automatic sampler
-// conversion. Most official shaders rely on the sampler's sRGB decode for color textures; only the
-// hand-ported Oklab/manual-conversion paths request raw clones explicitly.
+// Verify exported texture color-space metadata without applying it as a runtime conversion.
+// The official Android player is Gamma, so both color and data textures are sampled as stored.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -29,14 +28,15 @@ const rows = [];
 const buildSource = fs.readFileSync(path.join(ROOT, "build", "build.mjs"), "utf8");
 const appSource = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
 rows.push({
-  ok: /scene_data\.textureColorSpace\?\.\[name\]\s*===\s*1\s*\?\s*THREE\.SRGBColorSpace\s*:\s*THREE\.NoColorSpace/.test(appSource),
+  ok: /tex\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(appSource)
+    && !/tex\.colorSpace\s*=\s*scene_data\.textureColorSpace/.test(appSource),
   scene: "(runtime)",
   shader: "",
   mat: "preloadTextures",
   slot: "(all)",
   texture: "",
-  colorSpace: "scene_data.textureColorSpace",
-  reason: "runtime uploads color textures as sRGB and data textures as raw",
+  colorSpace: "raw",
+  reason: "official Gamma workflow samples all runtime textures without sRGB decode",
 });
 for (const slot of DATA_SLOTS) {
   rows.push({
@@ -49,59 +49,6 @@ for (const slot of DATA_SLOTS) {
     colorSpace: "",
     reason: "build fallback marks data slot linear",
   });
-}
-
-function blockFrom(source, marker) {
-  const start = source.indexOf(marker);
-  if (start < 0) return null;
-  const open = source.indexOf("{", start);
-  if (open < 0) return null;
-  let depth = 0;
-  for (let i = open; i < source.length; i += 1) {
-    const ch = source[i];
-    if (ch === "{") depth += 1;
-    else if (ch === "}") {
-      depth -= 1;
-      if (depth === 0) return source.slice(start, i + 1);
-    }
-  }
-  return null;
-}
-
-const RAW_SRGB_SAMPLERS = [
-  {
-    shader: "Opaque-UR-Oklab",
-    file: "public/render/materials/holo.js",
-    marker: "function sbHoloMaterial",
-    slots: ["_MainTex", "_RampTex", "_RampTex2"],
-  },
-  {
-    shader: "Frame-2Layer-UR",
-    file: "public/render/materials/frame2layer-ur.js",
-    marker: "function frame2LayerUrMaterial",
-    slots: ["_BaseTex", "_RampTex", "_RampTex2"],
-  },
-];
-
-for (const rule of RAW_SRGB_SAMPLERS) {
-  const source = fs.readFileSync(path.join(ROOT, rule.file), "utf8");
-  const block = blockFrom(source, rule.marker);
-  for (const slot of rule.slots) {
-    const ok = !!block && (
-      block.includes(`layerTexNoColorSpace(r, "${slot}")`)
-      || block.includes(`rawColorTex(r, ctx, "${slot}")`)
-    );
-    rows.push({
-      ok,
-      scene: "(source)",
-      shader: rule.shader,
-      mat: rule.file,
-      slot,
-      texture: "",
-      colorSpace: "raw",
-      reason: "manual sRGB/Oklab shader samples color texture without automatic sRGB decode",
-    });
-  }
 }
 
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))

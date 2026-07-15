@@ -120,19 +120,6 @@ function officialExtraPassState(shader, mat) {
   };
 }
 
-function mainTexName(mat) {
-  return mat.textures?._MainTex?.name || mat.textures?._BaseTex?.name || mat.textures?._BaseMap?.name;
-}
-
-function isStraight(cfg, shader, mat, scene) {
-  const kind = cfg?.kind;
-  if (kind === "illustTextured" || kind === "parallaxUR" || kind === "frameHoloUR" || kind === "exHolo" || kind === "exHoloUR") return true;
-  if (kind === "frameHolo") return shader === "Frame-Holo-Tuning";
-  if (kind === "simpleTransparent") return false;
-  if (kind === "textured" || kind === "plate") return scene.alphaMode?.[mainTexName(mat)] === "straight";
-  return false;
-}
-
 function rendererBlend(shader, mat, scene) {
   const cfg = SHADER[shader];
   if (!cfg || cfg.defer) return null;
@@ -142,9 +129,8 @@ function rendererBlend(shader, mat, scene) {
   if (cfg.blend === "opaque") return "1/0";
   if (cfg.blend === "multiply") return "2/0";
   if (cfg.blend === "add_a") return "5/1";
-  if (cfg.blend === "over" || cfg.blend === "premult") {
-    return `${isStraight(cfg, shader, mat, scene) ? 5 : 1}/10`;
-  }
+  if (cfg.blend === "over") return "5/10";
+  if (cfg.blend === "premult") return "1/10";
   return null;
 }
 

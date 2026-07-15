@@ -1,8 +1,6 @@
-// Verify scene alphaMode against the actual stored PNG alpha/RGB data.
-//
-// The renderer chooses blend factors from alphaMode. A stale or missing entry
-// can make straight-alpha textures over-bright or premultiplied textures too
-// dark, so this guard recomputes the mode from public/game PNGs.
+// Verify diagnostic scene alphaMode against the actual stored PNG alpha/RGB data.
+// A `premult` classification is only a stored-pixel candidate, not proof of the
+// shader output convention and never permission to rewrite official blend state.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

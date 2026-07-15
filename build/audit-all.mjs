@@ -12,6 +12,12 @@ const verbose = process.argv.includes("--verbose");
 
 const AUDITS = [
   ["render-claim-contract", "build/audit-render-claim-contract.mjs"],
+  ["official-player-pipeline", "build/audit-official-player-pipeline.mjs"],
+  ["official-texture-samplers", "build/audit-official-texture-sampler.mjs"],
+  ["texture-sampler-runtime-map", "build/build-official-texture-samplers.mjs", { PCR_EXACT_CHECK: "1" }],
+  ["official-animation-timing", "build/audit-official-animation-timing.mjs"],
+  ["glitter-flow-state", "build/test-glitter-flow.mjs"],
+  ["official-postprocess", "build/audit-official-postprocess.mjs"],
   ["scene-assets", "build/audit-scene-assets.mjs"],
   ["dynamic-ui-layout", "build/audit-dynamic-ui-layout.mjs"],
   ["postprocess-assumptions", "build/audit-postprocess-assumptions.mjs"],

@@ -17,14 +17,20 @@ Two paths:
 | **Node.js** | **18 LTS or newer** (tested on 20.19) | runs the renderer's static server + the build scripts |
 | npm | bundled with Node | — |
 | **Python** | **3.10 – 3.12** (tested on 3.11) | only for the recipe step (Path B) |
-| **UnityPy** | latest (`pip install UnityPy`) | reads the decrypted Unity bundles |
+| **UnityPy** | latest (`pip install UnityPy`) | reads Unity bundles and official PlayerSettings |
+| **capstone** | latest (`pip install capstone`) | decodes official ARM64 renderer methods for pipeline audits |
+| **lz4** | latest (`pip install lz4`) | decompresses the official serialized Bloom shader blob |
 | **AssetRipper** | latest stable GUI build | exports the composed geometry + textures (Path B) |
 | .NET | only if your AssetRipper build is framework-dependent → **.NET 8 runtime** | most AssetRipper releases are self-contained |
 | three.js | 0.165.0 — **pinned via CDN import map**, nothing to install | see `public/index.html` |
 | Browser | any recent Chrome / Edge / Firefox / Safari | needs WebGL2 + import maps |
 
 The **runtime has zero npm dependencies**; `npm install` only pulls dev tools (playwright/pngjs) used
-for headless screenshots.
+for headless screenshots and the screenshot-free runtime smoke test.
+
+The optional official-runtime audit also needs an APKM from your own game installation. Set
+`PCR_APKM=/path/to/package.apkm`, then run `npm run audit:official-player-pipeline`. The command reads
+the package directly and does not trust generated recipes as renderer evidence.
 
 > **AssetStudio is _not_ used anywhere here.** Geometry = AssetRipper; materials *and* shaders = UnityPy.
 > (Decompiling a shader for a new rarity is also UnityPy + SPIRV-Cross — see [SHADERS.md](SHADERS.md).)
