@@ -33,9 +33,8 @@ export const VIEW_BASIS_WORLD_VS = /* glsl */`
   }
 `;
 
-// UR shaders with MRT write their bloom/emissive contribution to render target 1:
-// _EmissivePattern = 0 Off, 1 FakeSpeculer, 2 All. Browser WebGL1 materials expose the same
-// official contribution through a bloom-only pass, then the app blurs/composites that RT.
+// UR shaders write bloom/emissive to MRT location 1 in the same draw as scene color.
+// _EmissivePattern = 0 Off, 1 FakeSpeculer, 2 All. The WebGL2 pipeline preserves that output directly.
 export const EMISSIVE_MRT_RGB = /* glsl */`
   vec3 emissiveMrtRgb(vec3 fakeSpecRgb, vec3 finalRgb, float pattern, vec4 emissiveColor, float alpha, float coverage) {
     float fakeOn = step(0.5, pattern) * (1.0 - step(1.5, pattern));

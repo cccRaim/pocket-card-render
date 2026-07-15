@@ -51,6 +51,7 @@ def pass_state(p):
         # Preserve the existing RT0 field for extraction consumers.
         "blend": rt_blends[0],
         "rtBlends": rt_blends,
+        "rtSeparateBlend": bool(st.get("rtSeparateBlend", False)),
         "zTest": param(st.get("zTest")),
         "zWrite": param(st.get("zWrite")),
         "zClip": param(st.get("zClip")),

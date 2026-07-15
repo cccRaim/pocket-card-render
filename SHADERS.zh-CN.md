@@ -64,13 +64,17 @@ python build/shaderdec/reflect.py "<同族着色器后缀>" --shaders "<DECRYPTE
 
 ## 第 4 步 —— 把 GLSL 移植进材质策略
 
+浏览器运行时现在使用真正的双 attachment WebGL2 RenderTarget。官方 Shader pass 数据的
+`rtSeparateBlend=false`，因此两路 attachment 共享各材质当前生效的 RT0 blend state；序列化的
+`rtBlend1` 只是未启用的默认槽。`npm run test:mrt-runtime` 会在同一次 draw 中以数值方式验证两路输出，
+不依赖截图。Bloom 的 downsample/upsample/final-blit 图仍属于后续独立的还原阶段。
+
 SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 
 - 别名化属性(`position` / `normal` / `uv`),`gl_Position` 用 `projectionMatrix * modelViewMatrix`;
 - 用 `inverse(modelMatrix) * cameraPosition` 算相机相对基底(见 `render/glsl.js` 的共享 `VIEW_BASIS_VS`,
   就是干这个的);
-- 保留所有实际生效的颜色输出；如果 WebGL 不能直接暴露官方 MRT 布局，就把未改写的官方输出路由到
-  对应 renderer pass，并对这层适配做显式审计；
+- 在原始 MRT location 保留所有实际生效的颜色输出；不要通过第二遍渲染重放 emissive layer；
 - 从 recipe 经 [RenderContext](public/render/context.js) 接 uniform(`ctx.layerTex(r, slot)`、`r.floats`、
   `r.colors`);
 - 按纹理维度保留 ShaderLab 的隐式默认值；例如空 Cubemap 属性应使用 Unity 内置灰色 cube，

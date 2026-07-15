@@ -16,14 +16,18 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage({ viewport: { width: 450, height: 600 }, deviceScaleFactor: 1 });
 let current = null;
-const records = new Map(SCENES.map(([scene]) => [scene, { errors: [], built: null }]));
+const records = new Map(SCENES.map(([scene]) => [scene, { errors: [], built: null, mrt: null }]));
 
 page.on("console", (message) => {
   if (!current) return;
   const text = message.text();
   const built = /^built (\d+) meshes\b/.exec(text);
   if (built) records.get(current).built = Number(built[1]);
-  if (message.type() === "error") records.get(current).errors.push(`console: ${text}`);
+  // External font/CDN failures are covered by requestfailed when they belong to
+  // the app origin. Chromium's generic resource message contains no URL.
+  if (message.type() === "error" && !/^Failed to load resource:/.test(text)) {
+    records.get(current).errors.push(`console: ${text}`);
+  }
 });
 page.on("pageerror", (error) => {
   if (current) records.get(current).errors.push(`pageerror: ${error.message}`);
@@ -56,9 +60,18 @@ try {
     await page.evaluate(async () => window.__renderShotFrames?.(2, 1000));
 
     const record = records.get(scene);
+    const runtime = await page.evaluate(() => ({
+      mrt: window.__mrtDiagnostics || null,
+      webglError: document.getElementById("c")?.getContext("webgl2")?.getError() ?? -1,
+    }));
+    record.mrt = runtime.mrt;
     if (record.built !== expectedBuilt) {
       record.errors.push(`mesh count: expected ${expectedBuilt}, got ${record.built ?? "no build log"}`);
     }
+    if (record.mrt?.attachments !== 2 || !(record.mrt?.cardPasses > 0)) {
+      record.errors.push(`MRT diagnostics: ${JSON.stringify(record.mrt)}`);
+    }
+    if (runtime.webglError !== 0) record.errors.push(`WebGL error: ${runtime.webglError}`);
     console.log(`${record.errors.length ? "FAIL" : "OK  "} ${scene} (${record.built ?? "?"} meshes)`);
   }
 } finally {

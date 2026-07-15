@@ -44,7 +44,9 @@ function resolveParam(p, mat) {
 }
 
 function passBlend(pass, target) {
-  return pass?.rtBlends?.[target] || (target === 0 ? pass?.blend : null);
+  if (!pass) return null;
+  const activeTarget = pass.rtSeparateBlend ? target : 0;
+  return pass.rtBlends?.[activeTarget] || (activeTarget === 0 ? pass.blend : null);
 }
 
 function scoreVariant(pass, mat) {
@@ -87,17 +89,6 @@ function officialBlend(shader, mat, target = 0) {
     key: found.key,
     dynamic: !!(src.name || dst.name || srcA.name || dstA.name),
   };
-}
-
-function isOneZeroReplace(blend) {
-  const v = blend?.values;
-  return v?.src === 1
-    && v.dst === 0
-    && v.srcAlpha === 1
-    && v.dstAlpha === 0
-    && v.op === 0
-    && v.opAlpha === 0
-    && v.colMask === 15;
 }
 
 function officialDepth(shader, mat) {
@@ -296,7 +287,10 @@ for (const sceneName of sceneNames) {
         && official.alpha === rendererA
         && official.op === "0/0"
         && official.mask === "15"
-        && isOneZeroReplace(officialRT1)
+        && officialRT1?.pair === official.pair
+        && officialRT1?.alpha === official.alpha
+        && officialRT1?.op === official.op
+        && officialRT1?.mask === official.mask
         && officialZ.pair === rendererZ
         && officialC.value === rendererC
         && officialS.value === rendererS

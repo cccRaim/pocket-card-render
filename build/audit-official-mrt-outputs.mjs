@@ -213,6 +213,7 @@ try {
 same("render shader state extraction missing set", defaults.missing || [], []);
 let rtBlend1Passes = 0;
 let rtBlend1Shaders = 0;
+let sharedBlendPasses = 0;
 for (const shader of evidence.shaders || []) {
   const metadata = defaults.found?.[shader.shortShader];
   if (!metadata) {
@@ -235,6 +236,8 @@ for (const shader of evidence.shaders || []) {
     for (const [passIndex, pass] of (assetVariant.passStates || []).entries()) {
       shaderPasses += 1;
       rtBlend1Passes += 1;
+      if (pass.rtSeparateBlend === false) sharedBlendPasses += 1;
+      else issues.push(`${shader.shortShader} pass ${passIndex}: expected rtSeparateBlend=false`);
       const blend = pass.rtBlends?.[1];
       const actual = blend && {
         src: blend.src?.val,
@@ -245,7 +248,7 @@ for (const shader of evidence.shaders || []) {
         opAlpha: blend.opAlpha?.val,
         colMask: blend.colMask?.val,
       };
-      same(`${shader.shortShader} pass ${passIndex} rtBlend1 One/Zero replace`, actual, {
+      same(`${shader.shortShader} pass ${passIndex} inactive rtBlend1 default`, actual, {
         src: 1,
         dst: 0,
         srcAlpha: 1,
@@ -261,6 +264,7 @@ for (const shader of evidence.shaders || []) {
 }
 same("rtBlend1 shader coverage", rtBlend1Shaders, 27);
 same("rtBlend1 pass coverage", rtBlend1Passes, 27);
+same("shared RT0 blend pass coverage", sharedBlendPasses, 27);
 
 if (issues.length) {
   for (const issue of issues) console.error(`BAD ${issue}`);
@@ -278,4 +282,5 @@ console.log(`Fragment outputs:      ${evidence.summary.location1Shaders} locatio
 console.log(`MRT1 formulas:         ${evidence.summary.fixedZeroShaders} fixed vec4(0), ${evidence.summary.formulaShaders} nonzero-capable`);
 console.log(`Configured nonzero:    ${EXPECTED_CONFIGURED_NONZERO.join(", ")}`);
 console.log(`Material-zero gates:   ${zeroGated.join(", ")}`);
-console.log(`rtBlend1:              ${rtBlend1Shaders} shaders / ${rtBlend1Passes} passes, One/Zero replace`);
+console.log(`MRT blend:             ${sharedBlendPasses} passes rtSeparateBlend=false; active RT0 state shared`);
+console.log(`Inactive rtBlend1:     ${rtBlend1Shaders} shaders / ${rtBlend1Passes} passes retain One/Zero defaults`);

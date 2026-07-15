@@ -16,6 +16,10 @@ import { SHADER, isBackgroundLayer } from "./render/rarities.js";
 import { getMaterial } from "./render/registry.js";
 import { makeRenderContext, setBlend, applyDepthState, applyCullState, applyStencilState, stencilWriter, applyClip, REGION } from "./render/context.js";
 import { updateGlitterFlow } from "./render/glitter-flow.js";
+import {
+  createOfficialMrtTarget,
+  resizeOfficialMrtTarget,
+} from "./render/pipeline/official-mrt.js";
 import "./render/materials/index.js";   // registers every material strategy (side effect)
 
 const errEl = document.getElementById("err");
@@ -525,18 +529,18 @@ async function main() {
     const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
     const w = Math.max(1, ds.x || innerWidth), h = Math.max(1, ds.y || innerHeight);
     const bw = Math.max(1, Math.floor(w / 2)), bh = Math.max(1, Math.floor(h / 2));
-    const sceneRT = new THREE.WebGLRenderTarget(w, h, { stencilBuffer: true });
-    const emissiveRT = new THREE.WebGLRenderTarget(bw, bh, { stencilBuffer: true });
+    const sceneRT = createOfficialMrtTarget(renderer, w, h);
     const bloomA = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
     const bloomB = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
-    for (const rt of [sceneRT, emissiveRT, bloomA, bloomB]) rt.texture.colorSpace = rtColorSpace;
+    for (const texture of sceneRT.textures) texture.colorSpace = rtColorSpace;
+    for (const rt of [bloomA, bloomB]) rt.texture.colorSpace = rtColorSpace;
     const postScene = new THREE.Scene();
     const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
     quad.frustumCulled = false; postScene.add(quad);
     const vs = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
     const blur = new THREE.ShaderMaterial({
-      uniforms: { rt: { value: emissiveRT.texture }, uTexel: { value: new THREE.Vector2(1 / bw, 1 / bh) }, uDir: { value: new THREE.Vector2(1, 0) } },
+      uniforms: { rt: { value: sceneRT.textures[1] }, uTexel: { value: new THREE.Vector2(1 / bw, 1 / bh) }, uDir: { value: new THREE.Vector2(1, 0) } },
       vertexShader: vs,
       fragmentShader: `
         uniform sampler2D rt; uniform vec2 uTexel, uDir; varying vec2 vUv;
@@ -552,7 +556,7 @@ async function main() {
       depthTest: false, depthWrite: false, toneMapped: false,
     });
     const composite = new THREE.ShaderMaterial({
-      uniforms: { rt: { value: sceneRT.texture }, bloom: { value: bloomB.texture }, uBloom: { value: 1.0 } },
+      uniforms: { rt: { value: sceneRT.textures[0] }, bloom: { value: bloomB.texture }, uBloom: { value: 1.0 } },
       vertexShader: vs,
       fragmentShader: `
         uniform sampler2D rt, bloom; uniform float uBloom; varying vec2 vUv;
@@ -567,11 +571,11 @@ async function main() {
       const s = renderer.getDrawingBufferSize(new THREE.Vector2());
       const nw = Math.max(1, s.x || innerWidth), nh = Math.max(1, s.y || innerHeight);
       const nbw = Math.max(1, Math.floor(nw / 2)), nbh = Math.max(1, Math.floor(nh / 2));
-      sceneRT.setSize(nw, nh); emissiveRT.setSize(nbw, nbh); bloomA.setSize(nbw, nbh); bloomB.setSize(nbw, nbh);
+      resizeOfficialMrtTarget(sceneRT, nw, nh); bloomA.setSize(nbw, nbh); bloomB.setSize(nbw, nbh);
       blur.uniforms.uTexel.value.set(1 / nbw, 1 / nbh);
     };
     composite.uniforms.uBloom.value = hasBloom ? 1.0 : 0.0;
-    return { sceneRT, emissiveRT, bloomA, bloomB, postScene, postCamera, quad, blur, composite, resize, hasBloom };
+    return { sceneRT, bloomA, bloomB, postScene, postCamera, quad, blur, composite, resize, hasBloom };
   }
 
   // Texture alpha classification is retained as source diagnostics only. Official pass/material state
@@ -650,7 +654,6 @@ async function main() {
     cardGroup.add(stencilGroup); cardGroup.add(fgGroup); cardGroup.add(bgGroup);   // stencilGroup stays visible in BOTH passes (clips the bg layers to the card shape)
 
     let built = 0, deferred = 0, writers = 0, skipped = 0;
-    const builtMeshes = [], bloomMeshes = [];
     let dynUIMat = null;
     const ONLY = window.__only || "";
     // All layers (flat + depth diorama) render together (rotated) to the RT; the game's HOMOGRAPHY (computed
@@ -673,14 +676,31 @@ async function main() {
       // intercept by name here.
       if (matName === "L_FullFace_Text") {
         if (!dynUITex) { skipped++; return; }
-        const m = new THREE.MeshBasicMaterial({ map: dynUITex, side: THREE.DoubleSide, toneMapped: false });
+        const m = new THREE.RawShaderMaterial({
+          glslVersion: THREE.GLSL3,
+          uniforms: { map: { value: dynUITex } },
+          vertexShader: `
+            in vec3 position; in vec2 uv; out vec2 vUv;
+            uniform mat4 modelViewMatrix, projectionMatrix;
+            void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+          `,
+          fragmentShader: `
+            precision highp float;
+            uniform sampler2D map; in vec2 vUv;
+            layout(location = 0) out vec4 outColor;
+            layout(location = 1) out vec4 outEmissive;
+            void main(){ outColor = texture(map, vUv); outEmissive = vec4(0.0); }
+          `,
+          side: THREE.DoubleSide,
+          toneMapped: false,
+        });
         dynUIMat = m;                                  // keep ref for the language switch
         setBlend(m, "over", true);                    // straight-alpha over (transparent canvas bg)
         applyClip(m, window.__raw ? null : "card");
         const mesh = new THREE.Mesh(o.geometry, m);
         mesh.applyMatrix4(o.matrixWorld); mesh.renderOrder = 2900; mesh.frustumCulled = false;
         mesh.userData.label = "DynamicUI (card_ui.json)";
-        fgGroup.add(mesh); builtMeshes.push(mesh); built++; return;
+        fgGroup.add(mesh); built++; return;
       }
       const r = materials[matName];
       if (!r) { skipped++; return; }                 // DefaultMaterial / dynamic-UI / unknown
@@ -741,8 +761,6 @@ async function main() {
       mesh.renderOrder = (cfg.kind === "exHolo" && !fullFaceHolo) ? 2950 : isSB ? r.queue + 6 : r.queue;
       mesh.frustumCulled = false;
       mesh.userData.label = `${matName}  ·  ${r.shader}  ·  q${mesh.renderOrder}`;
-      builtMeshes.push(mesh);
-      if (mat.userData?.bloomSource && mat.uniforms?.uBloomOnly) bloomMeshes.push(mesh);
       // Holistic root cause: ANY layer off the card plane (z≠0) swings when the card 3D-rotates. The card
       // plane is z≈-0.005; the depth diorama (effects -0.03..-0.075, shadowbox -0.04) is way off → it swings.
       // Bake ALL of those to the RT (homography), not just the SB. Flat layers (z≈0) stay (rotated-flat = homography).
@@ -767,7 +785,6 @@ async function main() {
 
     log(`built ${built} meshes (${writers} stencil, ${deferred} deferred, ${skipped} skipped)  ${scene_data.card.name} ${scene_data.card.rarityToken}`);
     window.__tilt = tiltPivot;
-    window.__bloomSource = { builtMeshes, bloomMeshes };
 
     // ── UR gold-foil BACKGROUND RT pass ──────────────────────────────────────────────────────────────────────
     // bgGroup (parallax base + holo + glitter + semi-transparent Uzumaki plate) pre-renders to an RT in queue
@@ -781,12 +798,17 @@ async function main() {
       bgRT = new THREE.WebGLRenderTarget(ds.x || 1024, ds.y || 1434, { stencilBuffer: true });
       bgRT.texture.colorSpace = cardTargetColorSpace;
       bgQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
+        glslVersion: THREE.GLSL3,
         uniforms: { rt: { value: bgRT.texture } },
-        vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.9999, 1.0); }`,   // fullscreen, at far depth
+        vertexShader: `out vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.9999, 1.0); }`,   // fullscreen, at far depth
         fragmentShader: `
-          uniform sampler2D rt; varying vec2 vUv;
+          uniform sampler2D rt; in vec2 vUv;
+          layout(location = 0) out vec4 outColor;
+          layout(location = 1) out vec4 outEmissive;
+          #define gl_FragColor outColor
           void main(){
-            gl_FragColor = texture2D(rt, vUv);
+            gl_FragColor = texture(rt, vUv);
+            outEmissive = vec4(0.0);
             #include <colorspace_fragment>
           }`,
         depthTest: false, depthWrite: false, toneMapped: false,
@@ -814,7 +836,7 @@ async function main() {
       try {
         await loadLocaleData(lc);                          // sets curFonts + loads that locale's fonts
         const t = await buildFace(lc);                     // rebuild the DynamicUI for the new locale (any card)
-        if (t && dynUIMat) { dynUIMat.map = t.ui; dynUIMat.needsUpdate = true; }
+        if (t && dynUIMat) dynUIMat.uniforms.map.value = t.ui;
         if (t) for (const m of exHoloMats) {
           if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
           if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
@@ -923,6 +945,7 @@ async function main() {
   let previousAnimationTime = null;
   let gameTime = 0;
   function renderFrame(t) {
+    let mrtCardPasses = 0;
     let rx = my * MAX, ry = mx * MAX;
     if (window.__preview) { rx = 0; ry = 0; }          // PREVIEW mode: flat, no tilt (debug)
     const m = Math.hypot(rx, ry); if (m > MAX) { rx *= MAX / m; ry *= MAX / m; }
@@ -947,6 +970,7 @@ async function main() {
       em.uniforms._78.value[15].set(...flow[1]);
     }
     function renderCard(target) {
+      if (target?.textures?.length === 2) mrtCardPasses += 1;
       const bg = window.__bg;   // set in the FBX callback for UR cards (gold-foil background RT pass); else undefined
       if (bg) {
       // pass 1: gold-foil stack → RT (stencil writers stay visible to clip it to the card; fg + bgQuad hidden).
@@ -962,60 +986,11 @@ async function main() {
         renderer.setRenderTarget(null);
       }
     }
-    function renderBloomSource(target) {
-      const src = window.__bloomSource;
-      if (!src || !src.bloomMeshes.length) return false;
-
-      const bloomSet = new Set(src.bloomMeshes);
-      const prevVisible = src.builtMeshes.map((m) => m.visible);
-      const bg = window.__bg;
-      const prevBg = bg ? {
-        quad: bg.quad.visible,
-        bgGroup: bg.bgGroup.visible,
-        fgGroup: bg.fgGroup.visible,
-      } : null;
-
-      for (const m of src.builtMeshes) m.visible = bloomSet.has(m);
-      for (const m of src.bloomMeshes) m.material.uniforms.uBloomOnly.value = 1;
-      if (bg) {
-        bg.quad.visible = false;
-        bg.bgGroup.visible = true;
-        bg.fgGroup.visible = true;
-      }
-
-      const clearColor = renderer.getClearColor(new THREE.Color()).clone();
-      const clearAlpha = renderer.getClearAlpha();
-      renderer.setClearColor(0x000000, 0);
-      renderer.setRenderTarget(target);
-      renderer.clear(true, true, true);
-      renderer.render(scene, camera);
-      renderer.setRenderTarget(null);
-      renderer.setClearColor(clearColor, clearAlpha);
-
-      for (const m of src.bloomMeshes) m.material.uniforms.uBloomOnly.value = 0;
-      src.builtMeshes.forEach((m, i) => { m.visible = prevVisible[i]; });
-      if (bg && prevBg) {
-        bg.quad.visible = prevBg.quad;
-        bg.bgGroup.visible = prevBg.bgGroup;
-        bg.fgGroup.visible = prevBg.fgGroup;
-      }
-      return true;
-    }
     const post = window.__post;
     if (post) {
       renderCard(post.sceneRT);
       if (post.hasBloom) {
-        const hasBloomSource = renderBloomSource(post.emissiveRT);
-        if (!hasBloomSource) {
-          const clearColor = renderer.getClearColor(new THREE.Color()).clone();
-          const clearAlpha = renderer.getClearAlpha();
-          renderer.setClearColor(0x000000, 0);
-          renderer.setRenderTarget(post.emissiveRT);
-          renderer.clear(true, true, true);
-          renderer.setRenderTarget(null);
-          renderer.setClearColor(clearColor, clearAlpha);
-        }
-        post.blur.uniforms.rt.value = post.emissiveRT.texture; post.blur.uniforms.uDir.value.set(1, 0);
+        post.blur.uniforms.rt.value = post.sceneRT.textures[1]; post.blur.uniforms.uDir.value.set(1, 0);
         post.quad.material = post.blur;
         renderer.setRenderTarget(post.bloomB); renderer.render(post.postScene, post.postCamera);
         post.blur.uniforms.rt.value = post.bloomB.texture; post.blur.uniforms.uDir.value.set(0, 1);
@@ -1027,6 +1002,11 @@ async function main() {
     } else {
       renderCard(null);
     }
+    window.__mrtDiagnostics = {
+      attachments: post?.sceneRT.textures.length || 0,
+      cardPasses: mrtCardPasses,
+      drawCalls: renderer.info.render.calls,
+    };
   }
   window.__renderShotFrames = async (count = 10, dtMs = 83) => {
     const base = performance.now();

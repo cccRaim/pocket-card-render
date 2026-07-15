@@ -12,6 +12,7 @@ import { fileURLToPath } from "node:url";
 const HERE = join(fileURLToPath(new URL(".", import.meta.url)));
 const PUB = join(HERE, "public");
 const GAME = join(PUB, "game");
+const THREE = join(HERE, "node_modules", "three");
 const PORT = Number(process.argv[2]) || 8011;
 
 const MIME = {
@@ -129,6 +130,7 @@ createServer(async (req, res) => {
     if (p === "/compose") return void serveCompose(req, res);
     if (p === "/scene") return void serveScene(req, res);
     if (p.startsWith("/game/")) return void serveFrom(GAME, p.slice("/game/".length), res);
+    if (p.startsWith("/vendor/three/")) return void serveFrom(THREE, p.slice("/vendor/three/".length), res);
     return void serveFrom(PUB, p, res);
   } catch (e) { res.writeHead(500).end(String(e)); }
 }).listen(PORT, () => console.log(`pocket-card-render  http://127.0.0.1:${PORT}/   (?scene=scene.<cardId>.json)`));

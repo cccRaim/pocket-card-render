@@ -180,6 +180,11 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
   const mrtOutputAudit = fs.existsSync(path.join(ROOT, "build", "extract_official_mrt_outputs.py"))
     && fs.existsSync(path.join(ROOT, "build", "audit-official-mrt-outputs.mjs"))
     && /official-mrt-outputs/.test(fs.readFileSync(path.join(ROOT, "build", "audit-all.mjs"), "utf8"));
+  const mrtRuntime = fs.existsSync(path.join(ROOT, "public", "render", "pipeline", "official-mrt.js"))
+    && /createOfficialMrtTarget\(renderer/.test(app)
+    && /sceneRT\.textures\[1\]/.test(app)
+    && !/renderBloomSource/.test(app)
+    && fs.existsSync(path.join(ROOT, "build", "test-mrt-runtime.mjs"));
   const animationRuntime = /updateGlitterFlow\(em\.userData\.glitterFlow/.test(app)
     && /gameTime\s*\+=\s*deltaTime/.test(app)
     && fs.existsSync(path.join(ROOT, "public", "render", "glitter-flow.js"));
@@ -213,21 +218,22 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     },
     "render-target-formats": {
       status: cardRTMatched ? "partial" : "not-proven",
-      coveredSubscopes: cardRTMatched ? (officialMrtKnown ? 2 : 1) : 0,
+      coveredSubscopes: cardRTMatched ? (officialMrtKnown ? (mrtRuntime ? 3 : 2) : 1) : 0,
       totalSubscopes: 4,
       evidence: cardRTMatched ? ["official Asset3DRenderer.CreateRenderTexture ARM64 body", "official RendererData.GetTemporary MRT allocation"] : [],
-      remaining: ["browser simultaneous MRT allocation", "bloom intermediate physical formats"],
+      remaining: mrtRuntime ? ["bloom intermediate physical formats"] : ["browser simultaneous MRT allocation", "bloom intermediate physical formats"],
     },
     "mrt-routing": {
       status: "partial",
-      coveredSubscopes: officialMrtKnown ? (mrtOutputAudit ? 3 : 2) : 1,
-      totalSubscopes: 4,
+      coveredSubscopes: officialMrtKnown ? (mrtOutputAudit ? (mrtRuntime ? 4 : 3) : 2) : 1,
+      totalSubscopes: 5,
       evidence: [
         "official opaque/transparent dual-attachment binding",
         "official prefab/material-keyword selected SPIR-V location 0/1 output matrix",
-        "official ShaderLab RT1 One/Zero replace state",
+        "official ShaderLab rtSeparateBlend=false shared RT0 state",
+        ...(mrtRuntime ? ["browser simultaneous two-attachment writes and numeric runtime sentinel"] : []),
       ],
-      remaining: ["browser simultaneous attachment writes with indexed RT1 blend state"],
+      remaining: ["official opaque/transparent pass partition and deferred draw coverage"],
     },
     "blend-stencil-depth": {
       status: "partial",
@@ -260,9 +266,9 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     "bloom-tone-mapping": {
       status: officialBloomKnown ? "partial" : "not-proven",
       coveredSubscopes: officialBloomKnown
-        ? (officialBloomConfigurationKnown ? (mrtOutputAudit ? 4 : 3) : 2)
+        ? (officialBloomConfigurationKnown ? (mrtOutputAudit ? (mrtRuntime ? 5 : 4) : 3) : 2)
         : 1,
-      totalSubscopes: 6,
+      totalSubscopes: 7,
       evidence: [
         "official HDR display/tier disabled",
         ...(officialBloomKnown ? ["official Bloom pass graph and SPIR-V math"] : []),
@@ -270,7 +276,6 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
         ...(mrtOutputAudit ? ["official per-material MRT1 formulas and configured nonzero shader set"] : []),
       ],
       remaining: [
-        "browser true-MRT pass-graph implementation",
         "Bloom sheet weights and complete per-level downsample/blur sizes",
         "FinalBlit shader selection, blend semantics, and final tone mapping",
       ],

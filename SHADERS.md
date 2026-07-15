@@ -68,14 +68,19 @@ statically recoverable — but first check whether the term is even active for y
 
 ## Step 4 — port the GLSL into a material strategy
 
+The browser runtime now uses a real two-attachment WebGL2 target. Official Shader pass data has
+`rtSeparateBlend=false`, so both attachments share each material's active RT0 blend state; serialized
+`rtBlend1` values are inactive defaults. `npm run test:mrt-runtime` verifies both results numerically in one draw,
+without screenshots. The remaining bloom downsample/upsample/final-blit graph is a separate fidelity stage.
+
 SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 
 - alias the attributes (`position` / `normal` / `uv`) and use `projectionMatrix * modelViewMatrix` for
   `gl_Position`;
 - compute the camera-relative basis with `inverse(modelMatrix) * cameraPosition` (see
   `render/glsl.js` — the shared `VIEW_BASIS_VS` does exactly this);
-- preserve every active color output; when WebGL cannot expose the official MRT layout directly, route the
-  unchanged official output into the corresponding renderer pass and audit that adaptation explicitly;
+- preserve every active color output at its original MRT location; do not replay emissive layers in a second
+  render pass;
 - wire the uniforms from the recipe via the [RenderContext](public/render/context.js)
   (`ctx.layerTex(r, slot)`, `r.floats`, `r.colors`);
 - preserve implicit ShaderLab defaults by texture dimension; for example an empty Cubemap property is

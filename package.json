@@ -9,6 +9,7 @@
     "gather": "node build/gather.mjs",
     "shot": "node build/shot.mjs",
     "test:runtime": "node build/test-runtime.mjs",
+    "test:mrt-runtime": "node build/test-mrt-runtime.mjs",
     "build:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs",
     "audit:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs --check",
     "build:exact-transparent-hologram-tuning": "node build/build-exact-transparent-hologram-tuning.mjs",
@@ -54,6 +55,7 @@
     "audit:official-program-assets": "node build/audit-official-program-assets.mjs",
     "audit:official-mrt-usage": "node build/audit-official-mrt-usage.mjs",
     "audit:official-mrt-outputs": "node build/audit-official-mrt-outputs.mjs",
+    "audit:three-mrt-runtime": "node build/audit-three-mrt-runtime.mjs",
     "audit:official-ur-core-constants": "node build/audit-official-ur-core-constants.mjs",
     "audit:official-effect-core": "node build/audit-official-effect-core.mjs",
     "audit:official-parallax-core": "node build/audit-official-parallax-core.mjs",
@@ -70,6 +72,7 @@
   },
   "devDependencies": {
     "playwright": "^1.61.0",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "three": "0.165.0"
   }
 }
