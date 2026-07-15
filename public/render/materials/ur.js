@@ -448,18 +448,61 @@ defineMaterial("urBgHolo", {
   build: urBgHoloMaterial,
 });
 
-// ── flare (Card_UR_LensFlare) — official VAT billboard. The vertex shader samples _FlareVAT by card
-// angle, moves the flare center in view space, and modulates intensity with corner/tilt/flicker fields.
-// Fragment: out = clamp(_BaseMap - _RemoveTextureArtifact, 0, 1) * vertexColor. ──
+// ── flare (Card_UR_LensFlare) — official exact program when available, traced hand port otherwise.
+// The vertex shader samples _FlareVAT by card angle, moves the flare center in view space, and modulates
+// intensity with corner/tilt/flicker fields. Fragment: clamp(_BaseMap - artifact, 0, 1) * vertexColor. ──
 defineMaterial("flare", {
   requires: (r, ctx) => !!(flareBaseMap(r, ctx) && flareVAT(r, ctx)),
   build(r, ctx) {
     const f = r.floats || {}, c = r.colors || {};
+    const baseMap = flareBaseMap(r, ctx);
+    const vat = flareVAT(r, ctx);
+    const exact = ctx.exactShaders?.Card_UR_LensFlare;
+    if (exact) {
+      const m = new THREE.RawShaderMaterial({
+        uniforms: {
+          _13: { value: baseMap },
+          _288: { value: vat },
+          uTime: { value: 0 },
+          _TexScale: { value: f._TexScale ?? 1 },
+          _TexPixelsX: { value: Math.trunc(f._TexPixelsX ?? 1024) },
+          _TexPixelsY: { value: Math.trunc(f._TexPixelsY ?? 256) },
+          _ScaleX: { value: f._ScaleX ?? 1 },
+          _ScaleY: { value: f._ScaleY ?? 1 },
+          _IsBack: { value: Math.trunc(f._IsBack ?? 0) },
+          _BaseColor: { value: V4(c._BaseColor, new THREE.Vector4(1, 1, 1, 1)) },
+          _BaseColorRGBIntensity: { value: f._BaseColorRGBIntensity ?? 1 },
+          _TiltThreshold: { value: f._TiltThreshold ?? 0.5 },
+          _TiltPower: { value: f._TiltPower ?? 2 },
+          _CornerPower: { value: f._CornerPower ?? 2 },
+          _NotCornerOffset: { value: f._NotCornerOffset ?? 0 },
+          _FlickerAnimSpeed: { value: f._FlickerAnimSpeed ?? 5 },
+          _TiltFlickerAnimSpeed: { value: f._TiltFlickerAnimSpeed ?? 3 },
+          _FlickerTimeDelay: { value: f._FlickerTimeDelay ?? 0 },
+          _FlickResultIntensityLowestPoint: { value: f._FlickResultIntensityLowestPoint ?? 0.5 },
+          _ShouldDoFlicker: { value: f._ShouldDoFlicker ?? 1 },
+          _RemoveTextureArtifact: { value: f._RemoveTextureArtifact ?? 0 },
+          _EmissivePattern: { value: Math.trunc(f._EmissivePattern ?? 1) },
+          _EmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
+          uBloomOnly: { value: 0 },
+        },
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        glslVersion: THREE.GLSL3,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.bloomSource = true;
+      m.userData.exactShader = "Card_UR_LensFlare";
+      ctx.animMats.push(m);
+      return m;
+    }
+
     const tint = c._BaseColor ? new THREE.Vector3(c._BaseColor.r, c._BaseColor.g, c._BaseColor.b) : new THREE.Vector3(1, 1, 1);
     const m = new THREE.ShaderMaterial({
       uniforms: {
-        baseMap: { value: flareBaseMap(r, ctx) },
-        flareVAT: { value: flareVAT(r, ctx) },
+        baseMap: { value: baseMap },
+        flareVAT: { value: vat },
         uCutoff: { value: f._RemoveTextureArtifact ?? 0 },
         uTint: { value: tint },
         uAlpha: { value: c._BaseColor?.a ?? 1 },
@@ -477,7 +520,7 @@ defineMaterial("flare", {
         uTiltFlickerSpeed: { value: f._TiltFlickerAnimSpeed ?? 3 },
         uFlickerDelay: { value: f._FlickerTimeDelay ?? 0 },
         uFlickerFloor: { value: f._FlickResultIntensityLowestPoint ?? 0.5 },
-        uEmissivePattern: { value: f._EmissivePattern ?? 0 },
+        uEmissivePattern: { value: f._EmissivePattern ?? 1 },
         uEmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
         uBloomOnly: { value: 0 },
         uTime: { value: 0 },

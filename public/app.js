@@ -500,6 +500,7 @@ async function main() {
     "Opaque-UR-Oklab": { vert: "shaders/opaque_ur_oklab.vert.glsl", frag: "shaders/opaque_ur_oklab.frag.glsl" },
     Card_Parallax_Hologram_UR_New: { vert: "shaders/ur_bg_hologram.vert.glsl", frag: "shaders/ur_bg_hologram.frag.glsl" },
     Card_UR_Plate: { vert: "shaders/ur_plate.vert.glsl", frag: "shaders/ur_plate.frag.glsl" },
+    Card_UR_LensFlare: { vert: "shaders/ur_lens_flare.vert.glsl", frag: "shaders/ur_lens_flare.frag.glsl" },
     "Frame-2Layer-UR": { vert: "shaders/frame_2layer_ur.vert.glsl", frag: "shaders/frame_2layer_ur.frag.glsl" },
     "Transparent-UR-New": { vert: "shaders/transparent_ur_new.vert.glsl", frag: "shaders/transparent_ur_new.frag.glsl" },
   });

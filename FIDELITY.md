@@ -114,6 +114,8 @@ npm run audit:official-player-pipeline
 npm run audit:official-texture-samplers
 npm run audit:official-animation-timing
 npm run audit:official-postprocess
+npm run audit:official-mrt-outputs
+npm run audit:exact-ur-lens-flare
 npm run test:runtime
 node build/audit-official-equivalence.mjs --json
 ```
@@ -128,6 +130,10 @@ The sampler, animation, and postprocess commands extract their evidence from off
 objects, native ARM64 code, and shader bytecode. `test:runtime` loads all four reference scenes in one
 browser process, advances deterministic frames, and checks console, network, and mesh counts without
 capturing screenshots.
+
+The MRT-output audit follows official prefab Material PPtrs and complete keyword sets to the selected
+Vulkan programs. It proves which shaders write location 1 and their RT1 replace state; the browser still
+reports MRT routing as partial until both attachments are written in the same draw with indexed blending.
 
 `audit:official-player-pipeline` reads `globalgamemanagers` and ARM64 `libil2cpp.so` directly from the
 official APKM (override its path with `PCR_APKM`). It currently proves the Unity Gamma workflow, HDR and

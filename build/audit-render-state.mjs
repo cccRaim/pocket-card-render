@@ -43,35 +43,61 @@ function resolveParam(p, mat) {
   return p.name ? Number(mat.floats?.[p.name] ?? p.val) : Number(p.val);
 }
 
+function passBlend(pass, target) {
+  return pass?.rtBlends?.[target] || (target === 0 ? pass?.blend : null);
+}
+
 function scoreVariant(pass, mat) {
   if (!pass) return 0;
+  const blend = passBlend(pass, 0);
   const params = [
-    pass.blend?.src, pass.blend?.dst, pass.blend?.srcAlpha, pass.blend?.dstAlpha,
+    blend?.src, blend?.dst, blend?.srcAlpha, blend?.dstAlpha,
     pass.zTest, pass.zWrite, pass.stencilRef, pass.stencilReadMask, pass.stencilWriteMask,
     pass.stencilOp?.pass, pass.stencilOp?.comp,
   ];
   return params.filter((p) => p?.name && mat.floats?.[p.name] != null).length;
 }
 
-function officialBlend(shader, mat) {
+function officialBlend(shader, mat, target = 0) {
   const found = officialPass(shader, mat);
-  const pass = found?.pass;
-  const src = pass?.blend?.src;
-  const dst = pass?.blend?.dst;
-  const srcA = pass?.blend?.srcAlpha;
-  const dstA = pass?.blend?.dstAlpha;
-  const op = pass?.blend?.op;
-  const opA = pass?.blend?.opAlpha;
-  const mask = pass?.blend?.colMask;
+  const blend = passBlend(found?.pass, target);
+  const src = blend?.src;
+  const dst = blend?.dst;
+  const srcA = blend?.srcAlpha;
+  const dstA = blend?.dstAlpha;
+  const op = blend?.op;
+  const opA = blend?.opAlpha;
+  const mask = blend?.colMask;
   if (!src || !dst || !srcA || !dstA || !op || !opA || !mask) return null;
+  const values = {
+    src: resolveParam(src, mat),
+    dst: resolveParam(dst, mat),
+    srcAlpha: resolveParam(srcA, mat),
+    dstAlpha: resolveParam(dstA, mat),
+    op: resolveParam(op, mat),
+    opAlpha: resolveParam(opA, mat),
+    colMask: resolveParam(mask, mat),
+  };
   return {
-    pair: `${resolveParam(src, mat)}/${resolveParam(dst, mat)}`,
-    alpha: `${resolveParam(srcA, mat)}/${resolveParam(dstA, mat)}`,
-    op: `${resolveParam(op, mat)}/${resolveParam(opA, mat)}`,
-    mask: `${resolveParam(mask, mat)}`,
+    pair: `${values.src}/${values.dst}`,
+    alpha: `${values.srcAlpha}/${values.dstAlpha}`,
+    op: `${values.op}/${values.opAlpha}`,
+    mask: `${values.colMask}`,
+    values,
     key: found.key,
     dynamic: !!(src.name || dst.name || srcA.name || dstA.name),
   };
+}
+
+function isOneZeroReplace(blend) {
+  const v = blend?.values;
+  return v?.src === 1
+    && v.dst === 0
+    && v.srcAlpha === 1
+    && v.dstAlpha === 0
+    && v.op === 0
+    && v.opAlpha === 0
+    && v.colMask === 15;
 }
 
 function officialDepth(shader, mat) {
@@ -201,8 +227,22 @@ for (const shader of official.missing || []) {
     kind: "",
     official: "(missing)",
     renderer: "(missing)",
+    officialA: "(missing)",
+    rendererA: "(missing)",
+    officialOp: "(missing)",
+    officialMask: "(missing)",
+    officialRT1: "(missing)",
+    officialRT1A: "(missing)",
+    officialRT1Op: "(missing)",
+    officialRT1Mask: "(missing)",
     officialZ: "(missing)",
     rendererZ: "(missing)",
+    officialC: "(missing)",
+    rendererC: "(missing)",
+    officialS: "(missing)",
+    rendererS: "(missing)",
+    officialX: "(missing)",
+    rendererX: "(missing)",
     dynamic: false,
     ok: false,
   });
@@ -215,7 +255,8 @@ for (const sceneName of sceneNames) {
     if (!shader || shader.endsWith("Stencil")) continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
-    const official = officialBlend(shader, mat);
+    const official = officialBlend(shader, mat, 0);
+    const officialRT1 = officialBlend(shader, mat, 1);
     const officialZ = officialDepth(shader, mat);
     const officialC = officialCull(shader, mat);
     const officialS = officialStencil(shader, mat);
@@ -238,6 +279,10 @@ for (const sceneName of sceneNames) {
       rendererA,
       officialOp: official.op,
       officialMask: official.mask,
+      officialRT1: officialRT1?.pair ?? "(missing)",
+      officialRT1A: officialRT1?.alpha ?? "(missing)",
+      officialRT1Op: officialRT1?.op ?? "(missing)",
+      officialRT1Mask: officialRT1?.mask ?? "(missing)",
       officialZ: officialZ.pair,
       rendererZ,
       officialC: officialC.value,
@@ -251,6 +296,7 @@ for (const sceneName of sceneNames) {
         && official.alpha === rendererA
         && official.op === "0/0"
         && official.mask === "15"
+        && isOneZeroReplace(officialRT1)
         && officialZ.pair === rendererZ
         && officialC.value === rendererC
         && officialS.value === rendererS
@@ -261,7 +307,7 @@ for (const sceneName of sceneNames) {
 
 const byShader = new Map();
 for (const row of rows) {
-  const key = `${row.shader}|${row.kind}|${row.official}|${row.renderer}|${row.officialA}|${row.rendererA}|${row.officialOp}|${row.officialMask}|${row.officialZ}|${row.rendererZ}|${row.officialC}|${row.rendererC}|${row.officialS}|${row.rendererS}|${row.officialX}|${row.rendererX}`;
+  const key = `${row.shader}|${row.kind}|${row.official}|${row.renderer}|${row.officialA}|${row.rendererA}|${row.officialOp}|${row.officialMask}|${row.officialRT1}|${row.officialRT1A}|${row.officialRT1Op}|${row.officialRT1Mask}|${row.officialZ}|${row.rendererZ}|${row.officialC}|${row.rendererC}|${row.officialS}|${row.rendererS}|${row.officialX}|${row.rendererX}`;
   if (!byShader.has(key)) byShader.set(key, { ...row, count: 0, scenes: new Set(), examples: [] });
   const agg = byShader.get(key);
   agg.count += 1;
@@ -272,7 +318,7 @@ for (const row of rows) {
 for (const row of [...byShader.values()].sort((a, b) => a.shader.localeCompare(b.shader))) {
   const mark = row.ok ? "OK " : "BAD";
   const dyn = row.dynamic ? " dyn" : "    ";
-  console.log(`${mark}${dyn} ${row.shader.padEnd(35)} kind=${row.kind.padEnd(18)} blend=${row.official.padEnd(4)}/${row.renderer.padEnd(4)} alpha=${row.officialA.padEnd(4)}/${row.rendererA.padEnd(4)} op=${row.officialOp} mask=${row.officialMask} depth=${row.officialZ.padEnd(3)}/${row.rendererZ.padEnd(3)} cull=${row.officialC.padEnd(1)}/${row.rendererC.padEnd(1)} stencil=${row.officialS}/${row.rendererS} extra=${row.officialX}/${row.rendererX} count=${String(row.count).padStart(2)} scenes=${[...row.scenes].join(",")}`);
+  console.log(`${mark}${dyn} ${row.shader.padEnd(35)} kind=${row.kind.padEnd(18)} blend=${row.official.padEnd(4)}/${row.renderer.padEnd(4)} alpha=${row.officialA.padEnd(4)}/${row.rendererA.padEnd(4)} op=${row.officialOp} mask=${row.officialMask} rt1(src/dst=${row.officialRT1} srcAlpha/dstAlpha=${row.officialRT1A} op/opAlpha=${row.officialRT1Op} colMask=${row.officialRT1Mask}) depth=${row.officialZ.padEnd(3)}/${row.rendererZ.padEnd(3)} cull=${row.officialC.padEnd(1)}/${row.rendererC.padEnd(1)} stencil=${row.officialS}/${row.rendererS} extra=${row.officialX}/${row.rendererX} count=${String(row.count).padStart(2)} scenes=${[...row.scenes].join(",")}`);
   console.log(`       e.g. ${row.examples.join(", ")}`);
 }
 

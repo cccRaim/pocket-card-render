@@ -27,6 +27,7 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Card_Parallax_Metal",
   "Card_Parallax_UR",
   "Card_UR_Glitter_FlowMaps",
+  "Card_UR_LensFlare",
   "Opaque_Hologram_Tuning",
   "Frame-Holo-UR-New",
   "Transparent_Hologram_Tuning",
@@ -54,6 +55,7 @@ const UR_REMAINDER_GUARDED = new Set([
   "Transparent-UR-New",
 ]);
 const MRT_RGB_GUARDED = new Set([
+  "Card_UR_LensFlare",
   "Card_UR_LensFlare",
   "Frame-2Layer-UR",
   "Frame-Holo-UR-New",
@@ -153,6 +155,31 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     && officialMrt?.opaqueAndTransparentBindMrt === true;
   const officialBloomKnown = postprocess?.bloomShader?.moduleCount === 12
     && postprocess?.native?.bloomExecuteSequence?.map((item) => item.pass).join(",") === "0,1,2,3,3,4,5";
+  const serializedBloom = postprocess?.serializedPostProcess;
+  const firstBloomVolume = serializedBloom?.bloomVolumes?.[0]?.fields;
+  const bloomSizing = postprocess?.native?.bloomSizing?.portraitExample;
+  const officialBloomConfigurationKnown = serializedBloom?.derived?.postProcessPassPathIds?.join(",") === "14721"
+    && serializedBloom?.derived?.profileComponentPathIds?.join(",") === "14722,14723,14724,14725,14726"
+    && serializedBloom?.derived?.bloomVolumeRawIdentical === true
+    && firstBloomVolume?.active?.value === true
+    && firstBloomVolume?.bufferSize?.overrideState?.value === true
+    && firstBloomVolume?.bufferSize?.value?.value === 256
+    && firstBloomVolume?.downSamplingCount?.overrideState?.value === true
+    && firstBloomVolume?.downSamplingCount?.value?.value === 5
+    && firstBloomVolume?.scatter?.overrideState?.value === true
+    && firstBloomVolume?.scatter?.value?.value === 0.5
+    && firstBloomVolume?.intensity?.overrideState?.value === true
+    && firstBloomVolume?.intensity?.value?.value === 1
+    && bloomSizing?.baseSize?.width === 256
+    && bloomSizing?.baseSize?.height === 455
+    && bloomSizing?.pass0?.scale?.width === 2
+    && bloomSizing?.pass0?.scale?.height === 2
+    && bloomSizing?.sheet?.size?.width === 420
+    && bloomSizing?.sheet?.size?.height === 473
+    && typeof postprocess?.native?.methods?.finalBlitExecute?.bodySha256 === "string";
+  const mrtOutputAudit = fs.existsSync(path.join(ROOT, "build", "extract_official_mrt_outputs.py"))
+    && fs.existsSync(path.join(ROOT, "build", "audit-official-mrt-outputs.mjs"))
+    && /official-mrt-outputs/.test(fs.readFileSync(path.join(ROOT, "build", "audit-all.mjs"), "utf8"));
   const animationRuntime = /updateGlitterFlow\(em\.userData\.glitterFlow/.test(app)
     && /gameTime\s*\+=\s*deltaTime/.test(app)
     && fs.existsSync(path.join(ROOT, "public", "render", "glitter-flow.js"));
@@ -193,10 +220,14 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     },
     "mrt-routing": {
       status: "partial",
-      coveredSubscopes: officialMrtKnown ? 2 : 1,
+      coveredSubscopes: officialMrtKnown ? (mrtOutputAudit ? 3 : 2) : 1,
       totalSubscopes: 4,
-      evidence: ["official SPIR-V location 0/1 outputs", "official opaque/transparent dual-attachment binding"],
-      remaining: ["browser simultaneous attachment writes", "per-attachment blend and alpha routing"],
+      evidence: [
+        "official opaque/transparent dual-attachment binding",
+        "official prefab/material-keyword selected SPIR-V location 0/1 output matrix",
+        "official ShaderLab RT1 One/Zero replace state",
+      ],
+      remaining: ["browser simultaneous attachment writes with indexed RT1 blend state"],
     },
     "blend-stencil-depth": {
       status: "partial",
@@ -228,10 +259,21 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     },
     "bloom-tone-mapping": {
       status: officialBloomKnown ? "partial" : "not-proven",
-      coveredSubscopes: officialBloomKnown ? 2 : 1,
-      totalSubscopes: 5,
-      evidence: ["official HDR display/tier disabled", ...(officialBloomKnown ? ["official Bloom pass graph and SPIR-V math"] : [])],
-      remaining: ["material MRT1 formulas", "Bloom volume/sheet/final blend", "browser pass-graph implementation and tone mapping outside Bloom"],
+      coveredSubscopes: officialBloomKnown
+        ? (officialBloomConfigurationKnown ? (mrtOutputAudit ? 4 : 3) : 2)
+        : 1,
+      totalSubscopes: 6,
+      evidence: [
+        "official HDR display/tier disabled",
+        ...(officialBloomKnown ? ["official Bloom pass graph and SPIR-V math"] : []),
+        ...(officialBloomConfigurationKnown ? ["official serialized Bloom membership/volume values, GetBufferSize geometry, and pinned FinalBlit body"] : []),
+        ...(mrtOutputAudit ? ["official per-material MRT1 formulas and configured nonzero shader set"] : []),
+      ],
+      remaining: [
+        "browser true-MRT pass-graph implementation",
+        "Bloom sheet weights and complete per-level downsample/blur sizes",
+        "FinalBlit shader selection, blend semantics, and final tone mapping",
+      ],
     },
     "display-transfer": {
       status: gamma && rawDisplay ? "partial" : "not-proven",

@@ -104,6 +104,8 @@ npm run audit:official-player-pipeline
 npm run audit:official-texture-samplers
 npm run audit:official-animation-timing
 npm run audit:official-postprocess
+npm run audit:official-mrt-outputs
+npm run audit:exact-ur-lens-flare
 npm run test:runtime
 node build/audit-official-equivalence.mjs --json
 ```
@@ -115,6 +117,10 @@ node build/audit-official-equivalence.mjs --json
 sampler、动画和后处理命令直接从官方序列化对象、ARM64 原生代码和 Shader bytecode 提取证据。
 `test:runtime` 在同一个浏览器进程内依次加载四张参考卡、推进确定性帧，并检查 console、网络和 mesh 数，
 不生成截图。
+
+MRT 输出审计会沿官方 prefab 的 Material PPtr 和完整 keyword 集合定位实际 Vulkan program，证明哪些
+Shader 写 location 1 以及 RT1 的 replace 状态。浏览器尚未在同一次 draw 中配合 indexed blending 写入
+两个 attachment 前，MRT routing 仍保持 `partial`。
 
 `audit:official-player-pipeline` 会从官方 APKM 直接读取 `globalgamemanagers` 和 ARM64 `libil2cpp.so`
 （可用 `PCR_APKM` 指定路径）。当前它证明 Unity Gamma 工作流、HDR/质量设置和卡片 RT 构造参数；

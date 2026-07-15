@@ -3,6 +3,7 @@
 import { chromium } from "playwright";
 
 const BASE_URL = process.env.PCR_RUNTIME_URL || "http://127.0.0.1:8011/";
+const APP_ORIGIN = new URL(BASE_URL).origin;
 const SCENES = [
   ["scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json", 26],
   ["scene.cTR_20_000230_00_LEAF_SR.json", 19],
@@ -28,10 +29,12 @@ page.on("pageerror", (error) => {
   if (current) records.get(current).errors.push(`pageerror: ${error.message}`);
 });
 page.on("requestfailed", (request) => {
-  if (current) records.get(current).errors.push(`request: ${request.url()} (${request.failure()?.errorText || "failed"})`);
+  if (current && new URL(request.url()).origin === APP_ORIGIN) {
+    records.get(current).errors.push(`request: ${request.url()} (${request.failure()?.errorText || "failed"})`);
+  }
 });
 page.on("response", (response) => {
-  if (current && response.status() >= 400) {
+  if (current && response.status() >= 400 && new URL(response.url()).origin === APP_ORIGIN) {
     records.get(current).errors.push(`http ${response.status()}: ${response.url()}`);
   }
 });

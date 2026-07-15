@@ -103,6 +103,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
   以及恒为零的第二 MRT 输出。
 - `npm run build:exact-ur-plate` 会重新生成 `Card_UR_Plate`，包括 8 个 compiled texture binding、
   材质自身的 Cubemap 语义、两个 UBO layout，以及恒为零的第二 MRT 输出。
+- `npm run build:exact-ur-lens-flare` 会重新生成无 keyword 的 `Card_UR_LensFlare` program，包括
+  VAT 顶点路径和非零 secondary MRT emissive 输出。当前参考 GLB 只保留 flare transform，没有 mesh
+  primitive，因此 program 等价不能单独证明运行时已经实例化该 flare。
 
 ## 现实提醒(别手调)
 

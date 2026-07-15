@@ -30,20 +30,27 @@ def stencil_op(v):
     }
 
 
+def blend_state(v):
+    blend = v if isinstance(v, dict) else {}
+    return {
+        "src": param(blend.get("srcBlend")),
+        "dst": param(blend.get("destBlend")),
+        "srcAlpha": param(blend.get("srcBlendAlpha")),
+        "dstAlpha": param(blend.get("destBlendAlpha")),
+        "op": param(blend.get("blendOp")),
+        "opAlpha": param(blend.get("blendOpAlpha")),
+        "colMask": param(blend.get("colMask")),
+    }
+
+
 def pass_state(p):
     st = p.get("m_State", {}) if isinstance(p, dict) else {}
-    blend = st.get("rtBlend0", {}) or {}
+    rt_blends = [blend_state(st.get(f"rtBlend{i}")) for i in range(8)]
     return {
         "name": p.get("m_Name", "") if isinstance(p, dict) else "",
-        "blend": {
-            "src": param(blend.get("srcBlend")),
-            "dst": param(blend.get("destBlend")),
-            "srcAlpha": param(blend.get("srcBlendAlpha")),
-            "dstAlpha": param(blend.get("destBlendAlpha")),
-            "op": param(blend.get("blendOp")),
-            "opAlpha": param(blend.get("blendOpAlpha")),
-            "colMask": param(blend.get("colMask")),
-        },
+        # Preserve the existing RT0 field for extraction consumers.
+        "blend": rt_blends[0],
+        "rtBlends": rt_blends,
         "zTest": param(st.get("zTest")),
         "zWrite": param(st.get("zWrite")),
         "zClip": param(st.get("zClip")),

@@ -40,6 +40,7 @@ const AUDITS = [
   ["shader-color-defaults", "build/audit-shader-color-defaults.mjs"],
   ["shader-gating", "build/audit-shader-gating.mjs"],
   ["official-dead-fields", "build/audit-official-dead-fields.mjs"],
+  ["official-mrt-outputs", "build/audit-official-mrt-outputs.mjs"],
   ["official-mrt-usage", "build/audit-official-mrt-usage.mjs", {
     PCR_AUDIT_STRICT_MRT: "1",
   }],
@@ -59,6 +60,7 @@ const AUDITS = [
   ["exact-simple-opaque-hologram", "build/build-exact-simple-opaque-hologram.mjs", { PCR_EXACT_CHECK: "1" }],
   ["exact-frame-2layer-ur", "build/build-exact-frame-2layer-ur.mjs", { PCR_EXACT_CHECK: "1" }],
   ["exact-transparent-ur-new", "build/build-exact-transparent-ur-new.mjs", { PCR_EXACT_CHECK: "1" }],
+  ["exact-ur-lens-flare", "build/build-exact-ur-lens-flare.mjs", { PCR_EXACT_CHECK: "1" }],
   ["official-program-assets", "build/audit-official-program-assets.mjs"],
   ["evidence-threshold", "build/audit-evidence-threshold.mjs"],
   ["official-program-threshold", "build/audit-official-program-threshold.mjs"],

@@ -1,0 +1,166 @@
+{
+  "shader": "Card_UR_LensFlare",
+  "generated_by": "build/build-exact-ur-lens-flare.mjs",
+  "official_variant": {
+    "keywords": [],
+    "variant_index": 0,
+    "parameter_blob_index": 0,
+    "program_blob_index": 1,
+    "observed_materials": 4,
+    "observed_scenes": [
+      "scene.cPK_20_008900_02_HOUOUex_UR.json",
+      "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json"
+    ]
+  },
+  "official_bundle_sha256": "3acf67f49d5aed3ca0b81794c606bef5d81fdd6bb6105c665779938176bcce7a",
+  "official_spirv_sha256": {
+    "vertex": "2f61420487c058c59b314a1baa80bff2e88c8ce81080cd0f138dab20c44dc5dc",
+    "fragment": "00ca932a4760a0bbf5ed7608ec819f69a7a758bb45f0fcc7cb4b689ccd14c69f"
+  },
+  "vertex_attributes": [
+    {
+      "semantic": "position",
+      "source": "_915",
+      "type": "vec4",
+      "location": 0
+    },
+    {
+      "semantic": "uv",
+      "source": "_81",
+      "type": "vec2",
+      "location": 1
+    }
+  ],
+  "samplers": [
+    "_13",
+    "_288"
+  ],
+  "sampler_slots": [
+    "_BaseMap",
+    "_FlareVAT"
+  ],
+  "compiled_texture_bindings": {
+    "_BaseMap": 0,
+    "_FlareVAT": 2
+  },
+  "constant_buffers": {
+    "fragment": {
+      "name": "PGlobals1657561348",
+      "size": 32,
+      "fields": [
+        {
+          "name": "_RemoveTextureArtifact",
+          "offset": 0
+        },
+        {
+          "name": "_EmissivePattern",
+          "offset": 4
+        },
+        {
+          "name": "_EmissiveColor",
+          "offset": 16
+        }
+      ]
+    },
+    "vertex": {
+      "name": "VGlobals1657561348",
+      "size": 296,
+      "fields": [
+        {
+          "name": "_Time",
+          "offset": 0
+        },
+        {
+          "name": "unity_ObjectToWorld",
+          "offset": 16
+        },
+        {
+          "name": "glstate_matrix_projection",
+          "offset": 80
+        },
+        {
+          "name": "unity_MatrixV",
+          "offset": 144
+        },
+        {
+          "name": "_TexScale",
+          "offset": 208
+        },
+        {
+          "name": "_TexPixelsX",
+          "offset": 212
+        },
+        {
+          "name": "_TexPixelsY",
+          "offset": 216
+        },
+        {
+          "name": "_ScaleX",
+          "offset": 220
+        },
+        {
+          "name": "_ScaleY",
+          "offset": 224
+        },
+        {
+          "name": "_IsBack",
+          "offset": 228
+        },
+        {
+          "name": "_BaseColor",
+          "offset": 240
+        },
+        {
+          "name": "_BaseColorRGBIntensity",
+          "offset": 256
+        },
+        {
+          "name": "_TiltThreshold",
+          "offset": 260
+        },
+        {
+          "name": "_TiltPower",
+          "offset": 264
+        },
+        {
+          "name": "_CornerPower",
+          "offset": 268
+        },
+        {
+          "name": "_NotCornerOffset",
+          "offset": 272
+        },
+        {
+          "name": "_FlickerAnimSpeed",
+          "offset": 276
+        },
+        {
+          "name": "_TiltFlickerAnimSpeed",
+          "offset": 280
+        },
+        {
+          "name": "_FlickerTimeDelay",
+          "offset": 284
+        },
+        {
+          "name": "_FlickResultIntensityLowestPoint",
+          "offset": 288
+        },
+        {
+          "name": "_ShouldDoFlicker",
+          "offset": 292
+        }
+      ]
+    }
+  },
+  "implicit_defaults": {
+    "_BaseMap": "white",
+    "_FlareVAT": "white"
+  },
+  "mrt": {
+    "primary": "_56",
+    "emissive": "_72",
+    "emissive_location": 1,
+    "webgl_bloom_route": "uBloomOnly"
+  }
+}
