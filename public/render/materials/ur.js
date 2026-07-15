@@ -239,6 +239,46 @@ function urBgHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = ctx.exactShaders?.Card_Parallax_Hologram_UR_New;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _257: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _321: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
+        _335: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _396: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _411: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _614: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
+        _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
+        _Height: { value: f._Height ?? -1 },
+        _HeightPower: { value: f._HeightPower ?? 0 },
+        _Scale: { value: f._Scale ?? 1 },
+        _UseUv2: { value: Math.trunc(f._UseUv2 ?? 0) },
+        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
+        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
+        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
+        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
+        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessColor: { value: V3(c._DarknessColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.exactShader = "Card_Parallax_Hologram_UR_New";
+    return m;
+  }
   return new THREE.ShaderMaterial({
     uniforms: {
       phase: { value: ctx.layerTexDefault(r, "_PhaseTex") }, phaseMask: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },

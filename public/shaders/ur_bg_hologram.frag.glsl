@@ -1,0 +1,203 @@
+precision mediump float;
+precision highp int;
+
+uniform highp mat4 modelMatrix;
+uniform highp mat4 viewMatrix;
+uniform mediump float _DiffractionIntensity;
+uniform mediump float _DiffractionPower;
+uniform mediump float _RampRepeat;
+uniform mediump float _RampSpeed;
+uniform mediump float _RampOffset;
+uniform mediump float _RampInterval;
+uniform mediump vec3 _FakeSpecularColor;
+uniform mediump vec3 _DarknessColor;
+uniform mediump float _DarknessOffset;
+uniform mediump vec3 _Rotation;
+
+uniform mediump sampler2D _257;
+uniform mediump sampler2D _321;
+uniform mediump sampler2D _335;
+uniform mediump sampler2D _396;
+uniform mediump sampler2D _411;
+uniform mediump sampler2D _614;
+
+in highp vec3 vs_TEXCOORD3;
+in highp vec2 vs_TEXCOORD0;
+in highp vec2 vs_TEXCOORD1;
+in highp vec4 vs_TEXCOORD4;
+layout(location = 0) out highp vec4 _695;
+layout(location = 1) out highp vec4 _701;
+highp vec4 _9;
+highp float _39;
+highp vec4 _54;
+highp vec3 _65;
+highp vec2 _80;
+highp vec2 _101;
+highp float _110;
+highp vec3 _114;
+highp vec3 _135;
+vec3 _163;
+vec2 _253;
+vec3 _270;
+highp vec2 _291;
+vec2 _320;
+vec3 _370;
+float _376;
+vec3 _395;
+float _454;
+float _462;
+vec3 _470;
+bool _530;
+bool _554;
+bool _583;
+
+void main()
+{
+    _9.x = -viewMatrix[0].z;
+    _9.y = -viewMatrix[1].z;
+    _9.z = -viewMatrix[2].z;
+    _39 = dot(_9.xyz, _9.xyz);
+    _39 = inversesqrt(_39);
+    highp vec3 _51 = vec3(_39) * _9.xyz;
+    _9 = vec4(_51.x, _51.y, _51.z, _9.w);
+    vec3 _61 = _Rotation * vec3(-0.01745329238474369049072265625);
+    _54 = vec4(_61.x, _61.y, _61.z, _54.w);
+    _65.x = cos(_54.x);
+    _54.x = sin(_54.x);
+    _65.y = -_54.x;
+    _80.y = dot(_65.xy, _9.yz);
+    _65.z = _54.x;
+    _65.y = -_54.x;
+    _9.w = dot(_65.zx, _9.yz);
+    _101.x = cos(_54.y);
+    _54.x = sin(_54.y);
+    _110 = sin(_54.z);
+    _114.x = cos(_54.z);
+    _101.y = _54.x;
+    highp vec2 _124 = -_54.xx;
+    _54 = vec4(_124.x, _54.y, _124.y, _54.w);
+    _80.x = dot(_101, _9.xw);
+    _114.y = -_110;
+    _135.x = dot(_114.xy, _80);
+    _114.z = _110;
+    _114.y = -_110;
+    _135.y = dot(_114.zx, _80);
+    _54.y = _101.x;
+    _54.w = _54.y;
+    _135.z = dot(_54.zw, _9.xw);
+    _163 = (_135 * vec3(0.5)) + vec3(0.5);
+    _9.x = dot(vs_TEXCOORD3, vs_TEXCOORD3);
+    _9.x = inversesqrt(_9.x);
+    highp vec3 _182 = _9.xxx * vs_TEXCOORD3;
+    _9 = vec4(_182.x, _182.y, _182.z, _9.w);
+    _9.w = dot(_65.zx, _9.yz);
+    _65.y = dot(_65.xy, _9.yz);
+    _65.x = dot(_101, _9.xw);
+    _9.z = dot(_54.xy, _9.xw);
+    _9.x = dot(_114.xy, _65.xy);
+    _9.y = dot(_114.zx, _65.xy);
+    highp vec3 _223 = (_9.xyz * vec3(0.5)) + vec3(0.5);
+    _9 = vec4(_223.x, _223.y, _223.z, _9.w);
+    _39 = dot(_9.xy, _163.xy);
+    highp vec3 _245 = _9.xyz * vec3(vec3(_RampSpeed, _RampSpeed, _RampSpeed));
+    _9 = vec4(_245.x, _245.y, _245.z, _9.w);
+    _9.x = dot(_9.xyz, _163);
+    _253 = texture(_257, vs_TEXCOORD0).xy;
+    _163.x = (-_253.y) + 1.0;
+    _270.x = _253.x * 0.25;
+    _163.x = (_163.x * 0.5) + 0.5;
+    _270.y = _163.x * 0.5;
+    vec2 _288 = _270.xy + vec2(0.25);
+    _163 = vec3(_288.x, _288.y, _163.z);
+    _291 = vec2(_39) + (-_163.xy);
+    _291 = min(abs(_291), vec2(1.0));
+    _291 = (-_291) + vec2(1.0);
+    _291 = log2(_291);
+    _291 *= vec2(vec2(_DiffractionPower, _DiffractionPower));
+    _291 = exp2(_291);
+    _320 = texture(_321, vs_TEXCOORD0).xy;
+    _291 *= _320;
+    _163.x = _291.y + _291.x;
+    _253.x = texture(_335, vs_TEXCOORD0).x;
+    _9.x = (-_253.x) + _9.x;
+    _9.x = (_9.x * _RampRepeat) + _RampOffset;
+    _291.x = floor(_9.x);
+    _9.x = (-_291.x) + _9.x;
+    _370.x = _RampInterval + 1.0;
+    _376 = _RampInterval * 0.5;
+    _9.x = (_9.x * _370.x) + (-_376);
+    _9.x = clamp(_9.x, 0.0, 1.0);
+    _9.y = 0.5;
+    _395 = texture(_396, _9.xy).xyz;
+    _370 = _395 * vec3(_DiffractionIntensity);
+    _163 = _163.xxx * _370;
+    _395.x = texture(_411, vs_TEXCOORD1).x;
+    _163 *= _395.xxx;
+    _270 = (_163 * _DarknessColor) + (-_163);
+    _9.x = dot(-modelMatrix[2].xyz, -modelMatrix[2].xyz);
+    _9.x = inversesqrt(_9.x);
+    highp vec3 _451 = _9.xxx * (-modelMatrix[2].xyz);
+    _9 = vec4(_451.x, _451.y, _451.z, _9.w);
+    _454 = dot(_9.xy, _9.xy);
+    _454 = sqrt(_454);
+    _462 = max(abs(_9.z), _454);
+    _462 = 1.0 / _462;
+    _470.x = min(abs(_9.z), _454);
+    _462 *= _470.x;
+    _470.x = _462 * _462;
+    _9.x = (_470.x * 0.02083509974181652069091796875) + (-0.08513300120830535888671875);
+    _9.x = (_470.x * _9.x) + 0.1801410019397735595703125;
+    _9.x = (_470.x * _9.x) + (-0.33029949665069580078125);
+    _9.x = (_470.x * _9.x) + 0.999866008758544921875;
+    _291.x = _9.x * _462;
+    _291.x = (_291.x * (-2.0)) + 1.57079637050628662109375;
+    _530 = abs(_9.z) < _454;
+    highp float _538;
+    if (_530)
+    {
+        _538 = _291.x;
+    }
+    else
+    {
+        _538 = 0.0;
+    }
+    _291.x = _538;
+    _9.x = (_462 * _9.x) + _291.x;
+    _554 = _9.z < (-_9.z);
+    _291.x = _554 ? (-3.1415927410125732421875) : 0.0;
+    _9.x = _291.x + _9.x;
+    _462 = min(_9.z, _454);
+    _454 = max(_9.z, _454);
+    _554 = _454 >= (-_454);
+    _583 = _462 < (-_462);
+    _554 = _554 && _583;
+    highp float _592;
+    if (_554)
+    {
+        _592 = -_9.x;
+    }
+    else
+    {
+        _592 = _9.x;
+    }
+    _9.x = _592;
+    _9.x *= 3.0;
+    _454 = sin(_9.x);
+    _454 *= _454;
+    _395.x = texture(_614, vs_TEXCOORD4.xy).x;
+    _462 = _395.x * vs_TEXCOORD4.z;
+    _462 = log2(_462);
+    _462 *= vs_TEXCOORD4.w;
+    _462 = exp2(_462);
+    _470 = vec3(_462) * vec3(_FakeSpecularColor.x, _FakeSpecularColor.y, _FakeSpecularColor.z);
+    _470.x = dot(_470, vec3(0.298911988735198974609375, 0.586610972881317138671875, 0.114477999508380889892578125));
+    _470.x += (-_DarknessOffset);
+    _470.x = clamp(_470.x, 0.0, 1.0);
+    _470.x = (-_470.x) + 1.0;
+    _454 *= _470.x;
+    _163 = (vec3(_454) * _270) + _163;
+    _163 = (vec3(_FakeSpecularColor.x, _FakeSpecularColor.y, _FakeSpecularColor.z) * vec3(_462)) + _163;
+    _695 = vec4(_163.x, _163.y, _163.z, _695.w);
+    _695.w = 1.0;
+    _701 = vec4(0.0);
+}

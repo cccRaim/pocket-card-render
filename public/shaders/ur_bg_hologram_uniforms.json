@@ -1,0 +1,45 @@
+{
+  "shader": "Card_Parallax_Hologram_UR_New",
+  "generated_by": "build/build-exact-ur-bg-hologram.mjs",
+  "official_spirv_sha256": {
+    "vertex": "edf422324256e22b8529b95b7fa9a1613a90d319186aa8f387b2bcd2a453c08b",
+    "fragment": "88ff63e04e5df3ba4e26af924457918dfe04880a26cdd29eab500fab9b33e56e"
+  },
+  "samplers": [
+    "_257",
+    "_321",
+    "_335",
+    "_396",
+    "_411",
+    "_614"
+  ],
+  "sampler_slots": [
+    "_PhaseTex",
+    "_PhaseMaskTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_HologramMaskTex",
+    "_FakeSpecularMask"
+  ],
+  "compiled_texture_bindings": {
+    "_PhaseTex": 0,
+    "_PhaseMaskTex": 1,
+    "_RampMaskTex": 2,
+    "_RampTex": 3,
+    "_HologramMaskTex": 4,
+    "_FakeSpecularMask": 5
+  },
+  "implicit_defaults": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "mrt": {
+    "primary": "_695",
+    "secondary": "_701",
+    "secondary_value": "zero"
+  }
+}

@@ -98,6 +98,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `npm run build:exact-opaque-ur-oklab` 会选择启用四个 keyword 的 `Opaque-UR-Oklab` variant，
   并从官方 SPIR-V 重新生成。审计还会解析该 compiled variant 的 parameter blob，恢复全部 13 个
   texture binding 和两个具名 UBO layout；`npm run audit:exact-opaque-ur-oklab` 会逐字节核对提交产物。
+- `npm run build:exact-ur-bg-hologram` 会重新生成只有一套 program 的
+  `Card_Parallax_Hologram_UR_New`，并核对全部 6 个 compiled texture binding、两个 UBO layout，
+  以及恒为零的第二 MRT 输出。
 
 ## 现实提醒(别手调)
 

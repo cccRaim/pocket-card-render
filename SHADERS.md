@@ -106,6 +106,9 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
   regenerates it from official SPIR-V. Its audit also parses the compiled variant parameter blob to
   recover all 13 texture bindings and both named UBO layouts; `npm run audit:exact-opaque-ur-oklab`
   checks the committed program byte-for-byte.
+- `npm run build:exact-ur-bg-hologram` regenerates the single-program
+  `Card_Parallax_Hologram_UR_New` shader and verifies all six compiled texture bindings, both UBO
+  layouts, and its zero-valued secondary MRT output.
 
 ## Reality check (don't hand-tune)
 
