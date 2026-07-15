@@ -102,6 +102,10 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `npm run build:exact-classic-holograms` regenerates `Frame-Holo-Tuning` and
   `Opaque-Hologram_Tuning`. In addition to SPIR-V reflection, its audit checks Unity's compiled
   `m_CommonParameters` texture and constant-buffer bindings against the runtime mapping.
+- `npm run build:exact-opaque-ur-oklab` selects the four-keyword `Opaque-UR-Oklab` variant and
+  regenerates it from official SPIR-V. Its audit also parses the compiled variant parameter blob to
+  recover all 13 texture bindings and both named UBO layouts; `npm run audit:exact-opaque-ur-oklab`
+  checks the committed program byte-for-byte.
 
 ## Reality check (don't hand-tune)
 

@@ -95,6 +95,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `npm run build:exact-classic-holograms` 会重新生成 `Frame-Holo-Tuning` 和
   `Opaque-Hologram_Tuning`。除 SPIR-V reflection 外，审计还会核对 Unity 编译结果中的
   `m_CommonParameters` texture / constant-buffer 绑定与运行时映射。
+- `npm run build:exact-opaque-ur-oklab` 会选择启用四个 keyword 的 `Opaque-UR-Oklab` variant，
+  并从官方 SPIR-V 重新生成。审计还会解析该 compiled variant 的 parameter blob，恢复全部 13 个
+  texture binding 和两个具名 UBO layout；`npm run audit:exact-opaque-ur-oklab` 会逐字节核对提交产物。
 
 ## 现实提醒(别手调)
 

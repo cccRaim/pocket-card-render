@@ -16,6 +16,8 @@
     "audit:exact-basic-holograms": "node build/build-exact-basic-holograms.mjs --check",
     "build:exact-classic-holograms": "node build/build-exact-classic-holograms.mjs",
     "audit:exact-classic-holograms": "node build/build-exact-classic-holograms.mjs --check",
+    "build:exact-opaque-ur-oklab": "node build/build-exact-opaque-ur-oklab.mjs",
+    "audit:exact-opaque-ur-oklab": "node build/build-exact-opaque-ur-oklab.mjs --check",
     "report:evidence": "node build/report-renderer-evidence.mjs",
     "audit:official-equivalence": "node build/audit-official-equivalence.mjs",
     "audit:claim-contract": "node build/audit-render-claim-contract.mjs",

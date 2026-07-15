@@ -402,6 +402,64 @@ const EXACT_PORTS = {
       /userData\.exactShader\s*=\s*"Opaque-Hologram_Tuning"/,
     ],
   },
+  "Opaque-UR-Oklab": {
+    name: "opaque_ur_oklab",
+    vert: "shaders/opaque_ur_oklab.vert.glsl",
+    frag: "shaders/opaque_ur_oklab.frag.glsl",
+    uniforms: "shaders/opaque_ur_oklab_uniforms.json",
+    generatedBy: "build/build-exact-opaque-ur-oklab.mjs",
+    requiredKeywords: [
+      "_DARKNESSENABLED_ON",
+      "_FAKESPECULARENABLED_ON",
+      "_HOLOGRAM2ENABLED_ON",
+      "_REFLECTIONENABLED_ON",
+    ],
+    requiredVert: [
+      /mat4\s+_ObjectToWorld\s*=\s*modelMatrix/,
+      /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
+      /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
+      /out\s+vec4\s+vs_TEXCOORD6\b/,
+      /out\s+vec4\s+vs_TEXCOORD7\b/,
+      /1\.26984119415283203125/,
+      /0\.90909087657928466796875/,
+      /^((?!gl_Position\.y\s*=\s*-gl_Position\.y).)*$/s,
+    ],
+    requiredFrag: [
+      /layout\(location = 0\) out highp vec4 _1985/,
+      /layout\(location = 1\) out highp vec4 _2004/,
+      /texture\(_354,\s*_20\.yzx\)\.xyz/,
+      /texture\(_926,\s*vs_TEXCOORD6\.xy\)\.x/,
+      /texture\(_1609,\s*vs_TEXCOORD0\)\.xy/,
+      /texture\(_1775,\s*vs_TEXCOORD0\)\.x/,
+      /0\.3963377773761749267578125/,
+      /4\.076741695404052734375/,
+      /_2004\s*=\s*\(vec4\(_42\)\s*\*\s*_350\)\s*\+\s*_1992/,
+      /if\s*\(uBloomOnly != 0\)[\s\S]*?_1985\s*=\s*_2004/,
+      /^((?!discard).)*$/s,
+    ],
+    samplers: ["_13", "_291", "_354", "_419", "_428", "_435", "_607", "_705", "_719", "_862", "_926", "_1609", "_1775"],
+    samplerSlots: ["_MainTex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex", "_PhaseTex2", "_RampMaskTex2", "_RampTex2", "_FakeSpecularMask", "_NormalMap2", "_ReflectionMask"],
+    samplerTypes: { _354: "samplerCube" },
+    implicitDefaults: {
+      _HologramMaskTex: "black", _CubeMap: "gray", _PhaseTex: "white", _PhaseMaskTex: "white",
+      _RampMaskTex: "black", _RampTex: "black", _PhaseTex2: "white", _RampMaskTex2: "black",
+      _RampTex2: "black", _FakeSpecularMask: "white", _NormalMap2: "bump", _ReflectionMask: "white",
+    },
+    mrt: { primary: "_1985", emissive: "_2004", webgl_bloom_route: "uBloomOnly" },
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
+    runtimePatterns: [
+      /"Opaque-UR-Oklab":\s*\{\s*vert:\s*"shaders\/opaque_ur_oklab\.vert\.glsl",\s*frag:\s*"shaders\/opaque_ur_oklab\.frag\.glsl"\s*\}/,
+      /exactUrProgram\s*=\s*ctx\.exactShaders\?\.\["Opaque-UR-Oklab"\]/,
+      /r\.shader\s*===\s*"Opaque-UR-Oklab"[\s\S]*?&&\s*exactUrProgram/,
+      /sceneKeywords\.every\(\(value, index\)\s*=>\s*value\s*===\s*opaqueUrKeywords\[index\]\)/,
+      /_13:\s*\{\s*value:\s*ctx\.layerTexNoColorSpace\(r,\s*"_MainTex"\)\s*\}/,
+      /_354:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
+      /vertexShader:\s*exactUrProgram\.vert/,
+      /fragmentShader:\s*exactUrProgram\.frag/,
+      /userData\.bloomSource\s*=\s*true/,
+      /userData\.exactShader\s*=\s*"Opaque-UR-Oklab"/,
+    ],
+  },
   Card_Parallax_UR: {
     name: "parallax_ur",
     vert: "shaders/parallax_ur.vert.glsl",
@@ -491,6 +549,16 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
       refs,
     });
   }
+  if (cfg.requiredKeywords) {
+    const required = [...cfg.requiredKeywords].sort();
+    rows.push({
+      ok: sceneUsers.every((user) => JSON.stringify([...user.keywords].sort()) === JSON.stringify(required)),
+      shader,
+      asset: "scene.*.json",
+      reason: `all scene users select exact keyword set ${required.join(",")}`,
+      refs,
+    });
+  }
   if (cfg.runtimeFiles && cfg.runtimePatterns) {
     const runtimeSource = cfg.runtimeFiles.map((file) => readText(file) || "").join("\n");
     for (const re of cfg.runtimePatterns) {
@@ -536,6 +604,15 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
           shader,
           asset: cfg.uniforms,
           reason: `uniform manifest variant ${cfg.requiredKeyword}`,
+          refs,
+        });
+      }
+      if (cfg.requiredKeywords) {
+        rows.push({
+          ok: JSON.stringify([...(uniforms.selected_keywords || [])].sort()) === JSON.stringify([...cfg.requiredKeywords].sort()),
+          shader,
+          asset: cfg.uniforms,
+          reason: "uniform manifest selected keyword set",
           refs,
         });
       }

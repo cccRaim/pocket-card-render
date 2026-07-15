@@ -32,6 +32,7 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Card_Hologram_Tuning",
   "Frame-Holo-Tuning",
   "Opaque-Hologram_Tuning",
+  "Opaque-UR-Oklab",
 ]);
 const UR_CORE_GUARDED = new Set([
   "Card_UR_Plate",

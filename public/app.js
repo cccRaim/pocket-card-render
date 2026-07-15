@@ -463,6 +463,7 @@ async function main() {
     Card_Hologram_Tuning: { vert: "shaders/card_hologram_tuning.vert.glsl", frag: "shaders/card_hologram_tuning.frag.glsl" },
     "Frame-Holo-Tuning": { vert: "shaders/frame_holo_tuning.vert.glsl", frag: "shaders/frame_holo_tuning.frag.glsl" },
     "Opaque-Hologram_Tuning": { vert: "shaders/opaque_shadowbox_hologram_tuning.vert.glsl", frag: "shaders/opaque_shadowbox_hologram_tuning.frag.glsl" },
+    "Opaque-UR-Oklab": { vert: "shaders/opaque_ur_oklab.vert.glsl", frag: "shaders/opaque_ur_oklab.frag.glsl" },
   });
   const exactGlitMats = [];   // RawShaderMaterials needing per-frame time/rotation
 

@@ -47,6 +47,7 @@ const AUDITS = [
   ["exact-transparent-hologram", "build/build-exact-transparent-hologram-tuning.mjs", { PCR_EXACT_CHECK: "1" }],
   ["exact-basic-holograms", "build/build-exact-basic-holograms.mjs", { PCR_EXACT_CHECK: "1" }],
   ["exact-classic-holograms", "build/build-exact-classic-holograms.mjs", { PCR_EXACT_CHECK: "1" }],
+  ["exact-opaque-ur-oklab", "build/build-exact-opaque-ur-oklab.mjs", { PCR_EXACT_CHECK: "1" }],
   ["official-program-assets", "build/audit-official-program-assets.mjs"],
   ["evidence-threshold", "build/audit-evidence-threshold.mjs"],
   ["official-program-threshold", "build/audit-official-program-threshold.mjs"],
