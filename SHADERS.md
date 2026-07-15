@@ -74,7 +74,8 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
   `gl_Position`;
 - compute the camera-relative basis with `inverse(modelMatrix) * cameraPosition` (see
   `render/glsl.js` — the shared `VIEW_BASIS_VS` does exactly this);
-- drop `SV_Target1` / Unity-only outputs;
+- preserve every active color output; when WebGL cannot expose the official MRT layout directly, route the
+  unchanged official output into the corresponding renderer pass and audit that adaptation explicitly;
 - wire the uniforms from the recipe via the [RenderContext](public/render/context.js)
   (`ctx.layerTex(r, slot)`, `r.floats`, `r.colors`);
 - preserve implicit ShaderLab defaults by texture dimension; for example an empty Cubemap property is
@@ -90,6 +91,9 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
   `RawShaderMaterial`.
 - `public/shaders/card_parallax*.glsl` shows smaller official programs adapted to named three.js
   uniforms, including exact keyword-variant selection and cube-map bindings.
+- `npm run build:exact-frame-holo-ur` regenerates `Frame-Holo-UR-New` from the official bundle. Its
+  location-1 emissive expression is preserved and routed unchanged into the WebGL bloom pass;
+  `npm run audit:exact-frame-holo-ur` verifies the checked-in files byte-for-byte against regeneration.
 
 ## Reality check (don't hand-tune)
 

@@ -8,6 +8,8 @@
     "serve": "node server.mjs",
     "gather": "node build/gather.mjs",
     "shot": "node build/shot.mjs",
+    "build:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs",
+    "audit:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs --check",
     "report:evidence": "node build/report-renderer-evidence.mjs",
     "audit:official-equivalence": "node build/audit-official-equivalence.mjs",
     "audit:claim-contract": "node build/audit-render-claim-contract.mjs",

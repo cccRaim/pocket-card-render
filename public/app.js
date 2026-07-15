@@ -457,6 +457,7 @@ async function main() {
     Card_Parallax_Metal: { vert: "shaders/card_parallax_metal.vert.glsl", frag: "shaders/card_parallax_metal.frag.glsl" },
     Card_Parallax_UR: { vert: "shaders/parallax_ur.vert.glsl", frag: "shaders/parallax_ur.frag.glsl" },
     Opaque_Hologram_Tuning: { vert: "shaders/opaque_hologram_tuning.vert.glsl", frag: "shaders/opaque_hologram_tuning.frag.glsl" },
+    Frame_Holo_UR_New: { vert: "shaders/frame_holo_ur.vert.glsl", frag: "shaders/frame_holo_ur.frag.glsl" },
   });
   const exactGlitMats = [];   // RawShaderMaterials needing per-frame time/rotation
 

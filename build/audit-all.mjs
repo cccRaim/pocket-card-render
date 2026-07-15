@@ -43,6 +43,7 @@ const AUDITS = [
   ["official-flat-core", "build/audit-official-flat-core.mjs"],
   ["official-holo-core", "build/audit-official-holo-core.mjs"],
   ["official-ur-remainder-core", "build/audit-official-ur-remainder-core.mjs"],
+  ["exact-frame-holo-ur", "build/build-exact-frame-holo-ur.mjs", { PCR_EXACT_CHECK: "1" }],
   ["official-program-assets", "build/audit-official-program-assets.mjs"],
   ["evidence-threshold", "build/audit-evidence-threshold.mjs"],
   ["official-program-threshold", "build/audit-official-program-threshold.mjs"],

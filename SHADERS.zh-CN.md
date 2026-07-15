@@ -69,7 +69,8 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - 别名化属性(`position` / `normal` / `uv`),`gl_Position` 用 `projectionMatrix * modelViewMatrix`;
 - 用 `inverse(modelMatrix) * cameraPosition` 算相机相对基底(见 `render/glsl.js` 的共享 `VIEW_BASIS_VS`,
   就是干这个的);
-- 去掉 `SV_Target1` / Unity 专有输出;
+- 保留所有实际生效的颜色输出；如果 WebGL 不能直接暴露官方 MRT 布局，就把未改写的官方输出路由到
+  对应 renderer pass，并对这层适配做显式审计；
 - 从 recipe 经 [RenderContext](public/render/context.js) 接 uniform(`ctx.layerTex(r, slot)`、`r.floats`、
   `r.colors`);
 - 按纹理维度保留 ShaderLab 的隐式默认值；例如空 Cubemap 属性应使用 Unity 内置灰色 cube，
@@ -83,6 +84,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `public/shaders/glitter.*.glsl` 展示了在 `RawShaderMaterial` 中保留大型匿名 constant buffer 布局。
 - `public/shaders/card_parallax*.glsl` 展示了把较小的官方程序适配成具名 three.js uniform，
   包括精确选择 keyword variant 和绑定 cube map。
+- `npm run build:exact-frame-holo-ur` 会直接从官方 bundle 重新生成 `Frame-Holo-UR-New`。它保留
+  location 1 的官方 emissive 表达式，并将其原样路由到 WebGL bloom pass；
+  `npm run audit:exact-frame-holo-ur` 会逐字节核对仓库文件与重新生成的结果。
 
 ## 现实提醒(别手调)
 

@@ -26,6 +26,7 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Card_Parallax_UR",
   "Card_UR_Glitter_FlowMaps",
   "Opaque_Hologram_Tuning",
+  "Frame-Holo-UR-New",
 ]);
 const UR_CORE_GUARDED = new Set([
   "Card_UR_Plate",

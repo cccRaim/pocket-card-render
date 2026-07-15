@@ -198,6 +198,43 @@ const EXACT_PORTS = {
       /userData\.exactShader\s*=\s*"Opaque_Hologram_Tuning"/,
     ],
   },
+  "Frame-Holo-UR-New": {
+    name: "frame_holo_ur",
+    vert: "shaders/frame_holo_ur.vert.glsl",
+    frag: "shaders/frame_holo_ur.frag.glsl",
+    uniforms: "shaders/frame_holo_ur_uniforms.json",
+    generatedBy: "build/build-exact-frame-holo-ur.mjs",
+    requiredVert: [
+      /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
+      /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
+      /out\s+vec4\s+vs_TEXCOORD4\b/,
+      /0\.582111895084381103515625/,
+      /2\.3929851055145263671875/,
+      /^((?!gl_Position\.y\s*=\s*-gl_Position\.y).)*$/s,
+    ],
+    requiredFrag: [
+      /layout\(location = 1\) out highp vec4 _1053/,
+      /layout\(location = 0\) out highp vec4 _1059/,
+      /texture\(_333,\s*_41\.yzx\)\.xyz/,
+      /texture\(_396,\s*vs_TEXCOORD0\)\.xy/,
+      /_428\s*\*=\s*_RemoveMetalic/,
+      /_1053\s*=\s*vec4\(_1057\.x\s*\?/,
+      /if\s*\(uBloomOnly != 0\)[\s\S]*?_1059\s*=\s*_1053/,
+    ],
+    samplers: ["_13", "_302", "_333", "_388", "_396", "_410", "_570", "_721"],
+    samplerSlots: ["_BaseTex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex", "_FakeSpecularMask"],
+    samplerTypes: { _333: "samplerCube" },
+    implicitDefaults: { _CubeMap: "gray" },
+    mrt: { primary: "_1059", emissive: "_1053", webgl_bloom_route: "uBloomOnly" },
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
+    runtimePatterns: [
+      /Frame_Holo_UR_New:\s*\{\s*vert:\s*"shaders\/frame_holo_ur\.vert\.glsl",\s*frag:\s*"shaders\/frame_holo_ur\.frag\.glsl"\s*\}/,
+      /exactShaders\?\.Frame_Holo_UR_New/,
+      /_333:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
+      /userData\.bloomSource\s*=\s*true/,
+      /userData\.exactShader\s*=\s*"Frame-Holo-UR-New"/,
+    ],
+  },
   Card_Parallax_UR: {
     name: "parallax_ur",
     vert: "shaders/parallax_ur.vert.glsl",
@@ -341,6 +378,24 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
           shader,
           asset: cfg.uniforms,
           reason: "implicit texture defaults",
+          refs,
+        });
+      }
+      if (cfg.generatedBy) {
+        rows.push({
+          ok: uniforms.generated_by === cfg.generatedBy,
+          shader,
+          asset: cfg.uniforms,
+          reason: "official generation provenance",
+          refs,
+        });
+      }
+      if (cfg.mrt) {
+        rows.push({
+          ok: JSON.stringify(uniforms.mrt || {}) === JSON.stringify(cfg.mrt),
+          shader,
+          asset: cfg.uniforms,
+          reason: "MRT output and WebGL route manifest",
           refs,
         });
       }

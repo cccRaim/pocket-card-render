@@ -1,0 +1,66 @@
+{
+  "shader": "Frame-Holo-UR-New",
+  "generated_by": "build/build-exact-frame-holo-ur.mjs",
+  "official_spirv_sha256": {
+    "vertex": "d92424eb171ce6605f336e2a799bfbe72474492f36051790f3cd60ba7e2b92b1",
+    "fragment": "90f2e82f3cb63f5aeda5c35757f7c42d01a23fb7414eec87cc8c129c197e0558"
+  },
+  "samplers": [
+    "_13",
+    "_302",
+    "_333",
+    "_388",
+    "_396",
+    "_410",
+    "_570",
+    "_721"
+  ],
+  "sampler_slots": [
+    "_BaseTex",
+    "_HologramMaskTex",
+    "_CubeMap",
+    "_PhaseTex",
+    "_PhaseMaskTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_FakeSpecularMask"
+  ],
+  "floats": {
+    "_RampMaskRotation": "_RampMaskRotation",
+    "_RampMaskScale": "_RampMaskScale",
+    "_UseSimpleRampMaskAndRotation": "_UseSimpleRampMaskAndRotation",
+    "_FakeSpecularMaskScale": "_FakeSpecularMaskScale",
+    "_FakeSpecularIntensity": "_FakeSpecularIntensity",
+    "_FakeSpecularPower": "_FakeSpecularPower",
+    "_FakeSpecularCornerPower": "_FakeSpecularCornerPower",
+    "_FakeSpecularNotCornerOffset": "_FakeSpecularNotCornerOffset",
+    "_Shininess": "_Shininess",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval",
+    "_RemoveMetalic": "_RemoveMetalic",
+    "_FakeSpecularEnabled": "_FakeSpecularEnabled",
+    "_DarknessEnabled": "_DarknessEnabled",
+    "_DarknessOffset": "_DarknessOffset",
+    "_EmissivePattern": "_EmissivePattern"
+  },
+  "colors": {
+    "_FakeSpecularColor": "_FakeSpecularColor",
+    "_DarknessColor": "_DarknessColor",
+    "_EmissiveColor": "_EmissiveColor",
+    "_Rotation": "_Rotation"
+  },
+  "implicit_defaults": {
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_1059",
+    "emissive": "_1053",
+    "webgl_bloom_route": "uBloomOnly"
+  }
+}
