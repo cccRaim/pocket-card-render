@@ -10,6 +10,74 @@ function frame2LayerUrMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = ctx.exactShaders?.["Frame-2Layer-UR"];
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _13: { value: rawColorTex(r, ctx, "_BaseTex") },
+        _260: { value: ctx.layerTexDefault(r, "_LayerMaskTex") },
+        _367: { value: ctx.layerCubeDefault(r) },
+        _420: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _428: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
+        _444: { value: ctx.layerTexDefaultRepeat(r, "_RampMaskTex") },
+        _601: { value: rawColorTex(r, ctx, "_RampTex") },
+        _760: { value: ctx.layerTexDefaultRepeat(r, "_RampMaskTex2") },
+        _916: { value: rawColorTex(r, ctx, "_RampTex2") },
+        _1277: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
+        _RampMaskRotation: { value: f._RampMaskRotation ?? 0 },
+        _RampMaskScale: { value: f._RampMaskScale ?? 1 },
+        _UseSimpleRampMaskAndRotation: { value: Math.trunc(f._UseSimpleRampMaskAndRotation ?? 0) },
+        _RampMaskRotation2: { value: f._RampMaskRotation2 ?? 0 },
+        _RampMaskScale2: { value: f._RampMaskScale2 ?? 1 },
+        _UseSimpleRampMaskAndRotation2: { value: Math.trunc(f._UseSimpleRampMaskAndRotation2 ?? 0) },
+        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
+        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
+        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
+        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
+        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
+        _FakeSpecularMaskScale2: { value: f._FakeSpecularMaskScale2 ?? 1 },
+        _FakeSpecularIntensity2: { value: f._FakeSpecularIntensity2 ?? 1 },
+        _FakeSpecularPower2: { value: f._FakeSpecularPower2 ?? 1 },
+        _FakeSpecularCornerPower2: { value: f._FakeSpecularCornerPower2 ?? 0 },
+        _FakeSpecularNotCornerOffset2: { value: f._FakeSpecularNotCornerOffset2 ?? 0 },
+        _Shininess: { value: f._Shininess ?? 32 },
+        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _RemoveMetallic: { value: f._RemoveMetallic ?? f._RemoveMetalic ?? 1 },
+        _DiffractionIntensity2: { value: f._DiffractionIntensity2 ?? 0.5 },
+        _DiffractionPower2: { value: f._DiffractionPower2 ?? 64 },
+        _RampRepeat2: { value: f._RampRepeat2 ?? 2 },
+        _RampSpeed2: { value: f._RampSpeed2 ?? 1 },
+        _RampOffset2: { value: f._RampOffset2 ?? 0 },
+        _RampInterval2: { value: f._RampInterval2 ?? 0 },
+        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
+        _FakeSpecularColor2: { value: V3(c._FakeSpecularColor2, new THREE.Vector3(0, 0, 0)) },
+        _DarknessColor1: { value: V3(c._DarknessColor1, new THREE.Vector3(0, 0, 0)) },
+        _DarknessOffset1: { value: f._DarknessOffset1 ?? 0 },
+        _DarknessColor2: { value: V3(c._DarknessColor2, new THREE.Vector3(0, 0, 0)) },
+        _DarknessOffset2: { value: f._DarknessOffset2 ?? 0 },
+        _EmissivePattern: { value: Math.trunc(f._EmissivePattern ?? 1) },
+        _EmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+        _Tilt: { value: f._Tilt ?? 0 },
+        uBloomOnly: { value: 0 },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.bloomSource = true;
+    m.userData.exactShader = "Frame-2Layer-UR";
+    return m;
+  }
   return new THREE.ShaderMaterial({
     uniforms: {
       baseTex: { value: rawColorTex(r, ctx, "_BaseTex") },

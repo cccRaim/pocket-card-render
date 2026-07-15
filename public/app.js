@@ -463,9 +463,12 @@ async function main() {
     Card_Hologram_Tuning: { vert: "shaders/card_hologram_tuning.vert.glsl", frag: "shaders/card_hologram_tuning.frag.glsl" },
     "Frame-Holo-Tuning": { vert: "shaders/frame_holo_tuning.vert.glsl", frag: "shaders/frame_holo_tuning.frag.glsl" },
     "Opaque-Hologram_Tuning": { vert: "shaders/opaque_shadowbox_hologram_tuning.vert.glsl", frag: "shaders/opaque_shadowbox_hologram_tuning.frag.glsl" },
+    "Simple-Opaque-Hologram_Tuning": { vert: "shaders/simple_opaque_hologram_tuning.vert.glsl", frag: "shaders/simple_opaque_hologram_tuning.frag.glsl" },
     "Opaque-UR-Oklab": { vert: "shaders/opaque_ur_oklab.vert.glsl", frag: "shaders/opaque_ur_oklab.frag.glsl" },
     Card_Parallax_Hologram_UR_New: { vert: "shaders/ur_bg_hologram.vert.glsl", frag: "shaders/ur_bg_hologram.frag.glsl" },
     Card_UR_Plate: { vert: "shaders/ur_plate.vert.glsl", frag: "shaders/ur_plate.frag.glsl" },
+    "Frame-2Layer-UR": { vert: "shaders/frame_2layer_ur.vert.glsl", frag: "shaders/frame_2layer_ur.frag.glsl" },
+    "Transparent-UR-New": { vert: "shaders/transparent_ur_new.vert.glsl", frag: "shaders/transparent_ur_new.frag.glsl" },
   });
   const exactGlitMats = [];   // RawShaderMaterials needing per-frame time/rotation
 
@@ -786,6 +789,7 @@ async function main() {
           if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
           if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
           if (m.uniforms._563) m.uniforms._563.value = t.holo;
+          if (m.uniforms._581) m.uniforms._581.value = t.holo;
           if (m.uniforms.foilMask) m.uniforms.foilMask.value = t.foil;
         }
         curLoc = lc;

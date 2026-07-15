@@ -66,12 +66,12 @@ def decompressed_programs(shader):
                 continue
 
 
-def select_variant(shader, keyword):
+def select_variant(shader, keyword=None, no_keywords=False):
     parsed = shader.get("m_ParsedForm", {})
     keyword_names = parsed.get("m_KeywordNames", [])
-    if keyword not in keyword_names:
+    if keyword and keyword not in keyword_names:
         raise ValueError(f"keyword {keyword!r} not found")
-    keyword_index = keyword_names.index(keyword)
+    keyword_index = keyword_names.index(keyword) if keyword else None
     candidates = []
     for subshader in parsed.get("m_SubShaders", []):
         for shader_pass in subshader.get("m_Passes", []):
@@ -81,14 +81,18 @@ def select_variant(shader, keyword):
                 parameter_groups = stage.get("m_ParameterBlobIndices", [])
                 for group_index, players in enumerate(player_groups):
                     for variant_index, player in enumerate(players or []):
-                        if keyword_index not in player.get("m_KeywordIndices", []):
+                        indices = player.get("m_KeywordIndices", [])
+                        if keyword and keyword_index not in indices:
+                            continue
+                        if no_keywords and indices:
                             continue
                         parameters = parameter_groups[group_index] if group_index < len(parameter_groups) else []
                         if variant_index >= len(parameters):
                             raise ValueError("selected variant has no parameter blob index")
                         candidates.append((shader_pass, stage, player, variant_index, parameters[variant_index]))
     if len(candidates) != 1:
-        raise ValueError(f"keyword {keyword!r} matched {len(candidates)} variants")
+        selector = f"keyword {keyword!r}" if keyword else "empty keyword set"
+        raise ValueError(f"{selector} matched {len(candidates)} variants")
     shader_pass, stage, player, variant_index, parameter_blob_index = candidates[0]
     selected_keywords = [keyword_names[index] for index in player.get("m_KeywordIndices", [])]
     return {
@@ -177,14 +181,16 @@ def common_textures(shader_pass):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("suffix")
-    parser.add_argument("--keyword", required=True)
+    selector = parser.add_mutually_exclusive_group(required=True)
+    selector.add_argument("--keyword")
+    selector.add_argument("--no-keywords", action="store_true")
     parser.add_argument("--shaders", default=os.environ.get("PCR_SHADERS", "decrypted/Common/Shader"))
     args = parser.parse_args()
 
     shader = find_shader(args.suffix, args.shaders)
     if not shader:
         raise SystemExit(f"shader {args.suffix!r} not found")
-    selected = select_variant(shader, args.keyword)
+    selected = select_variant(shader, args.keyword, args.no_keywords)
     max_index = max(selected["parameterBlobIndex"], selected["programBlobIndex"])
     decoded = None
     entries = None

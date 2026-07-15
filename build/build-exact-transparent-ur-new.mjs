@@ -1,0 +1,216 @@
+// Generate Transparent-UR-New from the official Unity shader bundle.
+import crypto from "node:crypto";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const SHADER_ROOT = process.env.PCR_SHADERS
+  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
+const PYTHON = process.env.PYTHON || "python";
+const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
+const OUT = path.join(ROOT, "public", "shaders");
+const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
+const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-transparent-ur-new-"));
+
+function run(command, args, options = {}) {
+  return execFileSync(command, args, {
+    cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], ...options,
+  });
+}
+
+function equal(actual, expected, message) {
+  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    throw new Error(`${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+  }
+}
+
+function member(name, type, offset, array = undefined) {
+  return { name, type, offset, ...(array ? { array } : {}) };
+}
+
+function reflect(file, expected) {
+  const data = JSON.parse(run(SPIRV_CROSS, [file, "--reflect"]));
+  const ubo = (data.ubos || []).find((item) => item.name === expected.ubo.name);
+  if (!ubo || ubo.block_size !== expected.ubo.size) throw new Error(`${expected.ubo.name} UBO changed`);
+  equal((data.types[ubo.type].members || []).map(({ name, type, offset, array }) => ({
+    name, type, offset, ...(array ? { array } : {}),
+  })), expected.ubo.members, `${expected.ubo.name} members changed`);
+  for (const key of ["inputs", "outputs", "textures"]) {
+    equal((data[key] || []).map(({ name, type, location, binding }) => ({
+      name, type, ...(location != null ? { location } : {}), ...(binding != null ? { binding } : {}),
+    })).sort((a, b) => (a.location ?? a.binding) - (b.location ?? b.binding)), expected[key] || [], `${key} changed`);
+  }
+}
+
+function replaceUbo(source, block, owner, declarations) {
+  const re = new RegExp(`layout\\(std140\\) uniform ${block}[\\s\\S]*?}\\s*${owner};\\s*`);
+  const result = source.replace(re, `${declarations.join("\n")}\n\n`);
+  if (result === source) throw new Error(`${block} replacement failed`);
+  return result;
+}
+
+function replaceMembers(source, owner, mapping) {
+  return source.replace(new RegExp(`${owner}\\._m(\\d+)`, "g"), (match, raw) => {
+    const value = mapping[Number(raw)];
+    if (value == null) throw new Error(`unmapped ${match}`);
+    return value;
+  });
+}
+
+const vertexMapping = [
+  "_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_FakeSpecularMaskScale",
+  "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower", "_FakeSpecularNotCornerOffset",
+];
+const fragmentMapping = [
+  "cameraPosition", "modelMatrix", "viewMatrix", "_Shininess", "_BaseColorIntensity",
+  "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
+  "_RampOffset", "_RampInterval", "_FakeSpecularColor", "_DarknessColor", "_DarknessOffset", "_Rotation",
+];
+
+function adaptVertex(source) {
+  let out = source.replace(/^#version 300 es\s*/m, "precision highp float;\nprecision highp int;\n\n");
+  out = replaceUbo(out, "_19_21", "_21", [
+    "uniform highp mat4 modelMatrix;", "uniform highp mat4 viewMatrix;", "uniform highp mat4 projectionMatrix;",
+    "uniform mediump float _FakeSpecularMaskScale;", "uniform mediump float _FakeSpecularIntensity;",
+    "uniform mediump float _FakeSpecularPower;", "uniform mediump float _FakeSpecularCornerPower;",
+    "uniform mediump float _FakeSpecularNotCornerOffset;",
+  ]);
+  out = out
+    .replace("layout(location = 0) in vec4 _11;", "in vec3 position;")
+    .replace("layout(location = 1) in vec2 _916;", "in vec2 uv;")
+    .replace("layout(location = 2) in vec3 _90;", "in vec3 normal;")
+    .replace(/void main\(\)\s*\{/, `void main()
+{
+    vec4 _11 = vec4(position, 1.0);
+    vec2 _916 = uv;
+    vec3 _90 = normal;
+    mat4 _ObjectToWorld = modelMatrix;
+    mat4 _WorldToObject = inverse(modelMatrix);
+    mat4 _ViewProjection = projectionMatrix * viewMatrix;`);
+  out = replaceMembers(out, "_21", vertexMapping);
+  out = out.replace(/^\s*gl_Position\.y\s*=\s*-gl_Position\.y;\s*$/m, "");
+  if (/_21\._m|gl_Position\.y\s*=\s*-gl_Position\.y/.test(out)) throw new Error("vertex adaptation incomplete");
+  return `${out.trimEnd()}\n`;
+}
+
+function adaptFragment(source) {
+  let out = source.replace(/^#version 300 es\s*/m, "");
+  out = replaceUbo(out, "_62_64", "_64", [
+    "uniform highp vec3 cameraPosition;", "uniform highp mat4 modelMatrix;", "uniform highp mat4 viewMatrix;",
+    "uniform mediump float _Shininess;", "uniform mediump float _BaseColorIntensity;",
+    "uniform mediump float _SpecularIntensity;", "uniform mediump float _DiffractionIntensity;",
+    "uniform mediump float _DiffractionPower;", "uniform mediump float _RampRepeat;",
+    "uniform mediump float _RampSpeed;", "uniform mediump float _RampOffset;",
+    "uniform mediump float _RampInterval;", "uniform mediump vec3 _FakeSpecularColor;",
+    "uniform mediump vec3 _DarknessColor;", "uniform mediump float _DarknessOffset;",
+    "uniform mediump vec3 _Rotation;",
+  ]);
+  out = replaceMembers(out, "_64", fragmentMapping);
+  if (/_64\._m/.test(out)) throw new Error("fragment adaptation incomplete");
+  return `${out.trimEnd()}\n`;
+}
+
+function sha256(file) {
+  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+}
+
+function compiledFields(buffer) {
+  return [...(buffer?.matrices || []), ...(buffer?.vectors || [])]
+    .sort((a, b) => a.offset - b.offset)
+    .map(({ name, offset }) => ({ name, offset }));
+}
+
+const vertexExpected = {
+  ubo: { name: "_19_21", size: 212, members: [
+    member("_m0", "vec4", 0, [4]), member("_m1", "vec4", 64, [4]), member("_m2", "vec4", 128, [4]),
+    ...Array.from({ length: 5 }, (_, i) => member(`_m${i + 3}`, "float", 192 + i * 4)),
+  ] },
+  inputs: [
+    { name: "_11", type: "vec4", location: 0 }, { name: "_916", type: "vec2", location: 1 },
+    { name: "_90", type: "vec3", location: 2 },
+  ],
+  outputs: [
+    { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+    { name: "vs_TEXCOORD2", type: "vec3", location: 2 }, { name: "vs_TEXCOORD3", type: "vec4", location: 3 },
+  ], textures: [],
+};
+
+const fragmentExpected = {
+  ubo: { name: "_62_64", size: 236, members: [
+    member("_m0", "vec3", 0), member("_m1", "vec4", 16, [4]), member("_m2", "vec4", 80, [4]),
+    ...Array.from({ length: 9 }, (_, i) => member(`_m${i + 3}`, "float", 144 + i * 4)),
+    member("_m12", "vec3", 192), member("_m13", "vec3", 208), member("_m14", "float", 220),
+    member("_m15", "vec3", 224),
+  ] },
+  inputs: [
+    { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+    { name: "vs_TEXCOORD2", type: "vec3", location: 2 }, { name: "vs_TEXCOORD3", type: "vec4", location: 3 },
+  ],
+  outputs: [{ name: "_873", type: "vec4", location: 0 }, { name: "_875", type: "vec4", location: 1 }],
+  textures: [
+    { name: "_581", type: "sampler2D", binding: 0 }, { name: "_609", type: "sampler2D", binding: 1 },
+    { name: "_528", type: "samplerCube", binding: 2 }, { name: "_13", type: "sampler2D", binding: 3 },
+    { name: "_361", type: "sampler2D", binding: 4 }, { name: "_379", type: "sampler2D", binding: 5 },
+    { name: "_428", type: "sampler2D", binding: 6 }, { name: "_800", type: "sampler2D", binding: 7 },
+  ],
+};
+
+try {
+  const dump = run(PYTHON, [
+    "build/shaderdec/dump_shader.py", "Transparent-UR-New", "transparent_ur_new", "--shaders", SHADER_ROOT, "--out", tmp,
+  ], { shell: process.platform === "win32" });
+  if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) throw new Error(`unexpected official module set:\n${dump}`);
+  const vertSpv = path.join(tmp, "transparent_ur_new_vert.spv");
+  const fragSpv = path.join(tmp, "transparent_ur_new_frag.spv");
+  reflect(vertSpv, vertexExpected);
+  reflect(fragSpv, fragmentExpected);
+
+  const metadata = JSON.parse(run(PYTHON, ["build/extract-shader-defaults.py"], {
+    shell: process.platform === "win32",
+    input: JSON.stringify({ root: SHADER_ROOT, shaders: ["Transparent-UR-New"] }),
+    stdio: ["pipe", "pipe", "pipe"],
+  })).found["Transparent-UR-New"];
+  const binding = metadata.programBindings?.[0];
+  const samplerSlots = [
+    "_DynamicUITex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex",
+    "_RampMaskTex", "_RampTex", "_FakeSpecularMask",
+  ];
+  equal(binding?.textures?.map(({ name, binding, dim }) => ({ name, binding, dim })),
+    samplerSlots.map((name, binding) => ({ name, binding, dim: name === "_CubeMap" ? 4 : 2 })),
+    "compiled sampler bindings changed");
+  const pglobals = binding.constantBuffers.find((item) => item.name.startsWith("PGlobals"));
+  const vglobals = binding.constantBuffers.find((item) => item.name.startsWith("VGlobals"));
+  equal({ p: pglobals?.size, v: vglobals?.size }, { p: 236, v: 212 }, "compiled UBO sizes changed");
+  const engineNames = { unity_ObjectToWorld: "modelMatrix", unity_WorldToObject: "_WorldToObject", unity_MatrixVP: "_ViewProjection", unity_MatrixV: "viewMatrix", _WorldSpaceCameraPos: "cameraPosition" };
+  const mappedVertex = compiledFields(vglobals).map(({ name, offset }) => ({ name: engineNames[name] || name, offset }));
+  mappedVertex[0].name = "_ObjectToWorld";
+  equal(mappedVertex, vertexMapping.map((name, index) => ({ name, offset: vertexExpected.ubo.members[index].offset })), "compiled vertex fields changed");
+  equal(compiledFields(pglobals).map(({ name, offset }) => ({ name: engineNames[name] || name, offset })),
+    fragmentMapping.map((name, index) => ({ name, offset: fragmentExpected.ubo.members[index].offset })), "compiled fragment fields changed");
+
+  const outputs = {
+    "transparent_ur_new.vert.glsl": adaptVertex(run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"])),
+    "transparent_ur_new.frag.glsl": adaptFragment(run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"])),
+    "transparent_ur_new_uniforms.json": `${JSON.stringify({
+      shader: "Transparent-UR-New", generated_by: "build/build-exact-transparent-ur-new.mjs",
+      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
+      samplers: fragmentExpected.textures.map((item) => item.name), sampler_slots: samplerSlots,
+      compiled_texture_bindings: Object.fromEntries(samplerSlots.map((name, binding) => [name, binding])),
+      implicit_defaults: { ...metadata.textures, _CubeMap: "gray" },
+      mrt: { primary: "_873", secondary: "_875", secondary_value: "zero" },
+    }, null, 2)}\n`,
+  };
+  fs.mkdirSync(OUT, { recursive: true });
+  for (const [name, content] of Object.entries(outputs)) {
+    const file = path.join(OUT, name);
+    if (CHECK) {
+      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match official regeneration`);
+    } else fs.writeFileSync(file, content);
+  }
+  console.log(`${CHECK ? "verified" : "generated"} Transparent-UR-New from official SPIR-V and compiled bindings`);
+} finally {
+  fs.rmSync(tmp, { recursive: true, force: true });
+}

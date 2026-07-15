@@ -1,0 +1,46 @@
+{
+  "shader": "Simple-Opaque-Hologram_Tuning",
+  "generated_by": "build/build-exact-simple-opaque-hologram.mjs",
+  "selector": {
+    "keywords": [],
+    "variant_index": 0,
+    "parameter_blob_index": 0,
+    "program_blob_index": 2
+  },
+  "official_spirv_sha256": {
+    "vertex": "0548eb74b092604a20c3f214627ac925a140eec3ed1f56de07ce67df7d4781a7",
+    "fragment": "71a0a291b3c5cba3373ea0b30519a971cac77882b370f36c7f8a99cdbca78089"
+  },
+  "samplers": [
+    "_491",
+    "_484",
+    "_343",
+    "_409",
+    "_465"
+  ],
+  "sampler_slots": [
+    "_MainTex",
+    "_HologramMaskTex",
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex"
+  ],
+  "compiled_texture_bindings": {
+    "_MainTex": 0,
+    "_HologramMaskTex": 1,
+    "_PhaseTex": 2,
+    "_RampMaskTex": 3,
+    "_RampTex": 4
+  },
+  "implicit_defaults": {
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "mrt": {
+    "primary": "_503",
+    "secondary": "_511",
+    "secondary_value": "zero"
+  }
+}

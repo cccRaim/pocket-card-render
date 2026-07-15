@@ -1,0 +1,61 @@
+{
+  "shader": "Frame-2Layer-UR",
+  "generated_by": "build/build-exact-frame-2layer-ur.mjs",
+  "official_spirv_sha256": {
+    "vertex": "ca5fb5f7f87fe4558bc50e1d91c6a874d979f8bef12edb4011373c67d425144b",
+    "fragment": "746ef1363103a59c4cad5caacf3264573f29e6370762b2350a738961739fc058"
+  },
+  "samplers": [
+    "_13",
+    "_260",
+    "_367",
+    "_420",
+    "_428",
+    "_444",
+    "_601",
+    "_760",
+    "_916",
+    "_1277"
+  ],
+  "sampler_slots": [
+    "_BaseTex",
+    "_LayerMaskTex",
+    "_CubeMap",
+    "_PhaseTex",
+    "_PhaseMaskTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_RampMaskTex2",
+    "_RampTex2",
+    "_FakeSpecularMask"
+  ],
+  "compiled_texture_bindings": {
+    "_BaseTex": 0,
+    "_LayerMaskTex": 1,
+    "_CubeMap": 2,
+    "_PhaseTex": 3,
+    "_PhaseMaskTex": 4,
+    "_RampMaskTex": 5,
+    "_RampTex": 6,
+    "_RampMaskTex2": 7,
+    "_RampTex2": 8,
+    "_FakeSpecularMask": 9
+  },
+  "implicit_defaults": {
+    "_BaseTex": "white",
+    "_FakeSpecularMask": "white",
+    "_LayerMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampMaskTex2": "black",
+    "_RampTex": "black",
+    "_RampTex2": "black",
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_34",
+    "emissive": "_42",
+    "webgl_bloom_route": "uBloomOnly"
+  }
+}

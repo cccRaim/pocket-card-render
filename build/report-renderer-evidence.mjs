@@ -35,6 +35,9 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Opaque-UR-Oklab",
   "Card_Parallax_Hologram_UR_New",
   "Card_UR_Plate",
+  "Simple-Opaque-Hologram_Tuning",
+  "Frame-2Layer-UR",
+  "Transparent-UR-New",
 ]);
 const UR_CORE_GUARDED = new Set([
   "Card_UR_Plate",

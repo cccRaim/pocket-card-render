@@ -758,6 +758,48 @@ function exHoloUrMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = ctx.exactShaders?.["Transparent-UR-New"];
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _581: { value: ctx.dynHoloTex || ctx.dynUITex },
+        _609: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _528: { value: ctx.layerCubeDefault(r) },
+        _13: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _361: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
+        _379: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _428: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _800: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
+        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
+        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
+        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
+        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
+        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
+        _Shininess: { value: f._Shininess ?? 32 },
+        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessColor: { value: V3(c._DarknessColor, new THREE.Vector3(0, 0, 0)) },
+        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.straight = true;
+    m.userData.exactShader = "Transparent-UR-New";
+    ctx.exHoloMats.push(m);
+    return m;
+  }
   const m = new THREE.ShaderMaterial({
     uniforms: {
       dynHolo: { value: ctx.dynHoloTex || ctx.dynUITex },
@@ -987,13 +1029,45 @@ function sbHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
+  const sceneKeywords = [...(r.keywords || [])].sort();
+  const exactSimple = r.shader === "Simple-Opaque-Hologram_Tuning"
+    && sceneKeywords.length === 0
+    && ctx.exactShaders?.["Simple-Opaque-Hologram_Tuning"];
+  if (exactSimple) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _491: { value: ctx.layerTex(r, "_MainTex") },
+        _484: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _343: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _409: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _465: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _TiltEnabled: { value: Math.trunc(f._TiltEnabled ?? 1) },
+        _TiltPower: { value: f._TiltPower ?? 2 },
+        _TiltOffset: { value: f._TiltOffset ?? 0 },
+        _TiltIntensity: { value: f._TiltIntensity ?? 1 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exactSimple.vert,
+      fragmentShader: exactSimple.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.exactShader = "Simple-Opaque-Hologram_Tuning";
+    return m;
+  }
   const opaqueUrKeywords = [
     "_DARKNESSENABLED_ON",
     "_FAKESPECULARENABLED_ON",
     "_HOLOGRAM2ENABLED_ON",
     "_REFLECTIONENABLED_ON",
   ];
-  const sceneKeywords = [...(r.keywords || [])].sort();
   const exactUrProgram = ctx.exactShaders?.["Opaque-UR-Oklab"];
   const exactUr = r.shader === "Opaque-UR-Oklab"
     && exactUrProgram
