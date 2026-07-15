@@ -117,8 +117,9 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `npm run build:exact-ur-plate` regenerates `Card_UR_Plate`, including its eight compiled texture
   bindings, material-local Cubemap semantics, both UBO layouts, and zero-valued secondary MRT output.
 - `npm run build:exact-ur-lens-flare` regenerates the no-keyword `Card_UR_LensFlare` program, including
-  its VAT vertex path and nonzero secondary MRT emissive output. The reference GLBs currently retain
-  flare transforms without mesh primitives, so program equivalence does not prove runtime instantiation.
+  its VAT vertex path and nonzero secondary MRT emissive output. AssetRipper retains the serialized flare
+  transforms but drops their `unity default resources` Quad; the runtime restores that built-in mesh from the
+  scene recipe, and the no-screenshot runtime test asserts two flare draws on each UR reference card.
 
 ## Reality check (don't hand-tune)
 

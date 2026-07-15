@@ -5,10 +5,10 @@ import { chromium } from "playwright";
 const BASE_URL = process.env.PCR_RUNTIME_URL || "http://127.0.0.1:8011/";
 const APP_ORIGIN = new URL(BASE_URL).origin;
 const SCENES = [
-  ["scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json", 26],
-  ["scene.cTR_20_000230_00_LEAF_SR.json", 19],
-  ["scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json", 17],
-  ["scene.cPK_20_008900_02_HOUOUex_UR.json", 16],
+  ["scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json", 26, 0],
+  ["scene.cTR_20_000230_00_LEAF_SR.json", 19, 0],
+  ["scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json", 19, 2],
+  ["scene.cPK_20_008900_02_HOUOUex_UR.json", 18, 2],
 ];
 
 const browser = await chromium.launch({
@@ -44,7 +44,7 @@ page.on("response", (response) => {
 });
 
 try {
-  for (const [scene, expectedBuilt] of SCENES) {
+  for (const [scene, expectedBuilt, expectedFlares] of SCENES) {
     current = scene;
     const url = new URL(BASE_URL);
     url.searchParams.set("scene", scene);
@@ -62,6 +62,7 @@ try {
     const record = records.get(scene);
     const runtime = await page.evaluate(() => ({
       mrt: window.__mrtDiagnostics || null,
+      flareLayers: (window.__layerLabels || []).filter((label) => label.includes("Card_UR_LensFlare")).length,
       webglError: document.getElementById("c")?.getContext("webgl2")?.getError() ?? -1,
     }));
     record.mrt = runtime.mrt;
@@ -72,6 +73,9 @@ try {
       record.errors.push(`MRT diagnostics: ${JSON.stringify(record.mrt)}`);
     }
     if (runtime.webglError !== 0) record.errors.push(`WebGL error: ${runtime.webglError}`);
+    if (runtime.flareLayers !== expectedFlares) {
+      record.errors.push(`LensFlare layers: expected ${expectedFlares}, got ${runtime.flareLayers}`);
+    }
     console.log(`${record.errors.length ? "FAIL" : "OK  "} ${scene} (${record.built ?? "?"} meshes)`);
   }
 } finally {

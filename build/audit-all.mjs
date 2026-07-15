@@ -41,6 +41,7 @@ const AUDITS = [
   ["shader-gating", "build/audit-shader-gating.mjs"],
   ["official-dead-fields", "build/audit-official-dead-fields.mjs"],
   ["official-mrt-outputs", "build/audit-official-mrt-outputs.mjs"],
+  ["official-draw-coverage", "build/audit-official-draw-coverage.mjs"],
   ["three-mrt-runtime", "build/audit-three-mrt-runtime.mjs"],
   ["mrt-runtime", "build/test-mrt-runtime.mjs"],
   ["official-mrt-usage", "build/audit-official-mrt-usage.mjs", {

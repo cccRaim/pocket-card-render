@@ -180,6 +180,8 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
   const mrtOutputAudit = fs.existsSync(path.join(ROOT, "build", "extract_official_mrt_outputs.py"))
     && fs.existsSync(path.join(ROOT, "build", "audit-official-mrt-outputs.mjs"))
     && /official-mrt-outputs/.test(fs.readFileSync(path.join(ROOT, "build", "audit-all.mjs"), "utf8"));
+  const drawCoverageAudit = fs.existsSync(path.join(ROOT, "build", "audit-official-draw-coverage.mjs"))
+    && /official-draw-coverage/.test(fs.readFileSync(path.join(ROOT, "build", "audit-all.mjs"), "utf8"));
   const mrtRuntime = fs.existsSync(path.join(ROOT, "public", "render", "pipeline", "official-mrt.js"))
     && /createOfficialMrtTarget\(renderer/.test(app)
     && /sceneRT\.textures\[1\]/.test(app)
@@ -225,15 +227,16 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     },
     "mrt-routing": {
       status: "partial",
-      coveredSubscopes: officialMrtKnown ? (mrtOutputAudit ? (mrtRuntime ? 4 : 3) : 2) : 1,
-      totalSubscopes: 5,
+      coveredSubscopes: officialMrtKnown ? (mrtOutputAudit ? (mrtRuntime ? (drawCoverageAudit ? 5 : 4) : 3) : 2) : 1,
+      totalSubscopes: 6,
       evidence: [
         "official opaque/transparent dual-attachment binding",
         "official prefab/material-keyword selected SPIR-V location 0/1 output matrix",
         "official ShaderLab rtSeparateBlend=false shared RT0 state",
         ...(mrtRuntime ? ["browser simultaneous two-attachment writes and numeric runtime sentinel"] : []),
+        ...(drawCoverageAudit ? ["98-draw official category coverage and LensFlare built-in Quad restoration audit"] : []),
       ],
-      remaining: ["official opaque/transparent pass partition and deferred draw coverage"],
+      remaining: ["official opaque/transparent pass partition and Side&Back deferred coverage"],
     },
     "blend-stencil-depth": {
       status: "partial",

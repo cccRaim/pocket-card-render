@@ -55,6 +55,7 @@
     "audit:official-program-assets": "node build/audit-official-program-assets.mjs",
     "audit:official-mrt-usage": "node build/audit-official-mrt-usage.mjs",
     "audit:official-mrt-outputs": "node build/audit-official-mrt-outputs.mjs",
+    "audit:official-draw-coverage": "node build/audit-official-draw-coverage.mjs",
     "audit:three-mrt-runtime": "node build/audit-three-mrt-runtime.mjs",
     "audit:official-ur-core-constants": "node build/audit-official-ur-core-constants.mjs",
     "audit:official-effect-core": "node build/audit-official-effect-core.mjs",

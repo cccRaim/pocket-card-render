@@ -642,6 +642,22 @@ async function main() {
     // → same recipe at their own transforms; the outline primitives carry L_RaremarkFlame_a; SBM2/SBM4
     // and every multi-material node split into distinct materials automatically.
     const materials = scene_data.materials;
+    // AssetRipper retains the official LensFlare GameObjects and transforms but drops their external
+    // `unity default resources` Mesh PPtr (Quad, PathID 10210). Restore only that serialized built-in mesh;
+    // material selection and Front/Back behavior still come entirely from each scene recipe.
+    const unityQuad = new THREE.PlaneGeometry(1, 1);
+    for (const [matName, recipe] of Object.entries(materials)) {
+      if (recipe.shader !== "Card_UR_LensFlare" || !recipe.go) continue;
+      const node = root.getObjectByName(recipe.go);
+      if (!node || node.isMesh || node.children.some((child) => child.isMesh)) continue;
+      const proxyMaterial = new THREE.MeshBasicMaterial();
+      proxyMaterial.name = matName;
+      const quad = new THREE.Mesh(unityQuad, proxyMaterial);
+      quad.name = `${recipe.go}_Quad`;
+      quad.userData.officialBuiltinQuad = true;
+      node.add(quad);
+    }
+    root.updateMatrixWorld(true);
     const cardGroup = new THREE.Group();
     cardGroup.scale.y = ORIENT_Y;
     cardGroup.scale.x = window.__ox ?? -1;   // glb comes in X-mirrored (Unity LH->glTF negate-X); flip back
@@ -900,6 +916,7 @@ async function main() {
     const dbgLayers = [];
     cardGroup.traverse((o) => { if (o.isMesh && o.userData.label) dbgLayers.push(o); });
     dbgLayers.sort((a, b) => a.renderOrder - b.renderOrder);
+    window.__layerLabels = dbgLayers.map((mesh) => mesh.userData.label);
     const hud = document.createElement("div");
     // selectable (so you can copy the label) + above the canvas
     hud.style.cssText = "position:fixed;left:8px;bottom:8px;font:12px/1.5 monospace;color:#fff;background:rgba(0,0,0,.78);padding:7px 10px;white-space:pre;user-select:text;-webkit-user-select:text;z-index:9;border-radius:4px;max-width:94vw";
