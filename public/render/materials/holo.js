@@ -540,6 +540,41 @@ function exHoloMaterial(r, ctx) {
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
   const foilOnly = /EXIcon|EXRule/.test(r.go || "");
+  const exact = ctx.exactShaders?.Transparent_Hologram_Tuning;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      uniforms: {
+        _278: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _332: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _355: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _510: { value: ctx.layerCubeDefault(r) },
+        _563: { value: ctx.dynHoloTex || ctx.dynUITex },
+        _596: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _Shininess: { value: f._Shininess ?? 32 },
+        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _AlphaBlend: { value: f._AlphaBlend ?? 0 },
+        _EmitMasking: { value: f._EmitMasking ?? 0 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      glslVersion: THREE.GLSL3,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.straight = true;
+    m.userData.fullFaceHolo = !foilOnly;
+    m.userData.exactShader = "Transparent_Hologram_Tuning";
+    ctx.exHoloMats.push(m);
+    return m;
+  }
   const m = new THREE.ShaderMaterial({
     uniforms: {
       dynUI: { value: ctx.dynUITex }, dynHolo: { value: ctx.dynHoloTex || ctx.dynUITex }, foilMask: { value: ctx.foilTex },

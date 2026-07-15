@@ -27,6 +27,7 @@ const TRANSPILED_OFFICIAL_PROGRAM = new Set([
   "Card_UR_Glitter_FlowMaps",
   "Opaque_Hologram_Tuning",
   "Frame-Holo-UR-New",
+  "Transparent_Hologram_Tuning",
 ]);
 const UR_CORE_GUARDED = new Set([
   "Card_UR_Plate",

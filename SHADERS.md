@@ -94,6 +94,8 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `npm run build:exact-frame-holo-ur` regenerates `Frame-Holo-UR-New` from the official bundle. Its
   location-1 emissive expression is preserved and routed unchanged into the WebGL bloom pass;
   `npm run audit:exact-frame-holo-ur` verifies the checked-in files byte-for-byte against regeneration.
+- `npm run build:exact-transparent-hologram-tuning` regenerates the DynamicUI hologram program while
+  preserving its alpha-only location-1 mask output and Unity's implicit gray Cubemap default.
 
 ## Reality check (don't hand-tune)
 

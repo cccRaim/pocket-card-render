@@ -83,7 +83,7 @@ const USED_BY_KIND = {
   exHolo: [
     "_AlphaBlend", "_BaseColorIntensity", "_Shininess", "_SpecularIntensity",
     "_DiffractionPower", "_DiffractionIntensity", "_RampRepeat", "_RampSpeed",
-    "_RampOffset", "_RampInterval",
+    "_RampOffset", "_RampInterval", "_EmitMasking",
   ],
   exHoloUR: [
     "_BaseColorIntensity", "_Shininess", "_SpecularIntensity",

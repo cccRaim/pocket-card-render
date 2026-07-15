@@ -1,0 +1,49 @@
+{
+  "shader": "Transparent_Hologram_Tuning",
+  "generated_by": "build/build-exact-transparent-hologram-tuning.mjs",
+  "official_spirv_sha256": {
+    "vertex": "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
+    "fragment": "5edc43738cbee9ee6abd5bd79809a8c8384cc81fd1ffe5d72d8d8c9300c2798e"
+  },
+  "samplers": [
+    "_563",
+    "_596",
+    "_510",
+    "_355",
+    "_278",
+    "_332"
+  ],
+  "sampler_slots": [
+    "_DynamicUITex",
+    "_HologramMaskTex",
+    "_CubeMap",
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex"
+  ],
+  "floats": {
+    "_Shininess": "_Shininess",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval",
+    "_AlphaBlend": "_AlphaBlend",
+    "_EmitMasking": "_EmitMasking"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  },
+  "implicit_defaults": {
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_611",
+    "mask": "_623",
+    "mask_channel": "alpha",
+    "mask_switch": "_EmitMasking"
+  }
+}

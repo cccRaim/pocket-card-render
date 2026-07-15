@@ -87,6 +87,8 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `npm run build:exact-frame-holo-ur` 会直接从官方 bundle 重新生成 `Frame-Holo-UR-New`。它保留
   location 1 的官方 emissive 表达式，并将其原样路由到 WebGL bloom pass；
   `npm run audit:exact-frame-holo-ur` 会逐字节核对仓库文件与重新生成的结果。
+- `npm run build:exact-transparent-hologram-tuning` 会重新生成 DynamicUI 全息程序，同时保留
+  location 1 的 alpha-only mask 输出和 Unity 隐式灰色 Cubemap 默认值。
 
 ## 现实提醒(别手调)
 

@@ -10,6 +10,8 @@
     "shot": "node build/shot.mjs",
     "build:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs",
     "audit:exact-frame-holo-ur": "node build/build-exact-frame-holo-ur.mjs --check",
+    "build:exact-transparent-hologram-tuning": "node build/build-exact-transparent-hologram-tuning.mjs",
+    "audit:exact-transparent-hologram-tuning": "node build/build-exact-transparent-hologram-tuning.mjs --check",
     "report:evidence": "node build/report-renderer-evidence.mjs",
     "audit:official-equivalence": "node build/audit-official-equivalence.mjs",
     "audit:claim-contract": "node build/audit-render-claim-contract.mjs",
