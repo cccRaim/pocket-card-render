@@ -72,6 +72,8 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - 去掉 `SV_Target1` / Unity 专有输出;
 - 从 recipe 经 [RenderContext](public/render/context.js) 接 uniform(`ctx.layerTex(r, slot)`、`r.floats`、
   `r.colors`);
+- 按纹理维度保留 ShaderLab 的隐式默认值；例如空 Cubemap 属性应使用 Unity 内置灰色 cube，
+  不能借用 scene 中其他材质的环境图；
 - 包成 `defineMaterial(kind, { requires, build })` —— 见 [CONTRIBUTING.zh-CN.md](CONTRIBUTING.zh-CN.md)。
 
 **仓库里现成的范例:**

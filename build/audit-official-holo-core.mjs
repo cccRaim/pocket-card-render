@@ -94,6 +94,8 @@ try {
 }
 
 const holoSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/holo.js"), "utf8");
+const exactRarityVert = fs.readFileSync(path.join(ROOT, "public/shaders/opaque_hologram_tuning.vert.glsl"), "utf8");
+const exactRarityFrag = fs.readFileSync(path.join(ROOT, "public/shaders/opaque_hologram_tuning.frag.glsl"), "utf8");
 const local = {
   holo: blockFrom(holoSrc, "function holoMaterial"),
   frameHolo: blockFrom(holoSrc, "function frameHoloMaterial"),
@@ -162,6 +164,18 @@ const localChecks = [
     ok: localHasFullRampCore(local.rarity)
       && /T0\.a\s*<\s*0\.5/.test(local.rarity),
     msg: "local rarity strategy must keep holo ramp core and data-shaped alpha cutout",
+  },
+  {
+    ok: /exactShaders\?\.Opaque_Hologram_Tuning/.test(local.rarity)
+      && /layerCubeDefault\(r\)/.test(local.rarity),
+    msg: "local rarity strategy must wire the exact program and data-driven implicit cubemap default",
+  },
+  {
+    ok: /transpose\(inverse\(mat3\(modelMatrix\)\)\)/.test(exactRarityVert)
+      && /mix\(base\.rgb,\s*shaded,\s*hologramMask\)/.test(exactRarityFrag)
+      && /_611\s*=\s*vec4\(0\.0\)/.test(exactRarityFrag)
+      && !/discard/.test(exactRarityFrag),
+    msg: "local exact rarity program must preserve official world normal, masked combine, coverage, and MRT behavior",
   },
   {
     ok: localHasFullRampCore(local.sbHolo)

@@ -53,6 +53,11 @@ export function makeRenderContext({ texInfo, envCubeTex, exactGlit, exactShaders
     clear: makeDefaultTex([0, 0, 0, 0]),
     bump: makeDefaultTex([128, 128, 255, 255]),
   };
+  const grayCubeTex = new THREE.CubeTexture(
+    Array.from({ length: 6 }, () => makeDefaultTex([128, 128, 128, 255]))
+  );
+  grayCubeTex.colorSpace = THREE.NoColorSpace;
+  grayCubeTex.needsUpdate = true;
   const layerTex = (L, slot) => {
     const n = L.textures?.[slot]?.name;
     return n && texInfo.has(n) ? texInfo.get(n).tex : null;
@@ -84,8 +89,11 @@ export function makeRenderContext({ texInfo, envCubeTex, exactGlit, exactShaders
     const c = t.clone(); c.wrapS = c.wrapT = THREE.RepeatWrapping; c.needsUpdate = true; return c;
   };
   const layerTexDefaultRepeat = (L, slot) => layerTexRepeat(L, slot) || layerTexDefault(L, slot);
+  // Unity's empty Cubemap property default is a built-in gray cube. A material without an explicit
+  // _CubeMap must not inherit another material's environment map merely because the scene loaded one.
+  const layerCubeDefault = (L, slot = "_CubeMap") => (L.textures?.[slot] && envCubeTex) || grayCubeTex;
   const texStraight = (name) => !!(name && texInfo.has(name) && texInfo.get(name).straight);
-  return { THREE, layerTex, layerTexNoColorSpace, layerTexDefault, layerTexRepeat, layerTexDefaultRepeat, texStraight, envCubeTex, exactGlit, exactShaders, animMats, exactGlitMats, dynUITex, dynHoloTex, foilTex, exHoloMats };
+  return { THREE, layerTex, layerTexNoColorSpace, layerTexDefault, layerTexRepeat, layerTexDefaultRepeat, layerCubeDefault, texStraight, envCubeTex, exactGlit, exactShaders, animMats, exactGlitMats, dynUITex, dynHoloTex, foilTex, exHoloMats };
 }
 
 // ── render state applied to a built material by the dispatcher ──

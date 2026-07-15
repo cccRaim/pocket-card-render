@@ -77,6 +77,8 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - drop `SV_Target1` / Unity-only outputs;
 - wire the uniforms from the recipe via the [RenderContext](public/render/context.js)
   (`ctx.layerTex(r, slot)`, `r.floats`, `r.colors`);
+- preserve implicit ShaderLab defaults by texture dimension; for example an empty Cubemap property is
+  Unity's built-in gray cube, not another material's scene environment map;
 - wrap it as `defineMaterial(kind, { requires, build })` — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Worked examples already in the repo:**

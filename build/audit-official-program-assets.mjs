@@ -166,6 +166,38 @@ const EXACT_PORTS = {
       /userData\.exactShader\s*=\s*"Card_Parallax_Metal"/,
     ],
   },
+  Opaque_Hologram_Tuning: {
+    name: "opaque_hologram_tuning",
+    vert: "shaders/opaque_hologram_tuning.vert.glsl",
+    frag: "shaders/opaque_hologram_tuning.frag.glsl",
+    uniforms: "shaders/opaque_hologram_tuning_uniforms.json",
+    requiredVert: [
+      /out\s+vec3\s+vs_TEXCOORD1\b/,
+      /out\s+vec3\s+vs_TEXCOORD2\b/,
+      /transpose\(inverse\(mat3\(modelMatrix\)\)\)\s*\*\s*normal/,
+    ],
+    requiredFrag: [
+      /uniform\s+highp\s+mat4\s+viewMatrix\b/,
+      /phase\.x\s*\*\s*0\.25\s*\+\s*0\.25/,
+      /dot\(rotatedNormal\s*\*\s*_RampSpeed,\s*rotatedView\)/,
+      /texture\(_CubeMap,\s*reflected\)/,
+      /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/,
+      /mix\(base\.rgb,\s*shaded,\s*hologramMask\)/,
+      /_611\s*=\s*vec4\(0\.0\)/,
+      /^((?!discard).)*$/s,
+    ],
+    samplers: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
+    samplerSlots: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
+    samplerTypes: { _CubeMap: "samplerCube" },
+    implicitDefaults: { _CubeMap: "gray" },
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
+    runtimePatterns: [
+      /Opaque_Hologram_Tuning:\s*\{\s*vert:\s*"shaders\/opaque_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/opaque_hologram_tuning\.frag\.glsl"\s*\}/,
+      /exactShaders\?\.Opaque_Hologram_Tuning/,
+      /layerCubeDefault\(r\)/,
+      /userData\.exactShader\s*=\s*"Opaque_Hologram_Tuning"/,
+    ],
+  },
   Card_Parallax_UR: {
     name: "parallax_ur",
     vert: "shaders/parallax_ur.vert.glsl",
@@ -300,6 +332,15 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
           shader,
           asset: cfg.uniforms,
           reason: `uniform manifest variant ${cfg.requiredKeyword}`,
+          refs,
+        });
+      }
+      if (cfg.implicitDefaults) {
+        rows.push({
+          ok: JSON.stringify(uniforms.implicit_defaults || {}) === JSON.stringify(cfg.implicitDefaults),
+          shader,
+          asset: cfg.uniforms,
+          reason: "implicit texture defaults",
           refs,
         });
       }

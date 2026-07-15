@@ -1,0 +1,22 @@
+{
+  "shader": "Opaque_Hologram_Tuning",
+  "samplers": ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
+  "sampler_slots": ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
+  "floats": {
+    "_Shininess": "_Shininess",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  },
+  "implicit_defaults": {
+    "_CubeMap": "gray"
+  }
+}

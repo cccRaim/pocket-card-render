@@ -18,7 +18,7 @@
 | 渲染管线一致性 | texture transfer、精度、RT、MRT、blend、stencil、相机和后处理与官方运行时一致 | 没有官方对照图时就能证明卡面正确 |
 | 受控视觉一致性 | 固定姿态、固定时间下的 layer 或整卡与官方采集结果一致 | 对采集范围之外的卡和状态也成立 |
 
-百分比只能用于某个明确维度的覆盖率，例如“官方程序转译覆盖 64 个参考 layer 中的 35 个”。不能把
+百分比只能用于某个明确维度的覆盖率，例如“官方程序转译覆盖 64 个参考 layer 中的 39 个”。不能把
 这个数字改名、加权或宣传成“游戏还原度”。
 
 ## 推进成本
@@ -37,8 +37,8 @@
 | 维度 | 当前状态 | 推进成本 | 剩余范围 |
 |---|---:|---|---:|
 | Layer 分发 | 64/64 | `maintenance` | 0 layer |
-| 官方程序转译 | 35/64 | `shader-reverse-engineering` | 29 layer / 13 个 Shader family |
-| E1 局部约束推进到 E2 | 29 个 E1 layer | `shader-reverse-engineering` | 与上一行相同的 29 layer / 13 family，不能重复相加 |
+| 官方程序转译 | 39/64 | `shader-reverse-engineering` | 25 layer / 12 个 Shader family |
+| E1 局部约束推进到 E2 | 25 个 E1 layer | `shader-reverse-engineering` | 与上一行相同的 25 layer / 12 family，不能重复相加 |
 | 任意官方源证据 | 64/64 | `maintenance` | 0 layer |
 | 渲染管线一致性 | `not-proven` | `runtime-pipeline-research` | 11 个共享阶段，影响全部 64 layer |
 | 视觉一致性 | `not-evaluated` | `excluded-by-policy` | 0 个自动工作单元 |

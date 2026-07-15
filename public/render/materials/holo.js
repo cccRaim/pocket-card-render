@@ -700,6 +700,36 @@ defineMaterial("exHoloUR", {
 function rarityMaterial(r, ctx) {
   const f = r.floats || {};
   const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
+  const exact = ctx.exactShaders?.Opaque_Hologram_Tuning;
+  if (exact) {
+    const m = new THREE.RawShaderMaterial({
+      glslVersion: THREE.GLSL3,
+      uniforms: {
+        _PhaseTex: { value: ctx.layerTexDefault(r, "_PhaseTex") },
+        _RampMaskTex: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
+        _RampTex: { value: ctx.layerTexDefault(r, "_RampTex") },
+        _CubeMap: { value: ctx.layerCubeDefault(r) },
+        _MainTex: { value: ctx.layerTex(r, "_MainTex") },
+        _HologramMaskTex: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
+        _Shininess: { value: f._Shininess ?? 32 },
+        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
+        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
+        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
+        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
+        _RampRepeat: { value: f._RampRepeat ?? 2 },
+        _RampSpeed: { value: f._RampSpeed ?? 1 },
+        _RampOffset: { value: f._RampOffset ?? 0 },
+        _RampInterval: { value: f._RampInterval ?? 0 },
+        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
+      },
+      vertexShader: exact.vert,
+      fragmentShader: exact.frag,
+      side: THREE.DoubleSide,
+      toneMapped: false,
+    });
+    m.userData.exactShader = "Opaque_Hologram_Tuning";
+    return m;
+  }
   return new THREE.ShaderMaterial({
     uniforms: {
       mainTex: { value: ctx.layerTex(r, "_MainTex") }, envCube: { value: ctx.envCubeTex },
