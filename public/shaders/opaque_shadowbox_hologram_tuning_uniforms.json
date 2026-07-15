@@ -1,0 +1,77 @@
+{
+  "shader": "Opaque-Hologram_Tuning",
+  "generated_by": "build/build-exact-classic-holograms.mjs",
+  "official_spirv_sha256": {
+    "vertex": "91c1b803b05a01edc0625b08f89ca3bb81f2e562495d92f169f725a1320fb792",
+    "fragment": "23cb98cea428b4130624da5a874184605a0979526495e5e64f5b24d16ec74b9e"
+  },
+  "samplers": [
+    "_624",
+    "_62",
+    "_13",
+    "_352",
+    "_532",
+    "_609",
+    "_742",
+    "_685",
+    "_731"
+  ],
+  "sampler_slots": [
+    "_MainTex",
+    "_MaskTex",
+    "_NormalMap",
+    "_CubeMap",
+    "_PhaseTex",
+    "_RampTex",
+    "_PhaseTex2",
+    "_RampMaskTex2",
+    "_RampTex2"
+  ],
+  "compiled_texture_bindings": {
+    "_MainTex": 0,
+    "_MaskTex": 1,
+    "_NormalMap": 2,
+    "_CubeMap": 3,
+    "_PhaseTex": 4,
+    "_RampTex": 5,
+    "_PhaseTex2": 6,
+    "_RampMaskTex2": 7,
+    "_RampTex2": 8
+  },
+  "compiled_property_aliases": {},
+  "floats": {
+    "_DiffuseIntensity": "_DiffuseIntensity",
+    "_Shininess": "_Shininess",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_OrientationU": "_OrientationU",
+    "_OrientationV": "_OrientationV",
+    "_ChangeSpeed": "_ChangeSpeed",
+    "_RampOffset": "_RampOffset",
+    "_UsePositionAsUV": "_UsePositionAsUV",
+    "_UseOutlineNormalFilter": "_UseOutlineNormalFilter",
+    "_OutlineNormalFilterThreshold": "_OutlineNormalFilterThreshold",
+    "_DiffractionIntensity2": "_DiffractionIntensity2",
+    "_DiffractionPower2": "_DiffractionPower2",
+    "_RampRepeat2": "_RampRepeat2",
+    "_RampSpeed2": "_RampSpeed2",
+    "_RampOffset2": "_RampOffset2",
+    "_RampInterval2": "_RampInterval2",
+    "_TiltEnabled": "_TiltEnabled",
+    "_TiltPower": "_TiltPower",
+    "_TiltOffset": "_TiltOffset",
+    "_TiltIntensity": "_TiltIntensity"
+  },
+  "colors": {
+    "_OutlineColor": "_OutlineColor",
+    "_Rotation": "_Rotation"
+  },
+  "implicit_defaults": {
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_643",
+    "secondary": "_848",
+    "secondary_value": "zero"
+  }
+}

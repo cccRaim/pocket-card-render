@@ -1,0 +1,71 @@
+precision highp float;
+precision highp int;
+
+uniform highp mat4 modelMatrix;
+uniform highp mat4 viewMatrix;
+uniform highp mat4 projectionMatrix;
+
+in vec3 position;
+out vec3 vs_TEXCOORD2;
+out vec2 vs_TEXCOORD0;
+in vec2 uv;
+out vec2 vs_TEXCOORD1;
+in vec3 normal;
+out vec3 vs_TEXCOORD3;
+in vec4 tangent;
+out vec3 vs_TEXCOORD4;
+out vec3 vs_TEXCOORD5;
+vec4 _9;
+vec4 _44;
+float _135;
+vec3 _202;
+
+void main()
+{
+    vec4 _11 = vec4(position, 1.0);
+    vec2 _100 = uv;
+    vec3 _113 = normal;
+    vec4 _153 = tangent;
+    mat4 _ObjectToWorld = modelMatrix;
+    mat4 _WorldToObject = inverse(modelMatrix);
+    mat4 _ViewProjection = projectionMatrix * viewMatrix;
+    _9 = _11.yyyy * _ObjectToWorld[1];
+    _9 = (_ObjectToWorld[0] * _11.xxxx) + _9;
+    _9 = (_ObjectToWorld[2] * _11.zzzz) + _9;
+    _44 = _9 + _ObjectToWorld[3];
+    vs_TEXCOORD2 = (_ObjectToWorld[3].xyz * _11.www) + _9.xyz;
+    _9 = _44.yyyy * _ViewProjection[1];
+    _9 = (_ViewProjection[0] * _44.xxxx) + _9;
+    _9 = (_ViewProjection[2] * _44.zzzz) + _9;
+    _9 = (_ViewProjection[3] * _44.wwww) + _9;
+    gl_Position = _9;
+    vs_TEXCOORD0 = _100;
+    vs_TEXCOORD1 = (_11.xy * vec2(1.26984119415283203125, 0.90909087657928466796875)) + vec2(0.5);
+    _9.x = dot(_113, _WorldToObject[0].xyz);
+    _9.y = dot(_113, _WorldToObject[1].xyz);
+    _9.z = dot(_113, _WorldToObject[2].xyz);
+    _135 = dot(_9.xyz, _9.xyz);
+    _135 = inversesqrt(_135);
+    vec3 _147 = vec3(_135) * _9.xyz;
+    _9 = vec4(_147.x, _147.y, _147.z, _9.w);
+    vs_TEXCOORD3 = _9.xyz;
+    vec3 _159 = _153.yyy * _ObjectToWorld[1].xyz;
+    _44 = vec4(_159.x, _159.y, _159.z, _44.w);
+    vec3 _170 = (_ObjectToWorld[0].xyz * _153.xxx) + _44.xyz;
+    _44 = vec4(_170.x, _170.y, _170.z, _44.w);
+    vec3 _181 = (_ObjectToWorld[2].xyz * _153.zzz) + _44.xyz;
+    _44 = vec4(_181.x, _181.y, _181.z, _44.w);
+    _135 = dot(_44.xyz, _44.xyz);
+    _135 = inversesqrt(_135);
+    vec3 _195 = vec3(_135) * _44.xyz;
+    _44 = vec4(_195.x, _195.y, _195.z, _44.w);
+    vs_TEXCOORD4 = _44.xyz;
+    _202 = _9.zxy * _44.yzx;
+    vec3 _215 = (_9.yzx * _44.zxy) + (-_202);
+    _9 = vec4(_215.x, _215.y, _215.z, _9.w);
+    vec3 _222 = _9.xyz * _153.www;
+    _9 = vec4(_222.x, _222.y, _222.z, _9.w);
+    _135 = dot(_9.xyz, _9.xyz);
+    _135 = inversesqrt(_135);
+    vs_TEXCOORD5 = vec3(_135) * _9.xyz;
+}

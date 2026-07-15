@@ -92,6 +92,9 @@ SPIRV-Cross 的输出用的是 Unity 约定。适配到 three.js:
 - `npm run build:exact-basic-holograms` 会重新生成 `Card_Parallax_Hologram_Tuning` 和
   `Card_Hologram_Tuning`，覆盖完整 UBO 布局、sampler 绑定、顶点属性和 MRT 输出；
   `npm run audit:exact-basic-holograms` 会核对仓库内程序与官方 bundle 的重新生成结果。
+- `npm run build:exact-classic-holograms` 会重新生成 `Frame-Holo-Tuning` 和
+  `Opaque-Hologram_Tuning`。除 SPIR-V reflection 外，审计还会核对 Unity 编译结果中的
+  `m_CommonParameters` texture / constant-buffer 绑定与运行时映射。
 
 ## 现实提醒(别手调)
 

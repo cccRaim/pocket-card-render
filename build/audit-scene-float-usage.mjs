@@ -150,7 +150,7 @@ const USED_BY_SHADER = {
     "_RampOffset", "_RampInterval", "_RampScale", "_RampRotate",
     "_RampMaskScale", "_RampMaskRotation", "_UseSimpleRampMaskAndRotation",
     "_RampUVOffset", "_RampUVTiltOffset", "_PhaseScale", "_PhaseRotate",
-    "_UseUv", "_UseMaskUv", "_CutOut", "_FrontMaskPower",
+    "_UseUv", "_UseMaskUv", "_CutOut", "_FrontMaskPower", "_MaskEmissive",
   ],
   "Card_Hologram_Tuning": [
     "_AlphaBlend", "_DiffractionPower", "_DiffractionIntensity",

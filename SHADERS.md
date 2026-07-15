@@ -99,6 +99,9 @@ SPIRV-Cross output uses Unity conventions. Adapt to three.js:
 - `npm run build:exact-basic-holograms` regenerates `Card_Parallax_Hologram_Tuning` and
   `Card_Hologram_Tuning`, including their complete UBO layouts, sampler bindings, vertex attributes,
   and MRT outputs; `npm run audit:exact-basic-holograms` verifies the checked-in programs.
+- `npm run build:exact-classic-holograms` regenerates `Frame-Holo-Tuning` and
+  `Opaque-Hologram_Tuning`. In addition to SPIR-V reflection, its audit checks Unity's compiled
+  `m_CommonParameters` texture and constant-buffer bindings against the runtime mapping.
 
 ## Reality check (don't hand-tune)
 

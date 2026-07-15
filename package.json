@@ -14,6 +14,8 @@
     "audit:exact-transparent-hologram-tuning": "node build/build-exact-transparent-hologram-tuning.mjs --check",
     "build:exact-basic-holograms": "node build/build-exact-basic-holograms.mjs",
     "audit:exact-basic-holograms": "node build/build-exact-basic-holograms.mjs --check",
+    "build:exact-classic-holograms": "node build/build-exact-classic-holograms.mjs",
+    "audit:exact-classic-holograms": "node build/build-exact-classic-holograms.mjs --check",
     "report:evidence": "node build/report-renderer-evidence.mjs",
     "audit:official-equivalence": "node build/audit-official-equivalence.mjs",
     "audit:claim-contract": "node build/audit-render-claim-contract.mjs",

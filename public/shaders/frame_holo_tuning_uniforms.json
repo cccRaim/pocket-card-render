@@ -1,0 +1,71 @@
+{
+  "shader": "Frame-Holo-Tuning",
+  "generated_by": "build/build-exact-classic-holograms.mjs",
+  "official_spirv_sha256": {
+    "vertex": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
+    "fragment": "5d99d92ac0cd93b7ba2578b6b22bd2654e4118c96498e1c28595852174b815b3"
+  },
+  "samplers": [
+    "_13",
+    "_748",
+    "_693",
+    "_523",
+    "_125",
+    "_467",
+    "_767"
+  ],
+  "sampler_slots": [
+    "_HologramMaskTex",
+    "_BaseTex",
+    "_CubeMap",
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex",
+    "_HologramFrontMaskTex"
+  ],
+  "compiled_texture_bindings": {
+    "_HologramMaskTex": 0,
+    "_BaseTex": 1,
+    "_CubeMap": 2,
+    "_PhaseTex": 3,
+    "_RampMaskTex": 4,
+    "_RampTex": 5,
+    "_HologramFrontMaskTex": 6
+  },
+  "compiled_property_aliases": {
+    "_CutOff": "_CutOut"
+  },
+  "floats": {
+    "_Shininess": "_Shininess",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_SpecularIntensity": "_SpecularIntensity",
+    "_DiffractionIntensity": "_DiffractionIntensity",
+    "_DiffractionPower": "_DiffractionPower",
+    "_RampRepeat": "_RampRepeat",
+    "_RampSpeed": "_RampSpeed",
+    "_RampOffset": "_RampOffset",
+    "_RampInterval": "_RampInterval",
+    "_RampUVOffset": "_RampUVOffset",
+    "_RampUVTiltOffset": "_RampUVTiltOffset",
+    "_PhaseScale": "_PhaseScale",
+    "_RampScale": "_RampScale",
+    "_PhaseRotate": "_PhaseRotate",
+    "_RampRotate": "_RampRotate",
+    "_FrontMaskPower": "_FrontMaskPower",
+    "_AlphaBlend": "_AlphaBlend",
+    "_MaskEmissive": "_MaskEmissive",
+    "_CutOut": "_CutOut"
+  },
+  "colors": {
+    "_Rotation": "_Rotation"
+  },
+  "implicit_defaults": {
+    "_CubeMap": "gray"
+  },
+  "mrt": {
+    "primary": "_806",
+    "secondary": "_817",
+    "secondary_value": "alpha-only",
+    "secondary_switch": "_MaskEmissive"
+  }
+}

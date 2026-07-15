@@ -59,6 +59,57 @@ def pass_state(p):
     }
 
 
+def program_bindings(parsed):
+    """Recover compiled property names, offsets, and texture bindings from ShaderLab metadata."""
+    out = []
+    for subshader in parsed.get("m_SubShaders", []):
+        for shader_pass in subshader.get("m_Passes", []):
+            names = {index: name for name, index in shader_pass.get("m_NameIndices", [])}
+            textures = {}
+            constant_buffers = {}
+            for stage_name in ("progVertex", "progFragment", "progGeometry", "progHull", "progDomain"):
+                common = shader_pass.get(stage_name, {}).get("m_CommonParameters", {})
+                for item in common.get("m_TextureParams", []):
+                    name = names.get(item.get("m_NameIndex"))
+                    if name:
+                        textures[name] = {
+                            "name": name,
+                            "binding": int(item.get("m_Index", 0)) & 0xFFFFFF,
+                            "dim": item.get("m_Dim"),
+                        }
+                for cb in common.get("m_ConstantBuffers", []):
+                    name = names.get(cb.get("m_NameIndex"))
+                    if not name:
+                        continue
+                    constant_buffers[name] = {
+                        "name": name,
+                        "size": cb.get("m_Size"),
+                        "matrices": sorted(({
+                            "name": names.get(item.get("m_NameIndex")),
+                            "offset": item.get("m_Index"),
+                            "arraySize": item.get("m_ArraySize"),
+                            "type": item.get("m_Type"),
+                            "rowCount": item.get("m_RowCount"),
+                        } for item in cb.get("m_MatrixParams", [])), key=lambda item: item["offset"]),
+                        "vectors": sorted(({
+                            "name": names.get(item.get("m_NameIndex")),
+                            "offset": item.get("m_Index"),
+                            "arraySize": item.get("m_ArraySize"),
+                            "type": item.get("m_Type"),
+                            "dim": item.get("m_Dim"),
+                        } for item in cb.get("m_VectorParams", [])), key=lambda item: item["offset"]),
+                    }
+            if textures or constant_buffers:
+                out.append({
+                    "name": shader_pass.get("m_Name", ""),
+                    "type": shader_pass.get("m_Type"),
+                    "programMask": shader_pass.get("m_ProgramMask"),
+                    "textures": sorted(textures.values(), key=lambda item: item["binding"]),
+                    "constantBuffers": sorted(constant_buffers.values(), key=lambda item: item["name"]),
+                })
+    return out
+
+
 def main():
     raw = sys.stdin.read()
     start = min([i for i in (raw.find("{"), raw.find("[")) if i >= 0], default=-1)
@@ -104,6 +155,7 @@ def main():
                     "keywords": keyword_names,
                     "keywordFlags": keyword_flags,
                     "passStates": pass_states,
+                    "programBindings": program_bindings(data.get("m_ParsedForm", {})),
                 }
                 if shader in found:
                     found[shader]["variants"].append(variant)
@@ -144,6 +196,7 @@ def main():
                     "keywords": keyword_names,
                     "keywordFlags": keyword_flags,
                     "passStates": pass_states,
+                    "programBindings": variant["programBindings"],
                     "variants": [variant],
                 }
 
