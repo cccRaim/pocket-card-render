@@ -54,6 +54,15 @@ const packageJson = fs.readFileSync(path.join(ROOT, "package.json"), "utf8");
 if (/report:fidelity|audit:fidelity-threshold/.test(packageJson)) {
   issues.push("package scripts must not label implementation coverage as fidelity");
 }
+if (!/"audit:restoration"/.test(packageJson)) {
+  issues.push("package scripts must expose the versioned restoration lower-bound audit");
+}
+const restorationAudit = fs.readFileSync(path.join(ROOT, "build", "audit-renderer-restoration.mjs"), "utf8");
+if (!/dimensions\.length !== 10/.test(restorationAudit)
+    || !/screenshotPolicy: "No screenshot/.test(restorationAudit)
+    || !/status: "runtime-required"/.test(restorationAudit)) {
+  issues.push("restoration lower-bound audit must retain its fixed denominator and no-screenshot/runtime-required policy");
+}
 
 for (const [file, link] of [
   ["README.md", "FIDELITY.md"],

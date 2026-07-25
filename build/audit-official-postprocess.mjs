@@ -42,6 +42,11 @@ const EXPECTED = {
     bloomGetBufferSize: "060d3cdcc3a3eb9f7c468e7a614ee03c4a6ad89bf75919e5db0b758637f2f0ec",
     bloomGetSheetSize: "eff8910701cc236ab4177b2e2d4f8e005d6e1a0432061fc085d8e4b6514106e5",
     finalBlitExecute: "821bbb2f8ca357392fbde0df1cd359e6bc8647786db6d2316e55f01c01706b82",
+    renderTextureDescriptorArgb32Ctor: "7cfa758662235756da2ce090435eb96f354649b95c126bf339aaa30b7a849d5c",
+    renderTextureDescriptorDepthCtor: "5e8aecd5d3e7affe7828aeb33f50572386f0da671126db73c3af83be290cd952",
+    renderTextureDescriptorFullCtor: "6f1b973fc6611494cc1d74efbacbfe26142f1b64363f43acf2a15ed27a503c5c",
+    commandBufferGetTemporaryFiltered: "14fd6f0099492e65d956caf9240a9c2101b6507dfb2a20b05cb71c354a0a9dd9",
+    commandBufferGetTemporaryDefault: "db473607c8611d0a4c3ae49312e63028295db4e449ccc5329dffdd6c91d9ff94",
   },
   serializedObjects: {
     14713: [5477504, 234624, 148, "e209f7ba0db7101a8e61db6ee2e7dea625d0a8abf36f2466db67730afaf6816e"],
@@ -286,6 +291,59 @@ same("mrt.depthFormatValue", mrt.depthFormatValue, 1);
 same("mrt.depthFormat", mrt.depthFormat, "Depth");
 same("mrt.opaqueAndTransparentBindMrt", mrt.opaqueAndTransparentBindMrt, true);
 
+const renderTargets = official.native.renderTargets;
+const sceneMrtTarget = renderTargets.sceneMrt;
+same("scene MRT filter value", sceneMrtTarget.filterModeValue, 0);
+same("scene MRT filter", sceneMrtTarget.filterMode, "Point");
+same("scene MRT allocation overload", sceneMrtTarget.allocationOverload,
+  "GetTemporaryRT(descriptor)");
+sameJson("scene MRT allocation calls", sceneMrtTarget.allocationCalls,
+  ["0x430e3b8", "0x430e3e4", "0x430e430", "0x430e45c"]);
+for (const instruction of sceneMrtTarget.instructionEvidence) {
+  verifyInstructionBytes(`scene MRT allocation ${instruction.address}`,
+    official.native.methods.commandBufferGetTemporaryDefault, instruction);
+}
+
+const bloomTarget = renderTargets.bloomIntermediate;
+same("Bloom RT requested color enum", bloomTarget.requestedColorFormatValue, 0);
+same("Bloom RT requested color format", bloomTarget.requestedColorFormat, "ARGB32");
+same("Bloom RT depth bits", bloomTarget.depthBufferBits, 0);
+same("Bloom RT requested read/write enum", bloomTarget.requestedReadWriteValue, 1);
+same("Bloom RT requested read/write", bloomTarget.requestedReadWrite, "Linear");
+same("Bloom RT compatible format usage", bloomTarget.compatibleFormatUsageValue, 4);
+same("Bloom RT filter enum", bloomTarget.filterModeValue, 1);
+same("Bloom RT filter", bloomTarget.filterMode, "Bilinear");
+same("Bloom RT MSAA samples", bloomTarget.msaaSamples, 1);
+same("Bloom RT volume depth", bloomTarget.volumeDepth, 1);
+same("Bloom RT constructor flags", bloomTarget.constructorFlagsValue, 0x82);
+same("Bloom RT memoryless enum", bloomTarget.memorylessValue, 0);
+same("Bloom RT mip count source", bloomTarget.mipCountSource,
+  "runtime static loaded by RenderTextureDescriptor overload");
+same("Bloom RT physical format is device-dependent",
+  bloomTarget.physicalGraphicsFormatDeviceDependent, true);
+sameJson("Bloom RT allocation calls", bloomTarget.allocationCalls,
+  ["0x4307a2c", "0x4307b80", "0x4307cdc", "0x4307d1c", "0x43081e8"]);
+for (const instruction of bloomTarget.instructionEvidence.execute) {
+  verifyInstructionBytes(`Bloom RT Execute ${instruction.address}`,
+    official.native.methods.bloomPassExecute, instruction);
+}
+for (const instruction of bloomTarget.instructionEvidence.formatCtor) {
+  verifyInstructionBytes(`Bloom RT format ctor ${instruction.address}`,
+    official.native.methods.renderTextureDescriptorArgb32Ctor, instruction);
+}
+for (const instruction of bloomTarget.instructionEvidence.defaultCtor) {
+  verifyInstructionBytes(`Bloom RT default ctor ${instruction.address}`,
+    official.native.methods.renderTextureDescriptorDepthCtor, instruction);
+}
+for (const instruction of bloomTarget.instructionEvidence.fullCtor) {
+  verifyInstructionBytes(`Bloom RT full ctor ${instruction.address}`,
+    official.native.methods.renderTextureDescriptorFullCtor, instruction);
+}
+for (const instruction of bloomTarget.instructionEvidence.filteredAllocation) {
+  verifyInstructionBytes(`Bloom RT filtered allocation ${instruction.address}`,
+    official.native.methods.commandBufferGetTemporaryFiltered, instruction);
+}
+
 const graph = official.native.customRendererPassGraph;
 same("CustomRenderer pass graph", graph.map((row) => row.pass).join(" > "),
   "PrePass > DrawOpaque > DrawSkybox > CopyDepth > DrawTransparent > DrawPostProcess > FinalBlit");
@@ -381,8 +439,6 @@ same("Bloom pass 5 arithmetic opcodes", JSON.stringify(bloom.math.pass5.arithmet
 same("Bloom pass 5 tone map", bloom.math.pass5.toneMapDetected, false);
 
 sameJson("unproven scopes", official.unproven, [
-  "Bloom sheet vertex weights/intensity-scatter encoding and the complete per-level downsample/blur render-target size sequence.",
-  "FinalBlit shader selection, blend semantics, and any final tone mapping beyond the pinned IL2CPP body bytes.",
   "Physical Vulkan image formats selected by a particular Android device for Unity ARGB32/Depth enums.",
 ]);
 
@@ -397,6 +453,8 @@ console.log(`APKM sha256:          ${official.source.apkmSha256}`);
 console.log(`libil2cpp sha256:     ${official.source.libil2cppSha256}`);
 console.log(`GGM resource sha256:  ${official.source.globalgamemanagersResourceSha256}`);
 console.log(`MRT:                  2x ARGB32 + Depth24/CopyDepth`);
+console.log(`RT filters:           scene Point, Bloom Bilinear`);
+console.log(`Bloom RT descriptor:  ARGB32 Linear, Depth0, MSAA1, flags 0x82`);
 console.log(`pass graph:           ${graph.map((row) => row.pass).join(" > ")}`);
 console.log(`Bloom blob:           ${bloom.compressedLength} -> ${bloom.decompressedLength} bytes`);
 console.log(`Bloom modules:        ${bloom.moduleCount} (${bloom.passCountFromModulePairs} pass pairs)`);

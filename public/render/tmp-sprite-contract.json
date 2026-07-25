@@ -1,0 +1,357 @@
+{
+ "schemaVersion": 1,
+ "unityVersion": "2022.3.62f2",
+ "gameVersion": "1.6.0",
+ "source": {
+  "fontBundle": {
+   "path": "PCR_OFFICIAL_FONT_BUNDLE",
+   "byteSize": 79168397,
+   "sha256": "88364448d71939764df209474b760b8d30623eba85a165d7b822e2488cc10589"
+  },
+  "il2cpp": {
+   "path": "PCR_IL2CPP",
+   "byteSize": 128218264,
+   "sha256": "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e"
+  },
+  "il2cppDumper": {
+   "scriptJsonSha256": "c6bbe3dd41b5530fae30c3b8f6d27bdcf212e442c024da71478621b8818c1e21",
+   "stringLiteralJsonSha256": "514ff3abee1a7f302d23323054dfc5de74e49688ee8b217ba27ea9b9a37bfa57"
+  },
+  "textGenerator": {
+   "path": "UnityCsReference/Modules/TextCoreTextEngine/Managed/TextGenerator.cs",
+   "byteSize": 432534,
+   "sha256": "6dc27875067f6d837d2ef4b72ac0d2d55b701285946c0b2a187e6c7de8f2a2c2",
+   "spriteScaleBranch": {
+    "startLine": 900,
+    "endLine": 946,
+    "sha256": "807fe4d306aa02bd723e21d86b93135b87b44ce05c6804bc5f631c1dc892391c"
+   },
+   "vertexPositionBranch": {
+    "startLine": 1200,
+    "endLine": 1222,
+    "sha256": "3a3a31ab84b6c2a6a944888c4fc9e3462e5610920d38e9d46e712f01f161eca9"
+   },
+   "advanceBranch": {
+    "startLine": 2028,
+    "endLine": 2042,
+    "sha256": "8c5fdb1dd1f565fb3a638d3f1cc32a25b8158e75e1e116b22bc379891094fbaf"
+   },
+   "spaceTagBranch": {
+    "startLine": 4100,
+    "endLine": 4115,
+    "sha256": "3ef4cc371cd5edbb29fe0495178c2c1fd5ebcb9923c91a7503fae33446914586"
+   }
+  }
+ },
+ "preprocessor": {
+  "methods": {
+   "preProcessEx": {
+    "name": "Lettuce.Infrastructure.LocLabel.TagCommandImpl.LtUIImgTagCommand$$PreProcessEX",
+    "rva": "0x464f628",
+    "endRva": "0x464f788",
+    "byteSize": 352,
+    "sha256": "faec25b7bd0fc7c0ccda127153828cd12ee1cdf2dcdcafbbb80e2fbe1194b187"
+   },
+   "getFontSize": {
+    "name": "Lettuce.Infrastructure.LocLabel.TagCommandImpl.LtUIImgTagCommand$$GetFontSize",
+    "rva": "0x464f8a4",
+    "endRva": "0x464f974",
+    "byteSize": 208,
+    "sha256": "a682141539d82716eb87de3e4d0e444ddcc8f69bc1b0c7835f540c624f0a535b"
+   },
+   "getRuleImgTagFontType": {
+    "name": "Lettuce.Infrastructure.Card.Core.PokemonCardUIBehaviour$$GetRuleImgTagFontType",
+    "rva": "0x44359b0",
+    "endRva": "0x44359d8",
+    "byteSize": 40,
+    "sha256": "080bcb7a6d5c08195e9ea2a915811488e574c4988bdaed6cd76c46bd25286d7b"
+   }
+  },
+  "formatLiteral": {
+   "address": "0x7548F48",
+   "value": "<space=-0.01em><size={0}><sprite={1}><space=-0.1em></size>"
+  },
+  "spriteIndexTable": {
+   "rva": "0x1af6700",
+   "bytes": "00000000020000000100000003000000",
+   "sha256": "3c52e07ea6f9c688f7921e6114ac155e13c5922f6fe7dd46e242c18e42262a1e",
+   "values": [
+    0,
+    2,
+    1,
+    3
+   ]
+  },
+  "fontTypeToSpriteIndex": {
+   "Black": 0,
+   "White": 2,
+   "BlackWithWhiteOutline": 1,
+   "ExBlack": 3
+  },
+  "pokemonRuleSelection": {
+   "normalEx": "ExBlack",
+   "megaEx": "White"
+  },
+  "defaultFontSize": 23,
+  "spaceBeforeEm": -0.01,
+  "spaceAfterEm": -0.1
+ },
+ "spriteAsset": {
+  "pathId": "840073264968542736",
+  "objectSha256": "e6f1c89e38810a0d8f99ae1a382a3e2f0a0ed05b03281f40f0c57644eea2dd55",
+  "name": "TextExSprite",
+  "hashCode": -1333707979,
+  "version": "1.1.0",
+  "material": {
+   "fileId": 0,
+   "pathId": "-1050951510632854060"
+  },
+  "spriteSheet": {
+   "fileId": 0,
+   "pathId": "3209478181533236899"
+  },
+  "faceInfo": {
+   "pointSize": 0,
+   "scale": 0,
+   "ascentLine": 0,
+   "descentLine": 0
+  },
+  "characters": [
+   {
+    "name": "ex_bl_01",
+    "unicode": 65534,
+    "glyphIndex": 3,
+    "scale": 1.100000023841858,
+    "hashCode": -1475580462
+   },
+   {
+    "name": "ex_wh_ol",
+    "unicode": 65534,
+    "glyphIndex": 0,
+    "scale": 1.100000023841858,
+    "hashCode": -1443951775
+   },
+   {
+    "name": "ex_wh",
+    "unicode": 65534,
+    "glyphIndex": 2,
+    "scale": 1.100000023841858,
+    "hashCode": 124134653
+   },
+   {
+    "name": "ex_bl_02",
+    "unicode": 65534,
+    "glyphIndex": 1,
+    "scale": 1.100000023841858,
+    "hashCode": -1475580463
+   }
+  ],
+  "glyphs": [
+   {
+    "index": 0,
+    "metrics": {
+     "width": 138,
+     "height": 70,
+     "horizontalBearingX": 0,
+     "horizontalBearingY": 60,
+     "horizontalAdvance": 138
+    },
+    "glyphRect": {
+     "x": 0,
+     "y": 186,
+     "width": 138,
+     "height": 70
+    },
+    "scale": 1,
+    "atlasIndex": 0,
+    "sprite": {
+     "fileId": 0,
+     "pathId": "606841134786854563"
+    }
+   },
+   {
+    "index": 1,
+    "metrics": {
+     "width": 138,
+     "height": 70,
+     "horizontalBearingX": 0,
+     "horizontalBearingY": 60,
+     "horizontalAdvance": 138
+    },
+    "glyphRect": {
+     "x": 138,
+     "y": 186,
+     "width": 138,
+     "height": 70
+    },
+    "scale": 1,
+    "atlasIndex": 0,
+    "sprite": {
+     "fileId": 0,
+     "pathId": "-2726544977098719581"
+    }
+   },
+   {
+    "index": 2,
+    "metrics": {
+     "width": 138,
+     "height": 70,
+     "horizontalBearingX": 0,
+     "horizontalBearingY": 60,
+     "horizontalAdvance": 138
+    },
+    "glyphRect": {
+     "x": 0,
+     "y": 116,
+     "width": 138,
+     "height": 70
+    },
+    "scale": 1,
+    "atlasIndex": 0,
+    "sprite": {
+     "fileId": 0,
+     "pathId": "2489022873567018659"
+    }
+   },
+   {
+    "index": 3,
+    "metrics": {
+     "width": 138,
+     "height": 70,
+     "horizontalBearingX": 0,
+     "horizontalBearingY": 60,
+     "horizontalAdvance": 138
+    },
+    "glyphRect": {
+     "x": 0,
+     "y": 46,
+     "width": 138,
+     "height": 70
+    },
+    "scale": 1,
+    "atlasIndex": 0,
+    "sprite": {
+     "fileId": 0,
+     "pathId": "-2737353082296680797"
+    }
+   }
+  ],
+  "fallbackSpriteAssets": []
+ },
+ "material": {
+  "pathId": "-1050951510632854060",
+  "objectSha256": "d5161b0bbbe99257643d3b9fd127b0433029beee5b87386eb796e20a5911b984",
+  "name": "TextExSprite",
+  "shader": {
+   "fileId": 6,
+   "pathId": "2168984029091550199"
+  },
+  "customRenderQueue": -1,
+  "mainTexture": {
+   "fileId": 0,
+   "pathId": "3209478181533236899"
+  },
+  "floats": {
+   "_AlphaClip": 0,
+   "_Blend": 0,
+   "_BumpScale": 1,
+   "_ClearCoatMask": 0,
+   "_ClearCoatSmoothness": 0,
+   "_ColorMask": 15,
+   "_Cull": 2,
+   "_Cutoff": 0.5,
+   "_DetailAlbedoMapScale": 1,
+   "_DetailNormalMapScale": 1,
+   "_DstBlend": 0,
+   "_EnvironmentReflections": 1,
+   "_GlossMapScale": 0,
+   "_Glossiness": 0,
+   "_GlossyReflections": 0,
+   "_Metallic": 0,
+   "_OcclusionStrength": 1,
+   "_Parallax": 0.004999999888241291,
+   "_QueueOffset": 0,
+   "_ReceiveShadows": 1,
+   "_Smoothness": 0.5,
+   "_SmoothnessTextureChannel": 0,
+   "_SpecularHighlights": 1,
+   "_SrcBlend": 1,
+   "_Stencil": 0,
+   "_StencilComp": 8,
+   "_StencilOp": 0,
+   "_StencilReadMask": 255,
+   "_StencilWriteMask": 255,
+   "_Surface": 0,
+   "_UseUIAlphaClip": 0,
+   "_WorkflowMode": 1,
+   "_ZWrite": 1
+  },
+  "colors": {
+   "_BaseColor": {
+    "r": 1,
+    "g": 1,
+    "b": 1,
+    "a": 1
+   },
+   "_ClipRect": {
+    "r": -32767,
+    "g": -32767,
+    "b": 32767,
+    "a": 32767
+   },
+   "_Color": {
+    "r": 1,
+    "g": 1,
+    "b": 1,
+    "a": 1
+   },
+   "_EmissionColor": {
+    "r": 0,
+    "g": 0,
+    "b": 0,
+    "a": 1
+   },
+   "_SpecColor": {
+    "r": 0.20000000298023224,
+    "g": 0.20000000298023224,
+    "b": 0.20000000298023224,
+    "a": 1
+   }
+  }
+ },
+ "texture": {
+  "pathId": "3209478181533236899",
+  "objectSha256": "579de24c79adec19a721dc8e786acd527f5d6648f9506d6c30ce6da5856e24ea",
+  "name": "TextExSprite",
+  "width": 512,
+  "height": 256,
+  "textureFormat": 47,
+  "mipCount": 1,
+  "compressedPayloadByteSize": 131072,
+  "compressedPayloadSha256": "041def58c34618782cf3ded71ce0b08283ea6c9a03effea79912265c005861a7",
+  "decodedRgbaSha256": "a5844651ffd27f40725e9eb1399f9d89bdded513ca6af502aec0c5279d1486e9",
+  "pngByteSize": 12866,
+  "pngSha256": "3581b830f4e1b76868a6aee34b79940ca43e9f9a68fe610867b8cf0290909dff",
+  "url": "/game/tmp-sprites/TextExSprite.png",
+  "sampler": {
+   "filterMode": 1,
+   "aniso": 1,
+   "mipBias": 0,
+   "wrapU": 1,
+   "wrapV": 1,
+   "wrapW": 0
+  }
+ },
+ "layout": {
+  "orthographic": true,
+  "spriteFacePointSizeZeroBranch": true,
+  "currentElementScale": "fontAscent / glyphHeight * characterScale * glyphScale * spriteScale",
+  "spriteScale": "tagFontSize / fontPointSize * fontScale",
+  "topLeftX": "xAdvance + horizontalBearingX * currentElementScale",
+  "topLeftY": "baseline + horizontalBearingY * currentElementScale",
+  "quadWidth": "glyphWidth * currentElementScale",
+  "quadHeight": "glyphHeight * currentElementScale",
+  "spriteAdvance": "horizontalAdvance * currentElementScale",
+  "tokenAdvance": "spaceBeforeEm * tagFontSize + spriteAdvance + spaceAfterEm * tagFontSize"
+ }
+}

@@ -9,6 +9,7 @@ const issues = [];
 const entries = Object.values(official.textures);
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
 const context = fs.readFileSync(path.join(ROOT, "public", "render", "context.js"), "utf8");
+const textureRuntime = fs.readFileSync(path.join(ROOT, "public", "render", "official-texture.js"), "utf8");
 
 function countBy(values, selector) {
   const counts = new Map();
@@ -84,13 +85,18 @@ for (const [name, expectedCount] of expectedMipChains) {
   }
 }
 
-if (!/fetch\("texture-samplers\.json"\)/.test(app) || !/applyOfficialSampler\(tex, officialSamplerMap\[url\]\)/.test(app)) {
+if (!/fetch\("texture-samplers\.json"\)/.test(app)
+  || !/loadOfficialTexture\(url, officialSamplerMap\[url\]\)/.test(app)) {
   issues.push("browser runtime does not consume the official per-texture sampler map");
 }
-if (!/NearestFilter/.test(app) || !/LinearMipmapNearestFilter/.test(app)) {
+if (!/runtimeTextures\?\._DynamicUITex\?\.sampler/.test(app)
+  || !/applyOfficialSampler\(t, samplerState\)/.test(app)) {
+  issues.push("browser runtime does not consume the captured _DynamicUITex sampler contract");
+}
+if (!/NearestFilter/.test(textureRuntime) || !/LinearMipmapNearestFilter/.test(textureRuntime)) {
   issues.push("browser runtime does not map official Point/Bilinear+mip state");
 }
-if (/anisotropy\s*=\s*4/.test(app)) issues.push("browser runtime still hard-codes anisotropy=4");
+if (/anisotropy\s*=\s*4/.test(textureRuntime)) issues.push("browser runtime still hard-codes anisotropy=4");
 if (/\.wrapS\s*=\s*c\.wrapT\s*=\s*THREE\.RepeatWrapping/.test(context)) {
   issues.push("material slot helper still overwrites official per-texture wrap state");
 }

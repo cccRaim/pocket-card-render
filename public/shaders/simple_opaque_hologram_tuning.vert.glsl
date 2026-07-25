@@ -9,7 +9,7 @@ in vec3 position;
 out vec2 vs_TEXCOORD0;
 in vec2 uv;
 out vec2 vs_TEXCOORD1;
-in vec2 uv2;
+in vec2 uv1;
 in vec3 normal;
 out vec3 vs_TEXCOORD2;
 vec4 _9;
@@ -21,7 +21,7 @@ void main()
     vec4 _11 = vec4(position, 1.0);
     vec3 _95 = normal;
     vec2 _88 = uv;
-    vec2 _91 = uv2;
+    vec2 _91 = uv1;
     mat4 _ObjectToWorld = modelMatrix;
     mat4 _WorldToObject = inverse(modelMatrix);
     mat4 _ViewProjection = projectionMatrix * viewMatrix;

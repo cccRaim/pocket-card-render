@@ -108,6 +108,16 @@ float _1774;
 highp float _1841;
 vec4 _1992;
 
+highp vec3 pcrUnityObjectToWorldAxisY(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[1].x, threeModelMatrix[1].y, -threeModelMatrix[1].z);
+}
+
+highp vec3 pcrUnityObjectToWorldAxisZ(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[2].x, threeModelMatrix[2].y, -threeModelMatrix[2].z);
+}
+
 void main()
 {
     _9 = texture(_13, vs_TEXCOORD0);
@@ -501,8 +511,8 @@ void main()
     _76 = inversesqrt(_76);
     vec2 _1638 = vec2(_76) * _460.xy;
     _99 = vec3(_1638.x, _1638.y, _99.z);
-    _1641 = _99.yyy * modelMatrix[2].xyz;
-    _99 = (modelMatrix[1].xyz * _99.xxx) + _1641;
+    _1641 = _99.yyy * pcrUnityObjectToWorldAxisZ(modelMatrix);
+    _99 = (pcrUnityObjectToWorldAxisY(modelMatrix) * _99.xxx) + _1641;
     _76 = dot(_99, _99);
     _76 = inversesqrt(_76);
     highp vec3 _1664 = vec3(_76) * _99;

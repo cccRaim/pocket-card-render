@@ -2,6 +2,7 @@
 // fall back to hand ports. Presence and wiring are structural evidence only;
 // they do not prove official-runtime or final-pixel parity.
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,12 +15,15 @@ const EXACT_PORTS = {
     vert: "shaders/card_illust.vert.glsl",
     frag: "shaders/card_illust.frag.glsl",
     uniforms: "shaders/card_illust_uniforms.json",
+    generatedBy: "build/build-exact-card-illust.mjs",
     requiredVert: [
       /in\s+vec3\s+position\b/,
       /in\s+vec2\s+uv\b/,
-      /in\s+vec2\s+uv2\b/,
-      /uniform\s+float\s+_UseUv\b/,
-      /vs_TEXCOORD0\s*=\s*\(_UseUv\s*\*\s*\(\(-uv\)\s*\+\s*uv2\)\)\s*\+\s*uv/,
+      /in\s+vec2\s+uv1\b/,
+      /uniform\s+int\s+_UseUv\b/,
+      /_9\.x\s*=\s*float\(_UseUv\)/,
+      /_92\s*=\s*\(-_94\)\s*\+\s*_97/,
+      /vs_TEXCOORD0\s*=\s*\(_9\.xx\s*\*\s*_92\)\s*\+\s*_94/,
     ],
     requiredFrag: [
       /uniform\s+mediump\s+sampler2D\s+_13\b/,
@@ -31,11 +35,70 @@ const EXACT_PORTS = {
     samplers: ["_13"],
     samplerSlots: ["_MainTex"],
   },
+  Card_Prism: {
+    name: "card_prism",
+    vert: "shaders/card_prism.vert.glsl",
+    frag: "shaders/card_prism.frag.glsl",
+    uniforms: "shaders/card_prism_uniforms.json",
+    generatedBy: "build/build-exact-card-prism.mjs",
+    requiredKeywords: [],
+    requiredVert: [
+      /in\s+vec3\s+position\b/,
+      /in\s+vec2\s+uv\b/,
+      /in\s+vec2\s+uv1\b/,
+      /uniform\s+float\s+uTime\b/,
+      /\(uTime\s*\*\s*0\.05\)/,
+      /mat4\s+_ObjectToWorld\s*=\s*modelMatrix/,
+      /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
+      /^((?!gl_Position\.y\s*=\s*-gl_Position\.y).)*$/s,
+    ],
+    requiredFrag: [
+      /uniform\s+mediump\s+sampler2D\s+_29\b/,
+      /uniform\s+int\s+_ColoringMethod\b/,
+      /uniform\s+int\s+_OkLabBlend\b/,
+      /texture\(_29,\s*vs_TEXCOORD0\)/,
+      /layout\(location = 0\) out highp vec4 _349/,
+      /layout\(location = 1\) out highp vec4 _361/,
+    ],
+    samplers: ["_29"],
+    samplerSlots: ["_BaseTex"],
+    mrt: { primary: "_349", emissive: "_361" },
+    runtimeFiles: ["app.js", "render/materials/prism.js"],
+    runtimePatterns: [
+      /Card_Prism:\s*\{[\s\S]*?manifest:\s*"shaders\/card_prism_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(recipe,\s*"Card_Prism"\)/,
+      /ctx\.exactPortUniforms\([\s\S]*?recipe,[\s\S]*?exact/,
+      /uniforms\.uTime\s*=\s*\{\s*value:\s*0\s*\}/,
+      /ctx\.animMats\.push\(material\)/,
+      /userData\.exactShader\s*=\s*"Card_Prism"/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\?\.official_executable_identity/,
+    ],
+  },
+  Card_Circular_Moving_Kira: {
+    name: "circular_moving",
+    generatedBy: "build/build-exact-circular-kira.mjs",
+    selectorManifests: [
+      ["shaders/circular_moving_p0_uniforms.json", []],
+      ["shaders/circular_moving_p1_uniforms.json", []],
+    ],
+    acceptedMaterialKeywordSets: [[]],
+  },
+  Card_Circular_Trail_Kira: {
+    name: "circular_trail",
+    generatedBy: "build/build-exact-circular-kira.mjs",
+    selectorManifests: [
+      ["shaders/circular_trail_p0_uniforms.json", []],
+      ["shaders/circular_trail_p1_uniforms.json", []],
+    ],
+    acceptedMaterialKeywordSets: [[]],
+  },
   Frame: {
     name: "frame",
     vert: "shaders/textured.vert.glsl",
     frag: "shaders/frame.frag.glsl",
-    uniforms: "shaders/simple_uniforms.json",
+    uniforms: "shaders/frame_uniforms.json",
+    generatedBy: "build/build-exact-flat-mrt.mjs",
     requiredVert: [
       /in\s+vec3\s+position\b/,
       /in\s+vec2\s+uv\b/,
@@ -43,11 +106,19 @@ const EXACT_PORTS = {
     ],
     requiredFrag: [
       /uniform\s+mediump\s+sampler2D\s+_13\b/,
+      /uniform\s+mediump\s+float\s+_EmitMasking\b/,
       /_21\s*=\s*_9/,
+      /_9\.w\s*\*=\s*_EmitMasking/,
       /_45\s*=\s*_9/,
     ],
     samplers: ["_13"],
-    samplerSlots: ["_MainTex"],
+    samplerSlots: ["_BaseTex"],
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/base.js"],
+    runtimePatterns: [
+      /manifest:\s*"shaders\/frame_uniforms\.json"/,
+      /ctx\.exactShaderPort\(r,\s*shaderName\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+    ],
   },
   "Simple-Opaque": {
     name: "simple_opaque",
@@ -71,7 +142,8 @@ const EXACT_PORTS = {
     name: "simple_transparent",
     vert: "shaders/textured.vert.glsl",
     frag: "shaders/simple_transparent.frag.glsl",
-    uniforms: "shaders/simple_uniforms.json",
+    uniforms: "shaders/simple_transparent_uniforms.json",
+    generatedBy: "build/build-exact-flat-mrt.mjs",
     requiredVert: [
       /in\s+vec3\s+position\b/,
       /in\s+vec2\s+uv\b/,
@@ -84,55 +156,79 @@ const EXACT_PORTS = {
     ],
     samplers: ["_13"],
     samplerSlots: ["_MainTex"],
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/base.js"],
+    runtimePatterns: [
+      /manifest:\s*"shaders\/simple_transparent_uniforms\.json"/,
+      /texturedExactMaterial\(r,\s*ctx,\s*"Simple-Transparent"/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+    ],
   },
   Effect: {
     name: "effect",
-    vert: "shaders/effect.vert.glsl",
-    frag: "shaders/effect.frag.glsl",
-    uniforms: "shaders/effect_uniforms.json",
-    requiredVert: [
-      /in\s+vec4\s+tangent\b/,
-      /out\s+vec3\s+vs_TEXCOORD1\b/,
-      /dot\(t,\s*viewObj\)/,
+    generatedBy: "build/build-exact-effect.mjs",
+    selectorManifests: [
+      ["shaders/effect_eff1_uniforms.json", ["_LAYER_EFF1"]],
+      ["shaders/effect_eff2_uniforms.json", ["_LAYER_EFF2"]],
+      ["shaders/effect_eff3_uniforms.json", ["_LAYER_EFF3"]],
+      ["shaders/effect_eff3_grad_uniforms.json", ["_LAYER_EFF3", "_UseGradationMap"]],
+      ["shaders/effect_eff1_grad_view_uniforms.json", ["_LAYER_EFF1", "_UseGradationMap", "_UseViewMask"]],
+      ["shaders/effect_eff2_grad_view_uniforms.json", ["_LAYER_EFF2", "_UseGradationMap", "_UseViewMask"]],
     ],
-    requiredFrag: [
-      /uniform\s+mediump\s+sampler2D\s+_MainTex\b/,
-      /uniform\s+mediump\s+sampler2D\s+_GradationMap\b/,
-      /texture\(_GradationMap,\s*vec2\(gradU,\s*0\.5\)\)/,
-      /t\s*\*\s*t\s*\*\s*\(3\.0\s*-\s*2\.0\s*\*\s*t\)/,
-      /_194\s*=\s*vec4\(0\.0\)/,
+    acceptedMaterialKeywordSets: [
+      ["_LAYER_EFF1"],
+      ["_LAYER_EFF2"],
+      ["_LAYER_EFF3"],
+      ["_LAYER_EFF3", "_UseGradationMap"],
+      ["_LAYER_EFF1", "_UseGradationMap", "_UseViewMask"],
+      ["_LAYER_EFF2", "_UseGradationMap", "_UseViewMask"],
     ],
-    samplers: ["_MainTex", "_GradationMap"],
-    samplerSlots: ["_MainTex", "_GradationMap"],
+    runtimeFiles: ["app.js", "render/context.js", "render/materials/base.js"],
+    runtimePatterns: [
+      /Effect:\s*\{[\s\S]*?manifests:\s*\[[\s\S]*?effect_eff1_uniforms\.json[\s\S]*?effect_eff2_grad_view_uniforms\.json[\s\S]*?\]/,
+      /sourcesByPort\[identityKey\]\s*=\s*manifestSources\[index\]/,
+      /port\.sourcesByPort\?\.\[identityKey\]/,
+      /ctx\.exactShaderPort\(r,\s*"Effect"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+      /userData\.exactShader\s*=\s*"Effect"/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\.official_executable_identity/,
+    ],
   },
   Card_Parallax: {
     name: "card_parallax",
     vert: "shaders/card_parallax.vert.glsl",
     frag: "shaders/card_parallax.frag.glsl",
-    uniforms: "shaders/card_parallax_uniforms.json",
-    requiredKeyword: "_UVASPECTRATIO_SQUARE",
+    uniforms: [
+      "shaders/card_parallax_uniforms.json",
+      "shaders/card_parallax_native_best_match_uniforms.json",
+    ],
+    generatedBy: "build/build-exact-card-parallax.mjs",
+    acceptedMaterialKeywordSets: [["_UVASPECTRATIO_SQUARE"], []],
+    requiredManifestKeywordSets: [["_UVASPECTRATIO_SQUARE"], []],
     requiredVert: [
       /in\s+vec4\s+tangent\b/,
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /uniform\s+int\s+_UseUv\b/,
-      /tv\.z\s*\+\s*0\.41999998688697815/,
-      /float\(_UseUv\)\s*\*\s*\(\(-uv\)\s*\+\s*uv2\)/,
-      /vs_TEXCOORD0\s*=\s*\(\(\(sourceUv\s*\*\s*2\.0\)\s*-\s*1\.0\)\s*\/\s*_Scale\)/,
+      /0\.4199999868869781494140625/,
+      /float\(_UseUv\)/,
+      /vs_TEXCOORD0\s*=/,
       /^((?!1\.608700037).)*$/s,
     ],
     requiredFrag: [
       /uniform\s+mediump\s+sampler2D\s+_13\b/,
-      /sampled\.rgb\s*\*\s*sampled\.a/,
+      /_22\s*=\s*_9\.www\s*\*\s*_9\.xyz/,
       /_40\s*=\s*vec4\(0\.0\)/,
     ],
     samplers: ["_13"],
     samplerSlots: ["_MainTex"],
     runtimeFiles: ["app.js", "render/materials/base.js"],
     runtimePatterns: [
-      /Card_Parallax:\s*\{\s*vert:\s*"shaders\/card_parallax\.vert\.glsl",\s*frag:\s*"shaders\/card_parallax\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Card_Parallax/,
+      /Card_Parallax:\s*\{[\s\S]*?manifests:\s*\[[\s\S]*?card_parallax_uniforms\.json[\s\S]*?card_parallax_native_best_match_uniforms\.json[\s\S]*?\]/,
+      /ctx\.exactShaderPort\(r,\s*"Card_Parallax"\)/,
       /userData\.exactShader\s*=\s*"Card_Parallax"/,
-      /userData\.exactVariant\s*=\s*"_UVASPECTRATIO_SQUARE"/,
+      /userData\.exactVariant\s*=\s*exact\.manifest\.official_selector\.selectionMode/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\.official_executable_identity/,
     ],
   },
   Card_Parallax_Metal: {
@@ -140,30 +236,40 @@ const EXACT_PORTS = {
     vert: "shaders/card_parallax_metal.vert.glsl",
     frag: "shaders/card_parallax_metal.frag.glsl",
     uniforms: "shaders/card_parallax_metal_uniforms.json",
+    generatedBy: "build/build-exact-card-parallax-metal.mjs",
+    requiredKeywords: [],
     requiredVert: [
       /in\s+vec4\s+tangent\b/,
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /uniform\s+int\s+_UseUv\b/,
-      /tv\.z\s*\+\s*0\.41999998688697815/,
-      /float\(_UseUv\)\s*\*\s*\(\(-uv\)\s*\+\s*uv2\)/,
-      /transpose\(inverse\(mat3\(modelMatrix\)\)\)\s*\*\s*normal/,
+      /0\.4199999868869781494140625/,
+      /_305\.x\s*=\s*float\(_UseUv\)/,
+      /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
     ],
     requiredFrag: [
-      /uniform\s+mediump\s+samplerCube\s+_CubeMap\b/,
-      /uniform\s+mediump\s+sampler2D\s+_MetalMaskTex\b/,
-      /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/,
-      /environment\s*\*\s*grazing\s*\*\s*_SpecularIntensity\s*\+\s*vec3\(_BaseColorIntensity\)/,
-      /texture\(_MetalMaskTex,\s*vs_TEXCOORD0\)\.r\s*\*\s*_MetalMaskIntensity/,
+      /uniform\s+mediump\s+samplerCube\s+_238\b/,
+      /uniform\s+mediump\s+sampler2D\s+_277\b/,
+      /_27\s*=\s*log2\(_27\)/,
+      /_27\s*\*=\s*_Shininess/,
+      /texture\(_277,\s*vs_TEXCOORD0\)\.x/,
       /_305\s*=\s*vec4\(0\.0\)/,
     ],
-    samplers: ["_CubeMap", "_MetalMaskTex"],
+    samplers: ["_238", "_277"],
     samplerSlots: ["_CubeMap", "_MetalMaskTex"],
-    samplerTypes: { _CubeMap: "samplerCube" },
+    samplerTypes: { _238: "samplerCube" },
+    implicitDefaults: { _MetalMaskTex: "white" },
+    officialTextureDescriptors: {
+      _CubeMap: { defaultName: "", dimension: 4 },
+      _MetalMaskTex: { defaultName: "white", dimension: 2 },
+    },
+    mrt: { primary: "_299", emissive: "_305" },
     runtimeFiles: ["app.js", "render/materials/ur.js"],
     runtimePatterns: [
-      /Card_Parallax_Metal:\s*\{\s*vert:\s*"shaders\/card_parallax_metal\.vert\.glsl",\s*frag:\s*"shaders\/card_parallax_metal\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Card_Parallax_Metal/,
+      /Card_Parallax_Metal:\s*\{[\s\S]*?manifest:\s*"shaders\/card_parallax_metal_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Card_Parallax_Metal"\)/,
       /userData\.exactShader\s*=\s*"Card_Parallax_Metal"/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\?\.official_executable_identity/,
     ],
   },
   Opaque_Hologram_Tuning: {
@@ -171,31 +277,37 @@ const EXACT_PORTS = {
     vert: "shaders/opaque_hologram_tuning.vert.glsl",
     frag: "shaders/opaque_hologram_tuning.frag.glsl",
     uniforms: "shaders/opaque_hologram_tuning_uniforms.json",
+    generatedBy: "build/build-exact-opaque-hologram-tuning.mjs",
     requiredVert: [
       /out\s+vec3\s+vs_TEXCOORD1\b/,
       /out\s+vec3\s+vs_TEXCOORD2\b/,
-      /transpose\(inverse\(mat3\(modelMatrix\)\)\)\s*\*\s*normal/,
+      /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
+      /dot\(_103,\s*_WorldToObject\[0\]\.xyz\)/,
     ],
     requiredFrag: [
       /uniform\s+highp\s+mat4\s+viewMatrix\b/,
-      /phase\.x\s*\*\s*0\.25\s*\+\s*0\.25/,
-      /dot\(rotatedNormal\s*\*\s*_RampSpeed,\s*rotatedView\)/,
-      /texture\(_CubeMap,\s*reflected\)/,
-      /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/,
-      /mix\(base\.rgb,\s*shaded,\s*hologramMask\)/,
+      /_22\.y\s*=\s*_22\.x\s*\*\s*0\.25/,
+      /_310\s*=\s*dot\(_90\.xyz,\s*_225\)/,
+      /texture\(_522,\s*_72\.yzx\)/,
+      /_72\.x\s*\*=\s*_Shininess/,
+      /texture\(_590,\s*vs_TEXCOORD0\)\.x/,
+      /_603\.w\s*=\s*_9\.w/,
       /_611\s*=\s*vec4\(0\.0\)/,
       /^((?!discard).)*$/s,
     ],
-    samplers: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
-    samplerSlots: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_CubeMap", "_MainTex", "_HologramMaskTex"],
-    samplerTypes: { _CubeMap: "samplerCube" },
-    implicitDefaults: { _CubeMap: "gray" },
+    samplers: ["_574", "_590", "_522", "_13", "_352", "_409"],
+    samplerSlots: ["_MainTex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_RampMaskTex", "_RampTex"],
+    samplerTypes: { _522: "samplerCube" },
+    implicitDefaults: {
+      _HologramMaskTex: "black", _PhaseTex: "white", _RampMaskTex: "black", _RampTex: "black",
+    },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /Opaque_Hologram_Tuning:\s*\{\s*vert:\s*"shaders\/opaque_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/opaque_hologram_tuning\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Opaque_Hologram_Tuning/,
-      /layerCubeDefault\(r\)/,
+      /Opaque_Hologram_Tuning:\s*\{[\s\S]*?manifest:\s*"shaders\/opaque_hologram_tuning_uniforms\.json"/,
+      /exactShaderPort\(r,\s*"Opaque_Hologram_Tuning"\)/,
+      /exactPortUniforms\(r,\s*exact/,
       /userData\.exactShader\s*=\s*"Opaque_Hologram_Tuning"/,
+      /userData\.officialPassRuntime\s*=\s*exact\.manifest\?\.official_pass_runtime/,
     ],
   },
   "Frame-Holo-UR-New": {
@@ -228,11 +340,12 @@ const EXACT_PORTS = {
     mrt: { primary: "_1059", emissive: "_1053", webgl_bloom_route: "uBloomOnly" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /Frame_Holo_UR_New:\s*\{\s*vert:\s*"shaders\/frame_holo_ur\.vert\.glsl",\s*frag:\s*"shaders\/frame_holo_ur\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Frame_Holo_UR_New/,
+      /"Frame-Holo-UR-New":\s*\{[\s\S]*?manifest:\s*"shaders\/frame_holo_ur_uniforms\.json"/,
+      /exactShaderPort\(r,\s*"Frame-Holo-UR-New"\)/,
       /_333:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
       /userData\.bloomSource\s*=\s*true/,
       /userData\.exactShader\s*=\s*"Frame-Holo-UR-New"/,
+      /userData\.officialPassRuntime\s*=\s*exact\.manifest\?\.official_pass_runtime/,
     ],
   },
   Transparent_Hologram_Tuning: {
@@ -259,12 +372,19 @@ const EXACT_PORTS = {
     samplers: ["_563", "_596", "_510", "_355", "_278", "_332"],
     samplerSlots: ["_DynamicUITex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_RampMaskTex", "_RampTex"],
     samplerTypes: { _510: "samplerCube" },
-    implicitDefaults: { _CubeMap: "gray" },
+    officialTextureDescriptors: {
+      _DynamicUITex: { defaultName: "white", dimension: 2 },
+      _CubeMap: { defaultName: "", dimension: 4 },
+      _PhaseTex: { defaultName: "white", dimension: 2 },
+      _RampMaskTex: { defaultName: "black", dimension: 2 },
+      _RampTex: { defaultName: "black", dimension: 2 },
+      _HologramMaskTex: { defaultName: "black", dimension: 2 },
+    },
     mrt: { primary: "_611", mask: "_623", mask_channel: "alpha", mask_switch: "_EmitMasking" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /Transparent_Hologram_Tuning:\s*\{\s*vert:\s*"shaders\/transparent_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/transparent_hologram_tuning\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Transparent_Hologram_Tuning/,
+      /Transparent_Hologram_Tuning:\s*\{[\s\S]*?vert:\s*"shaders\/transparent_hologram_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/transparent_hologram_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/transparent_hologram_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(r,\s*"Transparent_Hologram_Tuning"\)/,
       /_510:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
       /_563:\s*\{\s*value:\s*ctx\.dynHoloTex\s*\|\|\s*ctx\.dynUITex\s*\}/,
       /uniforms\._563\)\s*m\.uniforms\._563\.value\s*=\s*t\.holo/,
@@ -279,7 +399,7 @@ const EXACT_PORTS = {
     generatedBy: "build/build-exact-basic-holograms.mjs",
     requiredVert: [
       /in\s+vec4\s+tangent\b/,
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /uniform\s+int\s+_UseUv\b/,
       /uniform\s+int\s+_UseMaskUv\b/,
       /0\.4199999868869781494140625/,
@@ -297,8 +417,8 @@ const EXACT_PORTS = {
     mrt: { primary: "_409", secondary: "_415", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /Card_Parallax_Hologram_Tuning:\s*\{\s*vert:\s*"shaders\/card_parallax_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/card_parallax_hologram_tuning\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Card_Parallax_Hologram_Tuning/,
+      /Card_Parallax_Hologram_Tuning:\s*\{[\s\S]*?vert:\s*"shaders\/card_parallax_hologram_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/card_parallax_hologram_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/card_parallax_hologram_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(L,\s*"Card_Parallax_Hologram_Tuning"\)/,
       /userData\.exactShader\s*=\s*"Card_Parallax_Hologram_Tuning"/,
     ],
   },
@@ -307,9 +427,9 @@ const EXACT_PORTS = {
     vert: "shaders/card_hologram_tuning.vert.glsl",
     frag: "shaders/card_hologram_tuning.frag.glsl",
     uniforms: "shaders/card_hologram_tuning_uniforms.json",
-    generatedBy: "build/build-exact-basic-holograms.mjs",
+    generatedBy: "build/build-exact-card-hologram-tuning.mjs",
     requiredVert: [
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /uniform\s+int\s+_UseUv\b/,
       /uniform\s+int\s+_UseMaskUv\b/,
       /_WorldToObject\[0\]\.xyz/,
@@ -325,12 +445,23 @@ const EXACT_PORTS = {
     ],
     samplers: ["_13", "_488", "_386", "_458", "_595"],
     samplerSlots: ["_HologramMaskTex", "_PhaseTex", "_RampMaskTex", "_RampTex", "_HologramFrontMaskTex"],
+    officialTextureDescriptors: {
+      _PhaseTex: { defaultName: "white", dimension: 2 },
+      _RampMaskTex: { defaultName: "black", dimension: 2 },
+      _RampTex: { defaultName: "black", dimension: 2 },
+      _HologramMaskTex: { defaultName: "white", dimension: 2 },
+      _HologramFrontMaskTex: { defaultName: "white", dimension: 2 },
+    },
     mrt: { primary: "_678", secondary: "_680", secondary_value: "zero" },
-    runtimeFiles: ["app.js", "render/materials/holo.js"],
+    runtimeFiles: ["app.js", "render/context.js", "render/shader-defaults.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /Card_Hologram_Tuning:\s*\{\s*vert:\s*"shaders\/card_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/card_hologram_tuning\.frag\.glsl"\s*\}/,
-      /r\.shader\s*===\s*"Card_Hologram_Tuning"\s*&&\s*ctx\.exactShaders\?\.Card_Hologram_Tuning/,
+      /Card_Hologram_Tuning:\s*\{[\s\S]*?vert:\s*"shaders\/card_hologram_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/card_hologram_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/card_hologram_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(r,\s*"Card_Hologram_Tuning"\)/,
       /userData\.exactShader\s*=\s*"Card_Hologram_Tuning"/,
+      /userData\.officialPassRuntime\s*=\s*exact\.manifest\?\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\?\.official_executable_identity/,
+      /"Card_Hologram_Tuning":\s*\{[\s\S]*?_PhaseTex:\s*"white"[\s\S]*?_RampMaskTex:\s*"black"[\s\S]*?_RampTex:\s*"black"[\s\S]*?_HologramMaskTex:\s*"white"[\s\S]*?_HologramFrontMaskTex:\s*"white"[\s\S]*?\}/,
     ],
   },
   "Frame-Holo-Tuning": {
@@ -360,11 +491,14 @@ const EXACT_PORTS = {
     mrt: { primary: "_806", secondary: "_817", secondary_value: "alpha-only", secondary_switch: "_MaskEmissive" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /"Frame-Holo-Tuning":\s*\{\s*vert:\s*"shaders\/frame_holo_tuning\.vert\.glsl",\s*frag:\s*"shaders\/frame_holo_tuning\.frag\.glsl"\s*\}/,
-      /ctx\.exactShaders\?\.\["Frame-Holo-Tuning"\]/,
+      /"Frame-Holo-Tuning":\s*\{[\s\S]*?vert:\s*"shaders\/frame_holo_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/frame_holo_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/frame_holo_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(r,\s*"Frame-Holo-Tuning"\)/,
       /_693:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
       /userData\.straight\s*=\s*true/,
       /userData\.exactShader\s*=\s*"Frame-Holo-Tuning"/,
+      /userData\.officialPassRuntime\s*=\s*exactFrame\.manifest\?\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*exactFrame\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exactFrame\.manifest\?\.official_executable_identity/,
     ],
   },
   "Simple-Opaque-Hologram_Tuning": {
@@ -375,7 +509,7 @@ const EXACT_PORTS = {
     generatedBy: "build/build-exact-simple-opaque-hologram.mjs",
     requiredKeywords: [],
     requiredVert: [
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
       /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
       /out\s+vec3\s+vs_TEXCOORD2\b/,
@@ -399,9 +533,8 @@ const EXACT_PORTS = {
     mrt: { primary: "_503", secondary: "_511", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /"Simple-Opaque-Hologram_Tuning":\s*\{\s*vert:\s*"shaders\/simple_opaque_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/simple_opaque_hologram_tuning\.frag\.glsl"\s*\}/,
-      /ctx\.exactShaders\?\.\["Simple-Opaque-Hologram_Tuning"\]/,
-      /sceneKeywords\.length\s*===\s*0/,
+      /"Simple-Opaque-Hologram_Tuning":\s*\{[\s\S]*?vert:\s*"shaders\/simple_opaque_hologram_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/simple_opaque_hologram_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/simple_opaque_hologram_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(r,\s*"Simple-Opaque-Hologram_Tuning"\)/,
       /_491:\s*\{\s*value:\s*ctx\.layerTex\(r,\s*"_MainTex"\)\s*\}/,
       /userData\.exactShader\s*=\s*"Simple-Opaque-Hologram_Tuning"/,
     ],
@@ -435,10 +568,13 @@ const EXACT_PORTS = {
     mrt: { primary: "_643", secondary: "_848", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /"Opaque-Hologram_Tuning":\s*\{\s*vert:\s*"shaders\/opaque_shadowbox_hologram_tuning\.vert\.glsl",\s*frag:\s*"shaders\/opaque_shadowbox_hologram_tuning\.frag\.glsl"\s*\}/,
-      /ctx\.exactShaders\?\.\["Opaque-Hologram_Tuning"\]/,
+      /"Opaque-Hologram_Tuning":\s*\{[\s\S]*?vert:\s*"shaders\/opaque_shadowbox_hologram_tuning\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/opaque_shadowbox_hologram_tuning\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/opaque_shadowbox_hologram_tuning_uniforms\.json"[\s\S]*?\}/,
+      /exactShaderPort\(r,\s*"Opaque-Hologram_Tuning"\)/,
       /_352:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
       /userData\.exactShader\s*=\s*"Opaque-Hologram_Tuning"/,
+      /userData\.officialPassRuntime\s*=\s*exactClassic\.manifest\?\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*exactClassic\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exactClassic\.manifest\?\.official_executable_identity/,
     ],
   },
   "Opaque-UR-Oklab": {
@@ -487,16 +623,17 @@ const EXACT_PORTS = {
     mrt: { primary: "_1985", emissive: "_2004", webgl_bloom_route: "uBloomOnly" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /"Opaque-UR-Oklab":\s*\{\s*vert:\s*"shaders\/opaque_ur_oklab\.vert\.glsl",\s*frag:\s*"shaders\/opaque_ur_oklab\.frag\.glsl"\s*\}/,
-      /exactUrProgram\s*=\s*ctx\.exactShaders\?\.\["Opaque-UR-Oklab"\]/,
-      /r\.shader\s*===\s*"Opaque-UR-Oklab"[\s\S]*?&&\s*exactUrProgram/,
-      /sceneKeywords\.every\(\(value, index\)\s*=>\s*value\s*===\s*opaqueUrKeywords\[index\]\)/,
-      /_13:\s*\{\s*value:\s*ctx\.layerTexNoColorSpace\(r,\s*"_MainTex"\)\s*\}/,
-      /_354:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
-      /vertexShader:\s*exactUrProgram\.vert/,
-      /fragmentShader:\s*exactUrProgram\.frag/,
+      /"Opaque-UR-Oklab":\s*\{[\s\S]*?vert:\s*"shaders\/opaque_ur_oklab\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/opaque_ur_oklab\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/opaque_ur_oklab_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Opaque-UR-Oklab"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exactUr/,
+      /slot === "_MainTex" \|\| slot === "_RampTex" \|\| slot === "_RampTex2"/,
+      /vertexShader:\s*exactUr\.vert/,
+      /fragmentShader:\s*exactUr\.frag/,
       /userData\.bloomSource\s*=\s*true/,
       /userData\.exactShader\s*=\s*"Opaque-UR-Oklab"/,
+      /userData\.officialPassRuntime\s*=\s*manifest\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*manifest\.official_executable_identity/,
     ],
   },
   Card_Parallax_Hologram_UR_New: {
@@ -509,7 +646,7 @@ const EXACT_PORTS = {
       /mat4\s+_ObjectToWorld\s*=\s*modelMatrix/,
       /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
       /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /in\s+vec4\s+tangent\b/,
       /0\.582111895084381103515625/,
       /2\.3929851055145263671875/,
@@ -534,12 +671,16 @@ const EXACT_PORTS = {
     mrt: { primary: "_695", secondary: "_701", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/materials/ur.js"],
     runtimePatterns: [
-      /Card_Parallax_Hologram_UR_New:\s*\{\s*vert:\s*"shaders\/ur_bg_hologram\.vert\.glsl",\s*frag:\s*"shaders\/ur_bg_hologram\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Card_Parallax_Hologram_UR_New/,
-      /_257:\s*\{\s*value:\s*ctx\.layerTexDefault\(r,\s*"_PhaseTex"\)\s*\}/,
+      /Card_Parallax_Hologram_UR_New:\s*\{[\s\S]*?vert:\s*"shaders\/ur_bg_hologram\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/ur_bg_hologram\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/ur_bg_hologram_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Card_Parallax_Hologram_UR_New"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+      /ctx\.layerTexDefault\(r,\s*slot\)/,
       /vertexShader:\s*exact\.vert/,
       /fragmentShader:\s*exact\.frag/,
       /userData\.exactShader\s*=\s*"Card_Parallax_Hologram_UR_New"/,
+      /userData\.officialPassRuntime\s*=\s*manifest\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*manifest\.official_executable_identity/,
     ],
   },
   Card_UR_Plate: {
@@ -551,7 +692,7 @@ const EXACT_PORTS = {
     requiredVert: [
       /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
       /mat4\s+_ViewProjection\s*=\s*projectionMatrix\s*\*\s*viewMatrix/,
-      /in\s+vec2\s+uv2\b/,
+      /in\s+vec2\s+uv1\b/,
       /in\s+vec4\s+tangent\b/,
       /0\.582111895084381103515625/,
       /2\.3929851055145263671875/,
@@ -578,8 +719,8 @@ const EXACT_PORTS = {
     mrt: { primary: "_603", secondary: "_658", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/ur.js"],
     runtimePatterns: [
-      /Card_UR_Plate:\s*\{\s*vert:\s*"shaders\/ur_plate\.vert\.glsl",\s*frag:\s*"shaders\/ur_plate\.frag\.glsl"\s*\}/,
-      /exactShaders\?\.Card_UR_Plate/,
+      /Card_UR_Plate:\s*\{\s*vert:\s*"shaders\/ur_plate\.vert\.glsl",\s*frag:\s*"shaders\/ur_plate\.frag\.glsl",\s*manifest:\s*"shaders\/ur_plate_uniforms\.json"\s*\}/,
+      /ctx\.exactShaderPort\(r,\s*"Card_UR_Plate"\)/,
       /_555:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
       /_594:\s*\{\s*value:\s*tex\s*\}/,
       /userData\.exactShader\s*=\s*"Card_UR_Plate"/,
@@ -620,11 +761,15 @@ const EXACT_PORTS = {
     mrt: { primary: "_34", emissive: "_42", webgl_bloom_route: "uBloomOnly" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/frame2layer-ur.js"],
     runtimePatterns: [
-      /"Frame-2Layer-UR":\s*\{\s*vert:\s*"shaders\/frame_2layer_ur\.vert\.glsl",\s*frag:\s*"shaders\/frame_2layer_ur\.frag\.glsl"\s*\}/,
-      /ctx\.exactShaders\?\.\["Frame-2Layer-UR"\]/,
-      /_367:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
-      /uBloomOnly:\s*\{\s*value:\s*0\s*\}/,
+      /"Frame-2Layer-UR":\s*\{[\s\S]*?vert:\s*"shaders\/frame_2layer_ur\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/frame_2layer_ur\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/frame_2layer_ur_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Frame-2Layer-UR"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+      /slot === "_BaseTex" \|\| slot === "_RampTex" \|\| slot === "_RampTex2"/,
+      /slot === "_RampMaskTex" \|\| slot === "_RampMaskTex2"/,
       /userData\.exactShader\s*=\s*"Frame-2Layer-UR"/,
+      /userData\.officialPassRuntime\s*=\s*manifest\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*manifest\.official_executable_identity/,
     ],
   },
   "Transparent-UR-New": {
@@ -661,13 +806,17 @@ const EXACT_PORTS = {
     mrt: { primary: "_873", secondary: "_875", secondary_value: "zero" },
     runtimeFiles: ["app.js", "render/context.js", "render/materials/holo.js"],
     runtimePatterns: [
-      /"Transparent-UR-New":\s*\{\s*vert:\s*"shaders\/transparent_ur_new\.vert\.glsl",\s*frag:\s*"shaders\/transparent_ur_new\.frag\.glsl"\s*\}/,
-      /ctx\.exactShaders\?\.\["Transparent-UR-New"\]/,
-      /_581:\s*\{\s*value:\s*ctx\.dynHoloTex\s*\|\|\s*ctx\.dynUITex\s*\}/,
-      /_528:\s*\{\s*value:\s*ctx\.layerCubeDefault\(r\)\s*\}/,
+      /"Transparent-UR-New":\s*\{[\s\S]*?vert:\s*"shaders\/transparent_ur_new\.vert\.glsl"[\s\S]*?frag:\s*"shaders\/transparent_ur_new\.frag\.glsl"[\s\S]*?manifest:\s*"shaders\/transparent_ur_new_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Transparent-UR-New"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+      /slot === "_DynamicUITex"\) return ctx\.dynHoloTex \|\| ctx\.dynUITex/,
+      /slot === "_CubeMap"\) return ctx\.layerCubeDefault\(r\)/,
       /m\.uniforms\._581\)\s*m\.uniforms\._581\.value\s*=\s*t\.holo/,
       /userData\.straight\s*=\s*true/,
       /userData\.exactShader\s*=\s*"Transparent-UR-New"/,
+      /userData\.officialPassRuntime\s*=\s*manifest\.official_pass_runtime/,
+      /userData\.officialSelector\s*=\s*manifest\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*manifest\.official_executable_identity/,
     ],
   },
   Card_Parallax_UR: {
@@ -675,37 +824,36 @@ const EXACT_PORTS = {
     vert: "shaders/parallax_ur.vert.glsl",
     frag: "shaders/parallax_ur.frag.glsl",
     uniforms: "shaders/parallax_ur_uniforms.json",
+    generatedBy: "build/build-exact-card-parallax-ur.mjs",
+    requiredKeywords: [],
     requiredVert: [
       /in\s+vec4\s+tangent\b/,
-      /tv\.z\s*\+\s*0\.41999998688697815/,
+      /0\.4199999868869781494140625/,
+      /mat4\s+_WorldToObject\s*=\s*inverse\(modelMatrix\)/,
       /out\s+vec2\s+vs_TEXCOORD0\b/,
     ],
     requiredFrag: [
+      /uniform\s+highp\s+mat4\s+modelMatrix\b/,
+      /^((?!uniform\s+highp\s+mat4\s+viewMatrix\b).)*$/s,
       /uniform\s+mediump\s+sampler2D\s+_242\b/,
-      /sin\(darkAngle\s*\*\s*3\.0\)/,
+      /_44\.x\s*=\s*sin\(_9\.x\)/,
+      /_56\.x\s*=\s*-_DarknessOffset/,
       /_276\s*=\s*vec4\(0\.0\)/,
     ],
     samplers: ["_242"],
     samplerSlots: ["_MainTex"],
-  },
-  Card_UR_Glitter_FlowMaps: {
-    name: "glitter",
-    vert: "shaders/glitter.vert.glsl",
-    frag: "shaders/glitter.frag.glsl",
-    uniforms: "shaders/glitter_uniforms.json",
-    requiredVert: [
-      /uniform\s+vec4\s+_78\s*\[\s*18\s*\]/,
-      /out\s+vec4\s+vs_TEXCOORD0/,
-      /out\s+vec4\s+vs_TEXCOORD1/,
+    implicitDefaults: { _MainTex: "black" },
+    officialTextureDescriptors: { _MainTex: { defaultName: "black", dimension: 2 } },
+    mrt: { primary: "_267", emissive: "_276" },
+    runtimeFiles: ["app.js", "render/materials/ur.js"],
+    runtimePatterns: [
+      /Card_Parallax_UR:\s*\{[\s\S]*?manifest:\s*"shaders\/parallax_ur_uniforms\.json"[\s\S]*?\}/,
+      /ctx\.exactShaderPort\(r,\s*"Card_Parallax_UR"\)/,
+      /ctx\.exactPortUniforms\(r,\s*exact/,
+      /userData\.exactShader\s*=\s*"Card_Parallax_UR"/,
+      /userData\.officialSelector\s*=\s*exact\.manifest\?\.official_selector/,
+      /userData\.officialExecutableIdentity\s*=\s*exact\.manifest\?\.official_executable_identity/,
     ],
-    requiredFrag: [
-      /uniform\s+highp\s+vec4\s+_37\s*\[\s*5\s*\]/,
-      /layout\s*\(\s*location\s*=\s*0\s*\)\s*out\s+highp\s+vec4/,
-      /in\s+highp\s+vec4\s+vs_TEXCOORD0/,
-      /in\s+highp\s+vec4\s+vs_TEXCOORD1/,
-    ],
-    samplers: ["_13", "_205", "_404", "_644", "_690", "_843"],
-    samplerSlots: ["_FlowAMap", "_ALightTex", "_ABaseTex", "_FlowBMap", "_BLightTex", "_BBaseTex"],
   },
 };
 
@@ -716,6 +864,290 @@ function sceneId(name) {
 function readText(rel) {
   const abs = path.join(PUBLIC, rel);
   return fs.existsSync(abs) ? fs.readFileSync(abs, "utf8") : null;
+}
+
+export function officialPortKey(value) {
+  return [
+    value?.selectorId,
+    value?.candidateWitnessId,
+    value?.subshader,
+    value?.pass,
+  ].join("|");
+}
+
+function manifestShaderKey(manifest) {
+  return manifest.runtime_contract?.shader_key
+    || String(manifest.shader || manifest.official_selector?.shaderName || "").split("/").at(-1);
+}
+
+function sameJson(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function sha256(text) {
+  return crypto.createHash("sha256").update(text).digest("hex");
+}
+
+function vectorFields(manifest) {
+  return (manifest.official_program_bindings?.common_constant_buffers || [])
+    .flatMap((buffer) => (buffer.vectors || []).map((field) => ({ ...field, buffer: buffer.name })));
+}
+
+function fieldMatches(fields, name, expected) {
+  return fields.some((field) => field.name === name
+    && Object.entries(expected).every(([key, value]) => field[key] === value));
+}
+
+function structuredSemanticRows(entry) {
+  const { manifest, manifestPath } = entry;
+  const shader = manifestShaderKey(manifest);
+  const rows = [];
+  const push = (ok, reason) => rows.push({ ok, shader, asset: manifestPath, reason, refs: [] });
+  const fields = vectorFields(manifest);
+  const bindings = [...(manifest.sampler_bindings || [])].sort((a, b) => a.binding - b.binding);
+
+  if (shader === "Card_UR_Glitter_FlowMaps") {
+    push(
+      fieldMatches(fields, "_FlowParams", { buffer: "PGlobals703640426", offset: 0, arraySize: 2, dim: 4 })
+        && fieldMatches(fields, "_FlowParams", { buffer: "VGlobals703640426", offset: 224, arraySize: 2, dim: 4 }),
+      "Glitter FlowParams vec4[2] reflection in PGlobals/VGlobals",
+    );
+    push(
+      fieldMatches(fields, "_LightTime", { offset: 64, arraySize: 0, dim: 1 })
+        && fieldMatches(fields, "_EmitThreshold", { offset: 68, arraySize: 0, dim: 1 }),
+      "Glitter twinkle pulse reflection fields",
+    );
+    push(
+      sameJson(manifest.runtime_contract?.dynamic_uniforms?._FlowParams, {
+        type: "vec4[2]",
+        source: "GlitterFlowMaps.Update/Material.SetVectorArray",
+      })
+        && ["_LightTime", "_EmitThreshold"].every((name) =>
+          manifest.runtime_contract?.material_uniforms?.floats?.includes(name)),
+      "Glitter runtime dynamic/pulse contract",
+    );
+    push(
+      sameJson(bindings.map(({ slot, binding, dimension }) => ({ slot, binding, dimension })), [
+        { slot: "_FlowAMap", binding: 0, dimension: 2 },
+        { slot: "_ALightTex", binding: 1, dimension: 2 },
+        { slot: "_ABaseTex", binding: 2, dimension: 2 },
+        { slot: "_FlowBMap", binding: 3, dimension: 2 },
+        { slot: "_BLightTex", binding: 4, dimension: 2 },
+        { slot: "_BBaseTex", binding: 5, dimension: 2 },
+      ]),
+      "Glitter six-texture official binding topology",
+    );
+  }
+
+  if (shader === "Card_Parallax_MatCap_Lighting") {
+    push(
+      fieldMatches(fields, "_UseUv2", { offset: 224, type: 1, dim: 1 })
+        && fieldMatches(fields, "_LightSensitive", { offset: 64, type: 0, dim: 1 })
+        && fieldMatches(fields, "_LightCurvePower", { offset: 68, type: 0, dim: 1 }),
+      "MatCap UV selector and light-curve reflection",
+    );
+    push(
+      fieldMatches(fields, "_LightingColor", { offset: 80, type: 0, dim: 4 })
+        && fieldMatches(fields, "_EmissiveEnabled", { offset: 100, type: 1, dim: 1 })
+        && fieldMatches(fields, "_EmissiveColor", { offset: 112, type: 0, dim: 4 }),
+      "MatCap lighting/emissive reflection",
+    );
+    push(
+      sameJson(bindings.map(({ slot, binding, dimension }) => ({ slot, binding, dimension })), [
+        { slot: "_MatCapLightTex", binding: 0, dimension: 2 },
+        { slot: "_LightingMask", binding: 1, dimension: 2 },
+      ]),
+      "MatCap two-texture official binding topology",
+    );
+    push(
+      manifest.runtime_contract?.attributes?.normal === "vec3"
+        && manifest.runtime_contract?.attributes?.tangent === "vec4"
+        && manifest.runtime_contract?.attributes?.uv1 === "vec2"
+        && manifest.runtime_contract?.material_uniforms?.ints?.includes("_UseUv2")
+        && manifest.runtime_contract?.material_uniforms?.ints?.includes("_EmissiveEnabled")
+        && manifest.runtime_contract?.mrt_attachments === 2,
+      "MatCap runtime attributes, integer controls, and MRT contract",
+    );
+  }
+
+  return rows;
+}
+
+export function auditSelectorBoundProgramAssets({ contract, manifestEntries, readSourceText }) {
+  const rows = [];
+  const expectedKeys = contract.ports.map(officialPortKey);
+  const discoveredKeys = manifestEntries.map((entry) => officialPortKey(entry.manifest.official_selector));
+  const expectedSet = new Set(expectedKeys);
+  const discoveredSet = new Set(discoveredKeys);
+  const duplicateExpected = expectedKeys.filter((key, index) => expectedKeys.indexOf(key) !== index);
+  const duplicateDiscovered = discoveredKeys.filter((key, index) => discoveredKeys.indexOf(key) !== index);
+  const missing = [...expectedSet].filter((key) => !discoveredSet.has(key)).sort();
+  const extra = [...discoveredSet].filter((key) => !expectedSet.has(key)).sort();
+
+  rows.push({
+    ok: contract.schema === "pocket-card-render/official-program-port-contract@2",
+    shader: "selector-bound-contract",
+    asset: "shaders/official_program_port_contract.json",
+    reason: "contract schema v2",
+    refs: [],
+  });
+  rows.push({
+    ok: duplicateExpected.length === 0,
+    shader: "selector-bound-contract",
+    asset: "shaders/official_program_port_contract.json",
+    reason: duplicateExpected.length ? `duplicate contract keys: ${duplicateExpected.join(",")}` : "unique full contract identities",
+    refs: [],
+  });
+  rows.push({
+    ok: duplicateDiscovered.length === 0,
+    shader: "selector-bound-contract",
+    asset: "shaders/*_uniforms.json",
+    reason: duplicateDiscovered.length ? `duplicate manifest keys: ${duplicateDiscovered.join(",")}` : "unique full manifest identities",
+    refs: [],
+  });
+  rows.push({
+    ok: missing.length === 0 && extra.length === 0 && expectedSet.size === discoveredSet.size,
+    shader: "selector-bound-contract",
+    asset: "shaders/*_uniforms.json",
+    reason: missing.length || extra.length
+      ? `full-key set mismatch missing=[${missing.join(",")}] extra=[${extra.join(",")}]`
+      : `full-key set closed ${expectedSet.size}/${expectedSet.size}`,
+    refs: [],
+  });
+
+  const entryByKey = new Map(manifestEntries.map((entry) => [
+    officialPortKey(entry.manifest.official_selector),
+    entry,
+  ]));
+  for (const port of contract.ports) {
+    const key = officialPortKey(port);
+    const entry = entryByKey.get(key);
+    const shader = entry ? manifestShaderKey(entry.manifest) : "selector-bound-contract";
+    if (!entry) {
+      rows.push({ ok: false, shader, asset: port.manifest, reason: `contract port not consumed: ${key}`, refs: [] });
+      continue;
+    }
+
+    const { manifest, manifestPath, fallbackSources } = entry;
+    const selector = manifest.official_selector || {};
+    const identity = manifest.official_executable_identity || {};
+    const issues = [];
+    if (manifestPath !== port.manifest) issues.push(`manifest path ${manifestPath} != ${port.manifest}`);
+    if (manifest.generated_by !== port.generator) issues.push("generator provenance mismatch");
+    if (selector.semanticExecutableId !== port.semanticExecutableId) issues.push("semantic executable mismatch");
+    if (!sameJson([...(manifest.selected_keywords || [])].sort(), [...(selector.keywords || [])].sort())) {
+      issues.push("selected keyword reflection mismatch");
+    }
+    for (const [field, expected] of Object.entries(port.officialIdentityFields || {})) {
+      if (identity[field] !== expected) issues.push(`${field} mismatch`);
+    }
+    if (manifest.official_parameter_entry?.source_sha256 !== identity.parameterEntrySha256) {
+      issues.push("parameter entry source mismatch");
+    }
+    if (manifest.official_pass_runtime?.source_sha256 !== identity.passStateSha256) {
+      issues.push("pass state source mismatch");
+    }
+    if (manifest.official_common_bindings?.source_sha256 !== identity.commonBindingsSha256) {
+      issues.push("common binding source mismatch");
+    }
+    if (manifest.official_program_bindings) {
+      if (manifest.official_program_bindings.parameter_reflection_sha256
+        !== manifest.official_parameter_entry?.reflection_sha256) {
+        issues.push("parameter reflection join mismatch");
+      }
+      if (manifest.official_program_bindings.common_source_sha256 !== identity.commonBindingsSha256) {
+        issues.push("compiled common binding join mismatch");
+      }
+    }
+
+    const declaredSources = manifest.webgl_sources || fallbackSources || {};
+    if (manifest.webgl_sources && !manifest.runtime_contract) issues.push("declared WebGL source lacks runtime contract");
+    if (manifest.runtime_contract) {
+      if (manifest.runtime_contract.schema !== "pocket-card-render/webgl-runtime-port@1") {
+        issues.push("runtime contract schema mismatch");
+      }
+      if (manifest.runtime_contract.shader_key !== shader) issues.push("runtime shader key mismatch");
+      if ("require_complete_active_bindings" in manifest.runtime_contract
+        && typeof manifest.runtime_contract.require_complete_active_bindings !== "boolean") {
+        issues.push("runtime active-binding policy is not explicit");
+      }
+    }
+    for (const stage of ["vertex", "fragment"]) {
+      const sourcePath = declaredSources[stage];
+      const source = sourcePath ? readSourceText(sourcePath) : null;
+      const adaptation = manifest.webgl_adaptation?.[stage];
+      if (!sourcePath || !source) {
+        issues.push(`${stage} source missing`);
+        continue;
+      }
+      if (sha256(source) !== adaptation?.outputSha256) issues.push(`${stage} output hash mismatch`);
+      if (adaptation?.officialSpirvSha256 !== manifest.official_spirv_sha256?.[stage]) {
+        issues.push(`${stage} official SPIR-V join mismatch`);
+      }
+      const identityField = stage === "vertex" ? "vertexSpirvSha256" : "fragmentSpirvSha256";
+      if (adaptation?.officialSpirvSha256 !== identity[identityField]) {
+        issues.push(`${stage} contract SPIR-V mismatch`);
+      }
+    }
+
+    if (manifest.sampler_bindings) {
+      const bindings = [...manifest.sampler_bindings].sort((a, b) => a.binding - b.binding);
+      const bindingNumbers = bindings.map((binding) => binding.binding);
+      if (new Set(bindingNumbers).size !== bindingNumbers.length) issues.push("duplicate sampler binding number");
+      if (!sameJson(bindings.map((binding) => binding.spirvName), manifest.samplers || [])) {
+        issues.push("sampler SPIR-V order mismatch");
+      }
+      if (!sameJson(bindings.map((binding) => binding.slot), manifest.sampler_slots || [])) {
+        issues.push("sampler slot order mismatch");
+      }
+      const officialTextures = manifest.official_program_bindings?.textures
+        || manifest.official_common_bindings?.textures
+        || [];
+      for (const binding of bindings) {
+        const official = officialTextures.find((texture) => texture.binding === binding.binding);
+        if (!official || official.name !== binding.slot || official.dim !== binding.dimension) {
+          issues.push(`sampler binding ${binding.binding} does not join official reflection`);
+        }
+      }
+    }
+
+    rows.push({
+      ok: issues.length === 0,
+      shader,
+      asset: manifestPath,
+      reason: issues.length ? `${key}: ${issues.join("; ")}` : `consumed full identity ${key}`,
+      refs: [],
+    });
+    rows.push(...structuredSemanticRows(entry));
+  }
+
+  return { rows, expectedKeys: [...expectedSet].sort(), discoveredKeys: [...discoveredSet].sort() };
+}
+
+function discoverSelectorBoundManifestEntries() {
+  const shaderDir = path.join(PUBLIC, "shaders");
+  const sourcePathByHash = new Map();
+  for (const file of fs.readdirSync(shaderDir).filter((name) => /\.(?:vert|frag)\.glsl$/.test(name)).sort()) {
+    const source = fs.readFileSync(path.join(shaderDir, file), "utf8");
+    const hash = sha256(source);
+    if (!sourcePathByHash.has(hash)) sourcePathByHash.set(hash, `public/shaders/${file}`);
+  }
+  const entries = [];
+  for (const file of fs.readdirSync(shaderDir).filter((name) => name.endsWith("_uniforms.json")).sort()) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(shaderDir, file), "utf8"));
+    if (!manifest.official_selector
+      || !manifest.webgl_adaptation?.vertex?.outputSha256
+      || !manifest.webgl_adaptation?.fragment?.outputSha256) continue;
+    entries.push({
+      manifest,
+      manifestPath: `public/shaders/${file}`,
+      fallbackSources: {
+        vertex: sourcePathByHash.get(manifest.webgl_adaptation.vertex.outputSha256),
+        fragment: sourcePathByHash.get(manifest.webgl_adaptation.fragment.outputSha256),
+      },
+    });
+  }
+  return entries;
 }
 
 function findSceneUsers() {
@@ -734,7 +1166,23 @@ function findSceneUsers() {
   return users;
 }
 
-const rows = [];
+export function runProgramAssetAudit() {
+const contract = JSON.parse(fs.readFileSync(
+  path.join(PUBLIC, "shaders", "official_program_port_contract.json"),
+  "utf8",
+));
+const structuredAudit = auditSelectorBoundProgramAssets({
+  contract,
+  manifestEntries: discoverSelectorBoundManifestEntries(),
+  readSourceText: (sourcePath) => {
+    const normalized = String(sourcePath).replaceAll("\\", "/");
+    const absolute = normalized.startsWith("public/")
+      ? path.join(ROOT, ...normalized.split("/"))
+      : path.join(PUBLIC, ...normalized.split("/"));
+    return fs.existsSync(absolute) ? fs.readFileSync(absolute, "utf8") : null;
+  },
+});
+const rows = [...structuredAudit.rows];
 const users = findSceneUsers();
 for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
   const sceneUsers = users.get(shader) || [];
@@ -744,18 +1192,100 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
     continue;
   }
 
-  const vert = readText(cfg.vert);
-  const frag = readText(cfg.frag);
-  const uniformsRaw = readText(cfg.uniforms);
-  rows.push({ ok: !!vert, shader, asset: cfg.vert, reason: vert ? "present" : "missing", refs });
-  rows.push({ ok: !!frag, shader, asset: cfg.frag, reason: frag ? "present" : "missing", refs });
-  rows.push({ ok: !!uniformsRaw, shader, asset: cfg.uniforms, reason: uniformsRaw ? "present" : "missing", refs });
-  if (cfg.requiredKeyword) {
+  if (cfg.selectorManifests) {
+    const accepted = cfg.acceptedMaterialKeywordSets
+      .map((keywordSet) => JSON.stringify([...keywordSet].sort()));
     rows.push({
-      ok: sceneUsers.every((user) => user.keywords.includes(cfg.requiredKeyword)),
+      ok: sceneUsers.every((user) => accepted.includes(JSON.stringify([...user.keywords].sort()))),
       shader,
       asset: "scene.*.json",
-      reason: `all scene users select variant ${cfg.requiredKeyword}`,
+      reason: "all scene users resolve through an official selector manifest",
+      refs,
+    });
+    if (cfg.runtimeFiles && cfg.runtimePatterns) {
+      const runtimeSource = cfg.runtimeFiles.map((file) => readText(file) || "").join("\n");
+      for (const re of cfg.runtimePatterns) {
+        rows.push({ ok: re.test(runtimeSource), shader, asset: cfg.runtimeFiles.join(","), reason: `runtime wiring ${re}`, refs });
+      }
+    }
+    for (const [manifestFile, expectedKeywords] of cfg.selectorManifests) {
+      const raw = readText(manifestFile);
+      rows.push({ ok: !!raw, shader, asset: manifestFile, reason: raw ? "present" : "missing", refs });
+      if (!raw) continue;
+      try {
+        const manifest = JSON.parse(raw);
+        const selected = [...(manifest.selected_keywords || [])].sort();
+        rows.push({
+          ok: JSON.stringify(selected) === JSON.stringify([...expectedKeywords].sort()),
+          shader,
+          asset: manifestFile,
+          reason: "official selector keyword set",
+          refs,
+        });
+        rows.push({
+          ok: manifest.generated_by === cfg.generatedBy,
+          shader,
+          asset: manifestFile,
+          reason: "official generation provenance",
+          refs,
+        });
+        rows.push({
+          ok: manifest.runtime_contract?.shader_key === shader
+            && manifest.official_selector?.selectorId
+            && manifest.official_selector?.shaderIdentity,
+          shader,
+          asset: manifestFile,
+          reason: "selector-keyed runtime contract",
+          refs,
+        });
+        rows.push({
+          ok: JSON.stringify((manifest.sampler_bindings || []).map((binding) => binding.spirvName))
+            === JSON.stringify(manifest.samplers || [])
+            && JSON.stringify((manifest.sampler_bindings || []).map((binding) => binding.slot))
+              === JSON.stringify(manifest.sampler_slots || []),
+          shader,
+          asset: manifestFile,
+          reason: "official binding-number sampler join",
+          refs,
+        });
+        for (const stage of ["vertex", "fragment"]) {
+          const declared = manifest.webgl_sources?.[stage];
+          const relative = typeof declared === "string" ? declared.replace(/^public\//, "") : null;
+          const source = relative ? readText(relative) : null;
+          const expectedHash = manifest.webgl_adaptation?.[stage]?.outputSha256;
+          const actualHash = source ? crypto.createHash("sha256").update(source).digest("hex") : null;
+          rows.push({
+            ok: !!source && actualHash === expectedHash,
+            shader,
+            asset: relative || `${manifestFile}:${stage}`,
+            reason: `${stage} selector source hash`,
+            refs,
+          });
+        }
+      } catch (err) {
+        rows.push({ ok: false, shader, asset: manifestFile, reason: `invalid selector manifest: ${err.message}`, refs });
+      }
+    }
+    continue;
+  }
+
+  const vert = readText(cfg.vert);
+  const frag = readText(cfg.frag);
+  const uniformFiles = Array.isArray(cfg.uniforms) ? cfg.uniforms : [cfg.uniforms];
+  const uniformEntries = uniformFiles.map((file) => ({ file, raw: readText(file) }));
+  rows.push({ ok: !!vert, shader, asset: cfg.vert, reason: vert ? "present" : "missing", refs });
+  rows.push({ ok: !!frag, shader, asset: cfg.frag, reason: frag ? "present" : "missing", refs });
+  for (const entry of uniformEntries) {
+    rows.push({ ok: !!entry.raw, shader, asset: entry.file, reason: entry.raw ? "present" : "missing", refs });
+  }
+  if (cfg.requiredKeyword || cfg.acceptedMaterialKeywordSets) {
+    const accepted = (cfg.acceptedMaterialKeywordSets || [[cfg.requiredKeyword]])
+      .map((keywords) => JSON.stringify([...keywords].sort()));
+    rows.push({
+      ok: sceneUsers.every((user) => accepted.includes(JSON.stringify([...user.keywords].sort()))),
+      shader,
+      asset: "scene.*.json",
+      reason: "all scene users resolve through an explicitly supported selector keyword set",
       refs,
     });
   }
@@ -791,20 +1321,22 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
       rows.push({ ok: re.test(frag), shader, asset: cfg.frag, reason: `fragment sampler ${sampler}`, refs });
     }
   }
-  if (uniformsRaw) {
+  for (const [uniformIndex, uniformEntry] of uniformEntries.entries()) {
+    const uniformsRaw = uniformEntry.raw;
+    if (!uniformsRaw) continue;
     try {
       const uniforms = JSON.parse(uniformsRaw);
       rows.push({
         ok: JSON.stringify(uniforms.samplers || []) === JSON.stringify(cfg.samplers),
         shader,
-        asset: cfg.uniforms,
+        asset: uniformEntry.file,
         reason: "sampler binding order",
         refs,
       });
       rows.push({
         ok: JSON.stringify(uniforms.sampler_slots || []) === JSON.stringify(cfg.samplerSlots),
         shader,
-        asset: cfg.uniforms,
+        asset: uniformEntry.file,
         reason: "sampler slot order",
         refs,
       });
@@ -812,8 +1344,18 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
         rows.push({
           ok: uniforms.variant === cfg.requiredKeyword,
           shader,
-          asset: cfg.uniforms,
+          asset: uniformEntry.file,
           reason: `uniform manifest variant ${cfg.requiredKeyword}`,
+          refs,
+        });
+      }
+      if (cfg.requiredManifestKeywordSets) {
+        const expected = [...cfg.requiredManifestKeywordSets[uniformIndex]].sort();
+        rows.push({
+          ok: JSON.stringify([...(uniforms.selected_keywords || [])].sort()) === JSON.stringify(expected),
+          shader,
+          asset: uniformEntry.file,
+          reason: `manifest selector keyword set ${expected.join(",") || "<empty>"}`,
           refs,
         });
       }
@@ -821,17 +1363,28 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
         rows.push({
           ok: JSON.stringify([...(uniforms.selected_keywords || [])].sort()) === JSON.stringify([...cfg.requiredKeywords].sort()),
           shader,
-          asset: cfg.uniforms,
+          asset: uniformEntry.file,
           reason: "uniform manifest selected keyword set",
           refs,
         });
       }
       if (cfg.implicitDefaults) {
         rows.push({
-          ok: JSON.stringify(uniforms.implicit_defaults || {}) === JSON.stringify(cfg.implicitDefaults),
+          ok: JSON.stringify(Object.entries(uniforms.implicit_defaults || {}).sort(([a], [b]) => a.localeCompare(b)))
+            === JSON.stringify(Object.entries(cfg.implicitDefaults).sort(([a], [b]) => a.localeCompare(b))),
           shader,
-          asset: cfg.uniforms,
+          asset: uniformEntry.file,
           reason: "implicit texture defaults",
+          refs,
+        });
+      }
+      if (cfg.officialTextureDescriptors) {
+        rows.push({
+          ok: JSON.stringify(uniforms.official_shader_property_defaults?.textureDescriptors || {})
+            === JSON.stringify(cfg.officialTextureDescriptors),
+          shader,
+          asset: uniformEntry.file,
+          reason: "official serialized texture property descriptors",
           refs,
         });
       }
@@ -839,7 +1392,7 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
         rows.push({
           ok: uniforms.generated_by === cfg.generatedBy,
           shader,
-          asset: cfg.uniforms,
+          asset: uniformEntry.file,
           reason: "official generation provenance",
           refs,
         });
@@ -848,29 +1401,13 @@ for (const [shader, cfg] of Object.entries(EXACT_PORTS)) {
         rows.push({
           ok: JSON.stringify(uniforms.mrt || {}) === JSON.stringify(cfg.mrt),
           shader,
-          asset: cfg.uniforms,
+          asset: uniformEntry.file,
           reason: "MRT output/adaptation manifest",
           refs,
         });
       }
-      if (shader === "Card_UR_Glitter_FlowMaps") {
-        rows.push({
-          ok: uniforms._78?.["15"]?.[0] === "__rotA" && uniforms._78?.["15"]?.[1] === "__rotB",
-          shader,
-          asset: cfg.uniforms,
-          reason: "undeclared rotation slots documented",
-          refs,
-        });
-        rows.push({
-          ok: uniforms._37?.["4"]?.[0] === "_LightTime" && uniforms._37?.["4"]?.[1] === "_EmitThreshold",
-          shader,
-          asset: cfg.uniforms,
-          reason: "twinkle pulse fields mapped",
-          refs,
-        });
-      }
     } catch (err) {
-      rows.push({ ok: false, shader, asset: cfg.uniforms, reason: `invalid json: ${err.message}`, refs });
+      rows.push({ ok: false, shader, asset: uniformEntry.file, reason: `invalid json: ${err.message}`, refs });
     }
   }
 }
@@ -884,4 +1421,9 @@ const bad = rows.filter((r) => !r.ok);
 if (bad.length) {
   console.error(`\n${bad.length} official program asset issue(s) found.`);
   process.exitCode = 1;
+}
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  runProgramAssetAudit();
 }

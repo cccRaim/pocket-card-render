@@ -76,7 +76,7 @@ const checks = [
     msg: "official Card_Illust fragment must sample _MainTex and zero MRT1",
   },
   {
-    ok: /vUv\s*=\s*mix\(uv,\s*uv2,\s*step\(0\.5,\s*uUseUv\)\)/.test(illust),
+    ok: /vUv\s*=\s*mix\(uv,\s*uv1,\s*step\(0\.5,\s*uUseUv\)\)/.test(illust),
     msg: "local Card_Illust strategy must select UV0/UV1 by _UseUv",
   },
   {

@@ -1,0 +1,747 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Card_Circular_Trail_Kira",
+  "generated_by": "build/build-exact-circular-kira.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+    "candidateWitnessId": "6466d49d6b942d0756b3de11ccfdc4b3f60d0507b6de71f3f03d3d21f15531b5",
+    "shaderIdentity": "CAB-b91ee530ef520e839ef1482231693d1d:3418664917731838456",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Trail_Kira",
+    "keywords": [],
+    "selectionMode": "ordered-multipass-structure",
+    "subshader": 0,
+    "pass": 1,
+    "programBlobIndex": 3,
+    "parameterBlobIndex": 2,
+    "executableId": "7c0a7c7638e0eb7ecb4cd56d60aa7bcc5e81dbeda7f589c7089d9882403560c3",
+    "semanticExecutableId": "0f26cc7537fbeeb138f3ac59f2e778b510603f3d0cf718a482cfb031ec87148b"
+  },
+  "official_spirv_sha256": {
+    "vertex": "7ae8fed6e64fd080eadeb8c9c995324ba7ae13dd32cf322cb6b27cdaa4b5bf1c",
+    "fragment": "ed0d61841e21ebd8719c7227ffed401db3550403f544b053360393565276ec38"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "7ae8fed6e64fd080eadeb8c9c995324ba7ae13dd32cf322cb6b27cdaa4b5bf1c",
+    "fragmentSpirvSha256": "ed0d61841e21ebd8719c7227ffed401db3550403f544b053360393565276ec38",
+    "parameterEntrySha256": "a2db5f64c7abf7fa77fce756ff0ad68109b2fd1e8209476de2887a1679ff45de",
+    "passStateSha256": "85cde11675c40dbebb5cb5edf15222c6b686690595af03ac4191561245cfdf37",
+    "commonBindingsSha256": "9e24cf0574ee2fd4edc517922aefec8fc436602fa2d7dd48a41558e15b802474"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "a2db5f64c7abf7fa77fce756ff0ad68109b2fd1e8209476de2887a1679ff45de",
+    "byte_size": 100,
+    "reflection_sha256": "85f93a2d311e80133db9cc5092e8b824a012e4e208eaee730d1254225f643b16",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals2185321326",
+        "size": 44,
+        "fields": []
+      },
+      {
+        "name": "VGlobals2185321326",
+        "size": 140,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals2185321326",
+        "size": 44
+      },
+      {
+        "name": "VGlobals2185321326",
+        "size": 140
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_BaseTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 1,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "85cde11675c40dbebb5cb5edf15222c6b686690595af03ac4191561245cfdf37",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 4,
+        "name": null
+      },
+      "write": {
+        "val": 0,
+        "name": null
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": null
+      },
+      "read_mask": {
+        "val": 255,
+        "name": null
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 5,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 1,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 1,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "9e24cf0574ee2fd4edc517922aefec8fc436602fa2d7dd48a41558e15b802474",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals2185321326",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAddAlpha",
+            "offset": 4,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAddMinAlpha",
+            "offset": 8,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BaseScaleAdjust",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UVOffset",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BrightnessPower",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BrightnessAffectIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 28,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerScale",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerSpeed",
+            "offset": 36,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_NoiseTime",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185321326",
+        "size": 140,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_CenterMoveByTilt",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularDefaultAngle",
+            "offset": 132,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustRadiusScale",
+            "offset": 136,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals2185321326",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185321326",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "9e24cf0574ee2fd4edc517922aefec8fc436602fa2d7dd48a41558e15b802474",
+    "parameter_reflection_sha256": "85f93a2d311e80133db9cc5092e8b824a012e4e208eaee730d1254225f643b16",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals2185321326",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAddAlpha",
+            "offset": 4,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAddMinAlpha",
+            "offset": 8,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BaseScaleAdjust",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UVOffset",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BrightnessPower",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_BrightnessAffectIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 28,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerScale",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerSpeed",
+            "offset": 36,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_NoiseTime",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185321326",
+        "size": 140,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_CenterMoveByTilt",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularDefaultAngle",
+            "offset": 132,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustRadiusScale",
+            "offset": 136,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals2185321326",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185321326",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_BaseTex": "white"
+    },
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_BaseColorIntensity": 1,
+      "_AdjustAlphaBlendAlpha": 0.5,
+      "_AdjustAlphaBlendColor": 0.5,
+      "_AdjustAddAlpha": 1,
+      "_AdjustAddMinAlpha": 0,
+      "_BaseScaleAdjust": 1,
+      "_UVOffset": 0,
+      "_MeshDivideCount": 0,
+      "_AdjustRadiusScale": 1,
+      "_CenterMoveByTilt": 0,
+      "_BrightnessPower": 1,
+      "_BrightnessAffectIntensity": 1,
+      "_FlickerScale": 0.14000000059604645,
+      "_FlickerSpeed": 1,
+      "_EmissiveIntensity": 1
+    },
+    "colors": {},
+    "vectors": {}
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "7ae8fed6e64fd080eadeb8c9c995324ba7ae13dd32cf322cb6b27cdaa4b5bf1c",
+      "spirvCrossGlslSha256": "e26538835474aa06df3ab2ea87904d5e070d92d176a0833378b826ff37b23d33",
+      "outputSha256": "5dbe558f88f765a041a1a28874683c5a9004ca82c0c52284658d415b6dcab8fa",
+      "substitutions": [
+        "map official mesh locations to Three.js position/uv attributes",
+        "unity_ObjectToWorld := three.modelMatrix and unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "expand official common-buffer fields and fixed-size arrays into same-name WebGL uniforms",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "ed0d61841e21ebd8719c7227ffed401db3550403f544b053360393565276ec38",
+      "spirvCrossGlslSha256": "3b52dd6431a2f5d1546eb2f82ecdbaf257193fce3a9b08e340132a443418945b",
+      "outputSha256": "9c153f2bab05e2c8407f8dd13bff108c90655149f0b5d50d22bb14e49520061f",
+      "substitutions": [
+        "expand official common-buffer fields and fixed-size arrays into same-name WebGL uniforms"
+      ]
+    },
+    "interfaceSha256": "a8aeaf890a3ee094a9f9a82092e1bd780ccc777990a13c2dab2b46dc3626fafd"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/circular_trail_p1.vert.glsl",
+    "fragment": "public/shaders/circular_trail_p1.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Circular_Trail_Kira",
+    "attributes": {
+      "position": "vec3",
+      "uv": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_AdjustRadiusScale",
+        "_CenterMoveByTilt",
+        "_BaseColorIntensity",
+        "_AdjustAddAlpha",
+        "_AdjustAddMinAlpha",
+        "_BaseScaleAdjust",
+        "_UVOffset",
+        "_BrightnessPower",
+        "_BrightnessAffectIntensity",
+        "_EmissiveIntensity",
+        "_FlickerScale",
+        "_FlickerSpeed"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_CircularDefaultAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.Initialize/UpdateCircularParams"
+      },
+      "_NoiseTime": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateTrailParams"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": true,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic",
+    "ordered_pass": {
+      "subshader": 0,
+      "pass": 1,
+      "name": "AddPass"
+    }
+  },
+  "runtime_boundaries": [
+    {
+      "status": "runtime-required",
+      "producer": "CircularKiraObject.UpdateTrailParams/ApplyParams",
+      "payload": "_NoiseTime and circular angle MaterialPropertyBlock values"
+    },
+    {
+      "status": "runtime-required",
+      "producer": "CircularKiraObject.ApplyVerticesParams",
+      "payload": "runtime trail Mesh UVs"
+    }
+  ],
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_149",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_149"
+  ],
+  "sampler_slots": [
+    "_BaseTex"
+  ],
+  "compiled_texture_bindings": {
+    "_BaseTex": 0
+  },
+  "implicit_defaults": {
+    "_BaseTex": "white"
+  },
+  "floats": {
+    "_AdjustRadiusScale": "_AdjustRadiusScale",
+    "_CenterMoveByTilt": "_CenterMoveByTilt",
+    "_BaseColorIntensity": "_BaseColorIntensity",
+    "_AdjustAddAlpha": "_AdjustAddAlpha",
+    "_AdjustAddMinAlpha": "_AdjustAddMinAlpha",
+    "_BaseScaleAdjust": "_BaseScaleAdjust",
+    "_UVOffset": "_UVOffset",
+    "_BrightnessPower": "_BrightnessPower",
+    "_BrightnessAffectIntensity": "_BrightnessAffectIntensity",
+    "_EmissiveIntensity": "_EmissiveIntensity",
+    "_FlickerScale": "_FlickerScale",
+    "_FlickerSpeed": "_FlickerSpeed",
+    "_CircularDefaultAngle": "_CircularDefaultAngle",
+    "_NoiseTime": "_NoiseTime"
+  },
+  "mrt": {
+    "primary": "_227",
+    "emissive": "_229"
+  }
+}

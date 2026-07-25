@@ -16,7 +16,7 @@ in vec3 position;
 in vec3 normal;
 in vec4 tangent;
 in vec2 uv;
-in vec2 uv2;
+in vec2 uv1;
 out vec3 vs_TEXCOORD3;
 out vec2 vs_TEXCOORD0;
 out vec2 vs_TEXCOORD1;
@@ -34,7 +34,7 @@ void main()
     vec3 _86 = normal;
     vec4 _106 = tangent;
     vec2 _306 = uv;
-    vec2 _310 = uv2;
+    vec2 _310 = uv1;
     mat4 _ObjectToWorld = modelMatrix;
     mat4 _WorldToObject = inverse(modelMatrix);
     mat4 _ViewProjection = projectionMatrix * viewMatrix;

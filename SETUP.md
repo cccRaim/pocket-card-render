@@ -1,5 +1,8 @@
 # Setup & data pipeline
 
+For a newer game or Unity baseline, read [UPGRADING.md](UPGRADING.md) before
+replacing any version-bound official evidence.
+
 > **English** · [简体中文](SETUP.zh-CN.md)
 
 This guide covers everything end-to-end: install dependencies → export assets (exact config) → the
@@ -20,6 +23,9 @@ Two paths:
 | **UnityPy** | latest (`pip install UnityPy`) | reads Unity bundles and official PlayerSettings |
 | **capstone** | latest (`pip install capstone`) | decodes official ARM64 renderer methods for pipeline audits |
 | **lz4** | latest (`pip install lz4`) | decompresses the official serialized Bloom shader blob |
+| **freetype-py** | FreeType 2.13.x (`pip install freetype-py`) | independently audits all official TMP glyph metrics |
+| **Pillow** | latest (`pip install Pillow`) | reads and verifies official TMP atlas pixels |
+| **unicorn** | latest (`pip install unicorn`) | executes the pinned ARM64 Unity SDFAA glyph path for byte-exact atlas checks |
 | **AssetRipper** | latest stable GUI build | exports the composed geometry + textures (Path B) |
 | .NET | only if your AssetRipper build is framework-dependent → **.NET 8 runtime** | most AssetRipper releases are self-contained |
 | three.js | 0.165.0 — **pinned via CDN import map**, nothing to install | see `public/index.html` |
@@ -31,6 +37,18 @@ for headless screenshots and the screenshot-free runtime smoke test.
 The optional official-runtime audit also needs an APKM from your own game installation. Set
 `PCR_APKM=/path/to/package.apkm`, then run `npm run audit:official-player-pipeline`. The command reads
 the package directly and does not trust generated recipes as renderer evidence.
+
+If you already have a raw Vulkan capture from your own target-device session, import and audit it without
+screenshots:
+
+```bash
+npm run test:official-vulkan-runtime-import
+npm run audit:official-vulkan-runtime-capture -- /path/to/capture public/scene.<card>.json
+PCR_OFFICIAL_VULKAN_CAPTURE=/path/to/capture npm run report:evidence
+```
+
+The capture directory is local evidence and is intentionally not committed. A passing capture proves only the
+captured card/device/runtime scope; it does not stand in for uncaptured rarities or devices.
 
 > **AssetStudio is _not_ used anywhere here.** Geometry = AssetRipper; materials *and* shaders = UnityPy.
 > (Decompiling a shader for a new rarity is also UnityPy + SPIRV-Cross — see [SHADERS.md](SHADERS.md).)
@@ -53,6 +71,12 @@ config), then gather just what the samples reference:
 npm run gather -- /path/to/AssetRipper-export   # copies the meshes+textures into public/game/
 npm run serve                                    # → http://127.0.0.1:8011
 ```
+
+`gather` also reopens the official Unity Mesh objects with UnityPy and restores the copied GLB
+accessors after AssetRipper/SharpGLTF conversion. This preserves the official float32 position,
+normal, tangent, and UV payload while retaining the exporter's hierarchy and material primitives.
+Run `npm run audit:official-mesh-payload` to compare the four canonical prefabs as ordered expanded
+triangle streams; the audit uses no screenshots or image thresholds.
 
 Open <http://127.0.0.1:8011>, then `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`.
 
@@ -128,7 +152,11 @@ python build/dump_recipe.py \
 ```
 
 This writes the per-material recipe (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, queue, world
-transform). The `--shared` dirs let cross-bundle texture/shader pointers resolve. (Schema: see
+transform), plus official Renderer/Material/Shader/Mesh `CAB:pathID` identities and the serialized
+Material/Shader keyword inputs used by native draw sorting. It also decodes compiled Shader parameter
+reflection: a decisive per-renderer property outside `UnityPerDraw` writes `srpBatcherCompatible: 0`;
+absence of that witness stays `null` rather than being guessed. The `--shared` dirs let cross-bundle
+texture/shader pointers resolve. (Schema: see
 [ASSETS.md](ASSETS.md).)
 
 ### 5. Build the scene
@@ -162,6 +190,35 @@ step; without it the card renders **without** the name/HP/attacks overlay (the a
 ```bash
 npm run serve            # → http://127.0.0.1:8011/?scene=scene.<illId>.json
 ```
+
+### 9. (advanced, optional) Capture official runtime draw-sort fields
+
+The remaining equal-prefix draw-order inputs are process-session state, not serialized asset data. Capturing
+them requires the pinned PTCGP `1.6.0 (293311)` arm64 build on a rooted test device, ADB, and a matching
+`frida-server`. First verify that the read-only probe still matches the local official `libunity.so`:
+
+```powershell
+npm run audit:official-sort-runtime-capture-tool
+frida -U -f jp.pokemon.pokemontcgp -l build/capture-official-sort-runtime.js |
+  Tee-Object sort-capture.log
+```
+
+Open the target card in the official game, capture a stable frame, then stop Frida. Import that single session
+against the exact scene; the importer rejects mixed sessions/releases, independently recomputes entry `+0x08`
+and `+0x28`, ignores unrelated screen draws, and never guesses ambiguous Renderer mappings:
+
+```powershell
+npm run import:official-sort-runtime-capture -- sort-capture.log public/scene.<illId>.json public/sort-import.<illId>.json
+npm run test:official-sort-runtime-import
+```
+
+Load it explicitly with
+`?scene=scene.<illId>.json&sortCapture=sort-import.<illId>.json`. The renderer verifies the raw scene SHA-256
+and activates captured ordering only for collision groups whose every member has an exact draw mapping;
+incomplete groups fall back as a whole.
+
+The generated artifact is session-bound evidence. Do not reuse it across cold starts or game versions, and do
+not publish it as general draw-order data until repeated captures prove the required low bytes are stable.
 
 ---
 

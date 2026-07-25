@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Texture upload runtime sentinel</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "/vendor/three/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { loadOfficialTexture } from "./render/official-texture.js";
+
+const PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGklEQVR4AWMUVDJmMDY2/s+SlpbmEBoa2ggAJMQE9jDsYJwAAAAASUVORK5CYII=";
+const EXPECTED = [
+  17, 34, 51, 0, 68, 85, 102, 255,
+  119, 136, 153, 64, 204, 221, 238, 128,
+];
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function assertBytes(actual, expected, tolerance, label) {
+  assert(actual.length === expected.length, `${label}: length mismatch`);
+  for (let index = 0; index < actual.length; index += 1) {
+    assert(
+      Math.abs(actual[index] - expected[index]) <= tolerance,
+      `${label}: byte ${index} expected ${expected[index]}, got ${actual[index]}`,
+    );
+  }
+}
+
+async function run() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 2;
+  canvas.height = 2;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
+  renderer.setSize(2, 2, false);
+  const gl = renderer.getContext();
+  const texture = await loadOfficialTexture(PNG, {
+    filterMode: 0,
+    mipCount: 1,
+    wrapU: 1,
+    wrapV: 1,
+    anisotropy: 1,
+  });
+  const target = new THREE.WebGLRenderTarget(2, 2, {
+    format: THREE.RGBAFormat,
+    type: THREE.UnsignedByteType,
+    minFilter: THREE.NearestFilter,
+    magFilter: THREE.NearestFilter,
+    depthBuffer: false,
+    stencilBuffer: false,
+  });
+  target.texture.internalFormat = "RGBA8";
+  target.texture.colorSpace = THREE.NoColorSpace;
+  target.texture.generateMipmaps = false;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const material = new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: { source: { value: texture } },
+    vertexShader: `
+      in vec3 position;
+      in vec2 uv;
+      out vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position.xy, 0.0, 1.0);
+      }
+    `,
+    fragmentShader: `
+      precision highp float;
+      uniform sampler2D source;
+      in vec2 vUv;
+      out vec4 outColor;
+      void main() { outColor = texture(source, vUv); }
+    `,
+    depthTest: false,
+    depthWrite: false,
+    blending: THREE.NoBlending,
+  });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+  scene.add(mesh);
+  renderer.setRenderTarget(target);
+  renderer.render(scene, camera);
+  const pixels = new Uint8Array(16);
+  renderer.readRenderTargetPixels(target, 0, 0, 2, 2, pixels);
+
+  const webglTexture = renderer.properties.get(texture).__webglTexture;
+  assert(webglTexture, "three.js did not upload the source texture");
+  const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+  const gpuRenderer = debugInfo
+    ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+    : gl.getParameter(gl.RENDERER);
+  assert(/SwiftShader/i.test(gpuRenderer), `expected SwiftShader, got ${gpuRenderer}`);
+  assert(texture.colorSpace === THREE.NoColorSpace, "source colorSpace is not raw");
+  assert(texture.premultiplyAlpha === false, "source requests premultiplied upload");
+  assert(texture.flipY === false, "source requests browser Y flip");
+  assertBytes(Array.from(pixels), EXPECTED, 1, "PNG decode/upload/sample/readback");
+  assert(gl.getError() === gl.NO_ERROR, "WebGL error after texture upload sentinel");
+
+  mesh.geometry.dispose();
+  material.dispose();
+  target.dispose();
+  texture.dispose();
+  renderer.dispose();
+  return {
+    pixels: Array.from(pixels),
+    threeRevision: THREE.REVISION,
+    gpuRenderer,
+    hiddenRgb: Array.from(pixels.slice(0, 3)),
+    screenshots: 0,
+  };
+}
+
+window.__textureUploadRuntimeState = { done: false, result: null, error: null };
+run().then(
+  (result) => { window.__textureUploadRuntimeState = { done: true, result, error: null }; },
+  (error) => {
+    window.__textureUploadRuntimeState = {
+      done: true,
+      result: null,
+      error: { message: error.message || String(error), stack: error.stack || "" },
+    };
+  },
+);
+</script>
+</body>
+</html>

@@ -31,7 +31,7 @@ const hasFakeSpec = (r, ctx) => {
 function holoMaterial(L, ctx, overOpacity = 0) {
   const f = L.floats || {};
   const rot = L.colors?._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaders?.Card_Parallax_Hologram_Tuning;
+  const exact = ctx.exactShaderPort(L, "Card_Parallax_Hologram_Tuning");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -60,6 +60,9 @@ function holoMaterial(L, ctx, overOpacity = 0) {
       toneMapped: false,
     });
     m.userData.exactShader = "Card_Parallax_Hologram_Tuning";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   const m = new THREE.ShaderMaterial({
@@ -76,7 +79,7 @@ function holoMaterial(L, ctx, overOpacity = 0) {
     vertexShader: `
       uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv, uUseMaskUv;
       attribute vec4 tangent;
-      attribute vec2 uv2;
+      attribute vec2 uv1;
       varying vec2 vUv; varying vec2 vMaskUv; varying vec3 vNrmW;
       void main() {
         vec3 camObj = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
@@ -87,8 +90,8 @@ function holoMaterial(L, ctx, overOpacity = 0) {
         vec3 b = normalize(cross(n, t) * tangent.w);
         vec3 tv = normalize(vec3(dot(t, viewObj), dot(b, viewObj), dot(n, viewObj)));
         vec2 off = (tv.xy / (tv.z + 0.41999998688697815)) * (uHeightPower * (uHeight - 0.5));
-        vec2 phaseUv = mix(uv, uv2, step(0.5, uUseUv));
-        vec2 maskUv = mix(uv, uv2, step(0.5, uUseMaskUv));
+        vec2 phaseUv = mix(uv, uv1, step(0.5, uUseUv));
+        vec2 maskUv = mix(uv, uv1, step(0.5, uUseMaskUv));
         vUv = (((phaseUv * 2.0) - 1.0) / uScale) * 0.5 + off + 0.5;
         vMaskUv = (((maskUv * 2.0) - 1.0) / uScale) * 0.5 + off + 0.5;
         vNrmW = normalize(mat3(modelMatrix) * normal);
@@ -150,7 +153,7 @@ defineMaterial("holo", {
 function frameHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
-  const exactFrame = r.shader === "Frame-Holo-Tuning" && ctx.exactShaders?.["Frame-Holo-Tuning"];
+  const exactFrame = ctx.exactShaderPort(r, "Frame-Holo-Tuning");
   if (exactFrame) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -190,9 +193,12 @@ function frameHoloMaterial(r, ctx) {
     });
     m.userData.straight = true;
     m.userData.exactShader = "Frame-Holo-Tuning";
+    m.userData.officialPassRuntime = exactFrame.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exactFrame.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exactFrame.manifest?.official_executable_identity || null;
     return m;
   }
-  const exact = r.shader === "Card_Hologram_Tuning" && ctx.exactShaders?.Card_Hologram_Tuning;
+  const exact = ctx.exactShaderPort(r, "Card_Hologram_Tuning");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -229,6 +235,9 @@ function frameHoloMaterial(r, ctx) {
       toneMapped: false,
     });
     m.userData.exactShader = "Card_Hologram_Tuning";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   const specOn = hasFakeSpec(r, ctx);
@@ -287,7 +296,7 @@ function frameHoloMaterial(r, ctx) {
     },
     vertexShader: `
       uniform float uUseUv, uUseMaskUv;
-      attribute vec2 uv2;
+      attribute vec2 uv1;
       varying vec2 vUv; varying vec2 vMaskUv; varying vec3 vVdO; varying vec3 vNrm; varying vec3 vVdW; varying vec3 vNrmW;
       void main() {
         vec4 wp = modelMatrix * vec4(position, 1.0);
@@ -296,8 +305,8 @@ function frameHoloMaterial(r, ctx) {
         vNrm = normalize(normal);
         vVdW = vdW;
         vNrmW = normalize(mat3(modelMatrix) * normal);
-        vUv = mix(uv, uv2, step(0.5, uUseUv));
-        vMaskUv = mix(uv, uv2, step(0.5, uUseMaskUv));
+        vUv = mix(uv, uv1, step(0.5, uUseUv));
+        vMaskUv = mix(uv, uv1, step(0.5, uUseMaskUv));
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }`,
     fragmentShader: `
@@ -417,7 +426,7 @@ function frameHoloUrMaterial(r, ctx) {
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
   const baseName = r.textures?._BaseTex?.name;
-  const exact = ctx.exactShaders?.Frame_Holo_UR_New;
+  const exact = ctx.exactShaderPort(r, "Frame-Holo-UR-New");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -466,6 +475,9 @@ function frameHoloUrMaterial(r, ctx) {
     m.userData.bloomSource = true;
     m.userData.straight = true;
     m.userData.exactShader = "Frame-Holo-UR-New";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   const m = new THREE.ShaderMaterial({
@@ -652,7 +664,7 @@ function exHoloMaterial(r, ctx) {
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
   const foilOnly = /EXIcon|EXRule/.test(r.go || "");
-  const exact = ctx.exactShaders?.Transparent_Hologram_Tuning;
+  const exact = ctx.exactShaderPort(r, "Transparent_Hologram_Tuning");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -684,6 +696,9 @@ function exHoloMaterial(r, ctx) {
     m.userData.straight = true;
     m.userData.fullFaceHolo = !foilOnly;
     m.userData.exactShader = "Transparent_Hologram_Tuning";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     ctx.exHoloMats.push(m);
     return m;
   }
@@ -758,37 +773,16 @@ function exHoloUrMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaders?.["Transparent-UR-New"];
+  const exact = ctx.exactShaderPort(r, "Transparent-UR-New");
   if (exact) {
+    const manifest = exact.manifest;
+    const uniforms = ctx.exactPortUniforms(r, exact, ({ slot }) => {
+      if (slot === "_DynamicUITex") return ctx.dynHoloTex || ctx.dynUITex;
+      if (slot === "_CubeMap") return ctx.layerCubeDefault(r);
+      return ctx.layerTexDefault(r, slot);
+    });
     const m = new THREE.RawShaderMaterial({
-      uniforms: {
-        _581: { value: ctx.dynHoloTex || ctx.dynUITex },
-        _609: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
-        _528: { value: ctx.layerCubeDefault(r) },
-        _13: { value: ctx.layerTexDefault(r, "_PhaseTex") },
-        _361: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
-        _379: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
-        _428: { value: ctx.layerTexDefault(r, "_RampTex") },
-        _800: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
-        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
-        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
-        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
-        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
-        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
-        _Shininess: { value: f._Shininess ?? 32 },
-        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
-        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
-        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
-        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
-        _RampRepeat: { value: f._RampRepeat ?? 2 },
-        _RampSpeed: { value: f._RampSpeed ?? 1 },
-        _RampOffset: { value: f._RampOffset ?? 0 },
-        _RampInterval: { value: f._RampInterval ?? 0 },
-        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
-        _DarknessColor: { value: V3(c._DarknessColor, new THREE.Vector3(0, 0, 0)) },
-        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
-        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-      },
+      uniforms,
       vertexShader: exact.vert,
       fragmentShader: exact.frag,
       glslVersion: THREE.GLSL3,
@@ -797,6 +791,9 @@ function exHoloUrMaterial(r, ctx) {
     });
     m.userData.straight = true;
     m.userData.exactShader = "Transparent-UR-New";
+    m.userData.officialPassRuntime = manifest.official_pass_runtime || null;
+    m.userData.officialSelector = manifest.official_selector || null;
+    m.userData.officialExecutableIdentity = manifest.official_executable_identity || null;
     ctx.exHoloMats.push(m);
     return m;
   }
@@ -940,34 +937,24 @@ defineMaterial("exHoloUR", {
 function rarityMaterial(r, ctx) {
   const f = r.floats || {};
   const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaders?.Opaque_Hologram_Tuning;
+  const exact = ctx.exactShaderPort(r, "Opaque_Hologram_Tuning");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       glslVersion: THREE.GLSL3,
-      uniforms: {
-        _PhaseTex: { value: ctx.layerTexDefault(r, "_PhaseTex") },
-        _RampMaskTex: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
-        _RampTex: { value: ctx.layerTexDefault(r, "_RampTex") },
-        _CubeMap: { value: ctx.layerCubeDefault(r) },
-        _MainTex: { value: ctx.layerTex(r, "_MainTex") },
-        _HologramMaskTex: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
-        _Shininess: { value: f._Shininess ?? 32 },
-        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
-        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
-        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
-        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
-        _RampRepeat: { value: f._RampRepeat ?? 2 },
-        _RampSpeed: { value: f._RampSpeed ?? 1 },
-        _RampOffset: { value: f._RampOffset ?? 0 },
-        _RampInterval: { value: f._RampInterval ?? 0 },
-        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-      },
+      uniforms: ctx.exactPortUniforms(r, exact, (binding) => (
+        binding.slot === "_CubeMap"
+          ? ctx.layerCubeDefault(r, binding.slot)
+          : ctx.layerTexDefault(r, binding.slot)
+      )),
       vertexShader: exact.vert,
       fragmentShader: exact.frag,
       side: THREE.DoubleSide,
       toneMapped: false,
     });
     m.userData.exactShader = "Opaque_Hologram_Tuning";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   return new THREE.ShaderMaterial({
@@ -1029,10 +1016,7 @@ function sbHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
-  const sceneKeywords = [...(r.keywords || [])].sort();
-  const exactSimple = r.shader === "Simple-Opaque-Hologram_Tuning"
-    && sceneKeywords.length === 0
-    && ctx.exactShaders?.["Simple-Opaque-Hologram_Tuning"];
+  const exactSimple = ctx.exactShaderPort(r, "Simple-Opaque-Hologram_Tuning");
   if (exactSimple) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -1060,94 +1044,37 @@ function sbHoloMaterial(r, ctx) {
       toneMapped: false,
     });
     m.userData.exactShader = "Simple-Opaque-Hologram_Tuning";
+    m.userData.officialPassRuntime = exactSimple.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exactSimple.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exactSimple.manifest?.official_executable_identity || null;
     return m;
   }
-  const opaqueUrKeywords = [
-    "_DARKNESSENABLED_ON",
-    "_FAKESPECULARENABLED_ON",
-    "_HOLOGRAM2ENABLED_ON",
-    "_REFLECTIONENABLED_ON",
-  ];
-  const exactUrProgram = ctx.exactShaders?.["Opaque-UR-Oklab"];
-  const exactUr = r.shader === "Opaque-UR-Oklab"
-    && exactUrProgram
-    && sceneKeywords.length === opaqueUrKeywords.length
-    && sceneKeywords.every((value, index) => value === opaqueUrKeywords[index]);
+  const exactUr = ctx.exactShaderPort(r, "Opaque-UR-Oklab");
   if (exactUr) {
-    const ramp1 = ctx.layerTexNoColorSpace(r, "_RampTex") || ctx.layerTexDefault(r, "_RampTex");
-    const ramp2 = ctx.layerTexNoColorSpace(r, "_RampTex2") || ctx.layerTexDefault(r, "_RampTex2");
+    const manifest = exactUr.manifest;
+    const uniforms = ctx.exactPortUniforms(r, exactUr, ({ slot }) => {
+      if (slot === "_CubeMap") return ctx.layerCubeDefault(r);
+      if (slot === "_MainTex" || slot === "_RampTex" || slot === "_RampTex2") {
+        return ctx.layerTexNoColorSpace(r, slot) || ctx.layerTexDefault(r, slot);
+      }
+      return ctx.layerTexDefault(r, slot);
+    });
     const m = new THREE.RawShaderMaterial({
-      uniforms: {
-        _13: { value: ctx.layerTexNoColorSpace(r, "_MainTex") },
-        _291: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
-        _354: { value: ctx.layerCubeDefault(r) },
-        _419: { value: ctx.layerTexDefault(r, "_PhaseTex") },
-        _428: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
-        _435: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
-        _607: { value: ramp1 },
-        _705: { value: ctx.layerTexDefault(r, "_PhaseTex2") },
-        _719: { value: ctx.layerTexDefault(r, "_RampMaskTex2") },
-        _862: { value: ramp2 },
-        _926: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
-        _1609: { value: ctx.layerTexDefault(r, "_NormalMap2") },
-        _1775: { value: ctx.layerTexDefault(r, "_ReflectionMask") },
-        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
-        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
-        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
-        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
-        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
-        _FakeSpecularMaskScale_Outline: { value: f._FakeSpecularMaskScale_Outline ?? 1 },
-        _FakeSpecularIntensity_Outline: { value: f._FakeSpecularIntensity_Outline ?? 1 },
-        _FakeSpecularPower_Outline: { value: f._FakeSpecularPower_Outline ?? 1 },
-        _Shininess: { value: f._Shininess ?? 32 },
-        _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
-        _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
-        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
-        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
-        _RampRepeat: { value: f._RampRepeat ?? 2 },
-        _RampSpeed: { value: f._RampSpeed ?? 1 },
-        _RampOffset: { value: f._RampOffset ?? 0 },
-        _RampInterval: { value: f._RampInterval ?? 0 },
-        _UsePositionAsUV: { value: Math.trunc(f._UsePositionAsUV ?? 0) },
-        _DiffractionIntensity2: { value: f._DiffractionIntensity2 ?? 0.5 },
-        _DiffractionPower2: { value: f._DiffractionPower2 ?? 64 },
-        _RampRepeat2: { value: f._RampRepeat2 ?? 2 },
-        _RampSpeed2: { value: f._RampSpeed2 ?? 1 },
-        _RampOffset2: { value: f._RampOffset2 ?? 0 },
-        _RampInterval2: { value: f._RampInterval2 ?? 0 },
-        _RemoveBase: { value: f._RemoveBase ?? 0 },
-        _TiltPower2: { value: f._TiltPower2 ?? 2 },
-        _TiltOffset2: { value: f._TiltOffset2 ?? 0 },
-        _TiltIntensity2: { value: f._TiltIntensity2 ?? 1 },
-        _ReflectionColor: { value: V3(c._ReflectionColor, new THREE.Vector3(0, 0, 0)) },
-        _ReflectionIntensity: { value: f._ReflectionIntensity ?? 1 },
-        _ReflectionPower: { value: f._ReflectionPower ?? 0 },
-        _ReflectionCenterAdjust: { value: f._ReflectionCenterAdjust ?? 0.4000000059604645 },
-        _RefTiltEnabled: { value: Math.trunc(f._RefTiltEnabled ?? 1) },
-        _RefTiltPower: { value: f._RefTiltPower ?? 2 },
-        _RefTiltOffset: { value: f._RefTiltOffset ?? 0 },
-        _RefTiltIntensity: { value: f._RefTiltIntensity ?? 1 },
-        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
-        _FakeSpecularColor_Outline: { value: V3(c._FakeSpecularColor_Outline, new THREE.Vector3(0, 0, 0)) },
-        _DarknessColor: { value: V3(c._DarknessColor, new THREE.Vector3(0, 0, 0)) },
-        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
-        _OutlineColor: { value: V3(c._OutlineColor, new THREE.Vector3(0, 0, 0)) },
-        _EmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
-        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-        _Tilt: { value: f._Tilt ?? 0 },
-        uBloomOnly: { value: 0 },
-      },
-      vertexShader: exactUrProgram.vert,
-      fragmentShader: exactUrProgram.frag,
+      uniforms,
+      vertexShader: exactUr.vert,
+      fragmentShader: exactUr.frag,
       glslVersion: THREE.GLSL3,
       side: THREE.DoubleSide,
       toneMapped: false,
     });
     m.userData.bloomSource = true;
     m.userData.exactShader = "Opaque-UR-Oklab";
+    m.userData.officialPassRuntime = manifest.official_pass_runtime || null;
+    m.userData.officialSelector = manifest.official_selector || null;
+    m.userData.officialExecutableIdentity = manifest.official_executable_identity || null;
     return m;
   }
-  const exactClassic = r.shader === "Opaque-Hologram_Tuning" && ctx.exactShaders?.["Opaque-Hologram_Tuning"];
+  const exactClassic = ctx.exactShaderPort(r, "Opaque-Hologram_Tuning");
   if (exactClassic) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -1191,6 +1118,9 @@ function sbHoloMaterial(r, ctx) {
       toneMapped: false,
     });
     m.userData.exactShader = "Opaque-Hologram_Tuning";
+    m.userData.officialPassRuntime = exactClassic.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exactClassic.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exactClassic.manifest?.official_executable_identity || null;
     return m;
   }
   const mainTex = r.shader === "Opaque-UR-Oklab" ? ctx.layerTexNoColorSpace(r, "_MainTex") : ctx.layerTex(r, "_MainTex");

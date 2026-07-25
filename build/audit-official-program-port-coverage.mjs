@@ -1,0 +1,296 @@
+#!/usr/bin/env node
+// Selector-keyed local-port coverage over the compact official executable
+// index. SPIR-V ownership and complete executable closure remain separate.
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
+import { spawnSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  assertOfficialPortVerifierSessionStable,
+  createOfficialPortVerifierSession,
+  preloadOfficialProgramExtractions,
+  verify as verifyOfficialPortField,
+} from "./official-port-verifier-lib.mjs";
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const INVENTORY = path.resolve(process.env.PCR_MATERIAL_PROGRAM_INVENTORY
+  || path.join(ROOT, "$cache", "official-material-program-inventory-v4-full.json"));
+const CONTRACT = path.join(ROOT, "public", "shaders", "official_program_port_contract.json");
+const FULL_RUNTIME = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
+const EXPECTED_PROOF = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const EXPECTED_PORT_INDEX = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const JSON_MODE = process.argv.includes("--json");
+const GENERATORS_EXTERNALLY_VERIFIED = process.env.PCR_PROGRAM_PORT_GENERATORS_EXTERNALLY_VERIFIED === "1";
+const FIELDS = ["stageProgram", "parameterEntry", "passState", "commonBindings", "runtimeDispatch"];
+const VERDICTS = new Set(["exact", "source-hash-bound", "runtime-required", "unproved"]);
+const VERIFICATION_RUNTIME_SHA256 = fs.existsSync(FULL_RUNTIME)
+  ? crypto.createHash("sha256").update(fs.readFileSync(FULL_RUNTIME)).digest("hex")
+  : null;
+
+function walkJson(directory) {
+  const rows = [];
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const target = path.join(directory, entry.name);
+    if (entry.isDirectory()) rows.push(...walkJson(target));
+    else if (entry.isFile() && entry.name.endsWith(".json")) rows.push(target);
+  }
+  return rows;
+}
+
+function readManifest(relative) {
+  const target = path.resolve(ROOT, relative);
+  if (!target.startsWith(ROOT + path.sep) || !fs.existsSync(target)) return null;
+  return JSON.parse(fs.readFileSync(target, "utf8"));
+}
+
+function indexKey(row) {
+  return `${row.selectorId}:${row.subshader}:${row.pass}`;
+}
+
+function contractKey(row) {
+  return `${row.selectorId}:${row.candidateWitnessId}:${row.subshader}:${row.pass}`;
+}
+
+function isStageBound(contractRow, indexRow, manifest, verification) {
+  return !!indexRow && !!manifest
+    && contractRow.selectorId === indexRow.selectorId
+    && contractRow.subshader === indexRow.subshader
+    && contractRow.pass === indexRow.pass
+    && contractRow.candidateWitnessId === indexRow.candidateWitnessId
+    && contractRow.semanticExecutableId === indexRow.semanticExecutableId
+    && contractRow.generator === manifest.generated_by
+    && ["exact", "source-hash-bound"].includes(verification?.stageProgram?.verdict)
+    && manifest.official_spirv_sha256?.vertex === indexRow.identityFields.vertexSpirvSha256
+    && manifest.official_spirv_sha256?.fragment === indexRow.identityFields.fragmentSpirvSha256;
+}
+
+function hasCompleteClosure(verification) {
+  return FIELDS.every((field) => verification?.[field]?.verdict === "exact");
+}
+
+function runVerifier(contractRow, field) {
+  const obligation = contractRow.obligations?.[field];
+  assert.ok(obligation?.scope && obligation?.verifier, `${contractRow.selectorId}:${field} obligation is absent`);
+  const target = path.resolve(ROOT, obligation.verifier);
+  assert.ok(target.startsWith(path.join(ROOT, "build") + path.sep) && fs.existsSync(target));
+  const result = verifyOfficialPortField(field, contractRow, verifierSession);
+  assert.equal(result.schema, "pocket-card-render/official-port-verifier-result@1");
+  assert.equal(result.field, field);
+  assert.equal(result.scope, obligation.scope);
+  assert.deepEqual(result.selectorKey, {
+    selectorId: contractRow.selectorId,
+    candidateWitnessId: contractRow.candidateWitnessId,
+    subshader: contractRow.subshader,
+    pass: contractRow.pass,
+  });
+  assert.equal(result.semanticExecutableId, contractRow.semanticExecutableId);
+  assert.ok(VERDICTS.has(result.verdict));
+  assert.ok(Array.isArray(result.exactSubclaims) && Array.isArray(result.unresolved));
+  assert.equal(result.localEvidence?.runtimeEvidenceSha256, VERIFICATION_RUNTIME_SHA256);
+  if (result.verdict === "exact") assert.equal(result.unresolved.length, 0);
+  return result;
+}
+
+if (!fs.existsSync(INVENTORY)) {
+  fs.mkdirSync(path.dirname(INVENTORY), { recursive: true });
+  const generated = spawnSync(process.env.PYTHON || "python", [
+    "build/extract_official_material_program_inventory.py", "--out", INVENTORY,
+  ], {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+    shell: process.platform === "win32",
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (generated.status !== 0) {
+    console.error(`BAD official program port coverage: inventory generation failed\n${generated.stderr || generated.stdout || generated.error || ""}`);
+    process.exit(1);
+  }
+}
+
+const verifierSession = createOfficialPortVerifierSession({
+  inventoryPath: INVENTORY,
+  contractPath: CONTRACT,
+  runtimePath: FULL_RUNTIME,
+  expectedRuntimeSha256: VERIFICATION_RUNTIME_SHA256,
+  generatorsExternallyVerified: GENERATORS_EXTERNALLY_VERIFIED,
+  requirePreloadedExtractions: true,
+});
+const { inventory, contract } = verifierSession;
+assert.equal(inventory.schema, "pocket-card-render/official-material-program-inventory@4");
+assert.equal(inventory.digests.proofGraphSha256, EXPECTED_PROOF);
+assert.equal(inventory.digests.portIndexSha256, EXPECTED_PORT_INDEX);
+assert.equal(inventory.portIndex.length, 79);
+assert.equal(contract.schema, "pocket-card-render/official-program-port-contract@2");
+assert.deepEqual(contract.inventory, {
+  schema: inventory.schema,
+  proofGraphSha256: EXPECTED_PROOF,
+  portIndexSha256: EXPECTED_PORT_INDEX,
+});
+const selectorExtractionBatch = preloadOfficialProgramExtractions({
+  ports: contract.ports,
+  inventoryPath: INVENTORY,
+  expectedProofGraphSha256: EXPECTED_PROOF,
+  expectedPortIndexSha256: EXPECTED_PORT_INDEX,
+});
+for (const [key, extraction] of selectorExtractionBatch.extractions) {
+  verifierSession.officialExtractions.set(key, extraction);
+}
+assert.equal(verifierSession.officialExtractions.size, contract.ports.length);
+
+const index = new Map(inventory.portIndex.map((row) => [indexKey(row), row]));
+assert.equal(index.size, 79);
+const verificationResults = new Map(contract.ports.map((row) => [
+  contractKey(row),
+  Object.fromEntries(FIELDS.map((field) => [field, runVerifier(row, field)])),
+]));
+assertOfficialPortVerifierSessionStable(verifierSession);
+const stageBound = [];
+const unmatched = [];
+for (const row of contract.ports) {
+  const indexRow = index.get(indexKey(row));
+  const manifest = readManifest(row.manifest);
+  const verification = verificationResults.get(contractKey(row));
+  if (!isStageBound(row, indexRow, manifest, verification)) {
+    unmatched.push({ selectorId: row.selectorId, manifest: row.manifest });
+    continue;
+  }
+  const generator = path.resolve(ROOT, row.generator || "");
+  assert.ok(generator.startsWith(path.join(ROOT, "build") + path.sep) && fs.existsSync(generator));
+  stageBound.push({
+    ...row,
+    shaderIdentity: indexRow.shaderIdentity,
+    shaderName: indexRow.shaderName,
+    keywords: indexRow.keywords,
+    materialCount: indexRow.materialCount,
+    materialSlotUsages: indexRow.materialSlotUsages,
+    completeClosure: hasCompleteClosure(verification),
+    fieldVerdicts: Object.fromEntries(FIELDS.map((field) => [field, verification[field].verdict])),
+  });
+}
+
+const generatorChecks = [...verifierSession.checkedGenerators]
+  .map((generator) => path.relative(ROOT, generator).replaceAll("\\", "/"))
+  .sort();
+
+const runtimeVariantOnly = contract.runtimeBound.map((row) => {
+  const manifest = readManifest(row.manifest);
+  assert.equal(manifest?.shader, "Lettuce/Common/CardNew/Face/Side&Back");
+  assert.deepEqual(manifest?.official_variant?.keywords, ["INSTANCING_ON"]);
+  return row;
+});
+const stageSelectorIds = new Set(stageBound.map((row) => row.selectorId));
+const stageExecutableIds = new Set(stageBound.map((row) => row.semanticExecutableId));
+const completeExecutableIds = new Set(stageBound.filter((row) => row.completeClosure).map((row) => row.semanticExecutableId));
+const selectorTotals = [...stageSelectorIds].map((selectorId) => {
+  const rows = inventory.portIndex.filter((row) => row.selectorId === selectorId);
+  assert.ok(rows.length >= 1);
+  return rows[0];
+});
+const manifestsWithOfficialSpirv = walkJson(path.join(ROOT, "public", "shaders")).filter((file) => {
+  const value = JSON.parse(fs.readFileSync(file, "utf8"));
+  return value.official_spirv_sha256?.vertex && value.official_spirv_sha256?.fragment;
+}).length;
+const fieldVerdicts = Object.fromEntries(FIELDS.map((field) => [field, Object.fromEntries(
+  [...VERDICTS].map((verdict) => [verdict, [...verificationResults.values()]
+    .filter((result) => result[field].verdict === verdict).length]),
+)]));
+
+const summary = {
+  officialSemanticExecutables: inventory.summary.semanticExecutableArchetypes,
+  officialSelectors: inventory.summary.selectorArchetypes,
+  officialResolvedMaterials: inventory.summary.resolvedMaterials,
+  officialMaterialSlotUsages: inventory.summary.materialSlotUsages,
+  manifestsWithOfficialSpirv,
+  stageBoundSelectors: stageSelectorIds.size,
+  stageBoundSemanticExecutables: stageExecutableIds.size,
+  stageBoundResolvedMaterials: selectorTotals.reduce((sum, row) => sum + row.materialCount, 0),
+  stageBoundMaterialSlotUsages: selectorTotals.reduce((sum, row) => sum + row.materialSlotUsages, 0),
+  completeExecutableClosures: completeExecutableIds.size,
+  verifierChecks: contract.ports.length * FIELDS.length,
+  exactFieldObligations: [...verificationResults.values()].reduce((sum, result) =>
+    sum + FIELDS.filter((field) => result[field].verdict === "exact").length, 0),
+  selectorExtractionBatches: 1,
+  selectorExtractionInventoryLoads: selectorExtractionBatch.statistics.inventoryLoadCount,
+  selectorExtractions: selectorExtractionBatch.statistics.extractionCount,
+  generatorChecks: generatorChecks.length,
+  runtimeVariantOnlyManifests: runtimeVariantOnly.length,
+  unmatchedContractRows: unmatched.length,
+};
+const expectedSummary = {
+  officialSemanticExecutables: 76,
+  officialSelectors: 77,
+  officialResolvedMaterials: 8458,
+  officialMaterialSlotUsages: 58057,
+  manifestsWithOfficialSpirv: 42,
+  stageBoundSelectors: 39,
+  stageBoundSemanticExecutables: 38,
+  stageBoundResolvedMaterials: 7686,
+  stageBoundMaterialSlotUsages: 50501,
+  completeExecutableClosures: 0,
+  verifierChecks: 205,
+  exactFieldObligations: 41,
+  selectorExtractionBatches: 1,
+  selectorExtractionInventoryLoads: 1,
+  selectorExtractions: 41,
+  generatorChecks: GENERATORS_EXTERNALLY_VERIFIED ? 0 : 27,
+  runtimeVariantOnlyManifests: 1,
+  unmatchedContractRows: 0,
+};
+const reportCurrent = process.argv.includes("--report-current");
+if (reportCurrent) {
+  const runtimeDerived = new Set(["completeExecutableClosures", "exactFieldObligations"]);
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(summary).filter(([key]) => !runtimeDerived.has(key))),
+    Object.fromEntries(Object.entries(expectedSummary).filter(([key]) => !runtimeDerived.has(key))),
+  );
+} else {
+  assert.deepEqual(summary, expectedSummary);
+}
+
+// Mutation proofs: selector swaps, stage hash changes, and unverified closure
+// claims cannot retain coverage.
+const sample = contract.ports[0];
+const sampleIndex = index.get(indexKey(sample));
+const sampleManifest = readManifest(sample.manifest);
+const sampleVerification = verificationResults.get(contractKey(sample));
+assert.equal(isStageBound({ ...sample, selectorId: "0".repeat(64) }, sampleIndex, sampleManifest, sampleVerification), false);
+const mutatedManifest = structuredClone(sampleManifest);
+mutatedManifest.official_spirv_sha256.fragment = "0".repeat(64);
+assert.equal(isStageBound(sample, sampleIndex, mutatedManifest, sampleVerification), false);
+const copiedResults = structuredClone(sampleVerification);
+for (const field of FIELDS) copiedResults[field].verdict = "exact";
+assert.equal(hasCompleteClosure(copiedResults), true);
+copiedResults.parameterEntry.verdict = "unproved";
+assert.equal(hasCompleteClosure(copiedResults), false);
+
+const report = {
+  schema: "pocket-card-render/official-program-port-coverage@2",
+  inventory: { path: INVENTORY, proofGraphSha256: EXPECTED_PROOF, portIndexSha256: EXPECTED_PORT_INDEX },
+  contract: path.relative(ROOT, CONTRACT).replaceAll("\\", "/"),
+  summary,
+  stageBound,
+  fieldVerdicts,
+  runtimeVariantOnly,
+  unmatched,
+  boundaries: [
+    "selector-keyed SPIR-V equality plus generator --check proves stage-program ownership, not parameter/pass/binding/dispatch equivalence",
+    "complete closure requires five independently executed verifier verdicts of exact; route declarations and file existence never count",
+    ...(reportCurrent ? ["report-current preserves every static baseline assertion but permits source-stale runtime evidence to lower closure and exact-field counts"] : []),
+    "engine-owned INSTANCING_ON remains runtime evidence and cannot be attached to the static empty-keyword selector",
+  ],
+};
+if (JSON_MODE) console.log(JSON.stringify(report));
+else {
+  console.log("Official selector-keyed program port coverage audit OK");
+  console.log(`  stage-bound selectors:      ${summary.stageBoundSelectors}/${summary.officialSelectors}`);
+  console.log(`  stage-bound executables:    ${summary.stageBoundSemanticExecutables}/${summary.officialSemanticExecutables}`);
+  console.log(`  stage-bound Materials:      ${summary.stageBoundResolvedMaterials}/${summary.officialResolvedMaterials}`);
+  console.log(`  stage-bound material slots: ${summary.stageBoundMaterialSlotUsages}/${summary.officialMaterialSlotUsages}`);
+  console.log(`  complete executable closure:${String(summary.completeExecutableClosures).padStart(3)}/${summary.officialSemanticExecutables}`);
+  console.log(`  exact field obligations:    ${summary.exactFieldObligations}/${summary.verifierChecks}`);
+  console.log(`  selector extraction batch:  ${summary.selectorExtractionBatches} (${summary.selectorExtractions} selectors)`);
+  console.log(`  checked generators:         ${summary.generatorChecks}`);
+}

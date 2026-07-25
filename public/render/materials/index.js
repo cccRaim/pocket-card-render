@@ -4,6 +4,11 @@
 // To add materials for a NEW rarity, create a sibling module (e.g. ./sar.js) that imports
 // `defineMaterial` and registers its kinds, then add one import line here. Nothing else changes.
 import "./base.js";
+import "./stencil.js";
+import "./text.js";
+import "./kira.js";
+import "./prism.js";
+import "./matcap.js";
 import "./holo.js";
 import "./frame2layer-ur.js";
 import "./ur.js";

@@ -52,11 +52,16 @@ float _375;
 vec3 _392;
 vec3 _425;
 
+highp vec3 pcrUnityObjectToWorldAxisZ(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[2].x, threeModelMatrix[2].y, -threeModelMatrix[2].z);
+}
+
 void main()
 {
-    _9.x = dot(-modelMatrix[2].xyz, -modelMatrix[2].xyz);
+    _9.x = dot(-pcrUnityObjectToWorldAxisZ(modelMatrix), -pcrUnityObjectToWorldAxisZ(modelMatrix));
     _9.x = inversesqrt(_9.x);
-    _9 = _9.xxx * (-modelMatrix[2].xyz);
+    _9 = _9.xxx * (-pcrUnityObjectToWorldAxisZ(modelMatrix));
     _46.x = dot(_9.xy, _9.xy);
     _46.x = sqrt(_46.x);
     _58 = max(abs(_9.z), _46.x);

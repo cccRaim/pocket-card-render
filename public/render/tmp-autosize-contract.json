@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "scope": "PTCGP 1.6.0 PokemonCardUI and TrainersCardUI reachable TMP autosize/overflow branches",
+  "source": {
+    "textMeshProVersion": "3.0.6",
+    "packageSha256": "640c3c9ea8d7e5431bfefaccc70d85ea7aed204686d16a596d412286d2b9ba0b",
+    "uguiGenerator": {
+      "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_UGUI_Private.cs",
+      "byteSize": 247329,
+      "sha256": "1f8ba223bdd284bd0dfff1aefcf5988c872c9f6dd616673a8d4d58a9b2bf816a",
+      "ranges": {
+        "resetAndIterationLoop": {
+          "startLine": 1647,
+          "endLine": 1672,
+          "sha256": "7ffe0794304cdf41a4e726e9ee35a5ac7edf3b87faeef0cad9ce1e287705f924"
+        },
+        "currentLineVerticalOverflow": {
+          "startLine": 2446,
+          "endLine": 2512,
+          "sha256": "7f015abd171f246564428abef240b81330447c75f0904f5d902169bbd90a2b5e"
+        },
+        "wordWrapWidthAutosize": {
+          "startLine": 2621,
+          "endLine": 2722,
+          "sha256": "1666ceb34551887b2128746024a3b2e900c9789c09b5e29e45ce41a8159a6c8c"
+        },
+        "wrappedHeightAutosize": {
+          "startLine": 2750,
+          "endLine": 2837,
+          "sha256": "9aa6286060dc0a9cd26c2f462b8a65811050c16f107fae11a64f20fd0579a834"
+        },
+        "unwrappedWidthAutosize": {
+          "startLine": 2952,
+          "endLine": 3011,
+          "sha256": "a89b9855d4600fcb68cd2196f6fd06c2bd2753b20e9432e383a1b610c615114f"
+        },
+        "upperFontSizeBounds": {
+          "startLine": 3517,
+          "endLine": 3542,
+          "sha256": "a87c564947b7a9c06b3cc0f3f96aac4756b595b90d813901c4285ba99a055c15"
+        }
+      }
+    },
+    "tmpText": {
+      "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs",
+      "byteSize": 382588,
+      "sha256": "2cfcb00a4464c48ca87d05c692c752087a2a8a96944d54b83606d7762f0c7806",
+      "ranges": {
+        "overflowEnum": {
+          "startLine": 98,
+          "endLine": 98,
+          "sha256": "461f01c6d9ebea81ab56d7055f2bcd497589e7278c9b048f44796520511b215e"
+        },
+        "maxIterationCount": {
+          "startLine": 510,
+          "endLine": 510,
+          "sha256": "c5fe96aa6d311b3ff8193d94581fa616cff78cae1b1078f5f3f67b7ed56979e8"
+        }
+      }
+    },
+    "nativeGenerateTextMesh": {
+      "name": "TMPro.TextMeshProUGUI$$GenerateTextMesh",
+      "rva": "0x644f2f8",
+      "endRva": "0x6456dfc",
+      "byteSize": 31492,
+      "sha256": "63e11353317c008927215ccb1d6d7977a18ee8b4d3d2728ace5b5d9cf65240b8"
+    }
+  },
+  "constants": {
+    "widthEpsilon": 0.0001,
+    "justifiedWidthMultiplier": 1.05,
+    "fontSizeEpsilon": 0.051,
+    "minimumFontSizeStep": 0.05,
+    "fontSizeRoundingMultiplier": 20,
+    "maxIterations": 100
+  },
+  "cardUiCensus": {
+    "contractSha256": "26783bf6ef2d82f6057c677f42dc65288f29e6a6b6423eb41a4587ec1e9c0a6b",
+    "tmpComponentCount": 68,
+    "autosize": {
+      "0": 33,
+      "1": 35
+    },
+    "wordWrap": {
+      "0": 45,
+      "1": 23
+    },
+    "overflowMode": {
+      "0": 68
+    },
+    "lineSpacingMax": {
+      "0": 68
+    },
+    "charWidthMaxAdj": {
+      "0": 1,
+      "50": 67
+    },
+    "autosizeAndWordWrapCount": 1,
+    "reachableOverflowModes": [
+      0
+    ]
+  }
+}

@@ -46,6 +46,10 @@ scene 是渲染器消费的“每次绘制调用”清单。结构如下:
 - **贴图** —— `.png`,放在 `Assets/` 下它们真实的容器路径里。
 
 `npm run gather -- <导出根目录>` 会精确复制预置 scene 引用到的那些文件,所以你只需准备需要的部分。
+复制后，`gather` 会从官方 Unity Mesh 对象恢复基准 GLB 的顶点 accessor，因为
+AssetRipper/SharpGLTF 可能归一化 tangent 或改写其他 float payload。
+`npm run audit:official-mesh-payload` 会根据固定的官方 bundle identity，验证 position、normal、
+tangent、UV、三角形绕序以及合并 submesh 的有序数据流。
 
 ## 为一张**新卡**生成 scene
 
@@ -57,8 +61,11 @@ node build/build.mjs <illId>
 
 默认会写出 `public/scene.<illId>.json`。只有在你明确需要非规范文件名时,才传第三个参数覆盖输出名。
 
-材质 recipe（每材质的 `m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列）是**唯一不来自** AssetRipper
-glb 的那块（glb 只带几何 + 材质*名称*）。它单独生成——见下面的工具链——再作为 `scene.*.json` 的一部分提交到这里。
+材质 recipe（每材质的 `m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列、官方对象 identity 与
+Material/Shader keyword space）是**唯一不来自** AssetRipper
+glb 的那块（glb 只带几何 + 材质*名称*）。它还会保留从 compiled Shader reflection 解出的保守 SRP
+Batcher 结果：能决定性证明不兼容时写 `0`，无法证明时保留 `null`。它单独生成——见下面的工具链——再作为
+`scene.*.json` 的一部分提交到这里。
 
 ## 数据准备工具链
 
@@ -67,7 +74,7 @@ glb 的那块（glb 只带几何 + 材质*名称*）。它单独生成——见�
 | 工具 | 产出 | 说明 |
 |------|------|------|
 | **AssetRipper**（.NET,免费） | **合成好的** glb 几何 + 贴图 | 设置同上。它把预制件层级（每卡的 Face prefab + 共享的 Template prefab）实例化成一个 glb,每个材质都是命名子网格——这是其它工具复刻不出来的几何。 |
-| **UnityPy**（Python） | **材质 recipe**（`m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、渲染队列） | 加载**解密后的** Unity 材质 bundle（`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`),解析跨 bundle 的 PPtr,按上面的 schema 写出每层 recipe。渲染器需要它;glb 只有材质*名称*。 |
+| **UnityPy**（Python） | **材质 recipe**（参数、render state、`CAB:pathID` identity、keyword space） | 加载**解密后的** Unity 材质 bundle（`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`),解析跨 bundle 的 PPtr,按上面的 schema 写出每层 recipe。渲染器需要它;glb 只有材质*名称*。 |
 
 > **需要 AssetStudio 吗?不需要。** 几何来自 AssetRipper;**材质*和*着色器**都来自 UnityPy。
 > (AssetStudio 的 CLI 连 `Material` 都 dump 不了——`-m dump` 只产出 Mesh / Texture2D / MonoBehaviour /

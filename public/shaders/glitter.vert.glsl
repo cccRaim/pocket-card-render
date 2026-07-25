@@ -1,23 +1,24 @@
 precision highp float;
 precision highp int;
-in vec3 position;
-in vec3 normal;
-in vec2 uv;
-in vec4 tangent;
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
-#define _133 vec4(position, 1.0)
-#define _12 normal
-#define _214 uv
-#define _34 tangent
-
-uniform vec4 _78[18];
-
-
-
-
+uniform highp vec4 _FlowParams[2];
+uniform mediump float _FakeCameraHeight;
+uniform mediump float _Height;
+uniform mediump float _HeightPower;
+uniform mediump float _Scale;
+uniform mediump float _FlowScale;
+uniform mediump float _FakeCameraHeightB;
+uniform mediump float _HeightB;
+uniform mediump float _HeightPowerB;
+uniform mediump float _ScaleB;
+uniform mediump float _FlowScaleB;
+in vec3 normal;
+in mediump vec4 tangent;
+in vec3 position;
+in vec2 uv;
 out vec4 vs_TEXCOORD0;
 out vec4 vs_TEXCOORD1;
 vec4 _9;
@@ -37,7 +38,11 @@ vec2 _496;
 
 void main()
 {
-    vec3 uCamObj = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
+    vec3 _12 = normal;
+    mediump vec4 _34 = tangent;
+    vec4 _133 = vec4(position, 1.0);
+    vec2 _214 = uv;
+    vec3 uCameraObject = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
     _9.x = dot(_12, _12);
     _9.x = inversesqrt(_9.x);
     vec3 _28 = _9.xxx * _12.zxy;
@@ -50,8 +55,8 @@ void main()
     _9 = vec4(_62.x, _62.y, _62.z, _9.w);
     vec3 _69 = _9.xyz * _34.www;
     _9 = vec4(_69.x, _69.y, _69.z, _9.w);
-    _112 = vec4(uCamObj, _112.w);
-    _112.w = _112.y + _78[13].x;
+    _112 = vec4(uCameraObject, _112.w);
+    _112.w = _112.y + _FakeCameraHeight;
     _50 = _112.xwz + (-_133.xyz);
     _138 = dot(_50, _50);
     _138 = inversesqrt(_138);
@@ -65,49 +70,49 @@ void main()
     _138 = (_148.z * _163) + 0.4199999868869781494140625;
     mediump vec2 _188 = _173 / vec2(_138);
     _50 = vec3(_188.x, _188.y, _50.z);
-    _163 = _78[13].z * 0.5;
-    _163 = (_78[13].y * _78[13].z) + (-_163);
+    _163 = _HeightPower * 0.5;
+    _163 = (_Height * _HeightPower) + (-_163);
     vec2 _209 = _50.xy * vec2(_163);
     _50 = vec3(_209.x, _209.y, _50.z);
     _212 = (_214 * vec2(2.0)) + vec2(-1.0);
-    vec2 _232 = _212 / vec2(vec2(_78[13].w, _78[13].w));
+    vec2 _232 = _212 / vec2(vec2(_Scale, _Scale));
     _148 = vec4(_232.x, _232.y, _148.z, _148.w);
     vec2 _241 = (_148.xy * vec2(0.5)) + _50.xy;
     _148 = vec4(_241.x, _241.y, _148.z, _148.w);
     vec2 _246 = _148.xy + vec2(0.5);
     _148 = vec4(_246.x, _246.y, _148.z, _148.w);
-    mediump vec2 _256 = vec2(vec2(_78[13].w, _78[13].w));
+    mediump vec2 _256 = vec2(vec2(_Scale, _Scale));
     vec2 hp_copy_256 = _256;
     vec2 _261 = ((-hp_copy_256) * vec2(0.5)) + _148.xy;
     _148 = vec4(_261.x, _261.y, _148.z, _148.w);
-    _264.x = sin(_78[15].x);
-    _270.x = cos(_78[15].x);
+    _264.x = sin(_FlowParams[1].x);
+    _270.x = cos(_FlowParams[1].x);
     _270.y = -_264.x;
     _279.x = dot(_270.xy, _148.xy);
     _270.z = _264.x;
     _270.y = -_264.x;
     _279.y = dot(_270.zx, _148.xy);
-    mediump vec2 _308 = vec2(vec2(_78[13].w, _78[13].w));
+    mediump vec2 _308 = vec2(vec2(_Scale, _Scale));
     vec2 hp_copy_308 = _308;
     vec2 _311 = (hp_copy_308 * vec2(0.5)) + _279;
     vs_TEXCOORD0 = vec4(_311.x, _311.y, vs_TEXCOORD0.z, vs_TEXCOORD0.w);
-    _148 = _212.xyxy / vec4(_78[17].x, _78[17].x, _78[17].y, _78[17].y);
-    _212 /= vec2(vec2(_78[16].w, _78[16].w));
+    _148 = _212.xyxy / vec4(_FlowScale, _FlowScale, _FlowScaleB, _FlowScaleB);
+    _212 /= vec2(vec2(_ScaleB, _ScaleB));
     vec2 _344 = (_148.xy * vec2(0.5)) + _50.xy;
     _50 = vec3(_344.x, _344.y, _50.z);
     vec2 _349 = _50.xy + vec2(0.5);
     _50 = vec3(_349.x, _349.y, _50.z);
-    mediump vec2 _354 = vec2(_78[17].x);
+    mediump vec2 _354 = vec2(_FlowScale);
     vec2 hp_copy_354 = _354;
     vec2 _359 = ((-hp_copy_354) * vec2(0.5)) + _50.xy;
     _50 = vec3(_359.x, _359.y, _50.z);
     _362.y = dot(_270.zx, _50.xy);
     _362.x = dot(_270.xy, _50.xy);
-    mediump vec2 _377 = vec2(_78[17].x);
+    mediump vec2 _377 = vec2(_FlowScale);
     vec2 hp_copy_377 = _377;
     vec2 _380 = (hp_copy_377 * vec2(0.5)) + _362;
     vs_TEXCOORD0 = vec4(vs_TEXCOORD0.x, vs_TEXCOORD0.y, _380.x, _380.y);
-    _112.y += _78[16].x;
+    _112.y += _FakeCameraHeightB;
     _264 = _112.xyz + (-_133.xyz);
     _138 = dot(_264, _264);
     _138 = inversesqrt(_138);
@@ -121,8 +126,8 @@ void main()
     _9.x = (_9.z * _163) + 0.4199999868869781494140625;
     vec2 _440 = _173 / _9.xx;
     _9 = vec4(_440.x, _440.y, _9.z, _9.w);
-    _163 = _78[16].z * 0.5;
-    _163 = (_78[16].y * _78[16].z) + (-_163);
+    _163 = _HeightPowerB * 0.5;
+    _163 = (_HeightB * _HeightPowerB) + (-_163);
     vec2 _460 = _9.xy * vec2(_163);
     _9 = vec4(_460.x, _460.y, _9.z, _9.w);
     vec2 _468 = (_148.zw * vec2(0.5)) + _9.xy;
@@ -130,15 +135,15 @@ void main()
     vec2 _475 = (_212 * vec2(0.5)) + _9.xy;
     _9 = vec4(_475.x, _475.y, _9.z, _9.w);
     _9 += vec4(0.5);
-    mediump vec2 _488 = vec2(vec2(_78[16].w, _78[16].w));
+    mediump vec2 _488 = vec2(vec2(_ScaleB, _ScaleB));
     vec2 hp_copy_488 = _488;
     vec2 _493 = ((-hp_copy_488) * vec2(0.5)) + _9.xy;
     _9 = vec4(_493.x, _493.y, _9.z, _9.w);
-    mediump vec2 _504 = vec2(vec2(_78[17].y, _78[17].y));
+    mediump vec2 _504 = vec2(vec2(_FlowScaleB, _FlowScaleB));
     vec2 hp_copy_504 = _504;
     _496 = ((-hp_copy_504) * vec2(0.5)) + _9.zw;
-    _50.x = sin(_78[15].y);
-    _148.x = cos(_78[15].y);
+    _50.x = sin(_FlowParams[1].y);
+    _148.x = cos(_FlowParams[1].y);
     _148.y = -_50.x;
     _212.x = dot(_148.xy, _496);
     _148.z = _50.x;
@@ -146,13 +151,13 @@ void main()
     _50.x = dot(_148.xy, _9.xy);
     _50.y = dot(_148.zx, _9.xy);
     _212.y = dot(_148.zx, _496);
-    mediump vec2 _559 = vec2(vec2(_78[17].y, _78[17].y));
+    mediump vec2 _559 = vec2(vec2(_FlowScaleB, _FlowScaleB));
     vec2 hp_copy_559 = _559;
     vec2 _562 = (hp_copy_559 * vec2(0.5)) + _212;
     vs_TEXCOORD1 = vec4(vs_TEXCOORD1.x, vs_TEXCOORD1.y, _562.x, _562.y);
-    mediump vec2 _572 = vec2(vec2(_78[16].w, _78[16].w));
+    mediump vec2 _572 = vec2(vec2(_ScaleB, _ScaleB));
     vec2 hp_copy_572 = _572;
     vec2 _576 = (hp_copy_572 * vec2(0.5)) + _50.xy;
     vs_TEXCOORD1 = vec4(_576.x, _576.y, vs_TEXCOORD1.z, vs_TEXCOORD1.w);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
 }

@@ -1,7 +1,747 @@
 {
-  "shader": "Card_Parallax_Metal",
-  "samplers": ["_CubeMap", "_MetalMaskTex"],
-  "sampler_slots": ["_CubeMap", "_MetalMaskTex"],
+  "shader": "Lettuce/Common/CardNew/Face/Card_Parallax_Metal",
+  "generated_by": "build/build-exact-card-parallax-metal.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+    "candidateWitnessId": "723f76de6fb22268408a97849213a3bb510424a8a21084ab651cf45baeab7811",
+    "shaderIdentity": "CAB-d1582aca8a9778d6408528fab4637fc4:-3392042766667377368",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Metal",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "3ea58a7a098302de971cde5c085a41ea0491b1361f8cc072280230748e840d78",
+    "semanticExecutableId": "bbcbbdd141fcd8ee61ad5507fa3b0aa1b752117514c7878c0befe3fb207bddb6"
+  },
+  "official_spirv_sha256": {
+    "vertex": "af70104d803df4275b45d5a55988551339eac6ec6b16a1734b8507321f01147c",
+    "fragment": "1427d6d3da71cdb2daf1f4a5ca60a7104e60380911f359f973db4c52a1291553"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "af70104d803df4275b45d5a55988551339eac6ec6b16a1734b8507321f01147c",
+    "fragmentSpirvSha256": "1427d6d3da71cdb2daf1f4a5ca60a7104e60380911f359f973db4c52a1291553",
+    "parameterEntrySha256": "82c20c2d053bdfb5b45f2e9676de601fe6f90dcfb79811e262cecd190ac84af9",
+    "passStateSha256": "6f1db51184e2490870b02ef4a89fccc6d0edb90968c6ac60a7b4333253731820",
+    "commonBindingsSha256": "984380f229357d6a0787c7b0d30c1d6b62458eea8d1d2144446e0704feef409b"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "82c20c2d053bdfb5b45f2e9676de601fe6f90dcfb79811e262cecd190ac84af9",
+    "byte_size": 100,
+    "reflection_sha256": "b6168f2b8339cee8f541dd369ca31e7ea3085ca71aaed374f27d75afccb7b504",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals2872160209",
+        "size": 44,
+        "fields": []
+      },
+      {
+        "name": "VGlobals2872160209",
+        "size": 228,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals2872160209",
+        "size": 44
+      },
+      {
+        "name": "VGlobals2872160209",
+        "size": 228
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_CubeMap",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 4
+      },
+      {
+        "name": "_MetalMaskTex",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 2,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "6f1db51184e2490870b02ef4a89fccc6d0edb90968c6ac60a7b4333253731820",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 0,
+        "name": "_ZTest"
+      },
+      "write": {
+        "val": 0,
+        "name": "_ZWrite"
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": "_StencilRef"
+      },
+      "read_mask": {
+        "val": 0,
+        "name": "_StencilRef"
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 3,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 2,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 1,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "984380f229357d6a0787c7b0d30c1d6b62458eea8d1d2144446e0704feef409b",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_CubeMap",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 4,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_MetalMaskTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals2872160209",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Shininess",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_SpecularIntensity",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_MetalMaskIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2872160209",
+        "size": 228,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_FakeCameraHeight",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Height",
+            "offset": 212,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_HeightPower",
+            "offset": 216,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Scale",
+            "offset": 220,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseUv",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals2872160209",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2872160209",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "984380f229357d6a0787c7b0d30c1d6b62458eea8d1d2144446e0704feef409b",
+    "parameter_reflection_sha256": "b6168f2b8339cee8f541dd369ca31e7ea3085ca71aaed374f27d75afccb7b504",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_CubeMap",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 4,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_MetalMaskTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals2872160209",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Shininess",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_SpecularIntensity",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_MetalMaskIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2872160209",
+        "size": 228,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_FakeCameraHeight",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Height",
+            "offset": 212,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_HeightPower",
+            "offset": 216,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Scale",
+            "offset": 220,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseUv",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals2872160209",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2872160209",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_MetalMaskTex": "white"
+    },
+    "textureDescriptors": {
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_MetalMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_BaseColorIntensity": 0.5,
+      "_Shininess": 32,
+      "_SpecularIntensity": 1,
+      "_UseUv2": 0,
+      "_MetalMaskIntensity": 1,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_UseUv": 0,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "af70104d803df4275b45d5a55988551339eac6ec6b16a1734b8507321f01147c",
+      "spirvCrossGlslSha256": "ed820f58941cced165171a1bfc35e0f5b0769f355dca240eaf58f96d67fcc36d",
+      "outputSha256": "87b6449045c29e568ad26076a289124f2e091e206f4e5aa96e3ceadb1d20c805",
+      "substitutions": [
+        "map official position/normal/UV0/UV1/tangent locations to Three.js attributes",
+        "map Unity object/world/view-projection matrices and camera position to Three.js engine uniforms",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "1427d6d3da71cdb2daf1f4a5ca60a7104e60380911f359f973db4c52a1291553",
+      "spirvCrossGlslSha256": "6b5fde6ef34c843a4421029cfbd023a5949ad14b83dac3327b67194d51a8983e",
+      "outputSha256": "34e191e004b20e91c2f6d46cb1282cc3cc49ccd5ed32bcc33f6e4bbf87d73534",
+      "substitutions": [
+        "map the official PGlobals constant buffer to typed Three.js uniforms",
+        "remove the embedded GLSL version directive for Three.js RawShaderMaterial injection"
+      ]
+    },
+    "interfaceSha256": "c2c864d2564bd6827f5f64063c31b977a94e71855bc2f64be90974610357b928"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_metal.vert.glsl",
+    "fragment": "public/shaders/card_parallax_metal.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Parallax_Metal",
+    "attributes": {
+      "position": "vec3",
+      "normal": "vec3",
+      "tangent": "vec4",
+      "uv": "vec2",
+      "uv1": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4",
+      "cameraPosition": "vec3"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_BaseColorIntensity",
+        "_Shininess",
+        "_SpecularIntensity",
+        "_MetalMaskIntensity"
+      ],
+      "ints": [
+        "_UseUv"
+      ],
+      "vectors": {
+        "_Rotation": "vec3"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": true,
+    "mrt_attachments": 2,
+    "stencil_face_mode": "generic",
+    "backend_texture_defaults": {
+      "_CubeMap": "neutral-gray-cube"
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_238",
+      "binding": 0,
+      "dimension": 4,
+      "glslType": "samplerCube",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_MetalMaskTex",
+      "spirvName": "_277",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_238",
+    "_277"
+  ],
+  "sampler_slots": [
+    "_CubeMap",
+    "_MetalMaskTex"
+  ],
+  "compiled_texture_bindings": {
+    "_CubeMap": 0,
+    "_MetalMaskTex": 1
+  },
+  "implicit_defaults": {
+    "_MetalMaskTex": "white"
+  },
   "floats": {
     "_FakeCameraHeight": "_FakeCameraHeight",
     "_Height": "_Height",
@@ -15,5 +755,9 @@
   },
   "colors": {
     "_Rotation": "_Rotation"
+  },
+  "mrt": {
+    "primary": "_299",
+    "emissive": "_305"
   }
 }

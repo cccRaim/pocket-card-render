@@ -7,6 +7,7 @@ import path from "node:path";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { loadExactPortUsageContracts } from "./exact-port-usage-contracts.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -16,14 +17,20 @@ const strictExtraColors = process.env.PCR_AUDIT_STRICT_EXTRA_COLORS === "1";
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
   .filter((n) => /^scene\..*\.json$/.test(n))
   .sort();
+const exactPortUsage = loadExactPortUsageContracts(ROOT);
 
 const USED_BY_KIND = {
+  outerStencil: [],
+  innerStencil: [],
+  illustStencil: [],
+  dynamicText: [],
   textured: [],
   illustTextured: [],
   simpleTransparent: [],
   depthParallax: [],
   effect: [],
   frameOutline: [],
+  scalingKira: [],
   holo: ["_Rotation"],
   frameHolo: ["_Rotation"],
   frameHoloUR: ["_FakeSpecularColor", "_DarknessColor", "_EmissiveColor", "_Rotation"],
@@ -45,6 +52,11 @@ const USED_BY_KIND = {
   flare: ["_BaseColor", "_EmissiveColor"],
   metal: ["_Rotation"],
   glitter: ["_LightColor"],
+  sideBack: ["_Blend"],
+  circularMovingKira: [],
+  circularTrailKira: [],
+  matCapLighting: ["_LightingColor", "_EmissiveColor"],
+  prism: [],
 };
 
 const USED_BY_SHADER = {
@@ -65,6 +77,7 @@ const OFFICIAL_DEAD_COLORS = new Set([
 ]);
 
 function usedColorsFor(shader, kind) {
+  if (exactPortUsage.has(shader)) return new Set(exactPortUsage.get(shader).colors);
   return new Set(USED_BY_SHADER[shader] || USED_BY_KIND[kind] || []);
 }
 
@@ -72,6 +85,7 @@ function declaredStrategyColors() {
   const colors = new Set();
   for (const list of Object.values(USED_BY_KIND)) for (const name of list) colors.add(name);
   for (const list of Object.values(USED_BY_SHADER)) for (const name of list) colors.add(name);
+  for (const usage of exactPortUsage.values()) for (const name of usage.colors) colors.add(name);
   return colors;
 }
 
@@ -134,7 +148,7 @@ for (const sceneName of sceneNames) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
     const shader = mat.shader;
-    if (!shader || shader.startsWith("InnerStencil") || shader === "OuterStencil") continue;
+    if (!shader) continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
     const officialColors = new Set([
@@ -142,7 +156,7 @@ for (const sceneName of sceneNames) {
       ...(official.found[shader]?.vectorProps || []),
     ]);
     const usedColors = usedColorsFor(shader, cfg.kind);
-    if (!USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
+    if (!exactPortUsage.has(shader) && !USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
       rows.push({ ok: false, scene: sceneId(sceneName), shader, kind: cfg.kind, mat: matName, name: "", reason: "missing usage declaration" });
       continue;
     }
@@ -166,9 +180,12 @@ for (const sceneName of sceneNames) {
       }
       const used = usedColors.has(name);
       const dead = OFFICIAL_DEAD_COLORS.has(`${shader}:${name}`);
+      const inactiveExactBinding = exactPortUsage.has(shader)
+        && !exactPortUsage.get(shader).colors.has(name);
       rows.push({
-        ok: dead ? !used : used,
+        ok: dead ? !used : (used || inactiveExactBinding),
         dead,
+        inactiveExactBinding,
         scene: sceneId(sceneName),
         shader,
         kind: cfg.kind,
@@ -176,7 +193,11 @@ for (const sceneName of sceneNames) {
         name,
         reason: dead
           ? (used ? "strategy declares official-dead color/vector" : "official bytecode does not read color/vector")
-          : (used ? "strategy uses color/vector" : "strategy ignores official color/vector"),
+          : (used
+            ? "strategy uses color/vector"
+            : (inactiveExactBinding
+              ? "selector executable has no active vector binding"
+              : "strategy ignores official color/vector")),
       });
     }
   }

@@ -7,6 +7,8 @@ import { readOfficialPlayerPipeline } from "./official-player-pipeline.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
+const textureRuntime = fs.readFileSync(path.join(ROOT, "public", "render", "official-texture.js"), "utf8");
+const bloom = fs.readFileSync(path.join(ROOT, "public", "render", "pipeline", "official-bloom.js"), "utf8");
 const official = readOfficialPlayerPipeline();
 const player = official.playerSettings;
 const graphics = official.graphicsSettings;
@@ -16,10 +18,11 @@ const issues = [];
 if (player.activeColorSpaceValue !== 0 || player.activeColorSpace !== "Gamma") {
   issues.push(`unsupported official color space: ${player.activeColorSpace} (${player.activeColorSpaceValue})`);
 }
-if (!/tex\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
+if (!/texture\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(textureRuntime)
+    || !/loadOfficialTexture\(url, officialSamplerMap\[url\]\)/.test(app)) {
   issues.push("runtime textures must remain raw in the official Gamma workflow");
 }
-if (/tex\.colorSpace\s*=\s*scene_data\.textureColorSpace/.test(app)) {
+if (/colorSpace\s*=\s*scene_data\.textureColorSpace/.test(app + textureRuntime)) {
   issues.push("runtime must not enable per-texture sRGB decoding in the official Gamma workflow");
 }
 if (!/const cardTargetColorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
@@ -28,10 +31,13 @@ if (!/const cardTargetColorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
 if (!/renderer\.outputColorSpace\s*=\s*THREE\.LinearSRGBColorSpace/.test(app)) {
   issues.push("browser framebuffer must not add an implicit sRGB encode");
 }
-if (!/gl_FragColor\s*=\s*vec4\(base\.rgb\s*\+\s*glow,\s*base\.a\)/.test(app)) {
-  issues.push("final composite must add the official gamma-domain scene and emissive buffers directly");
+if (!/applyBlendState\(pass5,\s*THREE\.OneFactor,\s*THREE\.OneFactor,\s*THREE\.ZeroFactor,\s*THREE\.OneFactor\)/.test(bloom)
+    || !/post\.apply\(\)/.test(app)
+    || !/setHomographyDisplayPoints/.test(app)
+    || !/displayPost\.present\(\)/.test(app)) {
+  issues.push("official Bloom pass 5 must add emissive RGB before the raw FinalBlit presentation pass");
 }
-if (/pcrLinearToSrgb|LinearToSrgb\(base\.rgb\s*\+\s*glow\)/.test(app)) {
+if (/pcrLinearToSrgb|LinearToSrgb|linearToSrgb/i.test(app + bloom)) {
   issues.push("final composite contains an extra display transfer absent from Gamma workflow");
 }
 if (createRT.depthBits !== 24 || createRT.renderTextureFormatValue !== 0 || createRT.renderTextureFormat !== "ARGB32") {

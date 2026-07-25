@@ -1,107 +1,110 @@
-// Pin the high-volume `Effect` shader strategy to the official bytecode shape.
-//
-// Effect is the largest unguarded visible-layer family in the reference scenes.
-// The official fragment path is compact: sample a packed channel, shape it with
-// a smoothstep-like edge, recolor through the gradation ramp at y=0.5, optionally
-// blend in a view-offset alpha mask, and write zero to MRT1.
+// Audit the six serialized Effect selectors against their official shader bytes and local runtime wiring.
+// The generator owns byte extraction and backend substitutions; this audit must not infer one default
+// Effect variant or treat the legacy fallback shader as official evidence.
+import crypto from "node:crypto";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const shaderRoot = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
+const MANIFESTS = [
+  "effect_eff1_uniforms.json",
+  "effect_eff2_uniforms.json",
+  "effect_eff3_uniforms.json",
+  "effect_eff3_grad_uniforms.json",
+  "effect_eff1_grad_view_uniforms.json",
+  "effect_eff2_grad_view_uniforms.json",
+];
+const FIELDS = [
+  "vertexSpirvSha256",
+  "fragmentSpirvSha256",
+  "parameterEntrySha256",
+  "passStateSha256",
+  "commonBindingsSha256",
+];
+const issues = [];
 
-function dumpEffect() {
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-effect-"));
-  execFileSync("python", [
-    "build/shaderdec/dump_shader.py",
-    "Effect",
-    "Effect",
-    "--shaders",
-    shaderRoot,
-    "--out",
-    tmp,
-  ], { cwd: ROOT, shell: true, stdio: ["ignore", "ignore", "ignore"] });
-  const frag = path.join(tmp, "Effect_frag.spv");
-  const vert = path.join(tmp, "Effect_vert.spv");
-  const fragGlsl = execFileSync("spirv-cross", [frag, "--version", "300", "--es"], { encoding: "utf8" });
-  const vertGlsl = execFileSync("spirv-cross", [vert, "--version", "300", "--es"], { encoding: "utf8" });
-  fs.rmSync(tmp, { recursive: true, force: true });
-  return { fragGlsl, vertGlsl };
+function sha256(source) {
+  return crypto.createHash("sha256").update(source).digest("hex");
 }
 
-function blockFrom(source, marker) {
-  const start = source.indexOf(marker);
-  if (start < 0) return "";
-  const open = source.indexOf("{", start);
-  let depth = 0;
-  for (let i = open; i < source.length; i += 1) {
-    if (source[i] === "{") depth += 1;
-    else if (source[i] === "}") {
-      depth -= 1;
-      if (depth === 0) return source.slice(start, i + 1);
+const generated = spawnSync(process.execPath, ["build/build-exact-effect.mjs", "--check"], {
+  cwd: ROOT,
+  encoding: "utf8",
+  windowsHide: true,
+});
+if (generated.status !== 0) {
+  issues.push(`selector generator check failed: ${(generated.stderr || generated.stdout).trim()}`);
+}
+
+const selectors = new Set();
+const semantics = new Set();
+for (const name of MANIFESTS) {
+  const manifestFile = path.join(ROOT, "public", "shaders", name);
+  if (!fs.existsSync(manifestFile)) {
+    issues.push(`missing selector manifest ${name}`);
+    continue;
+  }
+  const manifest = JSON.parse(fs.readFileSync(manifestFile, "utf8"));
+  const selector = manifest.official_selector;
+  const identity = manifest.official_executable_identity;
+  if (manifest.shader !== "Lettuce/Common/CardNew/Effect"
+      || manifest.generated_by !== "build/build-exact-effect.mjs"
+      || manifest.runtime_contract?.shader_key !== "Effect") {
+    issues.push(`${name}: invalid shader/generator/runtime ownership`);
+  }
+  if (!selector?.selectorId || !selector?.semanticExecutableId || !selector?.shaderIdentity) {
+    issues.push(`${name}: incomplete official selector identity`);
+  } else {
+    selectors.add(selector.selectorId);
+    semantics.add(selector.semanticExecutableId);
+  }
+  if (FIELDS.some((field) => !/^[0-9a-f]{64}$/.test(identity?.[field] || ""))) {
+    issues.push(`${name}: incomplete five-field executable identity`);
+  }
+  if (manifest.runtime_contract?.mrt_attachments !== 2
+      || !manifest.runtime_contract?.require_complete_active_bindings) {
+    issues.push(`${name}: incomplete MRT/runtime binding contract`);
+  }
+  const joinedSamplers = (manifest.sampler_bindings || []).map(({ slot, spirvName }) => ({ slot, spirvName }));
+  if (JSON.stringify(joinedSamplers.map((row) => row.slot)) !== JSON.stringify(manifest.sampler_slots)
+      || JSON.stringify(joinedSamplers.map((row) => row.spirvName)) !== JSON.stringify(manifest.samplers)) {
+    issues.push(`${name}: sampler bindings are not joined from official binding numbers`);
+  }
+  for (const stage of ["vertex", "fragment"]) {
+    const relative = manifest.webgl_sources?.[stage]?.replace(/^public\//, "");
+    const file = relative ? path.join(ROOT, "public", relative.replace(/^shaders\//, "shaders/")) : null;
+    const source = file && fs.existsSync(file) ? fs.readFileSync(file) : null;
+    if (!source || sha256(source) !== manifest.webgl_adaptation?.[stage]?.outputSha256) {
+      issues.push(`${name}: ${stage} WebGL source hash mismatch`);
     }
   }
-  return "";
 }
 
-const issues = [];
-let official;
-try {
-  official = dumpEffect();
-} catch (err) {
-  issues.push(`official Effect shader dump failed: ${err.message.split(/\r?\n/)[0]}`);
-  official = { fragGlsl: "", vertGlsl: "" };
+if (selectors.size !== 6) issues.push(`expected 6 unique selectors, got ${selectors.size}`);
+if (semantics.size !== 4) issues.push(`expected 4 unique semantic executables, got ${semantics.size}`);
+
+const baseSource = fs.readFileSync(path.join(ROOT, "public", "render", "materials", "base.js"), "utf8");
+const effectStart = baseSource.indexOf('defineMaterial("effect"');
+const exactStart = baseSource.indexOf('ctx.exactShaderPort(r, "Effect")', effectStart);
+const fallbackStart = baseSource.indexOf('ctx.compatibleStageSource("Effect")', effectStart);
+if (effectStart < 0 || exactStart < effectStart || fallbackStart < exactStart) {
+  issues.push("Effect exact selector dispatch must precede the non-exact fallback");
 }
-
-const local = blockFrom(fs.readFileSync(path.join(ROOT, "public/render/materials/base.js"), "utf8"), 'defineMaterial("effect"');
-
-const checks = [
-  {
-    ok: /_194\s*=\s*vec4\(0\.0\)/.test(official.fragGlsl),
-    msg: "official Effect MRT1 must be zero",
-  },
-  {
-    ok: /(?:\.\w+|x)\s*=\s*0\.5\s*;[\s\S]*texture\([^,]+,\s*[^)]*(?:\.wx|\.xy)/.test(official.fragGlsl),
-    msg: "official Effect samples gradation ramp at y=0.5",
-  },
-  {
-    ok: /\*\s*\(-2\.0\)\)\s*\+\s*3\.0/.test(official.fragGlsl) || /\+\s*3\.0/.test(official.fragGlsl),
-    msg: "official Effect edge path must contain smoothstep 3-2t polynomial",
-  },
-  {
-    ok: /vs_TEXCOORD1\s*=\s*_9\.xyz/.test(official.vertGlsl),
-    msg: "official Effect vertex must output tangent-space view vector",
-  },
-  {
-    ok: /t\s*\*\s*t\s*\*\s*\(3\.0\s*-\s*2\.0\s*\*\s*t\)/.test(local),
-    msg: "local Effect must keep the official smoothstep edge polynomial",
-  },
-  {
-    ok: /texture2D\(gradMap,\s*vec2\(gradU,\s*0\.5\)\)/.test(local),
-    msg: "local Effect must sample the gradation ramp at y=0.5",
-  },
-  {
-    ok: /vUv\s*\+\s*vView\.xy\s*\*\s*uAnglePower/.test(local),
-    msg: "local Effect must use view-offset alpha mask",
-  },
-  {
-    ok: /alphaCore\s*\*\s*uAlphaBlend/.test(local),
-    msg: "local Effect must apply _AlphaBlend to output alpha",
-  },
-];
-
-for (const check of checks) {
-  if (!check.ok) issues.push(check.msg);
+for (const marker of [
+  'm.userData.exactShader = "Effect"',
+  "m.userData.officialPassRuntime = exact.manifest.official_pass_runtime",
+  "m.userData.officialSelector = exact.manifest.official_selector",
+  "m.userData.officialExecutableIdentity = exact.manifest.official_executable_identity",
+]) {
+  if (!baseSource.includes(marker)) issues.push(`missing runtime evidence marker: ${marker}`);
 }
 
 if (issues.length) {
-  console.error(`Effect core audit failed: ${issues.length} issue(s) found`);
+  console.error(`Effect selector audit failed: ${issues.length} issue(s) found`);
   for (const issue of issues) console.error(`BAD ${issue}`);
   process.exit(1);
 }
 
-console.log("Effect core audit OK");
+console.log("Effect selector audit OK: 6 selectors / 4 semantic executables / 30 identity fields");

@@ -68,7 +68,7 @@ if (failure || diagnostics.length) {
     `Capabilities: WebGL2, MAX_DRAW_BUFFERS=${capabilities.maxDrawBuffers}, `
     + `MAX_COLOR_ATTACHMENTS=${capabilities.maxColorAttachments}`,
   );
-  console.log("Target:       three r165, count=2, RGBA8/UnsignedByte, depth24-stencil8, samples=0");
+  console.log("Target:       three r165, count=2, RGBA8/UnsignedByte, Point, depth24-stencil8, samples=0");
   console.log(
     `Sentinel:     FRAMEBUFFER_COMPLETE, RT0 alpha=${sentinel.rt0.join(",")}, `
     + `RT1 shared alpha=${sentinel.rt1.join(",")}`,

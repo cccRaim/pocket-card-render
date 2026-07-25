@@ -1,0 +1,481 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Side&Back",
+  "generated_by": "build/build-exact-side-back.mjs",
+  "official_source": {
+    "bundle_relative_path": "Common/CardNew/Card_Side_And_Back.shader_bundles",
+    "bundle_sha256": "d166568a7f39256e3153042d1a05acc7aa08b20ef9f868bcac763e6917f0a42f",
+    "shader_object_path_id": "5701574008984223828",
+    "shader_object_sha256": "dd79ac5f87982ad08477440bf153e66772ecdbb73050ea8346c626ff151e04a0",
+    "compressed_program_sha256": "218c446e8a078e8bdaeec7ec260b1c5ae9bd27ec5c8538c26751d44213c8ca3e",
+    "decompressed_program_sha256": "0c05a7e99e3da09643cc9d2b60a6ac64aeb1fed49ac81c3037ed1df22dc91a74",
+    "parameter_entry_sha256": "7df4095c5213139db3b5aadac000344273adc6ed3198d9cbdb9b808ecafb4748",
+    "program_entry_sha256": "5c7685b880525a404e2306204cc2304d201f13637b52d9d3edb49a589310f1f8"
+  },
+  "official_variant": {
+    "keywords": [
+      "INSTANCING_ON"
+    ],
+    "variant_index": 1,
+    "parameter_blob_index": 1,
+    "program_blob_index": 3,
+    "gpu_program_type": 25,
+    "shader_requirements": 1101803
+  },
+  "official_spirv_sha256": {
+    "vertex": "5f3de58358234bd969164e05a077b9a557fc4420746acf8a882c43aa24617516",
+    "fragment": "2ca7d6a80832052d1cbd391bbbb8c59d38137a065b21f820762e27ae405b3547"
+  },
+  "official_materials": [
+    {
+      "name": "L_Card_R_M",
+      "relative_path": "Common/CardNew/Common/Model/Materials/UI/L_Card_R_M.mat_bundles",
+      "bundle_sha256": "cd05dfd098a35be800afebc4dbde9204ea223442b6810f4b14846d1d4eee910b",
+      "material_object_path_id": "-973451362924139007",
+      "material_object_sha256": "b47f3967e18c19505587ef3e8327be430a6496394cd5bffe615d93b635c58dfe",
+      "shader_pptr": {
+        "fileId": 1,
+        "pathId": "5701574008984223828"
+      },
+      "shader_external": "CAB-e4993e14922158e59579dd588a7a33d2",
+      "valid_keywords": [],
+      "enable_instancing_variants": true,
+      "custom_render_queue": -1,
+      "selected_properties": {
+        "_CullMode": 2,
+        "_Blend": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "_BaseTex": {
+          "fileId": 2,
+          "pathId": "3680672549930378084",
+          "scale": [
+            1,
+            1
+          ],
+          "offset": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "name": "L_Card_S_M",
+      "relative_path": "Common/CardNew/Common/Model/Materials/UI/L_Card_S_M.mat_bundles",
+      "bundle_sha256": "e4bb216a52e4631a80ff6d56bea8c7a849c258106134ed2af0bdfc84a4db5101",
+      "material_object_path_id": "-6503822316906939454",
+      "material_object_sha256": "6d5c052bf5959067a1e4c634734888ec228ebebd9505a43e10d929f18202b770",
+      "shader_pptr": {
+        "fileId": 1,
+        "pathId": "5701574008984223828"
+      },
+      "shader_external": "CAB-e4993e14922158e59579dd588a7a33d2",
+      "valid_keywords": [],
+      "enable_instancing_variants": true,
+      "custom_render_queue": -1,
+      "selected_properties": {
+        "_CullMode": 2,
+        "_Blend": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "_BaseTex": {
+          "fileId": 2,
+          "pathId": "7427414079537827346",
+          "scale": [
+            1,
+            1
+          ],
+          "offset": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  ],
+  "properties": [
+    {
+      "name": "_BaseTex",
+      "type": 4,
+      "defaultValue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "defaultTexture": "white"
+    },
+    {
+      "name": "_Blend",
+      "type": 0,
+      "defaultValue": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "defaultTexture": ""
+    },
+    {
+      "name": "_CullMode",
+      "type": 2,
+      "defaultValue": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "defaultTexture": ""
+    }
+  ],
+  "bindings": {
+    "authority": "runtime INSTANCING_ON SPIR-V reflection",
+    "parameter_blob_index": 1,
+    "parameter_entry_sha256": "7df4095c5213139db3b5aadac000344273adc6ed3198d9cbdb9b808ecafb4748",
+    "vertex": {
+      "ubos": [
+        {
+          "name": "_78_80",
+          "set": 1,
+          "binding": 1,
+          "size": 64,
+          "members": [
+            {
+              "name": "_m0",
+              "type": "vec4",
+              "offset": 0,
+              "array": [
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "name": "_12_14",
+          "set": 1,
+          "binding": 2,
+          "size": 8,
+          "members": [
+            {
+              "name": "_m0",
+              "type": "int",
+              "offset": 0
+            },
+            {
+              "name": "_m1",
+              "type": "int",
+              "offset": 4
+            }
+          ]
+        },
+        {
+          "name": "_38_40",
+          "set": 1,
+          "binding": 3,
+          "size": 256,
+          "members": [
+            {
+              "name": "_m0",
+              "type": "_35",
+              "offset": 0,
+              "array": [
+                36
+              ]
+            }
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "name": "_28",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "_117",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "vs_TEXCOORD0",
+          "type": "vec2",
+          "location": 0
+        },
+        {
+          "name": "_120",
+          "type": "uint",
+          "location": 1
+        }
+      ]
+    },
+    "fragment": {
+      "ubos": [
+        {
+          "name": "_15_17",
+          "set": 1,
+          "binding": 0,
+          "size": 32,
+          "members": [
+            {
+              "name": "_m0",
+              "type": "_11",
+              "offset": 0,
+              "array": [
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "textures": [
+        {
+          "name": "_44",
+          "type": "sampler2D",
+          "binding": 0
+        }
+      ],
+      "inputs": [
+        {
+          "name": "vs_TEXCOORD0",
+          "type": "vec2",
+          "location": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "_59",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "_67",
+          "type": "vec4",
+          "location": 1
+        }
+      ]
+    }
+  },
+  "baseline_bindings": {
+    "parameterBlobIndex": 0,
+    "parameterEntrySha256": "92a981277de22c454d77d5bc2ae777882d487264c7d3acd9794e7e832027fd7f",
+    "textures": [
+      {
+        "name": "_BaseTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "samplerIndex": -1,
+        "dimension": 2,
+        "multisampled": false,
+        "source": "common"
+      }
+    ],
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals2310095155",
+        "size": 16,
+        "fields": [
+          {
+            "name": "_Blend",
+            "offset": 0,
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "name": "VGlobals2310095155",
+        "size": 128,
+        "fields": [
+          {
+            "name": "unity_MatrixVP",
+            "offset": 64,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              64
+            ]
+          },
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    ],
+    "constantBufferBindings": [
+      {
+        "name": "PGlobals2310095155",
+        "descriptor": [
+          1,
+          134283264,
+          0
+        ]
+      },
+      {
+        "name": "VGlobals2310095155",
+        "descriptor": [
+          1,
+          67174401,
+          0
+        ]
+      }
+    ],
+    "parameterBlobVersion": 202012090,
+    "parameterBlobConstantBlockCount": 3,
+    "parameterBlobResourceCount": 2,
+    "semanticBindingsAvailable": true,
+    "bindingAuthority": "Unity parameter entry"
+  },
+  "runtime_parameter_entry": {
+    "parameterBlobIndex": 1,
+    "parameterEntrySha256": "7df4095c5213139db3b5aadac000344273adc6ed3198d9cbdb9b808ecafb4748",
+    "parameterEntryByteSize": 700,
+    "semanticBindingsAvailable": false,
+    "bindingAuthority": "runtime SPIR-V reflection"
+  },
+  "render_state": {
+    "blend": {
+      "srcColor": {
+        "value": 1,
+        "property": null
+      },
+      "dstColor": {
+        "value": 0,
+        "property": null
+      },
+      "srcAlpha": {
+        "value": 0,
+        "property": null
+      },
+      "dstAlpha": {
+        "value": 0,
+        "property": null
+      },
+      "colorOp": {
+        "value": 0,
+        "property": null
+      },
+      "alphaOp": {
+        "value": 0,
+        "property": null
+      },
+      "colorMask": {
+        "value": 15,
+        "property": null
+      },
+      "separate": false
+    },
+    "depth": {
+      "test": {
+        "value": 4,
+        "property": null
+      },
+      "write": {
+        "value": 1,
+        "property": null
+      },
+      "clip": {
+        "value": 1,
+        "property": null
+      }
+    },
+    "cull": {
+      "value": 0,
+      "property": "_CullMode"
+    },
+    "stencil": {
+      "reference": {
+        "value": 0,
+        "property": null
+      },
+      "readMask": {
+        "value": 255,
+        "property": null
+      },
+      "writeMask": {
+        "value": 255,
+        "property": null
+      },
+      "compare": {
+        "value": 8,
+        "property": null
+      },
+      "pass": {
+        "value": 0,
+        "property": null
+      },
+      "fail": {
+        "value": 0,
+        "property": null
+      },
+      "depthFail": {
+        "value": 0,
+        "property": null
+      }
+    },
+    "alphaToMask": {
+      "value": 0,
+      "property": null
+    }
+  },
+  "tags": {
+    "RenderType": "Opaque"
+  },
+  "vertex_attributes": [
+    {
+      "semantic": "position",
+      "source": "_11",
+      "type": "vec4",
+      "location": 0
+    },
+    {
+      "semantic": "uv",
+      "source": "_87",
+      "type": "vec2",
+      "location": 1
+    }
+  ],
+  "mrt": {
+    "primary": "_59",
+    "secondary": "_67",
+    "secondary_location": 1,
+    "secondary_value": "zero"
+  },
+  "webgl2_adaptation": [
+    "fold official per-instance arrays to element zero because the captured card draws use instanceCount=1",
+    "flatten official ObjectToWorld and MatrixVP UBO members into Three.js matrices",
+    "combine the official image and sampler as _BaseTex",
+    "remove the Vulkan clip-space Y flip",
+    "rename vertex attributes and uniforms without changing shader math"
+  ]
+}

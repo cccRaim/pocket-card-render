@@ -1,0 +1,549 @@
+{
+  "shader": "Lettuce/Common/Card/TextMeshPro/Distance Field (to RT)",
+  "generated_by": "build/build-exact-tmp-sdf.mjs",
+  "official_source": {
+    "bundle_sha256": "5bd303380d2e26d265c1c81d8eb91a55f12d8c65415a6f1be2c163197c1fc9d2",
+    "shader_object_sha256": "052c08e5bf09008a8289c65671ffa9a40be228d3f0e93709a8a5af07c591663d",
+    "compressed_program_sha256": "f773c4aa156a8ea6cea1c840806ee8f270b61723ab8c36da79bbee6514c8b7e3",
+    "decompressed_program_sha256": "9fe5f5c2c89921817fd6c379ba086fb55851a74418baa69706e3e356816f32b7"
+  },
+  "official_variant": {
+    "gpuProgramType": 25,
+    "keywordIndices": [],
+    "metadataStage": "progVertex",
+    "parameterBlobIndex": 0,
+    "passIndex": 0,
+    "playerGroup": 3,
+    "programBlobIndex": 8,
+    "shaderRequirements": 227,
+    "subshaderIndex": 0,
+    "variantIndex": 0
+  },
+  "modules": {
+    "vertex": {
+      "byte_size": 12324,
+      "spirv_sha256": "328d360fe02386b01be96298b84f108f7fd0fcd2870da4aaec1c1a56c020a373"
+    },
+    "fragment": {
+      "byte_size": 7124,
+      "spirv_sha256": "738b2fbd5864492ff81f6aafc16c02b8a564a08ff7858ac48e78d62127076d41"
+    }
+  },
+  "bindings": {
+    "constantBufferBindings": [
+      {
+        "descriptor": [
+          1,
+          134283264,
+          0
+        ],
+        "name": "PGlobals3555819490"
+      },
+      {
+        "descriptor": [
+          1,
+          67174401,
+          0
+        ],
+        "name": "VGlobals3555819490"
+      }
+    ],
+    "constantBuffers": [
+      {
+        "fields": [],
+        "name": "",
+        "size": 0
+      },
+      {
+        "fields": [
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              32
+            ],
+            "name": "_FaceColor",
+            "offset": 32
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              16
+            ],
+            "name": "_FaceUVSpeedX",
+            "offset": 16
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              20
+            ],
+            "name": "_FaceUVSpeedY",
+            "offset": 20
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              64
+            ],
+            "name": "_OutlineColor",
+            "offset": 64
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              48
+            ],
+            "name": "_OutlineSoftness",
+            "offset": 48
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              52
+            ],
+            "name": "_OutlineUVSpeedX",
+            "offset": 52
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              56
+            ],
+            "name": "_OutlineUVSpeedY",
+            "offset": 56
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              80
+            ],
+            "name": "_OutlineWidth",
+            "offset": 80
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              84
+            ],
+            "name": "_ScaleRatioA",
+            "offset": 84
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              0
+            ],
+            "name": "_Time",
+            "offset": 0
+          }
+        ],
+        "name": "PGlobals3555819490",
+        "size": 88
+      },
+      {
+        "fields": [
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              400
+            ],
+            "name": "_ClipRect",
+            "offset": 400
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              288
+            ],
+            "name": "_FaceDilate",
+            "offset": 288
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              448
+            ],
+            "name": "_FaceTex_ST",
+            "offset": 448
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              424
+            ],
+            "name": "_GradientScale",
+            "offset": 424
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              416
+            ],
+            "name": "_MaskSoftnessX",
+            "offset": 416
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              420
+            ],
+            "name": "_MaskSoftnessY",
+            "offset": 420
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              292
+            ],
+            "name": "_OutlineSoftness",
+            "offset": 292
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              464
+            ],
+            "name": "_OutlineTex_ST",
+            "offset": 464
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              296
+            ],
+            "name": "_OutlineWidth",
+            "offset": 296
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              436
+            ],
+            "name": "_PerspectiveFilter",
+            "offset": 436
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              376
+            ],
+            "name": "_ScaleRatioA",
+            "offset": 376
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              428
+            ],
+            "name": "_ScaleX",
+            "offset": 428
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              432
+            ],
+            "name": "_ScaleY",
+            "offset": 432
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              0,
+              16
+            ],
+            "name": "_ScreenParams",
+            "offset": 16
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              440
+            ],
+            "name": "_Sharpness",
+            "offset": 440
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              380
+            ],
+            "name": "_VertexOffsetX",
+            "offset": 380
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              384
+            ],
+            "name": "_VertexOffsetY",
+            "offset": 384
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              372
+            ],
+            "name": "_WeightBold",
+            "offset": 372
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              368
+            ],
+            "name": "_WeightNormal",
+            "offset": 368
+          },
+          {
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0
+          },
+          {
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              304
+            ],
+            "name": "_EnvMatrix",
+            "offset": 304
+          },
+          {
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              160
+            ],
+            "name": "glstate_matrix_projection",
+            "offset": 160
+          },
+          {
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              224
+            ],
+            "name": "unity_MatrixVP",
+            "offset": 224
+          },
+          {
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              32
+            ],
+            "name": "unity_ObjectToWorld",
+            "offset": 32
+          },
+          {
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              96
+            ],
+            "name": "unity_WorldToObject",
+            "offset": 96
+          }
+        ],
+        "name": "VGlobals3555819490",
+        "size": 480
+      }
+    ],
+    "textures": [
+      {
+        "binding": 0,
+        "dim": 2,
+        "encodedIndex": 134217728,
+        "name": "_MainTex",
+        "source": "common"
+      },
+      {
+        "binding": 1,
+        "dim": 2,
+        "encodedIndex": 134217729,
+        "name": "_FaceTex",
+        "source": "common"
+      },
+      {
+        "binding": 2,
+        "dim": 2,
+        "encodedIndex": 134217730,
+        "name": "_OutlineTex",
+        "source": "common"
+      }
+    ]
+  },
+  "webgl2_attributes": [
+    {
+      "name": "position",
+      "location": 0
+    },
+    {
+      "name": "normal",
+      "location": 1
+    },
+    {
+      "name": "color",
+      "location": 2
+    },
+    {
+      "name": "uv",
+      "location": 3
+    },
+    {
+      "name": "uv2",
+      "location": 4
+    }
+  ],
+  "webgl2_adaptation": [
+    "flatten exact official std140 blocks into named uniforms using serialized offsets",
+    "map official TMP glyph attributes to WebGL2 locations without changing shader math",
+    "map Unity object/world/view/projection matrices to Three.js uniforms",
+    "remove Vulkan clip-space Y inversion",
+    "rename stage interfaces and samplers without changing dataflow"
+  ],
+  "evidence_status": "exact-static-program-and-bindings",
+  "runtime_boundaries": [
+    "runtime-generated dynamic SDF atlas contents and sampler",
+    "TMP glyph mesh positions, UV0, packed UV2 weight/scale, normals, colors, and indices",
+    "per-draw resolved matrices, screen parameters, material uniforms, and Canvas state"
+  ]
+}

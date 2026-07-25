@@ -1,20 +1,43 @@
 // Generate the WebGL2 port of Frame-Holo-UR-New directly from the official Unity shader bundle.
 // The shader body stays SPIRV-Cross output; only engine bindings and the MRT1 bloom route are adapted.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+import assert from "node:assert/strict";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  adaptUnityObjectToWorldDataAxes,
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  joinSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-frame-holo-ur-"));
+const SELECTOR_ID = "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6";
+const CANDIDATE_WITNESS_ID = "ae75586ab5eb5009c12e838f37ba77cea0ce76343ffa23c4629c7aefdcc1307c";
+const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const OFFICIAL_CROSS_SHA256 = {
+  vertex: "841b3ea06b94f656e0b33fa6b4a5340c2e7fb63b8c3249352abb6ac354c4cc91",
+  fragment: "a93bcb003e65ca56174e53310fdc2edcdce03ea6e8159b85ed0658e6d7294b57",
+};
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+  },
+};
 
 const vertexUniforms = [
   "uniform highp mat4 modelMatrix;",
@@ -95,15 +118,6 @@ const fragmentMembers = [
   "_Rotation",
 ];
 
-function run(command, args, options = {}) {
-  return execFileSync(command, args, {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-    ...options,
-  });
-}
-
 function replaceMembers(source, owner, members) {
   return source.replace(new RegExp(`${owner}\\._m(\\d+)`, "g"), (match, rawIndex) => {
     const index = Number(rawIndex);
@@ -170,6 +184,9 @@ function adaptFragment(source) {
   let out = source.replace(/^#version 300 es\s*/m, "");
   out = out.replace(/layout\(std140\) uniform _49_51[\s\S]*?}\s*_51;\s*/, `${fragmentUniforms}\n\n`);
   out = replaceMembers(out, "_51", fragmentMembers);
+  out = adaptUnityObjectToWorldDataAxes(out, {
+    matrixName: "modelMatrix", expectedCounts: { 2: 3 },
+  });
   const officialTail = "    _1059.w = _9.w;";
   if (!out.includes(officialTail)) throw new Error("official primary-output tail changed");
   out = out.replace(officialTail, `${officialTail}\n    if (uBloomOnly != 0)\n    {\n        _1059 = _1053;\n    }`);
@@ -180,29 +197,17 @@ function adaptFragment(source) {
   return `${out.trimEnd()}\n`;
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
-
-try {
-  const dump = run(PYTHON, [
-    "build/shaderdec/dump_shader.py",
-    "Frame-Holo-UR-New",
-    "frame_holo_ur",
-    "--shaders",
-    SHADER_ROOT,
-    "--out",
-    tmp,
-  ], { shell: process.platform === "win32" });
-  if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) {
-    throw new Error(`unexpected official module set:\n${dump}`);
-  }
-
-  const vertSpv = path.join(tmp, "frame_holo_ur_vert.spv");
-  const fragSpv = path.join(tmp, "frame_holo_ur_frag.spv");
-  const vertReflection = JSON.parse(run(SPIRV_CROSS, [vertSpv, "--reflect"]));
-  const fragReflection = JSON.parse(run(SPIRV_CROSS, [fragSpv, "--reflect"]));
-  assertReflection(vertReflection, {
+await withExtractedSelectorProgram({
+  selectorId: SELECTOR_ID,
+  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: "frame_holo_ur",
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  assertReflection(reflection.vertex, {
     ubo: {
       name: "_20_22",
       blockSize: 224,
@@ -228,7 +233,7 @@ try {
       { name: "vs_TEXCOORD4", type: "vec4", location: 4 },
     ],
   });
-  assertReflection(fragReflection, {
+  assertReflection(reflection.fragment, {
     ubo: {
       name: "_49_51",
       blockSize: 268,
@@ -264,55 +269,160 @@ try {
       { name: "_570", type: "sampler2D", binding: 6 }, { name: "_721", type: "sampler2D", binding: 7 },
     ],
   });
-  const officialVert = run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"]);
-  const officialFrag = run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"]);
+  assertJsonEqual(metadata.parameterReflection, {
+    version: 202012090,
+    constantBlockCount: 3,
+    constantBuffers: [
+      { name: "", size: 0, fields: [] },
+      { name: "PGlobals2067551902", size: 268, fields: [] },
+      { name: "VGlobals2067551902", size: 224, fields: [] },
+    ],
+    resourceCount: 0,
+    resourceDecoding: "empty-exact",
+    textures: [],
+    constantBufferBindings: [],
+    serializedCommonBuffers: [
+      { name: "PGlobals2067551902", size: 268 }, { name: "VGlobals2067551902", size: 224 },
+    ],
+    serializedCommonTextures: [
+      { name: "_BaseTex", binding: 0, encodedIndex: 134217728, dim: 2 },
+      { name: "_HologramMaskTex", binding: 1, encodedIndex: 134217729, dim: 2 },
+      { name: "_CubeMap", binding: 2, encodedIndex: 134217730, dim: 4 },
+      { name: "_PhaseTex", binding: 3, encodedIndex: 134217731, dim: 2 },
+      { name: "_PhaseMaskTex", binding: 4, encodedIndex: 134217732, dim: 2 },
+      { name: "_RampMaskTex", binding: 5, encodedIndex: 134217733, dim: 2 },
+      { name: "_RampTex", binding: 6, encodedIndex: 134217734, dim: 2 },
+      { name: "_FakeSpecularMask", binding: 7, encodedIndex: 134217735, dim: 2 },
+    ],
+    bindingClosure: {
+      constantBuffersMatch: true,
+      constantBufferDeclarationMode: "serialized-common",
+      commonConstantBufferCount: 2,
+      variantConstantBufferCount: 0,
+      variantTextureCount: 0,
+      commonTextureCount: 8,
+      constantBufferBindingCount: 0,
+    },
+  }, "official parameter reflection changed");
+
+  const officialVert = runCommand(SPIRV_CROSS, [files.vertexSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFrag = runCommand(SPIRV_CROSS, [files.fragmentSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  assert.equal(sha256(officialVert), OFFICIAL_CROSS_SHA256.vertex, "official vertex SPIRV-Cross shape changed");
+  assert.equal(sha256(officialFrag), OFFICIAL_CROSS_SHA256.fragment, "official fragment SPIRV-Cross shape changed");
   assertMatch(officialVert, /layout\(std140\) uniform _20_22/, "official vertex UBO layout changed");
   assertMatch(officialFrag, /layout\(std140\) uniform _49_51/, "official fragment UBO layout changed");
   assertMatch(officialFrag, /_1053\s*=/, "official emissive output expression missing");
 
-  const outputs = {
-    "frame_holo_ur.vert.glsl": adaptVertex(officialVert),
-    "frame_holo_ur.frag.glsl": adaptFragment(officialFrag),
-    "frame_holo_ur_uniforms.json": `${JSON.stringify({
-    shader: "Frame-Holo-UR-New",
-    generated_by: "build/build-exact-frame-holo-ur.mjs",
-    official_spirv_sha256: {
-      vertex: sha256(vertSpv),
-      fragment: sha256(fragSpv),
+  const bindings = compileCommonBindings(metadata.commonBindings);
+  const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+    assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  assertJsonEqual(samplerBindings.map(({ slot, spirvName, binding }) => ({ slot, spirvName, binding })), [
+    { slot: "_BaseTex", spirvName: "_13", binding: 0 },
+    { slot: "_HologramMaskTex", spirvName: "_302", binding: 1 },
+    { slot: "_CubeMap", spirvName: "_333", binding: 2 },
+    { slot: "_PhaseTex", spirvName: "_388", binding: 3 },
+    { slot: "_PhaseMaskTex", spirvName: "_396", binding: 4 },
+    { slot: "_RampMaskTex", spirvName: "_410", binding: 5 },
+    { slot: "_RampTex", spirvName: "_570", binding: 6 },
+    { slot: "_FakeSpecularMask", spirvName: "_721", binding: 7 },
+  ], "compiled sampler bindings changed");
+
+  const vertex = adaptVertex(officialVert);
+  const fragment = adaptFragment(officialFrag);
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    vertex: {
+      officialSpirvSha256: sha256File(files.vertexSpirv),
+      spirvCrossGlslSha256: sha256(officialVert),
+      outputSha256: sha256(vertex),
+      substitutions: [
+        "position vec4 := vec4(three.position, 1.0), normal := three.normal and uv := three.uv",
+        "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
     },
-    samplers: ["_13", "_302", "_333", "_388", "_396", "_410", "_570", "_721"],
-    sampler_slots: ["_BaseTex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex", "_FakeSpecularMask"],
-    floats: Object.fromEntries([
-      "_RampMaskRotation", "_RampMaskScale", "_UseSimpleRampMaskAndRotation", "_FakeSpecularMaskScale",
-      "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower", "_FakeSpecularNotCornerOffset",
-      "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
-      "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_RemoveMetalic", "_FakeSpecularEnabled",
-      "_DarknessEnabled", "_DarknessOffset", "_EmissivePattern",
-    ].map((name) => [name, name])),
-    colors: {
-      _FakeSpecularColor: "_FakeSpecularColor",
-      _DarknessColor: "_DarknessColor",
-      _EmissiveColor: "_EmissiveColor",
-      _Rotation: "_Rotation",
+    fragment: {
+      officialSpirvSha256: sha256File(files.fragmentSpirv),
+      spirvCrossGlslSha256: sha256(officialFrag),
+      outputSha256: sha256(fragment),
+      substitutions: [
+        "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+        "recover Unity ObjectToWorld Z-axis data through M_unity = C * M_three * A before tilt-angle arithmetic",
+        "add uBloomOnly backend route that copies the official emissive MRT output to attachment 0 during bloom extraction",
+      ],
     },
-    implicit_defaults: { _CubeMap: "gray" },
-    mrt: { primary: "_1059", emissive: "_1053", webgl_bloom_route: "uBloomOnly" },
-    }, null, 2)}\n`,
+    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
   };
 
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) {
-        throw new Error(`${name} does not match the current official SPIR-V generation`);
-      }
-    } else {
-      fs.writeFileSync(file, content);
-    }
-  }
-
-  console.log(`${CHECK ? "verified" : "generated"} Frame-Holo-UR-New from official SPIR-V (${sha256(vertSpv).slice(0, 12)} / ${sha256(fragSpv).slice(0, 12)})`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  const outputs = {
+    "frame_holo_ur.vert.glsl": vertex,
+    "frame_holo_ur.frag.glsl": fragment,
+    "frame_holo_ur_uniforms.json": `${JSON.stringify({
+      shader: "Frame-Holo-UR-New",
+      generated_by: "build/build-exact-frame-holo-ur.mjs",
+      official_selector: metadata.selector,
+      official_spirv_sha256: {
+        vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv),
+      },
+      official_executable_identity: metadata.identityFields,
+      official_parameter_entry: {
+        source_sha256: metadata.identityFields.parameterEntrySha256,
+        byte_size: metadata.artifacts.parameterEntry.byteSize,
+        reflection_sha256: metadata.parameterReflectionSha256,
+        ...metadata.parameterReflection,
+      },
+      official_pass_runtime: {
+        ...compileOfficialPassContract(metadata.passContract, {
+          sourceSha256: metadata.identityFields.passStateSha256,
+          policy: PASS_POLICY,
+        }),
+        shader_property_defaults: metadata.shaderPropertyDefaults.floats,
+      },
+      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_shader_property_defaults: metadata.shaderPropertyDefaults,
+      webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/frame_holo_ur.vert.glsl",
+        fragment: "public/shaders/frame_holo_ur.frag.glsl",
+      },
+      runtime_contract: {
+        schema: "pocket-card-render/webgl-runtime-port@1",
+        shader_key: "Frame-Holo-UR-New",
+        attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
+        engine_uniforms: {
+          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+        },
+        material_uniforms: {
+          floats: [
+            "_RampMaskRotation", "_RampMaskScale", "_FakeSpecularMaskScale", "_FakeSpecularIntensity",
+            "_FakeSpecularPower", "_FakeSpecularCornerPower", "_FakeSpecularNotCornerOffset", "_Shininess",
+            "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
+            "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_RemoveMetalic", "_DarknessOffset",
+          ],
+          ints: ["_UseSimpleRampMaskAndRotation", "_FakeSpecularEnabled", "_DarknessEnabled", "_EmissivePattern"],
+          vectors: {
+            _FakeSpecularColor: "vec3", _DarknessColor: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
+          },
+        },
+        backend_uniforms: { uBloomOnly: { type: "int", value: 0 } },
+        require_complete_active_bindings: true,
+        camera_from_view: true,
+        mrt_attachments: 2,
+        stencil_normalization: "disable-when-always-keep",
+        stencil_face_mode: "generic",
+      },
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
+      implicit_defaults: { _CubeMap: "gray" },
+      mrt: { primary: "_1059", emissive: "_1053", webgl_bloom_route: "uBloomOnly" },
+    }, null, 2)}\n`,
+  };
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+  console.log(`${CHECK ? "verified" : "generated"} Frame-Holo-UR-New from selector-bound official SPIR-V (${sha256File(files.vertexSpirv).slice(0, 12)} / ${sha256File(files.fragmentSpirv).slice(0, 12)})`);
+});

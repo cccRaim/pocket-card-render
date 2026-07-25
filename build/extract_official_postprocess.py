@@ -107,6 +107,31 @@ METHODS = {
         "rva": 0x430DCC0,
         "endRva": 0x430E284,
     },
+    "renderTextureDescriptorArgb32Ctor": {
+        "name": "UnityEngine.RenderTextureDescriptor..ctor(width,height,colorFormat)",
+        "rva": 0x650E8FC,
+        "endRva": 0x650E904,
+    },
+    "renderTextureDescriptorDepthCtor": {
+        "name": "UnityEngine.RenderTextureDescriptor..ctor(width,height,colorFormat,depthBufferBits)",
+        "rva": 0x650E904,
+        "endRva": 0x650E998,
+    },
+    "renderTextureDescriptorFullCtor": {
+        "name": "UnityEngine.RenderTextureDescriptor..ctor(width,height,colorFormat,depthBufferBits,mipCount,readWrite)",
+        "rva": 0x650EAA4,
+        "endRva": 0x650EBB8,
+    },
+    "commandBufferGetTemporaryFiltered": {
+        "name": "UnityEngine.Rendering.CommandBuffer.GetTemporaryRT(descriptor,filterMode)",
+        "rva": 0x653D514,
+        "endRva": 0x653D590,
+    },
+    "commandBufferGetTemporaryDefault": {
+        "name": "UnityEngine.Rendering.CommandBuffer.GetTemporaryRT(descriptor)",
+        "rva": 0x653D590,
+        "endRva": 0x653D600,
+    },
 }
 
 
@@ -413,6 +438,62 @@ def decode_native_pipeline(elf_bytes: bytes, buffer_size_field: dict) -> dict:
         METHODS["rendererDataGetTemporary"]["name"],
     )
     require_instructions(
+        decoded["renderTextureDescriptorArgb32Ctor"],
+        {
+            0x650E8FC: "mov w4, wzr",
+            0x650E900: "b #0x650e904",
+        },
+        METHODS["renderTextureDescriptorArgb32Ctor"]["name"],
+    )
+    require_instructions(
+        decoded["renderTextureDescriptorDepthCtor"],
+        {
+            0x650E91C: "mov w19, w4",
+            0x650E980: "mov w6, #1",
+            0x650E98C: "ldr w5, [x8]",
+            0x650E994: "b #0x650eaa4",
+        },
+        METHODS["renderTextureDescriptorDepthCtor"]["name"],
+    )
+    require_instructions(
+        decoded["renderTextureDescriptorFullCtor"],
+        {
+            0x650EAC4: "mov w25, w6",
+            0x650EAC8: "mov w20, w5",
+            0x650EACC: "mov w23, w4",
+            0x650EAD0: "mov w24, w3",
+            0x650EB10: "mov w0, w24",
+            0x650EB14: "mov w1, w25",
+            0x650EB1C: "bl #0x6554254",
+            0x650EB20: "mov w1, #4",
+            0x650EB28: "bl #0x65295a0",
+            0x650EB38: "mov w0, w23",
+            0x650EB3C: "bl #0x650e098",
+            0x650EB48: "mov w8, #0x82",
+            0x650EB54: "stp w22, w21, [sp, #8]",
+            0x650EB60: "movi v0.2s, #1",
+            0x650EB64: "stp w8, wzr, [sp, #0x34]",
+            0x650EB68: "str d0, [sp, #0x10]",
+            0x650EB74: "str w23, [sp, #0x24]",
+            0x650EB78: "str w20, [sp, #0x18]",
+            0x650EB7C: "str wzr, [sp, #0x30]",
+        },
+        METHODS["renderTextureDescriptorFullCtor"]["name"],
+    )
+    require_instructions(
+        decoded["commandBufferGetTemporaryFiltered"],
+        {
+            0x653D528: "mov w19, w3",
+            0x653D574: "mov w3, w19",
+        },
+        METHODS["commandBufferGetTemporaryFiltered"]["name"],
+    )
+    require_instructions(
+        decoded["commandBufferGetTemporaryDefault"],
+        {0x653D5E8: "mov w3, wzr"},
+        METHODS["commandBufferGetTemporaryDefault"]["name"],
+    )
+    require_instructions(
         decoded["customRendererSetup"],
         {
             0x430C2D4: "bl #0x63cf4e4",
@@ -435,16 +516,28 @@ def decode_native_pipeline(elf_bytes: bytes, buffer_size_field: dict) -> dict:
     require_instructions(
         decoded["bloomPassExecute"],
         {
+            0x43079C8: "mov w3, wzr",
+            0x43079D4: "bl #0x650e8fc",
+            0x4307A08: "mov w3, #1",
+            0x4307A2C: "bl #0x653d514",
             0x4307AB4: "mov w4, wzr",
             0x4307AD8: "bl #0x653fce8",
+            0x4307B58: "mov w3, #1",
+            0x4307B80: "bl #0x653d514",
             0x4307C2C: "mov w4, #1",
             0x4307C48: "bl #0x653fce8",
+            0x4307CB4: "mov w3, #1",
+            0x4307CDC: "bl #0x653d514",
+            0x4307CF4: "mov w3, #1",
+            0x4307D1C: "bl #0x653d514",
             0x4307EB0: "mov w5, #2",
             0x4307ED0: "bl #0x653f3c0",
             0x4308080: "mov w4, #3",
             0x43080A4: "bl #0x653fce8",
             0x430816C: "mov w4, #3",
             0x4308198: "bl #0x653fce8",
+            0x43081A8: "mov w3, #1",
+            0x43081E8: "bl #0x653d514",
             0x43082EC: "mov w5, #4",
             0x4308304: "bl #0x653f3c0",
             0x43083F8: "mov w4, #5",
@@ -473,6 +566,66 @@ def decode_native_pipeline(elf_bytes: bytes, buffer_size_field: dict) -> dict:
     ]
     methods = {key: method_evidence(elf, key, spec) for key, spec in METHODS.items()}
     bloom_sizing = decode_bloom_sizing(decoded, methods, buffer_size_field)
+    render_target_evidence = {
+        "sceneMrt": {
+            "filterModeValue": 0,
+            "filterMode": "Point",
+            "allocationOverload": "GetTemporaryRT(descriptor)",
+            "allocationCalls": ["0x430e3b8", "0x430e3e4", "0x430e430", "0x430e45c"],
+            "instructionEvidence": [
+                instruction_evidence(decoded["commandBufferGetTemporaryDefault"], 0x653D5E8),
+            ],
+        },
+        "bloomIntermediate": {
+            "requestedColorFormatValue": 0,
+            "requestedColorFormat": "ARGB32",
+            "depthBufferBits": 0,
+            "requestedReadWriteValue": 1,
+            "requestedReadWrite": "Linear",
+            "compatibleFormatUsageValue": 4,
+            "filterModeValue": 1,
+            "filterMode": "Bilinear",
+            "msaaSamples": 1,
+            "volumeDepth": 1,
+            "constructorFlagsValue": 0x82,
+            "memorylessValue": 0,
+            "mipCountSource": "runtime static loaded by RenderTextureDescriptor overload",
+            "physicalGraphicsFormatDeviceDependent": True,
+            "allocationCalls": ["0x4307a2c", "0x4307b80", "0x4307cdc", "0x4307d1c", "0x43081e8"],
+            "instructionEvidence": {
+                "execute": [
+                    instruction_evidence(decoded["bloomPassExecute"], address)
+                    for address in (
+                        0x43079C8, 0x43079D4, 0x4307A08, 0x4307A2C,
+                        0x4307B58, 0x4307B80, 0x4307CB4, 0x4307CDC,
+                        0x4307CF4, 0x4307D1C, 0x43081A8, 0x43081E8,
+                    )
+                ],
+                "formatCtor": [
+                    instruction_evidence(decoded["renderTextureDescriptorArgb32Ctor"], address)
+                    for address in (0x650E8FC, 0x650E900)
+                ],
+                "defaultCtor": [
+                    instruction_evidence(decoded["renderTextureDescriptorDepthCtor"], address)
+                    for address in (0x650E91C, 0x650E980, 0x650E98C, 0x650E994)
+                ],
+                "fullCtor": [
+                    instruction_evidence(decoded["renderTextureDescriptorFullCtor"], address)
+                    for address in (
+                        0x650EAC4, 0x650EAC8, 0x650EACC, 0x650EAD0,
+                        0x650EB10, 0x650EB14, 0x650EB1C, 0x650EB20,
+                        0x650EB28, 0x650EB38, 0x650EB3C, 0x650EB48,
+                        0x650EB54, 0x650EB60, 0x650EB64, 0x650EB68,
+                        0x650EB74, 0x650EB78, 0x650EB7C,
+                    )
+                ],
+                "filteredAllocation": [
+                    instruction_evidence(decoded["commandBufferGetTemporaryFiltered"], address)
+                    for address in (0x653D528, 0x653D574)
+                ],
+            },
+        },
+    }
     return {
         "elfLoadSegments": elf.loads,
         "methods": methods,
@@ -488,6 +641,7 @@ def decode_native_pipeline(elf_bytes: bytes, buffer_size_field: dict) -> dict:
             "depthAllocCalls": ["0x430e430", "0x430e45c"],
             "opaqueAndTransparentBindMrt": True,
         },
+        "renderTargets": render_target_evidence,
         "customRendererPassGraph": pass_graph,
         "drawPostProcess": {
             "iteratesSerializedPassList": True,
@@ -1097,13 +1251,11 @@ def extract(apkm_path: Path) -> dict:
             "passGraph": "Pass order is decoded from CustomRenderer.Setup; optional branch predicates remain explicit.",
             "bloom": "Pass 0/1/3 math and pass 5 no-tone-map are limited to this exact official Bloom module set.",
             "serializedBloom": "PostProcessData, profile/component membership, BloomPass, and BloomVolume values are decoded from raw serialized objects because embedded custom MonoBehaviour type trees are stripped.",
-            "bloomSizing": "The 9:16 base/pass-0/sheet dimensions are derived from GetBufferSize/BloomPass.Execute ARM64 immediates and the serialized BloomVolume bufferSize.",
-            "finalBlit": "Only the exact FinalBlit IL2CPP body range is pinned; its final shader and tone-map semantics remain unproven.",
+            "bloomSizing": "The 9:16 base/pass-0/sheet dimensions are derived here; UpdateMesh float32 atlas coordinates, weights, and runtime graph are audited separately by audit:official-bloom-runtime.",
+            "finalBlit": "The exact IL2CPP body is pinned here; the ResourceManager/Material/Shader/SPIR-V chain and runtime program are audited separately by audit:official-final-blit and audit:exact-final-blit.",
             "mrtOutputs": "Per-material MRT1 formulas and keyword variants are audited separately by audit:official-mrt-outputs.",
         },
         "unproven": [
-            "Bloom sheet vertex weights/intensity-scatter encoding and the complete per-level downsample/blur render-target size sequence.",
-            "FinalBlit shader selection, blend semantics, and any final tone mapping beyond the pinned IL2CPP body bytes.",
             "Physical Vulkan image formats selected by a particular Android device for Unity ARGB32/Depth enums.",
         ],
     }

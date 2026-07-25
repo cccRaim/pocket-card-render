@@ -134,6 +134,41 @@ function sourceComparator(source, method) {
     issues.push(`runtime ${method} callback could not be located`);
     return null;
   }
+  const delegated = /^compareOfficialPrefix\(a, b, (false|true)\)$/.exec(match[1].trim());
+  if (delegated) {
+    const signature = "function compareOfficialPrefix(a, b, transparent)";
+    const signatureIndex = source.indexOf(signature);
+    const bodyStart = source.indexOf("{", signatureIndex + signature.length);
+    let depth = 0;
+    let bodyEnd = -1;
+    for (let index = bodyStart; index < source.length; index += 1) {
+      if (source[index] === "{") depth += 1;
+      if (source[index] === "}") depth -= 1;
+      if (depth === 0) {
+        bodyEnd = index + 1;
+        break;
+      }
+    }
+    if (signatureIndex < 0 || bodyStart < 0 || bodyEnd < 0) {
+      issues.push(`runtime ${method} delegated comparator could not be located`);
+      return null;
+    }
+    try {
+      const shared = new Function(
+        "nativeDistanceForRenderItem",
+        "capturedSortResolver",
+        `return ${signature} ${source.slice(bodyStart, bodyEnd)};`,
+      )((item) => ({ primary: item.z, quantizedFrontToBackBucket: item.z }), null);
+      const transparent = delegated[1] === "true";
+      return {
+        expression: match[1].trim(),
+        compare: (a, b) => shared(a, b, transparent),
+      };
+    } catch (error) {
+      issues.push(`runtime ${method} delegated comparator could not be compiled: ${error.message}`);
+      return null;
+    }
+  }
   try {
     return { expression: match[1].trim(), compare: new Function("a", "b", `return ${match[1]};`) };
   } catch (error) {
@@ -150,6 +185,7 @@ function auditSortComparator(source, method, depthDirection) {
     renderOrder: 0,
     z: 0,
     material: { id: 0 },
+    object: { userData: {} },
     id: 0,
     ...overrides,
   });
@@ -235,25 +271,17 @@ function parseGlbDrawMaterials(file) {
 }
 
 function runtimeRoute(draw, recipe) {
-  if (draw.material === "OuterStencil" || draw.material.startsWith("InnerStencil")) {
+  if (draw.material === "OuterStencil"
+      || draw.material.startsWith("InnerStencil")
+      || draw.material.startsWith("IllustStencil")) {
     return {
       coverage: "implemented",
-      route: "stencil-writer/direct-MRT",
+      route: "selector-material/direct-MRT",
       runtimePartition: "direct-MRT/opaque-list",
-      runtimeOrder: -100,
-      note: "MeshBasic stencil writer; official queue is replaced by the dedicated writer order",
+      runtimeOrder: recipe.queue,
+      note: "selector-bound shader and pass state; dedicated group preserves stencil-before-color routing",
     };
   }
-  if (draw.material === "L_FullFace_Text") {
-    return {
-      coverage: "implemented",
-      route: "DynamicUI-bridge/direct-MRT",
-      runtimePartition: "direct-MRT/transparent-list",
-      runtimeOrder: 2900,
-      note: "conditional on dynUITex; bridge is explicit in app.js",
-    };
-  }
-
   const cfg = SHADER[draw.shortShader];
   if (!cfg) {
     return {
@@ -510,8 +538,16 @@ requireCondition(
   "runtime material dispatcher no longer applies effective render queue state",
 );
 requireCondition(
-  appSource.includes("applyRenderQueueState(m, 2900)"),
-  "runtime DynamicUI bridge no longer applies its official queue state",
+  appSource.includes("mesh.renderOrder = r.queue;"),
+  "runtime material renderOrder no longer uses the serialized effective queue directly",
+);
+requireCondition(
+  !/mesh\.renderOrder\s*=\s*[^;]*\?[^;]*:\s*r\.queue/.test(appSource),
+  "runtime contains a conditional material queue override not sourced from official data",
+);
+requireCondition(
+  !appSource.includes("applyRenderQueueState(m, 2900)"),
+  "runtime still hardcodes the DynamicUI queue outside its official scene recipe",
 );
 requireCondition(
   appSource.includes("if (!cfg || cfg.defer) { deferred++; return; }"),
@@ -534,16 +570,21 @@ requireCondition(
   "runtime still publishes a legacy UR background precompose route",
 );
 requireCondition(
-  appSource.includes('if (matName === "OuterStencil" || matName.startsWith("InnerStencil"))'),
-  "runtime stencil writer branch could not be located",
+  /const isStencil = matName === "OuterStencil"\s*\|\| matName\.startsWith\("InnerStencil"\)\s*\|\| matName\.startsWith\("IllustStencil"\)/.test(appSource),
+  "runtime selector-bound stencil route could not be located",
 );
 requireCondition(
-  appSource.includes('if (matName === "L_FullFace_Text")'),
-  "runtime DynamicUI bridge branch could not be located",
+  appSource.includes('if (matName === "L_FullFace_Text") dynUIMat = passMaterials[0];'),
+  "runtime selector-bound DynamicUI material tracking could not be located",
 );
 requireCondition(
   appSource.includes('recipe.shader !== "Card_UR_LensFlare"'),
   "runtime LensFlare built-in Quad restoration could not be located",
+);
+requireCondition(
+  appSource.includes("studioRoot.traverse((object) => object.layers.set(21));")
+    && appSource.includes("camera.layers.set(21);"),
+  "runtime card hierarchy and Camera no longer share official layer 21 UICardViewRenderer",
 );
 
 const officialDraws = evidence.serializedPrefabs?.draws || [];
@@ -574,16 +615,11 @@ for (const card of CARDS) {
     if (draw.shortShader !== "Card_UR_LensFlare") increment(expectedGlbCounts, draw.material);
 
     const recipe = scene.materials?.[draw.material] || null;
-    if (draw.material === "L_FullFace_Text") {
-      requireCondition(!recipe, `${draw.key}: Text bridge unexpectedly has a scene recipe`);
-      same(`${draw.key}: Text runtime queue`, draw.effectiveQueue, 2900);
-    } else {
-      requireCondition(!!recipe, `${draw.key}: scene recipe is missing for ${draw.material}`);
-      if (recipe) {
-        same(`${draw.key}: scene shader`, recipe.shader, draw.shortShader);
-        if (!SHADER[draw.shortShader]?.defer) {
-          same(`${draw.key}: scene queue`, recipe.queue, draw.effectiveQueue);
-        }
+    requireCondition(!!recipe, `${draw.key}: scene recipe is missing for ${draw.material}`);
+    if (recipe) {
+      same(`${draw.key}: scene shader`, recipe.shader, draw.shortShader);
+      if (!SHADER[draw.shortShader]?.defer) {
+        same(`${draw.key}: scene queue`, recipe.queue, draw.effectiveQueue);
       }
     }
 
@@ -606,8 +642,8 @@ for (const card of CARDS) {
       shaderQueueTag: draw.shaderQueueTag,
       queue: draw.effectiveQueue,
       queueDerivation: draw.queueDerivation,
-      sceneQueue: recipe?.queue ?? (draw.material === "L_FullFace_Text" ? 2900 : null),
-      sceneQueueMatch: (recipe?.queue ?? (draw.material === "L_FullFace_Text" ? 2900 : null)) === draw.effectiveQueue,
+      sceneQueue: recipe?.queue ?? null,
+      sceneQueueMatch: recipe?.queue === draw.effectiveQueue,
       officialPass: draw.officialPass,
       ...route,
       passParity: route.runtimePartition?.endsWith("opaque-list")
@@ -680,7 +716,7 @@ requireCondition(
 
 const remaining = [
   ...(evidence.native?.remaining || []),
-  "Runtime sorting key order is implemented for the four serialized prefabs; projected z is a continuous stand-in and is not proved equivalent to Unity's native QuantizedFrontToBack bucket.",
+    "Runtime sorting uses the official Float32 distance plus serialized SortingGroup/Canvas/material-slot prefix for the four prefabs; the pass-candidate audit proves ordinal=0 for all 98 draws, and official Shader reflection proves SRP compatibility bit 0 for all 94 active draws. Equal-prefix groups next require the hashed Material/Shader state key; InstanceID low bytes, final keyword state, Mesh SmallMeshIDs, and compacted RenderNodeQueue slots remain runtime-capture boundaries.",
   "This audit proves dispatcher/route coverage without running material requires()/build() or issuing GPU draws; asset-dependent runtime construction remains outside this no-render audit.",
 ];
 if (deferredRows.length) {
@@ -741,7 +777,7 @@ if (JSON_MODE) {
   console.log(`shader tags        ${SHADER_TAGS.map((row) => row.value).join(" -> ")}`);
   console.log("filter             layerMask=Camera.cullingMask=0x00200000, renderingLayerMask=0xffffffff, excludeMotion=false");
   console.log("targets            both passes bind MRT[ColorRT,EmissiveRT] + DepthRT; clearBetween=false");
-  console.log(`runtime sort       opaque=${opaqueSortAudit ? "key-order OK" : "BAD"}; transparent=${transparentSortAudit ? "key-order OK" : "BAD"}; projected-z bucket parity partial`);
+  console.log(`runtime sort       opaque=${opaqueSortAudit ? "key-order OK" : "BAD"}; transparent=${transparentSortAudit ? "key-order OK" : "BAD"}; exact distance/bucket prefix; Optimize ties partial`);
   console.log("");
   console.log("Per-card partition and runtime coverage");
   console.log(`${"card".padEnd(43)} ${"opaque".padStart(7)} ${"transp".padStart(7)} ${"impl".padStart(7)} ${"defer".padStart(7)} ${"parity".padStart(7)} ${"draws".padStart(7)}`);

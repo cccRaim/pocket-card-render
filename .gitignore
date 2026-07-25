@@ -1,4 +1,6 @@
 node_modules/
+__pycache__/
+*.pyc
 
 # Game-derived art (meshes + textures) is NOT committed — it is the game's copyrighted
 # material. Populate it locally from your OWN game export with `npm run gather`.
@@ -8,4 +10,17 @@ public/game/
 # headless screenshots
 shot*.png
 *.shot.png
+
+# Session-bound official runtime sort evidence (local test-device output)
+sort-capture*.log
+public/sort-import.*.json
+
+# Target-device Vulkan captures and normalized session reports are local evidence.
+*.rdc
+*.gfxr
+official-vulkan-runtime*.json
+tmp-runtime-evidence.local.json
+.renderdoc-*
+build/.renderdoc-*
+$cache/
 .idea

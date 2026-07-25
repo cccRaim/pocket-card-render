@@ -1,25 +1,42 @@
-// Generate Frame-2Layer-UR from the official Unity shader bundle.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+// Generate the selector-owned Frame-2Layer-UR WebGL2 port from official Unity shader bytes.
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-frame-2layer-ur-"));
-
-function run(command, args, options = {}) {
-  return execFileSync(command, args, {
-    cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], ...options,
-  });
-}
+const SELECTOR_ID = "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e";
+const CANDIDATE_WITNESS_ID = "35d3ee7215e6c73746d6a66c6670b2b5563b435ddf7c0f6a6c3a51c6c1c4de90";
+const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const PARAMETER_REFLECTION_SHA256 = "bac97fd98a6d3f7d23b647123428cc19d3637dee832c09ca0a25110952eb2507";
+const OFFICIAL_CROSS_SHA256 = {
+  vertex: "12e63c161f48d7307ff0a770ce6c4a949157e43d19e5b8cb8b9862a112dc8867",
+  fragment: "5e5d75fc5f04d676b5efcb619136b0902c549ebf4d959b724df2db9890e14552",
+};
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+  },
+};
 
 function equal(actual, expected, message) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
@@ -31,8 +48,7 @@ function member(name, type, offset, array = undefined) {
   return { name, type, offset, ...(array ? { array } : {}) };
 }
 
-function reflect(file, expected) {
-  const data = JSON.parse(run(SPIRV_CROSS, [file, "--reflect"]));
+function reflect(data, expected) {
   const ubo = (data.ubos || []).find((item) => item.name === expected.ubo.name);
   if (!ubo || ubo.block_size !== expected.ubo.size) throw new Error(`${expected.ubo.name} UBO changed`);
   equal((data.types[ubo.type].members || []).map(({ name, type, offset, array }) => ({
@@ -137,10 +153,6 @@ function adaptFragment(source) {
   return `${out.trimEnd()}\n`;
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
-
 function compiledFields(buffer) {
   return [...(buffer?.matrices || []), ...(buffer?.vectors || [])]
     .sort((a, b) => a.offset - b.offset)
@@ -192,58 +204,160 @@ const fragmentExpected = {
   ],
 };
 
-try {
-  const dump = run(PYTHON, [
-    "build/shaderdec/dump_shader.py", "Frame-2Layer-UR", "frame_2layer_ur", "--shaders", SHADER_ROOT, "--out", tmp,
-  ], { shell: process.platform === "win32" });
-  if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) throw new Error(`unexpected official module set:\n${dump}`);
-  const vertSpv = path.join(tmp, "frame_2layer_ur_vert.spv");
-  const fragSpv = path.join(tmp, "frame_2layer_ur_frag.spv");
-  reflect(vertSpv, vertexExpected);
-  reflect(fragSpv, fragmentExpected);
+await withExtractedSelectorProgram({
+  selectorId: SELECTOR_ID,
+  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: "frame_2layer_ur",
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  equal(metadata.selector.keywords, [], "selector keyword set changed");
+  if (metadata.parameterReflectionSha256 !== PARAMETER_REFLECTION_SHA256) throw new Error("official parameter reflection changed");
+  if (metadata.artifacts.parameterEntry.byteSize !== 100) throw new Error("official parameter entry byte size changed");
+  reflect(reflection.vertex, vertexExpected);
+  reflect(reflection.fragment, fragmentExpected);
 
-  const metadata = JSON.parse(run(PYTHON, ["build/extract-shader-defaults.py"], {
-    shell: process.platform === "win32",
-    input: JSON.stringify({ root: SHADER_ROOT, shaders: ["Frame-2Layer-UR"] }),
-    stdio: ["pipe", "pipe", "pipe"],
-  })).found["Frame-2Layer-UR"];
-  const binding = metadata.programBindings?.[0];
-  const samplerSlots = [
-    "_BaseTex", "_LayerMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex",
-    "_RampTex", "_RampMaskTex2", "_RampTex2", "_FakeSpecularMask",
-  ];
-  equal(binding?.textures?.map(({ name, binding, dim }) => ({ name, binding, dim })),
-    samplerSlots.map((name, binding) => ({ name, binding, dim: name === "_CubeMap" ? 4 : 2 })),
-    "compiled sampler bindings changed");
-  const pglobals = binding.constantBuffers.find((item) => item.name.startsWith("PGlobals"));
-  const vglobals = binding.constantBuffers.find((item) => item.name.startsWith("VGlobals"));
+  const bindings = compileCommonBindings(metadata.commonBindings);
+  const programBindings = compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+  const pglobals = bindings.constant_buffers.find((item) => item.name.startsWith("PGlobals"));
+  const vglobals = bindings.constant_buffers.find((item) => item.name.startsWith("VGlobals"));
   equal({ p: pglobals?.size, v: vglobals?.size }, { p: 272, v: 256 }, "compiled UBO sizes changed");
-  const engineNames = { unity_ObjectToWorld: "_ObjectToWorld", unity_WorldToObject: "_WorldToObject", unity_MatrixVP: "_ViewProjection", unity_MatrixV: "viewMatrix", _WorldSpaceCameraPos: "cameraPosition" };
+  const engineNames = {
+    unity_ObjectToWorld: "_ObjectToWorld", unity_WorldToObject: "_WorldToObject",
+    unity_MatrixVP: "_ViewProjection", unity_MatrixV: "viewMatrix", _WorldSpaceCameraPos: "cameraPosition",
+  };
   equal(compiledFields(vglobals).map(({ name, offset }) => ({ name: engineNames[name] || name, offset })),
     vertexMapping.map((name, index) => ({ name, offset: vertexExpected.ubo.members[index].offset })), "compiled vertex fields changed");
   equal(compiledFields(pglobals).map(({ name, offset }) => ({ name: engineNames[name] || name, offset })),
     fragmentMapping.map((name, index) => ({ name, offset: fragmentExpected.ubo.members[index].offset })), "compiled fragment fields changed");
 
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
+    if (set !== 0) throw new Error("WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  equal(samplerBindings.map(({ slot, spirvName, binding }) => ({ slot, spirvName, binding })), [
+    { slot: "_BaseTex", spirvName: "_13", binding: 0 },
+    { slot: "_LayerMaskTex", spirvName: "_260", binding: 1 },
+    { slot: "_CubeMap", spirvName: "_367", binding: 2 },
+    { slot: "_PhaseTex", spirvName: "_420", binding: 3 },
+    { slot: "_PhaseMaskTex", spirvName: "_428", binding: 4 },
+    { slot: "_RampMaskTex", spirvName: "_444", binding: 5 },
+    { slot: "_RampTex", spirvName: "_601", binding: 6 },
+    { slot: "_RampMaskTex2", spirvName: "_760", binding: 7 },
+    { slot: "_RampTex2", spirvName: "_916", binding: 8 },
+    { slot: "_FakeSpecularMask", spirvName: "_1277", binding: 9 },
+  ], "compiled sampler bindings changed");
+
+  const officialVert = runCommand(SPIRV_CROSS, [files.vertexSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFrag = runCommand(SPIRV_CROSS, [files.fragmentSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  if (sha256(officialVert) !== OFFICIAL_CROSS_SHA256.vertex || sha256(officialFrag) !== OFFICIAL_CROSS_SHA256.fragment) {
+    throw new Error("complete official SPIRV-Cross output changed");
+  }
+  const vertex = adaptVertex(officialVert);
+  const fragment = adaptFragment(officialFrag);
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    vertex: {
+      officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVert), outputSha256: sha256(vertex),
+      substitutions: [
+        "replace serialized-common VGlobals UBO members with same-name Three.js uniforms",
+        "map official position/normal/uv locations to Three.js attributes",
+        "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
+    },
+    fragment: {
+      officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFrag), outputSha256: sha256(fragment),
+      substitutions: [
+        "replace serialized-common PGlobals UBO members with same-name Three.js uniforms",
+        "add uBloomOnly backend route that copies the official emissive MRT output to attachment 0 during bloom extraction",
+      ],
+    },
+    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
+  };
+  const materialFloats = [
+    "_RampMaskRotation", "_RampMaskScale", "_RampMaskRotation2", "_RampMaskScale2",
+    "_FakeSpecularMaskScale", "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower",
+    "_FakeSpecularNotCornerOffset", "_FakeSpecularMaskScale2", "_FakeSpecularIntensity2",
+    "_FakeSpecularPower2", "_FakeSpecularCornerPower2", "_FakeSpecularNotCornerOffset2",
+    "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
+    "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_RemoveMetallic",
+    "_DiffractionIntensity2", "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
+    "_RampInterval2", "_DarknessOffset1", "_DarknessOffset2", "_Tilt",
+  ];
+  const passRuntime = {
+    ...compileOfficialPassContract(metadata.passContract, {
+      sourceSha256: metadata.identityFields.passStateSha256,
+      policy: PASS_POLICY,
+    }),
+    shader_property_defaults: metadata.shaderPropertyDefaults.floats,
+  };
   const outputs = {
-    "frame_2layer_ur.vert.glsl": adaptVertex(run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"])),
-    "frame_2layer_ur.frag.glsl": adaptFragment(run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"])),
+    "frame_2layer_ur.vert.glsl": vertex,
+    "frame_2layer_ur.frag.glsl": fragment,
     "frame_2layer_ur_uniforms.json": `${JSON.stringify({
-      shader: "Frame-2Layer-UR", generated_by: "build/build-exact-frame-2layer-ur.mjs",
-      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
-      samplers: fragmentExpected.textures.map((item) => item.name), sampler_slots: samplerSlots,
-      compiled_texture_bindings: Object.fromEntries(samplerSlots.map((name, binding) => [name, binding])),
-      implicit_defaults: { ...metadata.textures, _CubeMap: "gray" },
+      shader: "Frame-2Layer-UR",
+      generated_by: "build/build-exact-frame-2layer-ur.mjs",
+      selected_keywords: [],
+      official_selector: metadata.selector,
+      official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+      official_executable_identity: metadata.identityFields,
+      official_parameter_entry: {
+        source_sha256: metadata.identityFields.parameterEntrySha256,
+        byte_size: metadata.artifacts.parameterEntry.byteSize,
+        reflection_sha256: metadata.parameterReflectionSha256,
+        ...metadata.parameterReflection,
+      },
+      official_pass_runtime: passRuntime,
+      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_program_bindings: {
+        common_source_sha256: metadata.identityFields.commonBindingsSha256,
+        parameter_reflection_sha256: metadata.parameterReflectionSha256,
+        ...programBindings,
+      },
+      official_shader_property_defaults: metadata.shaderPropertyDefaults,
+      webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/frame_2layer_ur.vert.glsl",
+        fragment: "public/shaders/frame_2layer_ur.frag.glsl",
+      },
+      runtime_contract: {
+        schema: "pocket-card-render/webgl-runtime-port@1",
+        shader_key: "Frame-2Layer-UR",
+        attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
+        engine_uniforms: {
+          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+        },
+        material_uniforms: {
+          floats: materialFloats,
+          ints: ["_UseSimpleRampMaskAndRotation", "_UseSimpleRampMaskAndRotation2", "_EmissivePattern"],
+          vectors: {
+            _FakeSpecularColor: "vec3", _FakeSpecularColor2: "vec3", _DarknessColor1: "vec3",
+            _DarknessColor2: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
+          },
+        },
+        backend_uniforms: { uBloomOnly: { type: "int", value: 0 } },
+        require_complete_active_bindings: true,
+        camera_from_view: true,
+        mrt_attachments: 2,
+        stencil_normalization: "disable-when-always-keep",
+        stencil_face_mode: "generic",
+      },
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
+      vertex_fields: Object.fromEntries(compiledFields(vglobals).map(({ name, offset }) => [name, offset])),
+      fragment_fields: Object.fromEntries(compiledFields(pglobals).map(({ name, offset }) => [name, offset])),
+      implicit_defaults: { ...metadata.shaderPropertyDefaults.textures, _CubeMap: "gray" },
       mrt: { primary: "_34", emissive: "_42", webgl_bloom_route: "uBloomOnly" },
     }, null, 2)}\n`,
   };
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match official regeneration`);
-    } else fs.writeFileSync(file, content);
-  }
-  console.log(`${CHECK ? "verified" : "generated"} Frame-2Layer-UR from official SPIR-V and compiled bindings`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+  console.log(`${CHECK ? "verified" : "generated"} selector-owned Frame-2Layer-UR WebGL2 port`);
+});

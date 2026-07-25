@@ -5,7 +5,18 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { OFFICIAL_GLITTER_FLOW_DEFAULTS } from "../public/render/glitter-flow.js";
+import {
+  OFFICIAL_GLITTER_FLOW_DEFAULTS,
+  threeWorldForwardToUnity,
+} from "../public/render/glitter-flow.js";
+import {
+  OFFICIAL_TIME_DEFAULTS,
+  OFFICIAL_TIME_EVIDENCE,
+} from "../public/render/official-clock.js";
+import {
+  OFFICIAL_MAX_ROTATION_DEGREES,
+  OFFICIAL_TOUCH_ROTATION_EVIDENCE,
+} from "../public/render/official-touch-rotation.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const APKM = process.env.PCR_APKM
@@ -20,6 +31,16 @@ const EXPECTED = {
   splitSha256: "7faf449bae431dcfeda4f882ecb04290af66cc4ccfeefc620e24cac70d22fcec",
   libil2cppSha256: "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e",
   bundleSha256: "8c7966e26446db4c635363d3eeeda7182456e2adc9b8fc62d6d4ef0b7c438929",
+  timeManager: {
+    timeScale: Math.fround(1),
+    maximumDeltaTime: Math.fround(0.3333333432674408),
+    getTimeRva: "0x6529698",
+    getDeltaTimeRva: "0x65296e8",
+    getTimeScaleRva: "0x6529850",
+    setTimeScaleRva: "0x6529878",
+    shaderGlobalsRva: "0x5e0328",
+    shaderTimeFactors: [Math.fround(0.05), Math.fround(1), Math.fround(2), Math.fround(3)],
+  },
   vertexSpirvSha256: "1af6dfd11c7da5008e4fb1819e056d86ceca72cc1fc08ef40442dc63ead61597",
   fragmentSpirvSha256: "f5aee5f528410fcade473ebe4adb39d36033c05a01020e959b530ea24d60785b",
   zeroSpeedWindows: {
@@ -45,6 +66,7 @@ function runPython(args) {
     encoding: "utf8",
     shell: process.platform === "win32",
     stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
   });
 }
 
@@ -85,6 +107,32 @@ assert.equal(evidence.rodata.normalizeEpsilon, Math.fround(0.00001));
 assert.equal(evidence.rodata.flowDirectionX, Math.fround(0.5821118950843811));
 assert.equal(evidence.rodata.flowDirectionY, Math.fround(0.8131087422370911));
 
+assert.equal(OFFICIAL_TIME_DEFAULTS.timeScale, EXPECTED.timeManager.timeScale);
+assert.equal(OFFICIAL_TIME_DEFAULTS.maximumDeltaTime, EXPECTED.timeManager.maximumDeltaTime);
+assert.equal(OFFICIAL_TIME_EVIDENCE.libil2cppRvas.getTime, EXPECTED.timeManager.getTimeRva);
+assert.equal(OFFICIAL_TIME_EVIDENCE.libil2cppRvas.getDeltaTime, EXPECTED.timeManager.getDeltaTimeRva);
+assert.equal(OFFICIAL_TIME_EVIDENCE.libil2cppRvas.getTimeScale, EXPECTED.timeManager.getTimeScaleRva);
+assert.equal(OFFICIAL_TIME_EVIDENCE.libil2cppRvas.setTimeScale, EXPECTED.timeManager.setTimeScaleRva);
+assert.equal(OFFICIAL_TIME_EVIDENCE.libunityShaderGlobalsRva, EXPECTED.timeManager.shaderGlobalsRva);
+assert.deepEqual(OFFICIAL_TIME_EVIDENCE.shaderTimeFactors, EXPECTED.timeManager.shaderTimeFactors);
+assert.equal(OFFICIAL_MAX_ROTATION_DEGREES, 30);
+assert.equal(OFFICIAL_TOUCH_ROTATION_EVIDENCE.angleDelta, "acos(current) - acos(previous)");
+assert.equal(OFFICIAL_TOUCH_ROTATION_EVIDENCE.dragComposition, "qY * qX");
+assert.equal(OFFICIAL_TOUCH_ROTATION_EVIDENCE.frameComposition, "currentLocalRotation * dragDelta");
+assert.deepEqual(threeWorldForwardToUnity([0.25, -0.5, 0.75]), [0.25, -0.5, -0.75]);
+
+const touchAudit = JSON.parse(execFileSync(process.execPath, [
+  "build/audit-official-touch-rotation.mjs",
+  "--json",
+], {
+  cwd: ROOT,
+  encoding: "utf8",
+  env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+}));
+assert.equal(touchAudit.status, "passed-with-explicit-unproved", "official touch evidence audit failed");
+assert.equal(touchAudit.source.apkmSha256, EXPECTED.apkmSha256);
+assert.equal(touchAudit.source.libil2cppSha256, EXPECTED.libil2cppSha256);
+
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-glitter-timing-"));
 try {
   runPython([
@@ -120,8 +168,13 @@ try {
 }
 
 const source = fs.readFileSync(path.join(ROOT, "public/render/glitter-flow.js"), "utf8");
+const clockSource = fs.readFileSync(path.join(ROOT, "public/render/official-clock.js"), "utf8");
+const touchSource = fs.readFileSync(path.join(ROOT, "public/render/official-touch-rotation.js"), "utf8");
 const appSource = fs.readFileSync(path.join(ROOT, "public/app.js"), "utf8");
 const urSource = fs.readFileSync(path.join(ROOT, "public/render/materials/ur.js"), "utf8");
+const prismSource = fs.readFileSync(path.join(ROOT, "public/render/materials/prism.js"), "utf8");
+const prismVertex = fs.readFileSync(path.join(ROOT, "public/shaders/card_prism.vert.glsl"), "utf8");
+const prismManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public/shaders/card_prism_uniforms.json"), "utf8"));
 assert.doesNotMatch(source, /\b_Time\b|requestAnimationFrame|performance\.now/, "glitter state must not use Unity _Time or RAF time");
 assert.match(source, /deltaTime/, "scaled deltaTime input is missing");
 const speedBlock = source.slice(source.indexOf("function updateFlowSpeed"), source.indexOf("function updateFlowMapUVOffset"));
@@ -133,10 +186,37 @@ assert.match(source, /state\.flowParams\[1\]\[1\]\s*=\s*state\.flowBRotate/, "Fl
 assert.match(source, /updateFlowSpeed\(state, forward\);[\s\S]*updateFlowMapUVOffset\(state, dt\);[\s\S]*updateLightTiming\(state, dt\);[\s\S]*updateFlowRotate\(state, dt\);/, "official Update method order drifted");
 assert.match(urSource, /createGlitterFlowState\(\)/, "glitter material does not own native FlowParams state");
 assert.match(appSource, /updateGlitterFlow\(em\.userData\.glitterFlow/, "render loop does not advance native glitter state");
-assert.match(appSource, /em\.uniforms\._37\.value\[0\]\.set\(\.\.\.flow\[0\]\)/, "fragment FlowParams[0] upload is missing");
-assert.match(appSource, /em\.uniforms\._78\.value\[15\]\.set\(\.\.\.flow\[1\]\)/, "vertex FlowParams[1] upload is missing");
-assert.doesNotMatch(appSource, /_37\.value\[0\]\.set\(s\s*\/\s*20/, "render loop still substitutes RAF time for FlowParams");
-assert.match(appSource, /gameTime\s*\+=\s*deltaTime/, "lens flare lacks shared scaled-time accumulation");
+assert.match(appSource, /em\.uniforms\._FlowParams\.value\[0\]\.set\(\.\.\.flow\[0\]\)/, "FlowParams[0] upload is missing");
+assert.match(appSource, /em\.uniforms\._FlowParams\.value\[1\]\.set\(\.\.\.flow\[1\]\)/, "FlowParams[1] upload is missing");
+assert.doesNotMatch(appSource, /_FlowParams\.value\[0\]\.set\(s\s*\/\s*20/, "render loop still substitutes RAF time for FlowParams");
+assert.match(appSource, /new OfficialClock\(\)/, "runtime does not own the official global clock");
+assert.match(appSource, /am\.uniforms\.uTime\.value\s*=\s*clockFrame\.globalTime/, "animated shader materials do not share the official global time");
+assert.deepEqual(prismManifest.runtime_contract?.dynamic_uniforms, {
+  uTime: { type: "float", source: "official-clock" },
+}, "Card_Prism does not declare its official clock binding");
+assert.match(prismVertex, /\(uTime\s*\*\s*0\.05\)/, "Card_Prism does not reconstruct Unity _Time.x");
+assert.match(prismSource, /uniforms\.uTime\s*=\s*\{\s*value:\s*0\s*\}/, "Card_Prism clock uniform is absent");
+assert.match(prismSource, /ctx\.animMats\.push\(material\)/, "Card_Prism is not registered for OfficialClock updates");
+assert.match(appSource, /deltaTime:\s*clockFrame\.scaledDeltaTime/, "GlitterFlowMaps does not consume scaled deltaTime");
+assert.match(appSource, /syncOfficialClockVisibility\(officialClock, document\.hidden\)/,
+  "visibility suspension/resume wiring is missing");
+assert.doesNotMatch(appSource, /addEventListener\(["']blur["']/, "visible blur must not suspend the official clock");
+assert.match(appSource, /addEventListener\(["']pointerdown["']/, "official pointerdown gate is missing");
+assert.match(appSource, /setPointerCapture\(event\.pointerId\)/, "pointer capture is missing");
+assert.match(appSource, /addEventListener\(["']pointerup["']/, "official pointerup is missing");
+assert.match(appSource, /addEventListener\(["']pointercancel["']/, "official pointercancel is missing");
+assert.match(appSource, /glitterTransform\.getWorldQuaternion\(glitterWorldQ\)/, "Glitter transform.forward is not computed from the full world transform");
+assert.match(appSource, /cardForward\.set\(0,\s*0,\s*-1\)/, "converted Unity local +Z axis is missing");
+assert.match(appSource, /threeWorldForwardToUnity\(cardForward\.toArray\(\)\)/, "Three world forward is not converted at the Unity simulation boundary");
+assert.match(touchSource, /Math\.acos\(current\[0\]\)\s*-\s*Math\.acos\(state\.previousPoint\[0\]\)/, "touch x delta is not direct official acos(current)-acos(previous)");
+assert.match(touchSource, /multiplyQuaternions\(qY, qX\)/, "touch drag is not qY*qX");
+assert.match(touchSource, /multiplyQuaternions\(state\.rotation, state\.pendingRotation\)/, "touch rotation does not accumulate current*delta");
+assert.match(clockSource, /Math\.min\(raw \* this\.timeScale, this\.maximumDeltaTime\)/, "scaled delta cap semantics drifted");
+assert.match(clockSource, /this\.previousTimestampMs\s*=\s*null/, "suspend/resume timestamp reset is missing");
+
+for (const testFile of ["build/test-official-touch-rotation.mjs", "build/test-official-clock.mjs"]) {
+  execFileSync(process.execPath, [testFile], { cwd: ROOT, stdio: "pipe" });
+}
 
 console.log("official GlitterFlowMaps animation timing: OK");
 console.log(`  APKM ${evidence.apkmSha256}`);
@@ -144,3 +224,4 @@ console.log(`  libil2cpp ${evidence.libil2cppSha256}`);
 console.log(`  prefab ${evidence.bundleSha256}`);
 console.log("  native methods 7/7 pinned; zero-speed divide window pinned; local finite-state guard present");
 console.log("  prefab fields 11/11 matched; SPIR-V FlowParams bindings matched");
+console.log("  touch world-forward basis, official drag state, TimeManager clock, Prism _Time.x, suspend/resume: matched");

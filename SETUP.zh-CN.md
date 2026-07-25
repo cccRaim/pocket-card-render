@@ -19,6 +19,9 @@
 | **UnityPy** | 最新(`pip install UnityPy`) | 读取 Unity bundle 和官方 PlayerSettings |
 | **capstone** | 最新(`pip install capstone`) | 为管线审计解码官方 ARM64 渲染方法 |
 | **lz4** | 最新(`pip install lz4`) | 解压官方序列化 Bloom Shader 数据块 |
+| **freetype-py** | FreeType 2.13.x（`pip install freetype-py`） | 独立审计全部官方 TMP glyph metrics |
+| **Pillow** | 最新（`pip install Pillow`） | 读取并核对官方 TMP atlas 像素 |
+| **unicorn** | 最新（`pip install unicorn`） | 执行固定版本的 ARM64 Unity SDFAA glyph 路径，进行逐字节 atlas 审计 |
 | **AssetRipper** | 最新稳定版 GUI | 导出合成几何 + 贴图(路径 B) |
 | .NET | 仅当你的 AssetRipper 是“依赖框架”版 → **.NET 8 运行时** | 多数 AssetRipper 发行版是自包含的 |
 | three.js | 0.165.0 —— **经 CDN import map 固定,无需安装** | 见 `public/index.html` |
@@ -28,6 +31,17 @@
 
 可选的官方运行时审计还需要你自己游戏安装包中的 APKM。设置 `PCR_APKM=/path/to/package.apkm` 后运行
 `npm run audit:official-player-pipeline`；该命令直接读取安装包，不把生成的 recipe 当作渲染器证据。
+
+如果已经从自己的目标设备会话取得原始 Vulkan capture，可以完全不使用截图地导入和审计：
+
+```bash
+npm run test:official-vulkan-runtime-import
+npm run audit:official-vulkan-runtime-capture -- /path/to/capture public/scene.<card>.json
+PCR_OFFICIAL_VULKAN_CAPTURE=/path/to/capture npm run report:evidence
+```
+
+capture 目录是本地证据，刻意不提交。一次通过只证明被捕获的卡、设备和运行时范围，不能代替尚未捕获的
+稀有度或设备。
 
 > **AssetStudio 这里完全不用。** 几何 = AssetRipper;材质*和*着色器 = UnityPy。
 > (新增稀有度时反编译着色器同样是 UnityPy + SPIRV-Cross——见 [SHADERS.zh-CN.md](SHADERS.zh-CN.md)。)
@@ -49,6 +63,12 @@ npm install
 npm run gather -- /path/to/AssetRipper-export   # 把网格+贴图复制进 public/game/
 npm run serve                                    # → http://127.0.0.1:8011
 ```
+
+`gather` 还会用 UnityPy 重新读取官方 Unity Mesh，并恢复 AssetRipper/SharpGLTF
+转换后的 GLB accessor。这会保留官方 float32 position、normal、tangent 和 UV payload，
+同时沿用 exporter 生成的层级与材质 primitive。运行
+`npm run audit:official-mesh-payload` 可把四张基准卡的 prefab 按展开后的有序三角形流逐字节对比；
+该审计不使用截图或图像阈值。
 
 打开 <http://127.0.0.1:8011>,再加 `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`。
 
@@ -122,8 +142,12 @@ python build/dump_recipe.py \
     --out "recipes/<illId>_render_full.json"
 ```
 
-这会写出每材质的 recipe(`m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、queue、世界变换)。`--shared`
-目录让跨 bundle 的贴图/着色器指针得以解析。(schema 见 [ASSETS.md](ASSETS.md)。)
+这会写出每材质的 recipe(`m_Floats`/`m_Colors`/`m_TexEnvs`、着色器名、queue、世界变换)，并保留官方
+Renderer/Material/Shader/Mesh 的 `CAB:pathID` identity，以及 native draw sorting 使用的序列化
+Material/Shader keyword 输入。脚本还会解析 compiled Shader parameter reflection：只有发现
+`UnityPerDraw` 外的决定性 per-renderer property 时才写入 `srpBatcherCompatible: 0`；没有见证则保留
+`null`，不做猜测。`--shared` 目录让跨 bundle 的贴图/着色器指针得以解析。
+(schema 见 [ASSETS.md](ASSETS.md)。)
 
 ### 5. 构建 scene
 
@@ -155,6 +179,34 @@ node build/gather.mjs "<export-root>"      # 只复制 scene 引用到的 /game/
 ```bash
 npm run serve            # → http://127.0.0.1:8011/?scene=scene.<illId>.json
 ```
+
+### 9.（高级、可选)捕获官方运行期 draw-sort 字段
+
+同前缀 draw order 剩余输入属于进程 session 状态,不是序列化资产数据。捕获它们需要固定的 PTCGP
+`1.6.0 (293311)` arm64 版本、rooted 测试设备、ADB 与版本匹配的 `frida-server`。先验证只读 probe
+仍与本机官方 `libunity.so` 完全匹配:
+
+```powershell
+npm run audit:official-sort-runtime-capture-tool
+frida -U -f jp.pokemon.pokemontcgp -l build/capture-official-sort-runtime.js |
+  Tee-Object sort-capture.log
+```
+
+在官方游戏里打开目标卡,捕获稳定帧后停止 Frida。再把这一份 session 与精确 scene 关联;导入器会拒绝
+混合 session/版本,独立重算 entry `+0x08` 与 `+0x28`,忽略屏幕上无关 draw,并保留有歧义的 Renderer
+候选而不猜测:
+
+```powershell
+npm run import:official-sort-runtime-capture -- sort-capture.log public/scene.<illId>.json public/sort-import.<illId>.json
+npm run test:official-sort-runtime-import
+```
+
+用 `?scene=scene.<illId>.json&sortCapture=sort-import.<illId>.json` 显式加载。renderer 会校验原始 scene
+SHA-256,并且只在 collision group 的每个成员都有精确 draw mapping 时启用 captured ordering;不完整 group
+会整体 fallback。
+
+生成物是 session-bound 证据。不要跨冷启动或游戏版本复用;在重复 capture 证明相关低字节稳定前,
+也不要把它发布成通用 draw-order 数据。
 
 ---
 

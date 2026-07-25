@@ -1,0 +1,850 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Card_Parallax_MatCap_Lighting",
+  "generated_by": "build/build-exact-card-parallax-matcap-lighting.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+    "candidateWitnessId": "60d74858874bf4a236896b464909975dff080498545e876ee63d7f9251f262a6",
+    "shaderIdentity": "CAB-448e21eabc30a251873b2458fa3dc612:6962791336545764085",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_MatCap_Lighting",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "a07e7c1ae5f14743e70cb218f4b88b25314b6a12b3d11cbbea3264fbaa69bf2c",
+    "semanticExecutableId": "b6133ce2aa6a3a725c68f058d4ccd995dd6b4244d50d845b032e248278fd9cc4"
+  },
+  "official_spirv_sha256": {
+    "vertex": "c18487e424c915ae8e53ecf9622f1d35a17e073b50ca51393f5d11f91d413369",
+    "fragment": "cd2e1ee1ef993f1f13863bd95d54d950749a9eb53980dcd703170a68ab87e894"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "c18487e424c915ae8e53ecf9622f1d35a17e073b50ca51393f5d11f91d413369",
+    "fragmentSpirvSha256": "cd2e1ee1ef993f1f13863bd95d54d950749a9eb53980dcd703170a68ab87e894",
+    "parameterEntrySha256": "f77e19f98e70e00dd17ed5832c28f1b9c675b14ff458213467fe33f7bf0cc935",
+    "passStateSha256": "6e341ceebcbd3df35b1c5682b5484104db4eb92351cf3763f1e2ac037f2dbbf6",
+    "commonBindingsSha256": "946872fbfc2f88290fefde8185491703e314ed9fc7a55bc4f632f11f23547b18"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "f77e19f98e70e00dd17ed5832c28f1b9c675b14ff458213467fe33f7bf0cc935",
+    "byte_size": 100,
+    "reflection_sha256": "b4c9bc8ce228de1463c87dd87f0525814e276bf117dba0e1f6bd807a23c53e85",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals134114739",
+        "size": 128,
+        "fields": []
+      },
+      {
+        "name": "VGlobals134114739",
+        "size": 228,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals134114739",
+        "size": 128
+      },
+      {
+        "name": "VGlobals134114739",
+        "size": 228
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_MatCapLightTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      },
+      {
+        "name": "_LightingMask",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 2,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "6e341ceebcbd3df35b1c5682b5484104db4eb92351cf3763f1e2ac037f2dbbf6",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 0,
+        "name": "_ZTest"
+      },
+      "write": {
+        "val": 0,
+        "name": "_ZWrite"
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": "_StencilRef"
+      },
+      "read_mask": {
+        "val": 0,
+        "name": "_StencilRef"
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 3,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 5,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 1,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 1,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "946872fbfc2f88290fefde8185491703e314ed9fc7a55bc4f632f11f23547b18",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_MatCapLightTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_LightingMask",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals134114739",
+        "size": 128,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_LightSensitive",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_LightCurvePower",
+            "offset": 68,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_LightingColor",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_Debug",
+            "offset": 96,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveEnabled",
+            "offset": 100,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 104,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveColor",
+            "offset": 112,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals134114739",
+        "size": 228,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_FakeCameraHeight",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Height",
+            "offset": 212,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_HeightPower",
+            "offset": 216,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Scale",
+            "offset": 220,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseUv2",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals134114739",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals134114739",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "946872fbfc2f88290fefde8185491703e314ed9fc7a55bc4f632f11f23547b18",
+    "parameter_reflection_sha256": "b4c9bc8ce228de1463c87dd87f0525814e276bf117dba0e1f6bd807a23c53e85",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_MatCapLightTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_LightingMask",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals134114739",
+        "size": 128,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_LightSensitive",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_LightCurvePower",
+            "offset": 68,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_LightingColor",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_Debug",
+            "offset": 96,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveEnabled",
+            "offset": 100,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 104,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveColor",
+            "offset": 112,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals134114739",
+        "size": 228,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          },
+          {
+            "name": "_FakeCameraHeight",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Height",
+            "offset": 212,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_HeightPower",
+            "offset": 216,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Scale",
+            "offset": 220,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseUv2",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals134114739",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals134114739",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_vertex_inputs": {
+    "schema": "pocket-card-render/official-vertex-input-contract@1",
+    "unityVersion": "2022.3.62f2",
+    "sourceSha256": "a9f62949dd9bc5315c02c8a019395b2a522f95dc3ac40d5a2422d954654453b1",
+    "serializedSourceMap": 55,
+    "inputs": [
+      {
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1",
+        "location": 0,
+        "threeAttribute": "position",
+        "spirvName": "_11",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 1,
+        "sourceName": "Normal",
+        "target": 14,
+        "targetName": "Attrib2",
+        "location": 1,
+        "threeAttribute": "normal",
+        "spirvName": "_97",
+        "spirvType": "vec3"
+      },
+      {
+        "source": 2,
+        "sourceName": "Tangent",
+        "target": 17,
+        "targetName": "Attrib5",
+        "location": 4,
+        "threeAttribute": "tangent",
+        "spirvName": "_117",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 15,
+        "targetName": "Attrib3",
+        "location": 2,
+        "threeAttribute": "uv",
+        "spirvName": "_313",
+        "spirvType": "vec2"
+      },
+      {
+        "source": 5,
+        "sourceName": "UV1",
+        "target": 16,
+        "targetName": "Attrib4",
+        "location": 3,
+        "threeAttribute": "uv1",
+        "spirvName": "_316",
+        "spirvType": "vec2"
+      }
+    ]
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_MatCapLightTex": "white",
+      "_LightingMask": "white"
+    },
+    "textureDescriptors": {
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_MatCapLightTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_LightingMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_UseUv2": 0,
+      "_LightSensitive": 0.10000000149011612,
+      "_LightCurvePower": 2,
+      "_Debug": 0,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_EmissiveEnabled": 0,
+      "_EmissiveIntensity": 1,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {
+      "_LightingColor": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "_EmissiveColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {}
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "c18487e424c915ae8e53ecf9622f1d35a17e073b50ca51393f5d11f91d413369",
+      "spirvCrossGlslSha256": "c37d2e7f9ac2e6631022d86b0d2511adfb1056af090c63fdb6d4e7b2e8f3e22c",
+      "outputSha256": "be6fec22ea8fbd586600e408d18f96cd7bfaf27854e1a36a49383551dc5486a2",
+      "substitutions": [
+        "map official position/normal/UV0/UV1/tangent locations to Three.js attributes",
+        "map Unity object/world/view-projection matrices and camera position to Three.js engine uniforms",
+        "expand serialized common-buffer values into same-name material uniforms",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "cd2e1ee1ef993f1f13863bd95d54d950749a9eb53980dcd703170a68ab87e894",
+      "spirvCrossGlslSha256": "768c9fd42b5b6beb7b0eab07532d8831bb6c350d4b2bbc59029ab8aaa6c3583b",
+      "outputSha256": "28ffbc3b6578b29eee477e1b01d2f8236fecb10c5ec66027abe40a0ffec44b32",
+      "substitutions": [
+        "map unity_ObjectToWorld to modelMatrix",
+        "expand serialized PGlobals fields into same-name material uniforms"
+      ]
+    },
+    "interfaceSha256": "1636b620a795a317b63e4e74baf0eb850666b7dd4a271bf98866cc32eb47c25c"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_matcap_lighting.vert.glsl",
+    "fragment": "public/shaders/card_parallax_matcap_lighting.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Parallax_MatCap_Lighting",
+    "attributes": {
+      "position": "vec3",
+      "normal": "vec3",
+      "tangent": "vec4",
+      "uv": "vec2",
+      "uv1": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4",
+      "cameraPosition": "vec3"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_LightSensitive",
+        "_LightCurvePower",
+        "_EmissiveIntensity"
+      ],
+      "ints": [
+        "_UseUv2",
+        "_Debug",
+        "_EmissiveEnabled"
+      ],
+      "vectors": {
+        "_LightingColor": "vec4",
+        "_EmissiveColor": "vec4"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": true,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic"
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MatCapLightTex",
+      "spirvName": "_56",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_LightingMask",
+      "spirvName": "_63",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_56",
+    "_63"
+  ],
+  "sampler_slots": [
+    "_MatCapLightTex",
+    "_LightingMask"
+  ],
+  "compiled_texture_bindings": {
+    "_MatCapLightTex": 0,
+    "_LightingMask": 1
+  },
+  "implicit_defaults": {
+    "_MatCapLightTex": "white",
+    "_LightingMask": "white"
+  },
+  "mrt": {
+    "primary": "_228",
+    "emissive": "_230"
+  }
+}

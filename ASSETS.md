@@ -47,7 +47,10 @@ The `<relative-path>` mirrors the AssetRipper export layout (`Assets/...`).
 - **textures** — `.png`, at their real container paths under `Assets/`.
 
 `npm run gather -- <export-root>` copies exactly the files the prebuilt scenes reference, so you only
-stage what you need.
+stage what you need. It then restores canonical GLB vertex accessors from the official Unity Mesh
+objects because AssetRipper/SharpGLTF can normalize tangent vectors or otherwise rewrite float
+payloads. `npm run audit:official-mesh-payload` proves the resulting position, normal, tangent, UV,
+triangle winding, and merged-submesh streams against pinned official bundle identities.
 
 ## Producing a scene for a NEW card
 
@@ -61,9 +64,12 @@ node build/build.mjs <illId>
 By default this writes `public/scene.<illId>.json`. Pass a third argument only when you intentionally
 want a non-canonical output filename.
 
-The material recipe (per-material `m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) is the
+The material recipe (per-material `m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue, official
+object identities, and serialized Material/Shader keyword inputs) is the
 one piece that does **not** come from the AssetRipper glb (the glb carries geometry + material *names*
-only). It is produced separately — see the toolchain below — then committed here as part of `scene.*.json`.
+only). It also carries a conservative SRP Batcher result decoded from compiled Shader reflection:
+decisive incompatibility is `0`, while unproved cases remain `null`. It is produced separately — see the
+toolchain below — then committed here as part of `scene.*.json`.
 
 ## The data-preparation toolchain
 
@@ -72,7 +78,7 @@ Two tools, because **no single one provides everything** (verified by execution)
 | Tool | Produces | Notes |
 |------|----------|-------|
 | **AssetRipper** (.NET, free) | the *composed* glb geometry + textures | Settings as above. It instantiates the prefab hierarchy (the per-card Face prefab + the shared Template prefab) into one glb with every material as a named sub-mesh — geometry no other tool here reproduces. |
-| **UnityPy** (Python) | the **material recipe** (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, render queue) | Loads the **decrypted** Unity material bundles (`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`), resolves cross-bundle PPtrs, and writes the per-layer recipe in the schema above. The renderer needs this; the glb has only material *names*. |
+| **UnityPy** (Python) | the **material recipe** (parameters, render state, `CAB:pathID` identities, keyword space) | Loads the **decrypted** Unity material bundles (`UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"`), resolves cross-bundle PPtrs, and writes the per-layer recipe in the schema above. The renderer needs this; the glb has only material *names*. |
 
 > **Do you need AssetStudio? No.** Geometry comes from AssetRipper; **materials *and* shaders** come from
 > UnityPy. (AssetStudio's CLI can't even dump `Material` — `-m dump` only emits Mesh / Texture2D /

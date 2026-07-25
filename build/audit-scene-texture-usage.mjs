@@ -5,6 +5,7 @@ import path from "node:path";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { loadExactPortUsageContracts } from "./exact-port-usage-contracts.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -12,8 +13,13 @@ const shaderRoot = process.env.PCR_SHADERS
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
   .filter((n) => /^scene\..*\.json$/.test(n))
   .sort();
+const exactPortUsage = loadExactPortUsageContracts(ROOT);
 
 const USED_BY_KIND = {
+  outerStencil: [],
+  innerStencil: ["_BaseTex"],
+  illustStencil: ["_BaseTex"],
+  dynamicText: ["_DynamicUITex"],
   textured: ["_MainTex", "_BaseTex"],
   illustTextured: ["_MainTex", "_BaseTex"],
   simpleTransparent: ["_MainTex", "_BaseTex"],
@@ -48,6 +54,15 @@ const USED_BY_KIND = {
   flare: ["_BaseMap", "_MainTex", "_FlareVAT"],
   metal: ["_CubeMap", "_MetalMaskTex"],
   glitter: ["_ABaseTex", "_ALightTex", "_BBaseTex", "_BLightTex", "_FlowAMap", "_FlowBMap"],
+  sideBack: ["_BaseTex"],
+  scalingKira: ["_BaseTex", "_ScrollLayerMask", "_RampTex"],
+  circularMovingKira: [
+    "_PrimATex", "_PrimAMorphTex", "_PrimBTex", "_PrimBMorphTex",
+    "_PrimCTex", "_PrimCMorphTex",
+  ],
+  circularTrailKira: ["_BaseTex"],
+  matCapLighting: ["_MatCapLightTex", "_LightingMask"],
+  prism: ["_BaseTex"],
 };
 
 const USED_BY_SHADER = {
@@ -80,9 +95,14 @@ const USED_BY_SHADER = {
     "_RampMaskTex", "_RampTex", "_RampMaskTex2", "_RampTex2",
     "_FakeSpecularMask",
   ],
+  "Transparent-UR-New": [
+    "_CubeMap", "_DynamicUITex", "_FakeSpecularMask", "_HologramMaskTex",
+    "_PhaseMaskTex", "_PhaseTex", "_RampMaskTex", "_RampTex",
+  ],
 };
 
 function usedSlotsFor(shader, kind) {
+  if (exactPortUsage.has(shader)) return new Set(exactPortUsage.get(shader).textures);
   return new Set(USED_BY_SHADER[shader] || USED_BY_KIND[kind] || []);
 }
 
@@ -90,6 +110,7 @@ function declaredStrategySlots() {
   const slots = new Set();
   for (const list of Object.values(USED_BY_KIND)) for (const slot of list) slots.add(slot);
   for (const list of Object.values(USED_BY_SHADER)) for (const slot of list) slots.add(slot);
+  for (const usage of exactPortUsage.values()) for (const slot of usage.textures) slots.add(slot);
   return slots;
 }
 
@@ -162,12 +183,12 @@ for (const sceneName of sceneNames) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
     const shader = mat.shader;
-    if (!shader || shader.startsWith("InnerStencil") || shader === "OuterStencil") continue;
+    if (!shader) continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
     const officialSlots = new Set(official.found[shader]?.textureProps || []);
     const usedSlots = usedSlotsFor(shader, cfg.kind);
-    if (!USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
+    if (!exactPortUsage.has(shader) && !USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
       rows.push({ ok: false, scene: sceneId(sceneName), shader, kind: cfg.kind, mat: matName, slot: "", reason: "missing usage declaration" });
       continue;
     }
@@ -185,6 +206,8 @@ for (const sceneName of sceneNames) {
     }
     for (const slot of Object.keys(mat.textures || {})) {
       const official = officialOrAlias(slot, officialSlots);
+      const inactiveExactBinding = exactPortUsage.has(shader)
+        && !exactPortUsage.get(shader).textures.has(slot);
       rows.push({
         ok: official.ok,
         scene: sceneId(sceneName),
@@ -195,13 +218,17 @@ for (const sceneName of sceneNames) {
         reason: official.reason,
       });
       rows.push({
-        ok: usedSlots.has(slot),
+        ok: usedSlots.has(slot) || inactiveExactBinding,
         scene: sceneId(sceneName),
         shader,
         kind: cfg.kind,
         mat: matName,
         slot,
-        reason: usedSlots.has(slot) ? "strategy uses slot" : "strategy ignores bound slot",
+        reason: usedSlots.has(slot)
+          ? "strategy uses slot"
+          : (inactiveExactBinding
+            ? "selector executable has no active sampler binding"
+            : "strategy ignores bound slot"),
       });
     }
   }

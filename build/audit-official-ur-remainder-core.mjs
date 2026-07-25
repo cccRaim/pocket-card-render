@@ -4,6 +4,7 @@
 // is the UR rule/UI foil. Together they are the last unguarded visible shader
 // families in the current reference scenes.
 import fs from "node:fs";
+import crypto from "node:crypto";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -69,8 +70,16 @@ try {
 
 const urSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/ur.js"), "utf8");
 const holoSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/holo.js"), "utf8");
-const localParallax = blockFrom(urSrc, "function parallaxUrMaterial");
+const parallaxStart = urSrc.indexOf("function parallaxUrMaterial");
+const parallaxEnd = urSrc.indexOf('defineMaterial("parallaxUR"', parallaxStart);
+const localParallax = parallaxStart >= 0 && parallaxEnd > parallaxStart
+  ? urSrc.slice(parallaxStart, parallaxEnd)
+  : "";
 const localTransparent = blockFrom(holoSrc, "function exHoloUrMaterial");
+const exactParallaxVert = fs.readFileSync(path.join(ROOT, "public/shaders/parallax_ur.vert.glsl"), "utf8");
+const exactParallaxFrag = fs.readFileSync(path.join(ROOT, "public/shaders/parallax_ur.frag.glsl"), "utf8");
+const parallaxManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public/shaders/parallax_ur_uniforms.json"), "utf8"));
+const sha256 = (value) => crypto.createHash("sha256").update(value).digest("hex");
 
 const checks = [
   {
@@ -93,8 +102,19 @@ const checks = [
   {
     ok: /sin\(darkAngle\s*\*\s*3\.0\)/.test(localParallax)
       && /-\s*uDarkOffset/.test(localParallax)
-      && /t\.rgb\s*\*\s*uDarkColor/.test(localParallax),
+      && /t\.rgb\s*\*\s*uDarkColor/.test(localParallax)
+      && /normalize\(-modelMatrix\[2\]\.xyz\)/.test(localParallax),
     msg: "local parallaxUR must keep official view-angle darkness wave and material color gate",
+  },
+  {
+    ok: /exactShaderPort\(r,\s*"Card_Parallax_UR"\)/.test(localParallax)
+      && parallaxManifest.generated_by === "build/build-exact-card-parallax-ur.mjs"
+      && parallaxManifest.official_selector?.selectorId === "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a"
+      && parallaxManifest.webgl_adaptation?.vertex?.spirvCrossGlslSha256 === sha256(parallax.vert)
+      && parallaxManifest.webgl_adaptation?.fragment?.spirvCrossGlslSha256 === sha256(parallax.frag)
+      && parallaxManifest.webgl_adaptation?.vertex?.outputSha256 === sha256(exactParallaxVert)
+      && parallaxManifest.webgl_adaptation?.fragment?.outputSha256 === sha256(exactParallaxFrag),
+    msg: "local Card_Parallax_UR must be selector/generator/hash-bound to official SPIR-V",
   },
   {
     ok: hasHoloRampCore(transparent.frag),

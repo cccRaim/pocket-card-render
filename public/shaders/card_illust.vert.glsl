@@ -1,16 +1,35 @@
 precision highp float;
 precision highp int;
 
+uniform highp mat4 modelMatrix;
+uniform highp mat4 viewMatrix;
+uniform highp mat4 projectionMatrix;
+uniform int _UseUv;
 in vec3 position;
 in vec2 uv;
-in vec2 uv2;
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
-uniform float _UseUv;
+in vec2 uv1;
 out vec2 vs_TEXCOORD0;
+vec4 _9;
+vec4 _48;
+vec2 _92;
 
 void main()
 {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    vs_TEXCOORD0 = (_UseUv * ((-uv) + uv2)) + uv;
+    vec4 _11 = vec4(position, 1.0);
+    vec2 _94 = uv;
+    vec2 _97 = uv1;
+    mat4 _ObjectToWorld = modelMatrix;
+    mat4 _ViewProjection = projectionMatrix * viewMatrix;
+    _9 = _11.yyyy * _ObjectToWorld[1];
+    _9 = (_ObjectToWorld[0] * _11.xxxx) + _9;
+    _9 = (_ObjectToWorld[2] * _11.zzzz) + _9;
+    _9 += _ObjectToWorld[3];
+    _48 = _9.yyyy * _ViewProjection[1];
+    _48 = (_ViewProjection[0] * _9.xxxx) + _48;
+    _48 = (_ViewProjection[2] * _9.zzzz) + _48;
+    _9 = (_ViewProjection[3] * _9.wwww) + _48;
+    gl_Position = _9;
+    _9.x = float(_UseUv);
+    _92 = (-_94) + _97;
+    vs_TEXCOORD0 = (_9.xx * _92) + _94;
 }

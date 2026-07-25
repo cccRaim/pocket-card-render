@@ -5,10 +5,10 @@ import { chromium } from "playwright";
 const BASE_URL = process.env.PCR_RUNTIME_URL || "http://127.0.0.1:8011/";
 const APP_ORIGIN = new URL(BASE_URL).origin;
 const SCENES = [
-  ["scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json", 26, 0],
-  ["scene.cTR_20_000230_00_LEAF_SR.json", 19, 0],
-  ["scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json", 19, 2],
-  ["scene.cPK_20_008900_02_HOUOUex_UR.json", 18, 2],
+  ["scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json", 28, 0],
+  ["scene.cTR_20_000230_00_LEAF_SR.json", 21, 0],
+  ["scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json", 21, 2],
+  ["scene.cPK_20_008900_02_HOUOUex_UR.json", 20, 2],
 ];
 
 const browser = await chromium.launch({
@@ -62,7 +62,32 @@ try {
     const record = records.get(scene);
     const runtime = await page.evaluate(() => ({
       mrt: window.__mrtDiagnostics || null,
+      display: window.__displayDiagnostics || null,
+      bloom: window.__post?.diagnostics?.() || null,
+      displayPass: window.__displayPost?.diagnostics?.() || null,
       flareLayers: (window.__layerLabels || []).filter((label) => label.includes("Card_UR_LensFlare")).length,
+      duplicateCullOffLayers: (() => {
+        let count = 0;
+        window.__tilt?.traverse((object) => {
+          const material = object.isMesh ? object.material : null;
+          if (material?.transparent && material.side === 2 && !material.forceSinglePass) count += 1;
+        });
+        return count;
+      })(),
+      queuePartitionErrors: (() => {
+        const errors = [];
+        window.__tilt?.traverse((object) => {
+          if (!object.isMesh || !object.userData.label) return;
+          const match = /\bq(\d+)\b/.exec(object.userData.label);
+          if (!match) return;
+          const queue = Number(match[1]);
+          const expectedTransparent = queue >= 2501 && queue <= 5000;
+          if (queue <= 5000 && object.material.transparent !== expectedTransparent) {
+            errors.push(`${object.userData.label}: transparent=${object.material.transparent}`);
+          }
+        });
+        return errors;
+      })(),
       webglError: document.getElementById("c")?.getContext("webgl2")?.getError() ?? -1,
     }));
     record.mrt = runtime.mrt;
@@ -72,9 +97,41 @@ try {
     if (record.mrt?.attachments !== 2 || !(record.mrt?.cardPasses > 0)) {
       record.errors.push(`MRT diagnostics: ${JSON.stringify(record.mrt)}`);
     }
+    if (runtime.display?.mode !== "PrerenderHomographyCard"
+      || runtime.display?.clampParallax !== true
+      || runtime.display?.sourceSize?.join("x") !== "1122x1122"
+      || runtime.display?.sourceCameraAspect !== 1
+      || runtime.display?.vertexInput !== "uv"
+      || runtime.display?.finiteMatrices !== true
+      || runtime.display?.viewportPoints?.length !== 4
+      || !(runtime.display?.sourcePixelProbe?.distinctRgb > 1)
+      || !(runtime.display?.sourcePixelProbe?.maxRgb > 0)
+      || !(runtime.display?.pixelProbe?.distinctRgb > 1)
+      || !(runtime.display?.pixelProbe?.maxRgb > 0)) {
+      record.errors.push(`display diagnostics: ${JSON.stringify(runtime.display)}`);
+    }
+    const points = runtime.display?.viewportPoints;
+    if (!(runtime.display?.sourceCameraPosition?.[2] > 0)
+      || runtime.display?.displayQuaternion?.some((value, index) => Math.abs(value - [0, 0, 0, 1][index]) > 1e-6)
+      || !(points?.[0]?.[0] < points?.[1]?.[0])
+      || !(points?.[0]?.[1] < points?.[2]?.[1])) {
+      record.errors.push(`display coordinate basis: ${JSON.stringify(runtime.display)}`);
+    }
     if (runtime.webglError !== 0) record.errors.push(`WebGL error: ${runtime.webglError}`);
+    if (runtime.bloom?.webglErrors?.length) {
+      record.errors.push(`Bloom WebGL errors: ${JSON.stringify(runtime.bloom.webglErrors)}`);
+    }
+    if (runtime.displayPass?.webglErrors?.length) {
+      record.errors.push(`Display WebGL errors: ${JSON.stringify(runtime.displayPass.webglErrors)}`);
+    }
     if (runtime.flareLayers !== expectedFlares) {
       record.errors.push(`LensFlare layers: expected ${expectedFlares}, got ${runtime.flareLayers}`);
+    }
+    if (runtime.duplicateCullOffLayers !== 0) {
+      record.errors.push(`Cull Off layers scheduled as duplicate transparent draws: ${runtime.duplicateCullOffLayers}`);
+    }
+    if (runtime.queuePartitionErrors.length) {
+      record.errors.push(`render queue partition: ${runtime.queuePartitionErrors.join("; ")}`);
     }
     console.log(`${record.errors.length ? "FAIL" : "OK  "} ${scene} (${record.built ?? "?"} meshes)`);
   }

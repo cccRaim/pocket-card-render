@@ -1,0 +1,338 @@
+{
+  "shader": "Lettuce/Common/CardNew/UI/Default(from RT)",
+  "generated_by": "build/build-exact-ui-default-from-rt.mjs",
+  "official_source": {
+    "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+    "material_bundle_sha256": "f160b0f6ebc9773f748a9e749cf40ae48fea0be76756c78342e32a2a26610299",
+    "material_object_sha256": "675cdeb44a8660bca55ba70846c391bcb182244d22956f6669d9f8eadd23d099",
+    "shader_bundle_sha256": "6bea6c98e97bfd7d322dd8f912a9a30fa21fd0fc273e69dd69414c09627ae02e",
+    "shader_object_sha256": "61b9ae7be77d58e2a363ffe0ad3243356601c0a8400016de0dd5dc4bef2a109a",
+    "compressed_program_sha256": "d2dbc7d7dceacacdbfca36d8198d4b1d1c186f704365a1b85993ed085278cdce",
+    "decompressed_program_sha256": "3287d2d433b57d143c797e0c6162a5fa35e7beff67a9f4166f8a9bb0290b5ed9",
+    "parameter_entry_sha256": "7ceaeb33aa7859f719eb61d87975b0a99794712f32c20cb36cdb13f664f4f3d2",
+    "program_entry_sha256": "fa69bd7b706e1b43f15ecda7144694b5832e6edcc0c254a60cea4b7cd69cbf26"
+  },
+  "official_variant": {
+    "keywords": [],
+    "variant_index": 0,
+    "parameter_blob_index": 0,
+    "program_blob_index": 8,
+    "gpu_program_type": 25,
+    "shader_requirements": 1
+  },
+  "modules": {
+    "vertex": {
+      "byte_size": 2916,
+      "spirv_sha256": "f7f9575dc16cbe21765696d9eae09674e5092db11161f7230450462f9df348c1",
+      "reflection_sha256": "bcea6eff397181895a867ac88ab99cd8ce285a6a16f791abccbcce12175c8162"
+    },
+    "fragment": {
+      "byte_size": 2028,
+      "spirv_sha256": "af859a616200510bddda23401e28eb37b34c9871ac9eff3d5b5f5a29da49ff71",
+      "reflection_sha256": "90f3a9dd86e2c73f1d7b6b7574e445b97950f43374c65b3ec198de13234b16f7"
+    }
+  },
+  "bindings": {
+    "main_texture": {
+      "name": "_MainTex",
+      "spirv_set": 0,
+      "spirv_binding": 0,
+      "serialized_binding": 0,
+      "dimension": 2,
+      "material_texture_pptr": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "scale": [
+        1,
+        1
+      ],
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "texture_sample_add": {
+      "name": "_TextureSampleAdd",
+      "stage": "fragment",
+      "serialized_buffer": "PGlobals3505314924",
+      "offset": 0,
+      "type": "vec4",
+      "spirv_set": 1,
+      "spirv_binding": 0
+    },
+    "vertex_globals": {
+      "serialized_buffer": "VGlobals3505314924",
+      "size": 160,
+      "spirv_set": 1,
+      "spirv_binding": 1,
+      "color_offset": 128,
+      "main_tex_st_offset": 144
+    },
+    "matrices": [
+      {
+        "official": "unity_ObjectToWorld",
+        "webgl2": "modelMatrix",
+        "offset": 0
+      },
+      {
+        "official": "unity_MatrixVP",
+        "webgl2": "projectionMatrix * viewMatrix",
+        "offset": 64
+      }
+    ],
+    "attributes": [
+      {
+        "name": "position",
+        "location": 0
+      },
+      {
+        "name": "color",
+        "location": 1
+      },
+      {
+        "name": "uv",
+        "location": 2
+      }
+    ]
+  },
+  "render_state": {
+    "official_shaderlab_serialized": {
+      "blend": {
+        "srcColor": {
+          "value": 1,
+          "property": null
+        },
+        "dstColor": {
+          "value": 10,
+          "property": null
+        },
+        "srcAlpha": {
+          "value": 1,
+          "property": null
+        },
+        "dstAlpha": {
+          "value": 10,
+          "property": null
+        },
+        "colorOp": {
+          "value": 0,
+          "property": null
+        },
+        "alphaOp": {
+          "value": 0,
+          "property": null
+        },
+        "colorMask": {
+          "value": 0,
+          "property": "_ColorMask"
+        },
+        "separate": false
+      },
+      "depth": {
+        "test": {
+          "value": 0,
+          "property": "unity_GUIZTestMode"
+        },
+        "write": {
+          "value": 0,
+          "property": null
+        },
+        "clip": {
+          "value": 1,
+          "property": null
+        }
+      },
+      "cull": {
+        "value": 0,
+        "property": null
+      },
+      "stencil": {
+        "reference": {
+          "value": 0,
+          "property": "_Stencil"
+        },
+        "readMask": {
+          "value": 0,
+          "property": "_StencilReadMask"
+        },
+        "writeMask": {
+          "value": 0,
+          "property": "_StencilWriteMask"
+        },
+        "compare": {
+          "value": 0,
+          "property": "_StencilComp"
+        },
+        "pass": {
+          "value": 0,
+          "property": "_StencilOp"
+        },
+        "fail": {
+          "value": 0,
+          "property": null
+        },
+        "depthFail": {
+          "value": 0,
+          "property": null
+        }
+      },
+      "alphaToMask": {
+        "value": 0,
+        "property": null
+      }
+    },
+    "interpretation": {
+      "dynamic_property_rule": "When property is non-null, value is a serialized ShaderLab placeholder, not the resolved runtime fixed-function value.",
+      "material_default_rule": "material_serialized_default is pinned evidence from UI_Default_From_RT.mat, but Canvas may override it per draw.",
+      "runtime_rule": "runtime_resolved_value remains null until the Canvas draw-state setter chain is proved."
+    },
+    "dynamic_properties": {
+      "color_mask": {
+        "shaderlab_path": "blend.colorMask",
+        "property": "_ColorMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 15,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "depth_test": {
+        "shaderlab_path": "depth.test",
+        "property": "unity_GUIZTestMode",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": null,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_reference": {
+        "shaderlab_path": "stencil.reference",
+        "property": "_Stencil",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 0,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_read_mask": {
+        "shaderlab_path": "stencil.readMask",
+        "property": "_StencilReadMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 255,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_write_mask": {
+        "shaderlab_path": "stencil.writeMask",
+        "property": "_StencilWriteMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 255,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_compare": {
+        "shaderlab_path": "stencil.compare",
+        "property": "_StencilComp",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 8,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_pass": {
+        "shaderlab_path": "stencil.pass",
+        "property": "_StencilOp",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 0,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      }
+    }
+  },
+  "blend": {
+    "source": "One",
+    "destination": "OneMinusSrcAlpha",
+    "sourceValue": 1,
+    "destinationValue": 10
+  },
+  "fragment_dataflow": {
+    "tint": "vertexColor * _Color",
+    "uv": "uv0 * _MainTex_ST.xy + _MainTex_ST.zw",
+    "rgb": "(sample.rgb + _TextureSampleAdd.rgb) * tint.rgb * tint.a",
+    "alpha": "(1.0 - sample.a) * tint.a",
+    "mrt1": "vec4(0.0)"
+  },
+  "mrt": {
+    "primary": {
+      "name": "outColor",
+      "location": 0
+    },
+    "secondary": {
+      "name": "outAux",
+      "location": 1,
+      "value": "vec4(0.0)"
+    }
+  },
+  "webgl2_adaptation": [
+    "remove the SPIRV-Cross #version directive for host-side WebGL2 version injection",
+    "flatten official std140 blocks into named WebGL2 uniforms",
+    "map official matrices and UI vertex attributes without changing shader math",
+    "combine the official image and sampler as _MainTex",
+    "remove the Vulkan clip-space Y flip",
+    "preserve the official UV transform without adding a texture-coordinate flip",
+    "rename stage interface symbols without changing dataflow or MRT"
+  ],
+  "runtime_boundaries": [
+    {
+      "id": "dynamic-color-mask-runtime-value",
+      "status": "unproved",
+      "claim": "the resolved _ColorMask value for each Canvas draw; ShaderLab value 0 is only a property placeholder and the serialized Material default is 15"
+    },
+    {
+      "id": "dynamic-ztest-runtime-value",
+      "status": "unproved",
+      "claim": "the resolved unity_GUIZTestMode value for each Canvas draw; no Material serialized default establishes it"
+    },
+    {
+      "id": "dynamic-stencil-runtime-values",
+      "status": "unproved",
+      "claim": "the resolved _Stencil, _StencilComp, _StencilOp, _StencilReadMask, and _StencilWriteMask values for each Canvas draw; Material defaults may be overridden"
+    }
+  ],
+  "unproved": [
+    {
+      "id": "texture-sample-add-per-draw-value",
+      "status": "unproved",
+      "claim": "the actual _TextureSampleAdd value supplied for each dynamic UI draw"
+    },
+    {
+      "id": "main-texture-srgb-physical-format",
+      "status": "unproved",
+      "claim": "the physical sRGB/linear format of the runtime _MainTex RenderTexture"
+    },
+    {
+      "id": "dynamic-ui-keyword-state",
+      "status": "unproved",
+      "claim": "the runtime dynamic UI keyword set for each draw despite the serialized Material having no keywords"
+    },
+    {
+      "id": "dynamic-color-mask-runtime-value",
+      "status": "unproved",
+      "claim": "the resolved _ColorMask value for each Canvas draw; ShaderLab value 0 is only a property placeholder and the serialized Material default is 15"
+    },
+    {
+      "id": "dynamic-ztest-runtime-value",
+      "status": "unproved",
+      "claim": "the resolved unity_GUIZTestMode value for each Canvas draw; no Material serialized default establishes it"
+    },
+    {
+      "id": "dynamic-stencil-runtime-values",
+      "status": "unproved",
+      "claim": "the resolved _Stencil, _StencilComp, _StencilOp, _StencilReadMask, and _StencilWriteMask values for each Canvas draw; Material defaults may be overridden"
+    }
+  ]
+}

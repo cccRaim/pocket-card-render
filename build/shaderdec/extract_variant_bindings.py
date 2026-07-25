@@ -10,6 +10,11 @@ import warnings
 import UnityPy
 import lz4.block
 
+try:
+    from shaderdec.unity_parameter_entry import parse_parameter_entry
+except ModuleNotFoundError:
+    from unity_parameter_entry import parse_parameter_entry
+
 UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
 warnings.filterwarnings("ignore", message="No valid Unity version found.*")
 
@@ -34,14 +39,21 @@ def find_shader(suffix, root):
 
 
 def u32(data, offset):
+    if offset < 0 or offset + 4 > len(data):
+        raise ValueError(f"u32 at {offset} exceeds {len(data)}-byte parameter entry")
     return struct.unpack_from("<I", data, offset)[0], offset + 4
 
 
 def aligned_string(data, offset):
     length, offset = u32(data, offset)
     end = offset + length
+    aligned_end = (end + 3) & ~3
+    if end > len(data) or aligned_end > len(data):
+        raise ValueError(f"aligned string at {offset - 4} exceeds parameter entry")
     value = data[offset:end].decode("utf-8")
-    return value, (end + 3) & ~3
+    if any(data[end:aligned_end]):
+        raise ValueError(f"aligned string {value!r} has nonzero padding")
+    return value, aligned_end
 
 
 def program_entries(data):
@@ -107,57 +119,7 @@ def select_variant(shader, keyword=None, no_keywords=False):
 
 
 def parse_parameter_blob(data, texture_names):
-    version, program_type = struct.unpack_from("<II", data, 0)
-    offset = 24
-    buffers = []
-    while offset < len(data):
-        saved = offset
-        name, offset = aligned_string(data, offset)
-        if not (name.startswith("PGlobals") or name.startswith("VGlobals")):
-            offset = saved
-            break
-        size, offset = u32(data, offset)
-        count, offset = u32(data, offset)
-        if not size or count > 256:
-            raise ValueError(f"invalid constant buffer {name!r}")
-        fields = []
-        for _ in range(count):
-            field_name, offset = aligned_string(data, offset)
-            descriptor = list(struct.unpack_from("<6I", data, offset))
-            offset += 24
-            fields.append({"name": field_name, "offset": descriptor[-1], "descriptor": descriptor})
-        struct_count, offset = u32(data, offset)
-        if struct_count != 0:
-            raise ValueError(f"unsupported structured fields in {name}")
-        buffers.append({"name": name, "size": size, "fields": fields})
-
-    resource_count, offset = u32(data, offset)
-    textures = []
-    buffer_bindings = []
-    for _ in range(resource_count):
-        name, offset = aligned_string(data, offset)
-        if name in texture_names:
-            descriptor = list(struct.unpack_from("<4I", data, offset))
-            offset += 16
-            textures.append({
-                "name": name,
-                "binding": descriptor[1] & 0xFFFFFF,
-                "encodedIndex": descriptor[1],
-                "descriptor": descriptor,
-            })
-        else:
-            descriptor = list(struct.unpack_from("<3I", data, offset))
-            offset += 12
-            buffer_bindings.append({"name": name, "descriptor": descriptor})
-    if offset != len(data):
-        raise ValueError(f"parameter blob has {len(data) - offset} trailing bytes")
-    return {
-        "version": version,
-        "programType": program_type,
-        "constantBuffers": buffers,
-        "textures": textures,
-        "constantBufferBindings": buffer_bindings,
-    }
+    return parse_parameter_entry(data, texture_names)
 
 
 def common_textures(shader_pass):
@@ -226,7 +188,8 @@ def main():
         "constantBuffers": parsed_blob["constantBuffers"],
         "constantBufferBindings": parsed_blob["constantBufferBindings"],
         "parameterBlobVersion": parsed_blob["version"],
-        "parameterBlobProgramType": parsed_blob["programType"],
+        "parameterBlobConstantBlockCount": parsed_blob["constantBlockCount"],
+        "parameterBlobResourceCount": parsed_blob["resourceCount"],
     }
     json.dump(result, sys.stdout, indent=2, sort_keys=False)
 

@@ -110,6 +110,24 @@ function officialMrtRows() {
   const rows = [];
   try {
     for (const shader of sceneShaders()) {
+      if (shader === "Side&Back") {
+        const manifestPath = path.join(ROOT, "public", "shaders", "side_back_program.json");
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+        const exactZero = manifest.mrt?.secondary_location === 1
+          && manifest.mrt?.secondary_value === "zero";
+        rows.push({
+          shader,
+          ok: exactZero,
+          loc1: manifest.mrt?.secondary || "(missing)",
+          nonzero: false,
+          rgbNonzero: false,
+          examples: exactZero ? ["vec4(0.0)"] : [],
+          reason: exactZero
+            ? "official MRT1 is zero (pinned Side&Back program)"
+            : "pinned Side&Back program does not prove zero MRT1",
+        });
+        continue;
+      }
       const prefix = shader.replace(/[^A-Za-z0-9_]/g, "_");
       try {
         execFileSync("python", [

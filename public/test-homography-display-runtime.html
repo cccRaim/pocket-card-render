@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Homography display runtime test</title>
+<script type="importmap">
+{ "imports": { "three": "/vendor/three/build/three.module.js" } }
+</script>
+<script>
+window.__homographyDisplayRuntimeState = { done: false, result: null, error: null };
+window.__finishHomographyDisplayRuntime = (result, error) => {
+  if (window.__homographyDisplayRuntimeState.done) return;
+  window.__homographyDisplayRuntimeState = { done: true, result, error };
+};
+window.addEventListener("error", (event) => {
+  window.__finishHomographyDisplayRuntime(null, {
+    message: event.error?.message || event.message || "module load failed",
+    stack: event.error?.stack || "",
+  });
+});
+window.addEventListener("unhandledrejection", (event) => {
+  window.__finishHomographyDisplayRuntime(null, {
+    message: event.reason?.message || String(event.reason),
+    stack: event.reason?.stack || "",
+  });
+});
+</script>
+</head>
+<body>
+<canvas id="homography-display" width="32" height="32" hidden></canvas>
+<script type="module">
+import * as THREE from "three";
+import {
+  createHomographyDisplayMaterial,
+  loadHomographyDisplayProgram,
+  setHomographyDisplayPoints,
+  setHomographyDisplayTexture,
+} from "./render/pipeline/homography-display.js";
+import {
+  createOfficialMrtTarget,
+  disposeOfficialMrtTarget,
+} from "./render/pipeline/official-mrt.js";
+
+const SIZE = 32;
+const TEXTURE_SIZE = 8;
+const PIXEL_TOLERANCE = 2;
+const IDENTITY_POINTS = Object.freeze([[0, 0], [1, 0], [0, 1], [1, 1]]);
+const CANONICAL_CORNERS = Object.freeze([
+  [-0.5, -0.5, 0],
+  [0.5, -0.5, 0],
+  [-0.5, 0.5, 0],
+  [0.5, 0.5, 0],
+]);
+const FORWARD_INDICES = Object.freeze([0, 1, 2, 2, 1, 3]);
+const REVERSE_INDICES = Object.freeze([0, 2, 1, 2, 3, 1]);
+const SAMPLE_PIXELS = Object.freeze([[4, 4], [10, 22], [24, 8], [27, 27]]);
+const checks = [];
+
+function assert(condition, message) {
+  checks.push({ ok: !!condition, message });
+  if (!condition) throw new Error(message);
+}
+
+function same(actual, expected, label) {
+  assert(Object.is(actual, expected) || actual === expected, `${label}: expected ${expected}, got ${actual}`);
+}
+
+function arrayNear(actual, expected, tolerance, label) {
+  same(actual.length, expected.length, `${label} length`);
+  for (let index = 0; index < expected.length; index += 1) {
+    assert(
+      Math.abs(actual[index] - expected[index]) <= tolerance,
+      `${label}[${index}]: expected ${expected[index]}, got ${actual[index]}`,
+    );
+  }
+}
+
+function pixelNear(actual, expected, label) {
+  arrayNear(actual, expected, PIXEL_TOLERANCE, label);
+}
+
+function textureBytes(variant) {
+  const bytes = new Uint8Array(TEXTURE_SIZE * TEXTURE_SIZE * 4);
+  for (let y = 0; y < TEXTURE_SIZE; y += 1) {
+    for (let x = 0; x < TEXTURE_SIZE; x += 1) {
+      const offset = (y * TEXTURE_SIZE + x) * 4;
+      if (variant === 0) {
+        bytes[offset] = 16 + x * 20;
+        bytes[offset + 1] = 24 + y * 18;
+        bytes[offset + 2] = 12 + x * 9 + y * 5;
+        bytes[offset + 3] = 18 + x * 13 + y * 15;
+      } else {
+        bytes[offset] = 170 - x * 11 - y * 3;
+        bytes[offset + 1] = 30 + x * 14 + y * 4;
+        bytes[offset + 2] = 190 - y * 15 + x * 2;
+        bytes[offset + 3] = 220 - x * 12 - y * 10;
+      }
+    }
+  }
+  return bytes;
+}
+
+function makeTexture(variant) {
+  const bytes = textureBytes(variant);
+  const texture = new THREE.DataTexture(
+    bytes,
+    TEXTURE_SIZE,
+    TEXTURE_SIZE,
+    THREE.RGBAFormat,
+    THREE.UnsignedByteType,
+  );
+  texture.colorSpace = THREE.NoColorSpace;
+  texture.minFilter = THREE.NearestFilter;
+  texture.magFilter = THREE.NearestFilter;
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture.generateMipmaps = false;
+  texture.needsUpdate = true;
+  return { texture, bytes };
+}
+
+function makeGeometry() {
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(CANONICAL_CORNERS.flat(), 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(IDENTITY_POINTS.flat(), 2));
+  geometry.setIndex(FORWARD_INDICES);
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
+function setGeometryWinding(geometry, indices) {
+  geometry.index.array.set(indices);
+  geometry.index.needsUpdate = true;
+}
+
+function mapPoint(matrix, point) {
+  const [x, y] = point;
+  const divisor = matrix[6] * x + matrix[7] * y + matrix[8];
+  return [
+    (matrix[0] * x + matrix[1] * y + matrix[2]) / divisor,
+    (matrix[3] * x + matrix[4] * y + matrix[5]) / divisor,
+  ];
+}
+
+function projectWithMatrix(matrix, point) {
+  const [x, y, z = 0] = point;
+  const elements = matrix.elements;
+  const clipX = elements[0] * x + elements[4] * y + elements[8] * z + elements[12];
+  const clipY = elements[1] * x + elements[5] * y + elements[9] * z + elements[13];
+  const clipW = elements[3] * x + elements[7] * y + elements[11] * z + elements[15];
+  return [clipX / clipW * 0.5 + 0.5, clipY / clipW * 0.5 + 0.5];
+}
+
+function makePerspectiveProjectionFixture() {
+  const camera = new THREE.PerspectiveCamera(53, 1, 0.1, 10);
+  camera.position.set(0.18, -0.12, 2.6);
+  camera.lookAt(0.03, 0.04, 0);
+  camera.updateMatrixWorld(true);
+  const model = new THREE.Matrix4().compose(
+    new THREE.Vector3(0.08, -0.04, 0.1),
+    new THREE.Quaternion().setFromEuler(new THREE.Euler(0.32, -0.41, 0.09)),
+    new THREE.Vector3(1.25, 0.92, 1),
+  );
+  const mvp = camera.projectionMatrix.clone().multiply(camera.matrixWorldInverse).multiply(model);
+
+  // Geometry and H inputs come from independent projection implementations.
+  const geometryPoints = CANONICAL_CORNERS.map((corner) => {
+    const projected = new THREE.Vector3(...corner).applyMatrix4(model).project(camera);
+    return [projected.x * 0.5 + 0.5, projected.y * 0.5 + 0.5];
+  });
+  const viewportPoints = CANONICAL_CORNERS.map((corner) => projectWithMatrix(mvp, corner));
+  geometryPoints.forEach((point, index) => {
+    arrayNear(point, viewportPoints[index], 2e-7, `perspective corner P${index}`);
+  });
+  assert(
+    viewportPoints.every(([x, y]) => x > 0 && x < 1 && y > 0 && y < 1),
+    "perspective viewport points must remain inside the source texture",
+  );
+  return { camera, model, mvp, geometryPoints, viewportPoints };
+}
+
+function makeDisplayCamera() {
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 10);
+  camera.position.set(0.14, -0.08, 2.7);
+  camera.lookAt(0.02, 0.01, 0);
+  camera.updateMatrixWorld(true);
+  return camera;
+}
+
+function setPerspectiveDisplayTransform(mesh) {
+  mesh.position.set(-0.06, 0.04, 0.05);
+  mesh.rotation.set(0.17, -0.24, 0.08);
+  mesh.scale.set(0.42, 0.38, 1);
+  mesh.updateMatrixWorld(true);
+}
+
+function resetDisplayTransform(mesh) {
+  mesh.position.set(0, 0, 0);
+  mesh.rotation.set(0, 0, 0);
+  mesh.scale.set(1, 1, 1);
+  mesh.updateMatrixWorld(true);
+}
+
+function displayUvAtPixel(pixel, camera, mesh) {
+  const ndcX = (pixel[0] + 0.5) / SIZE * 2 - 1;
+  const ndcY = (pixel[1] + 0.5) / SIZE * 2 - 1;
+  const inverseModel = mesh.matrixWorld.clone().invert();
+  const near = new THREE.Vector3(ndcX, ndcY, -1).unproject(camera).applyMatrix4(inverseModel);
+  const far = new THREE.Vector3(ndcX, ndcY, 1).unproject(camera).applyMatrix4(inverseModel);
+  const direction = far.sub(near);
+  if (Math.abs(direction.z) <= Number.EPSILON) return null;
+  const distance = -near.z / direction.z;
+  if (distance < 0) return null;
+  const point = near.addScaledVector(direction, distance);
+  return [point.x + 0.5, point.y + 0.5];
+}
+
+function sourcePixel(bytes, uv, invertAlpha) {
+  const x = Math.max(0, Math.min(TEXTURE_SIZE - 1, Math.floor(uv[0] * TEXTURE_SIZE)));
+  const y = Math.max(0, Math.min(TEXTURE_SIZE - 1, Math.floor(uv[1] * TEXTURE_SIZE)));
+  const offset = (y * TEXTURE_SIZE + x) * 4;
+  return [
+    bytes[offset],
+    bytes[offset + 1],
+    bytes[offset + 2],
+    invertAlpha ? 255 - bytes[offset + 3] : bytes[offset + 3],
+  ];
+}
+
+function officialBlendPixel(sampled, destination) {
+  const sampledAlpha = sampled[3] / 255;
+  return [
+    Math.min(255, Math.round(sampled[0] + destination[0] * sampledAlpha)),
+    Math.min(255, Math.round(sampled[1] + destination[1] * sampledAlpha)),
+    Math.min(255, Math.round(sampled[2] + destination[2] * sampledAlpha)),
+    Math.round(destination[3] * sampledAlpha),
+  ];
+}
+
+function readAttachment(gl, attachment, x, y) {
+  const pixel = new Uint8Array(4);
+  gl.readBuffer(gl.COLOR_ATTACHMENT0 + attachment);
+  gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+  return Array.from(pixel);
+}
+
+function readAttachmentImage(gl, attachment) {
+  const pixels = new Uint8Array(SIZE * SIZE * 4);
+  gl.readBuffer(gl.COLOR_ATTACHMENT0 + attachment);
+  gl.readPixels(0, 0, SIZE, SIZE, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+  return pixels;
+}
+
+function imagePixel(image, x, y) {
+  const offset = (y * SIZE + x) * 4;
+  return Array.from(image.subarray(offset, offset + 4));
+}
+
+function clearAttachments(gl, rt0, rt1, depth = 1, stencil = 0) {
+  gl.clearBufferfv(gl.COLOR, 0, new Float32Array(rt0.map((value) => value / 255)));
+  gl.clearBufferfv(gl.COLOR, 1, new Float32Array(rt1.map((value) => value / 255)));
+  gl.clearBufferfi(gl.DEPTH_STENCIL, 0, depth, stencil);
+}
+
+function currentUniformArray(gl, name) {
+  const webglProgram = gl.getParameter(gl.CURRENT_PROGRAM);
+  assert(webglProgram, `${name}: no current WebGL program`);
+  return Array.from({ length: 9 }, (_, index) => {
+    const location = gl.getUniformLocation(webglProgram, `${name}[${index}]`);
+    assert(location !== null, `${name}[${index}]: active uniform location is missing`);
+    return gl.getUniform(webglProgram, location);
+  });
+}
+
+function captureActualGlState(gl) {
+  return {
+    blend: {
+      enabled: gl.isEnabled(gl.BLEND),
+      equationRgb: gl.getParameter(gl.BLEND_EQUATION_RGB),
+      equationAlpha: gl.getParameter(gl.BLEND_EQUATION_ALPHA),
+      srcRgb: gl.getParameter(gl.BLEND_SRC_RGB),
+      dstRgb: gl.getParameter(gl.BLEND_DST_RGB),
+      srcAlpha: gl.getParameter(gl.BLEND_SRC_ALPHA),
+      dstAlpha: gl.getParameter(gl.BLEND_DST_ALPHA),
+    },
+    depth: {
+      enabled: gl.isEnabled(gl.DEPTH_TEST),
+      func: gl.getParameter(gl.DEPTH_FUNC),
+      writeMask: gl.getParameter(gl.DEPTH_WRITEMASK),
+    },
+    cull: {
+      enabled: gl.isEnabled(gl.CULL_FACE),
+      mode: gl.getParameter(gl.CULL_FACE_MODE),
+      frontFace: gl.getParameter(gl.FRONT_FACE),
+    },
+    stencil: {
+      enabled: gl.isEnabled(gl.STENCIL_TEST),
+      func: gl.getParameter(gl.STENCIL_FUNC),
+      ref: gl.getParameter(gl.STENCIL_REF),
+      readMask: gl.getParameter(gl.STENCIL_VALUE_MASK),
+      writeMask: gl.getParameter(gl.STENCIL_WRITEMASK),
+      fail: gl.getParameter(gl.STENCIL_FAIL),
+      depthFail: gl.getParameter(gl.STENCIL_PASS_DEPTH_FAIL),
+      pass: gl.getParameter(gl.STENCIL_PASS_DEPTH_PASS),
+    },
+  };
+}
+
+function assertOfficialGlState(gl, state) {
+  same(state.blend.enabled, true, "actual GL blend enabled");
+  same(state.blend.equationRgb, gl.FUNC_ADD, "actual GL RGB blend equation");
+  same(state.blend.equationAlpha, gl.FUNC_ADD, "actual GL alpha blend equation");
+  same(state.blend.srcRgb, gl.ONE, "actual GL RGB source factor");
+  same(state.blend.dstRgb, gl.ONE_MINUS_SRC_ALPHA, "actual GL RGB destination factor");
+  same(state.blend.srcAlpha, gl.ZERO, "actual GL alpha source factor");
+  same(state.blend.dstAlpha, gl.ONE_MINUS_SRC_ALPHA, "actual GL alpha destination factor");
+  same(state.depth.enabled, true, "actual GL depth test enabled");
+  same(state.depth.func, gl.LEQUAL, "actual GL depth function");
+  same(state.depth.writeMask, false, "actual GL depth write mask");
+  same(state.cull.enabled, true, "actual GL culling enabled");
+  same(state.cull.mode, gl.BACK, "actual GL cull mode");
+  same(state.cull.frontFace, gl.CCW, "actual GL front-face winding");
+  same(state.stencil.enabled, true, "actual GL stencil test enabled");
+  same(state.stencil.func, gl.ALWAYS, "actual GL stencil function");
+  same(state.stencil.ref, 0, "actual GL stencil reference");
+  same(state.stencil.readMask, 255, "actual GL stencil read mask");
+  same(state.stencil.writeMask, 255, "actual GL stencil write mask");
+  same(state.stencil.fail, gl.KEEP, "actual GL stencil fail operation");
+  same(state.stencil.depthFail, gl.KEEP, "actual GL stencil depth-fail operation");
+  same(state.stencil.pass, gl.KEEP, "actual GL stencil pass operation");
+}
+
+function makeStencilProbe() {
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute([
+    -1, -1, 0, 1, -1, 0, -1, 1, 0,
+    -1, 1, 0, 1, -1, 0, 1, 1, 0,
+  ], 3));
+  const material = new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: { uColor: { value: new THREE.Vector4() } },
+    vertexShader: "in vec3 position; void main() { gl_Position = vec4(position, 1.0); }",
+    fragmentShader: `
+      precision highp float;
+      uniform vec4 uColor;
+      layout(location = 0) out vec4 outColor;
+      layout(location = 1) out vec4 outAux;
+      void main() { outColor = uColor; outAux = vec4(0.0); }
+    `,
+    blending: THREE.NoBlending,
+    depthTest: false,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    stencilWrite: true,
+    stencilWriteMask: 0,
+    stencilFunc: THREE.EqualStencilFunc,
+    stencilFuncMask: 255,
+    stencilFail: THREE.KeepStencilOp,
+    stencilZFail: THREE.KeepStencilOp,
+    stencilZPass: THREE.KeepStencilOp,
+    toneMapped: false,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.frustumCulled = false;
+  const scene = new THREE.Scene();
+  scene.add(mesh);
+  return { geometry, material, mesh, scene, camera: new THREE.Camera() };
+}
+
+function verifyStencilPreservation(renderer, gl, probe, leftRef, rightRef) {
+  gl.clearBufferfv(gl.COLOR, 0, new Float32Array([0, 0, 0, 0]));
+  probe.material.stencilRef = leftRef;
+  probe.material.uniforms.uColor.value.set(1, 0, 0, 1);
+  renderer.render(probe.scene, probe.camera);
+  probe.material.stencilRef = rightRef;
+  probe.material.uniforms.uColor.value.set(0, 1, 0, 1);
+  renderer.render(probe.scene, probe.camera);
+  gl.finish();
+  const left = readAttachment(gl, 0, SIZE / 4, SIZE / 2);
+  const right = readAttachment(gl, 0, SIZE * 3 / 4, SIZE / 2);
+  pixelNear(left, [255, 0, 0, 255], "prefilled left stencil value preserved");
+  pixelNear(right, [0, 255, 0, 255], "prefilled right stencil value preserved");
+  return { left, right };
+}
+
+function assertOfficialMaterialState(material) {
+  same(material.transparent, true, "transparent queue");
+  same(material.blending, THREE.CustomBlending, "custom blending");
+  same(material.blendEquation, THREE.AddEquation, "color blend equation");
+  same(material.blendEquationAlpha, THREE.AddEquation, "alpha blend equation");
+  same(material.blendSrc, THREE.OneFactor, "source color blend");
+  same(material.blendDst, THREE.OneMinusSrcAlphaFactor, "destination color blend");
+  same(material.blendSrcAlpha, THREE.ZeroFactor, "source alpha blend");
+  same(material.blendDstAlpha, THREE.OneMinusSrcAlphaFactor, "destination alpha blend");
+  same(material.depthTest, true, "depth test enabled");
+  same(material.depthFunc, THREE.LessEqualDepth, "depth comparison");
+  same(material.depthWrite, false, "depth write disabled");
+  same(material.side, THREE.FrontSide, "Cull Back mapping");
+  same(material.stencilWrite, true, "stencil state enabled");
+  same(material.stencilRef, 0, "stencil reference");
+  same(material.stencilFuncMask, 255, "stencil read mask");
+  same(material.stencilWriteMask, 255, "stencil write mask");
+  same(material.stencilFunc, THREE.AlwaysStencilFunc, "stencil comparison");
+  same(material.stencilFail, THREE.KeepStencilOp, "stencil fail operation");
+  same(material.stencilZFail, THREE.KeepStencilOp, "stencil depth-fail operation");
+  same(material.stencilZPass, THREE.KeepStencilOp, "stencil pass operation");
+  same(material.alphaToCoverage, false, "alpha-to-coverage disabled");
+  same(material.toneMapped, false, "tone mapping disabled");
+}
+
+function directSampleExpectation(bytes, matrix, pixel) {
+  const outputUv = [(pixel[0] + 0.5) / SIZE, (pixel[1] + 0.5) / SIZE];
+  const sourceUv = mapPoint(matrix, outputUv);
+  return { sourceUv, rt0: sourcePixel(bytes, sourceUv, true), rt1: [0, 0, 0, 0] };
+}
+
+async function run() {
+  let renderer = null;
+  let target = null;
+  let textureA = null;
+  let textureB = null;
+  let geometry = null;
+  let officialMaterial = null;
+  let probeMaterial = null;
+  let stencilProbe = null;
+  let mesh = null;
+  let scene = null;
+
+  try {
+    const program = await loadHomographyDisplayProgram();
+    same(program.manifest.fragment_contract.alpha, "1.0 - sampled.a", "manifest alpha contract");
+    same(program.manifest.fragment_contract.secondary_output, "vec4(0.0)", "manifest MRT1 contract");
+    assert(
+      program.manifest.evidence_scope.includes("SPIR-V")
+        && program.manifest.evidence_scope.includes("libil2cpp"),
+      "manifest evidence scope must retain SPIR-V and libil2cpp",
+    );
+
+    const canvas = document.getElementById("homography-display");
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, stencil: true });
+    renderer.setSize(SIZE, SIZE, false);
+    renderer.autoClear = false;
+    const gl = renderer.getContext();
+    target = createOfficialMrtTarget(renderer, SIZE, SIZE);
+    const textureFixtureA = makeTexture(0);
+    const textureFixtureB = makeTexture(1);
+    textureA = textureFixtureA.texture;
+    textureB = textureFixtureB.texture;
+    const bytesA = textureFixtureA.bytes;
+    const bytesB = textureFixtureB.bytes;
+    const flipYA = textureA.flipY;
+    const flipYB = textureB.flipY;
+
+    geometry = makeGeometry();
+    scene = new THREE.Scene();
+    const orthographicCamera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, 0, 2);
+    orthographicCamera.position.z = 1;
+    orthographicCamera.updateMatrixWorld(true);
+    const displayCamera = makeDisplayCamera();
+
+    officialMaterial = createHomographyDisplayMaterial({
+      program,
+      dynamicUITexture: textureA,
+      viewportPoints: IDENTITY_POINTS,
+    });
+    probeMaterial = createHomographyDisplayMaterial({
+      program,
+      dynamicUITexture: textureA,
+      viewportPoints: IDENTITY_POINTS,
+    });
+    mesh = new THREE.Mesh(geometry, officialMaterial);
+    mesh.frustumCulled = false;
+    scene.add(mesh);
+    stencilProbe = makeStencilProbe();
+
+    assertOfficialMaterialState(officialMaterial);
+    same(officialMaterial.uniforms._DynamicUITex.value, textureA, "initial Dynamic UI texture binding");
+    same(textureA.flipY, flipYA, "material creation preserves first texture flipY");
+
+    renderer.setRenderTarget(target);
+    const destination0 = [9, 17, 25, 187];
+    const destination1 = [41, 57, 73, 131];
+    clearAttachments(gl, destination0, destination1, 1, 3);
+    renderer.setScissor(0, 0, SIZE / 2, SIZE);
+    renderer.setScissorTest(true);
+    gl.clearBufferfi(gl.DEPTH_STENCIL, 0, 0, 5);
+    renderer.setScissorTest(false);
+    let actualGlState = null;
+    const originalAfterRender = mesh.onAfterRender;
+    mesh.onAfterRender = () => { actualGlState = captureActualGlState(gl); };
+    try {
+      renderer.render(scene, orthographicCamera);
+    } finally {
+      mesh.onAfterRender = originalAfterRender;
+    }
+    gl.finish();
+    assert(actualGlState, "official draw did not capture actual GL state");
+    assertOfficialGlState(gl, actualGlState);
+
+    const depthRejectedPixel = [SIZE / 4, SIZE / 2];
+    const depthPassedPixel = [SIZE * 3 / 4, SIZE / 2];
+    const rejectedRt0 = readAttachment(gl, 0, ...depthRejectedPixel);
+    const rejectedRt1 = readAttachment(gl, 1, ...depthRejectedPixel);
+    pixelNear(rejectedRt0, destination0, "prefilled depth rejects RT0 draw");
+    pixelNear(rejectedRt1, destination1, "prefilled depth rejects RT1 draw");
+    const passedUv = [(depthPassedPixel[0] + 0.5) / SIZE, (depthPassedPixel[1] + 0.5) / SIZE];
+    const passedSample = sourcePixel(bytesA, passedUv, false);
+    const passedRt0 = readAttachment(gl, 0, ...depthPassedPixel);
+    const passedRt1 = readAttachment(gl, 1, ...depthPassedPixel);
+    pixelNear(passedRt0, officialBlendPixel(passedSample, destination0), "nonzero RT0 destination blend");
+    pixelNear(passedRt1, destination1, "zero MRT1 output preserves nonzero destination under shared blend");
+    const stencilPreservation = verifyStencilPreservation(renderer, gl, stencilProbe, 5, 3);
+
+    setGeometryWinding(geometry, REVERSE_INDICES);
+    const reverseDestination0 = [33, 47, 61, 173];
+    const reverseDestination1 = [71, 89, 107, 149];
+    clearAttachments(gl, reverseDestination0, reverseDestination1, 1, 0);
+    renderer.render(scene, orthographicCamera);
+    gl.finish();
+    const reversePixel = [SIZE / 2, SIZE / 2];
+    const reverseRt0 = readAttachment(gl, 0, ...reversePixel);
+    const reverseRt1 = readAttachment(gl, 1, ...reversePixel);
+    pixelNear(reverseRt0, reverseDestination0, "reverse winding is culled from RT0");
+    pixelNear(reverseRt1, reverseDestination1, "reverse winding is culled from RT1");
+    setGeometryWinding(geometry, FORWARD_INDICES);
+
+    mesh.material = probeMaterial;
+    probeMaterial.transparent = false;
+    probeMaterial.blending = THREE.NoBlending;
+    clearAttachments(gl, [7, 13, 19, 23], [43, 71, 101, 139]);
+    renderer.render(scene, orthographicCamera);
+    gl.finish();
+    const identityH = Array.from(probeMaterial.uniforms._HomographyMatrix.value);
+    const identityHinv = Array.from(probeMaterial.uniforms._InvHomographyMatrix.value);
+    const identityUploadedH = currentUniformArray(gl, "_HomographyMatrix");
+    const identityUploadedHinv = currentUniformArray(gl, "_InvHomographyMatrix");
+    arrayNear(identityUploadedH, identityH, 0, "identity H upload");
+    arrayNear(identityUploadedHinv, identityHinv, 0, "identity Hinv upload");
+    const identitySamples = SAMPLE_PIXELS.map((pixel) => {
+      const expected = directSampleExpectation(bytesA, identityH, pixel);
+      const rt0 = readAttachment(gl, 0, ...pixel);
+      const rt1 = readAttachment(gl, 1, ...pixel);
+      pixelNear(rt0, expected.rt0, `identity RT0 ${pixel.join(",")}`);
+      pixelNear(rt1, expected.rt1, `identity RT1 ${pixel.join(",")}`);
+      return { pixel, sourceUv: expected.sourceUv, rt0, rt1 };
+    });
+
+    setHomographyDisplayTexture(probeMaterial, textureB);
+    same(probeMaterial.uniforms._DynamicUITex.value, textureB, "updated Dynamic UI texture binding");
+    same(textureA.flipY, flipYA, "texture setter preserves first texture flipY");
+    same(textureB.flipY, flipYB, "texture setter preserves second texture flipY");
+    clearAttachments(gl, [5, 11, 17, 29], [37, 59, 83, 127]);
+    renderer.render(scene, orthographicCamera);
+    gl.finish();
+    const setterPixel = SAMPLE_PIXELS[1];
+    const setterExpected = directSampleExpectation(bytesB, identityH, setterPixel);
+    const setterPrevious = directSampleExpectation(bytesA, identityH, setterPixel);
+    const setterRt0 = readAttachment(gl, 0, ...setterPixel);
+    const setterRt1 = readAttachment(gl, 1, ...setterPixel);
+    pixelNear(setterRt0, setterExpected.rt0, "second texture setter RT0 readback");
+    pixelNear(setterRt1, setterExpected.rt1, "second texture setter MRT1 readback");
+    assert(
+      setterExpected.rt0.some((value, index) => value !== setterPrevious.rt0[index]),
+      "second texture fixture must differ at the setter probe pixel",
+    );
+
+    const projection = makePerspectiveProjectionFixture();
+    const convexMatrices = setHomographyDisplayPoints(probeMaterial, projection.viewportPoints);
+    setPerspectiveDisplayTransform(mesh);
+    const convexH = Array.from(convexMatrices.homography);
+    const convexHinv = Array.from(convexMatrices.inverseHomography);
+    assert(
+      convexH[6] !== 0 || convexH[7] !== 0,
+      "perspective projection must produce a non-affine Homography",
+    );
+    const correctedCorners = IDENTITY_POINTS.map((corner) => mapPoint(convexHinv, corner));
+    IDENTITY_POINTS.forEach((corner, index) => {
+      arrayNear(mapPoint(convexH, corner), projection.viewportPoints[index], 2e-6, `convex H corner P${index}`);
+      arrayNear(mapPoint(convexH, correctedCorners[index]), corner, 2e-6, `convex corrected Quad UV${index}`);
+    });
+    assert(
+      correctedCorners.some((corner, index) => corner.some((value, axis) => Math.abs(value - IDENTITY_POINTS[index][axis]) > 1e-4)),
+      "non-affine Homography must move at least one built-in Quad UV corner",
+    );
+
+    const convexClear0 = [3, 7, 11, 19];
+    const convexClear1 = [31, 47, 67, 97];
+    clearAttachments(gl, convexClear0, convexClear1, 1, 0);
+    renderer.render(scene, displayCamera);
+    gl.finish();
+    const convexUploadedH = currentUniformArray(gl, "_HomographyMatrix");
+    const convexUploadedHinv = currentUniformArray(gl, "_InvHomographyMatrix");
+    arrayNear(convexUploadedH, convexH, 0, "convex H upload");
+    arrayNear(convexUploadedHinv, convexHinv, 0, "convex Hinv upload");
+
+    const convexRt0Image = readAttachmentImage(gl, 0);
+    const convexRt1Image = readAttachmentImage(gl, 1);
+    const edgeMargin = 2 / SIZE;
+    let insidePixels = 0;
+    let outsidePixels = 0;
+    let sampledPixels = 0;
+    const convexSamples = [];
+    for (let y = 0; y < SIZE; y += 1) {
+      for (let x = 0; x < SIZE; x += 1) {
+        const displayUv = displayUvAtPixel([x, y], displayCamera, mesh);
+        const sourceUv = displayUv ? mapPoint(convexH, displayUv) : null;
+        const rt0 = imagePixel(convexRt0Image, x, y);
+        const rt1 = imagePixel(convexRt1Image, x, y);
+        const safelyInside = sourceUv
+          && sourceUv[0] >= edgeMargin && sourceUv[0] <= 1 - edgeMargin
+          && sourceUv[1] >= edgeMargin && sourceUv[1] <= 1 - edgeMargin;
+        const safelyOutside = !sourceUv
+          || sourceUv[0] <= -edgeMargin || sourceUv[0] >= 1 + edgeMargin
+          || sourceUv[1] <= -edgeMargin || sourceUv[1] >= 1 + edgeMargin;
+        if (safelyInside) {
+          pixelNear(rt1, [0, 0, 0, 0], `convex inside RT1 ${x},${y}`);
+          assert(
+            rt0.some((value, index) => value !== convexClear0[index]),
+            `convex inside RT0 ${x},${y} was not written`,
+          );
+          const samplingMargin = 2 / SIZE;
+          const stableTexel = sourceUv.every((value) => {
+            const texelCoordinate = value * TEXTURE_SIZE;
+            return Math.abs(texelCoordinate - Math.round(texelCoordinate)) > samplingMargin;
+          });
+          if (stableTexel) {
+            pixelNear(rt0, sourcePixel(bytesB, sourceUv, true), `convex sampled RT0 ${x},${y}`);
+            sampledPixels += 1;
+          }
+          insidePixels += 1;
+          if (convexSamples.length < 8) convexSamples.push({ pixel: [x, y], displayUv, sourceUv, rt0, rt1 });
+        } else if (safelyOutside) {
+          pixelNear(rt0, convexClear0, `convex outside RT0 ${x},${y}`);
+          pixelNear(rt1, convexClear1, `convex outside RT1 ${x},${y}`);
+          outsidePixels += 1;
+        }
+      }
+    }
+    assert(insidePixels > 0, "perspective display probe found no safely inside pixels");
+    assert(outsidePixels > 0, "perspective display probe found no safely outside pixels");
+    assert(sampledPixels > 0, "perspective display probe found no stable source texel samples");
+
+    const error = gl.getError();
+    same(error, gl.NO_ERROR, "final WebGL error");
+    const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    const vendor = debugInfo
+      ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
+      : gl.getParameter(gl.VENDOR);
+    const gpu = debugInfo
+      ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+      : gl.getParameter(gl.RENDERER);
+    return {
+      runtime: {
+        threeRevision: String(THREE.REVISION),
+        webglVersion: gl.getParameter(gl.VERSION),
+        shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
+        vendor,
+        renderer: gpu,
+        swiftShader: /swiftshader/i.test(`${vendor} ${gpu}`),
+      },
+      contract: {
+        evidenceScope: program.manifest.evidence_scope,
+        alpha: program.manifest.fragment_contract.alpha,
+        mrt1: program.manifest.fragment_contract.secondary_output,
+        textureCoordinateOperation: "direct H result; no added browser Y transform",
+        sourceRenderTextureYConventionEstablished: false,
+      },
+      actualGl: {
+        state: actualGlState,
+        depthRejected: { pixel: depthRejectedPixel, rt0: rejectedRt0, rt1: rejectedRt1 },
+        depthPassed: { pixel: depthPassedPixel, rt0: passedRt0, rt1: passedRt1 },
+        stencilPreservation,
+        reverseWinding: { pixel: reversePixel, rt0: reverseRt0, rt1: reverseRt1 },
+      },
+      identity: {
+        points: IDENTITY_POINTS,
+        homography: identityH,
+        inverseHomography: identityHinv,
+        uploadedHomography: identityUploadedH,
+        uploadedInverseHomography: identityUploadedHinv,
+        samples: identitySamples,
+      },
+      textureSetter: {
+        pixel: setterPixel,
+        previousExpected: setterPrevious.rt0,
+        updatedExpected: setterExpected.rt0,
+        rt0: setterRt0,
+        rt1: setterRt1,
+      },
+      convex: {
+        projection: {
+          camera: { fov: projection.camera.fov, near: projection.camera.near, far: projection.camera.far },
+          modelMatrix: projection.model.toArray(),
+          viewportPoints: projection.viewportPoints,
+        geometryPoints: projection.geometryPoints,
+        correctedQuadUvCorners: correctedCorners,
+        },
+        homography: convexH,
+        inverseHomography: convexHinv,
+        uploadedHomography: convexUploadedH,
+        uploadedInverseHomography: convexUploadedHinv,
+        insidePixels,
+        outsidePixels,
+        sampledPixels,
+        samples: convexSamples,
+      },
+      textureFlipY: {
+        first: { before: flipYA, after: textureA.flipY },
+        second: { before: flipYB, after: textureB.flipY },
+      },
+      checks,
+      screenshots: 0,
+    };
+  } finally {
+    renderer?.setRenderTarget(null);
+    if (mesh && scene) scene.remove(mesh);
+    if (stencilProbe) stencilProbe.scene.remove(stencilProbe.mesh);
+    geometry?.dispose();
+    officialMaterial?.dispose();
+    probeMaterial?.dispose();
+    stencilProbe?.geometry.dispose();
+    stencilProbe?.material.dispose();
+    textureA?.dispose();
+    textureB?.dispose();
+    if (target) disposeOfficialMrtTarget(target);
+    renderer?.dispose();
+  }
+}
+
+run().then(
+  (result) => window.__finishHomographyDisplayRuntime(result, null),
+  (error) => window.__finishHomographyDisplayRuntime(null, {
+    message: error.message || String(error),
+    stack: error.stack || "",
+  }),
+);
+</script>
+</body>
+</html>

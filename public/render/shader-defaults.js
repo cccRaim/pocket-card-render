@@ -8,6 +8,11 @@ export const SHADER_TEXTURE_DEFAULTS = {
   "Card_Illust": {
     _MainTex: "black",
   },
+  "Card_Scaling_Kira": {
+    _BaseTex: "white",
+    _ScrollLayerMask: "white",
+    _RampTex: "white",
+  },
   "Frame": {
     _BaseTex: "black",
   },
@@ -82,6 +87,12 @@ export const SHADER_TEXTURE_DEFAULTS = {
     _HologramMaskTex: "black",
   },
   "Simple-Opaque-Hologram_Tuning": {
+    _PhaseTex: "white",
+    _RampMaskTex: "black",
+    _RampTex: "black",
+    _HologramMaskTex: "white",
+  },
+  "Simple-PreMultiply-Hologram": {
     _PhaseTex: "white",
     _RampMaskTex: "black",
     _RampTex: "black",

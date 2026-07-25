@@ -80,10 +80,14 @@ class _R:
         op=remap_op(op); ln=decode_len(op, ln)
         return ln, op
 
-def decode(smolv: bytes) -> bytes:
+def decode_with_consumed(smolv: bytes):
+    """Decode exactly one SMOL-V module and return (SPIR-V, input bytes consumed)."""
     if len(smolv) < 24 or struct.unpack_from('<I', smolv, 0)[0] != SMOL_MAGIC:
         raise ValueError("not SMOL-V")
     w = struct.unpack_from('<6I', smolv, 0)
+    decoded_size = int(w[5])
+    if decoded_size < 20 or decoded_size % 4:
+        raise ValueError(f"invalid SMOL-V decoded byte size {decoded_size}")
     smol_version = w[1] >> 24
     out = bytearray()
     def W(v): out.extend(struct.pack('<I', v & 0xFFFFFFFF))
@@ -93,7 +97,7 @@ def decode(smolv: bytes) -> bytes:
     r = _R(smolv); r.i = 24    # skip 6-word header
     n = known_ops(smol_version)
     prev_result = 0; prev_dec = 0
-    while r.i < r.n:
+    while len(out) < decoded_size:
         instr_len, op = r.length_op()
         was_swizzle = (op == VectorShuffleCompact)
         if was_swizzle: op = VectorShuffle
@@ -137,7 +141,14 @@ def decode(smolv: bytes) -> bytes:
             while ioffs < instr_len: W(r.varint()); ioffs += 1
         else:
             while ioffs < instr_len: W(r.read4()); ioffs += 1
-    return bytes(out)
+    if len(out) != decoded_size:
+        raise ValueError(
+            f"SMOL-V decoded size mismatch: header={decoded_size}, actual={len(out)}"
+        )
+    return bytes(out), r.i
+
+def decode(smolv: bytes) -> bytes:
+    return decode_with_consumed(smolv)[0]
 
 def find_and_decode(blob: bytes):
     """Find every SMOL-V module in a buffer and decode each to SPIR-V."""
@@ -147,16 +158,36 @@ def find_and_decode(blob: bytes):
     while True:
         idx = blob.find(mg, start)
         if idx < 0: break
-        # decoded length lives in word[5]; smolv module is self-delimiting via that, but
-        # we don't know its byte length -> decode greedily from here to next magic / end.
-        nxt = blob.find(mg, idx + 4)
-        chunk = blob[idx: nxt if nxt > 0 else len(blob)]
         try:
-            outs.append((idx, decode(chunk)))
+            decoded, consumed = decode_with_consumed(blob[idx:])
+            outs.append((idx, decoded))
+            start = idx + consumed
         except Exception as e:
             outs.append((idx, None))
-        start = idx + 4
+            start = idx + 4
     return outs
+
+def find_and_decode_records(blob: bytes):
+    """Return strict module records including exact compressed input boundaries."""
+    mg = struct.pack('<I', SMOL_MAGIC)
+    records = []
+    start = 0
+    while True:
+        idx = blob.find(mg, start)
+        if idx < 0:
+            break
+        try:
+            decoded, consumed = decode_with_consumed(blob[idx:])
+            records.append({
+                "offset": idx,
+                "compressed_size": consumed,
+                "compressed": blob[idx:idx + consumed],
+                "decoded": decoded,
+            })
+            start = idx + consumed
+        except Exception:
+            start = idx + 4
+    return records
 
 if __name__ == "__main__":
     import sys

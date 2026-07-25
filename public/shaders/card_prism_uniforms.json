@@ -1,0 +1,816 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Card_Prism",
+  "generated_by": "build/build-exact-card-prism.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+    "candidateWitnessId": "3101394a11fce8f689324ae82849ef917392a8734af7f80226de74dd309dcf45",
+    "shaderIdentity": "CAB-9a0ceb86d06dab6e91ed10f319f1b6d4:3691811751576115235",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Prism",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "8b109fdd34923cd4554314440399a3ca0373fc9f17714470e726ababb63a6633",
+    "semanticExecutableId": "4744aedcc82468546da50873b996c5c7e1cb8596a1e07624b6d2d9abcdf4f473"
+  },
+  "official_spirv_sha256": {
+    "vertex": "2e46039d782ddcb7a81a599a1699c9234e3c42036e2166ec47e2a551104c883d",
+    "fragment": "5549fe55ae948aeea2f5ef6cc6e33ed1af40517f5d2d4de4fca24b6aa4d8d178"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "2e46039d782ddcb7a81a599a1699c9234e3c42036e2166ec47e2a551104c883d",
+    "fragmentSpirvSha256": "5549fe55ae948aeea2f5ef6cc6e33ed1af40517f5d2d4de4fca24b6aa4d8d178",
+    "parameterEntrySha256": "34ee4836354f4421d103790886cb691fb571362821c95d364b4fcdc28381590b",
+    "passStateSha256": "b13b8f47de8a0932d734921f212586a1f2f3cfa8688ad522e8c0bc8e057b89ff",
+    "commonBindingsSha256": "a96fd4b88126d0382f3a7d3c7d1db67c6536fdb88e7ee887fbc9a4340065de1c"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "34ee4836354f4421d103790886cb691fb571362821c95d364b4fcdc28381590b",
+    "byte_size": 100,
+    "reflection_sha256": "795f9c5cbccb96df3029f9007dadc7bc88e52e5fe0a175653be1a2cd701a2eb5",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals578556311",
+        "size": 44,
+        "fields": []
+      },
+      {
+        "name": "VGlobals578556311",
+        "size": 172,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals578556311",
+        "size": 44
+      },
+      {
+        "name": "VGlobals578556311",
+        "size": 172
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_BaseTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 1,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "b13b8f47de8a0932d734921f212586a1f2f3cfa8688ad522e8c0bc8e057b89ff",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 0,
+        "name": "_ZTest"
+      },
+      "write": {
+        "val": 0,
+        "name": "_ZWrite"
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": null
+      },
+      "read_mask": {
+        "val": 255,
+        "name": null
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 0,
+        "name": "_BlendSrcColor"
+      },
+      "dst_rgb": {
+        "val": 0,
+        "name": "_BlendDstColor"
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 1,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "a96fd4b88126d0382f3a7d3c7d1db67c6536fdb88e7ee887fbc9a4340065de1c",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals578556311",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_ColorIntensity",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAlphaIntensity",
+            "offset": 4,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ColoringMethod",
+            "offset": 8,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftU",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftV",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftUOffsetByTilt",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftUOffsetIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftVOffsetByTilt",
+            "offset": 28,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftVOffsetIntensity",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_OkLabBlend",
+            "offset": 36,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals578556311",
+        "size": 172,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_Time",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_ExpandScale",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ExpandTiming",
+            "offset": 148,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ExpandAlphaPower",
+            "offset": 152,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CenterMoveIntensity",
+            "offset": 156,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseRotate",
+            "offset": 160,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_RotateSpeed",
+            "offset": 164,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftTiming",
+            "offset": 168,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals578556311",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals578556311",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "a96fd4b88126d0382f3a7d3c7d1db67c6536fdb88e7ee887fbc9a4340065de1c",
+    "parameter_reflection_sha256": "795f9c5cbccb96df3029f9007dadc7bc88e52e5fe0a175653be1a2cd701a2eb5",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals578556311",
+        "size": 44,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_ColorIntensity",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_AdjustAlphaIntensity",
+            "offset": 4,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ColoringMethod",
+            "offset": 8,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftU",
+            "offset": 12,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftV",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftUOffsetByTilt",
+            "offset": 20,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftUOffsetIntensity",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftVOffsetByTilt",
+            "offset": 28,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftVOffsetIntensity",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_OkLabBlend",
+            "offset": 36,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals578556311",
+        "size": 172,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_Time",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_ExpandScale",
+            "offset": 144,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ExpandTiming",
+            "offset": 148,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ExpandAlphaPower",
+            "offset": 152,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CenterMoveIntensity",
+            "offset": 156,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_UseRotate",
+            "offset": 160,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_RotateSpeed",
+            "offset": 164,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_ShiftTiming",
+            "offset": 168,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals578556311",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals578556311",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_BaseTex": "white"
+    },
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_ColorIntensity": 1,
+      "_AdjustAlphaIntensity": 1,
+      "_ExpandScale": 1,
+      "_ExpandTiming": 1,
+      "_ExpandAlphaPower": 1,
+      "_CenterMoveIntensity": 0,
+      "_ColoringMethod": 0,
+      "_ShiftU": 0,
+      "_ShiftV": 0,
+      "_ShiftTiming": 2,
+      "_ShiftUOffsetByTilt": 0,
+      "_ShiftUOffsetIntensity": 0,
+      "_ShiftVOffsetByTilt": 0,
+      "_ShiftVOffsetIntensity": 0,
+      "_OkLabBlend": 0,
+      "_UseRotate": 0,
+      "_RotateSpeed": 1,
+      "_EmissiveIntensity": 1,
+      "_BlendSrcColor": 5,
+      "_BlendDstColor": 10,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {}
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "2e46039d782ddcb7a81a599a1699c9234e3c42036e2166ec47e2a551104c883d",
+      "spirvCrossGlslSha256": "30db9c072c19012c73736e8c0a9c1b98a6dc3a993e0ceffdb0e509f5b97f221b",
+      "outputSha256": "93f497c56382c58fea18634176f876ac3c837179c4ad34e97f3c4f4f516af216",
+      "substitutions": [
+        "map official position/UV0/UV1 locations to Three.js position/uv/uv1 attributes",
+        "unity_ObjectToWorld := three.modelMatrix and unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "Unity _Time.x := OfficialClock global time * the pinned 0.05 engine factor",
+        "expand serialized common-buffer values into same-name material uniforms without changing arithmetic",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "5549fe55ae948aeea2f5ef6cc6e33ed1af40517f5d2d4de4fca24b6aa4d8d178",
+      "spirvCrossGlslSha256": "a01f3ac6df367ac3f51b562b1dbe3c1f3a2addd42a3e9a80f827c9d68f22bfe9",
+      "outputSha256": "2e07b14edeffa978e83ee44f474a1c86ecaa04132dd143334f8775581a671179",
+      "substitutions": [
+        "expand serialized common-buffer values into same-name material uniforms without changing arithmetic"
+      ]
+    },
+    "interfaceSha256": "94eae10cb3c8a6dafc73ebccc8fb8fff9c195ebeb13e7cf932e5068f9a999713"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/card_prism.vert.glsl",
+    "fragment": "public/shaders/card_prism.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Prism",
+    "attributes": {
+      "position": "vec3",
+      "uv": "vec2",
+      "uv1": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_ExpandScale",
+        "_ExpandTiming",
+        "_ExpandAlphaPower",
+        "_CenterMoveIntensity",
+        "_RotateSpeed",
+        "_ShiftTiming",
+        "_ColorIntensity",
+        "_AdjustAlphaIntensity",
+        "_ShiftU",
+        "_ShiftV",
+        "_ShiftUOffsetIntensity",
+        "_ShiftVOffsetIntensity",
+        "_EmissiveIntensity"
+      ],
+      "ints": [
+        "_UseRotate",
+        "_ColoringMethod",
+        "_ShiftUOffsetByTilt",
+        "_ShiftVOffsetByTilt",
+        "_OkLabBlend"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "uTime": {
+        "type": "float",
+        "source": "official-clock"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": false,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic"
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_29",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_29"
+  ],
+  "sampler_slots": [
+    "_BaseTex"
+  ],
+  "compiled_texture_bindings": {
+    "_BaseTex": 0
+  },
+  "implicit_defaults": {
+    "_BaseTex": "white"
+  },
+  "floats": {
+    "_ExpandScale": "_ExpandScale",
+    "_ExpandTiming": "_ExpandTiming",
+    "_ExpandAlphaPower": "_ExpandAlphaPower",
+    "_CenterMoveIntensity": "_CenterMoveIntensity",
+    "_RotateSpeed": "_RotateSpeed",
+    "_ShiftTiming": "_ShiftTiming",
+    "_ColorIntensity": "_ColorIntensity",
+    "_AdjustAlphaIntensity": "_AdjustAlphaIntensity",
+    "_ShiftU": "_ShiftU",
+    "_ShiftV": "_ShiftV",
+    "_ShiftUOffsetIntensity": "_ShiftUOffsetIntensity",
+    "_ShiftVOffsetIntensity": "_ShiftVOffsetIntensity",
+    "_EmissiveIntensity": "_EmissiveIntensity",
+    "_UseRotate": "_UseRotate",
+    "_ColoringMethod": "_ColoringMethod",
+    "_ShiftUOffsetByTilt": "_ShiftUOffsetByTilt",
+    "_ShiftVOffsetByTilt": "_ShiftVOffsetByTilt",
+    "_OkLabBlend": "_OkLabBlend"
+  },
+  "mrt": {
+    "primary": "_349",
+    "emissive": "_361"
+  }
+}

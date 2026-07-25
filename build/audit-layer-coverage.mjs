@@ -5,17 +5,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
 import { SHADER_TEXTURE_DEFAULTS } from "../public/render/shader-defaults.js";
+import { CANONICAL_FULL_RUNTIME_SCENES } from "./full-runtime-sources.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
-  .filter((n) => /^scene\..*\.json$/.test(n))
-  .sort();
+const sceneNames = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file).sort();
 
 const sentinel = {};
-const ignoredShaders = new Set(["OuterStencil", "InnerStencil"]);
 const runtimeSpecialMaterials = new Set([
-  // DynamicUI full-face text quad is intercepted in app.js and composited from /compose.
-  "L_FullFace_Text",
   // AssetRipper/glTF placeholder material; app.js intentionally skips unknown DefaultMaterial meshes.
   "DefaultMaterial",
 ]);
@@ -42,7 +38,6 @@ function hasBoundTexture(mat, slot) {
 function makeAuditContext(scene) {
   return {
     envCubeTex: sentinel,
-    exactGlit: sentinel,
     dynUITex: sentinel,
     dynHoloTex: sentinel,
     foilTex: sentinel,
@@ -95,6 +90,10 @@ const hasDefaultRepeat = (slot) => (mat, ctx) => !!ctx.layerTexDefaultRepeat(mat
 const hasLayer = (slot) => (mat, ctx) => !!ctx.layerTex(mat, slot);
 
 const REQUIREMENTS = {
+  outerStencil: () => true,
+  innerStencil: hasDefault("_BaseTex"),
+  illustStencil: hasDefault("_BaseTex"),
+  dynamicText: (_mat, ctx) => !!ctx.dynHoloTex,
   textured: hasMainTex,
   illustTextured: hasMainTex,
   simpleTransparent: hasMainTex,
@@ -120,7 +119,9 @@ const REQUIREMENTS = {
     ctx.layerTex(mat, "_BaseMap") || ctx.layerTex(mat, "_MainTex") || ctx.layerTexDefault(mat, "_BaseMap")
   ) && hasDefaultRepeat("_FlareVAT")(mat, ctx),
   metal: () => true,
+  matCapLighting: (mat, ctx) => hasDefault("_MatCapLightTex")(mat, ctx) && hasDefault("_LightingMask")(mat, ctx),
   glitter: (mat, ctx) => hasDefault("_ABaseTex")(mat, ctx) && hasDefault("_FlowAMap")(mat, ctx),
+  sideBack: hasDefault("_BaseTex"),
 };
 
 const rows = [];
@@ -144,7 +145,7 @@ for (const sceneName of sceneNames) {
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
     if (used && !used.has(matName)) continue;
     const shader = mat.shader;
-    if (!shader || ignoredShaders.has(shader) || shader.startsWith("InnerStencil")) continue;
+    if (!shader) continue;
     const cfg = SHADER[shader];
     if (!cfg) {
       rows.push({ ok: false, scene: sceneId(sceneName), mat: matName, shader, reason: "unmapped shader" });

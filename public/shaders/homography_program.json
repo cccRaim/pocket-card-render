@@ -1,0 +1,602 @@
+{
+  "shader": "Lettuce/Common/CardNew/Prerender/Homography(from RT)",
+  "generated_by": "build/build-exact-homography.mjs",
+  "evidence_scope": [
+    "APKM",
+    "serialized Shader",
+    "serialized Material",
+    "serialized PrerenderCard",
+    "built-in Quad",
+    "SPIR-V",
+    "libil2cpp"
+  ],
+  "official_source": {
+    "bundle_relative_path": "Common/CardNew/Prerender/HomographyCard_FromRT.shader_bundles",
+    "bundle_byte_size": 18500,
+    "bundle_sha256": "00b8e07fdd4ff114513ed732abd5eae6489b1b744abf95eba5bd801544073f3a",
+    "shader_object_path_id": "-230642161556405053",
+    "shader_object_byte_size": 4724,
+    "shader_object_sha256": "0a8c0df5d762ff75550f7155e98a2307ceab5c55bab119d794f4506b223196b1",
+    "shader_serialized_file": "CAB-97b4be56dcc4d094ca2d7026a1259cfe",
+    "material_relative_path": "Common/CardNew/System/Materials/PrerenderHomographyCard.mat_bundles",
+    "material_bundle_sha256": "bae81007d07cbf680c94ac1827b8855adf03a6ddf92db0b7e8c07fb7da8c3d61",
+    "material_object_path_id": "-332705428253792402",
+    "material_object_sha256": "0178ec97db1f9ef89958a2f77ef190815cdcaa06b386e94c727b2f5427a03a37",
+    "compressed_program_sha256": "fc016c55bce184f501b01fd4270749d9be91f4fb54d78c05468f9ab9041c4b14",
+    "decompressed_program_sha256": "0e788dd3b902f0c1e34b11627957568b118f7d719608f10abf9f0e9d0e2dff1e",
+    "parameter_entry_sha256": "8a1edba526ab9e9a4b6b004a5d0461c3099c4afd4c7d206853f55b9aefdd1fed",
+    "program_entry_sha256": "8e67a7a923cf8eb278ff1b8001f9f3b72f72f34c7544b513db9b2635ae8ea780"
+  },
+  "apkm_source": {
+    "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+    "base_apk_sha256": "815dc606f3b3e3404199fac80abb46b9249948828178a5cbf6aedb3d9e6809de",
+    "arm64_split_sha256": "7faf449bae431dcfeda4f882ecb04290af66cc4ccfeefc620e24cac70d22fcec",
+    "libil2cpp_sha256": "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e",
+    "global_metadata_sha256": "bf58e06a98f9e9e05a1635f512ea432d33971bfc8280ba26df1c93e94b4f3cb9",
+    "unity_default_resources_sha256": "a9a74ab363888de3ea14ef01e780f851a395d4c6f5d5bcebad74a2a3e4785d16"
+  },
+  "official_variant": {
+    "keywords": [],
+    "variant_index": 0,
+    "parameter_blob_index": 0,
+    "program_blob_index": 1,
+    "gpu_program_type": 25,
+    "shader_requirements": 1
+  },
+  "modules": {
+    "vertex": {
+      "byte_size": 4312,
+      "spirv_sha256": "ca8eb7a85ec900b4b96271fce705592f67a76c9e42d399245bcbad44c59c6a59",
+      "reflection_sha256": "0174c9fe432cb8906d101ee03d1314dcf420bb866fdfcc62210774ca2e836c72"
+    },
+    "fragment": {
+      "byte_size": 2928,
+      "spirv_sha256": "be76493bce4ebe9ddd00d1387270afebf1ef36ce7e60fb5066259d7e23eabab2",
+      "reflection_sha256": "1b60444eb96e78940f50e8e55fb1aef1cfb7c7fd111d5255ed9a8b9e1033bbb8"
+    }
+  },
+  "bindings": {
+    "dynamic_ui_texture": {
+      "name": "_DynamicUITex",
+      "spirv_set": 0,
+      "spirv_binding": 0,
+      "serialized_binding": 0,
+      "serialized_encoded_index": 134217728,
+      "dimension": 2,
+      "multisampled": false,
+      "shader_default": "white",
+      "material_texture_pptr": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "material_scale": [
+        1,
+        1
+      ],
+      "material_offset": [
+        0,
+        0
+      ]
+    },
+    "homography": {
+      "name": "_HomographyMatrix",
+      "stage": "fragment",
+      "scalar_type": "float",
+      "array_length": 9,
+      "std140_array_stride": 16,
+      "serialized_buffer": "PGlobals445077468",
+      "serialized_buffer_size": 144,
+      "serialized_offset": 0,
+      "serialized_encoded_binding": 134283264,
+      "spirv_set": 1,
+      "spirv_binding": 0
+    },
+    "inverse_homography": {
+      "name": "_InvHomographyMatrix",
+      "stage": "vertex",
+      "scalar_type": "float",
+      "array_length": 9,
+      "std140_array_stride": 16,
+      "serialized_buffer": "VGlobals445077468",
+      "serialized_buffer_size": 272,
+      "serialized_offset": 128,
+      "serialized_encoded_binding": 67174401,
+      "spirv_set": 1,
+      "spirv_binding": 1
+    },
+    "matrices": [
+      {
+        "official": "unity_ObjectToWorld",
+        "offset": 0,
+        "webgl2": "modelMatrix"
+      },
+      {
+        "official": "unity_MatrixVP",
+        "offset": 64,
+        "webgl2": "projectionMatrix * viewMatrix"
+      }
+    ],
+    "vertex_attribute": {
+      "official": "_12",
+      "location": 0,
+      "type": "vec2",
+      "webgl2": "uv",
+      "source_mesh": "unity default resources/Quad PathID 10210",
+      "source_position_range": [
+        [
+          -0.5,
+          -0.5
+        ],
+        [
+          0.5,
+          0.5
+        ]
+      ],
+      "source_uv0_range": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "official_indices": [
+        0,
+        3,
+        1,
+        3,
+        0,
+        2
+      ],
+      "webgl2_indices": [
+        0,
+        1,
+        3,
+        3,
+        2,
+        0
+      ],
+      "winding_adaptation": "reverse each Unity triangle for left-handed to right-handed mesh conversion"
+    }
+  },
+  "runtime_upload": {
+    "property_literals": {
+      "homography": "_HomographyMatrix",
+      "inverse_homography": "_InvHomographyMatrix",
+      "dynamic_ui_texture": "_DynamicUITex"
+    },
+    "property_id_fields": {
+      "homography_offset": 112,
+      "inverse_homography_offset": 116
+    },
+    "float_array_length": 9,
+    "methods": {
+      "calcHomography": {
+        "name": "HomographyShapeCorrector.CalcHomographyMatrix",
+        "rva_start": "0x43987ec",
+        "rva_end_exclusive": "0x439899c",
+        "byte_size": 432,
+        "sha256": "fc1463b7d34a6bd728470522b9c369dd9125dd9c1fe0f7e4885f4422482c55e0"
+      },
+      "calcInverse": {
+        "name": "HomographyShapeCorrector.CalcInverseMatrix",
+        "rva_start": "0x4398aac",
+        "rva_end_exclusive": "0x4398c90",
+        "byte_size": 484,
+        "sha256": "d88715856fd608cf6c9c1a756851288f592e6bd453cb6d3cb9213d9b6614daa0"
+      },
+      "getRotatedKeyPoints": {
+        "name": "HomographyShapeCorrector.GetRotatedKeyPoints",
+        "rva_start": "0x439899c",
+        "rva_end_exclusive": "0x4398aac",
+        "byte_size": 272,
+        "sha256": "3dd9a748dd530c7e08e05009de0f44730f4d2662d6df1b926d4a1563bc8374e1"
+      },
+      "cameraWorldToViewportDefault": {
+        "name": "Camera.WorldToViewportPoint default wrapper",
+        "rva_start": "0x64ddce0",
+        "rva_end_exclusive": "0x64ddce8",
+        "byte_size": 8,
+        "sha256": "d9861b18cda9f066a90c30e6752bb6966be1a110f517b2ed37b9b0d8f228e12e"
+      },
+      "cameraWorldToViewportInjected": {
+        "name": "Camera.WorldToViewportPoint_Injected wrapper",
+        "rva_start": "0x64dda74",
+        "rva_end_exclusive": "0x64ddb40",
+        "byte_size": 204,
+        "sha256": "9ad895db6bb3889c22fcdc312586f7cfd52e6db5700daacd8bca8f990201a86f"
+      },
+      "setParameters": {
+        "name": "KeepParallaxCardBehaviour.SetHomographyParameters",
+        "rva_start": "0x441c474",
+        "rva_end_exclusive": "0x441c4f8",
+        "byte_size": 132,
+        "sha256": "6253248b683371c6aa0c8d9fa86defcea562f273a717e8cbf6f658a6b1e57719"
+      },
+      "constructor": {
+        "name": "KeepParallaxCardBehaviour..ctor",
+        "rva_start": "0x441c4f8",
+        "rva_end_exclusive": "0x441c5b4",
+        "byte_size": 188,
+        "sha256": "b014ddafef9f6163ad1840cbdfb96c831989d1632debdf70cc58428609a7d9ac"
+      },
+      "floatArraySetter": {
+        "name": "SetFloatArray call target",
+        "rva_start": "0x442cac4",
+        "rva_end_exclusive": "0x442cbd0",
+        "byte_size": 268,
+        "sha256": "56db4b6f82676cf10a899d750733e8b9fcdb5c25e833fe775d46b2f7b3dc0842"
+      }
+    },
+    "keypoint_coordinates": {
+      "space": "UnityEngine.Camera.WorldToViewportPoint",
+      "projected_point_count": 4,
+      "default_stereo_eye_argument": 2,
+      "native_icall": "UnityEngine.Camera::WorldToViewportPoint_Injected",
+      "native_icall_sha256": "06bce24701b9aea3bb254d19b130bb43ad48f4b4f9573fb4b778e9e9f2e97eea",
+      "projected_point_order": [
+        {
+          "index": 0,
+          "field": "_keyPointLeftDown",
+          "instance_offset": 56,
+          "array_data_offset": 32
+        },
+        {
+          "index": 1,
+          "field": "_keyPointRightDown",
+          "instance_offset": 64,
+          "array_data_offset": 40
+        },
+        {
+          "index": 2,
+          "field": "_keyPointLeftUp",
+          "instance_offset": 72,
+          "array_data_offset": 48
+        },
+        {
+          "index": 3,
+          "field": "_keyPointRightUp",
+          "instance_offset": 80,
+          "array_data_offset": 56
+        }
+      ]
+    }
+  },
+  "render_state": {
+    "blend": {
+      "separate": false,
+      "targets": [
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 10,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 10,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        },
+        {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 0,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 15,
+            "property": null
+          }
+        }
+      ]
+    },
+    "depth": {
+      "test": {
+        "value": 4,
+        "property": null
+      },
+      "write": {
+        "value": 0,
+        "property": null
+      },
+      "clip": {
+        "value": 1,
+        "property": null
+      }
+    },
+    "cull": {
+      "value": 2,
+      "property": null
+    },
+    "stencil": {
+      "reference": {
+        "value": 0,
+        "property": null
+      },
+      "readMask": {
+        "value": 255,
+        "property": null
+      },
+      "writeMask": {
+        "value": 255,
+        "property": null
+      },
+      "compare": {
+        "value": 8,
+        "property": null
+      },
+      "pass": {
+        "value": 0,
+        "property": null
+      },
+      "fail": {
+        "value": 0,
+        "property": null
+      },
+      "depthFail": {
+        "value": 0,
+        "property": null
+      }
+    },
+    "alphaToMask": {
+      "value": 0,
+      "property": null
+    }
+  },
+  "tags": {
+    "IGNOREPROJECTOR": "true",
+    "QUEUE": "Transparent",
+    "RenderType": "Transparent"
+  },
+  "fragment_contract": {
+    "sample_coordinates": "H * vHomographyUv, homogeneous divide by row 2",
+    "rgb": "sampled.rgb",
+    "alpha": "1.0 - sampled.a",
+    "secondary_output": "vec4(0.0)"
+  },
+  "mrt": {
+    "primary": {
+      "name": "outColor",
+      "location": 0
+    },
+    "secondary": {
+      "name": "outAux",
+      "location": 1,
+      "value": "vec4(0.0)"
+    }
+  },
+  "webgl2_adaptation": [
+    "remove the SPIRV-Cross #version directive for host-side WebGL2 version injection",
+    "add explicit highp float and int precision declarations to the vertex stage",
+    "flatten the official std140 H and Hinv float[9] arrays into named WebGL2 uniform arrays",
+    "map unity_ObjectToWorld and unity_MatrixVP to modelMatrix and projectionMatrix * viewMatrix",
+    "map the official location-0 vec2 input to the PrerenderCard built-in Quad UV0 attribute",
+    "combine the official image and sampler as _DynamicUITex",
+    "remove the Vulkan clip-space Y flip",
+    "rename stage interface symbols and temporaries without changing shader math"
+  ],
+  "not_established": [
+    "physical RenderTexture Y-coordinate convention",
+    "runtime wiring into public/app.js"
+  ]
+}

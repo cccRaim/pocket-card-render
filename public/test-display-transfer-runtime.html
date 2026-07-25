@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="only light">
+  <title>Display transfer runtime audit</title>
+  <style>
+    html, body { margin: 0; background: #fff; color: #111; font: 12px monospace; }
+    canvas { width: 4px; height: 1px; image-rendering: pixelated; }
+    pre { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <canvas id="fixture" width="4" height="1"></canvas>
+  <pre id="status">running</pre>
+  <script type="module">
+    const canvas = document.querySelector("#fixture");
+    const status = document.querySelector("#status");
+
+    function fail(message) {
+      throw new Error(message);
+    }
+
+    function compile(gl, type, source) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) fail(gl.getShaderInfoLog(shader));
+      return shader;
+    }
+
+    try {
+      const gl = canvas.getContext("webgl2", {
+        alpha: true,
+        antialias: false,
+        depth: false,
+        stencil: false,
+        premultipliedAlpha: true,
+        preserveDrawingBuffer: false,
+        powerPreference: "low-power",
+      });
+      if (!gl) fail("WebGL2 unavailable");
+      if (!("drawingBufferColorSpace" in gl)) fail("drawingBufferColorSpace unavailable");
+      gl.drawingBufferColorSpace = "srgb";
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      const gpuRenderer = debugInfo
+        ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        : gl.getParameter(gl.RENDERER);
+      if (!/SwiftShader/i.test(gpuRenderer)) fail(`expected SwiftShader, got ${gpuRenderer}`);
+
+      const vertex = `#version 300 es
+        precision highp float;
+        void main() {
+          vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
+          gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+        }
+      `;
+      const fragment = `#version 300 es
+        precision highp float;
+        layout(location = 0) out vec4 outColor;
+        void main() {
+          int x = clamp(int(floor(gl_FragCoord.x)), 0, 3);
+          vec4 values[4] = vec4[4](
+            vec4(0.0, 64.0, 128.0, 255.0) / 255.0,
+            vec4(17.0, 34.0, 51.0, 255.0) / 255.0,
+            vec4(63.0, 127.0, 191.0, 255.0) / 255.0,
+            vec4(255.0, 200.0, 1.0, 255.0) / 255.0
+          );
+          outColor = values[x];
+        }
+      `;
+      const program = gl.createProgram();
+      gl.attachShader(program, compile(gl, gl.VERTEX_SHADER, vertex));
+      gl.attachShader(program, compile(gl, gl.FRAGMENT_SHADER, fragment));
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) fail(gl.getProgramInfoLog(program));
+
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      const attachment = (parameter) => gl.getFramebufferAttachmentParameter(gl.FRAMEBUFFER, gl.BACK, parameter);
+      const framebuffer = {
+        drawingBufferFormat: gl.drawingBufferFormat,
+        redBits: gl.getParameter(gl.RED_BITS),
+        greenBits: gl.getParameter(gl.GREEN_BITS),
+        blueBits: gl.getParameter(gl.BLUE_BITS),
+        alphaBits: gl.getParameter(gl.ALPHA_BITS),
+        componentType: attachment(gl.FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE),
+        colorEncoding: attachment(gl.FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING),
+        objectType: attachment(gl.FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE),
+      };
+
+      gl.useProgram(program);
+      gl.bindVertexArray(gl.createVertexArray());
+      gl.viewport(0, 0, 4, 1);
+      gl.disable(gl.BLEND);
+      gl.disable(gl.DITHER);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      const pixels = new Uint8Array(4 * 4);
+      gl.readPixels(0, 0, 4, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+      const error = gl.getError();
+
+      const expected = [
+        0, 64, 128, 255,
+        17, 34, 51, 255,
+        63, 127, 191, 255,
+        255, 200, 1, 255,
+      ];
+      const actual = Array.from(pixels);
+      const rgba8 = framebuffer.redBits === 8
+        && framebuffer.greenBits === 8
+        && framebuffer.blueBits === 8
+        && framebuffer.alphaBits === 8
+        && framebuffer.componentType === gl.UNSIGNED_NORMALIZED
+        && framebuffer.drawingBufferFormat === gl.RGBA8;
+      const checks = {
+        drawingBufferRGBA8: rgba8,
+        linearAttachmentEncoding: framebuffer.colorEncoding === gl.LINEAR,
+        srgbCanvasColorSpace: gl.drawingBufferColorSpace === "srgb",
+        gammaDomainReadbackIdentity: actual.every((value, index) => value === expected[index]),
+        opaqueAlpha: actual.every((value, index) => index % 4 !== 3 || value === 255),
+        noGLError: error === gl.NO_ERROR,
+      };
+      if (!Object.values(checks).every(Boolean)) fail(`display-transfer checks failed: ${JSON.stringify(checks)}`);
+
+      window.__displayTransferResult = {
+        state: "done",
+        checks,
+        framebuffer,
+        drawingBufferColorSpace: gl.drawingBufferColorSpace,
+        expected,
+        readPixels: actual,
+        runtimeMetadata: {
+          renderer: gl.getParameter(gl.RENDERER),
+          gpuRenderer,
+          vendor: gl.getParameter(gl.VENDOR),
+          colorGamut: {
+            srgb: matchMedia("(color-gamut: srgb)").matches,
+            p3: matchMedia("(color-gamut: p3)").matches,
+            rec2020: matchMedia("(color-gamut: rec2020)").matches,
+          },
+          devicePixelRatio,
+        },
+        contract: {
+          runtimeConditions: {
+            browserGraphics: "headless Chromium ANGLE/SwiftShader",
+            browserColorProfile: "forced srgb by the test harness",
+            canvasColorSpace: "explicitly requested srgb",
+          },
+          compositorInput: {
+            status: "proven",
+            storage: "RGBA8_UNORM",
+            attachmentEncoding: "GL_LINEAR",
+            transferDomain: "gamma-domain bytes",
+            colorSpace: "srgb",
+            alpha: "opaque",
+          },
+          deviceOutput: {
+            status: "not-observable",
+            boundary: "browser compositor, OS color management, display transfer, and panel output",
+          },
+          deviceState: {
+            browserRendererAndMediaColorGamut: "reported in runtimeMetadata",
+            compositorDisplayProfileAndPanelEOTF: "not exposed to WebGL readPixels",
+            androidVkSurfaceFormats: "must be queried on the target Android device",
+          },
+        },
+        screenshots: 0,
+      };
+      status.textContent = JSON.stringify(window.__displayTransferResult, null, 2);
+    } catch (error) {
+      window.__displayTransferResult = { state: "error", message: error?.stack || String(error), screenshots: 0 };
+      status.textContent = window.__displayTransferResult.message;
+    }
+  </script>
+</body>
+</html>

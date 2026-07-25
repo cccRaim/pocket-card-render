@@ -5,7 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { SHADER, isBackgroundLayer } from "../public/render/rarities.js";
+import { SHADER } from "../public/render/rarities.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -14,8 +14,7 @@ const DECRYPTED_ROOT = path.resolve(process.env.PCR_DECRYPTED_ROOT
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted");
 
 const CATEGORY = Object.freeze({
-  EXACT: "exact-dual-output",
-  TEXT: "Text-bridge",
+  EXACT: "local-port-present",
   STENCIL: "Stencil-legal",
   GLITTER: "Glitter-single-RT-precompose",
   LENS_FLARE: "LensFlare-restored",
@@ -23,50 +22,51 @@ const CATEGORY = Object.freeze({
 });
 const CATEGORY_ORDER = Object.values(CATEGORY);
 
-function counts(exact, text, stencil, glitter, lensFlare, sideBack) {
+function counts(exact, stencil, glitter, lensFlare, sideBack) {
   return {
     [CATEGORY.EXACT]: exact,
-    [CATEGORY.TEXT]: text,
     [CATEGORY.STENCIL]: stencil,
     [CATEGORY.GLITTER]: glitter,
     [CATEGORY.LENS_FLARE]: lensFlare,
     [CATEGORY.SIDE_BACK]: sideBack,
-    total: exact + text + stencil + glitter + lensFlare + sideBack,
+    total: exact + stencil + glitter + lensFlare + sideBack,
   };
 }
 
 const EXPECTED_CARDS = Object.freeze({
   cPK_10_000040_00_FUSHIGIBANAex_RR: {
     meshRenderers: 23,
-    counts: counts(25, 1, 2, 0, 0, 2),
+    counts: counts(28, 2, 0, 0, 0),
   },
   cPK_20_008900_02_HOUOUex_UR: {
     meshRenderers: 18,
-    counts: counts(14, 1, 2, 1, 2, 2),
+    counts: counts(17, 2, 1, 2, 0),
   },
   cTR_20_000230_00_LEAF_SR: {
     meshRenderers: 18,
-    counts: counts(18, 1, 2, 0, 0, 2),
+    counts: counts(21, 2, 0, 0, 0),
   },
   cTR_20_000670_00_IIBUINOBAKKU_UR: {
     meshRenderers: 19,
-    counts: counts(15, 1, 2, 1, 2, 2),
+    counts: counts(18, 2, 1, 2, 0),
   },
 });
-const EXPECTED_TOTAL = counts(72, 4, 8, 2, 4, 8);
+const EXPECTED_TOTAL = counts(84, 8, 2, 4, 0);
 
-// These are the established exact program ports used by the four reference cards.
-// Frame-Holo-UR-New keeps its historical runtime key, hence the explicit appKey.
+// These local dual-output ports are present and wired for the four reference cards.
+// Exact executable closure is owned exclusively by audit-official-program-port-coverage.mjs.
 const EXACT_PORTS = Object.freeze({
   Card_Illust: { fragment: "card_illust.frag.glsl" },
   Card_Parallax: { fragment: "card_parallax.frag.glsl" },
   Card_Parallax_Hologram_Tuning: { fragment: "card_parallax_hologram_tuning.frag.glsl" },
   Card_Parallax_Metal: { fragment: "card_parallax_metal.frag.glsl" },
-  Effect: { fragment: "effect.frag.glsl" },
+  // Effect has six selector-owned sources; the app map's primary source is the basic variant.
+  // Selector/source closure is audited by audit-official-program-port-coverage.mjs.
+  Effect: { fragment: "effect_basic.frag.glsl" },
   Frame: { fragment: "frame.frag.glsl" },
   "Frame-2Layer-UR": { fragment: "frame_2layer_ur.frag.glsl" },
   "Frame-Holo-Tuning": { fragment: "frame_holo_tuning.frag.glsl" },
-  "Frame-Holo-UR-New": { appKey: "Frame_Holo_UR_New", fragment: "frame_holo_ur.frag.glsl" },
+  "Frame-Holo-UR-New": { fragment: "frame_holo_ur.frag.glsl" },
   Opaque_Hologram_Tuning: { fragment: "opaque_hologram_tuning.frag.glsl" },
   "Opaque-Hologram_Tuning": { fragment: "opaque_shadowbox_hologram_tuning.frag.glsl" },
   "Opaque-UR-Oklab": { fragment: "opaque_ur_oklab.frag.glsl" },
@@ -79,6 +79,8 @@ const EXACT_PORTS = Object.freeze({
   Card_Parallax_Hologram_UR_New: { fragment: "ur_bg_hologram.frag.glsl" },
   Card_UR_Plate: { fragment: "ur_plate.frag.glsl" },
   Card_Hologram_Tuning: { fragment: "card_hologram_tuning.frag.glsl" },
+  Text: { fragment: "dynamic_ui_text.frag.glsl" },
+  "Side&Back": { fragment: "side_back.frag.glsl" },
 });
 const GLITTER_PORT = Object.freeze({ fragment: "glitter.frag.glsl" });
 const LENS_FLARE_PORT = Object.freeze({ fragment: "ur_lens_flare.frag.glsl" });
@@ -129,8 +131,7 @@ function mapObject(map) {
 
 function classifyShader(shader) {
   if (Object.hasOwn(EXACT_PORTS, shader)) return CATEGORY.EXACT;
-  if (shader === "Text") return CATEGORY.TEXT;
-  if (shader === "InnerStencil" || shader === "OuterStencil") return CATEGORY.STENCIL;
+  if (["IllustStencil", "InnerStencil", "OuterStencil"].includes(shader)) return CATEGORY.STENCIL;
   if (shader === "Card_UR_Glitter_FlowMaps") return CATEGORY.GLITTER;
   if (shader === "Card_UR_LensFlare") return CATEGORY.LENS_FLARE;
   if (shader === "Side&Back") return CATEGORY.SIDE_BACK;
@@ -153,7 +154,7 @@ function outputLocations(source) {
 function readFragmentLocations(fragment) {
   const file = path.join(PUBLIC, "shaders", fragment);
   if (!fs.existsSync(file)) {
-    issues.push(`local exact fragment is missing: public/shaders/${fragment}`);
+    issues.push(`local port fragment is missing: public/shaders/${fragment}`);
     return [];
   }
   return outputLocations(fs.readFileSync(file, "utf8"));
@@ -164,12 +165,12 @@ function parseAppExactMap(appSource) {
   const start = appSource.indexOf(startMarker);
   const end = start < 0 ? -1 : appSource.indexOf("\n  });", start);
   if (start < 0 || end < 0) {
-    issues.push("app exact shader map could not be located");
+    issues.push("app local shader-port map could not be located");
     return new Map();
   }
   const result = new Map();
   const body = appSource.slice(start, end);
-  const entry = /(?:^|\n)\s*(?:"([^"]+)"|([A-Za-z_$][\w$]*))\s*:\s*\{\s*vert:\s*"[^"]+",\s*frag:\s*"shaders\/([^"]+)"\s*\},?/g;
+  const entry = /(?:^|\n)\s*(?:"([^"]+)"|([A-Za-z_$][\w$]*))\s*:\s*\{\s*vert:\s*"[^"]+",\s*frag:\s*"shaders\/([^"]+)"(?:,\s*(?:manifest:\s*"shaders\/[^"]+"|manifests:\s*\[[^\]]*\]))?\s*,?\s*\},?/g;
   for (const match of body.matchAll(entry)) result.set(match[1] || match[2], match[3]);
   return result;
 }
@@ -305,68 +306,51 @@ for (const variant of evidence.variants || []) {
   }
 }
 same("flattened official draw total", draws.length, EXPECTED_TOTAL.total);
-same("official exact shader set", sorted(officialExactShaders), sorted(Object.keys(EXACT_PORTS)));
+same("official local-port shader set", sorted(officialExactShaders), sorted(Object.keys(EXACT_PORTS)));
 
 const appSource = fs.readFileSync(path.join(PUBLIC, "app.js"), "utf8");
 const appExactMap = parseAppExactMap(appSource);
 for (const [shader, port] of Object.entries(EXACT_PORTS)) {
   const appKey = port.appKey || shader;
-  same(`${shader}: wired exact fragment`, appExactMap.get(appKey), port.fragment);
-  same(`${shader}: local exact output locations`, readFragmentLocations(port.fragment), [0, 1]);
+  same(`${shader}: wired local fragment`, appExactMap.get(appKey), port.fragment);
+  same(`${shader}: local dual-output locations`, readFragmentLocations(port.fragment), [0, 1]);
 }
 same(
-  "Card_UR_LensFlare: wired exact fragment",
+  "Card_UR_LensFlare: wired local fragment",
   appExactMap.get("Card_UR_LensFlare"),
   LENS_FLARE_PORT.fragment,
 );
 same(
-  "Card_UR_LensFlare: local exact output locations",
+  "Card_UR_LensFlare: local dual-output locations",
   readFragmentLocations(LENS_FLARE_PORT.fragment),
   [0, 1],
 );
 same(
-  "Card_UR_Glitter_FlowMaps: local precompose output locations",
+  "Card_UR_Glitter_FlowMaps: local WebGL MRT output locations",
   readFragmentLocations(GLITTER_PORT.fragment),
-  [0],
+  [0, 1],
 );
-requireCondition(
-  appSource.includes('fetch("shaders/glitter.frag.glsl")'),
-  "Card_UR_Glitter_FlowMaps: exact single-output fragment is not wired",
+same(
+  "Card_UR_Glitter_FlowMaps: wired selector-bound fragment",
+  appExactMap.get("Card_UR_Glitter_FlowMaps"),
+  GLITTER_PORT.fragment,
 );
 
-const stencilBlock = sourceBlock(
-  appSource,
-  'if (matName === "OuterStencil" || matName.startsWith("InnerStencil"))',
-  '// DynamicUI quad',
-  "Stencil writer",
-);
-requireCondition(stencilBlock.includes("stencilWriter(region)"), "Stencil writer no longer routes official stencil draws");
-
-const textBlock = sourceBlock(
-  appSource,
-  'if (matName === "L_FullFace_Text")',
-  "const r = materials[matName]",
-  "Text bridge",
-);
-same("Text bridge output locations", outputLocations(textBlock), [0, 1]);
-requireCondition(textBlock.includes("outEmissive = vec4(0.0)"), "Text bridge no longer writes a zero emissive attachment");
-requireCondition(textBlock.includes("dynUITex"), "Text bridge no longer consumes the DynamicUI texture");
-
-same("Side&Back defer policy", SHADER["Side&Back"]?.defer, true);
-same("Glitter background policy", SHADER.Card_UR_Glitter_FlowMaps?.bg, true);
 requireCondition(
-  isBackgroundLayer("Card_UR_Glitter_FlowMaps", SHADER.Card_UR_Glitter_FlowMaps, {}),
-  "Glitter is no longer routed to the background precompose",
+  /const isStencil = matName === "OuterStencil"\s*\|\| matName\.startsWith\("InnerStencil"\)\s*\|\| matName\.startsWith\("IllustStencil"\)/.test(appSource),
+  "selector-bound stencil route is absent",
 );
+requireCondition(appSource.includes("stencilGroup.add(mesh)"), "stencil draw is not routed to the stencil group");
+requireCondition(!appSource.includes("stencilWriter(region)"), "legacy MeshBasic stencil writer is still active");
+
+same("Side&Back local-port kind", SHADER["Side&Back"]?.kind, "sideBack");
+same("Side&Back wired local fragment", appExactMap.get("Side&Back"), "side_back.frag.glsl");
 requireCondition(
-  appSource.includes("(isBackgroundLayer(r.shader, cfg, r) ? bgGroup : fgGroup).add(mesh)"),
-  "background layers are no longer routed through the precompose group",
+  appSource.includes("fgGroup.add(mesh)") && !appSource.includes("isBackgroundLayer(r.shader, cfg, r)"),
+  "official draws no longer route directly to the shared MRT scene",
 );
-const backgroundBlock = sourceBlock(appSource, "if (bgPass) {", "window.__post", "background precompose");
-const singleTarget = /bgRT\s*=\s*new THREE\.WebGLRenderTarget\([\s\S]*?\);/.exec(backgroundBlock)?.[0] || "";
-requireCondition(!!singleTarget, "background precompose target could not be located");
-requireCondition(!/\bcount\s*:/.test(singleTarget), "background precompose unexpectedly became a multi-attachment target");
-same("background bridge output locations", outputLocations(backgroundBlock), [0, 1]);
+requireCondition(!appSource.includes("bgRT = new THREE.WebGLRenderTarget"),
+  "legacy single-target background precompose is still present");
 
 const flareRestoreBlock = sourceBlock(
   appSource,
@@ -441,17 +425,10 @@ for (const cardId of expectedCardIds) {
   same(`${cardId}: scene prefab GLB`, scene.prefabGlb, expectedGlbUrl);
 
   const recipes = scene.materials && typeof scene.materials === "object" ? scene.materials : {};
-  const expectedRecipeNames = sorted(
-    [...officialCounts.keys()].filter((material) => materialCategories.get(material) !== CATEGORY.TEXT),
-  );
+  const expectedRecipeNames = sorted(officialCounts.keys());
   same(`${cardId}: scene recipe material set`, sorted(Object.keys(recipes)), expectedRecipeNames);
   for (const material of expectedRecipeNames) {
     same(`${cardId}:${material}: scene shader`, recipes[material]?.shader, materialShaders.get(material));
-  }
-  for (const material of officialCounts.keys()) {
-    if (materialCategories.get(material) === CATEGORY.TEXT) {
-      requireCondition(!Object.hasOwn(recipes, material), `${cardId}:${material}: Text bridge unexpectedly has a scene recipe`);
-    }
   }
 
   let glbDraws;
@@ -478,8 +455,7 @@ same("global category counts", actualTotal, EXPECTED_TOTAL);
 same("active GLB covered official draw total", localGlbDrawTotal, EXPECTED_TOTAL.total - EXPECTED_TOTAL[CATEGORY.LENS_FLARE]);
 
 const columns = [
-  [CATEGORY.EXACT, "exact"],
-  [CATEGORY.TEXT, "text"],
+  [CATEGORY.EXACT, "port"],
   [CATEGORY.STENCIL, "stencil"],
   [CATEGORY.GLITTER, "glitter"],
   [CATEGORY.LENS_FLARE, "lens-rest"],
@@ -503,6 +479,7 @@ if (issues.length) {
 console.log("Official draw coverage audit OK");
 console.log(`Official chain: ${evidence.summary.meshRenderers} MeshRenderers, ${draws.length} Material draws, 0 unknown`);
 console.log(`Local GLBs:     ${localGlbDrawTotal}/${draws.length} official draws; ${defaultMaterialTotal} DefaultMaterial export placeholders ignored`);
-console.log(`Exceptions:     Text ${actualTotal[CATEGORY.TEXT]} bridged, Stencil ${actualTotal[CATEGORY.STENCIL]} legal, Glitter ${actualTotal[CATEGORY.GLITTER]} single-RT precomposed`);
-console.log(`Restored:       LensFlare ${actualTotal[CATEGORY.LENS_FLARE]} built-in Quad draws reconstructed from Transform + recipe`);
-console.log(`Deferred/gaps:  Side&Back ${actualTotal[CATEGORY.SIDE_BACK]} deferred`);
+console.log(`Exceptions:     Stencil ${actualTotal[CATEGORY.STENCIL]} selector-bound, Glitter ${actualTotal[CATEGORY.GLITTER]} precomposed`);
+console.log(`Local ports:    LensFlare ${actualTotal[CATEGORY.LENS_FLARE]} built-in Quad draws; Side&Back included in ${actualTotal[CATEGORY.EXACT]} wired draws`);
+console.log("Exact closure:  see audit-official-program-port-coverage.mjs; this inventory audit grants no exact verdict");
+console.log("Deferred/gaps:  none across the four reference prefabs");

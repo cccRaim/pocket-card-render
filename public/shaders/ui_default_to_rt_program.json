@@ -1,0 +1,781 @@
+{
+  "shader": "Lettuce/Common/CardNew/UI/Default(to RT)",
+  "role": "producer-to-render-texture",
+  "generated_by": "build/build-exact-ui-default-to-rt.mjs",
+  "official_source": {
+    "prefab_bundle_sha256": "c5f994db1c7fbce505d67d6affd8c638b8701243921438d3b5d3401b4577e613",
+    "ui_image_object_sha256": [
+      "8bb65619f11cdb8b216e069a26fc6b79be3dc87a7d6e887fd6ba196d00ffda62",
+      "14783a67d674df9cb1188dad0bc35ca052a6cd21fc77103bf26a405e04665433"
+    ],
+    "material_bundle_sha256": "f478326a8e58d1c1539ca181c93fab4302c7e37109fb30a012d4a7b7fe3fca54",
+    "material_object_sha256": "11cd5b30fc3e464b84bedda43e297576dfd5c36732fc8aa85ba33597c95f3db6",
+    "shader_bundle_sha256": "bfa614efb73e8a31da55f1fa71781b50108979dc19dd40d105f3e19a9da24198",
+    "shader_object_sha256": "186554d5da124466d167a320be7ee170a087bcbc9b74c0be8ee3c8315995b4b6",
+    "compressed_program_sha256": "2258f3c0a1dae1e10ca126ff269ca89c56363c68103d6c45a1f6a1fd98cdf27a",
+    "decompressed_program_sha256": "e97366c85713a41d9ff96791e3515682fc68fe943ba8ff35761122945185c5a1",
+    "parameter_entry_sha256": "50c6c2d071e0c99c3f9644d1be6a8948c706783ac0ef5586fe11414369a9bb63",
+    "program_entry_sha256": "49e9d4abf17db9f717c64716c155f6cf0e0be3deb093fd7b936e68eca813aed8"
+  },
+  "official_image_material_pptr": {
+    "file_id": 2,
+    "path_id": "-5098138999901745883",
+    "external_cab": "CAB-b03ac178e097f0b5b749149090b41913"
+  },
+  "official_material_shader_pptr": {
+    "file_id": 1,
+    "path_id": "5313265162950190389",
+    "external_cab": "CAB-475bda97c86c2e19de716358682956e4"
+  },
+  "pass_catalog": [
+    {
+      "subshaderIndex": 0,
+      "lod": 100,
+      "subshaderTags": {
+        "CanUseSpriteAtlas": "true",
+        "IGNOREPROJECTOR": "true",
+        "PreviewType": "Plane",
+        "QUEUE": "Transparent",
+        "RenderType": "Transparent"
+      },
+      "passIndex": 0,
+      "name": "Default",
+      "type": 0,
+      "programMask": 6,
+      "passTags": {},
+      "renderState": {
+        "blend": {
+          "srcColor": {
+            "value": 5,
+            "property": null
+          },
+          "dstColor": {
+            "value": 10,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 0,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 10,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 0,
+            "property": "_ColorMask"
+          },
+          "separate": false
+        },
+        "depth": {
+          "test": {
+            "value": 0,
+            "property": "unity_GUIZTestMode"
+          },
+          "write": {
+            "value": 0,
+            "property": null
+          },
+          "clip": {
+            "value": 1,
+            "property": null
+          }
+        },
+        "cull": {
+          "value": 0,
+          "property": null
+        },
+        "stencil": {
+          "reference": {
+            "value": 0,
+            "property": "_Stencil"
+          },
+          "readMask": {
+            "value": 0,
+            "property": "_StencilReadMask"
+          },
+          "writeMask": {
+            "value": 0,
+            "property": "_StencilWriteMask"
+          },
+          "compare": {
+            "value": 0,
+            "property": "_StencilComp"
+          },
+          "pass": {
+            "value": 0,
+            "property": "_StencilOp"
+          },
+          "fail": {
+            "value": 0,
+            "property": null
+          },
+          "depthFail": {
+            "value": 0,
+            "property": null
+          }
+        },
+        "alphaToMask": {
+          "value": 0,
+          "property": null
+        }
+      },
+      "compiledVariants": [
+        {
+          "subshaderIndex": 0,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 0,
+          "keywordIndices": [],
+          "keywords": [],
+          "parameterBlobIndex": 0,
+          "programBlobIndex": 4,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 0,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 1,
+          "keywordIndices": [
+            5
+          ],
+          "keywords": [
+            "UNITY_UI_ALPHACLIP"
+          ],
+          "parameterBlobIndex": 1,
+          "programBlobIndex": 5,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 0,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 2,
+          "keywordIndices": [
+            4
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT"
+          ],
+          "parameterBlobIndex": 2,
+          "programBlobIndex": 6,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 0,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 3,
+          "keywordIndices": [
+            4,
+            5
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT",
+            "UNITY_UI_ALPHACLIP"
+          ],
+          "parameterBlobIndex": 3,
+          "programBlobIndex": 7,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        }
+      ]
+    },
+    {
+      "subshaderIndex": 1,
+      "lod": 1,
+      "subshaderTags": {
+        "CanUseSpriteAtlas": "true",
+        "IGNOREPROJECTOR": "true",
+        "PreviewType": "Plane",
+        "QUEUE": "Transparent",
+        "RenderType": "Transparent"
+      },
+      "passIndex": 0,
+      "name": "Alpha",
+      "type": 0,
+      "programMask": 6,
+      "passTags": {},
+      "renderState": {
+        "blend": {
+          "srcColor": {
+            "value": 1,
+            "property": null
+          },
+          "dstColor": {
+            "value": 1,
+            "property": null
+          },
+          "srcAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "dstAlpha": {
+            "value": 1,
+            "property": null
+          },
+          "colorOp": {
+            "value": 0,
+            "property": null
+          },
+          "alphaOp": {
+            "value": 0,
+            "property": null
+          },
+          "colorMask": {
+            "value": 0,
+            "property": "_ColorMask"
+          },
+          "separate": false
+        },
+        "depth": {
+          "test": {
+            "value": 0,
+            "property": "unity_GUIZTestMode"
+          },
+          "write": {
+            "value": 0,
+            "property": null
+          },
+          "clip": {
+            "value": 1,
+            "property": null
+          }
+        },
+        "cull": {
+          "value": 0,
+          "property": null
+        },
+        "stencil": {
+          "reference": {
+            "value": 0,
+            "property": "_Stencil"
+          },
+          "readMask": {
+            "value": 0,
+            "property": "_StencilReadMask"
+          },
+          "writeMask": {
+            "value": 0,
+            "property": "_StencilWriteMask"
+          },
+          "compare": {
+            "value": 0,
+            "property": "_StencilComp"
+          },
+          "pass": {
+            "value": 0,
+            "property": "_StencilOp"
+          },
+          "fail": {
+            "value": 0,
+            "property": null
+          },
+          "depthFail": {
+            "value": 0,
+            "property": null
+          }
+        },
+        "alphaToMask": {
+          "value": 0,
+          "property": null
+        }
+      },
+      "compiledVariants": [
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 0,
+          "keywordIndices": [],
+          "keywords": [],
+          "parameterBlobIndex": 8,
+          "programBlobIndex": 10,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 1,
+          "keywordIndices": [
+            6
+          ],
+          "keywords": [
+            "SUB_OFFSET"
+          ],
+          "parameterBlobIndex": 8,
+          "programBlobIndex": 11,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 2,
+          "keywordIndices": [
+            5
+          ],
+          "keywords": [
+            "UNITY_UI_ALPHACLIP"
+          ],
+          "parameterBlobIndex": 8,
+          "programBlobIndex": 12,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 3,
+          "keywordIndices": [
+            5,
+            6
+          ],
+          "keywords": [
+            "UNITY_UI_ALPHACLIP",
+            "SUB_OFFSET"
+          ],
+          "parameterBlobIndex": 8,
+          "programBlobIndex": 13,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 4,
+          "keywordIndices": [
+            4
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT"
+          ],
+          "parameterBlobIndex": 9,
+          "programBlobIndex": 14,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 5,
+          "keywordIndices": [
+            4,
+            6
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT",
+            "SUB_OFFSET"
+          ],
+          "parameterBlobIndex": 9,
+          "programBlobIndex": 15,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 6,
+          "keywordIndices": [
+            4,
+            5
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT",
+            "UNITY_UI_ALPHACLIP"
+          ],
+          "parameterBlobIndex": 9,
+          "programBlobIndex": 16,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        },
+        {
+          "subshaderIndex": 1,
+          "passIndex": 0,
+          "stageMetadata": "progVertex",
+          "groupIndex": 3,
+          "variantIndex": 7,
+          "keywordIndices": [
+            4,
+            5,
+            6
+          ],
+          "keywords": [
+            "UNITY_UI_CLIP_RECT",
+            "UNITY_UI_ALPHACLIP",
+            "SUB_OFFSET"
+          ],
+          "parameterBlobIndex": 9,
+          "programBlobIndex": 17,
+          "gpuProgramType": 25,
+          "shaderRequirements": 1
+        }
+      ]
+    }
+  ],
+  "port_target": {
+    "status": "static-candidate-not-runtime-selection",
+    "reason": "first serialized subshader, Default pass, empty Material keyword set, Vulkan player group",
+    "subshaderIndex": 0,
+    "passIndex": 0,
+    "stageMetadata": "progVertex",
+    "groupIndex": 3,
+    "variantIndex": 0,
+    "keywordIndices": [],
+    "keywords": [],
+    "parameterBlobIndex": 0,
+    "programBlobIndex": 4,
+    "gpuProgramType": 25,
+    "shaderRequirements": 1
+  },
+  "modules": {
+    "vertex": {
+      "byte_size": 2916,
+      "spirv_sha256": "f7f9575dc16cbe21765696d9eae09674e5092db11161f7230450462f9df348c1",
+      "reflection_sha256": "bcea6eff397181895a867ac88ab99cd8ce285a6a16f791abccbcce12175c8162"
+    },
+    "fragment": {
+      "byte_size": 1320,
+      "spirv_sha256": "d57a4eb4230bbe11be4ec5fcd9f764889b7fa8506fedc185f46b3d324e97bf32",
+      "reflection_sha256": "8bd2d822fd779b34de023cd31c5264dc0b1dab86ee68c09509e4300d29bb08b7"
+    }
+  },
+  "bindings": {
+    "main_texture": {
+      "name": "_MainTex",
+      "spirv_set": 0,
+      "spirv_binding": 0,
+      "serialized_binding": 0,
+      "dimension": 2,
+      "material_texture_pptr": {
+        "file_id": 0,
+        "path_id": "0"
+      },
+      "scale": [
+        1,
+        1
+      ],
+      "offset": [
+        0,
+        0
+      ]
+    },
+    "texture_sample_add": {
+      "name": "_TextureSampleAdd",
+      "stage": "fragment",
+      "serialized_buffer": "PGlobals4044006825",
+      "offset": 0,
+      "type": "vec4",
+      "spirv_set": 1,
+      "spirv_binding": 0
+    },
+    "vertex_globals": {
+      "serialized_buffer": "VGlobals4044006825",
+      "size": 160,
+      "spirv_set": 1,
+      "spirv_binding": 1,
+      "color_offset": 128,
+      "main_tex_st_offset": 144
+    },
+    "matrices": [
+      {
+        "official": "unity_ObjectToWorld",
+        "webgl2": "modelMatrix",
+        "offset": 0
+      },
+      {
+        "official": "unity_MatrixVP",
+        "webgl2": "projectionMatrix * viewMatrix",
+        "offset": 64
+      }
+    ],
+    "attributes": [
+      {
+        "name": "position",
+        "location": 0
+      },
+      {
+        "name": "color",
+        "location": 1
+      },
+      {
+        "name": "uv",
+        "location": 2
+      }
+    ]
+  },
+  "render_state": {
+    "official_shaderlab_serialized": {
+      "blend": {
+        "srcColor": {
+          "value": 5,
+          "property": null
+        },
+        "dstColor": {
+          "value": 10,
+          "property": null
+        },
+        "srcAlpha": {
+          "value": 0,
+          "property": null
+        },
+        "dstAlpha": {
+          "value": 10,
+          "property": null
+        },
+        "colorOp": {
+          "value": 0,
+          "property": null
+        },
+        "alphaOp": {
+          "value": 0,
+          "property": null
+        },
+        "colorMask": {
+          "value": 0,
+          "property": "_ColorMask"
+        },
+        "separate": false
+      },
+      "depth": {
+        "test": {
+          "value": 0,
+          "property": "unity_GUIZTestMode"
+        },
+        "write": {
+          "value": 0,
+          "property": null
+        },
+        "clip": {
+          "value": 1,
+          "property": null
+        }
+      },
+      "cull": {
+        "value": 0,
+        "property": null
+      },
+      "stencil": {
+        "reference": {
+          "value": 0,
+          "property": "_Stencil"
+        },
+        "readMask": {
+          "value": 0,
+          "property": "_StencilReadMask"
+        },
+        "writeMask": {
+          "value": 0,
+          "property": "_StencilWriteMask"
+        },
+        "compare": {
+          "value": 0,
+          "property": "_StencilComp"
+        },
+        "pass": {
+          "value": 0,
+          "property": "_StencilOp"
+        },
+        "fail": {
+          "value": 0,
+          "property": null
+        },
+        "depthFail": {
+          "value": 0,
+          "property": null
+        }
+      },
+      "alphaToMask": {
+        "value": 0,
+        "property": null
+      }
+    },
+    "interpretation": {
+      "dynamic_property_rule": "When property is non-null, value is a serialized ShaderLab placeholder, not the resolved runtime fixed-function value.",
+      "material_default_rule": "material_serialized_default is pinned evidence from UI-Default-ToRT.mat, but Canvas may override it per draw.",
+      "runtime_rule": "runtime_resolved_value remains null until the Canvas draw-state setter chain is proved."
+    },
+    "dynamic_properties": {
+      "color_mask": {
+        "shaderlab_path": "blend.colorMask",
+        "property": "_ColorMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 15,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "depth_test": {
+        "shaderlab_path": "depth.test",
+        "property": "unity_GUIZTestMode",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": null,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_reference": {
+        "shaderlab_path": "stencil.reference",
+        "property": "_Stencil",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 0,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_read_mask": {
+        "shaderlab_path": "stencil.readMask",
+        "property": "_StencilReadMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 255,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_write_mask": {
+        "shaderlab_path": "stencil.writeMask",
+        "property": "_StencilWriteMask",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 255,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_compare": {
+        "shaderlab_path": "stencil.compare",
+        "property": "_StencilComp",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 8,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      },
+      "stencil_pass": {
+        "shaderlab_path": "stencil.pass",
+        "property": "_StencilOp",
+        "shaderlab_serialized_placeholder": 0,
+        "material_serialized_default": 0,
+        "runtime_resolved_value": null,
+        "status": "runtime-unproved",
+        "warning": "Resolve the named property for the actual Canvas draw; never use shaderlab_serialized_placeholder as fixed-function state."
+      }
+    }
+  },
+  "blend": {
+    "source": "SrcAlpha",
+    "destination": "OneMinusSrcAlpha",
+    "sourceValue": 5,
+    "destinationValue": 10,
+    "serializedSeparateBlend": false
+  },
+  "fragment_dataflow": {
+    "tint": "vertexColor * _Color",
+    "uv": "uv0 * _MainTex_ST.xy + _MainTex_ST.zw",
+    "primary": "(texture(_MainTex, uv) + _TextureSampleAdd) * tint",
+    "mrt1": "vec4(0.0)"
+  },
+  "mrt": {
+    "primary": {
+      "name": "outColor",
+      "location": 0
+    },
+    "secondary": {
+      "name": "outAux",
+      "location": 1,
+      "value": "vec4(0.0)"
+    }
+  },
+  "webgl2_adaptation": [
+    "remove the SPIRV-Cross #version directive for host-side WebGL2 version injection",
+    "flatten official std140 blocks into named WebGL2 uniforms",
+    "map official matrices and UI vertex attributes without changing shader math",
+    "combine the official image and sampler as _MainTex",
+    "remove the Vulkan clip-space Y flip",
+    "preserve the official UV transform without adding a texture-coordinate flip",
+    "rename stage interface symbols without changing dataflow or MRT"
+  ],
+  "runtime_boundaries": [
+    {
+      "id": "runtime-subshader-pass-selection",
+      "status": "unproved",
+      "claim": "the actual Canvas draw selects serialized subshader 0 Default rather than subshader 1 Alpha; static bundle order is not a runtime capture"
+    },
+    {
+      "id": "dynamic-ui-keyword-state",
+      "status": "unproved",
+      "claim": "the actual UNITY_UI_CLIP_RECT, UNITY_UI_ALPHACLIP, and SUB_OFFSET keyword set for each draw; the serialized Material has no keywords"
+    },
+    {
+      "id": "dynamic-canvas-fixed-function-state",
+      "status": "unproved",
+      "claim": "resolved unity_GUIZTestMode, _ColorMask, _Stencil, _StencilComp, _StencilOp, _StencilReadMask, and _StencilWriteMask values per Canvas draw"
+    },
+    {
+      "id": "producer-render-target-contract",
+      "status": "unproved",
+      "claim": "the runtime MRT attachment formats, color spaces, clears, viewport, and destination contents receiving this producer draw"
+    },
+    {
+      "id": "texture-sample-add-per-draw-value",
+      "status": "unproved",
+      "claim": "the actual _TextureSampleAdd value supplied for each UI Image draw"
+    }
+  ],
+  "unproved": [
+    {
+      "id": "runtime-subshader-pass-selection",
+      "status": "unproved",
+      "claim": "the actual Canvas draw selects serialized subshader 0 Default rather than subshader 1 Alpha; static bundle order is not a runtime capture"
+    },
+    {
+      "id": "dynamic-ui-keyword-state",
+      "status": "unproved",
+      "claim": "the actual UNITY_UI_CLIP_RECT, UNITY_UI_ALPHACLIP, and SUB_OFFSET keyword set for each draw; the serialized Material has no keywords"
+    },
+    {
+      "id": "dynamic-canvas-fixed-function-state",
+      "status": "unproved",
+      "claim": "resolved unity_GUIZTestMode, _ColorMask, _Stencil, _StencilComp, _StencilOp, _StencilReadMask, and _StencilWriteMask values per Canvas draw"
+    },
+    {
+      "id": "producer-render-target-contract",
+      "status": "unproved",
+      "claim": "the runtime MRT attachment formats, color spaces, clears, viewport, and destination contents receiving this producer draw"
+    },
+    {
+      "id": "texture-sample-add-per-draw-value",
+      "status": "unproved",
+      "claim": "the actual _TextureSampleAdd value supplied for each UI Image draw"
+    }
+  ]
+}

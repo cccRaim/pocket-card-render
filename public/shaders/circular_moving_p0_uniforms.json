@@ -1,0 +1,1106 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Card_Circular_Moving_Kira",
+  "generated_by": "build/build-exact-circular-kira.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+    "candidateWitnessId": "d144f36a25157e6512c2db8de22f1f54acf42de328268aecf2d4a61bcf09c1ce",
+    "shaderIdentity": "CAB-7c5dedb63d40a00ec1730072ec235e03:-3547658824311513007",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Moving_Kira",
+    "keywords": [],
+    "selectionMode": "ordered-multipass-structure",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "772bafd62273949b6c9e003e25b43d7d9f9726c2e88d90e258edd7fbe997966d",
+    "semanticExecutableId": "38637201438c597d434e794694efccbb306298cab6084758adb8c877b3f9f5bd"
+  },
+  "official_spirv_sha256": {
+    "vertex": "aa1e0c2950d9f1ea8e43a38cf34e886242cce68e159d61169593ec24c0e23ef4",
+    "fragment": "d57053f6cc69e02c0753bc53afef124dc9cfe3db73288509a85461ae3822e90b"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "aa1e0c2950d9f1ea8e43a38cf34e886242cce68e159d61169593ec24c0e23ef4",
+    "fragmentSpirvSha256": "d57053f6cc69e02c0753bc53afef124dc9cfe3db73288509a85461ae3822e90b",
+    "parameterEntrySha256": "c525e20f028aa8769a1d753ebe09bd0d795809df76578a68bf90d8fd1a76a93a",
+    "passStateSha256": "2b4075c736b03e048539e8c13ea87c5b092d9565f2449e9436b8c853add985f8",
+    "commonBindingsSha256": "6bc23c23097140ae801cc6f53359237bd44b8efacfa4ca4ced47dad09588fb2d"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "c525e20f028aa8769a1d753ebe09bd0d795809df76578a68bf90d8fd1a76a93a",
+    "byte_size": 100,
+    "reflection_sha256": "b6193fdcab1cb05610543479f05bda3fc2e23900d74c58c7621df743d97fe480",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals935786412",
+        "size": 660,
+        "fields": []
+      },
+      {
+        "name": "VGlobals935786412",
+        "size": 2408,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals935786412",
+        "size": 660
+      },
+      {
+        "name": "VGlobals935786412",
+        "size": 2408
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_PrimATex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      },
+      {
+        "name": "_PrimAMorphTex",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      },
+      {
+        "name": "_PrimBTex",
+        "binding": 2,
+        "encodedIndex": 134217730,
+        "dim": 2
+      },
+      {
+        "name": "_PrimBMorphTex",
+        "binding": 3,
+        "encodedIndex": 134217731,
+        "dim": 2
+      },
+      {
+        "name": "_PrimCTex",
+        "binding": 4,
+        "encodedIndex": 134217732,
+        "dim": 2
+      },
+      {
+        "name": "_PrimCMorphTex",
+        "binding": 5,
+        "encodedIndex": 134217733,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 6,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "2b4075c736b03e048539e8c13ea87c5b092d9565f2449e9436b8c853add985f8",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 4,
+        "name": null
+      },
+      "write": {
+        "val": 0,
+        "name": null
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": null
+      },
+      "read_mask": {
+        "val": 255,
+        "name": null
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 5,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 10,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 10,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "6bc23c23097140ae801cc6f53359237bd44b8efacfa4ca4ced47dad09588fb2d",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_PrimATex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PrimAMorphTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PrimBTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PrimBMorphTex",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PrimCTex",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PrimCMorphTex",
+        "encodedIndex": 134217733,
+        "set": 0,
+        "binding": 5,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals935786412",
+        "size": 660,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_AdjustAlphaBlendAlpha",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMorphing",
+            "offset": 16,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimTypes",
+            "offset": 336,
+            "arraySize": 20,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 656,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals935786412",
+        "size": 2408,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_Tilt",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerNoiseScale",
+            "offset": 132,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimAngles",
+            "offset": 144,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimBaseScales",
+            "offset": 464,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimBaseIntensities",
+            "offset": 784,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMinIntensities",
+            "offset": 1104,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMaxIntensities",
+            "offset": 1424,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimFlickerScaling",
+            "offset": 1744,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimFlickerAnimOffsets",
+            "offset": 2064,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularRadius",
+            "offset": 2384,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularDefaultAngle",
+            "offset": 2388,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_MoveAngle",
+            "offset": 2392,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CenterMoveByTilt",
+            "offset": 2396,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimCount",
+            "offset": 2400,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_PrimDelete",
+            "offset": 2404,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals935786412",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals935786412",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "6bc23c23097140ae801cc6f53359237bd44b8efacfa4ca4ced47dad09588fb2d",
+    "parameter_reflection_sha256": "b6193fdcab1cb05610543479f05bda3fc2e23900d74c58c7621df743d97fe480",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_PrimATex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PrimAMorphTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PrimBTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PrimBMorphTex",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PrimCTex",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PrimCMorphTex",
+        "encodedIndex": 134217733,
+        "set": 0,
+        "binding": 5,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals935786412",
+        "size": 660,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_AdjustAlphaBlendAlpha",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMorphing",
+            "offset": 16,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimTypes",
+            "offset": 336,
+            "arraySize": 20,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 656,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals935786412",
+        "size": 2408,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_Tilt",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_FlickerNoiseScale",
+            "offset": 132,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimAngles",
+            "offset": 144,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimBaseScales",
+            "offset": 464,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimBaseIntensities",
+            "offset": 784,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMinIntensities",
+            "offset": 1104,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimMaxIntensities",
+            "offset": 1424,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimFlickerScaling",
+            "offset": 1744,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimFlickerAnimOffsets",
+            "offset": 2064,
+            "arraySize": 20,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularRadius",
+            "offset": 2384,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CircularDefaultAngle",
+            "offset": 2388,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_MoveAngle",
+            "offset": 2392,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_CenterMoveByTilt",
+            "offset": 2396,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_PrimCount",
+            "offset": 2400,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_PrimDelete",
+            "offset": 2404,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals935786412",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals935786412",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_PrimATex": "white",
+      "_PrimBTex": "white",
+      "_PrimCTex": "white",
+      "_PrimAMorphTex": "white",
+      "_PrimBMorphTex": "white",
+      "_PrimCMorphTex": "white"
+    },
+    "textureDescriptors": {
+      "_PrimATex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimBTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimCTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimAMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimBMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimCMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_AdjustAlphaBlendAlpha": 0.5,
+      "_AdjustAddAlpha": 1,
+      "_AdjustAddMinAlpha": 0,
+      "_FlickerNoiseScale": 2,
+      "_ZRotateInverse": 0.20000000298023224,
+      "_PrimScalingXMin": 0.8999999761581421,
+      "_PrimScalingXMax": 1.100000023841858,
+      "_PrimScalingYMin": 0.8999999761581421,
+      "_PrimScalingYMax": 1.100000023841858,
+      "_IntensityAnimMin": 0.8999999761581421,
+      "_IntensityAnimMax": 1.100000023841858,
+      "_CircularRadius": 1,
+      "_CenterMoveByTilt": 0,
+      "_EmissiveIntensity": 1,
+      "_AdjustEmissiveAlpha": 1,
+      "_PrimCount": 0,
+      "_PrimDelete": 0
+    },
+    "colors": {},
+    "vectors": {}
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "aa1e0c2950d9f1ea8e43a38cf34e886242cce68e159d61169593ec24c0e23ef4",
+      "spirvCrossGlslSha256": "89bb13b5ee18a7704550ac337a7334f8b1e339b3f4e71d4ff6e395c33e8cc9e3",
+      "outputSha256": "992181aa8c71345953fa414efd526f010a0dcf3f612c6a8c7bf9a0fd5dc80349",
+      "substitutions": [
+        "map official mesh locations to Three.js position/uv/uv1 attributes",
+        "unity_ObjectToWorld := three.modelMatrix and unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "expand official common-buffer fields and fixed-size arrays into same-name WebGL uniforms",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "d57053f6cc69e02c0753bc53afef124dc9cfe3db73288509a85461ae3822e90b",
+      "spirvCrossGlslSha256": "369864fd87c3f6e5940fb5ffb37d0c7ec89ae63050ac0bdec305ebae9767a1de",
+      "outputSha256": "a9b9f96673a328f18efec2b731594802b92419203bacf33a6503ef1f10f43d4c",
+      "substitutions": [
+        "expand official common-buffer fields and fixed-size arrays into same-name WebGL uniforms"
+      ]
+    },
+    "interfaceSha256": "7c381700a39bbfa67df15c8c29df433bfcb3199eef4dfb1e6b061c897d4526be"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/circular_moving_p0.vert.glsl",
+    "fragment": "public/shaders/circular_moving_p0.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Circular_Moving_Kira",
+    "attributes": {
+      "position": "vec3",
+      "uv": "vec2",
+      "uv1": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FlickerNoiseScale",
+        "_CircularRadius",
+        "_CenterMoveByTilt",
+        "_AdjustAlphaBlendAlpha",
+        "_EmissiveIntensity"
+      ],
+      "ints": [
+        "_PrimCount",
+        "_PrimDelete"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_Tilt": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateTilt"
+      },
+      "_CircularDefaultAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.Initialize/UpdateCircularParams"
+      },
+      "_MoveAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateCircularParams"
+      },
+      "_PrimAngles": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimBaseScales": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimBaseIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimMinIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimMaxIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimFlickerScaling": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimFlickerAnimOffsets": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimMorphing": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimTypes": {
+        "type": "int[20]",
+        "source": "CircularKiraObject.Initialize"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": true,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic",
+    "ordered_pass": {
+      "subshader": 0,
+      "pass": 0,
+      "name": "AlphaBlendPass"
+    }
+  },
+  "runtime_boundaries": [
+    {
+      "status": "runtime-required",
+      "producer": "CircularKiraObject.UpdateTilt/UpdateParticleParams/ApplyParams",
+      "payload": "MaterialPropertyBlock scalar and 20-element arrays"
+    }
+  ],
+  "sampler_bindings": [
+    {
+      "slot": "_PrimATex",
+      "spirvName": "_109",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PrimAMorphTex",
+      "spirvName": "_104",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PrimBTex",
+      "spirvName": "_23",
+      "binding": 2,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PrimBMorphTex",
+      "spirvName": "_13",
+      "binding": 3,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PrimCTex",
+      "spirvName": "_62",
+      "binding": 4,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PrimCMorphTex",
+      "spirvName": "_56",
+      "binding": 5,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_109",
+    "_104",
+    "_23",
+    "_13",
+    "_62",
+    "_56"
+  ],
+  "sampler_slots": [
+    "_PrimATex",
+    "_PrimAMorphTex",
+    "_PrimBTex",
+    "_PrimBMorphTex",
+    "_PrimCTex",
+    "_PrimCMorphTex"
+  ],
+  "compiled_texture_bindings": {
+    "_PrimATex": 0,
+    "_PrimAMorphTex": 1,
+    "_PrimBTex": 2,
+    "_PrimBMorphTex": 3,
+    "_PrimCTex": 4,
+    "_PrimCMorphTex": 5
+  },
+  "implicit_defaults": {
+    "_PrimATex": "white",
+    "_PrimBTex": "white",
+    "_PrimCTex": "white",
+    "_PrimAMorphTex": "white",
+    "_PrimBMorphTex": "white",
+    "_PrimCMorphTex": "white"
+  },
+  "floats": {
+    "_FlickerNoiseScale": "_FlickerNoiseScale",
+    "_CircularRadius": "_CircularRadius",
+    "_CenterMoveByTilt": "_CenterMoveByTilt",
+    "_AdjustAlphaBlendAlpha": "_AdjustAlphaBlendAlpha",
+    "_EmissiveIntensity": "_EmissiveIntensity",
+    "_PrimCount": "_PrimCount",
+    "_PrimDelete": "_PrimDelete",
+    "_Tilt": "_Tilt",
+    "_CircularDefaultAngle": "_CircularDefaultAngle",
+    "_MoveAngle": "_MoveAngle",
+    "_PrimAngles": "_PrimAngles",
+    "_PrimBaseScales": "_PrimBaseScales",
+    "_PrimBaseIntensities": "_PrimBaseIntensities",
+    "_PrimMinIntensities": "_PrimMinIntensities",
+    "_PrimMaxIntensities": "_PrimMaxIntensities",
+    "_PrimFlickerScaling": "_PrimFlickerScaling",
+    "_PrimFlickerAnimOffsets": "_PrimFlickerAnimOffsets",
+    "_PrimMorphing": "_PrimMorphing",
+    "_PrimTypes": "_PrimTypes"
+  },
+  "mrt": {
+    "primary": "_163",
+    "emissive": "_175"
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "schema": "pocket-card-render/official-sort-collision-groups@1",
+  "source": {
+    "sortableDraws": 98,
+    "collidingDraws": 36,
+    "groupDigest": "d2f843b10ac651a9abff8f09a63cba6297526b3e220c94592ed7e9516db6a4ed",
+    "decisionDigest": "8fef885623b3f86d2e5140cd36cb6054d3eebd58b907194a2b68198b6dfc2e4c",
+    "boundaryClassCounts": {
+      "material-sort-byte17c-only": 6,
+      "shared-shader-instance-id-low8": 3,
+      "distinct-shader-instance-id-low8-then-material-byte17c-on-tie": 8
+    }
+  },
+  "groups": [
+    {
+      "groupId": "cPK_10_000040_00_FUSHIGIBANAex_RR:opaque:q1000",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "pass": "opaque",
+      "queue": 1000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:8479474336382667098#0",
+          "materialName": "InnerStencil_Window",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:8479474336382667098",
+          "materialIdentity": "CAB-40edce138949e7d8493c275431592e5c:5632862269281222530",
+          "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:3062412274509302106#0",
+          "materialName": "OuterStencil",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:3062412274509302106",
+          "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+          "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_10_000040_00_FUSHIGIBANAex_RR:opaque:q2000",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "pass": "opaque",
+      "queue": 2000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:4657635415711500634#0",
+          "materialName": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:4657635415711500634",
+          "materialIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-8964469818339715958",
+          "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3159871262
+        },
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3824503925824403110#1",
+          "materialName": "L_Card_R_M",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3824503925824403110",
+          "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3824503925824403110#2",
+          "materialName": "L_Card_S_M",
+          "materialSlot": 2,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3824503925824403110",
+          "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_10_000040_00_FUSHIGIBANAex_RR:opaque:q2030",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "pass": "opaque",
+      "queue": 2030,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-2658662930515146406#0",
+          "materialName": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR2",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-2658662930515146406",
+          "materialIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-7416839043634052329",
+          "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3159871262
+        },
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-8958781389936506534#0",
+          "materialName": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR3",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-8958781389936506534",
+          "materialIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-33357001875880953",
+          "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3159871262
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_10_000040_00_FUSHIGIBANAex_RR:transparent:q2502",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "pass": "transparent",
+      "queue": 2502,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3542326578629490342#0",
+          "materialName": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFM3",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-3542326578629490342",
+          "materialIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:207098015285813420",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+          "serializedLocalKeywordHash": 545665726
+        },
+        {
+          "drawId": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-314805241206781606#0",
+          "materialName": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFM4",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-314805241206781606",
+          "materialIdentity": "CAB-4f5d20f0c1be4b2db1c9cde3ac7e6080:-246845637757638258",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+          "serializedLocalKeywordHash": 545665726
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_20_008900_02_HOUOUex_UR:opaque:q1000",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "pass": "opaque",
+      "queue": 1000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-8570311521200046041#0",
+          "materialName": "InnerStencil_Full_v02",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-8570311521200046041",
+          "materialIdentity": "CAB-9e9a383d3a4150566c01b939e59f7f0a:659084912445889493",
+          "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:7247255812098359335#0",
+          "materialName": "OuterStencil",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:7247255812098359335",
+          "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+          "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_20_008900_02_HOUOUex_UR:opaque:q2000",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "pass": "opaque",
+      "queue": 2000,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041#1",
+          "materialName": "L_Card_R_M",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041",
+          "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041#2",
+          "materialName": "L_Card_S_M",
+          "materialSlot": 2,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041",
+          "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_20_008900_02_HOUOUex_UR:opaque:q2100",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "pass": "opaque",
+      "queue": 2100,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-1508310857659908057#1",
+          "materialName": "cPK_20_008900_02_HOUOUex_UR_L_SBM1",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-1508310857659908057",
+          "materialIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:2059060942362560581",
+          "shaderIdentity": "CAB-182e9ce244efe632677862310eb737a4:3059412248834019778",
+          "meshIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:7597758055364291549",
+          "serializedLocalKeywordHash": 3401280343
+        },
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041#0",
+          "materialName": "Pokemon_Frame_UR",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-7712216443504558041",
+          "materialIdentity": "CAB-f877bda3ff853f1ded0f5e25eee2796c:-5289940276455780354",
+          "shaderIdentity": "CAB-62d0fe26e15b81d6acb219fc4e4d8a94:-1788317573349155880",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_20_008900_02_HOUOUex_UR:opaque:q2500",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "pass": "opaque",
+      "queue": 2500,
+      "runtimeBoundaryClass": "shared-shader-instance-id-low8",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:3555085974982623271#0",
+          "materialName": "cPK_20_008900_02_HOUOUex_UR_L_EFM1",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:3555085974982623271",
+          "materialIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-3442102692758373498",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 1486851640
+        },
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-4086440514096070617#0",
+          "materialName": "cPK_20_008900_02_HOUOUex_UR_L_EFM2",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-4086440514096070617",
+          "materialIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:2989165423711302031",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 4005879819
+        }
+      ]
+    },
+    {
+      "groupId": "cPK_20_008900_02_HOUOUex_UR:transparent:q2650",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "pass": "transparent",
+      "queue": 2650,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:7772385622325133351#0",
+          "materialName": "L_UR_Pokemon_LensFlare_Back",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:7772385622325133351",
+          "materialIdentity": "CAB-2ca11ececccc6c7519dad93bcde9965b:1290296136370174394",
+          "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+          "meshIdentity": "Library/unity default resources:10210",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-5987881bb6c83232bd4e95e217d6902d:-1818939297817034713#0",
+          "materialName": "L_UR_Pokemon_LensFlare_Front",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-5987881bb6c83232bd4e95e217d6902d:-1818939297817034713",
+          "materialIdentity": "CAB-dfafb0e93b96a12fc5684d387af8386f:311239597850265459",
+          "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+          "meshIdentity": "Library/unity default resources:10210",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000230_00_LEAF_SR:opaque:q1000",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "pass": "opaque",
+      "queue": 1000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-8577190497621411449#0",
+          "materialName": "InnerStencil_Trainers",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-8577190497621411449",
+          "materialIdentity": "CAB-ffc5cad0bb62b36f3340fa753f5209b3:-525134074617919721",
+          "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:2286598546534463879#0",
+          "materialName": "OuterStencil",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:2286598546534463879",
+          "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+          "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000230_00_LEAF_SR:opaque:q2000",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "pass": "opaque",
+      "queue": 2000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:6053489821533960583#0",
+          "materialName": "cTR_20_000230_00_LEAF_SR_L_PAR",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:6053489821533960583",
+          "materialIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-4003850194562997915",
+          "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3159871262
+        },
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:5986854484210973063#1",
+          "materialName": "L_Card_R_M",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:5986854484210973063",
+          "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:5986854484210973063#2",
+          "materialName": "L_Card_S_M",
+          "materialSlot": 2,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:5986854484210973063",
+          "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000230_00_LEAF_SR:opaque:q2400",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "pass": "opaque",
+      "queue": 2400,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:1921693978867104135#1",
+          "materialName": "cTR_20_000230_00_LEAF_SR_L_SBM2",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:1921693978867104135",
+          "materialIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:239268056299605199",
+          "shaderIdentity": "CAB-8e1aefff56e426989d247ccc004f8b74:-7649023482242642590",
+          "meshIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:1560035244139323754",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-4424747628633884281#0",
+          "materialName": "Panel_Trainers_Support",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-4424747628633884281",
+          "materialIdentity": "CAB-7721adcb01c8957bb06c550acd68b32a:-3145017825280592906",
+          "shaderIdentity": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000230_00_LEAF_SR:opaque:q2500",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "pass": "opaque",
+      "queue": 2500,
+      "runtimeBoundaryClass": "shared-shader-instance-id-low8",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:1832743217612290439#0",
+          "materialName": "cTR_20_000230_00_LEAF_SR_L_EFM1",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:1832743217612290439",
+          "materialIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:5965074222017275984",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 1486851640
+        },
+        {
+          "drawId": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:4353866146883926407#0",
+          "materialName": "cTR_20_000230_00_LEAF_SR_L_EFM2",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:4353866146883926407",
+          "materialIdentity": "CAB-1929b86ec4f9ca8a5155ee9b7a451cc0:-179588731446675453",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 4005879819
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000670_00_IIBUINOBAKKU_UR:opaque:q1000",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "pass": "opaque",
+      "queue": 1000,
+      "runtimeBoundaryClass": "distinct-shader-instance-id-low8-then-material-byte17c-on-tie",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:329997189841044509#0",
+          "materialName": "InnerStencil_Trainers",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:329997189841044509",
+          "materialIdentity": "CAB-ffc5cad0bb62b36f3340fa753f5209b3:-525134074617919721",
+          "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:4782879949171606557#0",
+          "materialName": "OuterStencil",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:4782879949171606557",
+          "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+          "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+          "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000670_00_IIBUINOBAKKU_UR:opaque:q2000",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "pass": "opaque",
+      "queue": 2000,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:-547415284522007523#1",
+          "materialName": "L_Card_R_M",
+          "materialSlot": 1,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:-547415284522007523",
+          "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:-547415284522007523#2",
+          "materialName": "L_Card_S_M",
+          "materialSlot": 2,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:-547415284522007523",
+          "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+          "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+          "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000670_00_IIBUINOBAKKU_UR:opaque:q2500",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "pass": "opaque",
+      "queue": 2500,
+      "runtimeBoundaryClass": "shared-shader-instance-id-low8",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:6502998368875004957#0",
+          "materialName": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFM1",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:6502998368875004957",
+          "materialIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:7942875504867862277",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 1486851640
+        },
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:-7605413175089085411#0",
+          "materialName": "cTR_20_000670_00_IIBUINOBAKKU_UR_L_EFM2",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:-7605413175089085411",
+          "materialIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:5571848330149346736",
+          "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+          "meshIdentity": "CAB-f60808dad8d1c1ebab95671184630b81:-7179932594595022964",
+          "serializedLocalKeywordHash": 4005879819
+        }
+      ]
+    },
+    {
+      "groupId": "cTR_20_000670_00_IIBUINOBAKKU_UR:transparent:q2650",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "pass": "transparent",
+      "queue": 2650,
+      "runtimeBoundaryClass": "material-sort-byte17c-only",
+      "knownOptimizeTies": {
+        "rendererTypeValue": 1,
+        "lodFadeHighByte": 0,
+        "staticBatchSubMeshCount": 0,
+        "packedLightmapIndices": 4294967295,
+        "srpBatcherCompatible": 0
+      },
+      "members": [
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:-8727475402271144931#0",
+          "materialName": "L_UR_Trainer_LensFlare_Back",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:-8727475402271144931",
+          "materialIdentity": "CAB-94087f5e134b9f0efbdd3909f32a79f9:-3671203752172772910",
+          "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+          "meshIdentity": "Library/unity default resources:10210",
+          "serializedLocalKeywordHash": 3989861089
+        },
+        {
+          "drawId": "CAB-7f7dbe31815af3a5ae3e56b901922720:-3723081897654860771#0",
+          "materialName": "L_UR_Trainer_LensFlare_Front",
+          "materialSlot": 0,
+          "rendererIdentity": "CAB-7f7dbe31815af3a5ae3e56b901922720:-3723081897654860771",
+          "materialIdentity": "CAB-12030456889cc55cdfa1b4cb1630909b:-3757307238698655476",
+          "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+          "meshIdentity": "Library/unity default resources:10210",
+          "serializedLocalKeywordHash": 3989861089
+        }
+      ]
+    }
+  ]
+}

@@ -53,15 +53,20 @@ bool _695;
 bool _700;
 mediump float _728;
 
+highp vec3 pcrUnityObjectToWorldAxisZ(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[2].x, threeModelMatrix[2].y, -threeModelMatrix[2].z);
+}
+
 void main()
 {
     vec4 _915 = vec4(position, 1.0);
     vec2 _81 = uv;
     vec4 _Time = vec4(uTime * 0.05, uTime, uTime * 2.0, uTime * 3.0);
     _9 = _BaseColor.xyz * vec3(_BaseColorRGBIntensity);
-    _31.x = dot(-modelMatrix[2].xyz, -modelMatrix[2].xyz);
+    _31.x = dot(-pcrUnityObjectToWorldAxisZ(modelMatrix), -pcrUnityObjectToWorldAxisZ(modelMatrix));
     _31.x = inversesqrt(_31.x);
-    _31 = _31.xxx * (-modelMatrix[2].xyz);
+    _31 = _31.xxx * (-pcrUnityObjectToWorldAxisZ(modelMatrix));
     _59 = _31.z >= 0.0;
     if (_59)
     {

@@ -1,0 +1,150 @@
+{
+ "schemaVersion": 2,
+ "officialSample": "PTCGP 1.6.0",
+ "unityVersion": "2022.3.62f2",
+ "textMeshProVersion": "3.0.6",
+ "source": {
+  "apkm": "jp.pokemon.pokemontcgp_1.6.0.apkm",
+  "baseApkByteSize": 43516766,
+  "baseApkSha256": "815dc606f3b3e3404199fac80abb46b9249948828178a5cbf6aedb3d9e6809de",
+  "il2cpp": {
+   "path": "PCR_IL2CPP",
+   "byteSize": 128218264,
+   "sha256": "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e"
+  },
+  "il2cppDumperScriptSha256": "c6bbe3dd41b5530fae30c3b8f6d27bdcf212e442c024da71478621b8818c1e21",
+  "textMeshProPackage": {
+   "package": {
+    "path": "com.unity.textmeshpro@3.0.6/package.json",
+    "byteSize": 1486,
+    "sha256": "640c3c9ea8d7e5431bfefaccc70d85ea7aed204686d16a596d412286d2b9ba0b"
+   },
+   "settings": {
+    "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Settings.cs",
+    "byteSize": 17598,
+    "sha256": "3ce458b588247f4b364bbf607ed019f7e135d9bec0aa3610ec827333f4960131"
+   },
+   "fontAssetUtilities": {
+    "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_FontAssetUtilities.cs",
+    "byteSize": 19154,
+    "sha256": "fb2d13588d6ebacc34ba1fd32e75780d16f3df90347546482a9cc4bf1328cf60",
+    "ranges": {
+     "singleFontRecursiveSearch": {
+      "startLine": 47,
+      "endLine": 197,
+      "sha256": "4aaa65ed897dfd3a4f9ba753f382ca1bddae97aa7ba979e2748f913cc25ced52"
+     },
+     "fontListRecursiveSearch": {
+      "startLine": 214,
+      "endLine": 248,
+      "sha256": "e613263b623c9acbb3cd85f34e8a06b1c2244b3f29e91a32ce5edcbe19a53b92"
+     }
+    }
+   },
+   "uguiGenerator": {
+    "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_UGUI_Private.cs",
+    "byteSize": 247329,
+    "sha256": "1f8ba223bdd284bd0dfff1aefcf5988c872c9f6dd616673a8d4d58a9b2bf816a",
+    "ranges": {
+     "missingGlyphResolution": {
+      "startLine": 1207,
+      "endLine": 1276,
+      "sha256": "4bd4b22df978c0354cc7512c56a3e8242fe5701f53a500e7af30707f27772f9e"
+     }
+    }
+   }
+  }
+ },
+ "settings": {
+  "name": "TMP Settings",
+  "assetFile": "3f5b5dff67a942289a9defa416b206f3",
+  "pathId": 1,
+  "rawByteSize": 248,
+  "rawSha256": "61213932599fe55e49d0d3ea1010c17df74eb7027edb7a8d7501b0c824bad8de",
+  "enableWordWrapping": true,
+  "enableKerning": true,
+  "enableExtraPadding": false,
+  "enableTintAllSprites": false,
+  "enableParseEscapeCharacters": true,
+  "enableRaycastTarget": true,
+  "getFontFeaturesAtRuntime": true,
+  "missingGlyphCharacter": 0,
+  "warningsDisabled": true,
+  "defaultFontAssetPPtr": {
+   "fileId": 0,
+   "pathId": 0
+  },
+  "defaultFontAssetPath": "",
+  "defaultFontSize": 36,
+  "defaultAutoSizeMinRatio": 0.5,
+  "defaultAutoSizeMaxRatio": 2,
+  "defaultTextMeshProTextContainerSize": {
+   "x": 20,
+   "y": 5
+  },
+  "defaultTextMeshProUITextContainerSize": {
+   "x": 200,
+   "y": 50
+  },
+  "autoSizeTextContainer": false,
+  "isTextObjectScaleStatic": false,
+  "fallbackFontAssetPPtrs": [],
+  "matchMaterialPreset": true,
+  "defaultSpriteAssetPPtr": {
+   "fileId": 0,
+   "pathId": 0
+  },
+  "defaultSpriteAssetPath": "ImageInText/",
+  "enableEmojiSupport": true,
+  "missingCharacterSpriteUnicode": 0,
+  "defaultColorGradientPresetsPath": "Color Gradient Presets/",
+  "defaultStyleSheetPPtr": {
+   "fileId": 0,
+   "pathId": 0
+  },
+  "styleSheetsResourcePath": "",
+  "leadingCharactersPPtr": {
+   "fileId": 2,
+   "pathId": 1
+  },
+  "followingCharactersPPtr": {
+   "fileId": 3,
+   "pathId": 1
+  },
+  "useModernHangulLineBreakingRules": false
+ },
+ "native": {
+  "getTextElement": {
+   "name": "TMPro.TMP_Text$$GetTextElement",
+   "rva": "0x648f924",
+   "endRva": "0x648fd1c",
+   "byteSize": 1016,
+   "sha256": "979ea9dc300aca750014140698048e5c9f3405d578e291bcdd66e41ea1c2470d"
+  },
+  "generateTextMesh": {
+   "name": "TMPro.TextMeshProUGUI$$GenerateTextMesh",
+   "rva": "0x644f2f8",
+   "endRva": "0x6456dfc",
+   "byteSize": 31492,
+   "sha256": "63e11353317c008927215ccb1d6d7977a18ee8b4d3d2728ace5b5d9cf65240b8"
+  }
+ },
+ "lineBreaking": {
+  "leadingCharacters": {
+   "name": "LineBreaking Leading Characters",
+   "assetFile": "d82c1b31c7e74239bff1220585707d2b",
+   "pathId": 1,
+   "rawByteSize": 148,
+   "rawSha256": "43f49c58b3866d85ccb3b40ab114a04e981d1f2a79e37b2547aac1f8c42a1772",
+   "text": "([｛〔〈《「『【〘〖〝‘“｟«$—…‥〳〴〵\\［（{£¥\"々〇〉》」＄｠￥￦ #"
+  },
+  "followingCharacters": {
+   "name": "LineBreaking Following Characters",
+   "assetFile": "fade42e8bc714b018fac513c043d323b",
+   "pathId": 1,
+   "rawByteSize": 316,
+   "rawSha256": "b532d78da17863828461c8333a58c4ece4e3cba001a3a327045c51948d98dad3",
+   "text": ")]｝〕〉》」』】〙〗〟’”｠»ヽヾーァィゥェォッャュョヮヵヶぁぃぅぇぉっゃゅょゎゕゖㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ々〻‐゠–〜?!‼⁇⁈⁉・、%,.:;。！？］）：；＝}¢°\"†‡℃〆％，．"
+  }
+ }
+}

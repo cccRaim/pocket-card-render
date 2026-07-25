@@ -11,6 +11,7 @@ import path from "node:path";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { loadExactPortUsageContracts } from "./exact-port-usage-contracts.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -20,6 +21,7 @@ const strictExtraFloats = process.env.PCR_AUDIT_STRICT_EXTRA_FLOATS === "1";
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
   .filter((n) => /^scene\..*\.json$/.test(n))
   .sort();
+const exactPortUsage = loadExactPortUsageContracts(ROOT);
 
 const STATE_FLOATS = new Set([
   "_Blend", "_BlendMode", "_Cull", "_CullMode", "_Cutoff", "_DstBlend", "_DstFactor", "_DstFactorA",
@@ -44,6 +46,10 @@ const FAKE_SPEC_VALUE_FLOATS = [
 ];
 
 const USED_BY_KIND = {
+  outerStencil: [],
+  innerStencil: ["_AlphaThreshold"],
+  illustStencil: ["_AlphaThreshold"],
+  dynamicText: ["_AlphaThreshold", "_EmitMasking"],
   textured: [],
   illustTextured: ["_UseUv"],
   simpleTransparent: [],
@@ -53,6 +59,7 @@ const USED_BY_KIND = {
     "_AnglePower", "_Edge", "_Progress", "_AlphaBlend", "_DepthOffset",
   ],
   frameOutline: [],
+  scalingKira: ["_RampRotation"],
   holo: [
     "_Height", "_HeightPower", "_Scale", "_FakeCameraHeight", "_UseUv", "_UseMaskUv",
     "_DiffractionPower", "_DiffractionIntensity", "_RampRepeat", "_RampSpeed",
@@ -141,6 +148,28 @@ const USED_BY_KIND = {
     "_HeightB", "_HeightPowerB", "_ScaleB", "_FakeCameraHeightB", "_FlowScaleB",
     "_FadeDuration", "_FlowAPower", "_FlowBPower", "_LightTime", "_EmitThreshold",
   ],
+  sideBack: [],
+  circularMovingKira: [
+    "_FlickerNoiseScale", "_CircularRadius", "_CenterMoveByTilt",
+    "_AdjustAlphaBlendAlpha", "_EmissiveIntensity", "_PrimCount", "_PrimDelete",
+  ],
+  circularTrailKira: [
+    "_AdjustRadiusScale", "_CenterMoveByTilt", "_BaseColorIntensity",
+    "_AdjustAlphaBlendColor", "_AdjustAlphaBlendAlpha", "_BaseScaleAdjust",
+    "_UVOffset", "_BrightnessPower", "_BrightnessAffectIntensity",
+    "_FlickerScale", "_FlickerSpeed",
+  ],
+  matCapLighting: [
+    "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_LightSensitive",
+    "_LightCurvePower", "_EmissiveIntensity", "_UseUv2", "_Debug", "_EmissiveEnabled",
+  ],
+  prism: [
+    "_ExpandScale", "_ExpandTiming", "_ExpandAlphaPower", "_CenterMoveIntensity",
+    "_RotateSpeed", "_ShiftTiming", "_ColorIntensity", "_AdjustAlphaIntensity",
+    "_ShiftU", "_ShiftV", "_ShiftUOffsetIntensity", "_ShiftVOffsetIntensity",
+    "_EmissiveIntensity", "_UseRotate", "_ColoringMethod", "_ShiftUOffsetByTilt",
+    "_ShiftVOffsetByTilt", "_OkLabBlend",
+  ],
 };
 
 const USED_BY_SHADER = {
@@ -194,6 +223,7 @@ const USED_BY_SHADER_EXTRA = {
 };
 
 function usedFloatsFor(shader, kind) {
+  if (exactPortUsage.has(shader)) return new Set(exactPortUsage.get(shader).floats);
   const exact = USED_BY_SHADER[shader];
   const used = new Set(exact || USED_BY_KIND[kind] || []);
   if (!exact) for (const name of USED_BY_SHADER_EXTRA[shader] || []) used.add(name);
@@ -205,6 +235,7 @@ function declaredStrategyFloats() {
   for (const list of Object.values(USED_BY_KIND)) for (const name of list) floats.add(name);
   for (const list of Object.values(USED_BY_SHADER)) for (const name of list) floats.add(name);
   for (const list of Object.values(USED_BY_SHADER_EXTRA)) for (const name of list) floats.add(name);
+  for (const usage of exactPortUsage.values()) for (const name of usage.floats) floats.add(name);
   return floats;
 }
 
@@ -297,12 +328,12 @@ for (const sceneName of sceneNames) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
     const shader = mat.shader;
-    if (!shader || shader.startsWith("InnerStencil") || shader === "OuterStencil") continue;
+    if (!shader) continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
     const officialFloats = new Set(official.found[shader]?.floatProps || []);
     const usedFloats = usedFloatsFor(shader, cfg.kind);
-    if (!USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
+    if (!exactPortUsage.has(shader) && !USED_BY_SHADER[shader] && !USED_BY_KIND[cfg.kind]) {
       rows.push({ ok: false, scene: sceneId(sceneName), shader, kind: cfg.kind, mat: matName, name: "", reason: "missing usage declaration" });
       continue;
     }
@@ -334,26 +365,35 @@ for (const sceneName of sceneNames) {
         continue;
       }
       const used = usedFloats.has(name);
+      const inactiveExactBinding = exactPortUsage.has(shader)
+        && !exactPortUsage.get(shader).floats.has(name);
       const dead = OFFICIAL_DEAD_FLOATS.has(`${shader}:${name}`);
       const mrt = OFFICIAL_MRT_MASK_FLOATS.has(`${shader}:${name}`);
       const mrtDisabled = mrt && (mat.floats?.[name] ?? 0) === 0;
       const inactive = inactiveOfficialBranch(shader, name, mat.floats);
       const known = KNOWN_UNIMPLEMENTED.has(`${shader}:${name}`);
+      let reason;
+      if (dead) reason = used ? "strategy declares official-dead float" : "official bytecode does not read float";
+      else if (used) reason = "strategy uses float";
+      else if (inactiveExactBinding) reason = "selector executable has no active uniform binding";
+      else if (mrt) reason = mrtDisabled ? "official MRT mask disabled by scene" : "official MRT mask output not simulated";
+      else if (inactive) reason = "official branch disabled by scene";
+      else if (known) reason = "known unimplemented";
+      else reason = "strategy ignores official float";
       rows.push({
-        ok: dead ? !used : (used || inactive || known || mrtDisabled),
+        ok: dead ? !used : (used || inactiveExactBinding || inactive || known || mrtDisabled),
         known,
         dead,
         mrt,
         mrtDisabled,
         inactive,
+        inactiveExactBinding,
         scene: sceneId(sceneName),
         shader,
         kind: cfg.kind,
         mat: matName,
         name,
-        reason: dead
-          ? (used ? "strategy declares official-dead float" : "official bytecode does not read float")
-          : (used ? "strategy uses float" : (mrt ? (mrtDisabled ? "official MRT mask disabled by scene" : "official MRT mask output not simulated") : (inactive ? "official branch disabled by scene" : (known ? "known unimplemented" : "strategy ignores official float")))),
+        reason,
       });
     }
   }

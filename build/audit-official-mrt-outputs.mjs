@@ -91,12 +91,26 @@ const EXPECTED_FORMULAS = {
   },
 };
 
+// This audit's program set is derived from the four canonical scenes. IllustStencil is currently
+// present only in the separate S research card and is covered by the all-card selector inventory.
 const EXPECTED_LOCATION0_ONLY = ["InnerStencil", "OuterStencil"];
 const EXPECTED_CONFIGURED_NONZERO = [
   "Card_UR_LensFlare",
   "Frame-2Layer-UR",
   "Frame-Holo-UR-New",
   "Opaque-UR-Oklab",
+];
+const EXPECTED_SIDE_BACK_RUNTIME_VARIANTS = [
+  {
+    compiledKeywords: [],
+    fragmentSpvBytes: 2020,
+    fragmentSpvSha256: "12c4121a4fd3cc5694b21f983c40d9bd17e9ea6be3b14f797986d24502cd2370",
+  },
+  {
+    compiledKeywords: ["INSTANCING_ON"],
+    fragmentSpvBytes: 2140,
+    fragmentSpvSha256: "2ca7d6a80832052d1cbd391bbbb8c59d38137a065b21f820762e27ae405b3547",
+  },
 ];
 
 function runPython(script, args = [], input = undefined) {
@@ -171,6 +185,19 @@ for (const variant of evidence.variants || []) {
     }
   }
 }
+
+const sideBackRuntimeVariants = (evidence.runtimeFragmentCandidates || [])
+  .filter((candidate) => candidate.shortShader === "Side&Back")
+  .map((candidate) => ({
+    compiledKeywords: candidate.compiledKeywords,
+    fragmentSpvBytes: candidate.fragmentSpvBytes,
+    fragmentSpvSha256: candidate.fragmentSpvSha256,
+  }));
+same(
+  "Side&Back complete official runtime-eligible Vulkan variant table",
+  sideBackRuntimeVariants,
+  EXPECTED_SIDE_BACK_RUNTIME_VARIANTS,
+);
 
 const formulaVariants = (evidence.variants || []).filter((variant) => variant.classification === "formula");
 const formulaByShader = new Map(formulaVariants.map((variant) => [variant.shortShader, variant]));

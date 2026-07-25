@@ -1,0 +1,547 @@
+{
+  "schema_version": 5,
+  "generated_by": "build/build-official-card-display-contract.mjs",
+  "official_source": {
+    "version": "1.6.0",
+    "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+    "binary_hashes": {
+      "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+      "base_apk_sha256": "815dc606f3b3e3404199fac80abb46b9249948828178a5cbf6aedb3d9e6809de",
+      "arm64_split_sha256": "7faf449bae431dcfeda4f882ecb04290af66cc4ccfeefc620e24cac70d22fcec",
+      "globalgamemanagers_sha256": "5a1ca51ec16b267710479b85e33bfe150c4aab255e9716fd33d51ce7a33ea017",
+      "libunity_sha256": "43a04223f94b6ca0c7cf128b399fe0656c57b5a18a10bf21bb9ce27aeb219722",
+      "libil2cpp_sha256": "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e"
+    },
+    "unity_version": "2022.3.62f2_7670c08855a9",
+    "evidence": [
+      "build/extract_official_camera_transform.py",
+      "build/extract_official_card_renderer.py",
+      "build/extract_official-card-display.py",
+      "build/extract_official-homography-wiring.py",
+      "build/extract_official_homography_program.py",
+      "build/extract_official_final_blit.py",
+      "build/extract_official_rendertexture_contract.py"
+    ]
+  },
+  "profiles": {
+    "ordinary_android_default_middle_without_persisted_override": {
+      "applicability": {
+        "platform_default": "ordinaryAndroid",
+        "quality_enum": 1,
+        "quality_name": "Middle",
+        "quality_factor": 0.800000011920929,
+        "persisted_quality_override": "absent",
+        "note": "1122x1122 applies only to the ordinary Android default Middle profile when no persisted quality override replaces it"
+      },
+      "card_view": {
+        "serialized_size_type": 6,
+        "size_type": 3,
+        "size_name": "Large",
+        "pixel_width": 734,
+        "pixel_height": 1024
+      },
+      "display_mode": {
+        "serialized_prefab": "Common/CardNew/System/Prefabs/L_Card_Base_Pokemon_RS.prefab_bundles",
+        "clamp_parallax": true,
+        "selected_material": "PrerenderHomographyCard"
+      },
+      "source_render_target_request": {
+        "width": 1122,
+        "height": 1122,
+        "square": true,
+        "size_formula": "roundToEven(pixelHeight / VerticalPercentageInRT * UICardQuality)",
+        "requested_color_format": {
+          "unity_enum": 0,
+          "unity_name": "ARGB32"
+        },
+        "requested_depth_bits": 24,
+        "requested_anti_aliasing": 1
+      }
+    }
+  },
+  "quality_profiles": {
+    "high": {
+      "quality_enum": 0,
+      "quality_name": "High",
+      "quality_factor": 1,
+      "source_render_target_request": {
+        "width": 1403,
+        "height": 1403,
+        "square": true,
+        "size_formula": "roundToEven(pixelHeight / VerticalPercentageInRT * UICardQuality)"
+      }
+    },
+    "middle": {
+      "quality_enum": 1,
+      "quality_name": "Middle",
+      "quality_factor": 0.800000011920929,
+      "source_render_target_request": {
+        "width": 1122,
+        "height": 1122,
+        "square": true,
+        "size_formula": "roundToEven(pixelHeight / VerticalPercentageInRT * UICardQuality)"
+      }
+    },
+    "low": {
+      "quality_enum": 2,
+      "quality_name": "Low",
+      "quality_factor": 0.699999988079071,
+      "source_render_target_request": {
+        "width": 982,
+        "height": 982,
+        "square": true,
+        "size_formula": "roundToEven(pixelHeight / VerticalPercentageInRT * UICardQuality)"
+      }
+    }
+  },
+  "render_target_semantics": {
+    "clear_rgba": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "alpha_semantics": {
+      "meaning": "remaining transmission",
+      "initial_value": 1,
+      "official_reference_count": 98,
+      "official_reference_digest_sha256": "9b93692fe9f6cac138cb798cb03adfa3f14abfdbb389ebbf82c41d799d719728",
+      "rt0_classes": {
+        "clear-to-zero": 31,
+        "multiply-by-1-srcA": 36,
+        "preserve": 31
+      }
+    }
+  },
+  "render_texture_physical_contract": {
+    "status": "conditionally-proven",
+    "applicability": {
+      "unity_version": "2022.3.62f2_7670c08855a9",
+      "graphics_api": {
+        "serialized_value": 21,
+        "name": "Vulkan"
+      },
+      "active_color_space": {
+        "serialized_value": 0,
+        "name": "Gamma"
+      },
+      "depth_and_stencil_buffers_disabled": false
+    },
+    "request": {
+      "color": {
+        "value": 0,
+        "name": "ARGB32"
+      },
+      "depth_bits": 24,
+      "anti_aliasing": 1,
+      "distinction": "the constructor request is not the device-selected physical format"
+    },
+    "color": {
+      "legacy_mapping": {
+        "status": "proven",
+        "render_texture_format": {
+          "value": 0,
+          "name": "ARGB32"
+        },
+        "linear_or_gamma_graphics_format": {
+          "value": 8,
+          "name": "R8G8B8A8_UNorm"
+        },
+        "srgb_graphics_format": {
+          "value": 4,
+          "name": "R8G8B8A8_SRGB"
+        },
+        "selected_for_official_gamma_player": {
+          "value": 8,
+          "name": "R8G8B8A8_UNorm"
+        }
+      },
+      "compatible_format_chain": {
+        "status": "proven",
+        "steps": [
+          "legacy RenderTextureFormat mapping",
+          "GfxDevice format capability lookup",
+          "GetCompatibleFormat when the requested usage is unsupported",
+          "Vulkan GraphicsFormat descriptor lookup"
+        ],
+        "capability_entry_count": 152,
+        "capability_table_device_offset": "0x160",
+        "format_usage": {
+          "value": 4,
+          "name": "Render"
+        }
+      },
+      "preferred_vulkan_format": {
+        "status": "conditionally-proven",
+        "condition": "the running Vulkan device reports GF8 supported for FormatUsage.Render",
+        "graphics_format": {
+          "value": 8,
+          "name": "R8G8B8A8_UNorm"
+        },
+        "vk_format": {
+          "value": 37,
+          "name": "VK_FORMAT_R8G8B8A8_UNORM"
+        }
+      },
+      "srgb_vulkan_mapping": {
+        "graphics_format": 4,
+        "vk_format": 43,
+        "name": "VK_FORMAT_R8G8B8A8_SRGB"
+      },
+      "actual_vulkan_format": {
+        "status": "device-state",
+        "reason": "the selected compatible format depends on the runtime Vulkan format capability table"
+      }
+    },
+    "depth_stencil": {
+      "selection_chain": {
+        "status": "proven",
+        "requested_bits": 24,
+        "default_format": {
+          "value": 2,
+          "name": "DepthStencil"
+        },
+        "preferred_graphics_format": {
+          "value": 92,
+          "name": "D24_UNorm_S8_UInt"
+        },
+        "get_compatible_format": {
+          "format_usage": {
+            "value": 4,
+            "name": "Render"
+          },
+          "preserve": true
+        }
+      },
+      "known_vulkan_mappings": [
+        {
+          "graphics_format": 92,
+          "graphics_format_name": "D24_UNorm_S8_UInt",
+          "vk_format": 129,
+          "vk_format_name": "VK_FORMAT_D24_UNORM_S8_UINT"
+        },
+        {
+          "graphics_format": 94,
+          "graphics_format_name": "D32_SFloat_S8_UInt",
+          "vk_format": 130,
+          "vk_format_name": "VK_FORMAT_D32_SFLOAT_S8_UINT"
+        }
+      ],
+      "preferred_vulkan_format": {
+        "status": "conditionally-proven",
+        "condition": "the running Vulkan device reports GF92 supported for FormatUsage.Render with preserve=true",
+        "vk_format": 129,
+        "name": "VK_FORMAT_D24_UNORM_S8_UINT"
+      },
+      "actual_graphics_format": {
+        "status": "device-state",
+        "reason": "DefaultFormat.DepthStencil is initialized through GetCompatibleFormat and the device capability table"
+      },
+      "actual_depth_stencil_aspects": {
+        "status": "device-state",
+        "reason": "depth/stencil aspects follow the runtime-selected compatible GraphicsFormat"
+      }
+    },
+    "y": {
+      "unity_uv_origin": {
+        "status": "proven",
+        "graphics_uv_starts_at_top": true,
+        "native_flag_offset": "0xe0",
+        "native_initialized_value": 0
+      },
+      "homography_sampling": {
+        "status": "proven",
+        "extra_one_minus_y": false,
+        "managed_blit_or_flip_before_consumer": false,
+        "vulkan_clip_space_y_flip": true
+      },
+      "final_blit_sampling": {
+        "status": "proven",
+        "render_target_uv_one_minus_y": true,
+        "vulkan_clip_space_y_flip": true,
+        "vertex_spirv_sha256": "a95fea7dba0fd2f084b7e1e9e9be33e13464b26ed50710a18049b7b096333c63"
+      },
+      "actual_vk_viewport": {
+        "status": "device-state",
+        "proc_name_rva": "0x1045d9",
+        "proc_global_slot_rva": "0x1290760",
+        "reason": "VkViewport.y/height are emitted per command buffer and are not serialized in the APKM or pipeline cache"
+      },
+      "physical_row_origin": {
+        "status": "device-state",
+        "reason": "effective orientation is the composition of projection, VkViewport, shader clip-space transform, and sampling transform"
+      }
+    },
+    "pipeline_cache": {
+      "status": "device-state",
+      "shipped_in_apks": false,
+      "runtime_path": "/vulkan_pso_cache.bin",
+      "compatibility_header_fields": [
+        "version",
+        "vendorId",
+        "deviceId",
+        "pipelineCacheUUID"
+      ],
+      "consequence": "the runtime PSO cache is device-specific and is not a portable RenderTexture format or viewport oracle"
+    },
+    "static_evidence": {
+      "elf_virtual_address_mapping": "PT_LOAD file-backed range",
+      "elf_load_segments": [
+        {
+          "offset": "0x0",
+          "virtualAddress": "0x0",
+          "fileSize": "0x3ab84c",
+          "memorySize": "0x3ab84c",
+          "flags": 4
+        },
+        {
+          "offset": "0x3ab850",
+          "virtualAddress": "0x3af850",
+          "fileSize": "0xdd8ed0",
+          "memorySize": "0xdd8ed0",
+          "flags": 5
+        },
+        {
+          "offset": "0x1184720",
+          "virtualAddress": "0x118c720",
+          "fileSize": "0x44a70",
+          "memorySize": "0x44a70",
+          "flags": 6
+        },
+        {
+          "offset": "0x11c9190",
+          "virtualAddress": "0x11d5190",
+          "fileSize": "0x18dd0",
+          "memorySize": "0x103820",
+          "flags": 6
+        }
+      ],
+      "native_windows": {
+        "legacyRenderTextureFormatToGraphicsFormat": {
+          "rvaStart": "0xa7c004",
+          "rvaEndExclusive": "0xa7c094",
+          "byteSize": 144,
+          "sha256": "6a3a423ed98b255de65f2124f980ae8c0a11ebec071e277f0464c95d85185088"
+        },
+        "compatibleFormatSearch": {
+          "rvaStart": "0xa7c0d0",
+          "rvaEndExclusive": "0xa7c274",
+          "byteSize": 420,
+          "sha256": "5e338b045ac0c006635937c433c7d6583e552b54028a8e2ecea3f6f1213f1674"
+        },
+        "depthBitsLegacy": {
+          "rvaStart": "0xa7c274",
+          "rvaEndExclusive": "0xa7c2f0",
+          "byteSize": 124,
+          "sha256": "eb863f8cc72d57b997057470a00ab7c8d0978ad369b0453c1be7b131b306310f"
+        },
+        "activeColorSpaceLegacyMapping": {
+          "rvaStart": "0x5183d0",
+          "rvaEndExclusive": "0x518400",
+          "byteSize": 48,
+          "sha256": "3de21f15ee29a37fdae1300889ade6cdbea3147914fec601e5a737cdb2525e9e"
+        },
+        "systemInfoCompatibleFormat": {
+          "rvaStart": "0x5c12ac",
+          "rvaEndExclusive": "0x5c12d4",
+          "byteSize": 40,
+          "sha256": "aa17d843f3cb0776a6fa8bfbe3d6e1f98b6f69838eb59d2aa554736f13bc4489"
+        },
+        "deviceCompatibleFormat": {
+          "rvaStart": "0x5bf024",
+          "rvaEndExclusive": "0x5bf080",
+          "byteSize": 92,
+          "sha256": "a2acac7b37e1b987ab91aa0d48afbe568a312355370abf6111654808ed03c6c9"
+        },
+        "deviceFormatCapabilityLookup": {
+          "rvaStart": "0x5befc8",
+          "rvaEndExclusive": "0x5bf018",
+          "byteSize": 80,
+          "sha256": "ede1863f239d0e1f08320b3cc875e4111e8b2b44feb2902064a909958536b7e8"
+        },
+        "defaultFormatLookup": {
+          "rvaStart": "0x5bf478",
+          "rvaEndExclusive": "0x5bf49c",
+          "byteSize": 36,
+          "sha256": "e7e5941e5392176cff14c9c21463a690850fee0201e27467917414330444902f"
+        },
+        "vulkanFormatDescriptorLookup": {
+          "rvaStart": "0xaf2d98",
+          "rvaEndExclusive": "0xaf2da8",
+          "byteSize": 16,
+          "sha256": "ffe8156b138dea274bd6a1f56771810a317d6a4426289f2847ed4f9047d14783"
+        },
+        "vulkanCapabilityTableAndDepthDefault": {
+          "rvaStart": "0xb02618",
+          "rvaEndExclusive": "0xb0289c",
+          "byteSize": 644,
+          "sha256": "a5d93492be6dbbda0104f94f594b7e7eb93ecf629cabfd7c058396bf796ef49d"
+        },
+        "graphicsUvStartsAtTop": {
+          "rvaStart": "0x5c0fb0",
+          "rvaEndExclusive": "0x5c0fcc",
+          "byteSize": 28,
+          "sha256": "c317bdfcddcbbc0c320c9f1675e9156a748be88f92632b55353965bb33061aa0"
+        },
+        "vulkanUvOriginInitialization": {
+          "rvaStart": "0xb021e0",
+          "rvaEndExclusive": "0xb02220",
+          "byteSize": 64,
+          "sha256": "960a952aa4abef2fa13d3a6c28c521bfd8d0178e4bf9a685797f76f01554d540"
+        },
+        "vulkanViewportProcLoad": {
+          "rvaStart": "0xae8b68",
+          "rvaEndExclusive": "0xae8bec",
+          "byteSize": 132,
+          "sha256": "25951ad591319728c9e9bbe6dba74e07928421bf3fe2331962846f3202fdb711"
+        },
+        "vulkanPipelineCacheHeader": {
+          "rvaStart": "0xaee08c",
+          "rvaEndExclusive": "0xaee120",
+          "byteSize": 148,
+          "sha256": "adca1220e3b3a8cb424c68e3cdaf2b9cd2ecdded0f0f67fd3657941f357c8679"
+        }
+      }
+    }
+  },
+  "camera": {
+    "field_of_view_degrees": 35,
+    "aspect": 1,
+    "local_position": [
+      0,
+      0,
+      -1.9115060567855835
+    ],
+    "distance": 1.9115060567855835,
+    "culling_layer": {
+      "index": 21,
+      "bit": 2097152
+    }
+  },
+  "card_transform": {
+    "set_flipped_argument": false,
+    "parent_local_euler_degrees": [
+      0,
+      180,
+      0
+    ]
+  },
+  "homography": {
+    "keypoint_root_rotation": [
+      0,
+      1,
+      0,
+      0
+    ],
+    "keypoint_order": [
+      "LeftDown",
+      "RightDown",
+      "LeftUp",
+      "RightUp"
+    ],
+    "keypoints": [
+      {
+        "name": "LeftDown",
+        "field": "_keyPointLeftDown",
+        "projected_array_index": 0,
+        "instance_offset": 56,
+        "array_data_offset": 32,
+        "local_position": [
+          0.6029999852180481,
+          -0.6029999852180481,
+          0
+        ]
+      },
+      {
+        "name": "RightDown",
+        "field": "_keyPointRightDown",
+        "projected_array_index": 1,
+        "instance_offset": 64,
+        "array_data_offset": 40,
+        "local_position": [
+          -0.6029999852180481,
+          -0.6029999852180481,
+          0
+        ]
+      },
+      {
+        "name": "LeftUp",
+        "field": "_keyPointLeftUp",
+        "projected_array_index": 2,
+        "instance_offset": 72,
+        "array_data_offset": 48,
+        "local_position": [
+          0.6029999852180481,
+          0.6029999852180481,
+          0
+        ]
+      },
+      {
+        "name": "RightUp",
+        "field": "_keyPointRightUp",
+        "projected_array_index": 3,
+        "instance_offset": 80,
+        "array_data_offset": 56,
+        "local_position": [
+          -0.6029999852180481,
+          0.6029999852180481,
+          0
+        ]
+      }
+    ],
+    "projected_coordinate_space": "UnityEngine.Camera.WorldToViewportPoint",
+    "texture_uv": {
+      "y_flip": false,
+      "transform": "identity",
+      "managed_blit_or_flip_before_consumer": false,
+      "vulkan_vertex_clip_space_y_flip": true
+    }
+  },
+  "display_modes": {
+    "selector": "ModelCardView._clampParallax",
+    "false": "PrerenderCard",
+    "true": "PrerenderHomographyCard",
+    "source_texture_property": "_DynamicUITex",
+    "pinned_detail_profile": {
+      "clamp_parallax": true,
+      "selected_material": "PrerenderHomographyCard",
+      "evidence": "Common/CardNew/System/Prefabs/L_Card_Base_Pokemon_RS.prefab_bundles ModelCardView._clampParallax"
+    }
+  },
+  "runtime_boundaries": {
+    "clamp_parallax_selection": {
+      "pinned_detail_profile": "proved from the serialized ModelCardView instance",
+      "other_view_prefabs": "must supply their own serialized _clampParallax value"
+    },
+    "quality_selection": {
+      "persisted_override_supported": true,
+      "actual_persisted_quality_on_runtime_device": {
+        "status": "unproved",
+        "claim": "actual persisted quality selected on a runtime device"
+      },
+      "consequence": "the 1122x1122 profile is not universal; recompute the requested square side from the actual selected quality"
+    },
+    "physical_render_texture": {
+      "requested_color_format_is_not_physical_format": true,
+      "physical_color_format": {
+        "status": "conditionally-proven",
+        "condition": "GF8 Render support selects VK_FORMAT_R8G8B8A8_UNORM; any compatible fallback remains device-state"
+      },
+      "physical_depth_format": {
+        "status": "device-state",
+        "condition": "Depth24 resolves through DefaultFormat.DepthStencil and GetCompatibleFormat(GF92, Render, preserve=true)"
+      },
+      "unity_uv_origin": {
+        "status": "proven",
+        "graphics_uv_starts_at_top": true
+      },
+      "actual_vk_viewport": {
+        "status": "device-state",
+        "claim": "pass-specific VkViewport.y and VkViewport.height"
+      }
+    },
+    "texture_sample_add_per_draw": "unproved",
+    "main_texture_physical_srgb": "unproved",
+    "dynamic_ui_runtime_keywords": "unproved"
+  }
+}

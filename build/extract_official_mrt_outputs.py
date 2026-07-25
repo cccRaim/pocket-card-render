@@ -236,7 +236,7 @@ def nested_row(values: list, index: int) -> list:
     return value if isinstance(value, list) else [value]
 
 
-def decompress_vulkan_program(shader: dict, blob_index: int) -> bytes:
+def decompress_vulkan_modules(shader: dict, blob_index: int) -> list[bytes]:
     platforms = [int(value) for value in shader.get("platforms", [])]
     if VULKAN_PLATFORM not in platforms:
         raise RuntimeError(f"shader has no Vulkan platform {VULKAN_PLATFORM}: {platforms}")
@@ -248,7 +248,7 @@ def decompress_vulkan_program(shader: dict, blob_index: int) -> bytes:
         raise RuntimeError("Vulkan compressed shader segment arrays have different lengths")
 
     compressed_blob = bytes(shader.get("compressedBlob", []))
-    fragments: list[bytes] = []
+    modules: list[bytes] = []
     for offset, compressed_length, decompressed_length in zip(
         offsets, compressed_lengths, decompressed_lengths
     ):
@@ -264,18 +264,53 @@ def decompress_vulkan_program(shader: dict, blob_index: int) -> bytes:
         if entry_offset + entry_length > len(decoded):
             raise RuntimeError(f"ShaderProgram blob entry {blob_index} is out of bounds")
         entry = decoded[entry_offset : entry_offset + entry_length]
-        modules = [
-            module
-            for _, module in smolv.find_and_decode(entry)
-            if module and spirv_execution_model(module) == 4
-        ]
-        fragments.extend(modules)
+        modules.extend(trim_spirv(module) for _, module in smolv.find_and_decode(entry) if module)
+    return modules
+
+
+def decompress_vulkan_stage(shader: dict, blob_index: int, execution_model: int) -> bytes:
+    modules = [
+        module for module in decompress_vulkan_modules(shader, blob_index)
+        if spirv_execution_model(module) == execution_model
+    ]
+    stage_name = {0: "vertex", 4: "fragment"}.get(execution_model, str(execution_model))
+    if len(modules) != 1:
+        raise RuntimeError(
+            f"GpuProgramType {SPIRV_PROGRAM_TYPE} blob {blob_index} yielded "
+            f"{len(modules)} {stage_name} SPIR-V modules"
+        )
+    return modules[0]
+
+
+def decompress_vulkan_program(shader: dict, blob_index: int) -> bytes:
+    fragments = [
+        module for module in decompress_vulkan_modules(shader, blob_index)
+        if spirv_execution_model(module) == 4
+    ]
     if len(fragments) != 1:
         raise RuntimeError(
             f"GpuProgramType {SPIRV_PROGRAM_TYPE} blob {blob_index} yielded "
             f"{len(fragments)} fragment SPIR-V modules"
         )
     return fragments[0]
+
+
+def spirv_specialization_count(module: bytes) -> int:
+    module = trim_spirv(module)
+    words = struct.unpack(f"<{len(module) // 4}I", module)
+    spec_ids = set()
+    cursor = 5
+    while cursor < len(words):
+        instruction = words[cursor]
+        length = instruction >> 16
+        opcode = instruction & 0xFFFF
+        if length == 0 or cursor + length > len(words):
+            raise RuntimeError("malformed SPIR-V instruction while reading specialization constants")
+        # OpDecorate %target SpecId literal
+        if opcode == 71 and length >= 4 and words[cursor + 2] == 1:
+            spec_ids.add(words[cursor + 1])
+        cursor += length
+    return len(spec_ids)
 
 
 def exact_vulkan_variant(shader: dict, material_keywords: list[str]) -> dict:
@@ -321,6 +356,58 @@ def exact_vulkan_variant(shader: dict, material_keywords: list[str]) -> dict:
             f"complete keyword set {material_keywords} matched {len(unique)} Vulkan variants"
         )
     return next(iter(unique.values()))
+
+
+def all_vulkan_fragment_variants(shader: dict) -> list[dict]:
+    """Return every compiled Vulkan fragment program in one official Shader.
+
+    Unity may add engine-owned keywords such as INSTANCING_ON at runtime even
+    when they are absent from Material.m_ValidKeywords.  The serialized exact
+    selection remains the static baseline; this complete table lets a runtime
+    capture select the byte-identical program without guessing that keyword.
+    """
+    parsed = shader.get("m_ParsedForm", {})
+    keyword_names = list(parsed.get("m_KeywordNames", []))
+    candidates: dict[tuple, dict] = {}
+    module_cache: dict[int, bytes] = {}
+    for subshader_index, subshader in enumerate(parsed.get("m_SubShaders", [])):
+        for pass_index, shader_pass in enumerate(subshader.get("m_Passes", [])):
+            for stage_name in SHADER_STAGES:
+                stage = shader_pass.get(stage_name, {})
+                for group_index, group in enumerate(stage.get("m_PlayerSubPrograms", [])):
+                    for record in group or []:
+                        if int(record.get("m_GpuProgramType", -1)) != SPIRV_PROGRAM_TYPE:
+                            continue
+                        indices = tuple(int(value) for value in record.get("m_KeywordIndices", []))
+                        try:
+                            compiled = tuple(sorted(keyword_names[index] for index in indices))
+                        except IndexError as exc:
+                            raise RuntimeError("compiled shader keyword index is out of range") from exc
+                        blob_index = int(record.get("m_BlobIndex"))
+                        key = (subshader_index, pass_index, blob_index, compiled)
+                        if key in candidates:
+                            continue
+                        if blob_index not in module_cache:
+                            module_cache[blob_index] = decompress_vulkan_program(shader, blob_index)
+                        module = module_cache[blob_index]
+                        vertex = decompress_vulkan_stage(shader, blob_index, 0)
+                        candidates[key] = {
+                            "subshader": subshader_index,
+                            "pass": pass_index,
+                            "stageMetadata": stage_name,
+                            "playerGroup": group_index,
+                            "blobIndex": blob_index,
+                            "gpuProgramType": SPIRV_PROGRAM_TYPE,
+                            "keywordIndices": list(indices),
+                            "compiledKeywords": list(compiled),
+                            "fragmentSpvSha256": sha256_bytes(module),
+                            "fragmentSpvBytes": len(module),
+                            "fragmentSpecializationCount": spirv_specialization_count(module),
+                            "vertexSpvSha256": sha256_bytes(vertex),
+                            "vertexSpvBytes": len(vertex),
+                            "vertexSpecializationCount": spirv_specialization_count(vertex),
+                        }
+    return [candidates[key] for key in sorted(candidates)]
 
 
 def shader_constant_buffers(shader: dict) -> list[dict]:
@@ -611,13 +698,31 @@ def extract(decrypted_root: Path) -> dict:
         )
 
     output_variants = []
+    runtime_fragment_sources: dict[tuple[str, int], dict] = {}
     with tempfile.TemporaryDirectory(prefix="pcr-official-mrt-") as temporary_name:
         temporary = Path(temporary_name)
         for key in sorted(variants):
             row = variants[key]
             shader = row["shaderTree"]
+            shader_identity = (
+                str(row["shaderObject"].assets_file.name),
+                int(row["shaderObject"].path_id),
+            )
+            runtime_source = runtime_fragment_sources.get(shader_identity)
+            if runtime_source is None:
+                runtime_fragment_sources[shader_identity] = {
+                    "shader": row["shader"],
+                    "shortShader": row["shortShader"],
+                    "shaderPPtr": row["shaderPPtr"],
+                    "shaderBundle": index.relative(row["shaderBundle"]),
+                    "shaderBundleSha256": index.bundle_hash(row["shaderBundle"]),
+                    "candidates": all_vulkan_fragment_variants(shader),
+                }
+            elif runtime_source["shader"] != row["shader"]:
+                raise RuntimeError(f"Shader object {shader_identity} resolved conflicting names")
             selected = exact_vulkan_variant(shader, row["materialKeywords"])
             module = decompress_vulkan_program(shader, selected["blobIndex"])
+            vertex = decompress_vulkan_stage(shader, selected["blobIndex"], 0)
             fragment = classify_fragment(shader, module, temporary)
             gate = fragment["zeroGateProperty"]
             gate_values = []
@@ -652,6 +757,10 @@ def extract(decrypted_root: Path) -> dict:
                     "shaderBundleSha256": index.bundle_hash(row["shaderBundle"]),
                     "fragmentSpvSha256": sha256_bytes(module),
                     "fragmentSpvBytes": len(module),
+                    "fragmentSpecializationCount": spirv_specialization_count(module),
+                    "vertexSpvSha256": sha256_bytes(vertex),
+                    "vertexSpvBytes": len(vertex),
+                    "vertexSpecializationCount": spirv_specialization_count(vertex),
                     "outputs": fragment["outputs"],
                     "classification": fragment["classification"],
                     "location1Assignments": fragment["assignments"],
@@ -661,6 +770,21 @@ def extract(decrypted_root: Path) -> dict:
                     "materialUseCount": len(row["uses"]),
                     "uniqueMaterialCount": len(row["materialIdentities"]),
                     "materialUses": material_uses,
+                }
+            )
+
+    runtime_fragment_candidates = []
+    for shader_identity in sorted(runtime_fragment_sources):
+        source = runtime_fragment_sources[shader_identity]
+        for candidate in source["candidates"]:
+            runtime_fragment_candidates.append(
+                {
+                    "shader": source["shader"],
+                    "shortShader": source["shortShader"],
+                    "shaderPPtr": source["shaderPPtr"],
+                    "shaderBundle": source["shaderBundle"],
+                    "shaderBundleSha256": source["shaderBundleSha256"],
+                    **candidate,
                 }
             )
 
@@ -699,6 +823,7 @@ def extract(decrypted_root: Path) -> dict:
         },
         "cards": cards,
         "variants": output_variants,
+        "runtimeFragmentCandidates": runtime_fragment_candidates,
         "shaders": shaders,
         "summary": {
             "meshRenderers": sum(card["meshRenderers"] for card in cards),

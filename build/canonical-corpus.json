@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    {
+      "file": "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "textStem": "PK_10_000040_00"
+    },
+    {
+      "file": "scene.cPK_20_008900_02_HOUOUex_UR.json",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "textStem": "PK_20_008900_02"
+    },
+    {
+      "file": "scene.cTR_20_000230_00_LEAF_SR.json",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "textStem": "TR_20_000230_00"
+    },
+    {
+      "file": "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "textStem": "TR_20_000670_00"
+    }
+  ],
+  "locales": [
+    "de_DE",
+    "en_US",
+    "es_ES",
+    "fr_FR",
+    "it_IT",
+    "ja_JP",
+    "ko_KR",
+    "pt_BR",
+    "zh_TW"
+  ]
+}

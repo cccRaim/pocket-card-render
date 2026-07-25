@@ -17,6 +17,16 @@ const FLOW_DIRECTION_X = f32(0.5821118950843811);
 const FLOW_DIRECTION_Y = f32(0.8131087422370911);
 const TWO_PI = f32(6.2831854820251465);
 
+// Unity vectors cross the C=diag(1,1,-1) basis at the renderer boundary.
+// A converted Transform.forward therefore returns to Unity numeric space by
+// flipping z only; GlitterFlowMaps itself remains a renderer-independent port.
+export function threeWorldForwardToUnity(forward) {
+  if (!Array.isArray(forward) || forward.length < 3 || !forward.slice(0, 3).every(Number.isFinite)) {
+    throw new TypeError("forward must be a finite [x, y, z]");
+  }
+  return [f32(forward[0]), f32(forward[1]), f32(-forward[2])];
+}
+
 export const OFFICIAL_GLITTER_FLOW_DEFAULTS = Object.freeze({
   accelIntensity: f32(0.10000000149011612),
   maxFlowSpeed: f32(1),

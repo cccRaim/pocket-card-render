@@ -10,16 +10,63 @@
 // defaults, MRT usage, and high-impact UR constants are audited against official assets. Remaining
 // Layer dispatch is implementation coverage; official-runtime and visual parity need separate evidence.
 
+import "./render/page-errors.js";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { SHADER, isBackgroundLayer } from "./render/rarities.js";
+import { SHADER } from "./render/rarities.js";
 import { getMaterial } from "./render/registry.js";
-import { makeRenderContext, setBlend, applyDepthState, applyCullState, applyStencilState, stencilWriter, applyClip, REGION } from "./render/context.js";
-import { updateGlitterFlow } from "./render/glitter-flow.js";
+import { makeRenderContext, setBlend, applyRenderQueueState, applyDepthState, applyCullState, applyStencilState, applyOfficialPassState, applyClip } from "./render/context.js";
+import { threeWorldForwardToUnity, updateGlitterFlow } from "./render/glitter-flow.js";
+import { updateKiraPuyo } from "./render/kira-puyo.js";
+import { OfficialClock, syncOfficialClockVisibility } from "./render/official-clock.js";
+import { bindCircularKiraMesh, finalizeCircularKiraBindings, updateCircularKira } from "./render/circular-kira.js";
+import {
+  beginOfficialTouchDrag,
+  createOfficialTouchRotationState,
+  dragOfficialTouchRotation,
+  endOfficialTouchDrag,
+  screenPointToNormalizedLocal,
+  setAbsolutePointerTilt,
+  setOfficialDebugTilt,
+  unityQuaternionToThree,
+  updateOfficialTouchRotation,
+} from "./render/official-touch-rotation.js";
 import {
   createOfficialMrtTarget,
   resizeOfficialMrtTarget,
 } from "./render/pipeline/official-mrt.js";
+import {
+  createOfficialBloomPipeline,
+  loadOfficialBloomPrograms,
+  loadOfficialFinalBlitProgram,
+} from "./render/pipeline/official-bloom.js";
+import {
+  createHomographyDisplayMaterial,
+  loadHomographyDisplayProgram,
+  setHomographyDisplayPoints,
+} from "./render/pipeline/homography-display.js";
+import { applyOfficialSampler, loadOfficialTexture } from "./render/official-texture.js";
+import { attachLocalDrawAudit } from "./render/local-draw-audit.js";
+import { createOfficialHoloDynamicTexture } from "./render/dynamic-ui-texture.js";
+import { selectCardQualityProfile, selectDynamicUIRenderScale } from "./render/quality-profile.js";
+import { resolveOfficialUIImageDrawState } from "./render/official-ugui-image.js";
+import { computeOfficialTmpJustificationOffsets, loadOfficialTmpFonts, layoutOfficialTmpRun, measureOfficialTmpText, wrapOfficialTmpItems } from "./render/tmp-font-data.js";
+import { loadOfficialTmpSdfProgram, renderOfficialTmpDynamicTexture } from "./render/tmp-sdf-renderer.js";
+import { parseOfficialTmpRuns } from "./render/tmp-rich-text.js";
+import { layoutOfficialTmpSprite } from "./render/tmp-sprite-data.js";
+import { resolveOfficialTmpAutoSize } from "./render/tmp-autosize.js";
+import { officialTmpGlyphInkRight, resolveOfficialTmpItalic } from "./render/tmp-glyph-mesh.js";
+import {
+  OFFICIAL_DISTANCE_METRIC,
+  OFFICIAL_PASS_CRITERIA,
+  OFFICIAL_RENDERER_TYPE,
+  officialDistanceKey,
+} from "./render/official-draw-order.js";
+import { createOfficialCapturedSortResolver } from "./render/official-sort-capture.js";
+import {
+  officialPortIdentityKey,
+  orderOfficialPasses,
+} from "./render/official-port-identity.js";
 import "./render/materials/index.js";   // registers every material strategy (side effect)
 
 const errEl = document.getElementById("err");
@@ -32,6 +79,25 @@ const controlsEl = document.getElementById("controls");
 const setLoading = (t) => { if (loadingTxt && t) loadingTxt.textContent = t; };
 const hideLoading = () => loadingEl && loadingEl.classList.add("hidden");
 const busy = (on, t) => { if (!busyEl) return; if (t && busyTxt) busyTxt.textContent = t; busyEl.classList.toggle("on", on); };
+function publishTmpSdfStatus(value) {
+  const status = value || { mode: "canvas-fallback" };
+  window.__tmpSdfStatus = status;
+  document.documentElement.dataset.tmpSdfStatus = JSON.stringify(status);
+  console.log("official TMP runtime:", status);
+  if (status.readback) {
+    const query = new URLSearchParams(location.search);
+    window.fetch("/audit/tmp-runtime", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        scene: query.get("scene"),
+        locale: query.get("lc") || "zh_TW",
+        url: location.href,
+        evidence: status,
+      }),
+    }).catch((error) => console.warn("TMP runtime evidence write failed", error));
+  }
+}
 const DEFAULT_SCENE = "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json";
 const fail = (m) => {   // surface load errors in the overlay instead of an endless spinner
   errEl.textContent = "ERR: " + m; console.error(m);
@@ -63,10 +129,11 @@ function faceFont(font, fs) {
 // load the given font families (by url from the manifest) once; cached across locale switches
 const _fontLoaded = new Set();
 function loadFonts(fontFiles, families) {
-  return Promise.all([...new Set(families)].filter((f) => fontFiles[f] && !_fontLoaded.has(f)).map((f) => {
+  const requested = [...new Set(families)];
+  return Promise.all(requested.filter((f) => fontFiles[f] && !_fontLoaded.has(f)).map((f) => {
     const ff = new FontFace(f, `url(${fontFiles[f]})`);
     return ff.load().then((x) => { document.fonts.add(x); _fontLoaded.add(f); }).catch((e) => console.warn("font fail", f, e));
-  }));
+  })).then(() => requested.every((family) => _fontLoaded.has(family)));
 }
 
 // ── DynamicUI: composite the per-card UI elements into one canvas, exactly as the game renders the
@@ -83,32 +150,6 @@ const isFoilSprite = (e) => typeof e.sprite === "string" && e.sprite.startsWith(
 // reflection vector — NOT a flat 2D matcap (which plastered the env photo on = the "mirror" artifact).
 // L_001_ENV ships as a 128×768 VERTICAL STRIP = 6 stacked 128×128 cube faces (+X,-X,+Y,-Y,+Z,-Z, the
 // three.js CubeTexture order). Slice it into a CubeTexture so the reflection moves with the surface.
-const WRAP_MODE = {
-  0: THREE.RepeatWrapping,
-  1: THREE.ClampToEdgeWrapping,
-  2: THREE.MirroredRepeatWrapping,
-};
-
-function applyOfficialSampler(tex, state) {
-  const filterMode = state?.filterMode ?? 1;
-  const mipCount = state?.mipCount ?? 1;
-  const point = filterMode === 0;
-  tex.magFilter = point ? THREE.NearestFilter : THREE.LinearFilter;
-  if (mipCount > 1) {
-    tex.generateMipmaps = true;
-    tex.minFilter = point
-      ? THREE.NearestMipmapNearestFilter
-      : filterMode === 2 ? THREE.LinearMipmapLinearFilter : THREE.LinearMipmapNearestFilter;
-  } else {
-    tex.generateMipmaps = false;
-    tex.minFilter = point ? THREE.NearestFilter : THREE.LinearFilter;
-  }
-  tex.wrapS = WRAP_MODE[state?.wrapU] || THREE.ClampToEdgeWrapping;
-  tex.wrapT = WRAP_MODE[state?.wrapV] || THREE.ClampToEdgeWrapping;
-  tex.anisotropy = Math.max(1, state?.anisotropy ?? 1);
-  tex.userData.officialSampler = state || null;
-}
-
 function loadEnvCube(url, samplerState) {
   return new Promise((res) => {
     const img = new Image(); img.crossOrigin = "anonymous";
@@ -131,48 +172,58 @@ function loadEnvCube(url, samplerState) {
   });
 }
 
-function buildDynamicUITexture(cardUI, face) {
+function buildDynamicUITexture(
+  cardUI,
+  face,
+  samplerState,
+  renderScale = 1,
+  tmpFonts = null,
+  renderer = null,
+  tmpProgram = null,
+  collectTmpReadback = false,
+  tmpSpriteContract = null,
+) {
   const [W, H] = cardUI.canvasWH;
-  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const textureW = Math.max(1, Math.round(W * renderScale));
+  const textureH = Math.max(1, Math.round(H * renderScale));
+  const cv = document.createElement("canvas"); cv.width = textureW; cv.height = textureH;
   const ctx = cv.getContext("2d");
-  const foilCv = document.createElement("canvas"); foilCv.width = W; foilCv.height = H;   // ex-foil mask
+  ctx.scale(textureW / W, textureH / H);
+  const foilCv = document.createElement("canvas"); foilCv.width = textureW; foilCv.height = textureH;   // ex-foil mask
   const foilCtx = foilCv.getContext("2d");
-  function makeHoloDynamicCanvas(src) {
-    const out = document.createElement("canvas"); out.width = src.width; out.height = src.height;
-    const sctx = src.getContext("2d"), octx = out.getContext("2d");
-    const im = sctx.getImageData(0, 0, src.width, src.height);
-    const d = im.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const coverage = d[i + 3] / 255;
-      d[i] = Math.round(d[i] * coverage);
-      d[i + 1] = Math.round(d[i + 1] * coverage);
-      d[i + 2] = Math.round(d[i + 2] * coverage);
-      d[i + 3] = Math.round((1 - coverage) * 255);
-    }
-    octx.putImageData(im, 0, 0);
-    return out;
-  }
+  foilCtx.scale(textureW / W, textureH / H);
+  const tmpDraws = [];
+  const tmpSpriteBindings = [];
+  let tmpFallbackCount = 0;
+  const exactTmp = !!(tmpFonts && renderer && tmpProgram);
   const faceEls = (face && face.elements) || [];
   const loadImg = (url) => new Promise((res) => {
     const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => res(i); i.onerror = () => { console.warn("ui tex fail", url); res(null); }; i.src = url;
   });
   const urls = new Set([EX_GLYPH, EX_GLYPH_OUTLINE]);
   cardUI.elements.forEach((e) => urls.add(e.url));
-  faceEls.forEach((e) => { if (e.kind === "icon") urls.add(e.url); });
+  faceEls.forEach((e) => {
+    if (e.kind === "icon") urls.add(e.url);
+    for (const sprite of Object.values(e.inlineSprites || {})) if (sprite.url) urls.add(sprite.url);
+    if (e.inlineEx?.textureUrl) urls.add(e.inlineEx.textureUrl);
+  });
 
   function drawSprite(e, img, target) {                // card_ui.json image element (tint / contain / stretch)
     target = target || ctx;
     if (!img) return;
+    const imageState = resolveOfficialUIImageDrawState(e);
+    if (!imageState.visible) return;
     const b = e.box, bx = b.l * W, by = b.t * H, bw = (b.r - b.l) * W, bh = (b.b - b.t) * H;
     let src = img;
-    if (e.color) {                                      // tint to the UI Image m_Color (ex-rule title text)
+    const tintColor = imageState.color;
+    if (tintColor && tintColor.some((value) => Math.abs(value - 1) > 1e-6)) {
       const t = document.createElement("canvas"); t.width = img.width; t.height = img.height;
       const tc = t.getContext("2d"); tc.drawImage(img, 0, 0);
       tc.globalCompositeOperation = "source-in";
-      tc.fillStyle = `rgba(${(e.color[0]*255)|0},${(e.color[1]*255)|0},${(e.color[2]*255)|0},${e.color[3]})`;
+      tc.fillStyle = `rgba(${(tintColor[0]*255)|0},${(tintColor[1]*255)|0},${(tintColor[2]*255)|0},${tintColor[3]})`;
       tc.fillRect(0, 0, img.width, img.height); src = t;
     }
-    if (e.fit === "contain") {                          // preserve aspect, center in box (pre-evo / energy icon)
+    if (imageState.fit === "contain") {                 // preserve aspect, center in box (pre-evo / energy icon)
       const s = Math.min(bw / img.width, bh / img.height), dw = img.width * s, dh = img.height * s;
       target.drawImage(src, bx + (bw - dw) / 2, by + (bh - dh) / 2, dw, dh);
     } else {
@@ -197,122 +248,546 @@ function buildDynamicUITexture(cardUI, face) {
   }
   // rich text: \x01/\x02 sentinels (from [Ctrl:Bold]…[/Ctrl:Bold]) → bold runs (bold body = the heavier "name"
   // font); \x03 (from [Img:ex ]) → an inline ex-glyph image run, drawn as the ex sprite within the flowing text.
-  function parseRuns(text) {
-    const runs = []; let bold = false, cur = "";
-    const flush = () => { if (cur) runs.push({ t: cur, bold }); cur = ""; };
-    for (const ch of text) {
-      if (ch === "\x01" || ch === "\x02") { flush(); bold = (ch === "\x01"); }
-      else if (ch === "\x03") { flush(); runs.push({ img: "ex", bold }); }
-      else cur += ch;
+  const runFont = (e, bold, fs, italic = false) => {
+    const face = bold
+      ? `${curWeights.name} ${fs}px "${curFonts.name}", "${curFonts.body}", sans-serif`
+      : faceFont(e.font, fs);
+    return italic ? `italic ${face}` : face;
+  };
+  const runSdf = (e, bold) => bold && e.boldStyle
+    ? { ...(e.boldStyle.sdf || {}), fontId: e.boldStyle.fontId, materialId: e.boldStyle.materialId }
+    : e.sdf;
+  const tmpLayoutOptions = (e) => ({
+    characterSpacing: Number(e.characterSpacing || 0),
+    wordSpacing: Number(e.wordSpacing || 0),
+    charWidthAdjustment: Number(e.charWidthAdjustment || 0),
+    kerning: e.kerning !== false,
+  });
+  function measureRun(e, text, fs, bold = false, italic = false) {
+    const sdf = runSdf(e, bold);
+    if (tmpFonts && sdf?.fontId) {
+      try { return measureOfficialTmpText(tmpFonts, sdf.fontId, text, fs, tmpLayoutOptions(e)); }
+      catch (error) { tmpFallbackCount += 1; console.warn("TMP metric fallback", error); }
     }
-    flush();
-    return runs;
+    ctx.font = runFont(e, bold, fs, italic);
+    return ctx.measureText(text).width;
   }
-  const runFont = (e, bold, fs) => bold ? `${curWeights.name} ${fs}px "${curFonts.name}", "${curFonts.body}", sans-serif` : faceFont(e.font, fs);
+  function inkBounds(e, text, fs, bold = false, italic = false) {
+    const sdf = runSdf(e, bold);
+    if (tmpFonts && sdf?.fontId) {
+      try {
+        const layout = layoutOfficialTmpRun(tmpFonts, sdf.fontId, text, fs, 0, 0, tmpLayoutOptions(e));
+        const right = layout.glyphs.reduce((value, glyph) => Math.max(
+          value,
+          officialTmpGlyphInkRight(italic ? { ...glyph, italic: true } : glyph),
+        ), 0);
+        const font = tmpFonts.fonts.get(String(sdf.fontId));
+        const ascent = Number(font.face.ascentLine) * layout.scale;
+        const descent = -Number(font.face.descentLine) * layout.scale;
+        return { advance: layout.advance, right, ascent, descent };
+      } catch (error) { tmpFallbackCount += 1; console.warn("TMP ink fallback", error); }
+    }
+    ctx.font = runFont(e, bold, fs, italic);
+    const metrics = ctx.measureText(text);
+    return {
+      advance: metrics.width,
+      right: metrics.actualBoundingBoxRight || metrics.width,
+      ascent: metrics.actualBoundingBoxAscent || fs * 0.7,
+      descent: metrics.actualBoundingBoxDescent || 0,
+    };
+  }
+  function officialFontVerticalBounds(e, fs, bold = false) {
+    const sdf = runSdf(e, bold);
+    const font = sdf?.fontId && tmpFonts?.fonts.get(String(sdf.fontId));
+    if (!font) return { ascent: fs * 0.7, descent: 0 };
+    const scale = fs / Number(font.face.pointSize) * Number(font.face.scale || 1);
+    return {
+      ascent: Number(font.face.ascentLine) * scale,
+      descent: -Number(font.face.descentLine) * scale,
+    };
+  }
+  function officialLineHeight(e, fs, bold = false, lineSpacingDelta = 0) {
+    const sdf = runSdf(e, bold);
+    const font = sdf?.fontId && tmpFonts?.fonts.get(String(sdf.fontId));
+    if (!font) return fs * 1.18;
+    const baseScale = fs / Number(font.face.pointSize) * Number(font.face.scale || 1);
+    const emScale = fs * 0.01;
+    return (Number(font.face.lineHeight) + Number(lineSpacingDelta || 0)) * baseScale
+      + Number(e.lineSpacing || 0) * emScale;
+  }
+  function exSpriteLayout(e, item, currentSize, x = 0, baseline = 0) {
+    const fontId = runSdf(e, false)?.fontId;
+    const font = fontId && tmpFonts?.fonts.get(String(fontId));
+    if (!tmpSpriteContract || !font) return null;
+    return layoutOfficialTmpSprite(
+      tmpSpriteContract,
+      font.face,
+      item.spriteIndex,
+      currentSize,
+      Number(item.fontSize || currentSize),
+      x,
+      baseline,
+    );
+  }
+  function drawExSprite(target, source, e, item, currentSize, x, baseline) {
+    const layout = exSpriteLayout(e, item, currentSize, x, baseline);
+    if (!source || !layout) return layout;
+    const crop = layout.source;
+    target.drawImage(
+      source,
+      crop.x, crop.y, crop.width, crop.height,
+      layout.left, layout.top, layout.width, layout.height,
+    );
+    tmpSpriteBindings.push({
+      role: "inline-ex-sprite",
+      spriteAssetId: item.spriteAssetId,
+      materialId: item.materialId,
+      textureId: item.textureId,
+      spriteIndex: item.spriteIndex,
+      characterName: item.characterName,
+      fontId: String(runSdf(e, false)?.fontId || ""),
+      currentFontSize: Number(currentSize),
+      tagFontSize: Number(item.fontSize || currentSize),
+      elementScale: layout.elementScale,
+      advance: layout.advance,
+    });
+    return layout;
+  }
+  function fitOfficialTmpAutoSize(e, text, requestedSize, maxWidth) {
+    if (!e.autosize || !(maxWidth > 0) || !tmpFonts || !e.sdf?.fontId) {
+      return { fontSize: requestedSize, charWidthAdjustment: 0, lineSpacingDelta: 0 };
+    }
+    return resolveOfficialTmpAutoSize({
+      fontSizeBase: Number(e.fsbase ?? requestedSize),
+      fontSizeMin: Number(e.fsmin ?? requestedSize * 0.1),
+      fontSizeMax: Number(e.fsmax ?? requestedSize),
+      charWidthMaxAdj: Number(e.charWidthMaxAdj || 0),
+      lineSpacingMax: Number(e.lineSpacingMax || 0),
+      overflowMode: Number(e.overflowMode || 0),
+      maxWidth,
+    }, ({ fontSize, charWidthAdjustment }) => ({
+      width: measureRun({ ...e, charWidthAdjustment }, text, fontSize),
+      height: 0,
+      lineCount: 1,
+      baseScale: 1,
+    }));
+  }
   // word-wrap over runs: latin words stay whole, CJK breaks per char; first line shortened by `indent`.
   // an image run (inline ex glyph) is one non-breaking token sized fs·exAR wide.
-  function wrapRuns(runs, e, fs, maxW, indent, exAR) {
-    const toks = [];
-    for (const r of runs) {
-      if (r.img) { toks.push({ img: r.img, bold: r.bold }); continue; }
-      // honour EXPLICIT newlines (\n) in the source string as HARD breaks (the masterdata rule separates its
-      // effects with \n\n\n) — split on \n into a `br` token, else they'd tokenize as whitespace and be dropped.
-      r.t.split("\n").forEach((seg, i) => {
-        if (i > 0) toks.push({ br: true });
-        for (const p of (seg.match(/\s+|[A-Za-z0-9À-ÿ.,;:!?'"()%·\-]+|[^\s]/g) || [])) toks.push({ t: p, bold: r.bold });
-      });
-    }
-    const lines = [[]]; let lw = 0, avail = maxW - indent;
-    for (const tk of toks) {
-      if (tk.br) { lines.push([]); lw = 0; avail = maxW; continue; }   // hard line break
-      const w = tk.img ? fs * (exAR || 1.6) : (ctx.font = runFont(e, tk.bold, fs), ctx.measureText(tk.t).width);
-      const cur = lines[lines.length - 1];
-      if (lw + w > avail && cur.some((s) => s.t.trim())) {
-        lines.push([]); lw = 0; avail = maxW;
-        if (/^\s+$/.test(tk.t)) continue;
+  function wrapRuns(runs, e, fs, maxW, indent, imap) {
+    const items = [];
+    for (const run of runs) {
+      if (run.img || run.sprite) {
+        items.push({ character: "\uFFFC", ...run });
+        continue;
       }
-      lines[lines.length - 1].push(tk); lw += w;
+      if (run.symbol) {
+        items.push({ character: run.glyph, t: run.glyph, ...run });
+        continue;
+      }
+      for (const character of run.t) {
+        items.push({ character, t: character, bold: run.bold, italic: run.italic, noBreak: run.noBreak });
+      }
     }
-    return lines;
+    const imageAspect = (item) => {
+      const image = item.img === "ex" ? imap?.get(EX_GLYPH) : imap?.get(item.url);
+      return image?.height ? image.width / image.height : 1;
+    };
+    const measure = (lineItems) => {
+      let width = 0;
+      let text = "";
+      let bold = null;
+      let italic = null;
+      const flush = () => {
+        if (text) width += measureRun(e, text, fs, bold, italic);
+        text = "";
+      };
+      for (const item of lineItems) {
+        if ((item.character || "").codePointAt(0) === 0xAD) continue;
+        if (item.sprite) {
+          flush();
+          const layout = exSpriteLayout(e, item, fs);
+          width += layout ? layout.advance : fs;
+          bold = null;
+          italic = null;
+        } else if (item.img) {
+          flush();
+          width += fs * imageAspect(item);
+          bold = null;
+          italic = null;
+        } else if (item.symbol) {
+          flush();
+          width += measureRun(
+            { ...e, sdf: item.sdf, charWidthAdjustment: 0 },
+            item.glyph,
+            Number(item.fontSize || fs),
+          );
+          bold = null;
+          italic = null;
+        } else if (bold === null || (bold === item.bold && italic === item.italic)) {
+          text += item.t;
+          bold = item.bold;
+          italic = item.italic;
+        } else {
+          flush();
+          text = item.t;
+          bold = item.bold;
+          italic = item.italic;
+        }
+      }
+      flush();
+      return width;
+    };
+    return wrapOfficialTmpItems(tmpFonts, items, {
+      maxWidth: maxW,
+      firstLineWidth: maxW - indent,
+      measure,
+    }).map((line) => ({ ...line, width: measure(line.items) }));
   }
 
-  // TMP SDF outline → canvas stroke. Outward thickness(px) = fs · OutlineWidth · GradientScale/pointSize (=10/40);
-  // canvas strokeText is centred on the path (half hidden under the fill) so lineWidth = 2× that = fs·width·0.5.
-  function outlineFor(e, fs) {
-    if (!e.outline || !e.outline.width) return null;
-    const oc = e.outline.color || [1, 1, 1, 1];
-    return { lw: fs * e.outline.width * 0.5, css: `rgba(${(oc[0]*255)|0},${(oc[1]*255)|0},${(oc[2]*255)|0},${oc[3] ?? 1})` };
+  function groupWrappedItems(items) {
+    const segments = [];
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index];
+      const previous = segments[segments.length - 1];
+      if (!item.img && !item.sprite && !item.symbol && previous
+          && !previous.img && !previous.sprite && !previous.symbol
+          && previous.bold === item.bold && previous.italic === item.italic) {
+        previous.t += item.t;
+        previous.end = index + 1;
+      } else {
+        segments.push(item.img || item.sprite || item.symbol
+          ? { ...item, start: index, end: index + 1 }
+          : { t: item.t, bold: item.bold, italic: item.italic, noBreak: item.noBreak, start: index, end: index + 1 });
+      }
+    }
+    return segments;
+  }
+
+  function wrappedBlockMetrics(lines, e, fs, lineHeight) {
+    const lineMetrics = lines.map((line) => {
+      const bounds = groupWrappedItems(line.items)
+        .filter((segment) => !segment.img)
+        .map((segment) => segment.sprite
+          ? (exSpriteLayout(e, segment, fs) || officialFontVerticalBounds(e, fs, false))
+          : segment.symbol
+          ? inkBounds(
+            { ...e, sdf: segment.sdf, charWidthAdjustment: 0 },
+            segment.glyph,
+            Number(segment.fontSize || fs),
+          )
+          : inkBounds(e, segment.t || " ", fs, segment.bold, segment.italic));
+      if (!bounds.length) bounds.push(officialFontVerticalBounds(e, fs, false));
+      return {
+        ascent: Math.max(...bounds.map((value) => value.ascent)),
+        descent: Math.max(...bounds.map((value) => value.descent)),
+      };
+    });
+    const paragraphExtra = lines.slice(0, -1).reduce(
+      (sum, line) => sum + (line.hardBreak ? Number(e.paragraphSpacing || 0) * fs * 0.01 : 0),
+      0,
+    );
+    const first = lineMetrics[0] || { ascent: 0, descent: 0 };
+    const last = lineMetrics[lineMetrics.length - 1] || first;
+    const blockHeight = lines.length
+      ? first.ascent + last.descent + Math.max(0, lines.length - 1) * lineHeight + paragraphExtra
+      : 0;
+    return { lineMetrics, paragraphExtra, blockHeight };
+  }
+
+  function sdfStyleFor(e, fs, bold = false) {
+    const outline = bold && e.boldStyle?.outline ? e.boldStyle.outline : e.outline;
+    if (!outline || !outline.width) return null;
+    const oc = outline.color || [1, 1, 1, 1];
+    return {
+      outerLineWidth: fs * outline.width * 0.5,
+      outlineCss: `rgba(${(oc[0]*255)|0},${(oc[1]*255)|0},${(oc[2]*255)|0},${oc[3] ?? 1})`,
+    };
+  }
+  function drawSdfText(target, e, text, x, y, fs, bold = false, italic = false, align = "left", glyphOffsets = null) {
+    const sdf = runSdf(e, bold);
+    if (exactTmp && sdf?.fontId && sdf?.materialId) {
+      try {
+        const options = tmpLayoutOptions(e);
+        const probe = layoutOfficialTmpRun(tmpFonts, sdf.fontId, text, fs, 0, 0, options);
+        const startX = align === "right" ? x - probe.advance : align === "center" ? x - probe.advance / 2 : x;
+        let layout = layoutOfficialTmpRun(tmpFonts, sdf.fontId, text, fs, startX, y, options);
+        if (italic) layout = { ...layout, glyphs: layout.glyphs.map((glyph) => ({ ...glyph, italic: true })) };
+        if (glyphOffsets?.some((offset) => offset !== 0)) {
+          layout = {
+            ...layout,
+            glyphs: layout.glyphs.map((glyph, index) => ({ ...glyph, x: glyph.x + Number(glyphOffsets[index] || 0) })),
+            endX: layout.endX + Number(glyphOffsets[glyphOffsets.length - 1] || 0),
+          };
+        }
+        const componentColor = e.vertexColor || [1, 1, 1, 1];
+        const resolvedSdf = { ...sdf };
+        if (!resolvedSdf.faceColor) {
+          const c = e.color || [1, 1, 1, 1];
+          resolvedSdf.faceColor = { r: c[0], g: c[1], b: c[2], a: c[3] ?? 1 };
+        }
+        if (!resolvedSdf.outlineColor) {
+          const c = (bold && e.boldStyle?.outline?.color) || e.outline?.color || [0, 0, 0, 1];
+          resolvedSdf.outlineColor = { r: c[0], g: c[1], b: c[2], a: c[3] ?? 1 };
+        }
+        tmpDraws.push({
+          layout,
+          sdf: resolvedSdf,
+          sdfScale: layout.scale,
+          vertexColor: componentColor,
+          role: e.tmpRole || "text",
+        });
+        return;
+      } catch (error) { tmpFallbackCount += 1; console.warn("TMP glyph fallback", error); }
+    }
+    const style = sdfStyleFor(e, fs, bold);
+    target.textAlign = align;
+    target.textBaseline = "alphabetic";
+    if (style?.outerLineWidth > 0) {
+      target.lineWidth = style.outerLineWidth;
+      target.strokeStyle = style.outlineCss;
+      target.lineJoin = "round";
+      target.miterLimit = 2;
+      target.strokeText(text, x, y);
+    }
+    target.fillText(text, x, y);
   }
   function drawText(e, imap) {
     let fs = e.fs; const b = e.box, va = e.valign || "middle";
-    const runs = parseRuns(e.text);
+    const runs = parseOfficialTmpRuns(e.text, e.inlineSprites, e.inlineEx).map((run) => (
+      run.img || run.sprite || run.symbol
+        ? run
+        : { ...run, italic: resolveOfficialTmpItalic(e.fontStyle, run.italic) }
+    ));
     const exImg = imap && imap.get(EX_GLYPH);                          // inline ex glyph (for [Img:ex] in body text)
-    const exAR = exImg ? exImg.width / exImg.height : 1.6;
+    const exSpriteSheet = e.inlineEx?.textureUrl && imap?.get(e.inlineEx.textureUrl);
     if (e.wrap) {                                       // multi-line: wrap to box width, shrink to fit box height
-      const boxW = (b.r - b.l) * W, boxH = (b.b - b.t) * H, indentPx = (e.indent || 0) * W;
+      const margin = e.margin || [0, 0, 0, 0];
+      const boxLeft = b.l * W + Number(margin[0] || 0);
+      const boxRight = b.r * W - Number(margin[2] || 0);
+      const boxTop = b.t * H + Number(margin[1] || 0);
+      const boxBottom = b.b * H - Number(margin[3] || 0);
+      const boxW = boxRight - boxLeft, boxH = boxBottom - boxTop, indentPx = (e.indent || 0) * W;
       const c = e.color; ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
       ctx.textAlign = "left"; ctx.textBaseline = "top";
-      let lines, lh;
-      for (; ; fs -= 0.5) { lines = wrapRuns(runs, e, fs, boxW, indentPx, exAR); lh = fs * 1.18; if (lines.length * lh <= boxH || fs <= (e.fsmin || 6)) break; }
+      const layoutWrappedAt = ({ fontSize: size, charWidthAdjustment = 0, lineSpacingDelta = 0 }) => {
+        const layoutElement = { ...e, charWidthAdjustment };
+        const candidateLines = wrapRuns(runs, layoutElement, size, boxW, indentPx, imap);
+        const lineHeight = officialLineHeight(layoutElement, size, false, lineSpacingDelta);
+        const metrics = wrappedBlockMetrics(candidateLines, layoutElement, size, lineHeight);
+        const sdf = runSdf(layoutElement, false);
+        const font = sdf?.fontId && tmpFonts?.fonts.get(String(sdf.fontId));
+        const baseScale = font ? size / Number(font.face.pointSize) * Number(font.face.scale || 1) : 1;
+        return {
+          lines: candidateLines,
+          lineHeight,
+          lineSpacingDelta,
+          metrics,
+          width: candidateLines.reduce((maximum, line) => Math.max(maximum, line.width), 0),
+          height: metrics.blockHeight,
+          lineCount: candidateLines.length,
+          baseScale,
+        };
+      };
+      let wrapped;
+      if (e.autosize) {
+        const fitted = resolveOfficialTmpAutoSize({
+          fontSizeBase: Number(e.fsbase ?? fs),
+          fontSizeMin: Number(e.fsmin ?? fs * 0.1),
+          fontSizeMax: Number(e.fsmax ?? fs),
+          charWidthMaxAdj: Number(e.charWidthMaxAdj || 0),
+          lineSpacingMax: Number(e.lineSpacingMax || 0),
+          overflowMode: Number(e.overflowMode || 0),
+          maxWidth: boxW,
+          maxHeight: boxH,
+          justifiedOrFlush: e.horizontalAlignment === 8 || e.horizontalAlignment === 16,
+        }, layoutWrappedAt);
+        fs = fitted.fontSize;
+        e = { ...e, charWidthAdjustment: fitted.charWidthAdjustment };
+        wrapped = fitted.evaluation;
+      } else {
+        wrapped = layoutWrappedAt({ fontSize: fs });
+      }
+      const { lines, lineHeight: lh, metrics } = wrapped;
       // TMP Valign: Bottom anchors the block bottom at box.b; Middle centres the block in the box (the rule body
       // box is tall and the text is V=Middle → sits at the box centre, not the top); else Top.
-      const blockH = lines.length * lh;
-      let yy = va === "bottom" ? b.b * H - blockH
-             : va === "middle" ? (b.t + b.b) / 2 * H - blockH / 2
-             : b.t * H;
-      const ol = outlineFor(e, fs);                     // white SDF outline (drawn under each glyph)
+      const firstAscent = metrics.lineMetrics[0]?.ascent || 0;
+      let baseline = va === "bottom" ? boxBottom - metrics.blockHeight + firstAscent
+                   : va === "middle" ? (boxTop + boxBottom - metrics.blockHeight) / 2 + firstAscent
+                   : boxTop + firstAscent;
       for (let i = 0; i < lines.length; i++) {
-        let xx = b.l * W + (i === 0 ? indentPx : 0);
-        for (const seg of lines[i]) {
-          if (seg.img) {                                // inline ex glyph: black (body-text colour), on the text line
-            const eh = fs, ew = eh * exAR;
-            if (exImg) ctx.drawImage(tint(exImg, e.color), xx, yy + lh - eh - fs * 0.12, ew, eh);
-            xx += ew;
+        const line = lines[i];
+        const available = boxW - (i === 0 ? indentPx : 0);
+        let xx = boxLeft + (i === 0 ? indentPx : 0);
+        if (e.align === "right") xx += available - line.width;
+        else if (e.align === "center") xx += (available - line.width) / 2;
+        const justify = (e.horizontalAlignment === 16 || (e.horizontalAlignment === 8 && i < lines.length - 1))
+          && !line.hardBreak;
+        const offsets = justify
+          ? computeOfficialTmpJustificationOffsets(line.items, line.width, available, Number(e.wordWrappingRatios ?? 0.4))
+          : new Array(line.items.length).fill(0);
+        let advance = 0;
+        for (const seg of groupWrappedItems(line.items)) {
+          const drawX = xx + advance + offsets[seg.start];
+          if (seg.sprite) {
+            const layout = drawExSprite(ctx, exSpriteSheet, e, seg, fs, drawX, baseline);
+            advance += layout ? layout.advance : fs;
+          } else if (seg.symbol) {
+            const symbolSize = Number(seg.fontSize || fs);
+            const symbolElement = {
+              ...e,
+              sdf: seg.sdf,
+              charWidthAdjustment: 0,
+              outline: null,
+              tmpRole: "inline-element",
+            };
+            drawSdfText(ctx, symbolElement, seg.glyph, drawX, baseline, symbolSize);
+            advance += measureRun(symbolElement, seg.glyph, symbolSize);
+          } else if (seg.img) {
+            const source = seg.img === "ex" ? exImg : imap?.get(seg.url);
+            const eh = fs, ew = eh * (source?.height ? source.width / source.height : 1);
+            const lineTop = baseline - (metrics.lineMetrics[i]?.ascent || firstAscent);
+            if (source) {
+              const image = seg.img === "ex" ? tint(source, e.color) : source;
+              ctx.drawImage(image, drawX, lineTop + lh - eh - fs * 0.12, ew, eh);
+            }
+            advance += ew;
           } else {
-            ctx.font = runFont(e, seg.bold, fs);
-            if (ol) { ctx.lineWidth = ol.lw; ctx.strokeStyle = ol.css; ctx.lineJoin = "round"; ctx.miterLimit = 2; ctx.strokeText(seg.t, xx, yy); }
-            ctx.fillText(seg.t, xx, yy); xx += ctx.measureText(seg.t).width;
+            ctx.font = runFont(e, seg.bold, fs, seg.italic);
+            const baseOffset = offsets[seg.start];
+            const glyphOffsets = offsets.slice(seg.start, seg.end).map((offset) => offset - baseOffset);
+            drawSdfText(ctx, e, seg.t, drawX, baseline, fs, seg.bold, seg.italic, "left", glyphOffsets);
+            advance += measureRun(e, seg.t, fs, seg.bold, seg.italic);
           }
         }
-        yy += lh;
+        baseline += lh + (line.hardBreak ? Number(e.paragraphSpacing || 0) * fs * 0.01 : 0);
       }
       return;
     }
-    if (e.text.indexOf("\x01") >= 0 || e.text.indexOf("\x03") >= 0) e = { ...e, text: runs.map((r) => r.t || "").join("") };  // strip sentinels/inline-img for plain draw
+    const hasMixedRuns = runs.some((run) => run.img || run.sprite || run.symbol || run.bold || run.italic || run.noBreak);
+    if (hasMixedRuns) {
+      const metricsAt = (size, charWidthAdjustment = 0) => {
+        const layoutElement = { ...e, charWidthAdjustment };
+        const widthScale = 1 - charWidthAdjustment;
+        let width = 0;
+        let ascent = 0;
+        let descent = 0;
+        const segments = [];
+        for (const run of runs) {
+          if (run.sprite) {
+            const layout = exSpriteLayout(e, run, size);
+            const advance = (layout?.advance ?? size) * widthScale;
+            segments.push({ ...run, source: exSpriteSheet, size, advance, spriteLayout: layout });
+            width += advance;
+            ascent = Math.max(ascent, layout?.ascent ?? size * 0.88);
+            descent = Math.max(descent, layout?.descent ?? size * 0.12);
+          } else if (run.symbol) {
+            const symbolSize = Number(run.fontSize || size);
+            const symbolElement = {
+              ...layoutElement,
+              sdf: run.sdf,
+              outline: null,
+              tmpRole: "inline-element",
+            };
+            const bounds = inkBounds(symbolElement, run.glyph, symbolSize);
+            const advance = measureRun(symbolElement, run.glyph, symbolSize);
+            segments.push({ ...run, element: symbolElement, size: symbolSize, advance });
+            width += advance;
+            ascent = Math.max(ascent, bounds.ascent);
+            descent = Math.max(descent, bounds.descent);
+          } else if (run.img) {
+            const source = run.img === "ex" ? exImg : imap?.get(run.url);
+            const advance = size * (source?.height ? source.width / source.height : 1) * widthScale;
+            segments.push({ ...run, source, size, advance });
+            width += advance;
+            ascent = Math.max(ascent, size * 0.88);
+            descent = Math.max(descent, size * 0.12);
+          } else if (run.t) {
+            const bounds = inkBounds(layoutElement, run.t, size, run.bold, run.italic);
+            const advance = measureRun(layoutElement, run.t, size, run.bold, run.italic);
+            segments.push({ ...run, size, advance });
+            width += advance;
+            ascent = Math.max(ascent, bounds.ascent);
+            descent = Math.max(descent, bounds.descent);
+          }
+        }
+        return { width, ascent, descent, segments };
+      };
+      const boxW = (b.r - b.l) * W;
+      let mixed = metricsAt(fs);
+      if (e.autosize && boxW > 1) {
+        const fitted = resolveOfficialTmpAutoSize({
+          fontSizeBase: Number(e.fsbase ?? fs),
+          fontSizeMin: Number(e.fsmin ?? fs * 0.1),
+          fontSizeMax: Number(e.fsmax ?? fs),
+          charWidthMaxAdj: Number(e.charWidthMaxAdj || 0),
+          lineSpacingMax: Number(e.lineSpacingMax || 0),
+          overflowMode: Number(e.overflowMode || 0),
+          maxWidth: boxW,
+        }, ({ fontSize, charWidthAdjustment }) => {
+          const metrics = metricsAt(fontSize, charWidthAdjustment);
+          return { ...metrics, height: metrics.ascent + metrics.descent, lineCount: 1, baseScale: 1 };
+        });
+        fs = fitted.fontSize;
+        e = { ...e, charWidthAdjustment: fitted.charWidthAdjustment };
+        mixed = fitted.evaluation;
+      }
+      let baseline;
+      if (va === "bottom") baseline = b.b * H - mixed.descent;
+      else if (va === "top") baseline = b.t * H + mixed.ascent;
+      else baseline = (b.t + b.b) / 2 * H + (mixed.ascent - mixed.descent) / 2;
+      let cursor = e.align === "right" ? b.r * W - mixed.width
+        : e.align === "center" ? (b.l + b.r) / 2 * W - mixed.width / 2
+        : b.l * W;
+      const c = e.color;
+      ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
+      for (const segment of mixed.segments) {
+        if (segment.sprite) {
+          drawExSprite(ctx, segment.source, e, segment, fs, cursor, baseline);
+        } else if (segment.symbol) {
+          drawSdfText(ctx, segment.element, segment.glyph, cursor, baseline, segment.size);
+        } else if (segment.img) {
+          if (segment.source) {
+            const image = segment.img === "ex" ? tint(segment.source, e.color) : segment.source;
+            ctx.drawImage(image, cursor, baseline - segment.size * 0.88, segment.advance, segment.size);
+          }
+        } else {
+          drawSdfText(ctx, e, segment.t, cursor, baseline, fs, segment.bold, segment.italic);
+        }
+        cursor += segment.advance;
+      }
+      return;
+    }
     // TMP auto-sizing: shrink the font from fs down to fsmin so the text fits its box width (long translations)
     if (e.autosize) {
       const boxW = (b.r - b.l) * W;
       if (boxW > 1) {
-        ctx.font = faceFont(e.font, fs);
-        const tw = ctx.measureText(e.text).width;
-        if (tw > boxW) fs = Math.max(e.fsmin || fs * 0.1, fs * boxW / tw);
+        const fitted = fitOfficialTmpAutoSize(e, e.text, fs, boxW);
+        fs = fitted.fontSize;
+        e = { ...e, charWidthAdjustment: fitted.charWidthAdjustment };
       }
     }
     ctx.font = faceFont(e.font, fs);
-    ctx.textAlign = e.align;
     const x = e.align === "right" ? b.r * W : e.align === "center" ? (b.l + b.r) / 2 * W : b.l * W;
     // TMP vertical alignment: Middle centres the GLYPH INK bounds at the box centre (NOT the em box — canvas
     // "middle" uses the em box, which drops symbols like "+" below the digit line). Compute the baseline from
     // the actual ink metrics so "+" and "20" (and all numerals) sit consistently.
     let y;
-    if (va === "bottom") { ctx.textBaseline = "alphabetic"; y = b.b * H - fs * 0.12; }
-    else if (va === "top") { ctx.textBaseline = "top"; y = b.t * H; }
+    const mm = inkBounds(e, e.text, fs);
+    if (va === "bottom") y = b.b * H - mm.descent;
+    else if (va === "top") y = b.t * H + mm.ascent;
     else {
-      ctx.textBaseline = "alphabetic";
-      const mm = ctx.measureText(e.text);
-      const ia = mm.actualBoundingBoxAscent || fs * 0.7, id = mm.actualBoundingBoxDescent || 0;
+      const ia = mm.ascent, id = mm.descent;
       y = (b.t + b.b) / 2 * H + (ia - id) / 2;          // ink-centre at the box centre
     }
     const c = e.color;
     ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
-    const ol = outlineFor(e, fs);                        // white SDF outline under the glyph (full-art text)
-    if (ol) { ctx.lineWidth = ol.lw; ctx.strokeStyle = ol.css; ctx.lineJoin = "round"; ctx.miterLimit = 2; ctx.strokeText(e.text, x, y); }
-    ctx.fillText(e.text, x, y);
+    drawSdfText(ctx, e, e.text, x, y, fs, false, false, e.align);
     if (e.exAfter) {                                    // PokemonCardNameView.UpdateExLayout (byte-traced):
-      const mn = ctx.measureText(e.text);                //   ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx)
+      const mn = inkBounds(e, e.text, fs);               //   ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx)
       // use the INK right edge (not the advance width) so the ex follows the VISIBLE name end — the advance
       // includes the last glyph's right side-bearing, which made the name↔ex gap look a touch wide for latin names.
-      const nw = (mn.actualBoundingBoxRight != null && mn.actualBoundingBoxRight > 0) ? mn.actualBoundingBoxRight : mn.width;
+      const nw = mn.right > 0 ? mn.right : mn.advance;
       const ex = imap.get(EX_GLYPH), exo = imap.get(EX_GLYPH_OUTLINE);
       if (ex) {
         const exH = (e.exH ? e.exH * H : fs * 0.95), ar = ex.width / ex.height, exW = exH * ar;  // size from prefab box
@@ -336,17 +811,26 @@ function buildDynamicUITexture(cardUI, face) {
     // by hp_txt's ap.y (=8px) so the small label baseline-aligns with the big number.
     const b = e.box, midY = (b.t + b.b) / 2 * H, rx = b.r * W, c = e.color;
     ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
-    ctx.textBaseline = "middle";
-    ctx.textAlign = "right"; ctx.font = faceFont(e.font, e.numFs); ctx.fillText(e.num, rx, midY);
-    const numW = ctx.measureText(e.num).width;
+    const numElement = { ...e, sdf: e.numSdf, vertexColor: e.numVertexColor };
+    const numBounds = inkBounds(numElement, e.num, e.numFs);
+    const numBaseline = midY + (numBounds.ascent - numBounds.descent) / 2;
+    ctx.font = faceFont(e.font, e.numFs);
+    drawSdfText(ctx, numElement, e.num, rx, numBaseline, e.numFs, false, false, "right");
+    const numW = e.numSdf?.fontId && tmpFonts
+      ? measureOfficialTmpText(tmpFonts, e.numSdf.fontId, e.num, e.numFs, tmpLayoutOptions(e))
+      : ctx.measureText(e.num).width;
     const cellRight = rx - numW - (e.spacing || 0) * W, cellCenter = cellRight - (e.labelCellW || 0) * W / 2;
-    ctx.textAlign = "center"; ctx.font = faceFont(e.font, e.labelFs);
-    ctx.fillText(e.label, cellCenter, midY + (e.labelDY || 0));
+    const labelElement = { ...e, sdf: e.labelSdf, vertexColor: e.labelVertexColor };
+    const labelBounds = inkBounds(labelElement, e.label, e.labelFs);
+    const labelMid = midY + (e.labelDY || 0);
+    const labelBaseline = labelMid + (labelBounds.ascent - labelBounds.descent) / 2;
+    ctx.font = faceFont(e.font, e.labelFs);
+    drawSdfText(ctx, labelElement, e.label, cellCenter, labelBaseline, e.labelFs, false, false, "center");
   }
 
   return Promise.all([...urls].map((u) => loadImg(u).then((img) => [u, img]))).then((pairs) => {
     const imap = new Map(pairs);
-    return (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+    return (document.fonts ? document.fonts.ready : Promise.resolve()).then(async () => {
       // 1. sprite layers (UGUI hierarchy order: children paint after parents = back-to-front). Ex-rule banner
       //    sprites are also drawn into the foil mask.
       cardUI.elements.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).forEach((e) => {
@@ -357,8 +841,50 @@ function buildDynamicUITexture(cardUI, face) {
       faceEls.filter((e) => e.kind === "icon").forEach((e) => drawSprite({ ...e, fit: e.fit || "contain" }, imap.get(e.url)));
       faceEls.filter((e) => e.kind === "text").forEach((e) => drawText(e, imap));
       faceEls.filter((e) => e.kind === "hp").forEach((e) => drawHP(e));
-      const mk = (canvas) => { const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.NoColorSpace; t.flipY = window.__uiflipy ?? false; t.anisotropy = 1; return t; };
-      return { ui: mk(cv), holo: mk(makeHoloDynamicCanvas(cv)), foil: mk(foilCv) };
+      const mk = (canvas) => {
+        const t = new THREE.CanvasTexture(canvas);
+        t.colorSpace = THREE.NoColorSpace;
+        // The card mesh consumes DynamicUI with its serialized UVs. Producer-side
+        // top-left mapping is owned by tmp-sdf-renderer; no consumer flip belongs here.
+        t.flipY = false;
+        applyOfficialSampler(t, samplerState);
+        return t;
+      };
+      const foil = mk(foilCv);
+      if (exactTmp && tmpDraws.length) {
+        const rendered = await renderOfficialTmpDynamicTexture({
+          renderer,
+          baseCanvas: cv,
+          draws: tmpDraws,
+          fonts: tmpFonts,
+          program: tmpProgram,
+          samplerState,
+          logicalWidth: W,
+          logicalHeight: H,
+          textureWidth: textureW,
+          textureHeight: textureH,
+          collectReadback: collectTmpReadback,
+        });
+        return {
+          ...rendered,
+          evidence: {
+            ...rendered.evidence,
+            fallbackCount: tmpFallbackCount,
+            spriteBindings: tmpSpriteBindings,
+          },
+          foil,
+          dispose() {
+            rendered.dispose();
+            foil.dispose();
+          },
+        };
+      }
+      const holoImageData = ctx.getImageData(0, 0, cv.width, cv.height);
+      return {
+        ui: mk(cv),
+        holo: createOfficialHoloDynamicTexture(holoImageData, samplerState),
+        foil,
+      };
     });
   });
 }
@@ -379,6 +905,7 @@ async function main() {
   // ?scene=scene.<cardId>.json renders an alternate prebuilt card.
   // debug URL params (for headless screenshots): ?only=<substr> solos layers, ?nohud hides the overlays.
   const qp = new URLSearchParams(location.search);
+  const fullRuntimeAudit = qp.get("auditrt") === "1";
   // ?card=<illustrationId> builds the scene DYNAMICALLY for any card (server /scene). ?scene=<file> still works
   // (a prebuilt scene). Missing scene files fall back to the first prebuilt scene returned by /scenes.
   const cardParam = qp.get("card");
@@ -405,11 +932,54 @@ async function main() {
   const frameCap = Number(qp.get("fps") || 0);
   window.__frameInterval = Number.isFinite(frameCap) && frameCap > 0 ? 1000 / frameCap : 0;
   if (qp.has("nohud")) { window.__nohud = true; if (errEl) errEl.style.display = "none"; }
-  const scene_data = await fetch(sceneSrc).then((r) => r.json());
-  const officialSamplerMap = await fetch("texture-samplers.json")
+  const sceneResponse = await fetch(sceneSrc);
+  if (!sceneResponse.ok) throw new Error(`scene: HTTP ${sceneResponse.status}`);
+  const sceneBytes = await sceneResponse.arrayBuffer();
+  const sceneSha256 = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", sceneBytes)))
+    .map((value) => value.toString(16).padStart(2, "0")).join("");
+  const scene_data = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(sceneBytes));
+  const sortCaptureSrc = qp.get("sortCapture");
+  let capturedSortResolver = null;
+  if (sortCaptureSrc) {
+    const [artifactResponse, collisionResponse] = await Promise.all([
+      fetch(sortCaptureSrc),
+      fetch("render/official-sort-collision-groups.json"),
+    ]);
+    if (!artifactResponse.ok) throw new Error(`sortCapture: HTTP ${artifactResponse.status}`);
+    if (!collisionResponse.ok) throw new Error(`sort collision manifest: HTTP ${collisionResponse.status}`);
+    capturedSortResolver = createOfficialCapturedSortResolver({
+      artifact: await artifactResponse.json(),
+      collisionManifest: await collisionResponse.json(),
+      cardId: scene_data.card.id,
+      sceneSha256,
+    });
+    console.log(`official captured sort: ${capturedSortResolver.completeGroupCount} complete groups`);
+  }
+  const officialSamplerManifest = await fetch("texture-samplers.json")
     .then((r) => r.ok ? r.json() : null)
-    .then((data) => data?.textures || {})
-    .catch(() => ({}));
+    .catch(() => null);
+  const officialSamplerMap = officialSamplerManifest?.textures || {};
+  const dynamicUISamplerState = officialSamplerManifest?.runtimeTextures?._DynamicUITex?.sampler;
+  if (!dynamicUISamplerState) throw new Error("official _DynamicUITex sampler contract is missing");
+  const officialTmpFonts = await loadOfficialTmpFonts().catch((error) => {
+    console.warn("official TMP font data unavailable; retaining Canvas metric fallback", error);
+    return null;
+  });
+  const officialTmpSpriteContract = await fetch("/render/tmp-sprite-contract.json")
+    .then((response) => {
+      if (!response.ok) throw new Error(`official TMP sprite contract: HTTP ${response.status}`);
+      return response.json();
+    })
+    .catch((error) => {
+      console.warn("official TMP sprite contract unavailable; retaining legacy inline image fallback", error);
+      return null;
+    });
+  const officialTmpSdfProgram = exactEnabled("TMP_SDF")
+    ? await loadOfficialTmpSdfProgram().catch((error) => {
+      console.warn("official TMP SDF program unavailable; retaining Canvas glyph fallback", error);
+      return null;
+    })
+    : null;
   const hasOfficialEmissive = !qp.has("nobloom") && Object.values(scene_data.materials || {}).some((m) => {
     const p = m.floats?._EmissivePattern ?? 0;
     const e = m.colors?._EmissiveColor;
@@ -421,11 +991,49 @@ async function main() {
   const manifest = await fetch("locales/manifest.json").then((r) => r.json()).catch(() => null);
   let curLoc = qp.get("lc") || (manifest && manifest.default) || "zh_TW";
   if (manifest && manifest.locales && !manifest.locales.some((l) => l.lc === curLoc)) curLoc = manifest.default || "zh_TW";
+  const fullRuntimeSessionPromise = fullRuntimeAudit ? (async () => {
+    const storageKey = "pocket-card-render.full-runtime-session.v1";
+    const auditUrl = new URL(location.href);
+    auditUrl.searchParams.set("scene", sceneFile);
+    auditUrl.searchParams.set("lc", curLoc);
+    auditUrl.searchParams.set("auditrt", "1");
+    if (auditUrl.href !== location.href) history.replaceState(null, "", auditUrl);
+    const stored = JSON.parse(sessionStorage.getItem(storageKey) || "null");
+    const request = async (credentials = null) => fetch("/audit/full-runtime/session", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        url: auditUrl.href,
+        ...(credentials ? {
+          batchId: credentials.batchId,
+          sessionNonce: credentials.sessionNonce,
+        } : {}),
+      }),
+    });
+    let response = await request(stored);
+    if ((response.status === 401 || response.status === 409) && stored) {
+      sessionStorage.removeItem(storageKey);
+      response = await request();
+    }
+    if (!response.ok) throw new Error(`runtime session HTTP ${response.status}: ${await response.text()}`);
+    const session = await response.json();
+    sessionStorage.setItem(storageKey, JSON.stringify({
+      batchId: session.batchId,
+      sessionNonce: session.sessionNonce,
+    }));
+    if (session.expectedUrl !== location.href) throw new Error("runtime session URL does not match the active page");
+    return session;
+  })() : null;
   async function loadLocaleData(lc) {
     const ui = await fetch(`locales/card_ui.${lc}.json`).then((r) => r.json()).catch(() => null);
     const face = await fetch(`locales/card_face.${lc}.json`).then((r) => r.json()).catch(() => null);
     const lm = manifest && manifest.locales.find((l) => l.lc === lc);
-    if (lm) { curFonts = lm.fonts; if (lm.weights) curWeights = lm.weights; await loadFonts(manifest.fontFiles, Object.values(lm.fonts)); }
+    if (lm) {
+      const officialFontsLoaded = await loadFonts(manifest.fontFiles, Object.values(lm.fonts));
+      curFonts = officialFontsLoaded ? lm.fonts : (lm.fallbackFonts || lm.fonts);
+      if (officialFontsLoaded && lm.weights) curWeights = lm.weights;
+      else if (!officialFontsLoaded && lm.fallbackWeights) curWeights = lm.fallbackWeights;
+    }
     return { ui, face };
   }
   setLoading("Loading fonts…");
@@ -444,8 +1052,8 @@ async function main() {
   // DynamicUI (the L_FullFace_Text overlay). Built GENERICALLY for ANY card: the default Venusaur uses the
   // prebuilt cardUI/cardFace; any other card is composed DYNAMICALLY from masterdata+locale via /compose
   // (server runs carddata.mjs + compose.mjs — no per-card offline pre-gen, no _UT bake).
+  let dynamicUIRenderScale = 1;
   async function buildFace(lc) {
-    if (isDefaultCard && cardUI && cardUI.elements && cardUI.elements.length) return buildDynamicUITexture(cardUI, cardFace);
     if (!mdId) return null;
     // prefer the prebaked static composed-text file (public/text/<mdId>.<lc>.json); fall back to the live
     // /compose endpoint (advanced — only works if you run the server with your own masterdata).
@@ -455,65 +1063,318 @@ async function main() {
     if (!composed) composed = await fetch(`text/${mdId}.${lc}.json`).then((r) => r.ok ? r.json() : null).catch(() => null);
     if (!composed && !mdId.startsWith("PK_")) composed = await fetch(composeUrl).then((r) => r.ok ? r.json() : null).catch(() => null);
     if (!composed || !composed.elements || !composed.elements.length) return null;
-    return buildDynamicUITexture({ canvasWH: composed.canvasWH, elements: [] }, { elements: composed.elements });
+    return buildDynamicUITexture(
+      isDefaultCard && cardUI?.elements?.length
+        ? { ...cardUI, canvasWH: composed.canvasWH }
+        : { canvasWH: composed.canvasWH, elements: [] },
+      { elements: composed.elements },
+      dynamicUISamplerState,
+      dynamicUIRenderScale,
+      officialTmpFonts,
+      renderer,
+      officialTmpSdfProgram,
+      fullRuntimeAudit,
+      officialTmpSpriteContract,
+    );
   }
+
+  // Selector-bound shader ports are loaded with their official identity and
+  // generated manifest. A missing or mismatched port falls back non-exactly.
+  async function loadExactShaderPorts(spec) {
+    const out = {};
+    await Promise.all(Object.entries(spec).map(async ([name, files]) => {
+      if (!exactEnabled(name)) return;
+      const manifestFiles = Array.isArray(files.manifests)
+        ? files.manifests
+        : files.manifest ? [files.manifest] : [];
+      const [fallbackVert, fallbackFrag, manifests] = await Promise.all([
+        fetch(files.vert).then((r) => r.ok ? r.text() : null).catch(() => null),
+        fetch(files.frag).then((r) => r.ok ? r.text() : null).catch(() => null),
+        Promise.all(manifestFiles.map((file) => (
+          fetch(file).then((r) => r.ok ? r.json() : null).catch(() => null)
+        ))),
+      ]);
+      if (!manifests.every(Boolean)) return;
+      const browserAssetPath = (value) => (
+        typeof value === "string" && value.startsWith("public/") ? value.slice("public/".length) : value
+      );
+      const manifestSources = await Promise.all(manifests.map(async (manifest) => {
+        const declared = manifest.webgl_sources || {};
+        const [vert, frag] = await Promise.all([
+          declared.vertex
+            ? fetch(browserAssetPath(declared.vertex)).then((r) => r.ok ? r.text() : null).catch(() => null)
+            : fallbackVert,
+          declared.fragment
+            ? fetch(browserAssetPath(declared.fragment)).then((r) => r.ok ? r.text() : null).catch(() => null)
+            : fallbackFrag,
+        ]);
+        return vert && frag ? { vert, frag } : null;
+      }));
+      const stageSourceOnly = manifestFiles.length === 0;
+      if ((stageSourceOnly && fallbackVert && fallbackFrag)
+          || (!stageSourceOnly && manifestSources.every(Boolean))) {
+        const sourcesByPort = {};
+        manifests.forEach((manifest, index) => {
+          const identityKey = officialPortIdentityKey(manifest?.official_selector);
+          if (!identityKey) throw new Error(`${name}: exact manifest has an incomplete port identity`);
+          if (Object.hasOwn(sourcesByPort, identityKey)) {
+            throw new Error(`${name}: duplicate exact port identity ${identityKey}`);
+          }
+          sourcesByPort[identityKey] = manifestSources[index];
+        });
+        const primary = manifestSources[0] || { vert: fallbackVert, frag: fallbackFrag };
+        out[name] = {
+          vert: primary.vert,
+          frag: primary.frag,
+          manifest: manifests[0] || null,
+          manifests,
+          sourcesByPort,
+          stageSourceOnly,
+        };
+      }
+    }));
+    return out;
+  }
+  const exactShaders = await loadExactShaderPorts({
+    OuterStencil: {
+      vert: "shaders/outer_stencil.vert.glsl",
+      frag: "shaders/outer_stencil.frag.glsl",
+      manifest: "shaders/outer_stencil_uniforms.json",
+    },
+    InnerStencil: {
+      vert: "shaders/inner_stencil.vert.glsl",
+      frag: "shaders/inner_stencil.frag.glsl",
+      manifest: "shaders/inner_stencil_uniforms.json",
+    },
+    IllustStencil: {
+      vert: "shaders/illust_stencil.vert.glsl",
+      frag: "shaders/illust_stencil.frag.glsl",
+      manifest: "shaders/illust_stencil_uniforms.json",
+    },
+    Text: {
+      vert: "shaders/dynamic_ui_text.vert.glsl",
+      frag: "shaders/dynamic_ui_text.frag.glsl",
+      manifest: "shaders/dynamic_ui_text_uniforms.json",
+    },
+    Card_Illust: {
+      vert: "shaders/card_illust.vert.glsl",
+      frag: "shaders/card_illust.frag.glsl",
+      manifest: "shaders/card_illust_uniforms.json",
+    },
+    Card_Scaling_Kira: {
+      vert: "shaders/card_scaling_kira.vert.glsl",
+      frag: "shaders/card_scaling_kira.frag.glsl",
+      manifest: "shaders/card_scaling_kira_uniforms.json",
+    },
+    Card_Circular_Moving_Kira: {
+      vert: "shaders/circular_moving_p0.vert.glsl",
+      frag: "shaders/circular_moving_p0.frag.glsl",
+      manifests: [
+        "shaders/circular_moving_p0_uniforms.json",
+        "shaders/circular_moving_p1_uniforms.json",
+      ],
+    },
+    Card_Circular_Trail_Kira: {
+      vert: "shaders/circular_trail_p0.vert.glsl",
+      frag: "shaders/circular_trail_p0.frag.glsl",
+      manifests: [
+        "shaders/circular_trail_p0_uniforms.json",
+        "shaders/circular_trail_p1_uniforms.json",
+      ],
+    },
+    Card_Prism: {
+      vert: "shaders/card_prism.vert.glsl",
+      frag: "shaders/card_prism.frag.glsl",
+      manifest: "shaders/card_prism_uniforms.json",
+    },
+    Card_UR_Glitter_FlowMaps: {
+      vert: "shaders/glitter.vert.glsl",
+      frag: "shaders/glitter.frag.glsl",
+      manifest: "shaders/glitter_uniforms.json",
+    },
+    Frame: {
+      vert: "shaders/textured.vert.glsl",
+      frag: "shaders/frame.frag.glsl",
+      manifest: "shaders/frame_uniforms.json",
+    },
+    "Simple-Opaque": {
+      vert: "shaders/simple_opaque.vert.glsl",
+      frag: "shaders/simple_opaque.frag.glsl",
+      manifest: "shaders/simple_opaque_uniforms.json",
+    },
+    "Simple-Transparent": {
+      vert: "shaders/textured.vert.glsl",
+      frag: "shaders/simple_transparent.frag.glsl",
+      manifest: "shaders/simple_transparent_uniforms.json",
+    },
+    "Simple-PreMultiply-Hologram": {
+      vert: "shaders/simple_premultiply_hologram.vert.glsl",
+      frag: "shaders/simple_premultiply_hologram.frag.glsl",
+      manifest: "shaders/simple_premultiply_hologram_uniforms.json",
+    },
+    "Side&Back": { vert: "shaders/side_back.vert.glsl", frag: "shaders/side_back.frag.glsl" },
+    Effect: {
+      vert: "shaders/effect_basic.vert.glsl",
+      frag: "shaders/effect_basic.frag.glsl",
+      manifests: [
+        "shaders/effect_eff1_uniforms.json",
+        "shaders/effect_eff2_uniforms.json",
+        "shaders/effect_eff3_uniforms.json",
+        "shaders/effect_eff3_grad_uniforms.json",
+        "shaders/effect_eff1_grad_view_uniforms.json",
+        "shaders/effect_eff2_grad_view_uniforms.json",
+      ],
+    },
+    Card_Parallax: {
+      vert: "shaders/card_parallax.vert.glsl",
+      frag: "shaders/card_parallax.frag.glsl",
+      manifests: [
+        "shaders/card_parallax_uniforms.json",
+        "shaders/card_parallax_native_best_match_uniforms.json",
+      ],
+    },
+    Card_Parallax_Metal: {
+      vert: "shaders/card_parallax_metal.vert.glsl",
+      frag: "shaders/card_parallax_metal.frag.glsl",
+      manifest: "shaders/card_parallax_metal_uniforms.json",
+    },
+    Card_Parallax_MatCap_Lighting: {
+      vert: "shaders/card_parallax_matcap_lighting.vert.glsl",
+      frag: "shaders/card_parallax_matcap_lighting.frag.glsl",
+      manifest: "shaders/card_parallax_matcap_lighting_uniforms.json",
+    },
+    Card_Parallax_UR: {
+      vert: "shaders/parallax_ur.vert.glsl",
+      frag: "shaders/parallax_ur.frag.glsl",
+      manifest: "shaders/parallax_ur_uniforms.json",
+    },
+    Opaque_Hologram_Tuning: {
+      vert: "shaders/opaque_hologram_tuning.vert.glsl",
+      frag: "shaders/opaque_hologram_tuning.frag.glsl",
+      manifest: "shaders/opaque_hologram_tuning_uniforms.json",
+    },
+    "Frame-Holo-UR-New": {
+      vert: "shaders/frame_holo_ur.vert.glsl",
+      frag: "shaders/frame_holo_ur.frag.glsl",
+      manifest: "shaders/frame_holo_ur_uniforms.json",
+    },
+    Transparent_Hologram_Tuning: {
+      vert: "shaders/transparent_hologram_tuning.vert.glsl",
+      frag: "shaders/transparent_hologram_tuning.frag.glsl",
+      manifest: "shaders/transparent_hologram_tuning_uniforms.json",
+    },
+    Card_Parallax_Hologram_Tuning: {
+      vert: "shaders/card_parallax_hologram_tuning.vert.glsl",
+      frag: "shaders/card_parallax_hologram_tuning.frag.glsl",
+      manifest: "shaders/card_parallax_hologram_tuning_uniforms.json",
+    },
+    Card_Hologram_Tuning: {
+      vert: "shaders/card_hologram_tuning.vert.glsl",
+      frag: "shaders/card_hologram_tuning.frag.glsl",
+      manifest: "shaders/card_hologram_tuning_uniforms.json",
+    },
+    "Frame-Holo-Tuning": {
+      vert: "shaders/frame_holo_tuning.vert.glsl",
+      frag: "shaders/frame_holo_tuning.frag.glsl",
+      manifest: "shaders/frame_holo_tuning_uniforms.json",
+    },
+    "Opaque-Hologram_Tuning": {
+      vert: "shaders/opaque_shadowbox_hologram_tuning.vert.glsl",
+      frag: "shaders/opaque_shadowbox_hologram_tuning.frag.glsl",
+      manifest: "shaders/opaque_shadowbox_hologram_tuning_uniforms.json",
+    },
+    "Simple-Opaque-Hologram_Tuning": {
+      vert: "shaders/simple_opaque_hologram_tuning.vert.glsl",
+      frag: "shaders/simple_opaque_hologram_tuning.frag.glsl",
+      manifest: "shaders/simple_opaque_hologram_tuning_uniforms.json",
+    },
+    "Opaque-UR-Oklab": {
+      vert: "shaders/opaque_ur_oklab.vert.glsl",
+      frag: "shaders/opaque_ur_oklab.frag.glsl",
+      manifest: "shaders/opaque_ur_oklab_uniforms.json",
+    },
+    Card_Parallax_Hologram_UR_New: {
+      vert: "shaders/ur_bg_hologram.vert.glsl",
+      frag: "shaders/ur_bg_hologram.frag.glsl",
+      manifest: "shaders/ur_bg_hologram_uniforms.json",
+    },
+    Card_UR_Plate: { vert: "shaders/ur_plate.vert.glsl", frag: "shaders/ur_plate.frag.glsl", manifest: "shaders/ur_plate_uniforms.json" },
+    Card_UR_LensFlare: {
+      vert: "shaders/ur_lens_flare.vert.glsl",
+      frag: "shaders/ur_lens_flare.frag.glsl",
+      manifest: "shaders/ur_lens_flare_uniforms.json",
+    },
+    "Frame-2Layer-UR": {
+      vert: "shaders/frame_2layer_ur.vert.glsl",
+      frag: "shaders/frame_2layer_ur.frag.glsl",
+      manifest: "shaders/frame_2layer_ur_uniforms.json",
+    },
+    "Transparent-UR-New": {
+      vert: "shaders/transparent_ur_new.vert.glsl",
+      frag: "shaders/transparent_ur_new.frag.glsl",
+      manifest: "shaders/transparent_ur_new_uniforms.json",
+    },
+  });
+  const [officialBloomPrograms, officialFinalBlitProgram, cardDisplayContract, homographyDisplayProgram] = await Promise.all([
+    loadOfficialBloomPrograms(),
+    loadOfficialFinalBlitProgram(),
+    fetch("render/card-display-contract.json").then((response) => {
+      if (!response.ok) throw new Error(`Card display contract: HTTP ${response.status}`);
+      return response.json();
+    }),
+    loadHomographyDisplayProgram(),
+  ]);
+  if (cardDisplayContract.schema_version !== 5) throw new Error("unsupported card display contract schema");
+  const detailDisplayProfile = cardDisplayContract.profiles
+    ?.ordinary_android_default_middle_without_persisted_override;
+  if (!detailDisplayProfile?.display_mode?.clamp_parallax
+    || detailDisplayProfile.display_mode.selected_material !== "PrerenderHomographyCard") {
+    throw new Error("official detail display profile must select PrerenderHomographyCard");
+  }
+  if (typeof detailDisplayProfile.applicability?.quality_name !== "string"
+    || !detailDisplayProfile.applicability.quality_name.trim()) {
+    throw new Error("official detail display profile must name its default quality");
+  }
+  const officialDefaultQuality = detailDisplayProfile.applicability.quality_name.toLowerCase();
+  const qualityParam = (qp.get("quality") || officialDefaultQuality).toLowerCase();
+  const qualityProfiles = cardDisplayContract.quality_profiles;
+  const canvas = document.getElementById("c");
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, stencil: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight);
+
+  // The captured game runtime uses the ordinary Android Middle profile. Auto is an inspection-only
+  // profile derived from the actual physical drawing buffer: it preserves every official render step
+  // while preventing the fixed mobile source RT from being enlarged during the desktop display pass.
+  const drawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
+  const requestedDisplaySide = Math.round(Math.min(drawingBuffer.x, drawingBuffer.y));
+  const selectedQualityProfile = selectCardQualityProfile(
+    qualityParam,
+    qualityProfiles,
+    requestedDisplaySide,
+    renderer.capabilities.maxTextureSize,
+  );
+  dynamicUIRenderScale = selectDynamicUIRenderScale(
+    qualityParam,
+    selectedQualityProfile,
+    qualityProfiles,
+  );
+  console.log(
+    `official card quality: ${selectedQualityProfile.quality_name} `
+    + `${selectedQualityProfile.source_render_target_request.width}x${selectedQualityProfile.source_render_target_request.height} `
+    + `(requested ${qualityParam}, display side ${requestedDisplaySide})`,
+  );
+  console.log(`dynamic UI texture scale: ${dynamicUIRenderScale.toFixed(4)}`);
   let dynTex = await buildFace(curLoc);
+  publishTmpSdfStatus(dynTex?.evidence);
   const dynUITex = dynTex && dynTex.ui;       // full UI text canvas (mapped onto the L_FullFace_Text quad)
   const dynHoloTex = dynTex && dynTex.holo;   // DynamicUI encoded like the game's holo RT (alpha inverted)
   const foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
   // real environment cubemap for the holo/foil reflections (samplerCube, not a 2D matcap)
   const envCubeUrl = (Object.values(scene_data.materials).find((m) => m.textures && m.textures._CubeMap) || {}).textures?._CubeMap?.url;
   const envCubeTex = envCubeUrl ? await loadEnvCube(envCubeUrl, officialSamplerMap[envCubeUrl]) : null;
-
-  // EXACT glitter: the REAL game vertex+fragment bytecode transpiled by SPIRV-Cross (tools/render/build_exact_
-  // glitter.py), run verbatim as a three.js RawShaderMaterial. Loaded once; null if absent → falls back to the hand
-  // port. (data-verified faithful: tools/render/shaderdec/sc_port_check.py max|err|=0.)
-  const exactGlit = exactEnabled("Card_UR_Glitter_FlowMaps") ? await Promise.all([
-    fetch("shaders/glitter.vert.glsl").then((r) => r.ok ? r.text() : null).catch(() => null),
-    fetch("shaders/glitter.frag.glsl").then((r) => r.ok ? r.text() : null).catch(() => null),
-  ]).then(([vert, frag]) => (vert && frag) ? { vert, frag } : null) : null;
-  async function loadExactShaderPorts(spec) {
-    const out = {};
-    await Promise.all(Object.entries(spec).map(async ([name, files]) => {
-      if (!exactEnabled(name)) return;
-      const [vert, frag] = await Promise.all([
-        fetch(files.vert).then((r) => r.ok ? r.text() : null).catch(() => null),
-        fetch(files.frag).then((r) => r.ok ? r.text() : null).catch(() => null),
-      ]);
-      if (vert && frag) out[name] = { vert, frag };
-    }));
-    return out;
-  }
-  const exactShaders = await loadExactShaderPorts({
-    Card_Illust: { vert: "shaders/card_illust.vert.glsl", frag: "shaders/card_illust.frag.glsl" },
-    Frame: { vert: "shaders/textured.vert.glsl", frag: "shaders/frame.frag.glsl" },
-    "Simple-Opaque": { vert: "shaders/textured.vert.glsl", frag: "shaders/simple_opaque.frag.glsl" },
-    "Simple-Transparent": { vert: "shaders/textured.vert.glsl", frag: "shaders/simple_transparent.frag.glsl" },
-    Effect: { vert: "shaders/effect.vert.glsl", frag: "shaders/effect.frag.glsl" },
-    Card_Parallax: { vert: "shaders/card_parallax.vert.glsl", frag: "shaders/card_parallax.frag.glsl" },
-    Card_Parallax_Metal: { vert: "shaders/card_parallax_metal.vert.glsl", frag: "shaders/card_parallax_metal.frag.glsl" },
-    Card_Parallax_UR: { vert: "shaders/parallax_ur.vert.glsl", frag: "shaders/parallax_ur.frag.glsl" },
-    Opaque_Hologram_Tuning: { vert: "shaders/opaque_hologram_tuning.vert.glsl", frag: "shaders/opaque_hologram_tuning.frag.glsl" },
-    Frame_Holo_UR_New: { vert: "shaders/frame_holo_ur.vert.glsl", frag: "shaders/frame_holo_ur.frag.glsl" },
-    Transparent_Hologram_Tuning: { vert: "shaders/transparent_hologram_tuning.vert.glsl", frag: "shaders/transparent_hologram_tuning.frag.glsl" },
-    Card_Parallax_Hologram_Tuning: { vert: "shaders/card_parallax_hologram_tuning.vert.glsl", frag: "shaders/card_parallax_hologram_tuning.frag.glsl" },
-    Card_Hologram_Tuning: { vert: "shaders/card_hologram_tuning.vert.glsl", frag: "shaders/card_hologram_tuning.frag.glsl" },
-    "Frame-Holo-Tuning": { vert: "shaders/frame_holo_tuning.vert.glsl", frag: "shaders/frame_holo_tuning.frag.glsl" },
-    "Opaque-Hologram_Tuning": { vert: "shaders/opaque_shadowbox_hologram_tuning.vert.glsl", frag: "shaders/opaque_shadowbox_hologram_tuning.frag.glsl" },
-    "Simple-Opaque-Hologram_Tuning": { vert: "shaders/simple_opaque_hologram_tuning.vert.glsl", frag: "shaders/simple_opaque_hologram_tuning.frag.glsl" },
-    "Opaque-UR-Oklab": { vert: "shaders/opaque_ur_oklab.vert.glsl", frag: "shaders/opaque_ur_oklab.frag.glsl" },
-    Card_Parallax_Hologram_UR_New: { vert: "shaders/ur_bg_hologram.vert.glsl", frag: "shaders/ur_bg_hologram.frag.glsl" },
-    Card_UR_Plate: { vert: "shaders/ur_plate.vert.glsl", frag: "shaders/ur_plate.frag.glsl" },
-    Card_UR_LensFlare: { vert: "shaders/ur_lens_flare.vert.glsl", frag: "shaders/ur_lens_flare.frag.glsl" },
-    "Frame-2Layer-UR": { vert: "shaders/frame_2layer_ur.vert.glsl", frag: "shaders/frame_2layer_ur.frag.glsl" },
-    "Transparent-UR-New": { vert: "shaders/transparent_ur_new.vert.glsl", frag: "shaders/transparent_ur_new.frag.glsl" },
-  });
   const exactGlitMats = [];   // RawShaderMaterials driven by the native GlitterFlowMaps state machine
 
-  const canvas = document.getElementById("c");
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, stencil: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.setSize(innerWidth, innerHeight);
   // The official Android player uses Unity's Gamma color-space workflow. In that workflow texture samples,
   // render targets, and the display framebuffer stay in their stored gamma domain without automatic sRGB
   // decode/encode. The decompiled programs therefore receive and emit raw values.
@@ -522,60 +1383,142 @@ async function main() {
   renderer.setClearColor(0x14161c, 1);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+  const displayScene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(
+    cardDisplayContract.camera.field_of_view_degrees,
+    cardDisplayContract.camera.aspect,
+    0.01,
+    100,
+  );
+  const displayCamera = new THREE.PerspectiveCamera(
+    cardDisplayContract.camera.field_of_view_degrees,
+    innerWidth / innerHeight,
+    0.01,
+    100,
+  );
+
+  const sortLocalCenter = new THREE.Vector3();
+  const sortWorldCenter = new THREE.Vector3();
+  const sortCameraPosition = new THREE.Vector3();
+  function nativeDistanceForRenderItem(item) {
+    const sort = item.object.userData.officialSort;
+    if (!sort) return null;
+    if (sort.rendererType !== "MeshRenderer" || !Number.isFinite(sort.distanceOffset)) {
+      throw new Error(`unsupported official sort descriptor for ${item.object.userData.label || item.object.name}`);
+    }
+    if (!item.geometry.boundingBox) item.geometry.computeBoundingBox();
+    item.geometry.boundingBox.getCenter(sortLocalCenter);
+    sortWorldCenter.copy(sortLocalCenter).applyMatrix4(item.object.matrixWorld);
+    sortCameraPosition.setFromMatrixPosition(camera.matrixWorld);
+    return officialDistanceKey({
+      metric: OFFICIAL_DISTANCE_METRIC.Perspective,
+      position: sortWorldCenter.toArray(),
+      worldToCamera: camera.matrixWorldInverse.elements,
+      cameraPosition: sortCameraPosition.toArray(),
+      f: sort.distanceOffset,
+    });
+  }
+  function compareOfficialPrefix(a, b, transparent) {
+    const sortA = a.object.userData.officialSort;
+    const sortB = b.object.userData.officialSort;
+    if (sortA && sortB) {
+      const layerValue = sortA.sortingLayerValue - sortB.sortingLayerValue;
+      if (layerValue) return layerValue;
+      const layerOrder = sortA.sortingOrder - sortB.sortingOrder;
+      if (layerOrder) return layerOrder;
+    } else {
+      const group = a.groupOrder - b.groupOrder;
+      if (group) return group;
+    }
+    const queue = a.renderOrder - b.renderOrder;
+    if (queue) return queue;
+    if (sortA && sortB) {
+      const distanceA = nativeDistanceForRenderItem(a);
+      const distanceB = nativeDistanceForRenderItem(b);
+      const distance = transparent
+        ? distanceA.primary - distanceB.primary
+        : distanceA.quantizedFrontToBackBucket - distanceB.quantizedFrontToBackBucket;
+      if (distance) return distance;
+      if (transparent) {
+        const groupA = sortA.sortingGroupKey >>> 0;
+        const groupB = sortB.sortingGroupKey >>> 0;
+        const bothReserved = groupA >= 0xfffff000 && groupB >= 0xfffff000;
+        if (!bothReserved && groupA !== groupB) return groupA < groupB ? -1 : 1;
+        if (sortA.canvasOrder !== sortB.canvasOrder) {
+          return sortA.canvasOrder < sortB.canvasOrder ? -1 : 1;
+        }
+        if (sortA.materialSlot !== sortB.materialSlot) {
+          return sortA.materialSlot < sortB.materialSlot ? -1 : 1;
+        }
+      }
+      if (Number.isInteger(sortA.srpBatcherCompatible)
+          && Number.isInteger(sortB.srpBatcherCompatible)
+          && sortA.srpBatcherCompatible !== sortB.srpBatcherCompatible) {
+        return sortA.srpBatcherCompatible < sortB.srpBatcherCompatible ? -1 : 1;
+      }
+    } else {
+      const projected = transparent ? b.z - a.z : a.z - b.z;
+      if (projected) return projected;
+    }
+    if (capturedSortResolver) {
+      const drawIdA = a.object.userData.officialDraw?.drawId;
+      const drawIdB = b.object.userData.officialDraw?.drawId;
+      if (drawIdA && drawIdB) {
+        const criteria = transparent
+          ? OFFICIAL_PASS_CRITERIA.DrawTransparent.criteria
+          : OFFICIAL_PASS_CRITERIA.DrawOpaque.criteria;
+        const captured = capturedSortResolver.compare(drawIdA, drawIdB, criteria);
+        if (captured !== null) return captured;
+      }
+    }
+    // Without a complete session-bound collision group, keep the existing deterministic fallback.
+    // Partial capture data is never mixed into a group because it can break comparator transitivity.
+    return a.material.id - b.material.id || a.id - b.id;
+  }
+  renderer.setOpaqueSort((a, b) => compareOfficialPrefix(a, b, false));
+  renderer.setTransparentSort((a, b) => compareOfficialPrefix(a, b, true));
+  window.__officialSortDiagnostics = {
+    opaque: "exact through statically proved SRP bit; first unresolved key is entry+0x08 hashed Material/Shader state",
+    transparent: "exact through statically proved SRP bit; first unresolved key is entry+0x08 hashed Material/Shader state",
+  };
 
   function makeBloomPass(hasBloom) {
-    const rtColorSpace = cardTargetColorSpace;
-    const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
-    const w = Math.max(1, ds.x || innerWidth), h = Math.max(1, ds.y || innerHeight);
-    const bw = Math.max(1, Math.floor(w / 2)), bh = Math.max(1, Math.floor(h / 2));
+    const source = selectedQualityProfile.source_render_target_request;
+    const w = source.width, h = source.height;
     const sceneRT = createOfficialMrtTarget(renderer, w, h);
-    const bloomA = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
-    const bloomB = new THREE.WebGLRenderTarget(bw, bh, { depthBuffer: false, stencilBuffer: false });
-    for (const texture of sceneRT.textures) texture.colorSpace = rtColorSpace;
-    for (const rt of [bloomA, bloomB]) rt.texture.colorSpace = rtColorSpace;
-    const postScene = new THREE.Scene();
-    const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
-    quad.frustumCulled = false; postScene.add(quad);
-    const vs = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
-    const blur = new THREE.ShaderMaterial({
-      uniforms: { rt: { value: sceneRT.textures[1] }, uTexel: { value: new THREE.Vector2(1 / bw, 1 / bh) }, uDir: { value: new THREE.Vector2(1, 0) } },
-      vertexShader: vs,
-      fragmentShader: `
-        uniform sampler2D rt; uniform vec2 uTexel, uDir; varying vec2 vUv;
-        void main() {
-          vec2 d = uTexel * uDir;
-          vec3 c = texture2D(rt, vUv).rgb * 0.227027;
-          c += texture2D(rt, vUv + d * 1.384615).rgb * 0.316216;
-          c += texture2D(rt, vUv - d * 1.384615).rgb * 0.316216;
-          c += texture2D(rt, vUv + d * 3.230769).rgb * 0.070270;
-          c += texture2D(rt, vUv - d * 3.230769).rgb * 0.070270;
-          gl_FragColor = vec4(c, 1.0);
-        }`,
-      depthTest: false, depthWrite: false, toneMapped: false,
+    for (const texture of sceneRT.textures) texture.colorSpace = cardTargetColorSpace;
+    return createOfficialBloomPipeline({
+      renderer,
+      sceneTarget: sceneRT,
+      programs: officialBloomPrograms,
+      finalBlitProgram: officialFinalBlitProgram,
+      enabled: hasBloom,
+      resizeSceneTarget: resizeOfficialMrtTarget,
+      resizeSourceToDrawingBuffer: false,
+      diagnosticsEnabled: shotMode || fullRuntimeAudit,
     });
-    const composite = new THREE.ShaderMaterial({
-      uniforms: { rt: { value: sceneRT.textures[0] }, bloom: { value: bloomB.texture }, uBloom: { value: 1.0 } },
-      vertexShader: vs,
-      fragmentShader: `
-        uniform sampler2D rt, bloom; uniform float uBloom; varying vec2 vUv;
-        void main() {
-          vec4 base = texture2D(rt, vUv);
-          vec3 glow = texture2D(bloom, vUv).rgb * uBloom;
-          gl_FragColor = vec4(base.rgb + glow, base.a);
-        }`,
-      depthTest: false, depthWrite: false, toneMapped: false,
+  }
+
+  function makeDisplayPass() {
+    const drawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
+    const target = createOfficialMrtTarget(
+      renderer,
+      Math.max(1, drawingBuffer.x || innerWidth),
+      Math.max(1, drawingBuffer.y || innerHeight),
+    );
+    for (const texture of target.textures) texture.colorSpace = cardTargetColorSpace;
+    // The exact Homography fragment writes MRT0 and MRT1, so WebGL must render it into a
+    // two-attachment target before the official FinalBlit presents MRT0 to the canvas.
+    return createOfficialBloomPipeline({
+      renderer,
+      sceneTarget: target,
+      programs: officialBloomPrograms,
+      finalBlitProgram: officialFinalBlitProgram,
+      enabled: false,
+      resizeSceneTarget: resizeOfficialMrtTarget,
+      resizeSourceToDrawingBuffer: true,
+      diagnosticsEnabled: shotMode || fullRuntimeAudit,
     });
-    const resize = () => {
-      const s = renderer.getDrawingBufferSize(new THREE.Vector2());
-      const nw = Math.max(1, s.x || innerWidth), nh = Math.max(1, s.y || innerHeight);
-      const nbw = Math.max(1, Math.floor(nw / 2)), nbh = Math.max(1, Math.floor(nh / 2));
-      resizeOfficialMrtTarget(sceneRT, nw, nh); bloomA.setSize(nbw, nbh); bloomB.setSize(nbw, nbh);
-      blur.uniforms.uTexel.value.set(1 / nbw, 1 / nbh);
-    };
-    composite.uniforms.uBloom.value = hasBloom ? 1.0 : 0.0;
-    return { sceneRT, bloomA, bloomB, postScene, postCamera, quad, blur, composite, resize, hasBloom };
   }
 
   // Texture alpha classification is retained as source diagnostics only. Official pass/material state
@@ -583,38 +1526,36 @@ async function main() {
   // alpha mode comes from the build (build/detect_alpha.py with PIL — reliable, unlike canvas).
   const alphaMode = scene_data.alphaMode || {};
   const texInfo = new Map();                 // name -> { tex, straight }
-  function preloadTextures(urlMap) {
-    const entries = Object.entries(urlMap); let done = 0;
-    const tick = () => { done++; setLoading(`Loading textures… ${done}/${entries.length}`); };
-    return Promise.all(entries.map(([name, url]) => new Promise((res) => {
-      const img = new Image(); img.crossOrigin = "anonymous";
-      img.onload = () => {
-        const tex = new THREE.Texture(img);
-        // m_ActiveColorSpace=Gamma makes Unity ignore per-texture sRGB conversion at runtime.
-        // Keep textureColorSpace in the scene as source metadata, but upload every sample as raw.
-        tex.colorSpace = THREE.NoColorSpace;
-        tex.flipY = false;
-        tex.premultiplyAlpha = false;
-        applyOfficialSampler(tex, officialSamplerMap[url]);
-        tex.needsUpdate = true;
+  function preloadOfficialTextures(urlMap) {
+    const entries = Object.entries(urlMap);
+    let done = 0;
+    const tick = () => {
+      done += 1;
+      setLoading(`Loading textures ${done}/${entries.length}`);
+    };
+    return Promise.all(entries.map(async ([name, url]) => {
+      try {
+        const tex = await loadOfficialTexture(url, officialSamplerMap[url]);
         texInfo.set(name, { tex, straight: alphaMode[name] === "straight" });
-        tick(); res();
-      };
-      img.onerror = () => { console.warn("tex fail", url); tick(); res(); };
-      img.src = url;
-    })));
+      } catch {
+        console.warn("tex fail", url);
+      } finally {
+        tick();
+      }
+    }));
   }
 
   const animMats = [];
+  const kiraPuyoMats = [];
+  const circularKiraComponents = new Map();
 
   setLoading("Loading textures…");
-  await preloadTextures(scene_data.textures);
+  await preloadOfficialTextures(scene_data.textures);
   // RenderContext: the runtime deps every material strategy needs (resolved textures, env cubemap,
   // per-frame animation lists, the DynamicUI foil). Built once, after textures load.
   const exHoloMats = [];   // EX-foil materials (the language switch swaps their dynUI/foil textures)
-  const ctx = makeRenderContext({ texInfo, envCubeTex, exactGlit, exactShaders, animMats, exactGlitMats, dynUITex, dynHoloTex, foilTex, exHoloMats });
+  const ctx = makeRenderContext({ texInfo, envCubeTex, exactShaders, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, runtimeSettings: scene_data.runtimeSettings, dynUITex, dynHoloTex, foilTex, exHoloMats });
 
-  const ORIENT_Y = window.__oy ?? 1;   // glb already does Unity->glTF axis conversion; no extra flip
   const loader = new GLTFLoader();
   setLoading("Loading model…");
   loader.load(scene_data.prefabGlb, (gltf) => {
@@ -642,6 +1583,66 @@ async function main() {
     // → same recipe at their own transforms; the outline primitives carry L_RaremarkFlame_a; SBM2/SBM4
     // and every multi-material node split into distinct materials automatically.
     const materials = scene_data.materials;
+    if (scene_data.officialDrawSchemaVersion !== 2 || !Array.isArray(scene_data.officialDraws)) {
+      throw new Error("scene is missing the official draw-identity table");
+    }
+    const officialDrawsByMaterial = new Map();
+    const officialDrawsByNodeMaterial = new Map();
+    const nodeMaterialKey = (nodePath, materialName) => `${nodePath}\u0000${materialName}`;
+    for (const draw of scene_data.officialDraws) {
+      if (typeof draw.goPath !== "string" || !draw.goPath) {
+        throw new Error(`${draw.drawId || "official draw"}: missing GameObject path`);
+      }
+      if (!officialDrawsByMaterial.has(draw.materialName)) officialDrawsByMaterial.set(draw.materialName, []);
+      officialDrawsByMaterial.get(draw.materialName).push(draw);
+      const key = nodeMaterialKey(draw.goPath, draw.materialName);
+      if (!officialDrawsByNodeMaterial.has(key)) officialDrawsByNodeMaterial.set(key, []);
+      officialDrawsByNodeMaterial.get(key).push(draw);
+    }
+    function sourceNodePath(object) {
+      if (typeof object.userData.officialNodePath === "string") {
+        return object.userData.officialNodePath;
+      }
+      const names = [];
+      for (let current = object; current && current !== root.parent; current = current.parent) {
+        if (current.name) names.push(current.name);
+      }
+      return names.reverse().join("/");
+    }
+    function resolveOfficialDraw(sourceMesh, materialName) {
+      const nodePath = sourceNodePath(sourceMesh);
+      const matches = officialDrawsByNodeMaterial.get(nodeMaterialKey(nodePath, materialName)) || [];
+      if (matches.length > 1) {
+        throw new Error(`${nodePath}:${materialName} maps to multiple official draw identities`);
+      }
+      return { draw: matches[0] || null, nodePath };
+    }
+    function attachOfficialDrawIdentity(mesh, materialName, resolved) {
+      mesh.userData.sourceNodePath = resolved.nodePath;
+      if (resolved.draw) {
+        mesh.userData.officialDraw = resolved.draw;
+        return;
+      }
+      const candidates = officialDrawsByMaterial.get(materialName) || [];
+      if (candidates.length === 1) {
+        // AssetRipper may flatten or rename the source node path. A single material-bound official
+        // draw remains an exact identity join; multiple same-name candidates are never guessed.
+        mesh.userData.officialDraw = candidates[0];
+        mesh.userData.officialDrawResolution = "unique-material-candidate";
+        return;
+      }
+      if (candidates.length) {
+        // Preserve the candidate set for diagnostics, but never guess by same-name occurrence order.
+        mesh.userData.officialDrawCandidates = candidates.map((draw) => draw.drawId);
+      }
+    }
+    function attachAuditDescriptor(mesh, materialName, recipe = null) {
+      if (!fullRuntimeAudit) return;
+      attachLocalDrawAudit(mesh, {
+        materialName,
+        shader: recipe?.shader || (materialName === "L_FullFace_Text" ? "Text" : null),
+      });
+    }
     // AssetRipper retains the official LensFlare GameObjects and transforms but drops their external
     // `unity default resources` Mesh PPtr (Quad, PathID 10210). Restore only that serialized built-in mesh;
     // material selection and Front/Back behavior still come entirely from each scene recipe.
@@ -655,187 +1656,262 @@ async function main() {
       const quad = new THREE.Mesh(unityQuad, proxyMaterial);
       quad.name = `${recipe.go}_Quad`;
       quad.userData.officialBuiltinQuad = true;
+      const drawCandidates = (officialDrawsByMaterial.get(matName) || [])
+        .filter((draw) => draw.go === recipe.go);
+      if (drawCandidates.length !== 1) {
+        throw new Error(`${matName}:${recipe.go} does not resolve one official built-in Quad draw`);
+      }
+      quad.userData.officialNodePath = drawCandidates[0].goPath;
       node.add(quad);
     }
     root.updateMatrixWorld(true);
     const cardGroup = new THREE.Group();
-    cardGroup.scale.y = ORIENT_Y;
-    cardGroup.scale.x = window.__ox ?? -1;   // glb comes in X-mirrored (Unity LH->glTF negate-X); flip back
-    // The UR gold-foil BACKGROUND stack (parallax base + holo + glitter UNDER a semi-transparent Uzumaki plate)
-    // can't be drawn under the illustration via three.js's opaque/transparent pass split. So it goes in its OWN
-    // group, pre-rendered to an off-screen RT in queue order (no illustration there → the plate's transparency
-    // reveals the layers beneath), then shown as a fullscreen background while fgGroup (everything else) draws on
-    // top. bgGroup empty (non-UR) → the RT pass is skipped, normal render. Both groups inherit cardGroup's tilt.
-    const bgGroup = new THREE.Group(), fgGroup = new THREE.Group(), stencilGroup = new THREE.Group();
-    cardGroup.add(stencilGroup); cardGroup.add(fgGroup); cardGroup.add(bgGroup);   // stencilGroup stays visible in BOTH passes (clips the bg layers to the card shape)
+    // Every official draw shares one MRT and depth attachment. Effective render queue routing keeps the
+    // UR gold stack before the illustration without a lossy single-target background precompose.
+    const fgGroup = new THREE.Group(), stencilGroup = new THREE.Group();
+    cardGroup.add(stencilGroup); cardGroup.add(fgGroup);
 
     let built = 0, deferred = 0, writers = 0, skipped = 0;
     let dynUIMat = null;
     const ONLY = window.__only || "";
-    // All layers (flat + depth diorama) render together (rotated) to the RT; the game's HOMOGRAPHY (computed
-    // from the card's 4 corners, post-rotation → fixed rectangle) then corrects the shape so nothing swings,
-    // while the off-plane layers' parallax (the 3D depth feel) is preserved. So no per-layer swing hacks here.
+    // All layers remain under the same official Asset3D transform hierarchy. The later game homography
+    // stage is tracked separately; do not approximate it by moving individual layers here.
     root.traverse((o) => {
       if (!o.isMesh) return;
       const matName = (o.material && o.material.name) || "";
+      const isStencil = matName === "OuterStencil"
+        || matName.startsWith("InnerStencil")
+        || matName.startsWith("IllustStencil");
       if (ONLY && !/Stencil/.test(matName) && !matName.includes(ONLY)) return;
+      const resolvedOfficialDraw = resolveOfficialDraw(o, matName);
 
-      // stencil writers (by material name; InnerStencil_Window for Pokémon, InnerStencil_Trainers for trainers)
-      if (matName === "OuterStencil" || matName.startsWith("InnerStencil")) {
-        const region = matName.startsWith("InnerStencil") ? REGION.window : REGION.card;
-        const mw = new THREE.Mesh(o.geometry, stencilWriter(region));
-        mw.applyMatrix4(o.matrixWorld); mw.renderOrder = -100; mw.frustumCulled = false; stencilGroup.add(mw); writers++; return;
-      }
-      // DynamicUI quad (Card_Base_UI mesh, material L_FullFace_Text): the per-card UGUI content
-      // (pre-evo image, ex-rule banner, …) composited into a canvas → mapped onto this full-card-face
-      // quad (UV 0..1). Drawn as an overlay over the card content. build.mjs skips this material, so
-      // intercept by name here.
-      if (matName === "L_FullFace_Text") {
-        if (!dynUITex) { skipped++; return; }
-        const m = new THREE.RawShaderMaterial({
-          glslVersion: THREE.GLSL3,
-          uniforms: { map: { value: dynUITex } },
-          vertexShader: `
-            in vec3 position; in vec2 uv; out vec2 vUv;
-            uniform mat4 modelViewMatrix, projectionMatrix;
-            void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
-          `,
-          fragmentShader: `
-            precision highp float;
-            uniform sampler2D map; in vec2 vUv;
-            layout(location = 0) out vec4 outColor;
-            layout(location = 1) out vec4 outEmissive;
-            void main(){ outColor = texture(map, vUv); outEmissive = vec4(0.0); }
-          `,
-          side: THREE.DoubleSide,
-          toneMapped: false,
-        });
-        dynUIMat = m;                                  // keep ref for the language switch
-        setBlend(m, "over", true);                    // straight-alpha over (transparent canvas bg)
-        applyClip(m, window.__raw ? null : "card");
-        const mesh = new THREE.Mesh(o.geometry, m);
-        mesh.applyMatrix4(o.matrixWorld); mesh.renderOrder = 2900; mesh.frustumCulled = false;
-        mesh.userData.label = "DynamicUI (card_ui.json)";
-        fgGroup.add(mesh); built++; return;
-      }
       const r = materials[matName];
-      if (!r) { skipped++; return; }                 // DefaultMaterial / dynamic-UI / unknown
+      if (!r) { skipped++; return; }                 // DefaultMaterial / unknown
+      if (!r.sort || r.sort.rendererType !== "MeshRenderer"
+          || r.sort.rendererTypeValue !== OFFICIAL_RENDERER_TYPE.MeshRenderer
+          || !Number.isInteger(r.sort.materialSlot) || r.sort.materialSlot < 0
+          || !Number.isInteger(r.sort.staticBatchFirstSubMesh)
+          || !Number.isInteger(r.sort.staticBatchSubMeshCount)
+          || !Number.isInteger(r.sort.lightmapIndex)
+          || !Number.isInteger(r.sort.lightmapIndexDynamic)
+          || !Number.isInteger(r.sort.packedLightmapIndices)
+          || r.sort.packedLightmapIndices
+            !== (((r.sort.lightmapIndexDynamic << 16) | r.sort.lightmapIndex) >>> 0)
+          || !Number.isInteger(r.sort.lodFadeHighByte)
+          || r.sort.lodFadeHighByte < 0 || r.sort.lodFadeHighByte > 0xff
+          || !Number.isInteger(r.sort.sortingGroupId)
+          || !Number.isInteger(r.sort.sortingGroupOrder)
+          || !Number.isInteger(r.sort.sortingGroupKey)
+          || r.sort.sortingGroupKey
+            !== (((r.sort.sortingGroupId & 0xfffff) << 12) | (r.sort.sortingGroupOrder & 0xfff)) >>> 0
+          || !Number.isInteger(r.sort.canvasOrder)
+          || !Number.isFinite(r.sort.sortingLayerValue)
+          || !Number.isFinite(r.sort.sortingOrder)
+          || !Number.isFinite(r.sort.distanceOffset)
+          || ![0, 1, null].includes(r.sort.srpBatcherCompatible)
+          || r.sort.materialBatchStateBranch !== "hashed") {
+        throw new Error(`${matName}: missing official MeshRenderer sort descriptor`);
+      }
       const cfg = SHADER[r.shader];
       if (!cfg || cfg.defer) { deferred++; return; }  // metal (no-op), card back/edges, LOD
 
       // dispatch by kind → the registered material strategy (Strategy + Registry pattern). requires()
       // gates whether the layer renders; build() returns the three.js material (sets userData.straight).
       const strat = getMaterial(cfg.kind);
-      if (!strat || !strat.requires(r, ctx)) { skipped++; return; }
-      const mat = strat.build(r, ctx);
-      if (!mat) { skipped++; return; }
-      const straight = !!mat.userData.straight;
-      const fullFaceHolo = !!mat.userData.fullFaceHolo;
-      if (cfg.alphaTest && mat.isMeshBasicMaterial) mat.alphaTest = cfg.alphaTest;
-      // Some official shaders use material-controlled blend factors (_SrcFactor/_DstFactor).
-      setBlend(mat, cfg.blend, straight, cfg.materialBlend ? r.floats : undefined);
-      if (!window.__raw) applyStencilState(mat, r);
-      applyDepthState(mat, r.floats);
-      applyCullState(mat, r.floats, cfg.cull ?? 2, cfg.materialCull);
-      // The shadowbox (SBM2/SBM4) is a real 3D DIORAMA with Z-depth — not a flat coplanar layer. The
-      // painter's-order hack (depthTest off) makes its layered planes overlap in arbitrary mesh order →
-      // the depth looks inverted (concave) with seam LINES. Give the SB real depth testing so its own
-      // geometry resolves correctly (near occludes far = convex). Opaque SBM2 writes depth; SBM4 tests only.
+      const drawRecipe = resolvedOfficialDraw.draw?.rendererProperties
+        ? { ...r, rendererProperties: resolvedOfficialDraw.draw.rendererProperties }
+        : r;
+      if (!strat || !strat.requires(drawRecipe, ctx)) { skipped++; return; }
+      const builtMaterial = strat.build(drawRecipe, ctx);
+      if (!builtMaterial) { skipped++; return; }
+      const rawMaterials = Array.isArray(builtMaterial) ? builtMaterial : [builtMaterial];
+      if (rawMaterials.length === 0 || rawMaterials.some((material) => !material?.isMaterial)) {
+        rawMaterials.forEach((material) => material?.dispose?.());
+        throw new Error(`${matName}: material strategy returned an invalid pass collection`);
+      }
+      let passMaterials;
+      try {
+        passMaterials = rawMaterials.length > 1
+          ? orderOfficialPasses(rawMaterials, (material) => material.userData?.officialSelector)
+          : rawMaterials;
+      } catch (error) {
+        rawMaterials.forEach((material) => material.dispose());
+        throw new Error(`${matName}: ${error.message}`);
+      }
       const isSB = r.shader === "Simple-Opaque-Hologram_Tuning" || r.shader === "Simple-Transparent"
                 || r.shader === "Opaque-Hologram_Tuning"     // trainer SR shadowbox (same diorama mesh)
                 || r.shader === "Opaque-UR-Oklab";           // UR shadowbox (same diorama mesh, Oklab colour)
-      // SB is a 3D diorama → give it real depth testing (so its layers resolve, no seam lines). It stays in
-      // the live cardGroup, so KEEP its stencil clip (applyClip above) — without it the SB draws unclipped.
-      if (isSB) { mat.depthTest = true; mat.depthWrite = (cfg.blend === "opaque"); }   // opaque SB pass writes depth
-      // Non-SB layers that carry _ZTest/_ZWrite now use those material-controlled official states.
-      // Layers without explicit depth floats keep setBlend's painter-order default.
-      // SB diorama is built facing -Z (normals point away from the +Z camera) → its depth reads inverted
-      // (bulges INTO the card). Flip the SB's local Z about its own centre so it pops TOWARD the viewer
-      // (convex). Other layers are flat quads (z≈0) → the flip is a visual no-op for them, so SB-only.
-      let geom = o.geometry;
-      if (isSB) { geom = o.geometry.clone(); geom.scale(1, 1, -1); }
-      const mesh = new THREE.Mesh(geom, mat);
-      mesh.applyMatrix4(o.matrixWorld);
-      // Z-CONVENTION FIX (the real root cause): the card FRONT faces -Z in the glb (ILL normal=-Z; the back
-      // L_Card_R_M normal=+Z) — we view it from the BACK (+Z) via DoubleSide + scale.x=-1. The depth diorama
-      // (SB + effects, z=-0.03..-0.075) pops toward -Z = the FRONT (toward the real card's viewer). From our
-      // +Z camera that reads INVERTED → it looked recessed/"swinging". Reflect the depth layers about the card
-      // plane (z≈-0.005) so they pop toward OUR camera = float UP, as the data intends. (SB also has its
-      // internal geometry z mirrored above.) Effects then float; SB pops convex — both per the data, no hacks.
-      // Reflect EVERY off-plane layer (incl. effects) about the card plane so its depth matches our +Z camera.
-      // The effects carry real per-layer glb z (EFM1=-0.075 front … EFM3=-0.03 back, straddling the SB at
-      // -0.041): in Unity, MORE-negative z = closer to the viewer. Reflecting maps that to our camera so EFM1/
-      // EFM2 land IN FRONT of the character and EFM3 BEHIND it — then depthTest sorts them by real z. (Earlier
-      // this excluded effects, which left ALL of them behind the SB: EFM3 looked right by luck, EFM1/2 wrong.)
-      if (Math.abs(o.matrixWorld.elements[14]) > 0.015) mesh.position.z = -0.01 - mesh.position.z;
-      // EX foil shimmers ON TOP of the DynamicUI banner/badge (drawn at 2900), so lift it above.
-      // The SB is a 3D diorama that POPS toward the viewer; on a tilt its silhouette can recede in z and lose the
-      // back-to-front sort tie against COPLANAR frame/panel layers at the same queue (q2400) → the nameplate then
-      // clips the character's head. Nudge the SB +6 so it always sits just above those coplanar layers, while
-      // still BELOW the foreground effects (q2500) and UI overlays. (Painter's-order stand-in for the real depth
-      // pop-out.) renderOrder = real queue otherwise.
-      mesh.renderOrder = (cfg.kind === "exHolo" && !fullFaceHolo) ? 2950 : isSB ? r.queue + 6 : r.queue;
-      mesh.frustumCulled = false;
-      mesh.userData.label = `${matName}  ·  ${r.shader}  ·  q${mesh.renderOrder}`;
-      // Holistic root cause: ANY layer off the card plane (z≠0) swings when the card 3D-rotates. The card
-      // plane is z≈-0.005; the depth diorama (effects -0.03..-0.075, shadowbox -0.04) is way off → it swings.
-      // Bake ALL of those to the RT (homography), not just the SB. Flat layers (z≈0) stay (rotated-flat = homography).
-      // UR gold-foil background layers → bgGroup (pre-composited to the RT); everything else → fgGroup.
-      (isBackgroundLayer(r.shader, cfg, r) ? bgGroup : fgGroup).add(mesh);
-      built++;
+      const stagedMeshes = [];
+      let invalidQueue = false;
+      for (const [passOrdinal, mat] of passMaterials.entries()) {
+        const straight = !!mat.userData.straight;
+        if (cfg.alphaTest && mat.isMeshBasicMaterial) mat.alphaTest = cfg.alphaTest;
+        const exactPassApplied = mat.userData.officialPassRuntime
+          ? applyOfficialPassState(mat, r, mat.userData.officialPassRuntime, { stencil: isStencil || !window.__raw })
+          : false;
+        if (mat.userData.officialPassRuntime && !exactPassApplied) {
+          passMaterials.forEach((material) => material.dispose());
+          throw new Error(`${matName}: selector-bound official pass state is unsupported`);
+        }
+        if (!exactPassApplied) {
+          // Some official shaders use material-controlled blend factors (_SrcFactor/_DstFactor).
+          setBlend(mat, cfg.blend, straight, cfg.materialBlend ? r.floats : undefined);
+          if (!window.__raw) applyStencilState(mat, r);
+          applyDepthState(mat, r.floats);
+          applyCullState(mat, r.floats, cfg.cull ?? 2, cfg.materialCull);
+        }
+        if (!applyRenderQueueState(mat, r.queue)) { invalidQueue = true; break; }
+        // These shader families use fixed LEqual depth state in the official pass rather than material floats.
+        if (isSB && !exactPassApplied) {
+          mat.depthTest = true;
+          mat.depthWrite = cfg.blend === "opaque";
+        }
+        const mesh = new THREE.Mesh(o.geometry, mat);
+        mesh.applyMatrix4(o.matrixWorld);
+        if (mat.userData.glitterFlow) mat.userData.glitterTransform = mesh;
+        if (mat.userData.kiraPuyoState) mat.userData.kiraPuyoTransform = mesh;
+        if (mat.userData.circularKiraState) {
+          bindCircularKiraMesh(mat.userData.circularKiraState, mat.userData.circularKiraRole, mesh);
+        }
+        mesh.renderOrder = r.queue;
+        mesh.frustumCulled = false;
+        mesh.userData.officialSort = r.sort;
+        mesh.userData.officialPassOrdinal = passOrdinal;
+        attachOfficialDrawIdentity(mesh, matName, resolvedOfficialDraw);
+        attachAuditDescriptor(mesh, matName, r);
+        const selector = mat.userData.officialSelector;
+        const passLabel = selector ? `  p${selector.subshader}:${selector.pass}` : "";
+        mesh.userData.label = `${matName}  ·  ${r.shader}  ·  q${mesh.renderOrder}${passLabel}`;
+        stagedMeshes.push(mesh);
+      }
+      if (invalidQueue) {
+        passMaterials.forEach((material) => material.dispose());
+        skipped++;
+        return;
+      }
+      if (matName === "L_FullFace_Text") dynUIMat = passMaterials[0];
+      for (const mesh of stagedMeshes) {
+        // Stencil writers share the normal selector/pass/identity path; only their scene group differs.
+        if (isStencil) {
+          stencilGroup.add(mesh);
+          writers++;
+        } else {
+          fgGroup.add(mesh);
+          built++;
+        }
+      }
     });
 
+    for (const state of circularKiraComponents.values()) {
+      const matches = [];
+      root.traverse((object) => {
+        if (sourceNodePath(object) === state.config.componentGoPath) matches.push(object);
+      });
+      if (matches.length !== 1) {
+        throw new Error(`${state.componentIdentity}: component GameObject path resolved ${matches.length} nodes`);
+      }
+      const componentTransform = new THREE.Object3D();
+      matches[0].matrixWorld.decompose(
+        componentTransform.position,
+        componentTransform.quaternion,
+        componentTransform.scale,
+      );
+      cardGroup.add(componentTransform);
+      finalizeCircularKiraBindings(state, componentTransform);
+    }
 
-    const tiltPivot = new THREE.Group();
-    tiltPivot.add(cardGroup);
-    scene.add(tiltPivot);
-    tiltPivot.updateWorldMatrix(true, true);
-    const box = new THREE.Box3().setFromObject(cardGroup);
-    const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
-    cardGroup.position.sub(center);
+
+    // Official hierarchy: studioRoot -> Asset3D root -> rotation -> parent -> loaded asset.
+    // SetFlipped(false), used for the normal card face, sets parent.localRotation = Ry(180 degrees).
+    const studioRoot = new THREE.Group();
+    const assetRoot = new THREE.Group();
+    const rotationRoot = new THREE.Group();
+    const parentRoot = new THREE.Group();
+    parentRoot.rotation.y = Math.PI;
+    parentRoot.add(cardGroup);
+    rotationRoot.add(parentRoot);
+    assetRoot.add(rotationRoot);
+    studioRoot.add(assetRoot);
+    scene.add(studioRoot);
+    // ModelRenderStudio Camera.cullingMask is 0x00200000: layer 21, UICardViewRenderer.
+    studioRoot.traverse((object) => object.layers.set(21));
+    camera.layers.set(21);
+    studioRoot.updateWorldMatrix(true, true);
     // EXACT game camera (Asset3DRenderer): CameraDistance 1.911506, fov 35. The shadowbox is a
     // depth diorama calibrated to this distance — a closer bbox-fit over-separates the parts.
-    const dist = 1.911506;
-    camera.position.set(0, 0, dist); camera.lookAt(0, 0, 0);
+    const cameraPosition = cardDisplayContract.camera.local_position;
+    // In the exported GLB the front primitive is z=-0.005/normal=-Z. The official parent Ry(180)
+    // moves it to z=+0.005/normal=+Z, so the converted Three camera must view it from +Z.
+    camera.position.set(cameraPosition[0], cameraPosition[1], -cameraPosition[2]);
+    camera.lookAt(0, 0, 0);
+    // The official built-in Quad winds toward -Z and Homography serializes Cull Back. Its UI
+    // camera must therefore view the quad from +Z as well.
+    displayCamera.position.set(cameraPosition[0], cameraPosition[1], -cameraPosition[2]);
+    displayCamera.lookAt(0, 0, 0);
 
     log(`built ${built} meshes (${writers} stencil, ${deferred} deferred, ${skipped} skipped)  ${scene_data.card.name} ${scene_data.card.rarityToken}`);
-    window.__tilt = tiltPivot;
-
-    // ── UR gold-foil BACKGROUND RT pass ──────────────────────────────────────────────────────────────────────
-    // bgGroup (parallax base + holo + glitter + semi-transparent Uzumaki plate) pre-renders to an RT in queue
-    // order (with the stencil writers, so it's clipped to the card shape). A fullscreen quad then samples the RT
-    // as the background, and fgGroup draws over it — so the semi-transparent plate reveals the layers beneath
-    // WITHOUT three.js drawing it over the illustration. bgGroup empty (non-UR) → skipped, plain render.
-    const bgPass = bgGroup.children.length > 0;
-    let bgRT = null, bgQuad = null;
-    if (bgPass) {
-      const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
-      bgRT = new THREE.WebGLRenderTarget(ds.x || 1024, ds.y || 1434, { stencilBuffer: true });
-      bgRT.texture.colorSpace = cardTargetColorSpace;
-      bgQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), new THREE.ShaderMaterial({
-        glslVersion: THREE.GLSL3,
-        uniforms: { rt: { value: bgRT.texture } },
-        vertexShader: `out vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.9999, 1.0); }`,   // fullscreen, at far depth
-        fragmentShader: `
-          uniform sampler2D rt; in vec2 vUv;
-          layout(location = 0) out vec4 outColor;
-          layout(location = 1) out vec4 outEmissive;
-          #define gl_FragColor outColor
-          void main(){
-            gl_FragColor = texture(rt, vUv);
-            outEmissive = vec4(0.0);
-            #include <colorspace_fragment>
-          }`,
-        depthTest: false, depthWrite: false, toneMapped: false,
-      }));
-      bgQuad.frustumCulled = false; bgQuad.renderOrder = -100000; bgQuad.visible = false;
-      scene.add(bgQuad);
-      window.__bg = { rt: bgRT, quad: bgQuad, bgGroup, fgGroup };   // for resize
-    }
+    window.__tilt = assetRoot;
 
     // ── LANGUAGE SWITCH: rebuild only the DynamicUI canvas (content + fonts) and swap the textures in place ──
     window.__post = makeBloomPass(hasOfficialEmissive);
+    window.__displayPost = makeDisplayPass();
+    const displayGeometry = new THREE.BufferGeometry();
+    displayGeometry.setAttribute("position", new THREE.Float32BufferAttribute([
+      -0.5, -0.5, 0,
+       0.5, -0.5, 0,
+      -0.5,  0.5, 0,
+       0.5,  0.5, 0,
+    ], 3));
+    displayGeometry.setAttribute("uv", new THREE.Float32BufferAttribute([
+      0, 0, 1, 0, 0, 1, 1, 1,
+    ], 2));
+    // APK base/assets/bin/Data/unity default resources, Quad PathID 10210. The manifest
+    // reverses each Unity triangle when adapting the left-handed mesh to Three's right-handed world.
+    displayGeometry.setIndex(homographyDisplayProgram.manifest.bindings.vertex_attribute.webgl2_indices);
+    const keypointRotation = new THREE.Quaternion(...cardDisplayContract.homography.keypoint_root_rotation);
+    const keypointLocals = cardDisplayContract.homography.keypoints.map(({ local_position: position }) => (
+      new THREE.Vector3(...position).applyQuaternion(keypointRotation)
+    ));
+    const keypointExtent = keypointLocals.reduce((bounds, point) => ({
+      minX: Math.min(bounds.minX, point.x), maxX: Math.max(bounds.maxX, point.x),
+      minY: Math.min(bounds.minY, point.y), maxY: Math.max(bounds.maxY, point.y),
+    }), { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity });
+    const displayWorldSize = Math.max(
+      keypointExtent.maxX - keypointExtent.minX,
+      keypointExtent.maxY - keypointExtent.minY,
+    );
+    const projectedKeypoints = () => {
+      // Official ModelRenderStudio.GetRotatedKeyPoints projects the serialized KeyPoints/Root
+      // transforms. ApplyClampedRotation writes only _renderObject.localRotation, so feeding the
+      // render object's tilt into these points would apply the same pose twice.
+      camera.updateWorldMatrix(true, false);
+      camera.updateProjectionMatrix();
+      return keypointLocals.map((point) => {
+        const projected = point.clone().project(camera);
+        return [(projected.x + 1) * 0.5, (projected.y + 1) * 0.5];
+      });
+    };
+    const displayMaterial = createHomographyDisplayMaterial({
+      program: homographyDisplayProgram,
+      dynamicUITexture: window.__post.sceneRT.textures[0],
+      viewportPoints: [[0, 0], [1, 0], [0, 1], [1, 1]],
+    });
+    const displayMesh = new THREE.Mesh(displayGeometry, displayMaterial);
+    displayMesh.frustumCulled = false;
+    displayScene.add(displayMesh);
+    const updateDisplayViewport = () => {
+      displayCamera.aspect = innerWidth / innerHeight;
+      displayCamera.updateProjectionMatrix();
+      const containScale = Math.min(1, displayCamera.aspect);
+      displayMesh.scale.setScalar(displayWorldSize * containScale);
+    };
+    updateDisplayViewport();
+    window.__cardDisplay = {
+      material: displayMaterial,
+      mesh: displayMesh,
+      projectedKeypoints,
+      updateViewport: updateDisplayViewport,
+    };
     // its own font download + canvas rebuild takes a beat, so show the small busy spinner and lock the dropdown.
     let switching = false;
     let cardSel = null, repeatedSceneIds = new Set();
@@ -852,13 +1928,25 @@ async function main() {
       try {
         await loadLocaleData(lc);                          // sets curFonts + loads that locale's fonts
         const t = await buildFace(lc);                     // rebuild the DynamicUI for the new locale (any card)
-        if (t && dynUIMat) dynUIMat.uniforms.map.value = t.ui;
+        if (t && dynUIMat) {
+          const uniformName = dynUIMat.userData.dynamicUIUniform;
+          if (!uniformName || !dynUIMat.uniforms[uniformName]) {
+            throw new Error("L_FullFace_Text: missing exact DynamicUI sampler binding");
+          }
+          dynUIMat.uniforms[uniformName].value = t.holo;
+        }
         if (t) for (const m of exHoloMats) {
           if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
           if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
           if (m.uniforms._563) m.uniforms._563.value = t.holo;
           if (m.uniforms._581) m.uniforms._581.value = t.holo;
           if (m.uniforms.foilMask) m.uniforms.foilMask.value = t.foil;
+        }
+        if (t) {
+          const previous = dynTex;
+          dynTex = t;
+          publishTmpSdfStatus(t.evidence);
+          previous?.dispose?.();
         }
         curLoc = lc;
         refreshCardSelectLabels();
@@ -893,6 +1981,7 @@ async function main() {
         busy(true, "Loading…");
         const next = new URL(location.href);
         next.searchParams.delete("card");
+        next.searchParams.delete("sortCapture");
         next.searchParams.set("scene", sel.value);
         next.searchParams.set("lc", curLoc);
         location.href = next;
@@ -926,7 +2015,17 @@ async function main() {
     let solo = -1;
     window.__preview = window.__preview ?? false;
     function applyDbg() {
-      dbgLayers.forEach((m, i) => { m.visible = solo < 0 || i === solo; });
+      const selected = solo >= 0 ? dbgLayers[solo] : null;
+      const selectedNeedsStencil = !!(
+        selected?.material?.stencilWrite
+        && selected.material.stencilFunc !== THREE.AlwaysStencilFunc
+      );
+      dbgLayers.forEach((m, i) => {
+        const stencilDependency = selectedNeedsStencil
+          && m.material?.stencilWrite
+          && m.material.stencilFunc === THREE.AlwaysStencilFunc;
+        m.visible = solo < 0 || i === solo || stencilDependency;
+      });
       const mode = window.__preview ? "PREVIEW (flat, no tilt)" : "SELECT (mouse-tilt)";
       const cur = solo < 0 ? `ALL — ${dbgLayers.length} layers` : `SOLO [${solo + 1}/${dbgLayers.length}]  ${dbgLayers[solo].userData.label}`;
       hud.textContent = `mode: ${mode}\nlayer: ${cur}\n[←/→] solo prev/next   [a] all   [p] preview/select   [h] hide`;
@@ -947,75 +2046,394 @@ async function main() {
   }, (ev) => { if (ev && ev.total) setLoading(`Loading model… ${Math.round(ev.loaded / ev.total * 100)}%`); },
      (e) => fail("FBX load: " + e));
 
-  // ── mouse-follow tilt (TouchStateRotation: rotate card toward pointer, clamp 30°) ──
-  const MAX = THREE.MathUtils.degToRad(30);
-  let mx = 0, my = 0;
-  addEventListener("pointermove", (e) => {
-    const r = renderer.domElement.getBoundingClientRect();
-    mx = ((e.clientX - r.left) / r.width) * 2 - 1;
-    my = ((e.clientY - r.top) / r.height) * 2 - 1;
+  // Official TouchStateRotation acts on Asset3DRenderer.root. Homography keypoints
+  // remain in the separate serialized ModelRenderStudio.Root/KeyPoints space.
+  const touchRotation = createOfficialTouchRotationState();
+  const touchPoint = (event) => screenPointToNormalizedLocal(
+    event.clientX,
+    event.clientY,
+    renderer.domElement.getBoundingClientRect(),
+  );
+  renderer.domElement.style.touchAction = "none";
+  renderer.domElement.addEventListener("pointerdown", (event) => {
+    if (fullRuntimeAudit) return;
+    if (event.pointerType === "mouse") {
+      setAbsolutePointerTilt(touchRotation, touchPoint(event));
+      return;
+    }
+    if (event.isPrimary === false || !beginOfficialTouchDrag(touchRotation, touchPoint(event), event.pointerId)) return;
+    renderer.domElement.setPointerCapture(event.pointerId);
+    event.preventDefault();
   });
-  const targetQ = new THREE.Quaternion(), euler = new THREE.Euler();
+  renderer.domElement.addEventListener("pointermove", (event) => {
+    if (fullRuntimeAudit) return;
+    if (event.pointerType === "mouse") {
+      setAbsolutePointerTilt(touchRotation, touchPoint(event));
+    } else if (touchRotation.dragging) {
+      if (dragOfficialTouchRotation(touchRotation, touchPoint(event), event.pointerId)) event.preventDefault();
+    } else if (shotMode) {
+      // Synthetic non-mouse shot/debug callers remain deterministic.
+      setOfficialDebugTilt(touchRotation, touchPoint(event));
+    }
+  });
+  const finishPointer = (event) => {
+    if (!endOfficialTouchDrag(touchRotation, event.pointerId)) return;
+    if (renderer.domElement.hasPointerCapture(event.pointerId)) {
+      renderer.domElement.releasePointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+  };
+  renderer.domElement.addEventListener("pointerup", finishPointer);
+  renderer.domElement.addEventListener("pointercancel", finishPointer);
+  renderer.domElement.addEventListener("lostpointercapture", (event) => {
+    endOfficialTouchDrag(touchRotation, event.pointerId);
+  });
+  window.__setDebugTilt = (x = 0, y = 0) => setOfficialDebugTilt(touchRotation, [x, y]);
+  window.__officialTouchRotation = touchRotation;
+
+  const identityQ = new THREE.Quaternion();
+  const targetQ = new THREE.Quaternion();
+  const glitterWorldQ = new THREE.Quaternion();
   const cardForward = new THREE.Vector3();
-  const HM_PV = new THREE.Matrix4(), HM_R = new THREE.Matrix4();
   let lastRender = -Infinity;
-  let previousAnimationTime = null;
-  let gameTime = 0;
-  function renderFrame(t) {
-    let mrtCardPasses = 0;
-    let rx = my * MAX, ry = mx * MAX;
-    if (window.__preview) { rx = 0; ry = 0; }          // PREVIEW mode: flat, no tilt (debug)
-    const m = Math.hypot(rx, ry); if (m > MAX) { rx *= MAX / m; ry *= MAX / m; }
-    targetQ.setFromEuler(euler.set(rx, ry, 0, "XYZ"));
-    if (window.__tilt) window.__tilt.quaternion.slerp(targetQ, 0.15);
-    // Depth diorama: cancel the CENTRE's lateral swing (a point at depth z0 swings ≈ z0·tilt under the
-    // rotation) so the diorama stays on the card; the per-layer parallax (different z) is preserved.
-    // cardGroup.scale.x=-1 flips X. `?dcomp=` tunes the strength (0=off, default 1; negative to flip).
-    const now = Number.isFinite(t) ? t : 0;
-    const deltaTime = previousAnimationTime == null ? 0 : Math.max(0, (now - previousAnimationTime) * 0.001);
-    previousAnimationTime = now;
-    gameTime += deltaTime;
-    for (const am of animMats) am.uniforms.uTime.value = gameTime;
-    cardForward.set(0, 0, 1);
-    if (window.__tilt) cardForward.applyQuaternion(window.__tilt.quaternion);
-    for (const em of exactGlitMats) {
-      const flow = updateGlitterFlow(em.userData.glitterFlow, {
-        forward: [cardForward.x, cardForward.y, cardForward.z],
-        deltaTime,
+  const officialClock = new OfficialClock();
+  syncOfficialClockVisibility(officialClock, document.hidden);
+  window.__officialClock = officialClock;
+  const fullRuntimeTiltPoint = Object.freeze([0.5, -0.25]);
+  let fullRuntimeCaptureState = fullRuntimeAudit ? "await-neutral" : "disabled";
+  let fullRuntimeNeutralSnapshot = null;
+  if (fullRuntimeAudit) setOfficialDebugTilt(touchRotation, [0, 0]);
+  window.__localDrawAuditActive = false;
+  window.__localDrawAuditTrace = [];
+  window.__fullRuntimeEvidenceStatus = { state: fullRuntimeCaptureState };
+  document.documentElement.dataset.fullRuntimeEvidence = fullRuntimeCaptureState;
+
+  function publishFullRuntimeEvidenceStatus(state, detail = {}) {
+    fullRuntimeCaptureState = state;
+    window.__fullRuntimeEvidenceStatus = { state, ...detail };
+    document.documentElement.dataset.fullRuntimeEvidence = state;
+  }
+
+  function readFullRuntimePixels(target, attachment) {
+    const pixels = new Uint8Array(target.width * target.height * 4);
+    const previousTarget = renderer.getRenderTarget();
+    const gl = renderer.getContext();
+    renderer.setRenderTarget(target);
+    gl.readBuffer(gl.COLOR_ATTACHMENT0 + attachment);
+    renderer.readRenderTargetPixels(target, 0, 0, target.width, target.height, pixels);
+    gl.readBuffer(gl.COLOR_ATTACHMENT0);
+    renderer.setRenderTarget(previousTarget);
+    return pixels;
+  }
+
+  async function summarizeFullRuntimePixels(pixels, width, height, attachment) {
+    let nonzeroPixels = 0;
+    let alphaNonzero = 0;
+    let minX = width, minY = height, maxX = -1, maxY = -1;
+    for (let pixel = 0, offset = 0; pixel < width * height; pixel += 1, offset += 4) {
+      const nonzero = pixels[offset] !== 0 || pixels[offset + 1] !== 0
+        || pixels[offset + 2] !== 0 || pixels[offset + 3] !== 0;
+      if (pixels[offset + 3] !== 0) alphaNonzero += 1;
+      if (!nonzero) continue;
+      nonzeroPixels += 1;
+      const x = pixel % width;
+      const y = Math.floor(pixel / width);
+      minX = Math.min(minX, x); minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+    }
+    const rgbaSha256 = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", pixels)))
+      .map((value) => value.toString(16).padStart(2, "0")).join("");
+    return {
+      attachment,
+      width,
+      height,
+      pixelCount: width * height,
+      nonzeroPixels,
+      alphaNonzero,
+      bounds: nonzeroPixels ? [minX, minY, maxX, maxY] : null,
+      rgbaSha256,
+    };
+  }
+
+  function cloneRuntimeValue(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function readFullRuntimeState(label) {
+    const post = window.__post;
+    const displayPost = window.__displayPost;
+    const mrt = window.__mrtDiagnostics;
+    const display = window.__displayDiagnostics;
+    const tmp = dynTex?.evidence;
+    if (!post?.sceneRT || !displayPost?.sceneRT || !display || !mrt || !tmp) return null;
+
+    const source0 = readFullRuntimePixels(post.sceneRT, 0);
+    const source1 = readFullRuntimePixels(post.sceneRT, 1);
+    const display0 = readFullRuntimePixels(displayPost.sceneRT, 0);
+    const displaySnapshot = cloneRuntimeValue(display);
+    const localDraws = cloneRuntimeValue(window.__localDrawAuditTrace);
+    const officialTime = officialClock.globalTime;
+    const pipelineSnapshot = {
+      source: cloneRuntimeValue(post.diagnostics()),
+      display: cloneRuntimeValue(displayPost.diagnostics()),
+    };
+    return Promise.all([
+      summarizeFullRuntimePixels(source0, post.sceneRT.width, post.sceneRT.height, 0),
+      summarizeFullRuntimePixels(source1, post.sceneRT.width, post.sceneRT.height, 1),
+      summarizeFullRuntimePixels(display0, displayPost.sceneRT.width, displayPost.sceneRT.height, 0),
+    ]).then(([sourceAttachment0, sourceAttachment1, displayAttachment0]) => ({
+      label,
+      officialTime,
+      mrt: cloneRuntimeValue(mrt),
+      display: displaySnapshot,
+      pipelines: pipelineSnapshot,
+      tmp: cloneRuntimeValue(tmp),
+      source: { attachments: [sourceAttachment0, sourceAttachment1] },
+      presentation: { attachment: displayAttachment0 },
+      localDraws,
+    }));
+  }
+
+  function compactTransformState(snapshot) {
+    return {
+      officialTime: snapshot.officialTime,
+      renderObjectQuaternion: snapshot.display.renderObjectQuaternion,
+      displayQuaternion: snapshot.display.displayQuaternion,
+      viewportPoints: snapshot.display.viewportPoints,
+      homography: snapshot.display.homography,
+      inverseHomography: snapshot.display.inverseHomography,
+      source: snapshot.source,
+      display: snapshot.presentation,
+      localDrawCount: snapshot.localDraws.length,
+    };
+  }
+
+  function captureFullRuntimeEvidence() {
+    if (!fullRuntimeAudit) return;
+    if (fullRuntimeCaptureState === "await-neutral") {
+      const snapshot = readFullRuntimeState("neutral");
+      if (!snapshot) return;
+      fullRuntimeNeutralSnapshot = snapshot;
+      setOfficialDebugTilt(touchRotation, fullRuntimeTiltPoint);
+      publishFullRuntimeEvidenceStatus("await-tilted", { normalizedTiltPoint: [...fullRuntimeTiltPoint] });
+      return;
+    }
+    if (fullRuntimeCaptureState !== "await-tilted" || !fullRuntimeNeutralSnapshot) return;
+    const tiltedSnapshot = readFullRuntimeState("tilted");
+    if (!tiltedSnapshot) return;
+
+    publishFullRuntimeEvidenceStatus("reading-pair");
+    Promise.all([fullRuntimeNeutralSnapshot, tiltedSnapshot]).then(async ([neutral, tilted]) => {
+      const runtimeSession = await fullRuntimeSessionPromise;
+      const runtimeDrawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
+      const canvasRect = canvas.getBoundingClientRect();
+      const payload = {
+        schemaVersion: 5,
+        scene: sceneFile,
+        locale: curLoc,
+        url: runtimeSession.expectedUrl,
+        provenance: {
+          protocol: runtimeSession.protocol,
+          batchId: runtimeSession.batchId,
+          sessionNonce: runtimeSession.sessionNonce,
+          sourceSetSha256: runtimeSession.sourceSetSha256,
+          manifestSetSha256: runtimeSession.manifestSetSha256,
+        },
+        diagnostics: {
+          scene: { file: sceneFile, id: scene_data.card.id, sha256: sceneSha256 },
+          locale: curLoc,
+          quality: {
+            requested: qualityParam,
+            selected: selectedQualityProfile.quality_name,
+            factor: selectedQualityProfile.quality_factor,
+            requestedDisplaySide,
+          },
+          surface: {
+            cssViewport: [innerWidth, innerHeight],
+            devicePixelRatio,
+            rendererPixelRatio: renderer.getPixelRatio(),
+            drawingBufferSize: [runtimeDrawingBuffer.x, runtimeDrawingBuffer.y],
+            canvasBackingSize: [canvas.width, canvas.height],
+            canvasCssSize: [canvasRect.width, canvasRect.height],
+            dynamicUITextureSize: [dynUITex.image.width, dynUITex.image.height],
+          },
+          mrt: neutral.mrt,
+          display: neutral.display,
+          pipelines: neutral.pipelines,
+          tmp: neutral.tmp,
+        },
+        source: neutral.source,
+        display: neutral.presentation,
+        localDraws: neutral.localDraws,
+        transformProbe: {
+          clock: "OfficialClock.advance(0)",
+          adapter: "official-touch-rotation/absolute-pointer",
+          normalizedTiltPoint: [...fullRuntimeTiltPoint],
+          neutral: compactTransformState(neutral),
+          tilted: compactTransformState(tilted),
+        },
+      };
+      const response = await fetch("/audit/full-runtime", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
       });
-      em.uniforms._37.value[0].set(...flow[0]);
-      em.uniforms._78.value[15].set(...flow[1]);
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+      publishFullRuntimeEvidenceStatus("posted", { payload });
+      console.log("full-card runtime evidence recorded", payload);
+    }).catch((error) => {
+      publishFullRuntimeEvidenceStatus("failed", { error: String(error) });
+      console.warn("full-card runtime evidence write failed", error);
+    });
+  }
+
+  function readCenterProbe(target) {
+    const probeSize = 16;
+    const pixels = new Uint8Array(probeSize * probeSize * 4);
+    const x = Math.max(0, Math.floor((target.width - probeSize) / 2));
+    const y = Math.max(0, Math.floor((target.height - probeSize) / 2));
+    renderer.readRenderTargetPixels(target, x, y, probeSize, probeSize, pixels);
+    const colors = new Set();
+    let maxRgb = 0;
+    for (let offset = 0; offset < pixels.length; offset += 4) {
+      colors.add(`${pixels[offset]},${pixels[offset + 1]},${pixels[offset + 2]}`);
+      maxRgb = Math.max(maxRgb, pixels[offset], pixels[offset + 1], pixels[offset + 2]);
+    }
+    return { distinctRgb: colors.size, maxRgb };
+  }
+  function renderFrame(t, forcedDeltaSeconds = null) {
+    let mrtCardPasses = 0;
+    const frameWebglErrors = [];
+    const drainFrameWebglErrors = (stage) => {
+      if (!shotMode && !fullRuntimeAudit) return;
+      const gl = renderer.getContext();
+      for (let error = gl.getError(); error !== gl.NO_ERROR; error = gl.getError()) {
+        frameWebglErrors.push({ stage, error });
+      }
+    };
+    const now = Number.isFinite(t) ? t : 0;
+    const clockFrame = fullRuntimeAudit && !["posted", "failed"].includes(fullRuntimeCaptureState)
+      ? officialClock.advance(0)
+      : forcedDeltaSeconds == null
+        ? officialClock.tick(now)
+        : officialClock.advance(forcedDeltaSeconds);
+    const unityTouchQ = clockFrame.shouldUpdate
+      ? updateOfficialTouchRotation(touchRotation)
+      : touchRotation.rotation;
+    const threeTouchQ = unityQuaternionToThree(unityTouchQ);
+    targetQ.set(...threeTouchQ);
+    if (window.__preview) targetQ.copy(identityQ);
+    if (window.__tilt) window.__tilt.quaternion.copy(targetQ);
+    if (clockFrame.shouldUpdate) {
+      for (const am of animMats) am.uniforms.uTime.value = clockFrame.globalTime;
+      window.__tilt?.updateWorldMatrix(true, true);
+      for (const em of exactGlitMats) {
+        const glitterTransform = em.userData.glitterTransform;
+        if (!glitterTransform) throw new Error("exact GlitterFlowMaps material has no component transform");
+        glitterTransform.getWorldQuaternion(glitterWorldQ);
+        // Unity Transform.forward is local +Z. GLTF basis conversion maps that
+        // local axis to Three -Z; convert the resulting world vector back at the
+        // renderer-independent Unity simulation boundary.
+        cardForward.set(0, 0, -1).applyQuaternion(glitterWorldQ).normalize();
+        const unityForward = threeWorldForwardToUnity(cardForward.toArray());
+        const flow = updateGlitterFlow(em.userData.glitterFlow, {
+          forward: unityForward,
+          deltaTime: clockFrame.scaledDeltaTime,
+        });
+        em.uniforms._FlowParams.value[0].set(...flow[0]);
+        em.uniforms._FlowParams.value[1].set(...flow[1]);
+      }
+      for (const material of kiraPuyoMats) {
+        const transform = material.userData.kiraPuyoTransform;
+        if (!transform) throw new Error("Card_Scaling_Kira material has no KiraPuyoObject transform");
+        transform.getWorldQuaternion(glitterWorldQ);
+        cardForward.set(0, 0, 1).applyQuaternion(glitterWorldQ).normalize();
+        const unityLocalFront = threeWorldForwardToUnity(cardForward.toArray());
+        const values = updateKiraPuyo(material.userData.kiraPuyoState, unityLocalFront);
+        material.uniforms._RampRepeat.value = values.rampRepeat;
+        material.uniforms._ScrollScale.value = values.scrollScale;
+        material.uniforms._ScrollOffset.value = values.scrollOffset;
+        material.uniforms._KiraScale.value = values.kiraScale;
+        material.uniforms._Anim.value = values.anim;
+      }
+      for (const state of circularKiraComponents.values()) {
+        const transform = state.componentTransform;
+        if (!transform) throw new Error("CircularKiraObject has no component GameObject transform");
+        transform.getWorldQuaternion(glitterWorldQ);
+        // CircularKiraObject serializes localFront=(0,0,-1); Unity-to-GLTF handedness maps it to +Z.
+        cardForward.set(0, 0, 1).applyQuaternion(glitterWorldQ).normalize();
+        const unityFront = threeWorldForwardToUnity(cardForward.toArray());
+        updateCircularKira(state, unityFront, clockFrame.scaledDeltaTime);
+      }
     }
     function renderCard(target) {
       if (target?.textures?.length === 2) mrtCardPasses += 1;
-      const bg = window.__bg;   // set in the FBX callback for UR cards (gold-foil background RT pass); else undefined
-      if (bg) {
-      // pass 1: gold-foil stack → RT (stencil writers stay visible to clip it to the card; fg + bgQuad hidden).
-      bg.quad.visible = false; bg.bgGroup.visible = true; bg.fgGroup.visible = false;
-        renderer.setRenderTarget(bg.rt); renderer.render(scene, camera);
-      // pass 2: screen — fullscreen RT background behind, fgGroup (illustration/frame/text) over it.
-        bg.quad.visible = true; bg.bgGroup.visible = false; bg.fgGroup.visible = true;
-        renderer.setRenderTarget(target); renderer.render(scene, camera);
-        renderer.setRenderTarget(null);
-      } else {
+      const traceDraws = fullRuntimeAudit
+        && (fullRuntimeCaptureState === "await-neutral" || fullRuntimeCaptureState === "await-tilted");
+      if (traceDraws) {
+        window.__localDrawAuditTrace = [];
+        window.__localDrawAuditActive = true;
+      }
+      try {
+        drainFrameWebglErrors("before-card-render");
         renderer.setRenderTarget(target);
-        renderer.render(scene, camera);   // direct render (card 3D-tilts; the diorama parallax is the real glb depth)
+        renderer.render(scene, camera);
+        drainFrameWebglErrors("after-card-render");
         renderer.setRenderTarget(null);
+        drainFrameWebglErrors("after-card-target-detach");
+      } finally {
+        if (traceDraws) window.__localDrawAuditActive = false;
       }
     }
     const post = window.__post;
     if (post) {
+      renderer.setClearColor(0x000000, cardDisplayContract.render_target_semantics.clear_rgba[3]);
       renderCard(post.sceneRT);
-      if (post.hasBloom) {
-        post.blur.uniforms.rt.value = post.sceneRT.textures[1]; post.blur.uniforms.uDir.value.set(1, 0);
-        post.quad.material = post.blur;
-        renderer.setRenderTarget(post.bloomB); renderer.render(post.postScene, post.postCamera);
-        post.blur.uniforms.rt.value = post.bloomB.texture; post.blur.uniforms.uDir.value.set(0, 1);
-        renderer.setRenderTarget(post.bloomA); renderer.render(post.postScene, post.postCamera);
-        post.composite.uniforms.bloom.value = post.bloomA.texture;
+      post.apply();
+      const sourcePixelProbe = shotMode ? readCenterProbe(post.sceneRT) : null;
+      const cardDisplay = window.__cardDisplay;
+      if (cardDisplay) {
+        const viewportPoints = cardDisplay.projectedKeypoints();
+        const matrices = setHomographyDisplayPoints(cardDisplay.material, viewportPoints);
+        const displayPost = window.__displayPost;
+        renderer.setClearColor(0x14161c, 1);
+        drainFrameWebglErrors("before-homography-render");
+        renderer.setRenderTarget(displayPost.sceneRT);
+        renderer.render(displayScene, displayCamera);
+        drainFrameWebglErrors("after-homography-render");
+        renderer.setRenderTarget(null);
+        drainFrameWebglErrors("after-display-target-detach");
+        const pixelProbe = shotMode ? readCenterProbe(displayPost.sceneRT) : null;
+        displayPost.present();
+        drainFrameWebglErrors("after-display-present");
+        window.__displayDiagnostics = {
+          mode: detailDisplayProfile.display_mode.selected_material,
+          clampParallax: detailDisplayProfile.display_mode.clamp_parallax,
+          sourceSize: [post.sceneRT.width, post.sceneRT.height],
+          quality: {
+            requested: qualityParam,
+            selected: selectedQualityProfile.quality_name,
+            factor: selectedQualityProfile.quality_factor,
+            requestedDisplaySide,
+          },
+          displayTargetSize: [displayPost.sceneRT.width, displayPost.sceneRT.height],
+          sourceCameraAspect: camera.aspect,
+          sourceCameraPosition: camera.position.toArray(),
+          displayQuaternion: cardDisplay.mesh.quaternion.toArray(),
+          homographyKeypointSpace: "ModelRenderStudio.Root",
+          renderObjectQuaternion: window.__tilt?.quaternion.toArray() || identityQ.toArray(),
+          vertexInput: homographyDisplayProgram.manifest.bindings.vertex_attribute.webgl2,
+          viewportPoints,
+          finiteMatrices: [...matrices.homography, ...matrices.inverseHomography].every(Number.isFinite),
+          homography: [...matrices.homography],
+          inverseHomography: [...matrices.inverseHomography],
+          sourcePixelProbe,
+          pixelProbe,
+          webglErrors: frameWebglErrors.map((entry) => ({ ...entry })),
+        };
+      } else {
+        post.present();
       }
-      post.quad.material = post.composite;
-      renderer.setRenderTarget(null); renderer.render(post.postScene, post.postCamera);
     } else {
       renderCard(null);
     }
@@ -1024,10 +2442,10 @@ async function main() {
       cardPasses: mrtCardPasses,
       drawCalls: renderer.info.render.calls,
     };
+    captureFullRuntimeEvidence();
   }
   window.__renderShotFrames = async (count = 10, dtMs = 83) => {
-    const base = performance.now();
-    for (let i = 0; i < count; i++) renderFrame(base + i * dtMs);
+    for (let i = 0; i < count; i++) renderFrame(0, dtMs * 0.001);
     await new Promise((resolve) => requestAnimationFrame(resolve));
   };
   function loop(t) {
@@ -1039,16 +2457,15 @@ async function main() {
   if (shotMode) renderFrame(performance.now());
   else requestAnimationFrame(loop);
 
-  addEventListener("visibilitychange", () => {
-    if (document.hidden) previousAnimationTime = null;
+  document.addEventListener("visibilitychange", () => {
+    syncOfficialClockVisibility(officialClock, document.hidden);
   });
 
   addEventListener("resize", () => {
     renderer.setSize(innerWidth, innerHeight);
-    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-    const ds = renderer.getDrawingBufferSize(new THREE.Vector2());
-    if (window.__bg) window.__bg.rt.setSize(ds.x || innerWidth, ds.y || innerHeight);
+    window.__cardDisplay?.updateViewport();
     if (window.__post) window.__post.resize();
+    if (window.__displayPost) window.__displayPost.resize();
   });
 }
 

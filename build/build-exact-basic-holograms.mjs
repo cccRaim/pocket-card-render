@@ -1,37 +1,59 @@
-// Generate the two basic card hologram programs directly from official Unity shader bundles.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+// Generate Card_Parallax_Hologram_Tuning from one selector-bound official executable.
+import assert from "node:assert/strict";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  joinSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-basic-holograms-"));
 
-function run(command, args, options = {}) {
-  return execFileSync(command, args, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], ...options });
-}
+const PROGRAM = {
+  shader: "Card_Parallax_Hologram_Tuning",
+  stem: "card_parallax_hologram_tuning",
+  selector: {
+    selectorId: "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
+    candidateWitnessId: "b54f79946809a035762c9175061af64d2b48572b4a7143332d3d673339f75a9b",
+    proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
+    portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+    spirvCrossSha256: {
+      vertex: "14125d71fc0599c80e23279c8dd3a38ef9419e7f0e60f2beed8b8ac256d6032f",
+      fragment: "ad5cc1328e9f058f735c45f5b8efe8e23bb674122852205f82a80019fd6c5ffa",
+    },
+  },
+  samplerSlots: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_HologramMaskTex"],
+  floats: [
+    "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_UseUv", "_UseMaskUv",
+    "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
+  ],
+  ints: ["_UseUv", "_UseMaskUv"],
+  vectors: ["_Rotation"],
+};
 
 function members(types, offsets) {
   return types.map((type, index) => ({ name: `_m${index}`, type, offset: offsets[index] }));
 }
 
 function assertEqual(actual, expected, message) {
-  if (JSON.stringify(actual) !== JSON.stringify(expected)) {
-    throw new Error(`${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
-  }
+  assert.equal(JSON.stringify(actual), JSON.stringify(expected), message);
 }
 
 function assertReflection(reflection, expected) {
   const ubo = (reflection.ubos || []).find((item) => item.name === expected.ubo.name);
-  if (!ubo || ubo.block_size !== expected.ubo.size) throw new Error(`${expected.ubo.name} UBO layout changed`);
+  assert.equal(ubo?.block_size, expected.ubo.size, `${expected.ubo.name} UBO layout changed`);
   assertEqual(
     (reflection.types?.[ubo.type]?.members || []).map(({ name, type, offset }) => ({ name, type, offset })),
     expected.ubo.members,
@@ -66,214 +88,194 @@ function replaceUbo(source, blockName, instanceName, uniforms) {
   return out;
 }
 
-function adaptVertex(source, cfg) {
+function adaptVertex(source) {
   let out = source.replace(/^#version 300 es\s*/m, "precision highp float;\nprecision highp int;\n\n");
-  out = replaceUbo(out, cfg.block, cfg.owner, [
+  out = replaceUbo(out, "_21_23", "_23", [
     "uniform highp vec3 cameraPosition;",
     "uniform highp mat4 modelMatrix;",
     "uniform highp mat4 viewMatrix;",
     "uniform highp mat4 projectionMatrix;",
-    ...cfg.uniforms,
+    "uniform mediump float _FakeCameraHeight;", "uniform mediump float _Height;",
+    "uniform mediump float _HeightPower;", "uniform mediump float _Scale;",
+    "uniform int _UseUv;", "uniform int _UseMaskUv;",
   ]);
-  for (const [from, to] of Object.entries(cfg.attributes)) out = out.replace(from, to);
-  out = out.replace(/void main\(\)\s*\{/, `void main()\n{\n${cfg.locals.join("\n")}`);
-  out = replaceMembers(out, cfg.owner, cfg.mapping);
+  const attributes = {
+    "layout(location = 0) in vec4 _11;": "in vec3 position;",
+    "layout(location = 1) in vec3 _86;": "in vec3 normal;",
+    "layout(location = 4) in mediump vec4 _106;": "in vec4 tangent;",
+    "layout(location = 2) in vec2 _306;": "in vec2 uv;",
+    "layout(location = 3) in vec2 _310;": "in vec2 uv1;",
+  };
+  for (const [from, to] of Object.entries(attributes)) out = out.replace(from, to);
+  out = out.replace(/void main\(\)\s*\{/, `void main()\n{\n    vec4 _11 = vec4(position, 1.0);\n    vec3 _86 = normal;\n    vec4 _106 = tangent;\n    vec2 _306 = uv;\n    vec2 _310 = uv1;\n    mat4 _ObjectToWorld = modelMatrix;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;`);
+  out = replaceMembers(out, "_23", [
+    "cameraPosition", "_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_FakeCameraHeight",
+    "_Height", "_HeightPower", "_Scale", "_UseUv", "_UseMaskUv",
+  ]);
   out = out.replace(/^\s*gl_Position\.y\s*=\s*-gl_Position\.y;\s*$/m, "");
-  if (new RegExp(`${cfg.owner.replace("_", "\\_")}\\._m|gl_Position\\.y\\s*=\\s*-gl_Position\\.y`).test(out)) {
-    throw new Error(`${cfg.block} vertex adaptation incomplete`);
-  }
+  assert.doesNotMatch(out, /_23\._m|gl_Position\.y\s*=\s*-gl_Position\.y/, "vertex adaptation incomplete");
   return `${out.trimEnd()}\n`;
 }
 
-function adaptFragment(source, cfg) {
+function adaptFragment(source) {
   let out = source.replace(/^#version 300 es\s*/m, "");
-  out = replaceUbo(out, cfg.block, cfg.owner, ["uniform highp mat4 viewMatrix;", ...cfg.uniforms]);
-  out = replaceMembers(out, cfg.owner, cfg.mapping);
-  if (new RegExp(`${cfg.owner.replace("_", "\\_")}\\._m`).test(out)) throw new Error(`${cfg.block} fragment adaptation incomplete`);
-  for (const pattern of cfg.required) if (!pattern.test(out)) throw new Error(`${cfg.block} fragment invariant missing: ${pattern}`);
+  out = replaceUbo(out, "_14_16", "_16", [
+    "uniform highp mat4 viewMatrix;",
+    "uniform float _DiffractionIntensity;", "uniform float _DiffractionPower;", "uniform float _RampRepeat;",
+    "uniform float _RampSpeed;", "uniform float _RampOffset;", "uniform float _RampInterval;",
+    "uniform vec3 _Rotation;",
+  ]);
+  out = replaceMembers(out, "_16", [
+    "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
+    "_RampOffset", "_RampInterval", "_Rotation",
+  ]);
+  assert.doesNotMatch(out, /_16\._m/, "fragment adaptation incomplete");
+  assert.match(out, /_409\.w\s*=\s*1\.0;/);
+  assert.match(out, /_415\s*=\s*vec4\(0\.0\);/);
   return `${out.trimEnd()}\n`;
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
+const vertexReflection = {
+  ubo: {
+    name: "_21_23", size: 232,
+    members: members(
+      ["vec3", "vec4", "vec4", "vec4", "float", "float", "float", "float", "int", "int"],
+      [0, 16, 80, 144, 208, 212, 216, 220, 224, 228],
+    ),
+  },
+  inputs: [
+    { name: "_11", type: "vec4", location: 0 }, { name: "_86", type: "vec3", location: 1 },
+    { name: "_306", type: "vec2", location: 2 }, { name: "_310", type: "vec2", location: 3 },
+    { name: "_106", type: "vec4", location: 4 },
+  ],
+  outputs: [
+    { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
+    { name: "vs_TEXCOORD3", type: "vec3", location: 2 },
+  ],
+  textures: [],
+};
 
-const programs = [
-  {
-    shader: "Card_Parallax_Hologram_Tuning",
-    stem: "card_parallax_hologram_tuning",
+const fragmentReflection = {
+  ubo: {
+    name: "_14_16", size: 108,
+    members: members(["vec4", "float", "float", "float", "float", "float", "float", "vec3"], [0, 64, 68, 72, 76, 80, 84, 96]),
+  },
+  inputs: [
+    { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
+    { name: "vs_TEXCOORD3", type: "vec3", location: 2 },
+  ],
+  outputs: [{ name: "_409", type: "vec4", location: 0 }, { name: "_415", type: "vec4", location: 1 }],
+  textures: [
+    { name: "_256", type: "sampler2D", binding: 0 }, { name: "_323", type: "sampler2D", binding: 1 },
+    { name: "_382", type: "sampler2D", binding: 2 }, { name: "_397", type: "sampler2D", binding: 3 },
+  ],
+};
+
+const outputs = {};
+await withExtractedSelectorProgram({
+  selectorId: PROGRAM.selector.selectorId,
+  candidateWitnessId: PROGRAM.selector.candidateWitnessId,
+  expectedProofGraphSha256: PROGRAM.selector.proofGraphSha256,
+  expectedPortIndexSha256: PROGRAM.selector.portIndexSha256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: PROGRAM.stem,
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  assertReflection(reflection.vertex, vertexReflection);
+  assertReflection(reflection.fragment, fragmentReflection);
+  assert.equal(metadata.artifacts.parameterEntry.byteSize, 100);
+  assert.equal(metadata.parameterReflection.bindingClosure.constantBuffersMatch, true);
+
+  const officialVertex = runCommand(SPIRV_CROSS, [files.vertexSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFragment = runCommand(SPIRV_CROSS, [files.fragmentSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  assert.equal(sha256(officialVertex), PROGRAM.selector.spirvCrossSha256.vertex, "vertex SPIRV-Cross shape changed");
+  assert.equal(sha256(officialFragment), PROGRAM.selector.spirvCrossSha256.fragment, "fragment SPIRV-Cross shape changed");
+
+  const vertex = adaptVertex(officialVertex);
+  const fragment = adaptFragment(officialFragment);
+  const bindings = compileCommonBindings(metadata.commonBindings);
+  const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+    assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  assert.deepEqual(samplerBindings.map(({ slot }) => slot), PROGRAM.samplerSlots);
+
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
     vertex: {
-      block: "_21_23", owner: "_23",
-      uniforms: [
-        "uniform mediump float _FakeCameraHeight;", "uniform mediump float _Height;",
-        "uniform mediump float _HeightPower;", "uniform mediump float _Scale;",
-        "uniform int _UseUv;", "uniform int _UseMaskUv;",
+      officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVertex), outputSha256: sha256(vertex),
+      substitutions: [
+        "position location 0 := vec4(three.position, 1.0)", "normal location 1 := three.normal",
+        "UV0 location 2 := three.uv", "UV1 location 3 := three.uv1", "tangent location 4 := three.tangent",
+        "unity_ObjectToWorld := three.modelMatrix", "unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
       ],
-      attributes: {
-        "layout(location = 0) in vec4 _11;": "in vec3 position;",
-        "layout(location = 1) in vec3 _86;": "in vec3 normal;",
-        "layout(location = 4) in mediump vec4 _106;": "in vec4 tangent;",
-        "layout(location = 2) in vec2 _306;": "in vec2 uv;",
-        "layout(location = 3) in vec2 _310;": "in vec2 uv2;",
-      },
-      locals: [
-        "    vec4 _11 = vec4(position, 1.0);", "    vec3 _86 = normal;", "    vec4 _106 = tangent;",
-        "    vec2 _306 = uv;", "    vec2 _310 = uv2;", "    mat4 _ObjectToWorld = modelMatrix;",
-        "    mat4 _WorldToObject = inverse(modelMatrix);", "    mat4 _ViewProjection = projectionMatrix * viewMatrix;",
-      ],
-      mapping: ["cameraPosition", "_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_UseUv", "_UseMaskUv"],
-      reflection: {
-        ubo: { name: "_21_23", size: 232, members: members(
-          ["vec3", "vec4", "vec4", "vec4", "float", "float", "float", "float", "int", "int"],
-          [0, 16, 80, 144, 208, 212, 216, 220, 224, 228],
-        ) },
-        inputs: [
-          { name: "_11", type: "vec4", location: 0 }, { name: "_86", type: "vec3", location: 1 },
-          { name: "_306", type: "vec2", location: 2 }, { name: "_310", type: "vec2", location: 3 },
-          { name: "_106", type: "vec4", location: 4 },
-        ],
-        outputs: [
-          { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
-          { name: "vs_TEXCOORD3", type: "vec3", location: 2 },
-        ], textures: [],
-      },
     },
     fragment: {
-      block: "_14_16", owner: "_16",
-      uniforms: [
-        "uniform float _DiffractionIntensity;", "uniform float _DiffractionPower;", "uniform float _RampRepeat;",
-        "uniform float _RampSpeed;", "uniform float _RampOffset;", "uniform float _RampInterval;", "uniform vec3 _Rotation;",
-      ],
-      mapping: ["viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_Rotation"],
-      required: [/_409\.w\s*=\s*1\.0;/, /_415\s*=\s*vec4\(0\.0\);/],
-      reflection: {
-        ubo: { name: "_14_16", size: 108, members: members(["vec4", "float", "float", "float", "float", "float", "float", "vec3"], [0, 64, 68, 72, 76, 80, 84, 96]) },
-        inputs: [
-          { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
-          { name: "vs_TEXCOORD3", type: "vec3", location: 2 },
-        ],
-        outputs: [{ name: "_409", type: "vec4", location: 0 }, { name: "_415", type: "vec4", location: 1 }],
-        textures: [
-          { name: "_256", type: "sampler2D", binding: 0 }, { name: "_323", type: "sampler2D", binding: 1 },
-          { name: "_382", type: "sampler2D", binding: 2 }, { name: "_397", type: "sampler2D", binding: 3 },
-        ],
-      },
+      officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFragment), outputSha256: sha256(fragment),
+      substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
     },
-    manifest: {
-      samplers: ["_256", "_323", "_382", "_397"],
-      sampler_slots: ["_PhaseTex", "_RampMaskTex", "_RampTex", "_HologramMaskTex"],
-      floats: ["_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_UseUv", "_UseMaskUv", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval"],
-      colors: ["_Rotation"], mrt: { primary: "_409", secondary: "_415", secondary_value: "zero" },
-    },
-  },
-  {
-    shader: "Card_Hologram_Tuning",
-    stem: "card_hologram_tuning",
-    vertex: {
-      block: "_20_22", owner: "_22",
-      uniforms: ["uniform int _UseUv;", "uniform int _UseMaskUv;"],
-      attributes: {
-        "layout(location = 0) in vec4 _11;": "in vec3 position;",
-        "layout(location = 2) in vec2 _99;": "in vec2 uv;",
-        "layout(location = 3) in vec2 _103;": "in vec2 uv2;",
-        "layout(location = 1) in vec3 _116;": "in vec3 normal;",
-      },
-      locals: [
-        "    vec4 _11 = vec4(position, 1.0);", "    vec2 _99 = uv;", "    vec2 _103 = uv2;", "    vec3 _116 = normal;",
-        "    mat4 _ObjectToWorld = modelMatrix;", "    mat4 _WorldToObject = inverse(modelMatrix);",
-        "    mat4 _ViewProjection = projectionMatrix * viewMatrix;",
-      ],
-      mapping: ["_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_UseUv", "_UseMaskUv"],
-      reflection: {
-        ubo: { name: "_20_22", size: 200, members: members(["vec4", "vec4", "vec4", "int", "int"], [0, 64, 128, 192, 196]) },
-        inputs: [
-          { name: "_11", type: "vec4", location: 0 }, { name: "_116", type: "vec3", location: 1 },
-          { name: "_99", type: "vec2", location: 2 }, { name: "_103", type: "vec2", location: 3 },
-        ],
-        outputs: [
-          { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
-          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
-        ], textures: [],
-      },
-    },
-    fragment: {
-      block: "_32_34", owner: "_34",
-      uniforms: [
-        "uniform float _DiffractionIntensity;", "uniform float _DiffractionPower;", "uniform float _RampRepeat;",
-        "uniform float _RampSpeed;", "uniform float _RampOffset;", "uniform float _RampInterval;",
-        "uniform float _RampUVOffset;", "uniform float _RampUVTiltOffset;", "uniform float _RampScale;",
-        "uniform float _PhaseScale;", "uniform float _RampRotate;", "uniform float _PhaseRotate;",
-        "uniform float _AlphaBlend;", "uniform float _MaskPower;", "uniform float _CutOut;", "uniform vec3 _Rotation;",
-        "uniform int _UseAlphaAsAlphaBlendMask;", "uniform int _UseReflectionAlpha;",
-      ],
-      mapping: [
-        "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset",
-        "_RampInterval", "_RampUVOffset", "_RampUVTiltOffset", "_RampScale", "_PhaseScale", "_RampRotate",
-        "_PhaseRotate", "_AlphaBlend", "_MaskPower", "_CutOut", "_Rotation", "_UseAlphaAsAlphaBlendMask", "_UseReflectionAlpha",
-      ],
-      required: [/discard;/, /_680\s*=\s*vec4\(0\.0\);/],
-      reflection: {
-        ubo: { name: "_32_34", size: 148, members: members(
-          ["vec4", ...Array(15).fill("float"), "vec3", "int", "int"],
-          [0, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116, 120, 128, 140, 144],
-        ) },
-        inputs: [
-          { name: "vs_TEXCOORD0", type: "vec2", location: 0 }, { name: "vs_TEXCOORD1", type: "vec2", location: 1 },
-          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
-        ],
-        outputs: [{ name: "_678", type: "vec4", location: 0 }, { name: "_680", type: "vec4", location: 1 }],
-        textures: [
-          { name: "_13", type: "sampler2D", binding: 0 }, { name: "_488", type: "sampler2D", binding: 1 },
-          { name: "_386", type: "sampler2D", binding: 2 }, { name: "_458", type: "sampler2D", binding: 3 },
-          { name: "_595", type: "sampler2D", binding: 4 },
-        ],
-      },
-    },
-    manifest: {
-      samplers: ["_13", "_488", "_386", "_458", "_595"],
-      sampler_slots: ["_HologramMaskTex", "_PhaseTex", "_RampMaskTex", "_RampTex", "_HologramFrontMaskTex"],
-      floats: [
-        "_UseUv", "_UseMaskUv", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
-        "_RampOffset", "_RampInterval", "_RampUVOffset", "_RampUVTiltOffset", "_RampScale", "_PhaseScale",
-        "_RampRotate", "_PhaseRotate", "_AlphaBlend", "_MaskPower", "_CutOut", "_UseAlphaAsAlphaBlendMask", "_UseReflectionAlpha",
-      ],
-      colors: ["_Rotation"], mrt: { primary: "_678", secondary: "_680", secondary_value: "zero" },
-    },
-  },
-];
+    interfaceSha256: canonicalJsonSha256(reflection),
+  };
 
-try {
-  const outputs = {};
-  for (const program of programs) {
-    const dump = run(PYTHON, [
-      "build/shaderdec/dump_shader.py", program.shader, program.stem, "--shaders", SHADER_ROOT, "--out", tmp,
-    ], { shell: process.platform === "win32" });
-    if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) throw new Error(`${program.shader}: unexpected module set`);
-    const vertSpv = path.join(tmp, `${program.stem}_vert.spv`);
-    const fragSpv = path.join(tmp, `${program.stem}_frag.spv`);
-    assertReflection(JSON.parse(run(SPIRV_CROSS, [vertSpv, "--reflect"])), program.vertex.reflection);
-    assertReflection(JSON.parse(run(SPIRV_CROSS, [fragSpv, "--reflect"])), program.fragment.reflection);
-    outputs[`${program.stem}.vert.glsl`] = adaptVertex(run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"]), program.vertex);
-    outputs[`${program.stem}.frag.glsl`] = adaptFragment(run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"]), program.fragment);
-    outputs[`${program.stem}_uniforms.json`] = `${JSON.stringify({
-      shader: program.shader,
-      generated_by: "build/build-exact-basic-holograms.mjs",
-      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
-      samplers: program.manifest.samplers,
-      sampler_slots: program.manifest.sampler_slots,
-      floats: Object.fromEntries(program.manifest.floats.map((name) => [name, name])),
-      colors: Object.fromEntries(program.manifest.colors.map((name) => [name, name])),
-      mrt: program.manifest.mrt,
-    }, null, 2)}\n`;
-  }
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match official regeneration`);
-    } else fs.writeFileSync(file, content);
-  }
-  console.log(`${CHECK ? "verified" : "generated"} ${programs.map((p) => p.shader).join(" + ")} from official SPIR-V`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  outputs[`${PROGRAM.stem}.vert.glsl`] = vertex;
+  outputs[`${PROGRAM.stem}.frag.glsl`] = fragment;
+  outputs[`${PROGRAM.stem}_uniforms.json`] = `${JSON.stringify({
+    shader: metadata.selector.shaderName,
+    generated_by: "build/build-exact-basic-holograms.mjs",
+    official_selector: metadata.selector,
+    official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+    official_executable_identity: metadata.identityFields,
+    official_parameter_entry: {
+      source_sha256: metadata.identityFields.parameterEntrySha256,
+      byte_size: metadata.artifacts.parameterEntry.byteSize,
+      reflection_sha256: metadata.parameterReflectionSha256,
+      ...metadata.parameterReflection,
+    },
+    official_pass_runtime: compileOfficialPassContract(metadata.passContract, {
+      sourceSha256: metadata.identityFields.passStateSha256,
+      policy: {
+        rtSeparateBlend: false,
+        fixed: {
+          zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+          offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+          alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+        },
+      },
+    }),
+    official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+    official_shader_property_defaults: metadata.shaderPropertyDefaults,
+    webgl_adaptation: adaptation,
+    webgl_sources: {
+      vertex: `public/shaders/${PROGRAM.stem}.vert.glsl`, fragment: `public/shaders/${PROGRAM.stem}.frag.glsl`,
+    },
+    runtime_contract: {
+      schema: "pocket-card-render/webgl-runtime-port@1",
+      shader_key: PROGRAM.shader,
+      attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2", tangent: "vec4" },
+      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3" },
+      material_uniforms: {
+        floats: PROGRAM.floats.filter((name) => !PROGRAM.ints.includes(name)),
+        ints: PROGRAM.ints,
+        vectors: { _Rotation: "vec3" },
+      },
+      camera_from_view: true,
+      mrt_attachments: 2,
+      stencil_normalization: "disable-when-always-keep",
+      stencil_face_mode: "generic",
+    },
+    sampler_bindings: samplerBindings,
+    samplers: samplerBindings.map((row) => row.spirvName),
+    sampler_slots: samplerBindings.map((row) => row.slot),
+    compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
+    floats: Object.fromEntries(PROGRAM.floats.map((name) => [name, name])),
+    colors: Object.fromEntries(PROGRAM.vectors.map((name) => [name, name])),
+    mrt: { primary: "_409", secondary: "_415", secondary_value: "zero" },
+  }, null, 2)}\n`;
+});
+
+writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+console.log(`${CHECK ? "verified" : "generated"} ${PROGRAM.shader} from selector-bound official SPIR-V`);

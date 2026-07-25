@@ -22,7 +22,7 @@ const flareVAT = (r, ctx) => ctx.layerTexDefaultRepeat(r, "_FlareVAT");
 function plateMaterial(r, ctx) {
   const f = r.floats || {};
   const tex = plateTex(r, ctx);
-  const exact = ctx.exactShaders?.Card_UR_Plate;
+  const exact = ctx.exactShaderPort(r, "Card_UR_Plate");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -66,6 +66,9 @@ function plateMaterial(r, ctx) {
     });
     m.userData.straight = ctx.texStraight(mainTexName(r));
     m.userData.exactShader = "Card_UR_Plate";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   const m = new THREE.ShaderMaterial({
@@ -96,7 +99,7 @@ function plateMaterial(r, ctx) {
     vertexShader: `
       uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv2;
       uniform float uSpecMaskScale, uSpecAdd, uSpecPow, uSpecCorner, uSpecNotCorner;
-      attribute vec2 uv2;
+      attribute vec2 uv1;
       attribute vec4 tangent;
       varying vec2 vUv; varying vec2 vMaskUv; varying vec2 vSpecUv; varying vec2 vSpecParam; varying vec3 vVdO; varying vec3 vNrm;
       varying vec3 vNrmW; varying vec3 vWpos;
@@ -114,7 +117,7 @@ function plateMaterial(r, ctx) {
         float amt = uHeightPower * (uHeight - 0.5);
         vec2 off = (tv.xy / (tv.z + 0.42)) * amt;
         vec2 centeredUv = ((uv * 2.0 - 1.0) / uScale) * 0.5 + off;
-        vec2 selectedMaskUv = mix(uv, uv2, step(0.5, uUseUv2));
+        vec2 selectedMaskUv = mix(uv, uv1, step(0.5, uUseUv2));
         vec2 centeredMaskUv = ((selectedMaskUv * 2.0 - 1.0) / uScale) * 0.5 + off;
         vUv = centeredUv + 0.5;
         vMaskUv = centeredMaskUv + 0.5;
@@ -215,19 +218,11 @@ function parallaxUrMaterial(r, ctx) {
   const c = r.colors || {};
   const tex = parallaxTex(r, ctx);
   const dark = c._DarknessColor ? new THREE.Vector3(c._DarknessColor.r, c._DarknessColor.g, c._DarknessColor.b) : new THREE.Vector3(0, 0, 0);
-  const exact = ctx.exactShaders?.Card_Parallax_UR;
+  const exact = ctx.exactShaderPort(r, "Card_Parallax_UR");
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       glslVersion: THREE.GLSL3,
-      uniforms: {
-        _242: { value: tex },
-        _DarknessColor: { value: dark },
-        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
-        _Height: { value: f._Height ?? -1 },
-        _HeightPower: { value: f._HeightPower ?? 0 },
-        _Scale: { value: f._Scale ?? 1 },
-        _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
-      },
+      uniforms: ctx.exactPortUniforms(r, exact, ({ slot }) => ctx.layerTexDefault(r, slot)),
       vertexShader: exact.vert,
       fragmentShader: exact.frag,
       side: THREE.DoubleSide,
@@ -235,6 +230,9 @@ function parallaxUrMaterial(r, ctx) {
     });
     m.userData.straight = true;
     m.userData.exactShader = "Card_Parallax_UR";
+    m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+    m.userData.officialSelector = exact.manifest?.official_selector || null;
+    m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
     return m;
   }
   const m = new THREE.ShaderMaterial({
@@ -266,7 +264,7 @@ function parallaxUrMaterial(r, ctx) {
       varying vec2 vUv;
       void main() {
         vec4 t = texture2D(map, vUv);
-        vec3 darkDir = normalize(vec3(-viewMatrix[0][2], -viewMatrix[1][2], -viewMatrix[2][2]));
+        vec3 darkDir = normalize(-modelMatrix[2].xyz);
         float darkAngle = atan(length(darkDir.xy), darkDir.z);
         float darkWave = sin(darkAngle * 3.0);
         darkWave *= darkWave;
@@ -286,37 +284,12 @@ function urBgHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaders?.Card_Parallax_Hologram_UR_New;
+  const exact = ctx.exactShaderPort(r, "Card_Parallax_Hologram_UR_New");
   if (exact) {
+    const manifest = exact.manifest;
+    const uniforms = ctx.exactPortUniforms(r, exact, ({ slot }) => ctx.layerTexDefault(r, slot));
     const m = new THREE.RawShaderMaterial({
-      uniforms: {
-        _257: { value: ctx.layerTexDefault(r, "_PhaseTex") },
-        _321: { value: ctx.layerTexDefault(r, "_PhaseMaskTex") },
-        _335: { value: ctx.layerTexDefault(r, "_RampMaskTex") },
-        _396: { value: ctx.layerTexDefault(r, "_RampTex") },
-        _411: { value: ctx.layerTexDefault(r, "_HologramMaskTex") },
-        _614: { value: ctx.layerTexDefault(r, "_FakeSpecularMask") },
-        _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
-        _Height: { value: f._Height ?? -1 },
-        _HeightPower: { value: f._HeightPower ?? 0 },
-        _Scale: { value: f._Scale ?? 1 },
-        _UseUv2: { value: Math.trunc(f._UseUv2 ?? 0) },
-        _FakeSpecularMaskScale: { value: f._FakeSpecularMaskScale ?? 1 },
-        _FakeSpecularIntensity: { value: f._FakeSpecularIntensity ?? 1 },
-        _FakeSpecularPower: { value: f._FakeSpecularPower ?? 1 },
-        _FakeSpecularCornerPower: { value: f._FakeSpecularCornerPower ?? 0 },
-        _FakeSpecularNotCornerOffset: { value: f._FakeSpecularNotCornerOffset ?? 0 },
-        _DiffractionIntensity: { value: f._DiffractionIntensity ?? 0.5 },
-        _DiffractionPower: { value: f._DiffractionPower ?? 64 },
-        _RampRepeat: { value: f._RampRepeat ?? 2 },
-        _RampSpeed: { value: f._RampSpeed ?? 1 },
-        _RampOffset: { value: f._RampOffset ?? 0 },
-        _RampInterval: { value: f._RampInterval ?? 0 },
-        _FakeSpecularColor: { value: V3(c._FakeSpecularColor, new THREE.Vector3(0, 0, 0)) },
-        _DarknessColor: { value: V3(c._DarknessColor, new THREE.Vector3(0, 0, 0)) },
-        _DarknessOffset: { value: f._DarknessOffset ?? 0 },
-        _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-      },
+      uniforms,
       vertexShader: exact.vert,
       fragmentShader: exact.frag,
       glslVersion: THREE.GLSL3,
@@ -324,6 +297,9 @@ function urBgHoloMaterial(r, ctx) {
       toneMapped: false,
     });
     m.userData.exactShader = "Card_Parallax_Hologram_UR_New";
+    m.userData.officialPassRuntime = manifest.official_pass_runtime || null;
+    m.userData.officialSelector = manifest.official_selector || null;
+    m.userData.officialExecutableIdentity = manifest.official_executable_identity || null;
     return m;
   }
   return new THREE.ShaderMaterial({
@@ -351,7 +327,7 @@ function urBgHoloMaterial(r, ctx) {
       uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv2;
       uniform float uSpecScale, uSpecInt, uSpecPow, uSpecCorner, uSpecNotCorner;
       uniform vec3 uRot;
-      attribute vec2 uv2;
+      attribute vec2 uv1;
       attribute vec4 tangent;
       varying vec2 vUv; varying vec2 vMaskUv; varying vec2 vSpecUv; varying vec2 vSpecParam; varying vec3 vVdO; varying vec3 vNrm;
       vec3 rx(vec3 p, float a){ float s=sin(a), c=cos(a); return vec3(p.x, c*p.y-s*p.z, s*p.y+c*p.z); }
@@ -404,7 +380,7 @@ function urBgHoloMaterial(r, ctx) {
         float amt = uHeightPower * (uHeight - 0.5);
         vec2 off = (tv.xy / (tv.z + 0.42)) * amt;
         vec2 centeredUv = ((uv * 2.0 - 1.0) / uScale) * 0.5 + off;
-        vec2 selectedMaskUv = mix(uv, uv2, step(0.5, uUseUv2));
+        vec2 selectedMaskUv = mix(uv, uv1, step(0.5, uUseUv2));
         vec2 centeredMaskUv = ((selectedMaskUv * 2.0 - 1.0) / uScale) * 0.5 + off;
         vec2 puv = centeredUv + 0.5;
         vec3 specDir = normalize(vec3(-modelMatrix[2].z, -modelMatrix[2].x, -modelMatrix[2].y));
@@ -457,7 +433,7 @@ defineMaterial("flare", {
     const f = r.floats || {}, c = r.colors || {};
     const baseMap = flareBaseMap(r, ctx);
     const vat = flareVAT(r, ctx);
-    const exact = ctx.exactShaders?.Card_UR_LensFlare;
+    const exact = ctx.exactShaderPort(r, "Card_UR_LensFlare");
     if (exact) {
       const m = new THREE.RawShaderMaterial({
         uniforms: {
@@ -494,6 +470,9 @@ defineMaterial("flare", {
       });
       m.userData.bloomSource = true;
       m.userData.exactShader = "Card_UR_LensFlare";
+      m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+      m.userData.officialSelector = exact.manifest?.official_selector || null;
+      m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
       ctx.animMats.push(m);
       return m;
     }
@@ -601,30 +580,22 @@ defineMaterial("metal", {
   build(r, ctx) {
     const f = r.floats || {};
     const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
-    const exact = ctx.exactShaders?.Card_Parallax_Metal;
-    if (exact && ctx.envCubeTex && ctx.layerTexDefault(r, "_MetalMaskTex")) {
+    const exact = ctx.exactShaderPort(r, "Card_Parallax_Metal");
+    if (exact) {
       const m = new THREE.RawShaderMaterial({
         glslVersion: THREE.GLSL3,
-        uniforms: {
-          _CubeMap: { value: ctx.envCubeTex },
-          _MetalMaskTex: { value: ctx.layerTexDefault(r, "_MetalMaskTex") },
-          _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
-          _Height: { value: f._Height ?? -1 },
-          _HeightPower: { value: f._HeightPower ?? 0 },
-          _Scale: { value: f._Scale ?? 1 },
-          _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
-          _BaseColorIntensity: { value: f._BaseColorIntensity ?? 0.5 },
-          _Shininess: { value: f._Shininess ?? 32 },
-          _SpecularIntensity: { value: f._SpecularIntensity ?? 1 },
-          _MetalMaskIntensity: { value: f._MetalMaskIntensity ?? 1 },
-          _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-        },
+        uniforms: ctx.exactPortUniforms(r, exact, ({ slot }) => (
+          slot === "_CubeMap" ? ctx.layerCubeDefault(r, slot) : ctx.layerTexDefault(r, slot)
+        )),
         vertexShader: exact.vert,
         fragmentShader: exact.frag,
         side: THREE.DoubleSide,
         toneMapped: false,
       });
       m.userData.exactShader = "Card_Parallax_Metal";
+      m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+      m.userData.officialSelector = exact.manifest?.official_selector || null;
+      m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
       return m;
     }
     return new THREE.ShaderMaterial({
@@ -642,7 +613,7 @@ defineMaterial("metal", {
       vertexShader: `
         uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv;
         attribute vec4 tangent;
-        attribute vec2 uv2;
+        attribute vec2 uv1;
         varying vec2 vUv; varying vec3 vWorldPos; varying vec3 vWorldNrm;
         void main(){
           vec4 wp = modelMatrix * vec4(position, 1.0);
@@ -656,7 +627,7 @@ defineMaterial("metal", {
           vec3 b = normalize(cross(n, t) * tangent.w);
           vec3 tv = normalize(vec3(dot(t, viewObj), dot(b, viewObj), dot(n, viewObj)));
           vec2 off = (tv.xy / (tv.z + 0.41999998688697815)) * (uHeightPower * (uHeight - 0.5));
-          vec2 srcUv = mix(uv, uv2, step(0.5, uUseUv));
+          vec2 srcUv = mix(uv, uv1, step(0.5, uUseUv));
           vUv = (((srcUv * 2.0) - 1.0) / uScale) * 0.5 + off + 0.5;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }`,
@@ -692,46 +663,30 @@ defineMaterial("metal", {
   },
 });
 
-// ── glitter (Card_UR_Glitter_FlowMaps) — two strategies behind one kind: the EXACT real vertex+fragment
-// bytecode (SPIRV-Cross → RawShaderMaterial) when available, else a byte-traced hand port. The exact path
-// reproduces the field rotation that DATA-proved (sc_twinkle.py) to be the twinkle, not a swirl. ──
+// Card_UR_Glitter_FlowMaps uses the selector-bound official SPIR-V port when
+// shader identity and keywords match. The hand port is a non-exact fallback.
 function glitterMaterialExact(r, ctx) {
-  const f = r.floats || {}, c = r.colors || {}, lc = c._LightColor || { r: 1, g: 1, b: 1 };
+  const exact = ctx.exactShaderPort(r, "Card_UR_Glitter_FlowMaps");
+  if (!exact) return null;
   const rep = (slot) => ctx.layerTexDefaultRepeat(r, slot);
-  const V4 = (x, y, z, w) => new THREE.Vector4(x, y, z, w);
-  const _78 = Array.from({ length: 18 }, () => V4(0, 0, 0, 0));
-  _78[13].set(f._FakeCameraHeight ?? 0, f._Height ?? -1, f._HeightPower ?? 0, f._Scale ?? 1);
-  _78[15].set(0, 0, 0, 0);   // populated from official FlowParams[1] before each rendered frame
-  _78[16].set(f._FlowScale ?? 1.4, f._FakeCameraHeightB ?? 0, f._HeightB ?? -1, f._HeightPowerB ?? 0);
-  _78[17].set(f._ScaleB ?? 1, f._FlowScaleB ?? 1.4, 0, 0);
-  // fragment cbuffer (declaration order, anchored by _LightColor at byte @48 = _37[3]):
-  //   _37[2] = (_FadeDuration, _FlowAPower, _FlowBPower)   @32/36/40
-  //   _37[3] = _LightColor                                 @48
-  //   _37[4] = (_LightTime, _EmitThreshold)                @64/68
-  // _37[4].x = _LightTime is the twinkle PULSE half-width (frag: _133 = _37[4].x*0.5; emit where |phase|<_133).
-  // It was previously UNSET (=0) → the pulse window was zero → no sparkle flashes at all (the missing twinkle).
-  const _37 = Array.from({ length: 5 }, () => V4(0, 0, 0, 0));
-  _37[2].set(f._FadeDuration ?? 0.2, f._FlowAPower ?? 1, f._FlowBPower ?? 1, 0);
-  _37[3].set(lc.r, lc.g, lc.b, 1);
-  _37[4].set(f._LightTime ?? 0.1, f._EmitThreshold ?? 0.01, 0, 0);
+  const uniforms = ctx.exactPortUniforms(r, exact, (binding) => rep(binding.slot));
+  uniforms._FlowParams = { value: [new THREE.Vector4(), new THREE.Vector4()] };
   const m = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
-    uniforms: {
-      _78: { value: _78 }, _37: { value: _37 },
-      _13: { value: rep("_FlowAMap") }, _205: { value: rep("_ALightTex") }, _404: { value: rep("_ABaseTex") },
-      _644: { value: rep("_FlowBMap") }, _690: { value: rep("_BLightTex") }, _843: { value: rep("_BBaseTex") },
-    },
-    vertexShader: ctx.exactGlit.vert, fragmentShader: ctx.exactGlit.frag,
-    transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+    uniforms,
+    vertexShader: exact.vert,
+    fragmentShader: exact.frag,
+    toneMapped: false,
   });
-  // Native GlitterFlowMaps writes two vectors through Material.SetVectorArray("_FlowParams"). SPIR-V maps
-  // them to fragment _37[0] (offsets/light phase) and vertex _78[15] (flow rotations).
+  m.userData.exactShader = "Card_UR_Glitter_FlowMaps";
+  m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+  m.userData.officialSelector = exact.manifest?.official_selector || null;
+  m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
   m.userData.glitterFlow = createGlitterFlowState();
   ctx.exactGlitMats.push(m);
   return m;
 }
-// hand port (used when the SPIRV-Cross shader is absent) — base_rgb × light.GREEN, two layers B-over-A,
-// layer B's flow staggers the per-pixel scintillation (the twinkle), no field rotation.
+// Non-exact fallback used when the selector-bound source is unavailable.
 function glitterMaterialHand(r, ctx) {
   const f = r.floats || {};
   const rep = (slot) => ctx.layerTexDefaultRepeat(r, slot);
@@ -768,5 +723,5 @@ function glitterMaterialHand(r, ctx) {
 }
 defineMaterial("glitter", {
   requires: (r, ctx) => !!(ctx.layerTexDefault(r, "_ABaseTex") && ctx.layerTexDefault(r, "_FlowAMap")),
-  build: (r, ctx) => (ctx.exactGlit ? glitterMaterialExact(r, ctx) : glitterMaterialHand(r, ctx)),
+  build: (r, ctx) => glitterMaterialExact(r, ctx) || glitterMaterialHand(r, ctx),
 });

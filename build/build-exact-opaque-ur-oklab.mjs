@@ -1,36 +1,49 @@
-// Generate the enabled Opaque-UR-Oklab variant from official Unity shader bytecode and parameter blobs.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+// Generate the selector-owned Opaque-UR-Oklab WebGL2 port from official Unity shader bytes.
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  adaptUnityObjectToWorldDataAxes,
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-opaque-ur-oklab-"));
-
-const SELECTOR_KEYWORD = "_FAKESPECULARENABLED_ON";
+const SELECTOR_ID = "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a";
+const CANDIDATE_WITNESS_ID = "25b29591d0c4004e6451aff10e7b8e86c669038a7069955227c43c87f5e32866";
+const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const PARAMETER_REFLECTION_SHA256 = "b0e55a26b2dbb6dd4ee1a2765dc083963f09cfbed2e106a80c4df7a5968aa602";
+const OFFICIAL_CROSS_SHA256 = {
+  vertex: "f5624d0749a7469b51debaa972bdad7cf83947ca884dcb0258d6b4112a9e9daa",
+  fragment: "475d836c752c207646124214de89e764eeadcfaaa75621143c4a88747ab706ea",
+};
 const SELECTED_KEYWORDS = [
+  "_DARKNESSENABLED_ON",
+  "_FAKESPECULARENABLED_ON",
   "_HOLOGRAM2ENABLED_ON",
   "_REFLECTIONENABLED_ON",
-  "_FAKESPECULARENABLED_ON",
-  "_DARKNESSENABLED_ON",
 ];
-
-function run(command, args, options = {}) {
-  return execFileSync(command, args, {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-    ...options,
-  });
-}
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+  },
+};
 
 function assertEqual(actual, expected, message) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
@@ -192,16 +205,15 @@ function adaptFragment(source, mapping) {
     "uniform int uBloomOnly;",
   ]);
   out = replaceMembers(out, "_33", mapping);
+  out = adaptUnityObjectToWorldDataAxes(out, {
+    matrixName: "modelMatrix", expectedCounts: { 1: 1, 2: 1 },
+  });
   const officialTail = "    _1985.w = _9.w;";
   if (!out.includes(officialTail)) throw new Error("official primary-output tail changed");
   out = out.replace(officialTail, `${officialTail}\n    if (uBloomOnly != 0)\n    {\n        _1985 = _2004;\n    }`);
   if (/_33\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   if (!/layout\(location = 1\) out highp vec4 _2004/.test(out)) throw new Error("official emissive output missing");
   return `${out.trimEnd()}\n`;
-}
-
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 }
 
 const vertexExpected = {
@@ -250,79 +262,178 @@ const fragmentExpected = {
   ],
 };
 
-try {
-  const dump = run(PYTHON, [
-    "build/shaderdec/dump_shader.py", "Opaque-UR-Oklab", "opaque_ur_oklab", "--keyword", SELECTOR_KEYWORD,
-    "--shaders", SHADER_ROOT, "--out", tmp,
-  ], { shell: process.platform === "win32" });
-  if (!/variant: _FAKESPECULARENABLED_ON \(index 1, 2 module slots\)/.test(dump)
-      || !/modules 4 \| vertex 1 \| fragment 1/.test(dump)) {
-    throw new Error(`unexpected official variant:\n${dump}`);
+await withExtractedSelectorProgram({
+  selectorId: SELECTOR_ID,
+  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: "opaque_ur_oklab",
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  assertEqual(metadata.selector.keywords, SELECTED_KEYWORDS, "selector keyword set changed");
+  if (metadata.parameterReflectionSha256 !== PARAMETER_REFLECTION_SHA256) {
+    throw new Error("official parameter reflection changed");
   }
-  const bindings = JSON.parse(run(PYTHON, [
-    "build/shaderdec/extract_variant_bindings.py", "Opaque-UR-Oklab", "--keyword", SELECTOR_KEYWORD,
-    "--shaders", SHADER_ROOT,
-  ], { shell: process.platform === "win32" }));
-  assertEqual(bindings.selectedKeywords, SELECTED_KEYWORDS, "compiled keyword set changed");
+  if (metadata.artifacts.parameterEntry.byteSize !== 2692) throw new Error("official parameter entry byte size changed");
 
-  const vertSpv = path.join(tmp, "opaque_ur_oklab_vert.spv");
-  const fragSpv = path.join(tmp, "opaque_ur_oklab_frag.spv");
-  const vertReflection = JSON.parse(run(SPIRV_CROSS, [vertSpv, "--reflect"]));
-  const fragReflection = JSON.parse(run(SPIRV_CROSS, [fragSpv, "--reflect"]));
-  const vertInfo = assertReflection(vertReflection, vertexExpected);
-  const fragInfo = assertReflection(fragReflection, fragmentExpected);
-  const vglobals = bufferByPrefix(bindings, "VGlobals");
-  const pglobals = bufferByPrefix(bindings, "PGlobals");
+  const vertInfo = assertReflection(reflection.vertex, vertexExpected);
+  const fragInfo = assertReflection(reflection.fragment, fragmentExpected);
+  const parameterBindings = { constantBuffers: metadata.parameterReflection.constantBuffers };
+  const vglobals = bufferByPrefix(parameterBindings, "VGlobals");
+  const pglobals = bufferByPrefix(parameterBindings, "PGlobals");
   if (vglobals.size !== vertInfo.ubo.block_size || pglobals.size !== fragInfo.ubo.block_size) {
-    throw new Error("parameter blob and SPIR-V UBO sizes disagree");
+    throw new Error("parameter entry and SPIR-V UBO sizes disagree");
   }
   assertBufferOffsets(vglobals, vertInfo.members);
   assertBufferOffsets(pglobals, fragInfo.members);
   const vertexMapping = bindingMap(vglobals, vertInfo.members);
   const fragmentMapping = bindingMap(pglobals, fragInfo.members, { unity_ObjectToWorld: "modelMatrix" });
-  assertEqual(
-    bindings.textures.map(({ name, binding }) => ({ name, binding })),
-    fragmentExpected.textures.map((item, index) => ({ name: [
-      "_MainTex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex",
-      "_PhaseTex2", "_RampMaskTex2", "_RampTex2", "_FakeSpecularMask", "_NormalMap2", "_ReflectionMask",
-    ][index], binding: item.binding })),
-    "official texture binding map changed",
-  );
 
-  const officialVert = run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"]);
-  const officialFrag = run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"]);
+  const commonBindings = compileCommonBindings(metadata.commonBindings);
+  const programBindings = compileProgramBindings(
+    commonBindings,
+    metadata.parameterReflection,
+    metadata.shaderPropertyDefaults,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
+    if (set !== 0) throw new Error("WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  assertEqual(samplerBindings.map(({ slot, spirvName, binding }) => ({ slot, spirvName, binding })), [
+    { slot: "_MainTex", spirvName: "_13", binding: 0 },
+    { slot: "_HologramMaskTex", spirvName: "_291", binding: 1 },
+    { slot: "_CubeMap", spirvName: "_354", binding: 2 },
+    { slot: "_PhaseTex", spirvName: "_419", binding: 3 },
+    { slot: "_PhaseMaskTex", spirvName: "_428", binding: 4 },
+    { slot: "_RampMaskTex", spirvName: "_435", binding: 5 },
+    { slot: "_RampTex", spirvName: "_607", binding: 6 },
+    { slot: "_PhaseTex2", spirvName: "_705", binding: 7 },
+    { slot: "_RampMaskTex2", spirvName: "_719", binding: 8 },
+    { slot: "_RampTex2", spirvName: "_862", binding: 9 },
+    { slot: "_FakeSpecularMask", spirvName: "_926", binding: 10 },
+    { slot: "_NormalMap2", spirvName: "_1609", binding: 11 },
+    { slot: "_ReflectionMask", spirvName: "_1775", binding: 12 },
+  ], "compiled sampler binding map changed");
+
+  const officialVert = runCommand(SPIRV_CROSS, [files.vertexSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFrag = runCommand(SPIRV_CROSS, [files.fragmentSpirv, "--version", "300", "--es"], { cwd: ROOT });
+  if (sha256(officialVert) !== OFFICIAL_CROSS_SHA256.vertex || sha256(officialFrag) !== OFFICIAL_CROSS_SHA256.fragment) {
+    throw new Error("complete official SPIRV-Cross output changed");
+  }
+  const vertex = adaptVertex(officialVert, vertexMapping);
+  const fragment = adaptFragment(officialFrag, fragmentMapping);
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    vertex: {
+      officialSpirvSha256: sha256File(files.vertexSpirv),
+      spirvCrossGlslSha256: sha256(officialVert),
+      outputSha256: sha256(vertex),
+      substitutions: [
+        "replace variant-local VGlobals UBO members with same-name Three.js uniforms",
+        "position vec4 := vec4(three.position, 1.0), normal := three.normal and uv := three.uv",
+        "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
+    },
+    fragment: {
+      officialSpirvSha256: sha256File(files.fragmentSpirv),
+      spirvCrossGlslSha256: sha256(officialFrag),
+      outputSha256: sha256(fragment),
+      substitutions: [
+        "replace variant-local PGlobals UBO members with same-name Three.js uniforms",
+        "recover Unity ObjectToWorld Y/Z-axis data through M_unity = C * M_three * A before reflection arithmetic",
+        "add uBloomOnly backend route that copies the official emissive MRT output to attachment 0 during bloom extraction",
+      ],
+    },
+    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
+  };
+  const materialFloats = [
+    "_FakeSpecularMaskScale", "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower",
+    "_FakeSpecularNotCornerOffset", "_FakeSpecularMaskScale_Outline", "_FakeSpecularIntensity_Outline",
+    "_FakeSpecularPower_Outline", "_Shininess", "_BaseColorIntensity", "_SpecularIntensity",
+    "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
+    "_DiffractionIntensity2", "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
+    "_RampInterval2", "_RemoveBase", "_TiltPower2", "_TiltOffset2", "_TiltIntensity2", "_ReflectionIntensity",
+    "_ReflectionPower", "_ReflectionCenterAdjust", "_RefTiltPower", "_RefTiltOffset", "_RefTiltIntensity",
+    "_DarknessOffset", "_Tilt",
+  ];
+  const passRuntime = {
+    ...compileOfficialPassContract(metadata.passContract, {
+      sourceSha256: metadata.identityFields.passStateSha256,
+      policy: PASS_POLICY,
+    }),
+    shader_property_defaults: metadata.shaderPropertyDefaults.floats,
+  };
   const outputs = {
-    "opaque_ur_oklab.vert.glsl": adaptVertex(officialVert, vertexMapping),
-    "opaque_ur_oklab.frag.glsl": adaptFragment(officialFrag, fragmentMapping),
+    "opaque_ur_oklab.vert.glsl": vertex,
+    "opaque_ur_oklab.frag.glsl": fragment,
     "opaque_ur_oklab_uniforms.json": `${JSON.stringify({
       shader: "Opaque-UR-Oklab",
       generated_by: "build/build-exact-opaque-ur-oklab.mjs",
-      selector_keyword: SELECTOR_KEYWORD,
       selected_keywords: SELECTED_KEYWORDS,
-      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
-      samplers: fragmentExpected.textures.map((item) => item.name),
-      sampler_slots: bindings.textures.map((item) => item.name),
-      compiled_texture_bindings: Object.fromEntries(bindings.textures.map(({ name, binding }) => [name, binding])),
+      official_selector: metadata.selector,
+      official_spirv_sha256: {
+        vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv),
+      },
+      official_executable_identity: metadata.identityFields,
+      official_parameter_entry: {
+        source_sha256: metadata.identityFields.parameterEntrySha256,
+        byte_size: metadata.artifacts.parameterEntry.byteSize,
+        reflection_sha256: metadata.parameterReflectionSha256,
+        ...metadata.parameterReflection,
+      },
+      official_pass_runtime: passRuntime,
+      official_common_bindings: {
+        source_sha256: metadata.identityFields.commonBindingsSha256,
+        ...commonBindings,
+      },
+      official_program_bindings: {
+        common_source_sha256: metadata.identityFields.commonBindingsSha256,
+        parameter_reflection_sha256: metadata.parameterReflectionSha256,
+        ...programBindings,
+      },
+      official_shader_property_defaults: metadata.shaderPropertyDefaults,
+      webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/opaque_ur_oklab.vert.glsl",
+        fragment: "public/shaders/opaque_ur_oklab.frag.glsl",
+      },
+      runtime_contract: {
+        schema: "pocket-card-render/webgl-runtime-port@1",
+        shader_key: "Opaque-UR-Oklab",
+        attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
+        engine_uniforms: {
+          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+        },
+        material_uniforms: {
+          floats: materialFloats,
+          ints: ["_UsePositionAsUV", "_RefTiltEnabled"],
+          vectors: {
+            _ReflectionColor: "vec3", _FakeSpecularColor: "vec3", _FakeSpecularColor_Outline: "vec3",
+            _DarknessColor: "vec3", _OutlineColor: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
+          },
+        },
+        backend_uniforms: { uBloomOnly: { type: "int", value: 0 } },
+        require_complete_active_bindings: true,
+        camera_from_view: true,
+        mrt_attachments: 2,
+        stencil_normalization: "none",
+        stencil_face_mode: "generic",
+      },
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       vertex_fields: Object.fromEntries(vglobals.fields.map(({ name, offset }) => [name, offset])),
       fragment_fields: Object.fromEntries(pglobals.fields.map(({ name, offset }) => [name, offset])),
-      implicit_defaults: {
-        _HologramMaskTex: "black", _CubeMap: "gray", _PhaseTex: "white", _PhaseMaskTex: "white",
-        _RampMaskTex: "black", _RampTex: "black", _PhaseTex2: "white", _RampMaskTex2: "black",
-        _RampTex2: "black", _FakeSpecularMask: "white", _NormalMap2: "bump", _ReflectionMask: "white",
-      },
+      implicit_defaults: { ...metadata.shaderPropertyDefaults.textures, _CubeMap: "gray" },
       mrt: { primary: "_1985", emissive: "_2004", webgl_bloom_route: "uBloomOnly" },
     }, null, 2)}\n`,
   };
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) {
-        throw new Error(`${name} does not match official regeneration`);
-      }
-    } else fs.writeFileSync(file, content);
-  }
-  console.log(`${CHECK ? "verified" : "generated"} enabled Opaque-UR-Oklab from official SPIR-V and parameter blob`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+  console.log(`${CHECK ? "verified" : "generated"} selector-owned Opaque-UR-Oklab WebGL2 port`);
+});

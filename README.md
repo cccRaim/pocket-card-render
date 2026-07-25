@@ -44,6 +44,8 @@ you stage just what the samples need. (Game art is git-ignored and never committ
 
 > 📖 **Full end-to-end guide** — dependency versions, the exact AssetRipper export config, the expected
 > directory layout, and how to generate data for a brand-new card: **[SETUP.md](SETUP.md)**.
+>
+> Updating the game or Unity baseline: **[UPGRADING.md](UPGRADING.md)**.
 
 ## Sample cards
 
@@ -56,7 +58,10 @@ Three scenes ship prebuilt (the render recipe + text only — art is gathered lo
 | `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | Eevee's Bag | UR |
 
 Useful query params: `?scene=<file>` picks a card · `?only=<materialName>` solos one layer ·
-`?nohud` hides the debug overlay · the language dropdown (top-right) switches locale.
+`?quality=auto|middle|high|low` selects the card RT quality (`auto`, the default, derives a native-sized source
+RT from the physical drawing buffer so the desktop display pass never enlarges the mobile RT; `middle`
+reproduces the captured BlueStacks `1122×1122` source RT and remains the runtime-evidence profile) · `?nohud`
+hides the debug overlay · the language dropdown (top-right) switches locale.
 
 ## How it works
 

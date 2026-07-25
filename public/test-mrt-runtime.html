@@ -162,6 +162,8 @@ function testThreeTarget() {
       assert(texture.internalFormat === "RGBA8", `attachment ${index} internal format mismatch`);
       assert(texture.type === THREE.UnsignedByteType, `attachment ${index} type mismatch`);
       assert(texture.colorSpace === THREE.NoColorSpace, `attachment ${index} color space mismatch`);
+      assert(texture.minFilter === THREE.NearestFilter, `attachment ${index} min filter mismatch`);
+      assert(texture.magFilter === THREE.NearestFilter, `attachment ${index} mag filter mismatch`);
       assert(texture.generateMipmaps === false, `attachment ${index} mipmap state mismatch`);
       assert(
         texture.name === OFFICIAL_MRT_DESCRIPTOR.colorAttachments[index].name,

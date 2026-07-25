@@ -63,6 +63,11 @@ bool _725;
 bool _741;
 bool _768;
 
+highp vec3 pcrUnityObjectToWorldAxisZ(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[2].x, threeModelMatrix[2].y, -threeModelMatrix[2].z);
+}
+
 void main()
 {
     vec2 _20 = texture(_13, vs_TEXCOORD0).xy;
@@ -190,9 +195,9 @@ void main()
     _9.x = texture(_609, vs_TEXCOORD0).x;
     _25 = (_9.xxx * _25) + _594;
     _230 = (_25 * _DarknessColor) + (-_25);
-    _58.x = dot(-modelMatrix[2].xyz, -modelMatrix[2].xyz);
+    _58.x = dot(-pcrUnityObjectToWorldAxisZ(modelMatrix), -pcrUnityObjectToWorldAxisZ(modelMatrix));
     _58.x = inversesqrt(_58.x);
-    highp vec3 _650 = _58.xxx * (-modelMatrix[2].xyz);
+    highp vec3 _650 = _58.xxx * (-pcrUnityObjectToWorldAxisZ(modelMatrix));
     _58 = vec4(_650.x, _650.y, _650.z, _58.w);
     _557 = dot(_58.xy, _58.xy);
     _557 = sqrt(_557);

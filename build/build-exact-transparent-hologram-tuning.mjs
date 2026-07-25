@@ -1,20 +1,33 @@
-// Generate Transparent_Hologram_Tuning directly from the official Unity shader bundle.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+// Generate Transparent_Hologram_Tuning from its exact official material selector.
+import assert from "node:assert/strict";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  joinSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-transparent-hologram-tuning-"));
-
+const SELECTOR_ID = "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2";
+const CANDIDATE_WITNESS_ID = "ac5e02751605b754011910a4bd968dfed8df0cd6100a635a257e47695554d2fd";
+const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const OFFICIAL_CROSS_SHA256 = {
+  vertex: "941de2db0d2a134f3cd8b8ecd96d460e1a30cee60740b588d0cbe15910b75160",
+  fragment: "8701b4b6b870ff3593c9d5643939faf5f332e0b78a239340c79ebf43328f001e",
+};
 const vertexMembers = ["_ObjectToWorld", "_WorldToObject", "_ViewProjection"];
 const fragmentMembers = [
   "cameraPosition", "viewMatrix", "_Shininess", "_BaseColorIntensity", "_SpecularIntensity",
@@ -22,14 +35,14 @@ const fragmentMembers = [
   "_RampInterval", "_AlphaBlend", "_EmitMasking", "_Rotation",
 ];
 
-function run(command, args, options = {}) {
-  return execFileSync(command, args, {
-    cwd: ROOT,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "pipe"],
-    ...options,
-  });
-}
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+  },
+};
 
 function replaceMembers(source, owner, members) {
   return source.replace(new RegExp(`${owner}\\._m(\\d+)`, "g"), (match, rawIndex) => {
@@ -124,21 +137,20 @@ function adaptFragment(source) {
   return `${out.trimEnd()}\n`;
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
-
-try {
-  const dump = run(PYTHON, [
-    "build/shaderdec/dump_shader.py", "Transparent_Hologram_Tuning", "transparent_hologram_tuning",
-    "--shaders", SHADER_ROOT, "--out", tmp,
-  ], { shell: process.platform === "win32" });
-  if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) throw new Error(`unexpected official module set:\n${dump}`);
-
-  const vertSpv = path.join(tmp, "transparent_hologram_tuning_vert.spv");
-  const fragSpv = path.join(tmp, "transparent_hologram_tuning_frag.spv");
-  const vertReflection = JSON.parse(run(SPIRV_CROSS, [vertSpv, "--reflect"]));
-  const fragReflection = JSON.parse(run(SPIRV_CROSS, [fragSpv, "--reflect"]));
+await withExtractedSelectorProgram({
+  selectorId: SELECTOR_ID,
+  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: "transparent_hologram_tuning",
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  const vertSpv = files.vertexSpirv;
+  const fragSpv = files.fragmentSpirv;
+  const vertReflection = reflection.vertex;
+  const fragReflection = reflection.fragment;
   assertReflection(vertReflection, {
     ubo: { name: "_19_21", blockSize: 192, members: [
       { name: "_m0", type: "vec4", offset: 0 }, { name: "_m1", type: "vec4", offset: 64 },
@@ -176,36 +188,107 @@ try {
     ],
   });
 
-  const officialVert = run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"]);
-  const officialFrag = run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"]);
+  const officialVert = runCommand(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFrag = runCommand(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"], { cwd: ROOT });
+  assert.equal(sha256(officialVert), OFFICIAL_CROSS_SHA256.vertex, "official vertex SPIRV-Cross shape changed");
+  assert.equal(sha256(officialFrag), OFFICIAL_CROSS_SHA256.fragment, "official fragment SPIRV-Cross shape changed");
+  assert.equal(metadata.artifacts.parameterEntry.byteSize, 100);
+  assert.equal(metadata.parameterReflection.bindingClosure.constantBuffersMatch, true);
+  const vertex = adaptVertex(officialVert);
+  const fragment = adaptFragment(officialFrag);
+  const bindings = compileCommonBindings(metadata.commonBindings);
+  const samplerBindings = joinSamplerBindings(bindings, fragReflection).map(({ set, ...row }) => {
+    assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  assert.deepEqual(samplerBindings.map(({ slot, spirvName }) => ({ slot, spirvName })), [
+    { slot: "_DynamicUITex", spirvName: "_563" },
+    { slot: "_HologramMaskTex", spirvName: "_596" },
+    { slot: "_CubeMap", spirvName: "_510" },
+    { slot: "_PhaseTex", spirvName: "_355" },
+    { slot: "_RampMaskTex", spirvName: "_278" },
+    { slot: "_RampTex", spirvName: "_332" },
+  ]);
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    vertex: {
+      officialSpirvSha256: sha256File(vertSpv), spirvCrossGlslSha256: sha256(officialVert),
+      outputSha256: sha256(vertex),
+      substitutions: [
+        "position vec4 := vec4(three.position, 1.0)", "uv location 1 := three.uv",
+        "normal location 2 := three.normal", "unity_ObjectToWorld := three.modelMatrix",
+        "unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
+    },
+    fragment: {
+      officialSpirvSha256: sha256File(fragSpv), spirvCrossGlslSha256: sha256(officialFrag),
+      outputSha256: sha256(fragment),
+      substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+    },
+    interfaceSha256: canonicalJsonSha256({ vertex: vertReflection, fragment: fragReflection }),
+  };
   const outputs = {
-    "transparent_hologram_tuning.vert.glsl": adaptVertex(officialVert),
-    "transparent_hologram_tuning.frag.glsl": adaptFragment(officialFrag),
+    "transparent_hologram_tuning.vert.glsl": vertex,
+    "transparent_hologram_tuning.frag.glsl": fragment,
     "transparent_hologram_tuning_uniforms.json": `${JSON.stringify({
-      shader: "Transparent_Hologram_Tuning",
+      shader: "Lettuce/Common/CardNew/ShadowBox/UI/Transparent_Hologram_Tuning",
       generated_by: "build/build-exact-transparent-hologram-tuning.mjs",
-      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
-      samplers: ["_563", "_596", "_510", "_355", "_278", "_332"],
-      sampler_slots: ["_DynamicUITex", "_HologramMaskTex", "_CubeMap", "_PhaseTex", "_RampMaskTex", "_RampTex"],
+      official_selector: metadata.selector,
+      official_spirv_sha256: { vertex: sha256File(vertSpv), fragment: sha256File(fragSpv) },
+      official_executable_identity: metadata.identityFields,
+      official_parameter_entry: {
+        source_sha256: metadata.identityFields.parameterEntrySha256,
+        byte_size: metadata.artifacts.parameterEntry.byteSize,
+        reflection_sha256: metadata.parameterReflectionSha256,
+        ...metadata.parameterReflection,
+      },
+      official_pass_runtime: compileOfficialPassContract(metadata.passContract, {
+        sourceSha256: metadata.identityFields.passStateSha256,
+        policy: PASS_POLICY,
+      }),
+      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_shader_property_defaults: metadata.shaderPropertyDefaults,
+      webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/transparent_hologram_tuning.vert.glsl",
+        fragment: "public/shaders/transparent_hologram_tuning.frag.glsl",
+      },
+      runtime_contract: {
+        schema: "pocket-card-render/webgl-runtime-port@1",
+        shader_key: "Transparent_Hologram_Tuning",
+        attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
+        engine_uniforms: {
+          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+        },
+        material_uniforms: {
+          floats: [
+            "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity",
+            "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
+            "_AlphaBlend", "_EmitMasking",
+          ],
+          ints: [],
+          vectors: { _Rotation: "vec3" },
+        },
+        camera_from_view: true,
+        mrt_attachments: 2,
+        stencil_normalization: "disable-when-always-keep",
+        stencil_face_mode: "generic",
+      },
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       floats: Object.fromEntries([
         "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
         "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_AlphaBlend", "_EmitMasking",
       ].map((name) => [name, name])),
       colors: { _Rotation: "_Rotation" },
-      implicit_defaults: { _CubeMap: "gray" },
       mrt: { primary: "_611", mask: "_623", mask_channel: "alpha", mask_switch: "_EmitMasking" },
     }, null, 2)}\n`,
   };
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match official regeneration`);
-    } else {
-      fs.writeFileSync(file, content);
-    }
-  }
-  console.log(`${CHECK ? "verified" : "generated"} Transparent_Hologram_Tuning from official SPIR-V (${sha256(vertSpv).slice(0, 12)} / ${sha256(fragSpv).slice(0, 12)})`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+  console.log(`${CHECK ? "verified" : "generated"} Transparent_Hologram_Tuning from selector-bound official SPIR-V (${sha256File(vertSpv).slice(0, 12)} / ${sha256File(fragSpv).slice(0, 12)})`);
+});

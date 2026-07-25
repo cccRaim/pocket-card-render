@@ -1,23 +1,42 @@
-// Generate Card_UR_Plate from the official Unity shader bundle.
-import crypto from "node:crypto";
-import fs from "node:fs";
-import os from "node:os";
+// Generate Card_UR_Plate from its exact official material selector.
+import assert from "node:assert/strict";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  adaptUnityObjectToWorldDataAxes,
+  canonicalJsonSha256,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  joinSamplerBindings,
+  runCommand,
+  sha256,
+  sha256File,
+  withExtractedSelectorProgram,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-ur-plate-"));
-
-function run(command, args, options = {}) {
-  return execFileSync(command, args, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], ...options });
-}
+const SELECTOR_ID = "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f";
+const CANDIDATE_WITNESS_ID = "dbaf20c45c9886086ace387db281ef59447ed2d468104fd45219704768dc36f4";
+const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
+const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const OFFICIAL_CROSS_SHA256 = {
+  vertex: "8b157fe649d4372b58e5db24b92f16f41b9a0871b2e032e85b0be81614230697",
+  fragment: "52b4a8d3eecb9abe463f763da69e43d40c05fe40833affce748f470086df64a5",
+};
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null }, conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
+  },
+};
 
 function equal(actual, expected, message) {
   if (JSON.stringify(actual) !== JSON.stringify(expected)) {
@@ -29,8 +48,7 @@ function member(name, type, offset, array = undefined) {
   return { name, type, offset, ...(array ? { array } : {}) };
 }
 
-function assertReflection(file, expected) {
-  const data = JSON.parse(run(SPIRV_CROSS, [file, "--reflect"]));
+function assertReflection(data, expected) {
   const ubo = (data.ubos || []).find((item) => item.name === expected.ubo.name);
   if (!ubo || ubo.block_size !== expected.ubo.size) throw new Error(`${expected.ubo.name} UBO changed`);
   equal((data.types[ubo.type].members || []).map(({ name, type, offset, array }) => ({ name, type, offset, ...(array ? { array } : {}) })), expected.ubo.members, `${expected.ubo.name} members changed`);
@@ -71,8 +89,8 @@ function adaptVertex(source) {
     .replace("layout(location = 1) in vec3 _79;", "in vec3 normal;")
     .replace("layout(location = 4) in mediump vec4 _131;", "in vec4 tangent;")
     .replace("layout(location = 2) in vec2 _295;", "in vec2 uv;")
-    .replace("layout(location = 3) in vec2 _329;", "in vec2 uv2;")
-    .replace(/void main\(\)\s*\{/, `void main()\n{\n    vec4 _11 = vec4(position, 1.0);\n    vec3 _79 = normal;\n    vec4 _131 = tangent;\n    vec2 _295 = uv;\n    vec2 _329 = uv2;\n    mat4 _ObjectToWorld = modelMatrix;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;`);
+    .replace("layout(location = 3) in vec2 _329;", "in vec2 uv1;")
+    .replace(/void main\(\)\s*\{/, `void main()\n{\n    vec4 _11 = vec4(position, 1.0);\n    vec3 _79 = normal;\n    vec4 _131 = tangent;\n    vec2 _295 = uv;\n    vec2 _329 = uv1;\n    mat4 _ObjectToWorld = modelMatrix;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;`);
   out = replaceMembers(out, "_23", [
     "cameraPosition", "_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_FakeCameraHeight", "_Height",
     "_HeightPower", "_Scale", "_UseUv2", "_FakeSpecularMaskScale", "_FakeSpecularIntensity",
@@ -100,13 +118,13 @@ function adaptFragment(source) {
     "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset",
     "_RampInterval", "_RemoveMetalic", "_FakeSpecularColor", "_DarknessColor", "_DarknessOffset",
   ]);
+  out = adaptUnityObjectToWorldDataAxes(out, {
+    matrixName: "modelMatrix", expectedCounts: { 2: 3 },
+  });
   if (/_17\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   return `${out.trimEnd()}\n`;
 }
 
-function sha256(file) {
-  return crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
-}
 
 const vertexExpected = {
   ubo: { name: "_21_23", size: 248, members: [
@@ -146,40 +164,152 @@ const fragmentExpected = {
   ],
 };
 
-try {
-  const dump = run(PYTHON, ["build/shaderdec/dump_shader.py", "Card_UR_Plate", "ur_plate", "--shaders", SHADER_ROOT, "--out", tmp], { shell: process.platform === "win32" });
-  if (!/modules 2 \| vertex 1 \| fragment 1/.test(dump)) throw new Error(`unexpected official module set:\n${dump}`);
-  const vertSpv = path.join(tmp, "ur_plate_vert.spv");
-  const fragSpv = path.join(tmp, "ur_plate_frag.spv");
-  assertReflection(vertSpv, vertexExpected);
-  assertReflection(fragSpv, fragmentExpected);
-  const metadata = JSON.parse(run(PYTHON, ["build/extract-shader-defaults.py"], {
-    shell: process.platform === "win32", input: JSON.stringify({ root: SHADER_ROOT, shaders: ["Card_UR_Plate"] }),
-    stdio: ["pipe", "pipe", "pipe"],
-  })).found.Card_UR_Plate;
-  const binding = metadata.programBindings?.[0];
+await withExtractedSelectorProgram({
+  selectorId: SELECTOR_ID,
+  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
+  decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+  prefix: "ur_plate",
+  rootDir: ROOT,
+  spirvCross: SPIRV_CROSS,
+}, ({ metadata, files, reflection }) => {
+  const vertSpv = files.vertexSpirv;
+  const fragSpv = files.fragmentSpirv;
+  assertReflection(reflection.vertex, vertexExpected);
+  assertReflection(reflection.fragment, fragmentExpected);
+  equal(metadata.parameterReflection, {
+    version: 202012090,
+    constantBlockCount: 3,
+    constantBuffers: [
+      { name: "", size: 0, fields: [] },
+      { name: "PGlobals33246651", size: 224, fields: [] },
+      { name: "VGlobals33246651", size: 248, fields: [] },
+    ],
+    resourceCount: 0,
+    resourceDecoding: "empty-exact",
+    textures: [],
+    constantBufferBindings: [],
+    serializedCommonBuffers: [
+      { name: "PGlobals33246651", size: 224 },
+      { name: "VGlobals33246651", size: 248 },
+    ],
+    serializedCommonTextures: [
+      { name: "_MainTex", binding: 0, encodedIndex: 134217728, dim: 2 },
+      { name: "_CubeMap", binding: 1, encodedIndex: 134217729, dim: 4 },
+      { name: "_PhaseTex", binding: 2, encodedIndex: 134217730, dim: 2 },
+      { name: "_PhaseMaskTex", binding: 3, encodedIndex: 134217731, dim: 2 },
+      { name: "_RampMaskTex", binding: 4, encodedIndex: 134217732, dim: 2 },
+      { name: "_RampTex", binding: 5, encodedIndex: 134217733, dim: 2 },
+      { name: "_HologramMaskTex", binding: 6, encodedIndex: 134217734, dim: 2 },
+      { name: "_FakeSpecularMask", binding: 7, encodedIndex: 134217735, dim: 2 },
+    ],
+    bindingClosure: {
+      constantBuffersMatch: true,
+      constantBufferDeclarationMode: "serialized-common",
+      commonConstantBufferCount: 2,
+      variantConstantBufferCount: 0,
+      variantTextureCount: 0,
+      commonTextureCount: 8,
+      constantBufferBindingCount: 0,
+    },
+  }, "official parameter reflection changed");
+  const officialVertex = runCommand(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"], { cwd: ROOT });
+  const officialFragment = runCommand(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"], { cwd: ROOT });
+  assert.equal(sha256(officialVertex), OFFICIAL_CROSS_SHA256.vertex, "official vertex SPIRV-Cross shape changed");
+  assert.equal(sha256(officialFragment), OFFICIAL_CROSS_SHA256.fragment, "official fragment SPIRV-Cross shape changed");
+  const binding = compileCommonBindings(metadata.commonBindings);
+  const samplerBindings = joinSamplerBindings(binding, reflection.fragment).map(({ set, ...row }) => {
+    assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
+    return row;
+  });
   const samplerSlots = ["_MainTex", "_CubeMap", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex", "_HologramMaskTex", "_FakeSpecularMask"];
-  equal(binding?.textures?.map(({ name, binding }) => ({ name, binding })), samplerSlots.map((name, binding) => ({ name, binding })), "compiled sampler bindings changed");
+  equal(samplerBindings.map(({ slot, binding }) => ({ slot, binding })), samplerSlots.map((slot, binding) => ({ slot, binding })), "compiled sampler bindings changed");
+  const vertex = adaptVertex(officialVertex);
+  const fragment = adaptFragment(officialFragment);
+  const adaptation = {
+    schema: "pocket-card-render/webgl-stage-adaptation@1",
+    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    vertex: {
+      officialSpirvSha256: sha256File(vertSpv),
+      spirvCrossGlslSha256: sha256(officialVertex),
+      outputSha256: sha256(vertex),
+      substitutions: [
+        "position vec4 := vec4(three.position, 1.0)",
+        "normal, tangent, uv and uv1 locations := matching Three.js attributes",
+        "unity_ObjectToWorld := three.modelMatrix",
+        "unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
+    },
+    fragment: {
+      officialSpirvSha256: sha256File(fragSpv),
+      spirvCrossGlslSha256: sha256(officialFragment),
+      outputSha256: sha256(fragment),
+      substitutions: [
+        "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+        "recover Unity ObjectToWorld Z-axis data through M_unity = C * M_three * A before tilt-angle arithmetic",
+      ],
+    },
+    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
+  };
   const outputs = {
-    "ur_plate.vert.glsl": adaptVertex(run(SPIRV_CROSS, [vertSpv, "--version", "300", "--es"])),
-    "ur_plate.frag.glsl": adaptFragment(run(SPIRV_CROSS, [fragSpv, "--version", "300", "--es"])),
+    "ur_plate.vert.glsl": vertex,
+    "ur_plate.frag.glsl": fragment,
     "ur_plate_uniforms.json": `${JSON.stringify({
       shader: "Card_UR_Plate", generated_by: "build/build-exact-ur-plate.mjs",
-      official_spirv_sha256: { vertex: sha256(vertSpv), fragment: sha256(fragSpv) },
-      samplers: fragmentExpected.textures.map((item) => item.name), sampler_slots: samplerSlots,
-      compiled_texture_bindings: Object.fromEntries(samplerSlots.map((name, binding) => [name, binding])),
-      implicit_defaults: { ...metadata.textures, _CubeMap: "gray" },
+      official_selector: metadata.selector,
+      official_spirv_sha256: { vertex: sha256File(vertSpv), fragment: sha256File(fragSpv) },
+      official_executable_identity: metadata.identityFields,
+      official_parameter_entry: {
+        source_sha256: metadata.identityFields.parameterEntrySha256,
+        byte_size: metadata.artifacts.parameterEntry.byteSize,
+        reflection_sha256: metadata.parameterReflectionSha256,
+        ...metadata.parameterReflection,
+      },
+      official_pass_runtime: compileOfficialPassContract(metadata.passContract, {
+        sourceSha256: metadata.identityFields.passStateSha256,
+        policy: PASS_POLICY,
+      }),
+      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...binding },
+      official_shader_property_defaults: metadata.shaderPropertyDefaults,
+      webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/ur_plate.vert.glsl",
+        fragment: "public/shaders/ur_plate.frag.glsl",
+      },
+      runtime_contract: {
+        schema: "pocket-card-render/webgl-runtime-port@1",
+        shader_key: "Card_UR_Plate",
+        attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2", tangent: "vec4" },
+        engine_uniforms: {
+          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+        },
+        material_uniforms: {
+          floats: [
+            "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_FakeSpecularMaskScale",
+            "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower",
+            "_FakeSpecularNotCornerOffset", "_Shininess", "_BaseColorIntensity", "_SpecularIntensity",
+            "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset",
+            "_RampInterval", "_RemoveMetalic", "_DarknessOffset",
+          ],
+          ints: ["_UseUv2"],
+          vectors: { _FakeSpecularColor: "vec3", _DarknessColor: "vec3" },
+        },
+        camera_from_view: true,
+        mrt_attachments: 2,
+        stencil_normalization: "disable-when-always-keep",
+        stencil_face_mode: "generic",
+      },
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
+      implicit_defaults: { ...metadata.shaderPropertyDefaults.textures, _CubeMap: "gray" },
       mrt: { primary: "_603", secondary: "_658", secondary_value: "zero" },
     }, null, 2)}\n`,
   };
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match official regeneration`);
-    } else fs.writeFileSync(file, content);
-  }
-  console.log(`${CHECK ? "verified" : "generated"} Card_UR_Plate from official SPIR-V and compiled bindings`);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
-}
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
+  console.log(`${CHECK ? "verified" : "generated"} Card_UR_Plate from selector-bound official SPIR-V (${sha256File(vertSpv).slice(0, 12)} / ${sha256File(fragSpv).slice(0, 12)})`);
+});

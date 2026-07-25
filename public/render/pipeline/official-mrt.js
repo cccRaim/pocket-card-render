@@ -17,8 +17,8 @@ export const OFFICIAL_MRT_DESCRIPTOR = deepFreeze({
     internalFormat: "RGBA8",
     type: "UnsignedByteType",
     colorSpace: "NoColorSpace",
-    minFilter: "LinearFilter",
-    magFilter: "LinearFilter",
+    minFilter: "NearestFilter",
+    magFilter: "NearestFilter",
     generateMipmaps: false,
   },
   colorAttachments: [
@@ -38,7 +38,7 @@ const THREE_ENUMS = {
   RGBAFormat: THREE.RGBAFormat,
   UnsignedByteType: THREE.UnsignedByteType,
   NoColorSpace: THREE.NoColorSpace,
-  LinearFilter: THREE.LinearFilter,
+  NearestFilter: THREE.NearestFilter,
 };
 const targetState = new WeakMap();
 

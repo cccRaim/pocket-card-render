@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 2,
+  "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2",
+  "status": "baseline",
+  "game": {
+    "packageName": "jp.pokemon.pokemontcgp",
+    "versionName": "1.6.0",
+    "versionCode": 293311,
+    "architecture": "arm64-v8a",
+    "apkmBasename": "jp.pokemon.pokemontcgp_1.6.0.apkm"
+  },
+  "unity": {
+    "serializedVersion": "2022.3.62f2",
+    "playerBuildVersion": "2022.3.62f2_7670c08855a9",
+    "releaseSupportVersion": "2022.3.62f2c1_92e6e6be66dc"
+  },
+  "artifacts": {
+    "apkm": {
+      "byteLength": 285917033,
+      "sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201"
+    },
+    "baseApk": {
+      "entry": "base.apk",
+      "byteLength": 43516766,
+      "sha256": "815dc606f3b3e3404199fac80abb46b9249948828178a5cbf6aedb3d9e6809de"
+    },
+    "arm64Split": {
+      "entry": "split_config.arm64_v8a.apk",
+      "byteLength": 56968881,
+      "sha256": "7faf449bae431dcfeda4f882ecb04290af66cc4ccfeefc620e24cac70d22fcec"
+    },
+    "bundledTreeSplit": {
+      "entry": "split_bundledtree.apk",
+      "byteLength": 194106137,
+      "sha256": "7d32e4234d8c21c3d6e65c91f5c66dc748a1ab2e5d2adc129173a3a63c467890"
+    },
+    "libunity": {
+      "entry": "split_config.arm64_v8a.apk!lib/arm64-v8a/libunity.so",
+      "byteLength": 18753592,
+      "sha256": "43a04223f94b6ca0c7cf128b399fe0656c57b5a18a10bf21bb9ce27aeb219722"
+    },
+    "libil2cpp": {
+      "entry": "split_config.arm64_v8a.apk!lib/arm64-v8a/libil2cpp.so",
+      "byteLength": 128218264,
+      "sha256": "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e"
+    },
+    "globalMetadataEncrypted": {
+      "entry": "base.apk!assets/bin/Data/Managed/Metadata/global-metadata.dat",
+      "byteLength": 31429300,
+      "sha256": "b691dbdd2f9b35dc0dd6d3eb9cb54782c1013bc5b24fe2a6ed1c87db64ecada2"
+    },
+    "globalMetadataPlaintext": {
+      "byteLength": 31429296,
+      "sha256": "bf58e06a98f9e9e05a1635f512ea432d33971bfc8280ba26df1c93e94b4f3cb9"
+    },
+    "bootConfig": {
+      "entry": "base.apk!assets/bin/Data/boot.config",
+      "byteLength": 171,
+      "sha256": "b886ce8a232bda260099e3639b8718ae7336a244bf5a097fd3119f74b1017bcd"
+    },
+    "globalGameManagers": {
+      "entry": "base.apk!assets/bin/Data/globalgamemanagers",
+      "byteLength": 880940,
+      "sha256": "5a1ca51ec16b267710479b85e33bfe150c4aab255e9716fd33d51ce7a33ea017"
+    },
+    "unityReleasePlayer": {
+      "byteLength": 25197120,
+      "sha256": "9250260245fdbe960845d785e42418890e62ca586d2566e1d4c146c294cd637a"
+    },
+    "unityReleaseSymbols": {
+      "byteLength": 10801824,
+      "sha256": "2244367020161ab6f84350dba36ef2c44e645014c056c3cd427b13e9efa05969"
+    }
+  },
+  "snapshots": {
+    "masterdata": {
+      "illustrations": 3305,
+      "pokemonSha256": "90a141190b0b9dedae410766d0ddb131d2c004d73c9a95d10044d108cfea5e15",
+      "trainerSha256": "07e02439bf5339edf01809b7d6eca1fcd0a4c90ac2540f37b904f3b1fc0a357a"
+    },
+    "faceBundles": {
+      "count": 3191,
+      "byteLength": 1181259080,
+      "inventorySha256": "6df6965bb845027cc95f30577060fbbaf77ca3db59a160dd960fd5c65c987ad4",
+      "missingIllustrations": 114,
+      "missingIllustrationsSha256": "850fff6d204d38fe8799f592c417ec24cb03be4a92c02a27b6dc9cd2a59e7ba5"
+    }
+  },
+  "proofSets": {
+    "materialPrograms": {
+    "materialCount": 8460,
+    "resolvedMaterialCount": 8458,
+    "shaderCount": 61,
+    "selectorCount": 77,
+    "passExecutableCount": 79,
+    "semanticExecutableCount": 76,
+    "sourceBundlesSha256": "a0a0561057018c51df3bb6ed8b0b23de98abcafa032eca3138d97a6e2c82f542",
+    "proofGraphSha256": "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
+    "portIndexSha256": "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f"
+    }
+  },
+  "canonicalCorpus": {
+    "path": "build/canonical-corpus.json",
+    "sha256": "1634af0e6f00b6ddb9c2032bbcad7975b248c916092e259053d9346716e65cfd"
+  }
+}

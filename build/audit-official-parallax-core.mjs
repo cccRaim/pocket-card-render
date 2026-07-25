@@ -2,6 +2,7 @@
 // bytecode. Card_Parallax's aspect correction is a compiled keyword variant:
 // SQUARE has no correction, while CARDWINDOW applies 1.6087.
 import fs from "node:fs";
+import crypto from "node:crypto";
 import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -66,8 +67,14 @@ const urSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/ur.js"), 
 const exactDepthSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax.vert.glsl"), "utf8");
 const exactMetalVertSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax_metal.vert.glsl"), "utf8");
 const exactMetalFragSrc = fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax_metal.frag.glsl"), "utf8");
+const depthManifests = [
+  "card_parallax_uniforms.json",
+  "card_parallax_native_best_match_uniforms.json",
+].map((file) => JSON.parse(fs.readFileSync(path.join(ROOT, "public/shaders", file), "utf8")));
+const metalManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public/shaders/card_parallax_metal_uniforms.json"), "utf8"));
 const localDepth = blockFrom(baseSrc, 'defineMaterial("depthParallax"');
 const localMetal = blockFrom(urSrc, 'defineMaterial("metal"');
+const sha256 = (value) => crypto.createHash("sha256").update(value).digest("hex");
 
 const checks = [
   {
@@ -99,12 +106,17 @@ const checks = [
     msg: "local depthParallax must keep the official 0.42 tangent-view denominator bias",
   },
   {
-    ok: /exactShaders\?\.Card_Parallax/.test(localDepth) && /_UVASPECTRATIO_SQUARE/.test(localDepth),
-    msg: "local depthParallax exact path must be gated to the selected SQUARE keyword variant",
+    ok: /exactShaderPort\(r,\s*"Card_Parallax"\)/.test(localDepth)
+      && /official_selector\.selectionMode/.test(localDepth),
+    msg: "local depthParallax exact path must be selector-gated",
   },
   {
-    ok: /tv\.z\s*\+\s*0\.41999998688697815/.test(exactDepthSrc) && !/1\.608700037/.test(exactDepthSrc),
-    msg: "local exact Card_Parallax vertex must match the official SQUARE aspect path",
+    ok: depthManifests.every((manifest) => (
+      manifest.generated_by === "build/build-exact-card-parallax.mjs"
+      && manifest.webgl_adaptation?.vertex?.outputSha256 === sha256(exactDepthSrc)
+      && manifest.webgl_adaptation?.vertex?.spirvCrossGlslSha256 === sha256(parallax.vert)
+    )),
+    msg: "local exact Card_Parallax vertex must be generator/hash-bound to the official selector",
   },
   {
     ok: /off\.y\s*\*=\s*uAspectY/.test(localDepth) && /1\.6087000370025635/.test(localDepth),
@@ -119,12 +131,16 @@ const checks = [
     msg: "local metal must not inherit depthParallax vertical aspect correction",
   },
   {
-    ok: /tv\.z\s*\+\s*0\.41999998688697815/.test(exactMetalVertSrc) && !/1\.608700037/.test(exactMetalVertSrc),
-    msg: "local exact Card_Parallax_Metal vertex must preserve the official parallax core without aspect correction",
+    ok: metalManifest.generated_by === "build/build-exact-card-parallax-metal.mjs"
+      && metalManifest.official_selector?.selectorId === "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0"
+      && metalManifest.webgl_adaptation?.vertex?.outputSha256 === sha256(exactMetalVertSrc)
+      && metalManifest.webgl_adaptation?.vertex?.spirvCrossGlslSha256 === sha256(metal.vert),
+    msg: "local exact Card_Parallax_Metal vertex must be generator/hash-bound to the official selector",
   },
   {
-    ok: /pow\(clamp\(-reflected\.z,\s*0\.0,\s*1\.0\),\s*_Shininess\)/.test(exactMetalFragSrc),
-    msg: "local exact Card_Parallax_Metal fragment must preserve the official -reflect.z grazing power",
+    ok: metalManifest.webgl_adaptation?.fragment?.outputSha256 === sha256(exactMetalFragSrc)
+      && metalManifest.webgl_adaptation?.fragment?.spirvCrossGlslSha256 === sha256(metal.frag),
+    msg: "local exact Card_Parallax_Metal fragment must be generator/hash-bound to the official selector",
   },
   {
     ok: /_305\s*=\s*vec4\(0\.0\)/.test(exactMetalFragSrc),

@@ -1,7 +1,13 @@
-precision highp float;
+precision mediump float;
 precision highp int;
 
-uniform highp vec4 _37[5];
+uniform highp vec4 _FlowParams[2];
+uniform highp float _FadeDuration;
+uniform highp float _FlowAPower;
+uniform highp float _FlowBPower;
+uniform vec4 _LightColor;
+uniform highp float _LightTime;
+uniform highp float _EmitThreshold;
 uniform mediump sampler2D _13;
 uniform mediump sampler2D _205;
 uniform mediump sampler2D _404;
@@ -12,7 +18,7 @@ uniform mediump sampler2D _843;
 in highp vec4 vs_TEXCOORD0;
 in highp vec4 vs_TEXCOORD1;
 layout(location = 0) out highp vec4 _1090;
-
+layout(location = 1) out highp vec4 _1092;
 vec4 _9;
 highp vec4 _24;
 highp vec2 _55;
@@ -49,17 +55,17 @@ void main()
     _9 = vec4(_21.x, _21.y, _9.z, _9.w);
     vec2 _29 = _9.xy + vec2(-0.5);
     _24 = vec4(_29.x, _29.y, _24.z, _24.w);
-    highp vec2 _51 = _24.xy * vec2(vec2(_37[2].y, _37[2].y));
+    highp vec2 _51 = _24.xy * vec2(vec2(_FlowAPower, _FlowAPower));
     _24 = vec4(_51.x, _51.y, _24.z, _24.w);
-    _55 = fract(_37[0].xy);
-    highp vec2 _68 = _37[0].xy + vec2(0.5);
+    _55 = fract(_FlowParams[0].xy);
+    highp vec2 _68 = _FlowParams[0].xy + vec2(0.5);
     _62 = vec4(_68.x, _68.y, _62.z, _62.w);
     highp vec2 _73 = fract(_62.xy);
     _62 = vec4(_73.x, _73.y, _62.z, _62.w);
     _76 = (_24.xy * _55.xx) + vs_TEXCOORD0.xy;
     highp vec2 _92 = (_24.xy * _62.xx) + vs_TEXCOORD0.xy;
     _24 = vec4(_92.x, _92.y, _24.z, _24.w);
-    _95.x = (-_37[2].x) + 0.5;
+    _95.x = (-_FadeDuration) + 0.5;
     _104 = (-_55) + vec2(0.5);
     _55.x = (-_95.x) + 0.5;
     _104 = (-_95.xx) + abs(_104);
@@ -90,12 +96,12 @@ void main()
     if (_214)
     {
         _55.x = fract(_204.x);
-        _62.x = _55.x + (-_37[0].z);
-        _133.x = _37[4].x * 0.5;
+        _62.x = _55.x + (-_FlowParams[0].z);
+        _133.x = _LightTime * 0.5;
         _237 = abs(_62.x) < _133.x;
         if (_237)
         {
-            _247 = _204.yyyy * _37[3];
+            _247 = _204.yyyy * _LightColor;
             _254.x = (-_204.y) + 1.0;
             _62.x = abs(_62.x) / _133.x;
             _62.x = (-_62.x) + 1.0;
@@ -107,12 +113,12 @@ void main()
         }
         else
         {
-            _284 = _37[0].z + (-1.0);
+            _284 = _FlowParams[0].z + (-1.0);
             _284 = _55.x + (-_284);
             _303 = abs(_284) < _133.x;
             if (_303)
             {
-                _254 = _204.yyyy * _37[3];
+                _254 = _204.yyyy * _LightColor;
                 _317 = (-_204.y) + 1.0;
                 _284 = abs(_284) / _133.x;
                 _284 = (-_284) + 1.0;
@@ -124,12 +130,12 @@ void main()
             }
             else
             {
-                _337 = _37[0].z + 1.0;
+                _337 = _FlowParams[0].z + 1.0;
                 _55.x += (-_337);
                 _333 = abs(_55.x) < _133.x;
                 if (_333)
                 {
-                    _254 = _204.yyyy * _37[3];
+                    _254 = _204.yyyy * _LightColor;
                     _317 = (-_204.y) + 1.0;
                     _55.x = abs(_55.x) / _133.x;
                     _55.x = (-_55.x) + 1.0;
@@ -144,7 +150,7 @@ void main()
                     _254 = texture(_404, _76);
                     _254 = _204.yyyy * _254;
                     _317 = (-_204.y) + 1.0;
-                    _214 = _37[4].y >= _317;
+                    _214 = _EmitThreshold >= _317;
                     _55.x = float(_214);
                     _287 = _55.xxxx * _254;
                     _247 = _287;
@@ -165,12 +171,12 @@ void main()
     {
         _55.x = _435.x + 0.5;
         _55.x = fract(_55.x);
-        _337 = _55.x + (-_37[0].z);
-        _461 = _37[4].x * 0.5;
+        _337 = _55.x + (-_FlowParams[0].z);
+        _461 = _LightTime * 0.5;
         _465 = abs(_337) < _461;
         if (_465)
         {
-            _204 = _435.yyyy * _37[3];
+            _204 = _435.yyyy * _LightColor;
             _317 = (-_435.y) + 1.0;
             _337 = abs(_337) / _461;
             _337 = (-_337) + 1.0;
@@ -182,12 +188,12 @@ void main()
         }
         else
         {
-            _337 = _37[0].z + (-1.0);
+            _337 = _FlowParams[0].z + (-1.0);
             _337 = _55.x + (-_337);
             _465 = abs(_337) < _461;
             if (_465)
             {
-                _254 = _435.yyyy * _37[3];
+                _254 = _435.yyyy * _LightColor;
                 _317 = (-_435.y) + 1.0;
                 _337 = abs(_337) / _461;
                 _337 = (-_337) + 1.0;
@@ -199,12 +205,12 @@ void main()
             }
             else
             {
-                _337 = _37[0].z + 1.0;
+                _337 = _FlowParams[0].z + 1.0;
                 _55.x += (-_337);
                 _333 = abs(_55.x) < _461;
                 if (_333)
                 {
-                    _254 = _435.yyyy * _37[3];
+                    _254 = _435.yyyy * _LightColor;
                     _317 = (-_435.y) + 1.0;
                     _55.x = abs(_55.x) / _461;
                     _55.x = (-_55.x) + 1.0;
@@ -219,7 +225,7 @@ void main()
                     _254 = texture(_404, _24.xy);
                     _254 = _435.yyyy * _254;
                     _317 = (-_435.y) + 1.0;
-                    _616 = _37[4].y >= _317;
+                    _616 = _EmitThreshold >= _317;
                     _24.x = float(_616);
                     _133 = _24.xxxx * _254;
                     _204 = _133;
@@ -240,7 +246,7 @@ void main()
     _9 = vec4(_650.x, _650.y, _9.z, _9.w);
     vec2 _655 = _9.xy + vec2(-0.5);
     _24 = vec4(_655.x, _655.y, _24.z, _24.w);
-    highp vec2 _669 = _24.xy * vec2(vec2(_37[2].z, _37[2].z));
+    highp vec2 _669 = _24.xy * vec2(vec2(_FlowBPower, _FlowBPower));
     _24 = vec4(_669.x, _669.y, _24.z, _24.w);
     _55 = (_24.xy * _55.yy) + vs_TEXCOORD1.xy;
     highp vec2 _687 = (_24.xy * _62.yy) + vs_TEXCOORD1.xy;
@@ -250,12 +256,12 @@ void main()
     if (_695)
     {
         _337 = fract(_435.x);
-        _461 = _337 + (-_37[0].z);
-        _710 = _37[4].x * 0.5;
+        _461 = _337 + (-_FlowParams[0].z);
+        _710 = _LightTime * 0.5;
         _714 = abs(_461) < _710;
         if (_714)
         {
-            _722 = _435.yyyy * _37[3];
+            _722 = _435.yyyy * _LightColor;
             _247.x = (-_435.y) + 1.0;
             _461 = abs(_461) / _710;
             _461 = (-_461) + 1.0;
@@ -267,12 +273,12 @@ void main()
         }
         else
         {
-            _461 = _37[0].z + (-1.0);
+            _461 = _FlowParams[0].z + (-1.0);
             _461 = (-_461) + _337;
             _714 = abs(_461) < _710;
             if (_714)
             {
-                _247 = _435.yyyy * _37[3];
+                _247 = _435.yyyy * _LightColor;
                 _317 = (-_435.y) + 1.0;
                 _461 = abs(_461) / _710;
                 _461 = (-_461) + 1.0;
@@ -284,12 +290,12 @@ void main()
             }
             else
             {
-                _461 = _37[0].z + 1.0;
+                _461 = _FlowParams[0].z + 1.0;
                 _337 = (-_461) + _337;
                 _695 = abs(_337) < _710;
                 if (_695)
                 {
-                    _247 = _435.yyyy * _37[3];
+                    _247 = _435.yyyy * _LightColor;
                     _317 = (-_435.y) + 1.0;
                     _337 = abs(_337) / _710;
                     _337 = (-_337) + 1.0;
@@ -304,7 +310,7 @@ void main()
                     _247 = texture(_843, _55);
                     _247 = _435.yyyy * _247;
                     _317 = (-_435.y) + 1.0;
-                    _214 = _37[4].y >= _317;
+                    _214 = _EmitThreshold >= _317;
                     _55.x = float(_214);
                     _62 = _55.xxxx * _247;
                     _722 = _62;
@@ -325,12 +331,12 @@ void main()
     {
         _55.x = _872.x + 0.5;
         _55.x = fract(_55.x);
-        _337 = _55.x + (-_37[0].z);
-        _898 = _37[4].x * 0.5;
+        _337 = _55.x + (-_FlowParams[0].z);
+        _898 = _LightTime * 0.5;
         _695 = abs(_337) < _898;
         if (_695)
         {
-            _247 = _872.yyyy * _37[3];
+            _247 = _872.yyyy * _LightColor;
             _317 = (-_872.y) + 1.0;
             _337 = abs(_337) / _898;
             _337 = (-_337) + 1.0;
@@ -342,12 +348,12 @@ void main()
         }
         else
         {
-            _337 = _37[0].z + (-1.0);
+            _337 = _FlowParams[0].z + (-1.0);
             _337 = _55.x + (-_337);
             _695 = abs(_337) < _898;
             if (_695)
             {
-                _254 = _872.yyyy * _37[3];
+                _254 = _872.yyyy * _LightColor;
                 _317 = (-_872.y) + 1.0;
                 _337 = abs(_337) / _898;
                 _337 = (-_337) + 1.0;
@@ -359,12 +365,12 @@ void main()
             }
             else
             {
-                _337 = _37[0].z + 1.0;
+                _337 = _FlowParams[0].z + 1.0;
                 _55.x += (-_337);
                 _333 = abs(_55.x) < _898;
                 if (_333)
                 {
-                    _254 = _872.yyyy * _37[3];
+                    _254 = _872.yyyy * _LightColor;
                     _317 = (-_872.y) + 1.0;
                     _55.x = abs(_55.x) / _898;
                     _55.x = (-_55.x) + 1.0;
@@ -379,7 +385,7 @@ void main()
                     _254 = texture(_843, _24.xy);
                     _254 = _872.yyyy * _254;
                     _317 = (-_872.y) + 1.0;
-                    _616 = _37[4].y >= _317;
+                    _616 = _EmitThreshold >= _317;
                     _24.x = float(_616);
                     _287 = _24.xxxx * _254;
                     _247 = _287;
@@ -399,4 +405,5 @@ void main()
     _317 = (-_24.w) + 1.0;
     _9 = (_133 * vec4(_317)) + _24;
     _1090 = _9;
+    _1092 = vec4(0.0);
 }

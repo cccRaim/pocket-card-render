@@ -1,0 +1,959 @@
+{
+  "shader": "Lettuce/Common/CardNew/ShadowBox/Simple-PreMultiply-Hologram",
+  "generated_by": "build/build-exact-simple-premultiply-hologram.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d",
+    "candidateWitnessId": "f12371cc222c53d980a281d8870889277b7efb3223e9d857453f19f17717a901",
+    "shaderIdentity": "CAB-02a141675d6b3d87702eeee6ccb0a9ba:4329679624396401671",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-PreMultiply-Hologram",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "cc42b2db433dfbfedd8b7b6b53807fe63b9b0f770d9b85dc2bf4a7a95d7c62b7",
+    "semanticExecutableId": "14841ab2ded68d6d00c5e41575ceb8f265e1a1896532dc8f03f796af81abb5b3"
+  },
+  "official_spirv_sha256": {
+    "vertex": "ebd8d4f5cf4665121549b30aa05887e4ef0d97f8e4b036760c3cd66a18511977",
+    "fragment": "16925ae21ff762a3d3b842bd716dd1b5517ad73c6a87571850f1af9cd5bf3618"
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "ebd8d4f5cf4665121549b30aa05887e4ef0d97f8e4b036760c3cd66a18511977",
+    "fragmentSpirvSha256": "16925ae21ff762a3d3b842bd716dd1b5517ad73c6a87571850f1af9cd5bf3618",
+    "parameterEntrySha256": "21e1d904e59525dc5e45e22b7652eb7c2bb57cca70ac5661f229b3358f09102e",
+    "passStateSha256": "e6eb91cde881c9cfa135b4b0461430d51f1178b0c0dfc3a143c1098a92f5c92f",
+    "commonBindingsSha256": "e535cd652285a26009e29bdb869e13947cae400815709717c68fafd06d6c74ba"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "21e1d904e59525dc5e45e22b7652eb7c2bb57cca70ac5661f229b3358f09102e",
+    "byte_size": 100,
+    "reflection_sha256": "3e37c518edc0728f6bd6f2e22ffc9784709d3a8925edb9d263ba9e8cd75b4dac",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals198614763",
+        "size": 124,
+        "fields": []
+      },
+      {
+        "name": "VGlobals198614763",
+        "size": 192,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals198614763",
+        "size": 124
+      },
+      {
+        "name": "VGlobals198614763",
+        "size": 192
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_MainTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      },
+      {
+        "name": "_HologramMaskTex",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      },
+      {
+        "name": "_PhaseTex",
+        "binding": 2,
+        "encodedIndex": 134217730,
+        "dim": 2
+      },
+      {
+        "name": "_RampMaskTex",
+        "binding": 3,
+        "encodedIndex": 134217731,
+        "dim": 2
+      },
+      {
+        "name": "_RampTex",
+        "binding": 4,
+        "encodedIndex": 134217732,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 5,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "e6eb91cde881c9cfa135b4b0461430d51f1178b0c0dfc3a143c1098a92f5c92f",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 4,
+        "name": null
+      },
+      "write": {
+        "val": 0,
+        "name": null
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 7,
+        "name": null
+      },
+      "read_mask": {
+        "val": 0,
+        "name": "_Stencil"
+      },
+      "write_mask": {
+        "val": 4,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 3,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 2,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 1,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 10,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 10,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "e535cd652285a26009e29bdb869e13947cae400815709717c68fafd06d6c74ba",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_MainTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_HologramMaskTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_PhaseTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RampMaskTex",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RampTex",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals198614763",
+        "size": 124,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_MatrixV",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_DiffractionIntensity",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_DiffractionPower",
+            "offset": 68,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampRepeat",
+            "offset": 72,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampSpeed",
+            "offset": 76,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampOffset",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampInterval",
+            "offset": 84,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltEnabled",
+            "offset": 88,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_TiltPower",
+            "offset": 92,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltOffset",
+            "offset": 96,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltIntensity",
+            "offset": 100,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 112,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals198614763",
+        "size": 192,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals198614763",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals198614763",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "e535cd652285a26009e29bdb869e13947cae400815709717c68fafd06d6c74ba",
+    "parameter_reflection_sha256": "3e37c518edc0728f6bd6f2e22ffc9784709d3a8925edb9d263ba9e8cd75b4dac",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_MainTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_HologramMaskTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_PhaseTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RampMaskTex",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RampTex",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals198614763",
+        "size": 124,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_MatrixV",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_DiffractionIntensity",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_DiffractionPower",
+            "offset": 68,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampRepeat",
+            "offset": 72,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampSpeed",
+            "offset": 76,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampOffset",
+            "offset": 80,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_RampInterval",
+            "offset": 84,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltEnabled",
+            "offset": 88,
+            "arraySize": 0,
+            "type": 1,
+            "dim": 1
+          },
+          {
+            "name": "_TiltPower",
+            "offset": 92,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltOffset",
+            "offset": 96,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_TiltIntensity",
+            "offset": 100,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 112,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals198614763",
+        "size": 192,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals198614763",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals198614763",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_vertex_inputs": {
+    "schema": "pocket-card-render/official-vertex-input-contract@1",
+    "unityVersion": "2022.3.62f2",
+    "sourceSha256": "89e548d85169672fb2a46fb1d15cbef2ba9e804a204357327c288857e580e7cc",
+    "serializedSourceMap": 59,
+    "inputs": [
+      {
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1",
+        "location": 0,
+        "threeAttribute": "position",
+        "spirvName": "_11",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 15,
+        "targetName": "Attrib3",
+        "location": 2,
+        "threeAttribute": "uv",
+        "spirvName": "_88",
+        "spirvType": "vec2"
+      },
+      {
+        "source": 5,
+        "sourceName": "UV1",
+        "target": 16,
+        "targetName": "Attrib4",
+        "location": 3,
+        "threeAttribute": "uv1",
+        "spirvName": "_91",
+        "spirvType": "vec2"
+      },
+      {
+        "source": 1,
+        "sourceName": "Normal",
+        "target": 14,
+        "targetName": "Attrib2",
+        "location": 1,
+        "threeAttribute": "normal",
+        "spirvName": "_95",
+        "spirvType": "vec3"
+      },
+      {
+        "source": 3,
+        "sourceName": "Color",
+        "target": 17,
+        "targetName": "Attrib5",
+        "location": 4,
+        "threeAttribute": "color",
+        "spirvName": "_134",
+        "spirvType": "vec4"
+      }
+    ]
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_PhaseTex": "white",
+      "_RampMaskTex": "black",
+      "_RampTex": "black",
+      "_HologramMaskTex": "white"
+    },
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "",
+        "dimension": 2
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_UseHoloAlphaBlend": 0,
+      "_HoloAlphaBlend": 0,
+      "_TiltEnabled": 1,
+      "_TiltPower": 2,
+      "_TiltOffset": 0,
+      "_TiltIntensity": 1,
+      "_Stencil": 0
+    },
+    "colors": {},
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "ebd8d4f5cf4665121549b30aa05887e4ef0d97f8e4b036760c3cd66a18511977",
+      "spirvCrossGlslSha256": "7b68c49229c32a8fd9b35634232941dd84056795d4d0cab4314e65689a6ab954",
+      "outputSha256": "5e35f4197a4e5fd714b299df70c4499c9a860ea2395582a9774c9fb3897cb03b",
+      "substitutions": [
+        "map official position/normal/UV0/UV1/color locations to Three.js r165 attributes",
+        "map Unity object/world/view-projection matrices to Three.js engine uniforms",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "16925ae21ff762a3d3b842bd716dd1b5517ad73c6a87571850f1af9cd5bf3618",
+      "spirvCrossGlslSha256": "a90f1feec3dd68cf931d998535c7510a4710803f8e3cb0d28b5f833641525664",
+      "outputSha256": "80cff67e017acdef3c111242c01e9841321515080b0b327e6ca2465eb5a1fc35",
+      "substitutions": [
+        "map unity_MatrixV to viewMatrix",
+        "expand serialized PGlobals fields into same-name material uniforms"
+      ]
+    },
+    "interfaceSha256": "f514737e6c529938ff451c935a54f666fd5fcd043deaea1ce1a0cec90ca2c5d0"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/simple_premultiply_hologram.vert.glsl",
+    "fragment": "public/shaders/simple_premultiply_hologram.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Simple-PreMultiply-Hologram",
+    "attributes": {
+      "position": "vec3",
+      "normal": "vec3",
+      "color": "vec4",
+      "uv": "vec2",
+      "uv1": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_TiltPower",
+        "_TiltOffset",
+        "_TiltIntensity"
+      ],
+      "ints": [
+        "_TiltEnabled"
+      ],
+      "vectors": {
+        "_Rotation": "vec3"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": false,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic"
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_491",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_473",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_334",
+      "binding": 2,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_400",
+      "binding": 3,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_458",
+      "binding": 4,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_491",
+    "_473",
+    "_334",
+    "_400",
+    "_458"
+  ],
+  "sampler_slots": [
+    "_MainTex",
+    "_HologramMaskTex",
+    "_PhaseTex",
+    "_RampMaskTex",
+    "_RampTex"
+  ],
+  "compiled_texture_bindings": {
+    "_MainTex": 0,
+    "_HologramMaskTex": 1,
+    "_PhaseTex": 2,
+    "_RampMaskTex": 3,
+    "_RampTex": 4
+  },
+  "implicit_defaults": {
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black",
+    "_HologramMaskTex": "white"
+  },
+  "mrt": {
+    "primary": "_504",
+    "secondary": "_516",
+    "secondary_value": "zero"
+  },
+  "runtime_boundaries": {
+    "missing_uv1_guest_binding": "target official meshes do not serialize TEXCOORD_1; native guest default binding remains runtime-required"
+  }
+}

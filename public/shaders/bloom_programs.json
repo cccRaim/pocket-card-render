@@ -1,0 +1,207 @@
+{
+  "shader": "Hidden/CustomPostEffect/Bloom",
+  "generated_by": "build/build-exact-bloom.mjs",
+  "official": {
+    "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+    "asset_sha256": "8684703cededfb2cbd1bddb656c650be5689ba80cfe1d0ae30deecf35826ccef",
+    "compressed_program_sha256": "1f923d6c1b6cb41e2ec631b66c433ff59ff27a9835e1cfc844c3f3a070a214ba",
+    "decompressed_program_sha256": "cbb7eee99c33df71d8eb2bb0a763357978e4f5c5aedab9a9b5662d42b7c3b500",
+    "program_set_sha256": "212cac8fa20e4336ca6c9fd06622000f210fb08171a77e7fe161739f0b69422b"
+  },
+  "passes": [
+    {
+      "pass": 0,
+      "parameter_entry_sha256": "abc9260ca44693aa494b92e17dc211246ea95940de3171a4f069997a805e263c",
+      "program_entry_sha256": "0461f6b48af1c0f79ac42d48d49f41bb466764cf038b0bb0ff53fcd610ba6ace",
+      "modules": {
+        "vertex": {
+          "byte_size": 2388,
+          "spirv_sha256": "005ae2db725c0855cd7639112f4fcbe8a927962c1d3cbabad4253140cf0442ee",
+          "reflection_sha256": "2c26b0dcc428d84098c8136af91c446365a324120ae8e75466b76efa4d0f28f9"
+        },
+        "fragment": {
+          "byte_size": 1476,
+          "spirv_sha256": "801650bce9770e4916791417a67838a0d6492bdf3865b78aac7034db00993bd5",
+          "reflection_sha256": "33c19de6fee85ee0b94db8ff001f12dd99e6d6c59d9222431181cea4972d2505"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "uv": "vec2"
+      },
+      "varyings": {
+        "vUv": "vec2"
+      },
+      "samplers": {
+        "_MainTex": "_MainTex"
+      },
+      "uniforms": [],
+      "webgl_mrt_secondary_noop": false
+    },
+    {
+      "pass": 1,
+      "parameter_entry_sha256": "a6437bf1be4beb49e61df7edb497f46a680eac4e3721b858a6e3f43561d9d36c",
+      "program_entry_sha256": "d3af06e5a4ac1b1ede51ba4425042ee3d2d9f04cb9ede27a78c733c957cca061",
+      "modules": {
+        "vertex": {
+          "byte_size": 3604,
+          "spirv_sha256": "345ad63197d4f528fd23b42ca3f5630600ab0e9738b3eb646c198a1eec71f6ff",
+          "reflection_sha256": "22f12402346bba65049faf22b8f9610c511ff6d09284c2c89c9ba91d45818f49"
+        },
+        "fragment": {
+          "byte_size": 2860,
+          "spirv_sha256": "e07a14939c2270f4decfa8fd759749f8e8b61969e67cbcc7751a6f2a9875d3ed",
+          "reflection_sha256": "2055759b1718c48e84ee86b08bd3718ebafe96a5608061d47929e9292d3f34e1"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "color": "vec4",
+        "uv": "vec2"
+      },
+      "varyings": {
+        "vColor": "vec4",
+        "vUv": "vec2"
+      },
+      "samplers": {
+        "_MainTex": "_MainTex"
+      },
+      "uniforms": [
+        "_MainTex_TexelSize"
+      ],
+      "webgl_mrt_secondary_noop": false
+    },
+    {
+      "pass": 2,
+      "parameter_entry_sha256": "b226335b552b116b73f2a1f3825e5b993f206c7c9a68933647cfd8936ebc36ab",
+      "program_entry_sha256": "b2a841a47e114952d615bdd320d1e7051df969099e37875098b28262e6ec7800",
+      "modules": {
+        "vertex": {
+          "byte_size": 3504,
+          "spirv_sha256": "b4cd4802893d1bfd1042386e3f79bafaf658b502707d005fb2df76cb8a747e02",
+          "reflection_sha256": "8d89faf0eca65a3a0a48597c8c5fcaeb3c6d72c243576a1464ad292057c9542e"
+        },
+        "fragment": {
+          "byte_size": 4176,
+          "spirv_sha256": "0b715f2bb9ce16be7898d38ba63c80764fddedc0d938e3e56632f74cd89dbbfe",
+          "reflection_sha256": "1040b8ae982ea390e6c1ac2ef767d8e39b36f51e17b57e1291ebdd72b21df230"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "uvSelector": "vec3"
+      },
+      "varyings": {
+        "vUv": "vec3"
+      },
+      "samplers": {
+        "_DownSampling1Tex": "_DownSampling1Tex",
+        "_DownSampling2Tex": "_DownSampling2Tex",
+        "_DownSampling3Tex": "_DownSampling3Tex",
+        "_DownSampling4Tex": "_DownSampling4Tex",
+        "_DownSampling5Tex": "_DownSampling5Tex",
+        "_DownSampling6Tex": "_DownSampling6Tex",
+        "_DownSampling7Tex": "_DownSampling7Tex"
+      },
+      "uniforms": [],
+      "webgl_mrt_secondary_noop": false
+    },
+    {
+      "pass": 3,
+      "parameter_entry_sha256": "8f688399ea775476cd53ac5139a0f1b92659437299499a8e3f511dedd9087204",
+      "program_entry_sha256": "f7cea732009cf2b172dfa6bdfe97ae115ce0d2f5e5ecbbcf5345312e8e247eb2",
+      "modules": {
+        "vertex": {
+          "byte_size": 3504,
+          "spirv_sha256": "47d77db73cb2da6e5ddbd9aa29b273f30e4662002f18b0e072751f6306082b21",
+          "reflection_sha256": "687dc32769a6d7c7f19881b1f954683fd4060de5f3f21e2372bc6dfccd8e5af3"
+        },
+        "fragment": {
+          "byte_size": 3432,
+          "spirv_sha256": "64e5101598193c179f84aa18625d472595c3c7f188037d870e541cda7e1524ad",
+          "reflection_sha256": "839452c5f1a8891d5df4f47a425396779cb4d0111f2fea0b25dc7bbe1ddee30a"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "uv": "vec2"
+      },
+      "varyings": {
+        "vUv": "vec2"
+      },
+      "samplers": {
+        "_MainTex": "_MainTex"
+      },
+      "uniforms": [
+        "_GlobalMipBias",
+        "_MainTex_TexelSize",
+        "_Vector"
+      ],
+      "webgl_mrt_secondary_noop": false
+    },
+    {
+      "pass": 4,
+      "parameter_entry_sha256": "f48c52f47256668fe904e5086210156d55dfb4e3561fb99686bef582ce84b078",
+      "program_entry_sha256": "e58a9b189797b38661b0a1ec56e0b957cc14c5e984cc3720e8af28f8b4aa93cc",
+      "modules": {
+        "vertex": {
+          "byte_size": 3604,
+          "spirv_sha256": "240d6492f4889dfd160e84881a59dcd0c3c0e4e84c6b494cc9c06aea00926f56",
+          "reflection_sha256": "8377b16c462212ee62d3679bce6dd96033ce811e7545b9cabd9e24959e944c57"
+        },
+        "fragment": {
+          "byte_size": 1408,
+          "spirv_sha256": "3cd41d46192418a497e907d947d328b948bb6f99855cadbefb8f5a52fcbf2586",
+          "reflection_sha256": "717601609788e2ccb6ebdfa637e797e8e136a4c4753f73f331415916f9362758"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "color": "vec4",
+        "uvw": "vec3"
+      },
+      "varyings": {
+        "vColor": "vec4",
+        "vUv": "vec3"
+      },
+      "samplers": {
+        "_MainTex": "_MainTex"
+      },
+      "uniforms": [
+        "_GlobalMipBias"
+      ],
+      "webgl_mrt_secondary_noop": false
+    },
+    {
+      "pass": 5,
+      "parameter_entry_sha256": "3587f63135b4dd7aab5bdf0e2488a68d3f8ea3ad15891808d6b7274165e97bbf",
+      "program_entry_sha256": "c25d8ba99d108fe51249427a2ee17dfe7e5d326994233b2761cee5e68c654d38",
+      "modules": {
+        "vertex": {
+          "byte_size": 3504,
+          "spirv_sha256": "47d77db73cb2da6e5ddbd9aa29b273f30e4662002f18b0e072751f6306082b21",
+          "reflection_sha256": "687dc32769a6d7c7f19881b1f954683fd4060de5f3f21e2372bc6dfccd8e5af3"
+        },
+        "fragment": {
+          "byte_size": 1052,
+          "spirv_sha256": "aaa4a2b3e10d9ee617e167bab26754c6b045ca448db5023c6d30afb6fc99606c",
+          "reflection_sha256": "8eb95b30ac0f8d31ae556f83b77fe7b635aa9e3fef101c157df923d168faa878"
+        }
+      },
+      "attributes": {
+        "position": "vec3",
+        "uv": "vec2"
+      },
+      "varyings": {
+        "vUv": "vec2"
+      },
+      "samplers": {
+        "_MainTex": "_MainTex"
+      },
+      "uniforms": [
+        "_GlobalMipBias"
+      ],
+      "webgl_mrt_secondary_noop": true
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "scope": "PTCGP 1.6.0 card UI reachable TMP 3.0.6 LTR Overflow line layout",
+  "source": {
+    "textMeshProVersion": "3.0.6",
+    "packageSha256": "640c3c9ea8d7e5431bfefaccc70d85ea7aed204686d16a596d412286d2b9ba0b",
+    "uguiGenerator": {
+      "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_UGUI_Private.cs",
+      "byteSize": 247329,
+      "sha256": "1f8ba223bdd284bd0dfff1aefcf5988c872c9f6dd616673a8d4d58a9b2bf816a",
+      "ranges": {
+        "initializeSavedStates": {
+          "startLine": 1855,
+          "endLine": 1870,
+          "sha256": "008a2c7a1ea19838c2c625f021eb748fa22d678c941ba03d7c6e77e0d08c0fe5"
+        },
+        "horizontalOverflowAndSoftBreak": {
+          "startLine": 2621,
+          "endLine": 2748,
+          "sha256": "4cd5d0fa7f9e2e305af38d12f3eced7466170eee68a76efa4c77958c978c9869"
+        },
+        "carriageReturnAndLineTermination": {
+          "startLine": 3258,
+          "endLine": 3375,
+          "sha256": "89c581b0a8a275d9dd6561f4fedfb43e9347737cdaf5f243109b445e14da6f2a"
+        },
+        "saveBreakpoints": {
+          "startLine": 3435,
+          "endLine": 3506,
+          "sha256": "73cd25bea604769382cc17c784b484a7fa846e73840b363f331bcd659a214d6c"
+        },
+        "justifiedAlignment": {
+          "startLine": 3694,
+          "endLine": 3758,
+          "sha256": "6dcd29200c0018c699ebeb08ac023c091c9d30c100f8b69334e6b4f35a1ccc8c"
+        }
+      }
+    },
+    "tmpText": {
+      "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMP_Text.cs",
+      "byteSize": 382588,
+      "sha256": "2cfcb00a4464c48ca87d05c692c752087a2a8a96944d54b83606d7762f0c7806",
+      "ranges": {
+        "saveWordWrappingState": {
+          "startLine": 5101,
+          "endLine": 5180,
+          "sha256": "e7dfd3fd927f00cb54ed2a158b9481acc7998561a6b6db63c53b8eee498168de"
+        },
+        "restoreWordWrappingState": {
+          "startLine": 5190,
+          "endLine": 5277,
+          "sha256": "ed88699515292ae4f4065aaff3012d82f8d84992cde99c77fb1a049994018cfa"
+        },
+        "noBreakTags": {
+          "startLine": 7395,
+          "endLine": 7402,
+          "sha256": "8d92c4a5450f00ecc96482f6bbac91e1c81016f31483ce7c6962c4048fbe9799"
+        }
+      }
+    },
+    "meshUtilities": {
+      "path": "com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_MeshUtilities.cs",
+      "byteSize": 14280,
+      "sha256": "7c6b22a1748b2ec4f4956506cc4da906cc3085ac3d9e2b97ddd4b44360addde1",
+      "ranges": {
+        "wordWrapState": {
+          "startLine": 344,
+          "endLine": 422,
+          "sha256": "688bd0aa763dbd77f543a5d75c5bba66c6b257f5c91ebfd206c303dde390984f"
+        }
+      }
+    },
+    "nativeGenerateTextMesh": {
+      "name": "TMPro.TextMeshProUGUI$$GenerateTextMesh",
+      "rva": "0x644f2f8",
+      "endRva": "0x6456dfc",
+      "byteSize": 31492,
+      "sha256": "63e11353317c008927215ccb1d6d7977a18ee8b4d3d2728ace5b5d9cf65240b8"
+    }
+  },
+  "constants": {
+    "horizontalOverflowEpsilon": 0.0001,
+    "justifiedWidthMultiplier": 1.05,
+    "nonBreakingCodePoints": [
+      160,
+      8199,
+      8209,
+      8239,
+      8288
+    ],
+    "explicitLineBreakCodePoints": [
+      10,
+      11,
+      8232,
+      8233
+    ],
+    "softHyphen": 173,
+    "zeroWidthSpace": 8203,
+    "cjkExclusiveRanges": [
+      [
+        11904,
+        40959
+      ],
+      [
+        63744,
+        64255
+      ],
+      [
+        65072,
+        65103
+      ],
+      [
+        65280,
+        65519
+      ]
+    ],
+    "legacyHangulExclusiveRanges": [
+      [
+        4352,
+        4607
+      ],
+      [
+        43360,
+        43391
+      ],
+      [
+        44032,
+        55295
+      ]
+    ]
+  },
+  "cardUiCensus": {
+    "contractSha256": "26783bf6ef2d82f6057c677f42dc65288f29e6a6b6423eb41a4587ec1e9c0a6b",
+    "tmpComponentCount": 68,
+    "wrappedComponentCount": 23,
+    "wordWrap": {
+      "0": 45,
+      "1": 23
+    },
+    "overflowMode": {
+      "0": 68
+    },
+    "rightToLeft": {
+      "0": 68
+    },
+    "horizontalAlignment": {
+      "1": 36,
+      "2": 13,
+      "4": 13,
+      "8": 6
+    },
+    "wrappedHorizontalAlignment": {
+      "1": 8,
+      "2": 4,
+      "4": 5,
+      "8": 6
+    },
+    "wrappedAutoSize": {
+      "0": 22,
+      "1": 1
+    },
+    "reachableOverflowModes": [
+      0
+    ]
+  },
+  "localizedCanonicalCorpus": {
+    "fileCount": 36,
+    "locales": [
+      "de_DE",
+      "en_US",
+      "es_ES",
+      "fr_FR",
+      "it_IT",
+      "ja_JP",
+      "ko_KR",
+      "pt_BR",
+      "zh_TW"
+    ],
+    "textElementCount": 279,
+    "wrappedTextElementCount": 90,
+    "characterCount": 7117,
+    "controls": {
+      "LF": 47,
+      "VT": 0,
+      "CR": 0,
+      "softHyphen": 0,
+      "noBreakSpace": 22,
+      "figureSpace": 0,
+      "noBreakHyphen": 0,
+      "lineSeparator": 0,
+      "paragraphSeparator": 0,
+      "narrowNoBreakSpace": 0,
+      "wordJoiner": 0,
+      "noBreakTagStart": 5,
+      "noBreakTagEnd": 5
+    }
+  }
+}

@@ -66,7 +66,7 @@ for (const sceneName of sceneNames) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
     const shader = mat.shader;
-    if (!shader || shader.startsWith("InnerStencil") || shader === "OuterStencil") continue;
+    if (!shader || shader.startsWith("InnerStencil") || shader.startsWith("IllustStencil") || shader === "OuterStencil") continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
     const officialKeywords = new Set(official.found[shader]?.keywords || []);

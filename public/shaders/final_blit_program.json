@@ -1,0 +1,71 @@
+{
+  "shader": "Rendering/CustomRenderer/Blit",
+  "generated_by": "build/build-exact-final-blit.mjs",
+  "official": {
+    "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
+    "resource_manager_path_id": 13,
+    "resource_manager_sha256": "878c096d7143ee90722194d5df2e12b22705c854e5cd608152062c8b97f5ec20",
+    "material_file": "8bdac87d3d839054ab63a0e27b5cc251",
+    "material_file_sha256": "a0a61863fbf3b3e11e7a335418ed97ab8466745d34d7d23cd7b12172e67febca",
+    "material_asset_sha256": "d6166008a65009b47b380903da01ee7939daf1d3d3f210f11f25d2b8b09fa0ad",
+    "shader_file": "de5cbc5999435ca42a6ca06a2e0d1257",
+    "shader_file_sha256": "38f0953ac0ec342ba844fa95f65c44cf41d264940f5d57b2cead96121f55ea62",
+    "shader_asset_sha256": "00448b294fe2745dc4ed51d04aa73a39baf7c885096767414553d36dd4b228b8",
+    "compressed_program_sha256": "891d50a834912ef0337cf0362c5400bccf106f75294a8d7dd44de8e12c226d6f",
+    "decompressed_program_sha256": "76d69f275d961c7db9c747cbc4f1e389df960b214cf0006e627619f6e0fa3527",
+    "parameter_entry_sha256": "d2fc3f4d9880e4454b5c8226151de2b34031a5051de90ea3e462a284957c8da7",
+    "program_entry_sha256": "81d397323ea0e0067c12c12730d45b381cacf499563829ad04a455e0e70561d0"
+  },
+  "modules": {
+    "vertex": {
+      "byte_size": 2128,
+      "spirv_sha256": "a95fea7dba0fd2f084b7e1e9e9be33e13464b26ed50710a18049b7b096333c63",
+      "reflection_sha256": "b6fb093caf989c2bb8151410a25b1f2901af313378f1af554a3e55c151c89939"
+    },
+    "fragment": {
+      "byte_size": 1056,
+      "spirv_sha256": "d146c34d1f09e1cf8c814e410a6be8bbcdb8903c0c0c09eb71e69b44377f2397",
+      "reflection_sha256": "c5595def42fe04c6c8bdeb67ce037ef79e72779d0ce89747d678cbdb62cdf2dd"
+    }
+  },
+  "bindings": {
+    "texture": {
+      "name": "_BlitTexture",
+      "binding": 0,
+      "dimension": 2
+    },
+    "scale_bias": {
+      "name": "_BlitScaleBias",
+      "stage": "vertex",
+      "offset": 0,
+      "type": "vec4"
+    },
+    "lod": {
+      "name": "_BlitMipLevel",
+      "stage": "fragment",
+      "offset": 0,
+      "type": "float",
+      "explicit_texture_lod": true
+    }
+  },
+  "render_state": {
+    "blendOp": 0,
+    "blendOpAlpha": 0,
+    "colorMask": 15,
+    "cull": 0,
+    "destBlend": 0,
+    "destBlendAlpha": 0,
+    "separateBlend": false,
+    "srcBlend": 1,
+    "srcBlendAlpha": 1,
+    "zTest": 4,
+    "zWrite": 0
+  },
+  "webgl2_adaptation": [
+    "flatten serialized partial UBOs into named uniforms",
+    "combine the SPIR-V image and sampler as _BlitTexture",
+    "express the official vertex-ID bit extraction with WebGL2-safe uint operators",
+    "remove the paired Vulkan clip-space and render-target UV Y flips",
+    "rename stage interface symbols without changing shader math"
+  ]
+}

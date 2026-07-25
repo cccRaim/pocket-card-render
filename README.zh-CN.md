@@ -40,6 +40,8 @@ npm run serve                        # → http://127.0.0.1:8011
 
 > 📖 **完整端到端指南** —— 依赖版本、AssetRipper 精确导出配置、期望目录结构、以及如何为一张全新卡
 > 生成数据:**[SETUP.zh-CN.md](SETUP.zh-CN.md)**。
+>
+> 更新游戏或 Unity 基线：**[UPGRADING.zh-CN.md](UPGRADING.zh-CN.md)**。
 
 ## 样例卡
 
@@ -51,7 +53,10 @@ npm run serve                        # → http://127.0.0.1:8011
 | `?scene=scene.cTR_20_000230_00_LEAF_SR.json` | 叶子（Leaf） | SR |
 | `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | 伊布的背包（Eevee's Bag） | UR |
 
-常用查询参数:`?scene=<文件>` 选卡 · `?only=<材质名>` 单独显示某一层 · `?nohud` 隐藏调试浮层 ·
+常用查询参数:`?scene=<文件>` 选卡 · `?only=<材质名>` 单独显示某一层 ·
+`?quality=auto|middle|high|low` 选择卡片 RT 质量（默认 `auto` 按物理 drawing buffer 派生同尺寸 source RT，
+避免桌面 display pass 放大移动端 RT；`middle` 复现 BlueStacks capture 的 `1122×1122` source RT，
+并继续作为运行时证据档）· `?nohud` 隐藏调试浮层 ·
 右上角下拉菜单切换语言。
 
 ## 工作原理

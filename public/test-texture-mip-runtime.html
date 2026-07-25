@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Official texture mip runtime audit</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "/vendor/three/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { loadOfficialTexture } from "./render/official-texture.js";
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+async function sha256(bytes) {
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function createLevelMaterial(texture, level) {
+  return new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: {
+      source: { value: texture },
+      mipLevel: { value: level },
+    },
+    vertexShader: `
+      in vec3 position;
+      in vec2 uv;
+      out vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position.xy, 0.0, 1.0);
+      }
+    `,
+    fragmentShader: `
+      precision highp float;
+      uniform highp sampler2D source;
+      uniform float mipLevel;
+      in vec2 vUv;
+      out vec4 outColor;
+      void main() { outColor = textureLod(source, vUv, mipLevel); }
+    `,
+    depthTest: false,
+    depthWrite: false,
+    blending: THREE.NoBlending,
+    toneMapped: false,
+  });
+}
+
+async function auditTexture(renderer, scene, mesh, url, samplerState) {
+  const chain = samplerState.fallback.rgba8MipChain;
+  const texture = await loadOfficialTexture(url, samplerState);
+  assert(texture.isDataTexture, `${url}: official mip chain did not create a DataTexture`);
+  assert(texture.generateMipmaps === false, `${url}: runtime mip generation is enabled`);
+  assert(texture.mipmaps.length === chain.levels.length, `${url}: uploaded mip count mismatch`);
+
+  const levels = [];
+  try {
+    for (const level of chain.levels) {
+      const target = new THREE.WebGLRenderTarget(level.width, level.height, {
+        format: THREE.RGBAFormat,
+        type: THREE.UnsignedByteType,
+        minFilter: THREE.NearestFilter,
+        magFilter: THREE.NearestFilter,
+        depthBuffer: false,
+        stencilBuffer: false,
+        generateMipmaps: false,
+      });
+      target.texture.internalFormat = "RGBA8";
+      target.texture.colorSpace = THREE.NoColorSpace;
+      const material = createLevelMaterial(texture, level.level);
+      mesh.material = material;
+
+      renderer.setRenderTarget(target);
+      renderer.setViewport(0, 0, level.width, level.height);
+      renderer.render(scene, mesh.userData.camera);
+      const pixels = new Uint8Array(level.length);
+      renderer.readRenderTargetPixels(target, 0, 0, level.width, level.height, pixels);
+      const actualHash = await sha256(pixels);
+      assert(
+        actualHash === level.sha256,
+        `${url} mip ${level.level}: expected ${level.sha256}, got ${actualHash}`,
+      );
+      levels.push({ level: level.level, width: level.width, height: level.height, sha256: actualHash });
+      material.dispose();
+      target.dispose();
+    }
+  } finally {
+    texture.dispose();
+  }
+  return { url, payloadSha256: samplerState.identity.payloadSha256, levels };
+}
+
+async function run() {
+  const response = await fetch("/texture-samplers.json");
+  assert(response.ok, `texture sampler manifest HTTP ${response.status}`);
+  const manifest = await response.json();
+  const entries = Object.entries(manifest.textures)
+    .filter(([, state]) => state.fallback?.rgba8MipChain)
+    .sort(([left], [right]) => left.localeCompare(right));
+  assert(entries.length > 0, "manifest has no official mip fallback entries");
+
+  const renderCanvas = document.createElement("canvas");
+  renderCanvas.width = 1;
+  renderCanvas.height = 1;
+  const renderer = new THREE.WebGLRenderer({ canvas: renderCanvas, antialias: false, alpha: true });
+  assert(renderer.capabilities.isWebGL2, "textureLod audit requires WebGL2");
+  renderer.outputColorSpace = THREE.NoColorSpace;
+  renderer.getContext().disable(renderer.getContext().DITHER);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+  mesh.userData.camera = camera;
+  scene.add(mesh);
+
+  const textures = [];
+  try {
+    for (const [url, samplerState] of entries) {
+      textures.push(await auditTexture(renderer, scene, mesh, url, samplerState));
+    }
+    const gl = renderer.getContext();
+    assert(gl.getError() === gl.NO_ERROR, "WebGL error after official mip readback audit");
+    const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    const gpuRenderer = debugInfo
+      ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+      : gl.getParameter(gl.RENDERER);
+    return {
+      textures,
+      textureCount: textures.length,
+      levelCount: textures.reduce((sum, texture) => sum + texture.levels.length, 0),
+      byteCount: entries.reduce((sum, [, state]) => sum + state.fallback.rgba8MipChain.byteLength, 0),
+      threeRevision: THREE.REVISION,
+      gpuRenderer,
+      screenshots: 0,
+    };
+  } finally {
+    mesh.geometry.dispose();
+    renderer.dispose();
+  }
+}
+
+window.__textureMipRuntimeState = { done: false, result: null, error: null };
+run().then(
+  (result) => { window.__textureMipRuntimeState = { done: true, result, error: null }; },
+  (error) => {
+    window.__textureMipRuntimeState = {
+      done: true,
+      result: null,
+      error: { message: error.message || String(error), stack: error.stack || "" },
+    };
+  },
+);
+</script>
+</body>
+</html>

@@ -8,13 +8,16 @@ const mainTex = (r, ctx) => ctx.layerTexDefault(r, "_MainTex") || ctx.layerTexDe
 const hasMainTex = (r, ctx) => !!mainTex(r, ctx);
 
 function texturedExactMaterial(r, ctx, shaderName, straight) {
-  const exact = ctx.exactShaders?.[shaderName];
+  const exact = ctx.exactShaderPort(r, shaderName);
   if (!exact) return null;
   const tex = mainTex(r, ctx);
   if (!tex) return null;
+  const uniforms = exact.manifest?.runtime_contract
+    ? ctx.exactPortUniforms(r, exact, (binding) => ctx.layerTexDefault(r, binding.slot))
+    : { _13: { value: tex } };
   const m = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
-    uniforms: { _13: { value: tex } },
+    uniforms,
     vertexShader: exact.vert,
     fragmentShader: exact.frag,
     side: THREE.DoubleSide,
@@ -22,15 +25,72 @@ function texturedExactMaterial(r, ctx, shaderName, straight) {
   });
   m.userData.straight = straight;
   m.userData.exactShader = shaderName;
+  m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+  m.userData.officialSelector = exact.manifest?.official_selector || null;
+  m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
+  return m;
+}
+
+function texturedMrtFallbackMaterial(r, ctx, shaderName, straight) {
+  const stageSource = ctx.exactShaders?.[shaderName];
+  const tex = mainTex(r, ctx);
+  if (!stageSource?.vert || !stageSource?.frag || !tex) return null;
+  const m = new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: { _13: { value: tex } },
+    vertexShader: stageSource.vert,
+    fragmentShader: stageSource.frag,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  // This keeps the non-selector fallback compatible with the two-attachment card MRT. It deliberately
+  // carries no exactShader/selector/pass identity and therefore cannot receive exact coverage credit.
+  m.userData.straight = straight;
+  m.userData.stageSourceFallback = shaderName;
   return m;
 }
 
 // ── textured: a plain albedo quad (Frame and other premult/simple layers) ──
+// Physical card back and side wall. The exact fragment only mixes _BaseTex with _Blend; legacy
+// material fields such as fog/specular are not bound by the official empty-keyword program.
+defineMaterial("sideBack", {
+  requires: (r, ctx) => !!ctx.layerTexDefault(r, "_BaseTex"),
+  build(r, ctx) {
+    const tex = ctx.layerTexDefault(r, "_BaseTex");
+    const blend = r.colors?._Blend || { r: 0, g: 0, b: 0, a: 0 };
+    const stageSource = ctx.compatibleStageSource("Side&Back");
+    const uniforms = {
+      _BaseTex: { value: tex },
+      _Blend: { value: new THREE.Vector4(blend.r, blend.g, blend.b, blend.a) },
+    };
+    const m = stageSource ? new THREE.RawShaderMaterial({
+      glslVersion: THREE.GLSL3,
+      uniforms,
+      vertexShader: stageSource.vert,
+      fragmentShader: stageSource.frag,
+      toneMapped: false,
+    }) : new THREE.ShaderMaterial({
+      uniforms,
+      vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+      fragmentShader: `uniform sampler2D _BaseTex; uniform vec4 _Blend; varying vec2 vUv;
+        void main(){ vec4 t=texture2D(_BaseTex,vUv); gl_FragColor=vec4(mix(t.rgb,_Blend.rgb,_Blend.a),t.a); }`,
+      toneMapped: false,
+    });
+    if (stageSource) m.userData.stageSourceFallback = "Side&Back";
+    m.userData.straight = true;
+    return m;
+  },
+});
+
 defineMaterial("textured", {
   requires: hasMainTex,
   build(r, ctx) {
     const exact = r.shader === "Frame" ? texturedExactMaterial(r, ctx, "Frame", ctx.texStraight(mainTexName(r))) : null;
     if (exact) return exact;
+    if (r.shader === "Frame") {
+      const mrtFallback = texturedMrtFallbackMaterial(r, ctx, "Frame", ctx.texStraight(mainTexName(r)));
+      if (mrtFallback) return mrtFallback;
+    }
     const tex = mainTex(r, ctx);
     const m = new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, toneMapped: false });
     m.userData.straight = ctx.texStraight(mainTexName(r));
@@ -44,14 +104,11 @@ defineMaterial("illustTextured", {
   requires: hasMainTex,
   build(r, ctx) {
     const tex = mainTex(r, ctx);
-    const exact = ctx.exactShaders?.Card_Illust;
+    const exact = ctx.exactShaderPort(r, "Card_Illust");
     if (exact) {
       const m = new THREE.RawShaderMaterial({
         glslVersion: THREE.GLSL3,
-        uniforms: {
-          _13: { value: tex },
-          _UseUv: { value: r.floats?._UseUv ?? 0 },
-        },
+        uniforms: ctx.exactPortUniforms(r, exact, () => tex),
         vertexShader: exact.vert,
         fragmentShader: exact.frag,
         side: THREE.DoubleSide,
@@ -59,6 +116,9 @@ defineMaterial("illustTextured", {
       });
       m.userData.straight = true;
       m.userData.exactShader = "Card_Illust";
+      m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+      m.userData.officialSelector = exact.manifest?.official_selector || null;
+      m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
       return m;
     }
     const m = new THREE.ShaderMaterial({
@@ -68,10 +128,10 @@ defineMaterial("illustTextured", {
       },
       vertexShader: `
         uniform float uUseUv;
-        attribute vec2 uv2;
+        attribute vec2 uv1;
         varying vec2 vUv;
         void main() {
-          vUv = mix(uv, uv2, step(0.5, uUseUv));
+          vUv = mix(uv, uv1, step(0.5, uUseUv));
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }`,
       fragmentShader: `
@@ -96,6 +156,8 @@ defineMaterial("simpleTransparent", {
   build(r, ctx) {
     const exact = texturedExactMaterial(r, ctx, "Simple-Transparent", false);
     if (exact) return exact;
+    const mrtFallback = texturedMrtFallbackMaterial(r, ctx, "Simple-Transparent", false);
+    if (mrtFallback) return mrtFallback;
     const tex = mainTex(r, ctx);
     const m = new THREE.ShaderMaterial({
       uniforms: { map: { value: tex } },
@@ -121,6 +183,16 @@ defineMaterial("simpleTransparent", {
   },
 });
 
+// Newer RR ShadowBox layers combine a premultiplied base texture with the official diffraction
+// hologram. There is deliberately no approximate fallback: losing the five-sampler diffraction,
+// vertex-color alpha gate, or selector-owned pass state would silently render a different material.
+defineMaterial("simplePremultiplyHologram", {
+  requires: hasMainTex,
+  build(r, ctx) {
+    return texturedExactMaterial(r, ctx, "Simple-PreMultiply-Hologram", false);
+  },
+});
+
 // ── depthParallax (Card_Parallax): per-layer virtual-depth parallax (decompiled from parallax_vert
 // SPIR-V). Each quad is flat but the vertex shader offsets its UV along the tangent-space view direction
 // scaled by _HeightPower * (_Height - 0.5), so when the card tilts the layers shift at different depths
@@ -129,18 +201,11 @@ defineMaterial("depthParallax", {
   requires: hasMainTex,
   build(r, ctx) {
     const f = r.floats;
-    const exact = ctx.exactShaders?.Card_Parallax;
-    if (exact && (r.keywords || []).includes("_UVASPECTRATIO_SQUARE")) {
+    const exact = ctx.exactShaderPort(r, "Card_Parallax");
+    if (exact) {
       const m = new THREE.RawShaderMaterial({
         glslVersion: THREE.GLSL3,
-        uniforms: {
-          _13: { value: mainTex(r, ctx) },
-          _FakeCameraHeight: { value: f._FakeCameraHeight ?? 0 },
-          _Height: { value: f._Height ?? -1 },
-          _HeightPower: { value: f._HeightPower ?? 0 },
-          _Scale: { value: f._Scale ?? 1 },
-          _UseUv: { value: Math.trunc(f._UseUv ?? 0) },
-        },
+        uniforms: ctx.exactPortUniforms(r, exact, (binding) => ctx.layerTexDefault(r, binding.slot)),
         vertexShader: exact.vert,
         fragmentShader: exact.frag,
         side: THREE.DoubleSide,
@@ -148,7 +213,10 @@ defineMaterial("depthParallax", {
       });
       m.userData.straight = false;
       m.userData.exactShader = "Card_Parallax";
-      m.userData.exactVariant = "_UVASPECTRATIO_SQUARE";
+      m.userData.exactVariant = exact.manifest.official_selector.selectionMode;
+      m.userData.officialPassRuntime = exact.manifest.official_pass_runtime;
+      m.userData.officialSelector = exact.manifest.official_selector;
+      m.userData.officialExecutableIdentity = exact.manifest.official_executable_identity;
       return m;
     }
     const m = new THREE.ShaderMaterial({
@@ -162,7 +230,7 @@ defineMaterial("depthParallax", {
       vertexShader: `
         uniform float uHeight, uHeightPower, uScale, uFakeH, uUseUv, uAspectY;
         attribute vec4 tangent;
-        attribute vec2 uv2;
+        attribute vec2 uv1;
         varying vec2 vUv;
         void main() {
           vec3 camObj = (inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz;
@@ -175,7 +243,7 @@ defineMaterial("depthParallax", {
           // Official vertex path: select UV0/UV1, scale around center, then add tangent-view offset.
           vec2 off = (tv.xy / (tv.z + 0.41999998688697815)) * (uHeightPower * (uHeight - 0.5));
           off.y *= uAspectY;
-          vec2 srcUv = mix(uv, uv2, step(0.5, uUseUv));
+          vec2 srcUv = mix(uv, uv1, step(0.5, uUseUv));
           vUv = (((srcUv * 2.0) - 1.0) / uScale) * 0.5 + off + 0.5;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }`,
@@ -203,11 +271,28 @@ defineMaterial("effect", {
   build(r, ctx) {
     const f = r.floats || {};
     const kw = r.keywords || [];
+    const exact = ctx.exactShaderPort(r, "Effect");
+    if (exact) {
+      const m = new THREE.RawShaderMaterial({
+        glslVersion: THREE.GLSL3,
+        uniforms: ctx.exactPortUniforms(r, exact, (binding) => ctx.layerTexDefault(r, binding.slot)),
+        vertexShader: exact.vert,
+        fragmentShader: exact.frag,
+        side: THREE.DoubleSide,
+        toneMapped: false,
+      });
+      m.userData.straight = false;
+      m.userData.exactShader = "Effect";
+      m.userData.officialPassRuntime = exact.manifest.official_pass_runtime;
+      m.userData.officialSelector = exact.manifest.official_selector;
+      m.userData.officialExecutableIdentity = exact.manifest.official_executable_identity;
+      return m;
+    }
     const layer = f._Layer != null ? f._Layer : (kw.includes("_LAYER_EFF2") ? 1 : kw.includes("_LAYER_EFF3") ? 2 : 0);
     const grad = ctx.layerTexDefault(r, "_GradationMap");
     const useGrad = f._UseGradationMap != null ? f._UseGradationMap : (r.textures?._GradationMap ? 1 : 0);
-    const exact = ctx.exactShaders?.Effect;
-    if (exact) {
+    const stageSource = ctx.compatibleStageSource("Effect");
+    if (stageSource) {
       const m = new THREE.RawShaderMaterial({
         glslVersion: THREE.GLSL3,
         uniforms: {
@@ -224,12 +309,12 @@ defineMaterial("effect", {
           _AlphaBlend: { value: f._AlphaBlend ?? 1 },
           uDepthOffset: { value: f._DepthOffset ?? 0 },
         },
-        vertexShader: exact.vert,
-        fragmentShader: exact.frag,
+        vertexShader: stageSource.vert,
+        fragmentShader: stageSource.frag,
         side: THREE.DoubleSide,
         toneMapped: false,
       });
-      m.userData.exactShader = "Effect";
+      m.userData.stageSourceFallback = "Effect";
       return m;
     }
     return new THREE.ShaderMaterial({

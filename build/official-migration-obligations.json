@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "domains": [
+    {
+      "id": "package-native",
+      "triggers": [
+        "game.versionName",
+        "game.versionCode",
+        "game.architecture",
+        "artifacts.apkm",
+        "artifacts.baseApk",
+        "artifacts.arm64Split",
+        "artifacts.libunity",
+        "artifacts.libil2cpp",
+        "artifacts.globalMetadataEncrypted",
+        "artifacts.globalMetadataPlaintext",
+        "artifacts.bootConfig"
+      ],
+      "producers": [
+        "build/extract_official_runtime_quality.py",
+        "build/audit-official-unity-symbol-map.mjs"
+      ],
+      "auditors": [
+        "build/audit-official-shader-variant-selection.mjs",
+        "build/audit-official-sort-input-producers.mjs"
+      ],
+      "action": "re-extract APK/IL2CPP metadata, relocate native functions, and regenerate native byte evidence"
+    },
+    {
+      "id": "unity-runtime",
+      "triggers": [
+        "unity",
+        "artifacts.libunity",
+        "artifacts.globalGameManagers",
+        "artifacts.unityReleasePlayer",
+        "artifacts.unityReleaseSymbols"
+      ],
+      "producers": [
+        "build/audit-official-unity-symbol-map.mjs"
+      ],
+      "auditors": [
+        "build/audit-official-android-lifecycle.mjs",
+        "build/audit-official-rendertexture-contract.mjs",
+        "build/audit-official-tmp-fontengine.mjs"
+      ],
+      "action": "rebuild Unity symbol maps and revalidate engine defaults, render state, TMP, UGUI, RT, and input contracts"
+    },
+    {
+      "id": "serialized-assets",
+      "triggers": [
+        "game.versionName",
+        "unity.serializedVersion",
+        "snapshots",
+        "canonicalCorpus"
+      ],
+      "producers": [
+        "build/dump_recipe.py",
+        "build/build.mjs"
+      ],
+      "auditors": [
+        "build/audit-official-illustration-inventory.mjs",
+        "build/audit-official-mesh-payload.mjs"
+      ],
+      "action": "redump official bundles/materials/meshes/locales and regenerate canonical scenes"
+    },
+    {
+      "id": "shader-programs",
+      "triggers": [
+        "game.versionName",
+        "unity.serializedVersion",
+        "proofSets.materialPrograms"
+      ],
+      "producers": [
+        "build/extract_official_material_program_inventory.py",
+        "build/build-official-program-port-contract.mjs"
+      ],
+      "auditors": [
+        "build/audit-official-material-program-inventory.mjs",
+        "build/audit-official-program-port-generators.mjs",
+        "build/audit-official-program-port-coverage.mjs"
+      ],
+      "action": "regenerate the material/program proof graph, selector contract, and changed WebGL ports"
+    },
+    {
+      "id": "runtime-evidence",
+      "triggers": [
+        "game",
+        "unity",
+        "artifacts",
+        "snapshots",
+        "proofSets",
+        "canonicalCorpus"
+      ],
+      "producers": [
+        "server.mjs"
+      ],
+      "auditors": [
+        "build/audit-full-runtime-evidence.mjs",
+        "build/audit-runtime-display-fidelity.mjs"
+      ],
+      "action": "invalidate every prior runtime capture and recapture the complete canonical batch"
+    },
+    {
+      "id": "documentation",
+      "triggers": [
+        "game",
+        "unity",
+        "snapshots",
+        "proofSets"
+      ],
+      "producers": [],
+      "auditors": [
+        "build/audit-official-version-boundaries.mjs"
+      ],
+      "action": "refresh versioned counts, commands, limitations, and migration notes"
+    }
+  ]
+}

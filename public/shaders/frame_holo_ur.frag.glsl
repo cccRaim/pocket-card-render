@@ -80,6 +80,11 @@ bool _891;
 bool _921;
 bool _1003;
 
+highp vec3 pcrUnityObjectToWorldAxisZ(highp mat4 threeModelMatrix)
+{
+    return vec3(threeModelMatrix[2].x, threeModelMatrix[2].y, -threeModelMatrix[2].z);
+}
+
 void main()
 {
     _9 = texture(_13, vs_TEXCOORD0);
@@ -237,9 +242,9 @@ void main()
         _423.x += (-_DarknessOffset);
         _423.x = clamp(_423.x, 0.0, 1.0);
         _423.x = (-_423.x) + 1.0;
-        _781.x = dot(-modelMatrix[2].xyz, -modelMatrix[2].xyz);
+        _781.x = dot(-pcrUnityObjectToWorldAxisZ(modelMatrix), -pcrUnityObjectToWorldAxisZ(modelMatrix));
         _781.x = inversesqrt(_781.x);
-        _781 = _781.xxx * (-modelMatrix[2].xyz);
+        _781 = _781.xxx * (-pcrUnityObjectToWorldAxisZ(modelMatrix));
         _575.x = dot(_781.xy, _781.xy);
         _575.x = sqrt(_575.x);
         _814 = min(abs(_781.z), _575.x);

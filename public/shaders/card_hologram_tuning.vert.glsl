@@ -10,7 +10,7 @@ uniform int _UseMaskUv;
 
 in vec3 position;
 in vec2 uv;
-in vec2 uv2;
+in vec2 uv1;
 in vec3 normal;
 out vec3 vs_TEXCOORD2;
 out vec2 vs_TEXCOORD0;
@@ -24,7 +24,7 @@ void main()
 {
     vec4 _11 = vec4(position, 1.0);
     vec2 _99 = uv;
-    vec2 _103 = uv2;
+    vec2 _103 = uv1;
     vec3 _116 = normal;
     mat4 _ObjectToWorld = modelMatrix;
     mat4 _WorldToObject = inverse(modelMatrix);

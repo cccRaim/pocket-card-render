@@ -7,7 +7,7 @@
 // A strategy:
 //   defineMaterial("plate", {
 //     requires: (r, ctx) => !!ctx.layerTex(r, "_MainTex"),   // optional gate — false → layer skipped
-//     build:    (r, ctx) => new THREE.ShaderMaterial({ ... }), // returns the three.js material
+//     build:    (r, ctx) => new THREE.ShaderMaterial({ ... }), // returns one material or an official ordered-pass array
 //   })
 //
 // `r`   = the material recipe from scene_data.materials[name] (shader/queue/floats/colors/textures).
