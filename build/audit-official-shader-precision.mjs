@@ -1,247 +1,728 @@
-import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+import {
+  canonicalJson,
+  canonicalJsonSha256,
+  OFFICIAL_SPIRV_PRECISION_SCHEMA,
+  SPIRV_PRECISION_STAGE_SCHEMA,
+} from "./exact-selector-port-core.mjs";
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SHADERS = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const PYTHON = process.env.PYTHON || "python";
-const SPIRV_CROSS = process.env.SPIRV_CROSS
-  || (process.env.VULKAN_SDK
-    ? path.join(process.env.VULKAN_SDK, "Bin", "spirv-cross.exe")
-    : "C:/VulkanSDK/1.4.350.0/Bin/spirv-cross.exe");
+const HASH_PATTERN = /^[0-9a-f]{64}$/;
+const CONTRACT_SCHEMA = "pocket-card-render/official-program-port-contract@2";
+const PRECISION_CAPABILITIES = Object.freeze([
+  "Float16Buffer",
+  "Float16",
+  "Float64",
+  "DenormPreserve",
+  "DenormFlushToZero",
+  "SignedZeroInfNanPreserve",
+  "RoundingModeRTE",
+  "RoundingModeRTZ",
+  "Float16ImageAMD",
+  "FloatControls2",
+]);
+const PRECISION_DECORATIONS = Object.freeze({
+  RelaxedPrecision: { value: 0, operandCount: 0 },
+  FPRoundingMode: { value: 39, operandCount: 1 },
+  FPFastMathMode: { value: 40, operandCount: 1 },
+  NoContraction: { value: 42, operandCount: 0 },
+});
+const FLOAT_CONTROL_MODES = Object.freeze({
+  DenormPreserve: 4459,
+  DenormFlushToZero: 4460,
+  SignedZeroInfNanPreserve: 4461,
+  RoundingModeRTE: 4462,
+  RoundingModeRTZ: 4463,
+});
+const GLITTER_SHADER = "Lettuce/Common/CardNew/Face/Card_UR_Glitter_FlowMaps";
 
-const PROGRAMS = [
-  ["Card_Parallax_Hologram_Tuning", null, 48, 79,
-    "089d575ef8fef77e7a968bbf409a32b02d2d0644a1d834fde5d4b63b8e4e4abc",
-    "6ec969b57b0ffe26c7560771865a148fd65e1a617b196152b25e75ffee5b8e3f"],
-  ["Card_Hologram_Tuning", null, 0, 154,
-    "889e3e0ad89c44498eeeb66406ab63bea881d61cce1e2c82d7afe61783b952c3",
-    "849da6480e0acf23a42c98ff315ce1c97b7e927f3a674d4cd5af2526299ffc2b"],
-  ["Frame-Holo-Tuning", null, 0, 191,
-    "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
-    "5d99d92ac0cd93b7ba2578b6b22bd2654e4118c96498e1c28595852174b815b3"],
-  ["Opaque-Hologram_Tuning", null, 9, 219,
-    "91c1b803b05a01edc0625b08f89ca3bb81f2e562495d92f169f725a1320fb792",
-    "23cb98cea428b4130624da5a874184605a0979526495e5e64f5b24d16ec74b9e"],
-  ["Frame-2Layer-UR", null, 121, 445,
-    "ca5fb5f7f87fe4558bc50e1d91c6a874d979f8bef12edb4011373c67d425144b",
-    "746ef1363103a59c4cad5caacf3264573f29e6370762b2350a738961739fc058"],
-  ["Frame-Holo-UR-New", null, 76, 301,
-    "d92424eb171ce6605f336e2a799bfbe72474492f36051790f3cd60ba7e2b92b1",
-    "90f2e82f3cb63f5aeda5c35757f7c42d01a23fb7414eec87cc8c129c197e0558"],
-  ["Opaque-UR-Oklab", ["--keyword", "_FAKESPECULARENABLED_ON"], 94, 361,
-    "4e5ca701d29cea4e13d73687edfaec9a8f9d2423d65b7644a1e4860e05b1c4e0",
-    "171fea2f7d06c8644755e5364cb2d714f87beb72b314cacf198d2874ddb59108"],
-  ["Simple-Opaque-Hologram_Tuning", ["--no-keywords"], 0, 104,
-    "0548eb74b092604a20c3f214627ac925a140eec3ed1f56de07ce67df7d4781a7",
-    "71a0a291b3c5cba3373ea0b30519a971cac77882b370f36c7f8a99cdbca78089"],
-  ["Transparent_Hologram_Tuning", null, 0, 147,
-    "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
-    "5edc43738cbee9ee6abd5bd79809a8c8384cc81fd1ffe5d72d8d8c9300c2798e"],
-  ["Transparent-UR-New", null, 66, 220,
-    "2d413a0fda9b7a80a7898f4a0e913588368098e91b3d05e8e9ab4d5ca668147c",
-    "f427d102ab9395f4e5f7029dc7ee32a362aa759b6e2830de6de302ddd8639391"],
-  ["Card_Parallax_Hologram_UR_New", null, 111, 177,
-    "edf422324256e22b8529b95b7fa9a1613a90d319186aa8f387b2bcd2a453c08b",
-    "88ff63e04e5df3ba4e26af924457918dfe04880a26cdd29eab500fab9b33e56e"],
-  ["Card_UR_LensFlare", ["--no-keywords"], 61, 22,
-    "2f61420487c058c59b314a1baa80bff2e88c8ce81080cd0f138dab20c44dc5dc",
-    "00ca932a4760a0bbf5ed7608ec819f69a7a758bb45f0fcc7cb4b689ccd14c69f"],
-  ["Card_UR_Plate", null, 113, 218,
-    "3f61767d51c8525ef8e6b1f184890c3a9af1083741d8e24a7ea79aae040bbda0",
-    "a28632318e353e752a8f583b2bbc3b61597d4b834a3e6892da94ba2f7b5f551a"],
-  ["Card_UR_Glitter_FlowMaps", null, 89, 227,
-    "1af6dfd11c7da5008e4fb1819e056d86ceca72cc1fc08ef40442dc63ead61597",
-    "f5aee5f528410fcade473ebe4adb39d36033c05a01020e959b530ea24d60785b"],
-];
+export const GLITTER_ALIAS_CONTRACT = Object.freeze({
+  schema: "pocket-card-render/glitter-mixed-precision-alias-contract@1",
+  scope: "local-glsl-declaration-preservation",
+  vulkan_to_webgl_equivalence: "not-claimed",
+  selectorId: "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+  candidateWitnessId: "741330e6c5c79eb6e2a8fc9c2f214f421165df8160ee63a33b693d28906ca676",
+  stages: {
+    vertex: {
+      officialSpirvSha256: "1af6dfd11c7da5008e4fb1819e056d86ceca72cc1fc08ef40442dc63ead61597",
+      defaultFloat: "highp",
+      aliases: [
+        { official: "_80._m8[2]", local: "_FlowParams[2]", declaration: ["uniform", "highp", "vec4", "_FlowParams", "[2]"] },
+        { official: "_80._m4", local: "_FakeCameraHeight", declaration: ["uniform", "mediump", "float", "_FakeCameraHeight", ""] },
+        { official: "_80._m5", local: "_Height", declaration: ["uniform", "mediump", "float", "_Height", ""] },
+        { official: "_80._m6", local: "_HeightPower", declaration: ["uniform", "mediump", "float", "_HeightPower", ""] },
+        { official: "_80._m7", local: "_Scale", declaration: ["uniform", "mediump", "float", "_Scale", ""] },
+        { official: "_80._m13", local: "_FlowScale", declaration: ["uniform", "mediump", "float", "_FlowScale", ""] },
+        { official: "_80._m9", local: "_FakeCameraHeightB", declaration: ["uniform", "mediump", "float", "_FakeCameraHeightB", ""] },
+        { official: "_80._m10", local: "_HeightB", declaration: ["uniform", "mediump", "float", "_HeightB", ""] },
+        { official: "_80._m11", local: "_HeightPowerB", declaration: ["uniform", "mediump", "float", "_HeightPowerB", ""] },
+        { official: "_80._m12", local: "_ScaleB", declaration: ["uniform", "mediump", "float", "_ScaleB", ""] },
+        { official: "_80._m14", local: "_FlowScaleB", declaration: ["uniform", "mediump", "float", "_FlowScaleB", ""] },
+        { official: "_34@location3", local: "tangent", declaration: ["in", "mediump", "vec4", "tangent", ""] },
+      ],
+      forbidden: [],
+    },
+    fragment: {
+      officialSpirvSha256: "f5aee5f528410fcade473ebe4adb39d36033c05a01020e959b530ea24d60785b",
+      defaultFloat: "mediump",
+      aliases: [
+        { official: "_39._m0[2]", local: "_FlowParams[2]", declaration: ["uniform", "highp", "vec4", "_FlowParams", "[2]"] },
+        { official: "_39._m1", local: "_FadeDuration", declaration: ["uniform", "highp", "float", "_FadeDuration", ""] },
+        { official: "_39._m2", local: "_FlowAPower", declaration: ["uniform", "highp", "float", "_FlowAPower", ""] },
+        { official: "_39._m3", local: "_FlowBPower", declaration: ["uniform", "highp", "float", "_FlowBPower", ""] },
+        { official: "_39._m4", local: "_LightColor", declaration: ["uniform", "", "vec4", "_LightColor", ""] },
+        { official: "_39._m5", local: "_LightTime", declaration: ["uniform", "highp", "float", "_LightTime", ""] },
+        { official: "_39._m6", local: "_EmitThreshold", declaration: ["uniform", "highp", "float", "_EmitThreshold", ""] },
+      ],
+      forbidden: [
+        ["uniform", "highp", "vec4", "_LightColor", ""],
+      ],
+    },
+  },
+});
 
-const OP = {
-  ExecutionMode: 16,
-  Capability: 17,
-  TypeFloat: 22,
-  Decorate: 71,
-  MemberDecorate: 72,
-  QuantizeToF16: 116,
-  ExecutionModeId: 331,
-};
-const DECORATION = {
-  RelaxedPrecision: 0,
-  FPRoundingMode: 39,
-  FPFastMathMode: 40,
-  NoContraction: 42,
-};
-const FLOAT_CONTROL_MODES = new Set([4459, 4460, 4461, 4462, 4463]);
-
-function sha256(file) {
-  return createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+function fail(message) {
+  throw new Error(`official shader precision audit: ${message}`);
 }
 
-function inspectSpirv(file) {
-  const bytes = fs.readFileSync(file);
-  assert.equal(bytes.length % 4, 0, `${file}: SPIR-V byte length is not word aligned`);
-  const words = new Uint32Array(bytes.buffer, bytes.byteOffset, bytes.byteLength / 4);
-  assert.equal(words[0], 0x07230203, `${file}: bad SPIR-V magic`);
-  const result = {
-    relaxedPrecision: 0,
-    float16Capabilities: 0,
-    float16Types: 0,
-    float32Types: 0,
-    quantizeToF16: 0,
-    noContraction: 0,
-    fpFastMathMode: 0,
-    fpRoundingMode: 0,
-    floatControlExecutionModes: 0,
+function isRecord(value) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
+}
+
+function record(value, label) {
+  if (!isRecord(value)) fail(`${label} must be a plain object`);
+  return value;
+}
+
+function array(value, label) {
+  if (!Array.isArray(value)) fail(`${label} must be an array`);
+  return value;
+}
+
+function own(owner, key, label) {
+  const descriptor = Object.getOwnPropertyDescriptor(owner, key);
+  if (!descriptor) fail(`${label}.${key} is absent`);
+  if (descriptor.get || descriptor.set) fail(`${label}.${key} must not be an accessor`);
+  return descriptor.value;
+}
+
+function string(value, label) {
+  if (typeof value !== "string" || value.length === 0) fail(`${label} must be a non-empty string`);
+  return value;
+}
+
+function integer(value, label, min = 0) {
+  if (!Number.isSafeInteger(value) || value < min) fail(`${label} must be an integer >= ${min}`);
+  return value;
+}
+
+function hash(value, label) {
+  if (typeof value !== "string" || !HASH_PATTERN.test(value)) {
+    fail(`${label} must be a lowercase SHA-256 hex string`);
+  }
+  return value;
+}
+
+function exactKeys(value, expected, label) {
+  const actual = Object.keys(record(value, label)).sort();
+  const wanted = [...expected].sort();
+  if (canonicalJson(actual) !== canonicalJson(wanted)) {
+    fail(`${label} fields changed: expected ${wanted.join(", ")}, got ${actual.join(", ")}`);
+  }
+}
+
+function safeRepoFile(root, relativePath, label) {
+  string(relativePath, label);
+  if (path.isAbsolute(relativePath)) fail(`${label} must be repository-relative`);
+  const resolved = path.resolve(root, relativePath);
+  const relative = path.relative(root, resolved);
+  if (relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)) {
+    fail(`${label} escapes the repository`);
+  }
+  if (!fs.statSync(resolved, { throwIfNoEntry: false })?.isFile()) {
+    fail(`${label} is absent: ${relativePath}`);
+  }
+  return resolved;
+}
+
+function readJson(file, label) {
+  try {
+    return record(JSON.parse(fs.readFileSync(file, "utf8")), label);
+  } catch (error) {
+    fail(`${label} is unreadable JSON: ${error.message}`);
+  }
+}
+
+function validateCountObject(value, label) {
+  exactKeys(value, ["decorate", "member_decorate", "decorate_id"], label);
+  return {
+    decorate: integer(value.decorate, `${label}.decorate`),
+    member_decorate: integer(value.member_decorate, `${label}.member_decorate`),
+    decorate_id: integer(value.decorate_id, `${label}.decorate_id`),
   };
-  for (let offset = 5; offset < words.length;) {
-    const instruction = words[offset];
-    const wordCount = instruction >>> 16;
-    const opcode = instruction & 0xffff;
-    assert.ok(wordCount > 0 && offset + wordCount <= words.length,
-      `${file}: malformed instruction at word ${offset}`);
-    if (opcode === OP.Capability) {
-      if (words[offset + 1] === 9) result.float16Capabilities += 1;
-    } else if (opcode === OP.TypeFloat) {
-      if (words[offset + 2] === 16) result.float16Types += 1;
-      if (words[offset + 2] === 32) result.float32Types += 1;
-    } else if (opcode === OP.Decorate || opcode === OP.MemberDecorate) {
-      const decorationIndex = opcode === OP.Decorate ? offset + 2 : offset + 3;
-      const decoration = words[decorationIndex];
-      if (decoration === DECORATION.RelaxedPrecision) result.relaxedPrecision += 1;
-      if (decoration === DECORATION.FPRoundingMode) result.fpRoundingMode += 1;
-      if (decoration === DECORATION.FPFastMathMode) result.fpFastMathMode += 1;
-      if (decoration === DECORATION.NoContraction) result.noContraction += 1;
-    } else if (opcode === OP.QuantizeToF16) {
-      result.quantizeToF16 += 1;
-    } else if (opcode === OP.ExecutionMode || opcode === OP.ExecutionModeId) {
-      if (FLOAT_CONTROL_MODES.has(words[offset + 2])) result.floatControlExecutionModes += 1;
+}
+
+export function validateSpirvPrecisionStage(value, expectedSourceSha256, label = "precision stage") {
+  const stage = record(value, label);
+  exactKeys(stage, [
+    "schema",
+    "source_sha256",
+    "byte_size",
+    "word_count",
+    "header",
+    "instruction_count",
+    "capabilities",
+    "float_types",
+    "decorations",
+    "quantize_to_f16_count",
+    "float_control_execution_modes",
+    "instruction_structure_sha256",
+    "facts_sha256",
+  ], label);
+  if (stage.schema !== SPIRV_PRECISION_STAGE_SCHEMA) fail(`${label}.schema changed`);
+  const sourceSha256 = hash(stage.source_sha256, `${label}.source_sha256`);
+  if (sourceSha256 !== hash(expectedSourceSha256, `${label} expected source SHA-256`)) {
+    fail(`${label}.source_sha256 does not match the formal port`);
+  }
+  const byteSize = integer(stage.byte_size, `${label}.byte_size`, 20);
+  if (byteSize % 4 !== 0) fail(`${label}.byte_size is not word aligned`);
+  const wordCount = integer(stage.word_count, `${label}.word_count`, 5);
+  if (wordCount !== byteSize / 4) fail(`${label}.word_count does not match byte_size`);
+
+  const header = record(stage.header, `${label}.header`);
+  exactKeys(header, [
+    "version_word",
+    "version",
+    "major",
+    "minor",
+    "revision",
+    "generator_magic",
+    "id_bound",
+    "schema_word",
+  ], `${label}.header`);
+  const versionWord = integer(header.version_word, `${label}.header.version_word`);
+  string(header.version, `${label}.header.version`);
+  const major = integer(header.major, `${label}.header.major`);
+  const minor = integer(header.minor, `${label}.header.minor`);
+  const revision = integer(header.revision, `${label}.header.revision`);
+  if (header.version !== `${major}.${minor}.${revision}`) fail(`${label}.header.version is inconsistent`);
+  if (major !== 1 || minor > 6) fail(`${label}.header version is unsupported`);
+  if (versionWord !== ((major << 16) | (minor << 8) | revision)) {
+    fail(`${label}.header.version_word is inconsistent`);
+  }
+  integer(header.generator_magic, `${label}.header.generator_magic`);
+  integer(header.id_bound, `${label}.header.id_bound`, 1);
+  if (integer(header.schema_word, `${label}.header.schema_word`) !== 0) {
+    fail(`${label}.header.schema_word is unsupported`);
+  }
+  integer(stage.instruction_count, `${label}.instruction_count`, 1);
+
+  const capabilities = record(stage.capabilities, `${label}.capabilities`);
+  exactKeys(capabilities, PRECISION_CAPABILITIES, `${label}.capabilities`);
+  for (const name of PRECISION_CAPABILITIES) {
+    integer(capabilities[name], `${label}.capabilities.${name}`);
+  }
+
+  const floatTypes = array(stage.float_types, `${label}.float_types`);
+  let previousWidth = -1;
+  let hasFloat32 = false;
+  for (const [index, raw] of floatTypes.entries()) {
+    const row = record(raw, `${label}.float_types[${index}]`);
+    exactKeys(row, ["width", "declaration_count"], `${label}.float_types[${index}]`);
+    const width = integer(row.width, `${label}.float_types[${index}].width`, 1);
+    if (width <= previousWidth) fail(`${label}.float_types must be unique and sorted`);
+    previousWidth = width;
+    const declarationCount = integer(
+      row.declaration_count,
+      `${label}.float_types[${index}].declaration_count`,
+      1,
+    );
+    if (width === 32 && declarationCount > 0) hasFloat32 = true;
+  }
+  if (!hasFloat32) fail(`${label} has no declared 32-bit float type`);
+
+  const decorations = record(stage.decorations, `${label}.decorations`);
+  exactKeys(decorations, Object.keys(PRECISION_DECORATIONS), `${label}.decorations`);
+  for (const [name, expectation] of Object.entries(PRECISION_DECORATIONS)) {
+    const decoration = record(decorations[name], `${label}.decorations.${name}`);
+    exactKeys(decoration, [
+      "decoration_value",
+      "instruction_counts",
+      "source_instruction_count",
+      "direct_application_count",
+      "group_application_count",
+      "effective_application_count",
+      "operand_sets",
+    ], `${label}.decorations.${name}`);
+    if (integer(
+      decoration.decoration_value,
+      `${label}.decorations.${name}.decoration_value`,
+    ) !== expectation.value) {
+      fail(`${label}.decorations.${name}.decoration_value changed`);
     }
-    offset += wordCount;
-  }
-  return result;
-}
-
-function run(command, args) {
-  return execFileSync(command, args, {
-    cwd: ROOT,
-    encoding: "utf8",
-    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1", PYTHONWARNINGS: "ignore" },
-    shell: process.platform === "win32" && command === PYTHON,
-    windowsHide: true,
-    maxBuffer: 32 * 1024 * 1024,
-  });
-}
-
-function assertNoFp16Evidence(stats, label) {
-  assert.ok(stats.float32Types > 0, `${label}: no Float32 type found`);
-  assert.equal(stats.float16Capabilities, 0, `${label}: unexpected Float16 capability`);
-  assert.equal(stats.float16Types, 0, `${label}: unexpected Float16 type`);
-  assert.equal(stats.quantizeToF16, 0, `${label}: unexpected OpQuantizeToF16`);
-  assert.equal(stats.noContraction, 0, `${label}: unexpected NoContraction`);
-  assert.equal(stats.fpFastMathMode, 0, `${label}: unexpected FPFastMathMode`);
-  assert.equal(stats.fpRoundingMode, 0, `${label}: unexpected FPRoundingMode`);
-  assert.equal(stats.floatControlExecutionModes, 0, `${label}: unexpected float-control execution mode`);
-}
-
-function cross(file) {
-  return run(SPIRV_CROSS, [file, "--version", "300", "--es"]);
-}
-
-assert.ok(fs.existsSync(SHADERS), `official shader bundle root missing: ${SHADERS}`);
-if (path.isAbsolute(SPIRV_CROSS)) assert.ok(fs.existsSync(SPIRV_CROSS), `spirv-cross missing: ${SPIRV_CROSS}`);
-
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-official-precision-"));
-let vertexRelaxed = 0;
-let fragmentRelaxed = 0;
-let glitterVert;
-let glitterFrag;
-try {
-  for (let index = 0; index < PROGRAMS.length; index += 1) {
-    const [name, selector, expectedVert, expectedFrag, vertHash, fragHash] = PROGRAMS[index];
-    const prefix = `p${String(index).padStart(2, "0")}`;
-    run(PYTHON, [
-      "-W", "ignore",
-      "build/shaderdec/dump_shader.py",
-      name,
-      prefix,
-      "--shaders", SHADERS,
-      "--out", tmp,
-      ...(selector || []),
-    ]);
-    const vertPath = path.join(tmp, `${prefix}_vert.spv`);
-    const fragPath = path.join(tmp, `${prefix}_frag.spv`);
-    assert.ok(fs.existsSync(vertPath) && fs.existsSync(fragPath), `${name}: stage module missing`);
-    assert.equal(sha256(vertPath), vertHash, `${name}: vertex module drifted`);
-    assert.equal(sha256(fragPath), fragHash, `${name}: fragment module drifted`);
-    const vert = inspectSpirv(vertPath);
-    const frag = inspectSpirv(fragPath);
-    assert.equal(vert.relaxedPrecision, expectedVert, `${name}: vertex RelaxedPrecision count drifted`);
-    assert.equal(frag.relaxedPrecision, expectedFrag, `${name}: fragment RelaxedPrecision count drifted`);
-    assertNoFp16Evidence(vert, `${name} vertex`);
-    assertNoFp16Evidence(frag, `${name} fragment`);
-    vertexRelaxed += vert.relaxedPrecision;
-    fragmentRelaxed += frag.relaxedPrecision;
-    if (name === "Card_UR_Glitter_FlowMaps") {
-      glitterVert = { path: vertPath, source: cross(vertPath) };
-      glitterFrag = { path: fragPath, source: cross(fragPath) };
+    const instructionCounts = validateCountObject(
+      decoration.instruction_counts,
+      `${label}.decorations.${name}.instruction_counts`,
+    );
+    const sourceInstructionCount = integer(
+      decoration.source_instruction_count,
+      `${label}.decorations.${name}.source_instruction_count`,
+    );
+    if (
+      sourceInstructionCount
+      !== instructionCounts.decorate + instructionCounts.member_decorate + instructionCounts.decorate_id
+    ) {
+      fail(`${label}.decorations.${name} instruction counts do not close`);
     }
-    console.log(`${name}: RelaxedPrecision v${vert.relaxedPrecision}/f${frag.relaxedPrecision}; Float16/Quantize/NoContraction 0/0/0`);
+    const directApplications = integer(
+      decoration.direct_application_count,
+      `${label}.decorations.${name}.direct_application_count`,
+    );
+    const groupApplications = integer(
+      decoration.group_application_count,
+      `${label}.decorations.${name}.group_application_count`,
+    );
+    if (
+      integer(
+        decoration.effective_application_count,
+        `${label}.decorations.${name}.effective_application_count`,
+      ) !== directApplications + groupApplications
+    ) {
+      fail(`${label}.decorations.${name} application counts do not close`);
+    }
+    const operandSets = array(
+      decoration.operand_sets,
+      `${label}.decorations.${name}.operand_sets`,
+    );
+    let operandDeclarationCount = 0;
+    let previousOperandSet = null;
+    for (const [index, raw] of operandSets.entries()) {
+      const row = record(raw, `${label}.decorations.${name}.operand_sets[${index}]`);
+      exactKeys(row, ["operands", "declaration_count"], `${label}.decorations.${name}.operand_sets[${index}]`);
+      const operands = array(
+        row.operands,
+        `${label}.decorations.${name}.operand_sets[${index}].operands`,
+      );
+      if (operands.length !== expectation.operandCount) {
+        fail(`${label}.decorations.${name}.operand_sets[${index}] has invalid width`);
+      }
+      for (const [operandIndex, operand] of operands.entries()) {
+        integer(operand, `${label}.decorations.${name}.operand_sets[${index}].operands[${operandIndex}]`);
+      }
+      const key = canonicalJson(operands);
+      if (previousOperandSet !== null && key <= previousOperandSet) {
+        fail(`${label}.decorations.${name}.operand_sets must be unique and sorted`);
+      }
+      previousOperandSet = key;
+      operandDeclarationCount += integer(
+        row.declaration_count,
+        `${label}.decorations.${name}.operand_sets[${index}].declaration_count`,
+        1,
+      );
+    }
+    if (operandDeclarationCount !== sourceInstructionCount) {
+      fail(`${label}.decorations.${name} operand counts do not close`);
+    }
   }
 
-  assert.equal(vertexRelaxed, 788, "aggregate vertex RelaxedPrecision count drifted");
-  assert.equal(fragmentRelaxed, 2865, "aggregate fragment RelaxedPrecision count drifted");
-  assert.equal(vertexRelaxed + fragmentRelaxed, 3653, "aggregate RelaxedPrecision count drifted");
-
-  assert.ok(glitterVert && glitterFrag, "Glitter modules were not captured");
-  for (const member of [4, 5, 6, 7, 9, 10, 11, 12, 13, 14]) {
-    assert.match(glitterVert.source, new RegExp(`mediump\\s+\\w+\\s+_m${member}\\b`),
-      `Glitter vertex _m${member} lost official mediump qualifier`);
+  integer(stage.quantize_to_f16_count, `${label}.quantize_to_f16_count`);
+  const modes = array(
+    stage.float_control_execution_modes,
+    `${label}.float_control_execution_modes`,
+  );
+  let previousMode = null;
+  for (const [index, raw] of modes.entries()) {
+    const row = record(raw, `${label}.float_control_execution_modes[${index}]`);
+    exactKeys(row, [
+      "opcode",
+      "mode",
+      "mode_value",
+      "operands",
+      "declaration_count",
+    ], `${label}.float_control_execution_modes[${index}]`);
+    if (row.opcode !== "OpExecutionMode" && row.opcode !== "OpExecutionModeId") {
+      fail(`${label}.float_control_execution_modes[${index}].opcode is unsupported`);
+    }
+    const mode = string(row.mode, `${label}.float_control_execution_modes[${index}].mode`);
+    if (!Object.hasOwn(FLOAT_CONTROL_MODES, mode)) {
+      fail(`${label}.float_control_execution_modes[${index}].mode is unsupported`);
+    }
+    if (
+      integer(row.mode_value, `${label}.float_control_execution_modes[${index}].mode_value`)
+      !== FLOAT_CONTROL_MODES[mode]
+    ) {
+      fail(`${label}.float_control_execution_modes[${index}].mode_value changed`);
+    }
+    const operands = array(row.operands, `${label}.float_control_execution_modes[${index}].operands`);
+    if (operands.length !== 1) fail(`${label}.float_control_execution_modes[${index}] has invalid width`);
+    integer(operands[0], `${label}.float_control_execution_modes[${index}].operands[0]`);
+    integer(
+      row.declaration_count,
+      `${label}.float_control_execution_modes[${index}].declaration_count`,
+      1,
+    );
+    const key = canonicalJson({
+      opcode: row.opcode,
+      mode: row.mode,
+      mode_value: row.mode_value,
+      operands,
+    });
+    if (previousMode !== null && key <= previousMode) {
+      fail(`${label}.float_control_execution_modes must be unique and sorted`);
+    }
+    previousMode = key;
   }
-  assert.match(glitterVert.source, /\bvec4 _m8\[2\];/, "Glitter vertex _m8[2] missing");
-  assert.doesNotMatch(glitterVert.source, /mediump\s+vec4 _m8\[2\]/,
-    "Glitter vertex rotation member _m8[2] must remain highp/default vertex precision");
-  assert.match(glitterVert.source, /layout\(location = 3\) in mediump vec4 _34;/,
-    "Glitter vertex tangent qualifier drifted");
-  assert.match(glitterFrag.source, /^precision mediump float;/m, "Glitter fragment default is not mediump");
-  for (const member of [0, 1, 2, 3, 5, 6]) {
-    assert.match(glitterFrag.source, new RegExp(`highp\\s+\\w+(?:\\s+_m${member}\\b|\\s+_m${member}\\[)`),
-      `Glitter fragment _m${member} lost official highp qualifier`);
-  }
-  assert.match(glitterFrag.source, /\bvec4 _m4;/, "Glitter fragment _m4 missing");
-  assert.doesNotMatch(glitterFrag.source, /highp\s+vec4 _m4;/,
-    "Glitter fragment light color _m4 must inherit mediump default");
+  hash(stage.instruction_structure_sha256, `${label}.instruction_structure_sha256`);
+  const factsSha256 = hash(stage.facts_sha256, `${label}.facts_sha256`);
+  const { facts_sha256: _discarded, ...facts } = stage;
+  if (canonicalJsonSha256(facts) !== factsSha256) fail(`${label}.facts_sha256 changed`);
+  return stage;
+}
 
-  const localVert = fs.readFileSync(path.join(ROOT, "public/shaders/glitter.vert.glsl"), "utf8");
-  const localFrag = fs.readFileSync(path.join(ROOT, "public/shaders/glitter.frag.glsl"), "utf8");
-  assert.match(localVert, /^precision highp float;/m);
-  assert.match(localVert, /in mediump vec4 tangent;/);
-  assert.match(localVert, /uniform highp vec4 _FlowParams\[2\];/);
-  for (const name of [
-    "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_FlowScale",
-    "_FakeCameraHeightB", "_HeightB", "_HeightPowerB", "_ScaleB", "_FlowScaleB",
+function validatePortIdentity(manifest, port, label) {
+  if (string(manifest.generated_by, `${label}.generated_by`) !== string(port.generator, "port.generator")) {
+    fail(`${label}.generated_by does not match the formal port generator`);
+  }
+  const selector = record(manifest.official_selector, `${label}.official_selector`);
+  for (const key of ["selectorId", "candidateWitnessId", "semanticExecutableId"]) {
+    if (string(selector[key], `${label}.official_selector.${key}`) !== string(port[key], `port.${key}`)) {
+      fail(`${label}.official_selector.${key} does not match the formal port`);
+    }
+  }
+  for (const key of ["subshader", "pass"]) {
+    if (integer(selector[key], `${label}.official_selector.${key}`) !== integer(port[key], `port.${key}`)) {
+      fail(`${label}.official_selector.${key} does not match the formal port`);
+    }
+  }
+  const identities = record(port.officialIdentityFields, "port.officialIdentityFields");
+  const manifestIdentities = record(
+    manifest.official_executable_identity,
+    `${label}.official_executable_identity`,
+  );
+  for (const key of [
+    "vertexSpirvSha256",
+    "fragmentSpirvSha256",
+    "parameterEntrySha256",
+    "passStateSha256",
+    "commonBindingsSha256",
   ]) {
-    assert.match(localVert, new RegExp(`uniform mediump float ${name};`),
-      `local Glitter vertex ${name} lost official mediump qualifier`);
+    if (
+      hash(manifestIdentities[key], `${label}.official_executable_identity.${key}`)
+      !== hash(identities[key], `port.officialIdentityFields.${key}`)
+    ) {
+      fail(`${label}.official_executable_identity.${key} does not match the formal port`);
+    }
   }
-  assert.match(localFrag, /^precision mediump float;/m);
-  assert.match(localFrag, /uniform highp vec4 _FlowParams\[2\];/);
-  for (const name of ["_FadeDuration", "_FlowAPower", "_FlowBPower", "_LightTime", "_EmitThreshold"]) {
-    assert.match(localFrag, new RegExp(`uniform highp float ${name};`),
-      `local Glitter fragment ${name} lost official highp qualifier`);
+  const manifestSpirv = record(manifest.official_spirv_sha256, `${label}.official_spirv_sha256`);
+  if (
+    hash(manifestSpirv.vertex, `${label}.official_spirv_sha256.vertex`)
+    !== identities.vertexSpirvSha256
+    || hash(manifestSpirv.fragment, `${label}.official_spirv_sha256.fragment`)
+    !== identities.fragmentSpirvSha256
+  ) {
+    fail(`${label}.official_spirv_sha256 does not match the formal port`);
   }
-  assert.match(localFrag, /uniform vec4 _LightColor;/,
-    "local Glitter fragment _LightColor must inherit the mediump default");
-  assert.match(localFrag, /layout\(location = 1\) out highp vec4 _1092;/);
-  assert.match(localFrag, /_1092 = vec4\(0\.0\);/);
-} finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
 }
 
-console.log("official shader precision audit: OK");
-console.log(`  programs ${PROGRAMS.length}; RelaxedPrecision vertex ${vertexRelaxed}, fragment ${fragmentRelaxed}, total ${vertexRelaxed + fragmentRelaxed}`);
-console.log("  all pinned modules: Float16 capability/type=0, QuantizeToF16=0, NoContraction=0, FPFastMathMode=0, float-control modes=0");
-console.log("  Glitter qualifiers: raw SPIRV-Cross evidence matched; local mixed-precision aliases matched");
+export function validateFormalPortPrecisionManifest(manifestValue, portValue, label = "manifest") {
+  const manifest = record(manifestValue, label);
+  const port = record(portValue, "formal port");
+  validatePortIdentity(manifest, port, label);
+  const precision = record(
+    own(manifest, "official_spirv_precision", label),
+    `${label}.official_spirv_precision`,
+  );
+  exactKeys(precision, [
+    "schema",
+    "evidence_scope",
+    "vulkan_to_webgl_equivalence",
+    "stages",
+  ], `${label}.official_spirv_precision`);
+  if (precision.schema !== OFFICIAL_SPIRV_PRECISION_SCHEMA) {
+    fail(`${label}.official_spirv_precision.schema changed`);
+  }
+  if (precision.evidence_scope !== "official-vulkan-spirv-structure") {
+    fail(`${label}.official_spirv_precision.evidence_scope changed`);
+  }
+  if (precision.vulkan_to_webgl_equivalence !== "not-claimed") {
+    fail(`${label}.official_spirv_precision must not claim Vulkan-to-WebGL equivalence`);
+  }
+  const stages = record(precision.stages, `${label}.official_spirv_precision.stages`);
+  exactKeys(stages, ["vertex", "fragment"], `${label}.official_spirv_precision.stages`);
+  const identities = port.officialIdentityFields;
+  return {
+    vertex: validateSpirvPrecisionStage(
+      stages.vertex,
+      identities.vertexSpirvSha256,
+      `${label}.official_spirv_precision.stages.vertex`,
+    ),
+    fragment: validateSpirvPrecisionStage(
+      stages.fragment,
+      identities.fragmentSpirvSha256,
+      `${label}.official_spirv_precision.stages.fragment`,
+    ),
+  };
+}
+
+function portKey(port) {
+  return [
+    string(port.selectorId, "port.selectorId"),
+    string(port.candidateWitnessId, "port.candidateWitnessId"),
+    integer(port.subshader, "port.subshader"),
+    integer(port.pass, "port.pass"),
+  ].join(":");
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function declarationRegex([storage, precision, type, name, suffix]) {
+  const precisionPart = precision ? `${escapeRegex(precision)}\\s+` : "";
+  return new RegExp(
+    `^\\s*${escapeRegex(storage)}\\s+${precisionPart}${escapeRegex(type)}\\s+`
+      + `${escapeRegex(name)}${escapeRegex(suffix)}\\s*;\\s*$`,
+    "m",
+  );
+}
+
+function validateGlitterAliases(root, manifestRows, aliasContractValue = GLITTER_ALIAS_CONTRACT) {
+  const aliasContract = record(aliasContractValue, "Glitter alias contract");
+  const aliasStages = record(aliasContract.stages, "Glitter alias contract.stages");
+  const matches = manifestRows.filter(({ manifest }) => manifest.shader === GLITTER_SHADER);
+  if (matches.length !== 1) {
+    fail(`Glitter alias contract matched ${matches.length} formal ports instead of 1`);
+  }
+  const [{ port, manifest, precisionStages }] = matches;
+  if (
+    port.selectorId !== aliasContract.selectorId
+    || port.candidateWitnessId !== aliasContract.candidateWitnessId
+  ) {
+    fail("Glitter alias contract selector identity changed");
+  }
+  for (const stageName of ["vertex", "fragment"]) {
+    const contract = record(aliasStages[stageName], `Glitter alias contract.stages.${stageName}`);
+    if (precisionStages[stageName].source_sha256 !== contract.officialSpirvSha256) {
+      fail(`Glitter ${stageName} alias contract SPIR-V identity changed`);
+    }
+    if (
+      precisionStages[stageName].decorations.RelaxedPrecision.effective_application_count === 0
+    ) {
+      fail(`Glitter ${stageName} has no official RelaxedPrecision evidence`);
+    }
+    const sources = record(manifest.webgl_sources, "Glitter manifest.webgl_sources");
+    const sourcePath = safeRepoFile(
+      root,
+      string(sources[stageName], `Glitter manifest.webgl_sources.${stageName}`),
+      `Glitter manifest.webgl_sources.${stageName}`,
+    );
+    const source = fs.readFileSync(sourcePath, "utf8");
+    const defaultPattern = new RegExp(
+      `^\\s*precision\\s+${contract.defaultFloat}\\s+float\\s*;\\s*$`,
+      "m",
+    );
+    if (!defaultPattern.test(source)) fail(`Glitter ${stageName} default float precision changed`);
+    for (const alias of contract.aliases) {
+      if (!declarationRegex(alias.declaration).test(source)) {
+        fail(
+          `Glitter ${stageName} alias declaration changed: `
+            + `${alias.official} -> ${alias.local}`,
+        );
+      }
+    }
+    for (const declaration of contract.forbidden) {
+      if (declarationRegex(declaration).test(source)) {
+        fail(`Glitter ${stageName} forbidden alias declaration appeared: ${declaration.join(" ")}`);
+      }
+    }
+  }
+  const fragmentSource = fs.readFileSync(
+    safeRepoFile(root, manifest.webgl_sources.fragment, "Glitter fragment source"),
+    "utf8",
+  );
+  if (!/^layout\(location = 1\) out highp vec4 _1092;\s*$/m.test(fragmentSource)) {
+    fail("Glitter fragment MRT1 precision declaration changed");
+  }
+  if (!/^\s*_1092 = vec4\(0\.0\);\s*$/m.test(fragmentSource)) {
+    fail("Glitter fragment MRT1 zero write changed");
+  }
+  return aliasContract;
+}
+
+export function auditOfficialShaderPrecision(options = {}) {
+  const config = record(options, "precision audit options");
+  const root = path.resolve(config.rootDir ?? ROOT);
+  const contractRelative = config.contract
+    ?? "public/shaders/official_program_port_contract.json";
+  const contract = readJson(
+    safeRepoFile(root, contractRelative, "official program port contract"),
+    "official program port contract",
+  );
+  if (contract.schema !== CONTRACT_SCHEMA) fail(`contract schema changed: ${contract.schema}`);
+  const ports = array(contract.ports, "official program port contract.ports");
+  if (ports.length === 0) fail("official program port contract has no formal ports");
+
+  const keys = new Set();
+  const manifestPaths = new Set();
+  const manifestRows = [];
+  const uniqueStages = new Map();
+  let stageReferences = 0;
+  for (const [index, rawPort] of ports.entries()) {
+    const port = record(rawPort, `formal port ${index}`);
+    const key = portKey(port);
+    if (keys.has(key)) fail(`formal port identity is duplicated: ${key}`);
+    keys.add(key);
+    const manifestRelative = string(port.manifest, `formal port ${index}.manifest`);
+    if (manifestPaths.has(manifestRelative)) {
+      fail(`formal port manifest is reused: ${manifestRelative}`);
+    }
+    manifestPaths.add(manifestRelative);
+    const manifest = readJson(
+      safeRepoFile(root, manifestRelative, `formal port ${index}.manifest`),
+      `formal port ${index} manifest`,
+    );
+    const precisionStages = validateFormalPortPrecisionManifest(
+      manifest,
+      port,
+      `formal port ${index} manifest`,
+    );
+    manifestRows.push({ port, manifest, precisionStages });
+    for (const stageName of ["vertex", "fragment"]) {
+      stageReferences += 1;
+      const facts = precisionStages[stageName];
+      const existing = uniqueStages.get(facts.source_sha256);
+      if (existing) {
+        if (canonicalJson(existing.facts) !== canonicalJson(facts)) {
+          fail(`stage hash ${facts.source_sha256} has inconsistent precision facts`);
+        }
+        existing.usages.push({ key, stage: stageName, manifest: manifestRelative });
+      } else {
+        uniqueStages.set(facts.source_sha256, {
+          facts,
+          usages: [{ key, stage: stageName, manifest: manifestRelative }],
+        });
+      }
+    }
+  }
+  if (manifestRows.length !== ports.length || manifestPaths.size !== ports.length) {
+    fail("formal port manifest denominator did not close");
+  }
+  if (stageReferences !== ports.length * 2) fail("formal port stage denominator did not close");
+
+  const floatTypeDeclarations = new Map();
+  const aggregate = {
+    capabilities: Object.fromEntries(PRECISION_CAPABILITIES.map((name) => [name, 0])),
+    decorations: Object.fromEntries(Object.keys(PRECISION_DECORATIONS).map((name) => [
+      name,
+      {
+        source_instruction_count: 0,
+        effective_application_count: 0,
+      },
+    ])),
+    quantize_to_f16_instruction_count: 0,
+    float_control_execution_modes: Object.fromEntries(
+      Object.keys(FLOAT_CONTROL_MODES).map((name) => [name, 0]),
+    ),
+  };
+  for (const { facts } of uniqueStages.values()) {
+    for (const name of PRECISION_CAPABILITIES) {
+      aggregate.capabilities[name] += facts.capabilities[name];
+    }
+    for (const row of facts.float_types) {
+      floatTypeDeclarations.set(
+        row.width,
+        (floatTypeDeclarations.get(row.width) ?? 0) + row.declaration_count,
+      );
+    }
+    for (const name of Object.keys(PRECISION_DECORATIONS)) {
+      aggregate.decorations[name].source_instruction_count +=
+        facts.decorations[name].source_instruction_count;
+      aggregate.decorations[name].effective_application_count +=
+        facts.decorations[name].effective_application_count;
+    }
+    aggregate.quantize_to_f16_instruction_count += facts.quantize_to_f16_count;
+    for (const row of facts.float_control_execution_modes) {
+      aggregate.float_control_execution_modes[row.mode] += row.declaration_count;
+    }
+  }
+  aggregate.float_type_declarations = [...floatTypeDeclarations.entries()]
+    .sort(([left], [right]) => left - right)
+    .map(([width, declarationCount]) => ({
+      width,
+      declaration_count: declarationCount,
+    }));
+  const glitterAliasContract = validateGlitterAliases(
+    root,
+    manifestRows,
+    config.glitterAliasContract ?? GLITTER_ALIAS_CONTRACT,
+  );
+  return {
+    schema: "pocket-card-render/official-shader-precision-audit@2",
+    denominator: {
+      formal_ports: ports.length,
+      manifests: manifestPaths.size,
+      stage_references: stageReferences,
+      unique_stage_hashes: uniqueStages.size,
+    },
+    official_spirv_structure: {
+      exact_formal_ports: manifestRows.length,
+      exact_unique_stage_hashes: uniqueStages.size,
+      aggregate,
+    },
+    webgl_precision_equivalence: {
+      exact_unique_stage_hashes: 0,
+      denominator_unique_stage_hashes: uniqueStages.size,
+      status: "not-claimed",
+    },
+    glitter_mixed_precision_aliases: glitterAliasContract,
+  };
+}
+
+function printResult(result) {
+  const denominator = result.denominator;
+  const aggregate = result.official_spirv_structure.aggregate;
+  const relaxed = aggregate.decorations.RelaxedPrecision;
+  const float16Types = aggregate.float_type_declarations
+    .find((row) => row.width === 16)?.declaration_count ?? 0;
+  const floatControlModes = Object.values(aggregate.float_control_execution_modes)
+    .reduce((total, count) => total + count, 0);
+  console.log("official shader precision audit: OK");
+  console.log(
+    `  formal ports ${result.official_spirv_structure.exact_formal_ports}/${denominator.formal_ports}; `
+      + `manifests ${denominator.manifests}; stage references ${denominator.stage_references}`,
+  );
+  console.log(
+    `  unique official stage structures ${result.official_spirv_structure.exact_unique_stage_hashes}`
+      + `/${denominator.unique_stage_hashes}; RelaxedPrecision instructions `
+      + `${relaxed.source_instruction_count}`,
+  );
+  console.log(
+    `  Float16 capability/type ${aggregate.capabilities.Float16}`
+      + `/${float16Types}; QuantizeToF16 `
+      + `${aggregate.quantize_to_f16_instruction_count}; float-control modes `
+      + `${floatControlModes}`,
+  );
+  console.log(
+    `  Vulkan-to-WebGL precision equivalence `
+      + `${result.webgl_precision_equivalence.exact_unique_stage_hashes}`
+      + `/${result.webgl_precision_equivalence.denominator_unique_stage_hashes} exact `
+      + `(${result.webgl_precision_equivalence.status})`,
+  );
+  console.log("  Glitter mixed-precision local aliases: exact declaration preservation only");
+}
+
+const invokedAsScript = process.argv[1]
+  && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (invokedAsScript) {
+  try {
+    printResult(auditOfficialShaderPrecision());
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+  }
+}

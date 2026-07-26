@@ -16,11 +16,17 @@ import {
   generateExactSelectorPort,
   joinProgramSamplerBindings,
   joinSamplerBindings,
+  parseSpirvPrecisionFacts,
   runCommand,
   sha256,
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import {
+  auditOfficialShaderPrecision,
+  GLITTER_ALIAS_CONTRACT,
+  validateFormalPortPrecisionManifest,
+} from "./audit-official-shader-precision.mjs";
 import { selectExactShaderPort } from "../public/render/context.js";
 
 test("runtime selector gate is fail-closed for manifestless and derived identities", () => {
@@ -49,6 +55,103 @@ function tempDirectory(t) {
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   return directory;
 }
+
+function spirvModule(instructions) {
+  const words = [
+    0x07230203,
+    0x00010500,
+    0,
+    64,
+    0,
+    ...instructions.flatMap(([opcode, ...operands]) => [
+      ((operands.length + 1) << 16) | opcode,
+      ...operands,
+    ]),
+  ];
+  const bytes = Buffer.alloc(words.length * 4);
+  words.forEach((word, index) => bytes.writeUInt32LE(word >>> 0, index * 4));
+  return bytes;
+}
+
+function precisionSpirvFixture() {
+  return spirvModule([
+    [17, 1],
+    [17, 9],
+    [22, 1, 32],
+    [22, 2, 16],
+    [73, 3],
+    [71, 4, 0],
+    [72, 5, 2, 0],
+    [71, 3, 0],
+    [74, 3, 6, 7],
+    [71, 8, 40, 1],
+    [71, 9, 39, 2],
+    [71, 10, 42],
+    [116, 2, 13, 14],
+    [16, 11, 4459, 32],
+    [331, 11, 4462, 12],
+  ]);
+}
+
+test("SPIR-V precision parser closes direct/group facts and rejects structural mutations", () => {
+  const facts = parseSpirvPrecisionFacts(precisionSpirvFixture());
+  assert.equal(facts.schema, "pocket-card-render/spirv-stage-precision@1");
+  assert.equal(facts.capabilities.Float16Buffer, 0);
+  assert.equal(facts.capabilities.Float16, 1);
+  assert.equal(facts.capabilities.Float16ImageAMD, 0);
+  assert.equal(facts.capabilities.FloatControls2, 0);
+  assert.deepEqual(facts.float_types, [
+    { width: 16, declaration_count: 1 },
+    { width: 32, declaration_count: 1 },
+  ]);
+  assert.deepEqual(facts.decorations.RelaxedPrecision, {
+    decoration_value: 0,
+    instruction_counts: { decorate: 2, member_decorate: 1, decorate_id: 0 },
+    source_instruction_count: 3,
+    direct_application_count: 2,
+    group_application_count: 2,
+    effective_application_count: 4,
+    operand_sets: [{ operands: [], declaration_count: 3 }],
+  });
+  assert.equal(facts.decorations.FPFastMathMode.effective_application_count, 1);
+  assert.equal(facts.decorations.FPRoundingMode.effective_application_count, 1);
+  assert.equal(facts.decorations.NoContraction.effective_application_count, 1);
+  assert.equal(facts.quantize_to_f16_count, 1);
+  assert.deepEqual(
+    facts.float_control_execution_modes.map(({ opcode, mode, operands }) => ({
+      opcode,
+      mode,
+      operands,
+    })),
+    [
+      { opcode: "OpExecutionMode", mode: "DenormPreserve", operands: [32] },
+      { opcode: "OpExecutionModeId", mode: "RoundingModeRTE", operands: [12] },
+    ],
+  );
+  assert.match(facts.instruction_structure_sha256, /^[0-9a-f]{64}$/);
+  assert.match(facts.facts_sha256, /^[0-9a-f]{64}$/);
+
+  const changed = parseSpirvPrecisionFacts(spirvModule([
+    [17, 1],
+    [22, 1, 32],
+    [71, 4, 42],
+  ]));
+  assert.notEqual(changed.instruction_structure_sha256, facts.instruction_structure_sha256);
+
+  const truncated = precisionSpirvFixture().subarray(0, -4);
+  assert.throws(
+    () => parseSpirvPrecisionFacts(truncated),
+    /malformed instruction/,
+  );
+  const missingFloatControlWidth = spirvModule([
+    [22, 1, 32],
+    [16, 11, 4459],
+  ]);
+  assert.throws(
+    () => parseSpirvPrecisionFacts(missingFloatControlWidth),
+    /invalid operand count/,
+  );
+});
 
 function parameter(val, name = "<noninit>") {
   return { val, name };
@@ -532,8 +635,8 @@ test("high-level selector generator closes the standard manifest envelope and fa
   const vertexSpirv = path.join(root, "fixture.vert.spv");
   const fragmentSpirv = path.join(root, "fixture.frag.spv");
   const parameterEntry = path.join(root, "fixture.parameter.bin");
-  fs.writeFileSync(vertexSpirv, "vertex-spv");
-  fs.writeFileSync(fragmentSpirv, "fragment-spv");
+  fs.writeFileSync(vertexSpirv, precisionSpirvFixture());
+  fs.writeFileSync(fragmentSpirv, precisionSpirvFixture());
   fs.writeFileSync(parameterEntry, "parameter");
   const officialVertex = "official vertex\n";
   const officialFragment = "official fragment\n";
@@ -547,7 +650,14 @@ test("high-level selector generator closes the standard manifest envelope and fa
     ] },
   };
   const metadata = {
-    selector: { selectorId: "1".repeat(64), candidateWitnessId: "2".repeat(64), keywords: [], subshader: 0, pass: 0 },
+    selector: {
+      selectorId: "1".repeat(64),
+      candidateWitnessId: "2".repeat(64),
+      semanticExecutableId: "4".repeat(64),
+      keywords: [],
+      subshader: 0,
+      pass: 0,
+    },
     identityFields: {
       vertexSpirvSha256: sha256FileForTest(vertexSpirv),
       fragmentSpirvSha256: sha256FileForTest(fragmentSpirv),
@@ -586,6 +696,120 @@ test("high-level selector generator closes the standard manifest envelope and fa
   const generated = await generateExactSelectorPort(base);
   assert.equal(generated.manifest.sampler_bindings.length, 3);
   assert.equal(generated.manifest.official_selector.selectorId, metadata.selector.selectorId);
+  assert.equal(
+    generated.manifest.official_spirv_precision.schema,
+    "pocket-card-render/official-spirv-precision@1",
+  );
+  assert.equal(
+    generated.manifest.official_spirv_precision.vulkan_to_webgl_equivalence,
+    "not-claimed",
+  );
+  assert.equal(
+    generated.manifest.official_spirv_precision.stages.vertex
+      .decorations.RelaxedPrecision.effective_application_count,
+    4,
+  );
+  const formalPort = {
+    selectorId: metadata.selector.selectorId,
+    candidateWitnessId: metadata.selector.candidateWitnessId,
+    subshader: metadata.selector.subshader,
+    pass: metadata.selector.pass,
+    semanticExecutableId: metadata.selector.semanticExecutableId,
+    generator: base.generatedBy,
+    officialIdentityFields: metadata.identityFields,
+  };
+  assert.doesNotThrow(() => validateFormalPortPrecisionManifest(
+    generated.manifest,
+    formalPort,
+    "generated test manifest",
+  ));
+  const missingPrecision = structuredClone(generated.manifest);
+  delete missingPrecision.official_spirv_precision;
+  assert.throws(
+    () => validateFormalPortPrecisionManifest(missingPrecision, formalPort, "missing precision manifest"),
+    /official_spirv_precision is absent/,
+  );
+  const missingStageField = structuredClone(generated.manifest);
+  delete missingStageField.official_spirv_precision.stages.fragment.facts_sha256;
+  assert.throws(
+    () => validateFormalPortPrecisionManifest(missingStageField, formalPort, "missing stage field manifest"),
+    /fields changed/,
+  );
+  const shaderDir = path.join(root, "public", "shaders");
+  fs.mkdirSync(shaderDir, { recursive: true });
+  const glitterVertex = `precision highp float;
+uniform highp vec4 _FlowParams[2];
+uniform mediump float _FakeCameraHeight;
+uniform mediump float _Height;
+uniform mediump float _HeightPower;
+uniform mediump float _Scale;
+uniform mediump float _FlowScale;
+uniform mediump float _FakeCameraHeightB;
+uniform mediump float _HeightB;
+uniform mediump float _HeightPowerB;
+uniform mediump float _ScaleB;
+uniform mediump float _FlowScaleB;
+in mediump vec4 tangent;
+`;
+  const glitterFragment = `precision mediump float;
+uniform highp vec4 _FlowParams[2];
+uniform highp float _FadeDuration;
+uniform highp float _FlowAPower;
+uniform highp float _FlowBPower;
+uniform vec4 _LightColor;
+uniform highp float _LightTime;
+uniform highp float _EmitThreshold;
+layout(location = 1) out highp vec4 _1092;
+void main() {
+  _1092 = vec4(0.0);
+}
+`;
+  fs.writeFileSync(path.join(shaderDir, "glitter.vert.glsl"), glitterVertex);
+  fs.writeFileSync(path.join(shaderDir, "glitter.frag.glsl"), glitterFragment);
+  const auditManifest = {
+    ...generated.manifest,
+    shader: "Lettuce/Common/CardNew/Face/Card_UR_Glitter_FlowMaps",
+    webgl_sources: {
+      vertex: "public/shaders/glitter.vert.glsl",
+      fragment: "public/shaders/glitter.frag.glsl",
+    },
+  };
+  fs.writeFileSync(
+    path.join(shaderDir, "glitter.json"),
+    `${JSON.stringify(auditManifest, null, 2)}\n`,
+  );
+  fs.writeFileSync(
+    path.join(shaderDir, "official_program_port_contract.json"),
+    `${JSON.stringify({
+      schema: "pocket-card-render/official-program-port-contract@2",
+      ports: [{
+        ...formalPort,
+        manifest: "public/shaders/glitter.json",
+      }],
+    }, null, 2)}\n`,
+  );
+  const testGlitterAliasContract = structuredClone(GLITTER_ALIAS_CONTRACT);
+  testGlitterAliasContract.selectorId = formalPort.selectorId;
+  testGlitterAliasContract.candidateWitnessId = formalPort.candidateWitnessId;
+  testGlitterAliasContract.stages.vertex.officialSpirvSha256 =
+    metadata.identityFields.vertexSpirvSha256;
+  testGlitterAliasContract.stages.fragment.officialSpirvSha256 =
+    metadata.identityFields.fragmentSpirvSha256;
+  const audit = auditOfficialShaderPrecision({
+    rootDir: root,
+    glitterAliasContract: testGlitterAliasContract,
+  });
+  assert.deepEqual(audit.denominator, {
+    formal_ports: 1,
+    manifests: 1,
+    stage_references: 2,
+    unique_stage_hashes: 1,
+  });
+  assert.deepEqual(audit.webgl_precision_equivalence, {
+    exact_unique_stage_hashes: 0,
+    denominator_unique_stage_hashes: 1,
+    status: "not-claimed",
+  });
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, "test.json"))).shader, "Lettuce/Test/Exact");
   await generateExactSelectorPort({ ...base, output: { ...base.output, check: true } });
   await assert.rejects(

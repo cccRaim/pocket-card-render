@@ -8,6 +8,51 @@ import { fileURLToPath } from "node:url";
 const MODULE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
 const STENCIL_KEYS = ["comp", "fail", "pass", "zFail"];
+const SPIRV_MAGIC = 0x07230203;
+const SPIRV_OP = Object.freeze({
+  ExecutionMode: 16,
+  Capability: 17,
+  TypeFloat: 22,
+  Decorate: 71,
+  MemberDecorate: 72,
+  DecorationGroup: 73,
+  GroupDecorate: 74,
+  GroupMemberDecorate: 75,
+  QuantizeToF16: 116,
+  ExecutionModeId: 331,
+  DecorateId: 332,
+});
+const SPIRV_PRECISION_DECORATIONS = Object.freeze({
+  0: "RelaxedPrecision",
+  39: "FPRoundingMode",
+  40: "FPFastMathMode",
+  42: "NoContraction",
+});
+const SPIRV_FLOAT_CAPABILITIES = Object.freeze({
+  8: "Float16Buffer",
+  9: "Float16",
+  10: "Float64",
+  4464: "DenormPreserve",
+  4465: "DenormFlushToZero",
+  4466: "SignedZeroInfNanPreserve",
+  4467: "RoundingModeRTE",
+  4468: "RoundingModeRTZ",
+  5008: "Float16ImageAMD",
+  6029: "FloatControls2",
+});
+const SPIRV_FLOAT_CONTROL_MODES = Object.freeze({
+  4459: "DenormPreserve",
+  4460: "DenormFlushToZero",
+  4461: "SignedZeroInfNanPreserve",
+  4462: "RoundingModeRTE",
+  4463: "RoundingModeRTZ",
+});
+
+export const OFFICIAL_SPIRV_PRECISION_SCHEMA =
+  "pocket-card-render/official-spirv-precision@1";
+export const SPIRV_PRECISION_STAGE_SCHEMA =
+  "pocket-card-render/spirv-stage-precision@1";
+
 
 export const DEFAULT_TEXTURE_DIMENSION_TYPES = Object.freeze({
   2: "sampler2D",
@@ -119,6 +164,295 @@ export function canonicalJson(value) {
 
 export function canonicalJsonSha256(value) {
   return sha256(canonicalJson(value));
+}
+
+function asSpirvBuffer(value) {
+  if (Buffer.isBuffer(value)) return value;
+  if (value instanceof ArrayBuffer) return Buffer.from(value);
+  if (ArrayBuffer.isView(value)) {
+    return Buffer.from(value.buffer, value.byteOffset, value.byteLength);
+  }
+  fail("SPIR-V precision input must be a Buffer, ArrayBuffer, or typed array");
+}
+
+function increment(map, key, amount = 1) {
+  map.set(key, (map.get(key) ?? 0) + amount);
+}
+
+function sortedCountRows(map, keyName, numeric = false) {
+  return [...map.entries()]
+    .sort(([left], [right]) => (
+      numeric ? Number(left) - Number(right) : String(left).localeCompare(String(right))
+    ))
+    .map(([key, declarationCount]) => ({
+      [keyName]: numeric ? Number(key) : key,
+      declaration_count: declarationCount,
+    }));
+}
+
+/**
+ * Parse only precision and floating-point-control facts from an already
+ * validated official SPIR-V module. The instruction-structure digest binds
+ * exact target/member rows without inflating every generated manifest.
+ */
+export function parseSpirvPrecisionFacts(value) {
+  const bytes = asSpirvBuffer(value);
+  if (bytes.length < 20) fail("SPIR-V precision input is shorter than its five-word header");
+  if (bytes.length % 4 !== 0) fail("SPIR-V precision input is not word aligned");
+  const wordAt = (index) => bytes.readUInt32LE(index * 4);
+  if (wordAt(0) !== SPIRV_MAGIC) fail("SPIR-V precision input has invalid magic");
+
+  const versionWord = wordAt(1);
+  const major = (versionWord >>> 16) & 0xff;
+  const minor = (versionWord >>> 8) & 0xff;
+  const revision = versionWord & 0xff;
+  if (major !== 1 || minor > 6) {
+    fail(`SPIR-V precision input has unsupported version ${major}.${minor}.${revision}`);
+  }
+  const generatorMagic = wordAt(2);
+  const idBound = wordAt(3);
+  const schemaWord = wordAt(4);
+  if (idBound === 0) fail("SPIR-V precision input has zero id bound");
+  if (schemaWord !== 0) fail(`SPIR-V precision input has unsupported schema word ${schemaWord}`);
+
+  const capabilityCounts = new Map(
+    Object.values(SPIRV_FLOAT_CAPABILITIES).map((name) => [name, 0]),
+  );
+  const floatTypeCounts = new Map();
+  const decorationRows = [];
+  const decorationGroups = new Set();
+  const groupApplications = new Map();
+  const quantizeRows = [];
+  const floatControlRows = [];
+  let instructionCount = 0;
+
+  for (let offset = 5; offset < bytes.length / 4;) {
+    const instruction = wordAt(offset);
+    const wordCount = instruction >>> 16;
+    const opcode = instruction & 0xffff;
+    if (wordCount === 0 || offset + wordCount > bytes.length / 4) {
+      fail(`SPIR-V precision input has malformed instruction at word ${offset}`);
+    }
+    const operands = Array.from(
+      { length: wordCount - 1 },
+      (_, index) => wordAt(offset + index + 1),
+    );
+    instructionCount += 1;
+
+    if (opcode === SPIRV_OP.Capability) {
+      if (wordCount !== 2) fail(`OpCapability at word ${offset} has invalid word count`);
+      const name = SPIRV_FLOAT_CAPABILITIES[operands[0]];
+      if (name) increment(capabilityCounts, name);
+    } else if (opcode === SPIRV_OP.TypeFloat) {
+      if (wordCount !== 3) fail(`OpTypeFloat at word ${offset} has invalid word count`);
+      if (operands[1] === 0) fail(`OpTypeFloat at word ${offset} has zero width`);
+      increment(floatTypeCounts, operands[1]);
+    } else if (opcode === SPIRV_OP.DecorationGroup) {
+      if (wordCount !== 2) fail(`OpDecorationGroup at word ${offset} has invalid word count`);
+      if (decorationGroups.has(operands[0])) {
+        fail(`OpDecorationGroup at word ${offset} repeats result id ${operands[0]}`);
+      }
+      decorationGroups.add(operands[0]);
+    } else if (opcode === SPIRV_OP.GroupDecorate) {
+      if (wordCount < 3) fail(`OpGroupDecorate at word ${offset} has invalid word count`);
+      const [groupId, ...targets] = operands;
+      const applications = groupApplications.get(groupId) ?? [];
+      applications.push(...targets.map((targetId) => ({ target_id: targetId })));
+      groupApplications.set(groupId, applications);
+    } else if (opcode === SPIRV_OP.GroupMemberDecorate) {
+      if (wordCount < 4 || (wordCount - 2) % 2 !== 0) {
+        fail(`OpGroupMemberDecorate at word ${offset} has invalid word count`);
+      }
+      const [groupId, ...targetMembers] = operands;
+      const applications = groupApplications.get(groupId) ?? [];
+      for (let index = 0; index < targetMembers.length; index += 2) {
+        applications.push({
+          target_id: targetMembers[index],
+          member_index: targetMembers[index + 1],
+        });
+      }
+      groupApplications.set(groupId, applications);
+    } else if (
+      opcode === SPIRV_OP.Decorate
+      || opcode === SPIRV_OP.MemberDecorate
+      || opcode === SPIRV_OP.DecorateId
+    ) {
+      const member = opcode === SPIRV_OP.MemberDecorate;
+      const minimum = member ? 3 : 2;
+      if (operands.length < minimum) {
+        fail(`precision decoration instruction at word ${offset} is truncated`);
+      }
+      const decorationIndex = member ? 2 : 1;
+      const decorationValue = operands[decorationIndex];
+      const decorationName = SPIRV_PRECISION_DECORATIONS[decorationValue];
+      if (decorationName) {
+        const parameters = operands.slice(decorationIndex + 1);
+        const expectedParameterCount = (
+          decorationName === "FPRoundingMode" || decorationName === "FPFastMathMode"
+        ) ? 1 : 0;
+        if (parameters.length !== expectedParameterCount) {
+          fail(`${decorationName} at word ${offset} has invalid operand count`);
+        }
+        decorationRows.push({
+          word_offset: offset,
+          opcode: opcode === SPIRV_OP.Decorate
+            ? "OpDecorate"
+            : opcode === SPIRV_OP.MemberDecorate
+              ? "OpMemberDecorate"
+              : "OpDecorateId",
+          target_id: operands[0],
+          ...(member ? { member_index: operands[1] } : {}),
+          decoration: decorationName,
+          decoration_value: decorationValue,
+          operands: parameters,
+        });
+      }
+    } else if (opcode === SPIRV_OP.QuantizeToF16) {
+      if (wordCount !== 4) fail(`OpQuantizeToF16 at word ${offset} has invalid word count`);
+      quantizeRows.push({
+        word_offset: offset,
+        result_type_id: operands[0],
+        result_id: operands[1],
+        value_id: operands[2],
+      });
+    } else if (opcode === SPIRV_OP.ExecutionMode || opcode === SPIRV_OP.ExecutionModeId) {
+      if (wordCount < 3) fail(`execution mode at word ${offset} is truncated`);
+      const modeName = SPIRV_FLOAT_CONTROL_MODES[operands[1]];
+      if (modeName) {
+        const modeOperands = operands.slice(2);
+        if (modeOperands.length !== 1) {
+          fail(`${modeName} execution mode at word ${offset} has invalid operand count`);
+        }
+        floatControlRows.push({
+          word_offset: offset,
+          opcode: opcode === SPIRV_OP.ExecutionMode ? "OpExecutionMode" : "OpExecutionModeId",
+          entry_point_id: operands[0],
+          mode: modeName,
+          mode_value: operands[1],
+          operands: modeOperands,
+        });
+      }
+    }
+    offset += wordCount;
+  }
+
+  for (const groupId of groupApplications.keys()) {
+    if (!decorationGroups.has(groupId)) {
+      fail(`SPIR-V precision input references undeclared decoration group ${groupId}`);
+    }
+  }
+
+  const decorations = {};
+  for (const [decorationValue, decorationName] of Object.entries(SPIRV_PRECISION_DECORATIONS)) {
+    const rows = decorationRows.filter((row) => row.decoration === decorationName);
+    const instructionCounts = {
+      decorate: rows.filter((row) => row.opcode === "OpDecorate").length,
+      member_decorate: rows.filter((row) => row.opcode === "OpMemberDecorate").length,
+      decorate_id: rows.filter((row) => row.opcode === "OpDecorateId").length,
+    };
+    let directApplications = 0;
+    let groupApplicationsCount = 0;
+    const operandSets = new Map();
+    for (const row of rows) {
+      increment(operandSets, canonicalJson(row.operands));
+      if (decorationGroups.has(row.target_id)) {
+        groupApplicationsCount += (groupApplications.get(row.target_id) ?? []).length;
+      } else {
+        directApplications += 1;
+      }
+    }
+    decorations[decorationName] = {
+      decoration_value: Number(decorationValue),
+      instruction_counts: instructionCounts,
+      source_instruction_count: rows.length,
+      direct_application_count: directApplications,
+      group_application_count: groupApplicationsCount,
+      effective_application_count: directApplications + groupApplicationsCount,
+      operand_sets: sortedCountRows(operandSets, "operands").map((row) => ({
+        operands: JSON.parse(row.operands),
+        declaration_count: row.declaration_count,
+      })),
+    };
+  }
+
+  const floatControlCounts = new Map();
+  for (const row of floatControlRows) {
+    const key = canonicalJson({
+      opcode: row.opcode,
+      mode: row.mode,
+      mode_value: row.mode_value,
+      operands: row.operands,
+    });
+    increment(floatControlCounts, key);
+  }
+  const floatControlExecutionModes = sortedCountRows(floatControlCounts, "fact").map((row) => ({
+    ...JSON.parse(row.fact),
+    declaration_count: row.declaration_count,
+  }));
+  const relevantGroupRows = [...new Set(
+    decorationRows
+      .filter((row) => decorationGroups.has(row.target_id))
+      .map((row) => row.target_id),
+  )].sort((left, right) => left - right).map((groupId) => ({
+    group_id: groupId,
+    applications: groupApplications.get(groupId) ?? [],
+  }));
+  const instructionStructure = {
+    capabilities: Object.entries(SPIRV_FLOAT_CAPABILITIES)
+      .flatMap(([value, name]) => Array.from(
+        { length: capabilityCounts.get(name) },
+        () => ({ capability: name, capability_value: Number(value) }),
+      )),
+    float_types: sortedCountRows(floatTypeCounts, "width", true),
+    decorations: decorationRows,
+    decoration_groups: relevantGroupRows,
+    quantize_to_f16: quantizeRows,
+    float_control_execution_modes: floatControlRows,
+  };
+  const facts = {
+    schema: SPIRV_PRECISION_STAGE_SCHEMA,
+    source_sha256: sha256(bytes),
+    byte_size: bytes.length,
+    word_count: bytes.length / 4,
+    header: {
+      version_word: versionWord,
+      version: `${major}.${minor}.${revision}`,
+      major,
+      minor,
+      revision,
+      generator_magic: generatorMagic,
+      id_bound: idBound,
+      schema_word: schemaWord,
+    },
+    instruction_count: instructionCount,
+    capabilities: Object.fromEntries(capabilityCounts),
+    float_types: sortedCountRows(floatTypeCounts, "width", true),
+    decorations,
+    quantize_to_f16_count: quantizeRows.length,
+    float_control_execution_modes: floatControlExecutionModes,
+    instruction_structure_sha256: canonicalJsonSha256(instructionStructure),
+  };
+  return {
+    ...facts,
+    facts_sha256: canonicalJsonSha256(facts),
+  };
+}
+
+export function buildOfficialSpirvPrecisionEvidence(value) {
+  const stages = record(value, "official SPIR-V precision stages");
+  return {
+    schema: OFFICIAL_SPIRV_PRECISION_SCHEMA,
+    evidence_scope: "official-vulkan-spirv-structure",
+    vulkan_to_webgl_equivalence: "not-claimed",
+    stages: {
+      vertex: parseSpirvPrecisionFacts(
+        ownDataValue(stages, "vertex", "official SPIR-V precision stages"),
+      ),
+      fragment: parseSpirvPrecisionFacts(
+        ownDataValue(stages, "fragment", "official SPIR-V precision stages"),
+      ),
+    },
+  };
 }
 
 const UNITY_OBJECT_AXIS_HELPERS = Object.freeze({
@@ -1074,6 +1408,22 @@ export async function generateExactSelectorPort(options) {
     const { metadata, files, reflection } = bundle;
     if (!reflection?.vertex || !reflection?.fragment) fail("selector port requires vertex and fragment reflection");
     validateReflection(reflection, metadata);
+    const officialSpirvPrecision = buildOfficialSpirvPrecisionEvidence({
+      vertex: fs.readFileSync(files.vertexSpirv),
+      fragment: fs.readFileSync(files.fragmentSpirv),
+    });
+    for (const [stage, identityKey] of [
+      ["vertex", "vertexSpirvSha256"],
+      ["fragment", "fragmentSpirvSha256"],
+    ]) {
+      const expectedHash = hashString(
+        ownDataValue(metadata.identityFields, identityKey, "identityFields"),
+        `identityFields.${identityKey}`,
+      );
+      if (officialSpirvPrecision.stages[stage].source_sha256 !== expectedHash) {
+        fail(`${stage} SPIR-V precision evidence does not match official executable identity`);
+      }
+    }
     const officialVertex = runner(
       spirvCross,
       [files.vertexSpirv, "--version", "300", "--es"],
@@ -1140,9 +1490,10 @@ export async function generateExactSelectorPort(options) {
       selected_keywords: metadata.selector.keywords,
       official_selector: metadata.selector,
       official_spirv_sha256: {
-        vertex: sha256File(files.vertexSpirv),
-        fragment: sha256File(files.fragmentSpirv),
+        vertex: officialSpirvPrecision.stages.vertex.source_sha256,
+        fragment: officialSpirvPrecision.stages.fragment.source_sha256,
       },
+      official_spirv_precision: officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
