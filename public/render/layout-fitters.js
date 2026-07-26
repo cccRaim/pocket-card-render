@@ -350,11 +350,11 @@ function setChildrenAlongAxis(group, children, containerSize, layoutInput, axis)
   });
 }
 
-export function executeLayoutGroup({ component, containerSize, children }) {
+function normalizeGroupComponent(component) {
   if (!component || !["horizontal", "vertical"].includes(component.kind)) {
     fail("component must be a normalized horizontal or vertical LayoutGroup");
   }
-  const group = {
+  return {
     kind: component.kind,
     enabled: bool(component.enabled, "component.enabled"),
     padding: {
@@ -383,12 +383,84 @@ export function executeLayoutGroup({ component, containerSize, children }) {
     ],
     reverseArrangement: bool(component.reverseArrangement, "component.reverseArrangement"),
   };
-  const size = vec2(containerSize, "containerSize");
+}
+
+function normalizeGroupChildren(children) {
   if (!Array.isArray(children)) fail("children must be an array");
   const normalized = children.map(normalizedChild);
   if (new Set(normalized.map((child) => child.id)).size !== normalized.length) {
     fail("children ids must be unique");
   }
+  return normalized;
+}
+
+function normalizeGroupLayoutInput(layoutInput) {
+  if (!layoutInput || typeof layoutInput !== "object" || Array.isArray(layoutInput)) {
+    fail("layoutInput must be an object");
+  }
+  return {
+    min: vec2(layoutInput.min, "layoutInput.min"),
+    preferred: vec2(layoutInput.preferred, "layoutInput.preferred"),
+    flexible: vec2(layoutInput.flexible, "layoutInput.flexible"),
+  };
+}
+
+export function calculateLayoutGroupAxis({ component, children, axis }) {
+  axisName(axis);
+  const group = normalizeGroupComponent(component);
+  const normalized = normalizeGroupChildren(children);
+  const included = normalized.filter((child) => child.activeInHierarchy && !child.ignoreLayout);
+  if (!group.enabled) {
+    return {
+      applied: false,
+      layoutInput: null,
+      includedChildIds: [],
+    };
+  }
+  return {
+    applied: true,
+    layoutInput: calculateAlongAxis(group, included, axis),
+    includedChildIds: included.map((child) => child.id),
+  };
+}
+
+export function controlLayoutGroupAxis({
+  component,
+  containerSize,
+  children,
+  layoutInput,
+  axis,
+}) {
+  axisName(axis);
+  const group = normalizeGroupComponent(component);
+  const size = vec2(containerSize, "containerSize");
+  const normalized = normalizeGroupChildren(children);
+  const included = normalized.filter((child) => child.activeInHierarchy && !child.ignoreLayout);
+  if (!group.enabled) {
+    return {
+      applied: false,
+      includedChildIds: [],
+      children: normalized,
+    };
+  }
+  setChildrenAlongAxis(
+    group,
+    included,
+    size,
+    normalizeGroupLayoutInput(layoutInput),
+    axis,
+  );
+  return {
+    applied: true,
+    includedChildIds: included.map((child) => child.id),
+    children: normalized,
+  };
+}
+
+export function executeLayoutGroup({ component, containerSize, children }) {
+  const group = normalizeGroupComponent(component);
+  const size = vec2(containerSize, "containerSize");
+  const normalized = normalizeGroupChildren(children);
   const included = normalized.filter((child) => child.activeInHierarchy && !child.ignoreLayout);
   if (!group.enabled) {
     return {
