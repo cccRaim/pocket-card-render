@@ -74,7 +74,8 @@ function testFullSourceClassification() {
   assert.equal(files.includes("public/shaders/tmp_sdf_program.json"), true);
   assert.equal(files.includes("public/shaders/glitter.frag.glsl"), true);
   assert.equal(files.includes("public/shaders/ur_plate_uniforms.json"), true);
-  assert.equal(files.includes("public/shaders/official_program_port_contract.json"), false);
+  assert.equal(files.includes("public/shaders/official_program_port_contract.json"), true);
+  assert.equal(files.includes("public/shaders/side_back_program.json"), true);
 
   const runtimeManifest = "public/shaders/ur_plate_uniforms.json";
   const hashes = Object.fromEntries(files.map((file) => [file, DIGEST_A]));

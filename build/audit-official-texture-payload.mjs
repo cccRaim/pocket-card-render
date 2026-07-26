@@ -85,6 +85,16 @@ for (const [url, extracted] of Object.entries(official.textures)) {
 
   const chain = entry.fallback?.rgba8MipChain;
   if (entry.mipCount > 1 && !chain) issues.push(`${url}: multi-mip texture has no deterministic fallback`);
+  if (entry.format?.name?.startsWith("ASTC_HDR_")) {
+    if (!chain) {
+      issues.push(`${url}: ASTC HDR texture has no deterministic fallback`);
+    } else if (chain.sourceEncoding !== entry.format.name
+        || chain.decoder?.name !== "ARM astcenc"
+        || !chain.decoder?.profile?.startsWith("HDR RGB/LDR alpha")
+        || !SHA256.test(chain.decoder?.executableSha256 || "")) {
+      issues.push(`${url}: ASTC HDR fallback lacks exact HDR decoder provenance`);
+    }
+  }
   if (!chain) continue;
   fallbackFiles += 1;
   fallbackBytes += chain.byteLength;
@@ -133,6 +143,9 @@ if (cardBackObjects.size !== 2 || cardBackPayloads.size !== 1) {
 if (/generateMipmaps\s*=\s*true/.test(runtimeSource)) issues.push("runtime still enables browser mip generation");
 if (!/new THREE\.DataTexture/.test(runtimeSource) || !/texture\.mipmaps\s*=\s*mipmaps/.test(runtimeSource)) {
   issues.push("runtime does not upload explicit official mip levels");
+}
+if (!/samplerState\?\.fallback\?\.rgba8MipChain/.test(runtimeSource)) {
+  issues.push("runtime does not prefer an available deterministic official fallback");
 }
 if (/Canvas|canvas|getContext\s*\(/.test(runtimeSource)) issues.push("static official texture loader must not use Canvas");
 

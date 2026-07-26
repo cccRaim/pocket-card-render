@@ -3,16 +3,21 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
-  joinSamplerBindings,
+  compileOfficialVertexInputContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
   runCommand,
   sha256,
   sha256File,
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -34,6 +39,14 @@ const fragmentMembers = [
   "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset",
   "_RampInterval", "_AlphaBlend", "_EmitMasking", "_Rotation",
 ];
+const FRAGMENT_BASIS_CONVERSIONS = {
+  worldVectors: [
+    { source: "cameraPosition", alias: "pcrUnityCameraPosition", expectedOccurrences: 1 },
+    { source: "vs_TEXCOORD1", alias: "pcrUnityWorldPosition", expectedOccurrences: 1 },
+    { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 3 },
+  ],
+  viewForwards: [{ matrixName: "viewMatrix", targetName: "_9" }],
+};
 
 const PASS_POLICY = {
   rtSeparateBlend: false,
@@ -131,6 +144,10 @@ function adaptFragment(source) {
     "",
   ].join("\n"));
   out = replaceMembers(out, "_16", fragmentMembers);
+  out = adaptThreeWorldVectorsToUnityDataAxes(out, {
+    bindings: FRAGMENT_BASIS_CONVERSIONS.worldVectors,
+  });
+  out = adaptThreeViewForwardToUnityDataAxes(out, FRAGMENT_BASIS_CONVERSIONS.viewForwards[0]);
   assertMatch(out, /_623\s*=\s*_562;/, "official MRT1 output missing");
   assertMatch(out, /_562\.w\s*=\s*_274\.w\s*\*\s*_EmitMasking;/, "official emit-mask expression missing");
   if (/_16\._m/.test(out)) throw new Error("fragment adaptation incomplete");
@@ -197,7 +214,21 @@ await withExtractedSelectorProgram({
   const vertex = adaptVertex(officialVert);
   const fragment = adaptFragment(officialFrag);
   const bindings = compileCommonBindings(metadata.commonBindings);
-  const samplerBindings = joinSamplerBindings(bindings, fragReflection).map(({ set, ...row }) => {
+  const programBindings = compileProgramBindings(
+    bindings,
+    metadata.parameterReflection,
+    metadata.shaderPropertyDefaults,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    vertReflection,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
     return row;
   });
@@ -209,12 +240,45 @@ await withExtractedSelectorProgram({
     { slot: "_RampMaskTex", spirvName: "_278" },
     { slot: "_RampTex", spirvName: "_332" },
   ]);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Transparent_Hologram_Tuning",
+    attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
+    engine_uniforms: {
+      modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+    },
+    material_uniforms: {
+      floats: [
+        "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity",
+        "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
+        "_AlphaBlend", "_EmitMasking",
+      ],
+      ints: [],
+      vectors: { _Rotation: "vec3" },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: true,
+    mrt_attachments: 2,
+    stencil_normalization: "disable-when-always-keep",
+    stencil_face_mode: "generic",
+    backend_texture_defaults: { _CubeMap: "neutral-gray-cube" },
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(vertSpv), spirvCrossGlslSha256: sha256(officialVert),
       outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position vec4 := vec4(three.position, 1.0)", "uv location 1 := three.uv",
         "normal location 2 := three.normal", "unity_ObjectToWorld := three.modelMatrix",
@@ -226,10 +290,26 @@ await withExtractedSelectorProgram({
     fragment: {
       officialSpirvSha256: sha256File(fragSpv), spirvCrossGlslSha256: sha256(officialFrag),
       outputSha256: sha256(fragment),
-      substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+        "convert Three world camera, position, normal and reconstructed view-forward vectors to Unity data axes",
+      ],
     },
     interfaceSha256: canonicalJsonSha256({ vertex: vertReflection, fragment: fragReflection }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const outputs = {
     "transparent_hologram_tuning.vert.glsl": vertex,
     "transparent_hologram_tuning.frag.glsl": fragment,
@@ -238,6 +318,7 @@ await withExtractedSelectorProgram({
       generated_by: "build/build-exact-transparent-hologram-tuning.mjs",
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: sha256File(vertSpv), fragment: sha256File(fragSpv) },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -250,33 +331,15 @@ await withExtractedSelectorProgram({
         policy: PASS_POLICY,
       }),
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
         vertex: "public/shaders/transparent_hologram_tuning.vert.glsl",
         fragment: "public/shaders/transparent_hologram_tuning.frag.glsl",
       },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: "Transparent_Hologram_Tuning",
-        attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
-        engine_uniforms: {
-          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
-        },
-        material_uniforms: {
-          floats: [
-            "_Shininess", "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity",
-            "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
-            "_AlphaBlend", "_EmitMasking",
-          ],
-          ints: [],
-          vectors: { _Rotation: "vec3" },
-        },
-        camera_from_view: true,
-        mrt_attachments: 2,
-        stencil_normalization: "disable-when-always-keep",
-        stencil_face_mode: "generic",
-      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),

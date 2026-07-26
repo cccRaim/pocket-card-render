@@ -3,7 +3,7 @@ import { defineMaterial } from "../registry.js";
 
 defineMaterial("dynamicText", {
   requires: (recipe, ctx) => !!(
-    ctx.dynHoloTex
+    ctx.dynUITex
     && ctx.exactShaderPort(recipe, "Text")
   ),
   build(recipe, ctx) {
@@ -14,7 +14,7 @@ defineMaterial("dynamicText", {
       uniforms: ctx.exactPortUniforms(
         recipe,
         exact,
-        ({ slot }) => slot === "_DynamicUITex" ? ctx.dynHoloTex : null,
+        ({ slot }) => slot === "_DynamicUITex" ? ctx.dynUITex : null,
       ),
       vertexShader: exact.vert,
       fragmentShader: exact.frag,

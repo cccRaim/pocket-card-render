@@ -44,6 +44,9 @@ export function auditTmpRuntimeEvidence(file = process.env.PCR_TMP_RUNTIME_EVIDE
   const fontContract = JSON.parse(fs.readFileSync(path.join(ROOT, "public/render/card-font-contract.json"), "utf8"));
   const inlineContract = fontContract.inlineElements;
   const spriteContract = JSON.parse(fs.readFileSync(path.join(ROOT, "public/render/tmp-sprite-contract.json"), "utf8"));
+  const spriteProgramContract = JSON.parse(
+    fs.readFileSync(path.join(ROOT, "public/render/tmp-sprite-program.json"), "utf8"),
+  );
   const expectedProgram = manifest.official_source.decompressed_program_sha256;
   const artifactErrors = [...errors];
   const captures = Object.values(artifact.captures || {}).map((capture) => {
@@ -87,6 +90,33 @@ export function auditTmpRuntimeEvidence(file = process.env.PCR_TMP_RUNTIME_EVIDE
       && binding.advance > 0)) {
       captureErrors.push("official TextExSprite binding and layout were not executed");
     }
+    const spriteDraws = (evidence.orderedDraws || []).filter((draw) =>
+      draw.kind === "TMP-Sprite" && draw.role === "inline-ex-sprite");
+    if (expectsExSprite) {
+      if (evidence.tmpSpriteDrawCount !== spriteDraws.length || spriteDraws.length < 1) {
+        captureErrors.push("inline EX did not execute through a dedicated TMP-Sprite draw");
+      }
+      if ((evidence.orderedDraws || []).some((draw) =>
+        draw.kind === "Image" && draw.role === "inline-ex-sprite")) {
+        captureErrors.push("inline EX incorrectly executed through the UIImage producer");
+      }
+      const spriteProgram = evidence.tmpSpriteProgram;
+      if (spriteProgram?.selectorId !== spriteProgramContract.officialSelector.selectorId
+          || spriteProgram?.candidateWitnessId
+            !== spriteProgramContract.officialSelector.candidateWitnessId
+          || spriteProgram?.executableId !== spriteProgramContract.officialSelector.executableId
+          || spriteProgram?.semanticExecutableId
+            !== spriteProgramContract.officialSelector.semanticExecutableId
+          || spriteProgram?.passStateSha256
+            !== spriteProgramContract.officialPass.passStateSha256
+          || spriteProgram?.commonBindingsSha256
+            !== spriteProgramContract.officialPass.commonBindingsSha256
+          || spriteProgram?.webglAdaptationStatus !== "source-hash-bound") {
+        captureErrors.push("dedicated TMP Sprite selector/program identity drifted");
+      }
+    } else if (spriteDraws.length || evidence.tmpSpriteDrawCount) {
+      captureErrors.push("non-ex card unexpectedly executed a TMP-Sprite draw");
+    }
     if (!expectsExSprite && spriteBindings.length) captureErrors.push("non-ex card unexpectedly executed TextExSprite");
     if (!nonemptyReadback(evidence.readback?.premultiplied)) captureErrors.push("premultiplied RT is empty or malformed");
     if (!nonemptyReadback(evidence.readback?.ui)) captureErrors.push("straight UI RT is empty or malformed");
@@ -98,6 +128,11 @@ export function auditTmpRuntimeEvidence(file = process.env.PCR_TMP_RUNTIME_EVIDE
       resourceBindings: evidence.resourceBindings || [],
       inlineElementBindingCount: inlineBindings.length,
       tmpSpriteBindingCount: spriteBindings.length,
+      tmpSpriteDrawCount: spriteDraws.length,
+      tmpSpriteProgramBound: expectsExSprite
+        && spriteDraws.length > 0
+        && evidence.tmpSpriteProgram?.selectorId
+          === spriteProgramContract.officialSelector.selectorId,
       errors: captureErrors,
     };
   });

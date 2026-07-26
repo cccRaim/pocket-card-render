@@ -40,7 +40,6 @@ uniform vec3 _OutlineColor;
 uniform vec4 _EmissiveColor;
 uniform vec3 _Rotation;
 uniform highp float _Tilt;
-uniform int uBloomOnly;
 
 uniform mediump sampler2D _13;
 uniform mediump sampler2D _291;
@@ -609,8 +608,4 @@ void main()
     _1992.w = _EmissiveColor.w;
     _2004 = (vec4(_42) * _350) + _1992;
     _1985.w = _9.w;
-    if (uBloomOnly != 0)
-    {
-        _1985 = _2004;
-    }
 }

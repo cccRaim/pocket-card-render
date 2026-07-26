@@ -58,6 +58,7 @@ float _594;
 
 void main()
 {
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD2.xy, -vs_TEXCOORD2.z);
     _9 = texture(_13, vs_TEXCOORD1).xw;
     _22.x = _9.x + (-_CutOut);
     _44 = _22.x < 0.0;
@@ -67,7 +68,7 @@ void main()
     }
     _59.x = -viewMatrix[0].z;
     _59.y = -viewMatrix[1].z;
-    _59.z = -viewMatrix[2].z;
+    _59.z = viewMatrix[2].z;
     _75.x = dot(_59.xyz, _59.xyz);
     _75.x = inversesqrt(_75.x);
     highp vec3 _91 = _75.xxx * _59.xyz;
@@ -97,9 +98,9 @@ void main()
     _59.y = _138.x;
     _59.w = _59.y;
     _172.z = dot(_59.zw, _86.xw);
-    _75.x = dot(vs_TEXCOORD2, vs_TEXCOORD2);
+    _75.x = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _75.x = inversesqrt(_75.x);
-    highp vec3 _215 = _75.xxx * vs_TEXCOORD2;
+    highp vec3 _215 = _75.xxx * pcrUnityWorldNormal;
     _86 = vec4(_215.x, _215.y, _215.z, _86.w);
     _86.w = dot(_104.zx, _86.yz);
     _104.y = dot(_104.xy, _86.yz);

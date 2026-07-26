@@ -11,9 +11,14 @@ import { readOfficialPlayerPipeline } from "./official-player-pipeline.mjs";
 import { readOfficialPostprocess } from "./official-postprocess.mjs";
 import { importOfficialVulkanCapture } from "./import-official-vulkan-runtime-capture.mjs";
 import { CANONICAL_FULL_RUNTIME_SCENES } from "./full-runtime-sources.mjs";
+import {
+  loadOfficialPortSceneIndex,
+  matchingOfficialPortManifests,
+} from "./official-port-scene-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const sceneNames = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file).sort();
+const officialPortSceneIndex = loadOfficialPortSceneIndex(ROOT);
 
 const RUNTIME_SPECIAL_MATERIALS = new Set(["DefaultMaterial"]);
 const UR_CORE_GUARDED = new Set([
@@ -344,7 +349,7 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
     && cardDisplayContractData?.generated_by === "build/build-official-card-display-contract.mjs"
     && /official-card-display-contract/.test(auditAllSource);
   const runtimeTestSource = fs.readFileSync(path.join(ROOT, "build", "test-runtime.mjs"), "utf8");
-  const cardDisplayRuntime = cardDisplayContractData?.schema_version === 5
+  const cardDisplayRuntime = cardDisplayContractData?.schema_version === 6
     && cardDisplayContractData?.profiles?.ordinary_android_default_middle_without_persisted_override
       ?.display_mode?.selected_material === "PrerenderHomographyCard"
     && /resizeSourceToDrawingBuffer:\s*false/.test(app)
@@ -818,6 +823,7 @@ export function collectEvidenceRows() {
       const cfg = SHADER[shader];
       if (cfg?.defer) continue;
       if (RUNTIME_SPECIAL_MATERIALS.has(matName)) continue;
+      const sourceBoundProgram = matchingOfficialPortManifests(officialPortSceneIndex, mat).length > 0;
       rows.push({
         scene: sceneId(sceneName),
         mat: matName,
@@ -827,6 +833,10 @@ export function collectEvidenceRows() {
         // Complete official-program closure is selector-keyed and audited over
         // the all-card inventory. A shader display name is never sufficient.
         transpiledProgram: false,
+        // Weaker than backend-semantic exact: this only proves that the
+        // recipe's official Shader identity and keyword set select a generated
+        // selector-bound stage source.
+        sourceBoundProgram,
         urGuarded: UR_CORE_GUARDED.has(shader),
         urRemainderGuarded: UR_REMAINDER_GUARDED.has(shader),
         effectGuarded: EFFECT_GUARDED.has(shader),
@@ -843,13 +853,14 @@ export function collectEvidenceRows() {
 export function summarizeEvidenceRows(rows) {
   const total = rows.length;
   const partialByteGuarded = rows.filter((r) => !r.transpiledProgram && (
-    r.urGuarded || r.urRemainderGuarded || r.effectGuarded ||
+    r.sourceBoundProgram || r.urGuarded || r.urRemainderGuarded || r.effectGuarded ||
     r.parallaxGuarded || r.flatGuarded || r.holoGuarded
   )).length;
   return {
     total,
     dispatched: rows.filter((r) => r.dispatched).length,
     transpiledProgram: rows.filter((r) => r.transpiledProgram).length,
+    sourceBoundProgram: rows.filter((r) => r.sourceBoundProgram).length,
     partialByteGuarded,
     urGuarded: rows.filter((r) => r.urGuarded).length,
     urRemainderGuarded: rows.filter((r) => r.urRemainderGuarded).length,
@@ -858,7 +869,7 @@ export function summarizeEvidenceRows(rows) {
     flatGuarded: rows.filter((r) => r.flatGuarded).length,
     holoGuarded: rows.filter((r) => r.holoGuarded).length,
     mrtGuarded: rows.filter((r) => r.mrtGuarded).length,
-    anyOfficialEvidence: rows.filter((r) => r.transpiledProgram || r.urGuarded || r.urRemainderGuarded || r.effectGuarded || r.parallaxGuarded || r.flatGuarded || r.holoGuarded).length,
+    anyOfficialEvidence: rows.filter((r) => r.transpiledProgram || r.sourceBoundProgram || r.urGuarded || r.urRemainderGuarded || r.effectGuarded || r.parallaxGuarded || r.flatGuarded || r.holoGuarded).length,
   };
 }
 
@@ -871,7 +882,7 @@ export function buildAdvancementCosts(rows = collectEvidenceRows(), pipelineStag
   const undispatched = rows.filter((row) => !row.dispatched);
   const notTranspiled = rows.filter((row) => !row.transpiledProgram);
   const withoutOfficialEvidence = rows.filter((row) => !(
-    row.transpiledProgram || row.urGuarded || row.urRemainderGuarded ||
+    row.transpiledProgram || row.sourceBoundProgram || row.urGuarded || row.urRemainderGuarded ||
     row.effectGuarded || row.parallaxGuarded || row.flatGuarded || row.holoGuarded
   ));
   return {

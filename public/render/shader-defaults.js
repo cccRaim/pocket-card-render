@@ -1,168 +1,189 @@
-// Texture defaults extracted from the official Unity Shader m_ParsedForm.m_PropInfo.
-// They are used only when a material does not bind the slot in its recipe.
+// Generated from official Unity Shader m_ParsedForm.m_PropInfo by
+// build/build-shader-texture-defaults.mjs. Do not edit this table by hand.
 
 export const SHADER_TEXTURE_DEFAULTS = {
-  "Card_Parallax": {
-    _MainTex: "black",
+  "Card_Circular_Moving_Kira": {
+    "_PrimAMorphTex": "white",
+    "_PrimATex": "white",
+    "_PrimBMorphTex": "white",
+    "_PrimBTex": "white",
+    "_PrimCMorphTex": "white",
+    "_PrimCTex": "white"
   },
-  "Card_Illust": {
-    _MainTex: "black",
-  },
-  "Card_Scaling_Kira": {
-    _BaseTex: "white",
-    _ScrollLayerMask: "white",
-    _RampTex: "white",
-  },
-  "Frame": {
-    _BaseTex: "black",
-  },
-  "Effect": {
-    _MainTex: "black",
-    _ViewMask: "white",
-    _GradationMap: "white",
-  },
-  "Card_Parallax_UR": {
-    _MainTex: "black",
-  },
-  "Frame-2Layer-UR": {
-    _BaseTex: "white",
-    _LayerMaskTex: "black",
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _RampMaskTex2: "black",
-    _RampTex2: "black",
-    _FakeSpecularMask: "white",
-  },
-  "Frame-Holo-UR-New": {
-    _BaseTex: "white",
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _FakeSpecularMask: "white",
-  },
-  "Card_Parallax_Hologram_UR_New": {
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _FakeSpecularMask: "white",
-  },
-  "Card_Parallax_Hologram_Tuning": {
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "white",
-  },
-  "Opaque_Hologram_Tuning": {
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-  },
-  "Frame-Holo-Tuning": {
-    _BaseTex: "white",
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _HologramFrontMaskTex: "white",
+  "Card_Circular_Trail_Kira": {
+    "_BaseTex": "white"
   },
   "Card_Hologram_Tuning": {
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "white",
-    _HologramFrontMaskTex: "white",
+    "_HologramFrontMaskTex": "white",
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
-  "Transparent_Hologram_Tuning": {
-    _DynamicUITex: "white",
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
+  "Card_Illust": {
+    "_MainTex": "black"
   },
-  "Simple-Opaque-Hologram_Tuning": {
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "white",
+  "Card_Parallax": {
+    "_MainTex": "black"
   },
-  "Simple-PreMultiply-Hologram": {
-    _PhaseTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "white",
+  "Card_Parallax_Hologram_Tuning": {
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
-  "Opaque-Hologram_Tuning": {
-    _NormalMap: "bump",
-    _PhaseTex: "black",
-    _RampTex: "white",
-    _MaskTex: "black",
-    _PhaseTex2: "white",
-    _RampMaskTex2: "black",
-    _RampTex2: "black",
+  "Card_Parallax_Hologram_UR_New": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
-  "Opaque-UR-Oklab": {
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _PhaseTex2: "white",
-    _RampMaskTex2: "black",
-    _RampTex2: "black",
-    _NormalMap2: "bump",
-    _ReflectionMask: "white",
-    _FakeSpecularMask: "white",
-  },
-  "Transparent-UR-New": {
-    _DynamicUITex: "white",
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _FakeSpecularMask: "white",
-  },
-  "Card_UR_Plate": {
-    _MainTex: "black",
-    _PhaseTex: "white",
-    _PhaseMaskTex: "white",
-    _RampMaskTex: "black",
-    _RampTex: "black",
-    _HologramMaskTex: "black",
-    _FakeSpecularMask: "white",
-  },
-  "Card_UR_Glitter_FlowMaps": {
-    _ABaseTex: "black",
-    _ALightTex: "black",
-    _FlowAMap: "white",
-    _BBaseTex: "black",
-    _BLightTex: "black",
-    _FlowBMap: "white",
-  },
-  "Card_UR_LensFlare": {
-    _BaseMap: "white",
-    _FlareVAT: "white",
+  "Card_Parallax_MatCap_Lighting": {
+    "_LightingMask": "white",
+    "_MatCapLightTex": "white"
   },
   "Card_Parallax_Metal": {
-    _MetalMaskTex: "white",
+    "_MetalMaskTex": "white"
+  },
+  "Card_Parallax_UR": {
+    "_MainTex": "black"
+  },
+  "Card_Prism": {
+    "_BaseTex": "white"
+  },
+  "Card_Scaling_Kira": {
+    "_BaseTex": "white",
+    "_RampTex": "white",
+    "_ScrollLayerMask": "white"
+  },
+  "Card_UR_Glitter_FlowMaps": {
+    "_ABaseTex": "black",
+    "_ALightTex": "black",
+    "_BBaseTex": "black",
+    "_BLightTex": "black",
+    "_FlowAMap": "white",
+    "_FlowBMap": "white"
+  },
+  "Card_UR_LensFlare": {
+    "_BaseMap": "white",
+    "_FlareVAT": "white"
+  },
+  "Card_UR_Plate": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_MainTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Effect": {
+    "_GradationMap": "white",
+    "_MainTex": "black",
+    "_ViewMask": "white"
+  },
+  "Frame": {
+    "_BaseTex": "black"
+  },
+  "Frame-2Layer-UR": {
+    "_BaseTex": "white",
+    "_FakeSpecularMask": "white",
+    "_LayerMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampMaskTex2": "black",
+    "_RampTex": "black",
+    "_RampTex2": "black"
+  },
+  "Frame-Holo-Tuning": {
+    "_BaseTex": "white",
+    "_HologramFrontMaskTex": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Frame-Holo-UR-New": {
+    "_BaseTex": "white",
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Opaque-Hologram_Tuning": {
+    "_MaskTex": "black",
+    "_NormalMap": "bump",
+    "_PhaseTex": "black",
+    "_PhaseTex2": "white",
+    "_RampMaskTex2": "black",
+    "_RampTex": "white",
+    "_RampTex2": "black"
+  },
+  "Opaque-UR-Oklab": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_NormalMap2": "bump",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_PhaseTex2": "white",
+    "_RampMaskTex": "black",
+    "_RampMaskTex2": "black",
+    "_RampTex": "black",
+    "_RampTex2": "black",
+    "_ReflectionMask": "white"
+  },
+  "Opaque_Hologram_Tuning": {
+    "_HologramMaskTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
   "Side&Back": {
-    _BaseTex: "white",
+    "_BaseTex": "white"
   },
   "Simple": {
-    _AdditionalFrameTex: "black",
-    _AdditionalFrameTrainersHeaderTex: "black",
-    _BaseTex: "white",
-    _DecorationMask: "black",
-    _DecorationTex: "clear",
-    _DynamicUITex: "black",
-    _RentalTex: "black",
+    "_AdditionalFrameTex": "black",
+    "_AdditionalFrameTrainersHeaderTex": "black",
+    "_BaseTex": "white",
+    "_DecorationMask": "black",
+    "_DecorationTex": "clear",
+    "_DynamicUITex": "black",
+    "_RentalTex": "black"
   },
+  "Simple-Opaque-Hologram_Tuning": {
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Simple-PreMultiply-Hologram": {
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Text": {
+    "_DynamicUITex": "black"
+  },
+  "Transparent-UR-New": {
+    "_DynamicUITex": "white",
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Transparent_Hologram_Tuning": {
+    "_DynamicUITex": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  }
 };

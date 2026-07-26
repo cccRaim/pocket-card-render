@@ -5,6 +5,7 @@ import {
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
+  compileOfficialVertexInputContract,
   compileProgramBindings,
   joinProgramSamplerBindings,
   runCommand,
@@ -13,6 +14,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -144,6 +146,15 @@ for (const port of PORTS) {
 
     const commonBindings = compileCommonBindings(metadata.commonBindings);
     const programBindings = compileProgramBindings(commonBindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+    const manifestProgramBindings = {
+      common_source_sha256: metadata.identityFields.commonBindingsSha256,
+      parameter_reflection_sha256: metadata.parameterReflectionSha256,
+      ...programBindings,
+    };
+    const vertexInputContract = compileOfficialVertexInputContract(
+      metadata.programBindChannels,
+      reflection.vertex,
+    );
     const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
       if (set !== 0) throw new Error(`${port.shader}: WebGL sampler requires descriptor set 0`);
       return row;
@@ -162,13 +173,34 @@ for (const port of PORTS) {
     if (sharedVertex !== null && sharedVertex !== vertex) throw new Error("flat MRT selectors no longer share the same adapted vertex program");
     sharedVertex = vertex;
 
-    const adaptation = {
-      schema: "pocket-card-render/webgl-stage-adaptation@1",
-      backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    const runtimeContract = {
+      schema: "pocket-card-render/webgl-runtime-port@1",
+      shader_key: port.shader,
+      attributes: { position: "vec3", uv: "vec2" },
+      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
+      material_uniforms: { floats: port.materialFloats, ints: [], vectors: {} },
+      require_complete_active_bindings: true,
+      camera_from_view: false,
+      mrt_attachments: 2,
+      stencil_normalization: "disable-when-always-keep",
+      stencil_face_mode: "generic",
+    };
+    const adaptation = buildWebglAdaptationV2({
       vertex: {
         officialSpirvSha256: sha256File(files.vertexSpirv),
         spirvCrossGlslSha256: sha256(officialVertex),
         outputSha256: sha256(vertex),
+        operations: [
+          { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+          { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+          {
+            kind: "clip-space-y-conversion",
+            from: "unity-vulkan",
+            to: "webgl",
+            operation: "remove-y-inversion",
+          },
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+        ],
         substitutions: [
           "replace serialized VGlobals UBO members with Three.js model/view/projection uniforms",
           "map official position and UV locations to Three.js attributes",
@@ -180,12 +212,23 @@ for (const port of PORTS) {
         officialSpirvSha256: sha256File(files.fragmentSpirv),
         spirvCrossGlslSha256: sha256(officialFragment),
         outputSha256: sha256(fragment),
+        operations: [
+          ...(port.shader === "Frame" ? [{
+            kind: "uniform-buffer-flattening",
+            source: "serialized-common",
+            preservation: "names-types-precision",
+          }] : []),
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+        ],
         substitutions: port.shader === "Frame"
           ? ["replace serialized PGlobals _EmitMasking with the same-name Three.js material uniform"]
           : ["remove #version directive supplied by Three.js RawShaderMaterial"],
       },
       interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-    };
+      officialVertexInputs: vertexInputContract,
+      runtimeContract,
+      officialProgramBindings: manifestProgramBindings,
+    });
     const passRuntime = compileOfficialPassContract(metadata.passContract, {
       sourceSha256: metadata.identityFields.passStateSha256,
       policy: PASS_POLICY,
@@ -197,6 +240,7 @@ for (const port of PORTS) {
       selected_keywords: [],
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -206,29 +250,15 @@ for (const port of PORTS) {
       },
       official_pass_runtime: passRuntime,
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
-      official_program_bindings: {
-        common_source_sha256: metadata.identityFields.commonBindingsSha256,
-        parameter_reflection_sha256: metadata.parameterReflectionSha256,
-        ...programBindings,
-      },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
         vertex: "public/shaders/textured.vert.glsl",
         fragment: `public/shaders/${port.fragmentFile}`,
       },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: port.shader,
-        attributes: { position: "vec3", uv: "vec2" },
-        engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
-        material_uniforms: { floats: port.materialFloats, ints: [], vectors: {} },
-        require_complete_active_bindings: true,
-        camera_from_view: false,
-        mrt_attachments: 2,
-        stencil_normalization: "disable-when-always-keep",
-        stencil_face_mode: "generic",
-      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),

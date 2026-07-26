@@ -1,5 +1,6 @@
 {
   "shader": "Lettuce/Common/CardNew/UI/Default(from RT)",
+  "role": "display-from-render-texture",
   "generated_by": "build/build-exact-ui-default-from-rt.mjs",
   "official_source": {
     "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",

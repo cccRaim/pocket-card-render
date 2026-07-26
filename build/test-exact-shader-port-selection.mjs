@@ -24,7 +24,7 @@ const manifest = (selectorId, keywords, options = {}) => ({
   },
 });
 const square = manifest("square", ["_UVASPECTRATIO_SQUARE"]);
-const bestMatch = manifest("best-match", []);
+const bestMatch = manifest("best-match", [], { selectionMode: "native-best-match" });
 const exactShaders = {
   Card_Parallax: {
     vert: "vertex",

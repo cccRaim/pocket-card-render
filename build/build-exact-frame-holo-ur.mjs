@@ -8,13 +8,17 @@ import {
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
-  joinSamplerBindings,
+  compileOfficialVertexInputContract,
+  compileProgramBindings,
+  joinProgramConstantBufferStages,
+  joinProgramSamplerBindings,
   runCommand,
   sha256,
   sha256File,
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -38,6 +42,14 @@ const PASS_POLICY = {
     alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
   },
 };
+const FRAGMENT_BASIS_CONVERSIONS = Object.freeze({
+  objectMatrices: [{
+    matrixName: "modelMatrix",
+    columns: [{ column: 2, expectedOccurrences: 3 }],
+  }],
+  worldVectors: [],
+  viewForwards: [],
+});
 
 const vertexUniforms = [
   "uniform highp mat4 modelMatrix;",
@@ -76,7 +88,6 @@ const fragmentUniforms = [
   "uniform int _EmissivePattern;",
   "uniform vec4 _EmissiveColor;",
   "uniform vec3 _Rotation;",
-  "uniform int uBloomOnly;",
 ].join("\n");
 
 const vertexMembers = [
@@ -187,12 +198,8 @@ function adaptFragment(source) {
   out = adaptUnityObjectToWorldDataAxes(out, {
     matrixName: "modelMatrix", expectedCounts: { 2: 3 },
   });
-  const officialTail = "    _1059.w = _9.w;";
-  if (!out.includes(officialTail)) throw new Error("official primary-output tail changed");
-  out = out.replace(officialTail, `${officialTail}\n    if (uBloomOnly != 0)\n    {\n        _1059 = _1053;\n    }`);
   assertMatch(out, /layout\(location = 1\) out highp vec4 _1053;/, "official emissive MRT output missing");
   assertMatch(out, /layout\(location = 0\) out highp vec4 _1059;/, "official primary MRT output missing");
-  assertMatch(out, /if \(uBloomOnly != 0\)[\s\S]*?_1059 = _1053;/, "WebGL bloom route missing");
   if (/_51\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   return `${out.trimEnd()}\n`;
 }
@@ -314,7 +321,20 @@ await withExtractedSelectorProgram({
   assertMatch(officialFrag, /_1053\s*=/, "official emissive output expression missing");
 
   const bindings = compileCommonBindings(metadata.commonBindings);
-  const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+  const programBindings = joinProgramConstantBufferStages(
+    compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults),
+    reflection,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
     return row;
   });
@@ -331,13 +351,53 @@ await withExtractedSelectorProgram({
 
   const vertex = adaptVertex(officialVert);
   const fragment = adaptFragment(officialFrag);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Frame-Holo-UR-New",
+    attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
+    engine_uniforms: {
+      modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+    },
+    material_uniforms: {
+      floats: [
+        "_RampMaskRotation", "_RampMaskScale", "_FakeSpecularMaskScale", "_FakeSpecularIntensity",
+        "_FakeSpecularPower", "_FakeSpecularCornerPower", "_FakeSpecularNotCornerOffset", "_Shininess",
+        "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
+        "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_RemoveMetalic", "_DarknessOffset",
+      ],
+      ints: ["_UseSimpleRampMaskAndRotation", "_FakeSpecularEnabled", "_DarknessEnabled", "_EmissivePattern"],
+      vectors: {
+        _FakeSpecularColor: "vec3", _DarknessColor: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
+      },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: true,
+    mrt_attachments: 2,
+    stencil_normalization: "disable-when-always-keep",
+    stencil_face_mode: "generic",
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(files.vertexSpirv),
       spirvCrossGlslSha256: sha256(officialVert),
       outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position vec4 := vec4(three.position, 1.0), normal := three.normal and uv := three.uv",
         "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
@@ -349,14 +409,26 @@ await withExtractedSelectorProgram({
       officialSpirvSha256: sha256File(files.fragmentSpirv),
       spirvCrossGlslSha256: sha256(officialFrag),
       outputSha256: sha256(fragment),
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "replace serialized PGlobals UBO members with same-name Three.js uniforms",
         "recover Unity ObjectToWorld Z-axis data through M_unity = C * M_three * A before tilt-angle arithmetic",
-        "add uBloomOnly backend route that copies the official emissive MRT output to attachment 0 during bloom extraction",
       ],
     },
     interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
 
   const outputs = {
     "frame_holo_ur.vert.glsl": vertex,
@@ -368,6 +440,7 @@ await withExtractedSelectorProgram({
       official_spirv_sha256: {
         vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv),
       },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -383,44 +456,21 @@ await withExtractedSelectorProgram({
         shader_property_defaults: metadata.shaderPropertyDefaults.floats,
       },
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
         vertex: "public/shaders/frame_holo_ur.vert.glsl",
         fragment: "public/shaders/frame_holo_ur.frag.glsl",
       },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: "Frame-Holo-UR-New",
-        attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
-        engine_uniforms: {
-          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
-        },
-        material_uniforms: {
-          floats: [
-            "_RampMaskRotation", "_RampMaskScale", "_FakeSpecularMaskScale", "_FakeSpecularIntensity",
-            "_FakeSpecularPower", "_FakeSpecularCornerPower", "_FakeSpecularNotCornerOffset", "_Shininess",
-            "_BaseColorIntensity", "_SpecularIntensity", "_DiffractionIntensity", "_DiffractionPower",
-            "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval", "_RemoveMetalic", "_DarknessOffset",
-          ],
-          ints: ["_UseSimpleRampMaskAndRotation", "_FakeSpecularEnabled", "_DarknessEnabled", "_EmissivePattern"],
-          vectors: {
-            _FakeSpecularColor: "vec3", _DarknessColor: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
-          },
-        },
-        backend_uniforms: { uBloomOnly: { type: "int", value: 0 } },
-        require_complete_active_bindings: true,
-        camera_from_view: true,
-        mrt_attachments: 2,
-        stencil_normalization: "disable-when-always-keep",
-        stencil_face_mode: "generic",
-      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),
       compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       implicit_defaults: { _CubeMap: "gray" },
-      mrt: { primary: "_1059", emissive: "_1053", webgl_bloom_route: "uBloomOnly" },
+      mrt: { primary: "_1059", emissive: "_1053", secondary_rgb: "active" },
     }, null, 2)}\n`,
   };
   writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });

@@ -13,6 +13,7 @@ export const ASPECT_MODE = Object.freeze({
 });
 
 export const LAYOUT_COMPONENT_TYPE = Object.freeze({
+  LayoutElement: "LayoutElement",
   Horizontal: "HorizontalLayoutGroup",
   Vertical: "VerticalLayoutGroup",
   ContentSize: "ContentSizeFitter",
@@ -44,6 +45,18 @@ const ASPECT_RATIO_FIELDS = Object.freeze([
   "m_Name",
   "m_AspectMode",
   "m_AspectRatio",
+]);
+const LAYOUT_ELEMENT_FIELDS = Object.freeze([
+  "m_Enabled",
+  "m_Name",
+  "m_IgnoreLayout",
+  "m_MinWidth",
+  "m_MinHeight",
+  "m_PreferredWidth",
+  "m_PreferredHeight",
+  "m_FlexibleWidth",
+  "m_FlexibleHeight",
+  "m_LayoutPriority",
 ]);
 const PADDING_FIELDS = Object.freeze(["m_Left", "m_Right", "m_Top", "m_Bottom"]);
 
@@ -575,6 +588,27 @@ export function decodeSerializedLayoutComponent(record) {
   }
   const type = record.componentType;
   const fields = record.serialized;
+  if (type === LAYOUT_COMPONENT_TYPE.LayoutElement) {
+    exactKeys(fields, LAYOUT_ELEMENT_FIELDS, type);
+    return {
+      kind: "layout-element",
+      enabled: bool(fields.m_Enabled, `${type}.m_Enabled`),
+      ignoreLayout: bool(fields.m_IgnoreLayout, `${type}.m_IgnoreLayout`),
+      layoutPriority: integer(fields.m_LayoutPriority, `${type}.m_LayoutPriority`),
+      min: [
+        finite(fields.m_MinWidth, `${type}.m_MinWidth`),
+        finite(fields.m_MinHeight, `${type}.m_MinHeight`),
+      ],
+      preferred: [
+        finite(fields.m_PreferredWidth, `${type}.m_PreferredWidth`),
+        finite(fields.m_PreferredHeight, `${type}.m_PreferredHeight`),
+      ],
+      flexible: [
+        finite(fields.m_FlexibleWidth, `${type}.m_FlexibleWidth`),
+        finite(fields.m_FlexibleHeight, `${type}.m_FlexibleHeight`),
+      ],
+    };
+  }
   if (type === LAYOUT_COMPONENT_TYPE.Horizontal || type === LAYOUT_COMPONENT_TYPE.Vertical) {
     exactKeys(fields, GROUP_FIELDS, type);
     exactKeys(fields.m_Padding, PADDING_FIELDS, `${type}.m_Padding`);

@@ -122,8 +122,59 @@ for (const file of CANONICAL_LOCALIZED_TEXT_FILES) {
     );
   }
 }
-assert.equal(iconCount, 378);
-assert.equal(directImageCount, 117);
+assert.equal(iconCount, 441);
+assert.equal(directImageCount, 198);
+const topAttributeElements = CANONICAL_LOCALIZED_TEXT_FILES.flatMap((file) => {
+  const composition = JSON.parse(fs.readFileSync(path.join(textDir, file), "utf8"));
+  const elements = (composition.elements || []).filter((element) => (
+    element.layoutPath?.startsWith("/PokemonCardUI/energy_view/CardEnergyIconView/")
+  ));
+  return elements.length ? [{ file, elements }] : [];
+});
+assert.equal(topAttributeElements.length, 18);
+for (const { file, elements } of topAttributeElements) {
+  assert.deepEqual(
+    elements.map((element) => ({
+      path: element.layoutPath,
+      hierarchyOrder: element.hierarchyOrder,
+      imageObjectSha256: element.uiImage?.imageObjectSha256,
+    })),
+    [
+      {
+        path: "/PokemonCardUI/energy_view/CardEnergyIconView/Outline",
+        hierarchyOrder: 23,
+        imageObjectSha256: "f391450c9f6aba02cc37491542af9dcfd43323dac89c45e9e0f4ff6f840877bd",
+      },
+      {
+        path: "/PokemonCardUI/energy_view/CardEnergyIconView/icn_gra_img",
+        hierarchyOrder: 24,
+        imageObjectSha256: "7e15fefa1a318903714300eedfa9db3540a00427444baecc5f5dc28e6b360296",
+      },
+    ],
+    `${file}: top attribute lost official Outline -> icon child order`,
+  );
+  const [outline, icon] = elements;
+  assert(
+    icon.box.l > outline.box.l
+      && icon.box.r < outline.box.r
+      && icon.box.t > outline.box.t
+      && icon.box.b < outline.box.b,
+    `${file}: top attribute icon lost its inset official child RectTransform`,
+  );
+}
+const exOutlineElements = CANONICAL_LOCALIZED_TEXT_FILES.flatMap((file) => {
+  const composition = JSON.parse(fs.readFileSync(path.join(textDir, file), "utf8"));
+  return (composition.elements || [])
+    .filter((element) => element.layoutPath?.endsWith("/ImgExOutlineWhite/ImgExOutlineWhite"))
+    .map((element) => ({ file, element }));
+});
+assert.equal(exOutlineElements.length, 9);
+assert.ok(exOutlineElements.every(({ file, element }) => (
+  file.startsWith("PK_20_008900_02.")
+  && element.hierarchyOrder === 7
+  && element.uiImage?.imageObjectSha256
+    === "a26a81faf3d5a4d61f6d37a0c6a5b6f6384b124f4f794702f6c86629d395c3c1"
+)));
 
 const exTitle = imageRows.find(({ path: layoutPath }) => layoutPath.endsWith("/PokemonExRuleView/ex_rule_ttl_txt/ex_rule_ttl_txt_zh"));
 assert(exTitle, "official zh_TW ex-rule Image is absent");

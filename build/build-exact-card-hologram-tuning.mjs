@@ -7,6 +7,18 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
+  buildOfficialSpirvPrecisionEvidence,
+  compileCommonBindings,
+  compileOfficialPassContract,
+  compileOfficialVertexInputContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
+  writeOrCheckOutputs,
+} from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -23,6 +35,18 @@ const OFFICIAL_CROSS_SHA256 = {
   vertex: "94dc4cd2a68dfa9d1a705bbea05a76341c6cb01e47db10168708c8b12f8d2443",
   fragment: "7cd083ccdd2d6a308775354059f5184b35e67eb98031fba74491159af73677d4",
 };
+const PASS_POLICY = {
+  rtSeparateBlend: false,
+  fixed: {
+    zClip: { val: 1, name: null },
+    conservative: { val: 0, name: null },
+    offsetFactor: { val: 0, name: null },
+    offsetUnits: { val: 0, name: null },
+    alphaToMask: { val: 0, name: null },
+    fogMode: -1,
+    lighting: false,
+  },
+};
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-card-hologram-tuning-"));
 
 const vertexMembers = ["_ObjectToWorld", "_WorldToObject", "_ViewProjection", "_UseUv", "_UseMaskUv"];
@@ -38,6 +62,18 @@ const floatNames = [
   "_RampScale", "_PhaseScale", "_RampRotate", "_PhaseRotate", "_AlphaBlend", "_MaskPower",
   "_CutOut", "_UseAlphaAsAlphaBlendMask", "_UseReflectionAlpha",
 ];
+const materialFloats = [
+  "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset",
+  "_RampInterval", "_RampUVOffset", "_RampUVTiltOffset", "_RampScale", "_PhaseScale",
+  "_RampRotate", "_PhaseRotate", "_AlphaBlend", "_MaskPower", "_CutOut",
+];
+const materialInts = ["_UseUv", "_UseMaskUv", "_UseAlphaAsAlphaBlendMask", "_UseReflectionAlpha"];
+const FRAGMENT_BASIS_CONVERSIONS = {
+  worldVectors: [
+    { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 3 },
+  ],
+  viewForwards: [{ matrixName: "viewMatrix", targetName: "_59" }],
+};
 
 function run(command, args) {
   return execFileSync(command, args, {
@@ -66,11 +102,6 @@ function canonicalJson(value) {
 
 function canonicalJsonDigest(value) {
   return digest(canonicalJson(value));
-}
-
-function officialParam(value) {
-  if (!value || !Number.isFinite(Number(value.val))) throw new Error("official pass parameter is absent");
-  return { val: Number(value.val), name: value.name === "<noninit>" ? null : value.name };
 }
 
 function replaceMembers(source, owner, mapping) {
@@ -119,7 +150,6 @@ function assertReflection(reflection, expected) {
 function adaptVertex(source) {
   let out = source.replace(/^#version 300 es\s*/m, "precision highp float;\nprecision highp int;\n\n");
   out = replaceUbo(out, "_20_22", "_22", [
-    "uniform highp vec3 cameraPosition;",
     "uniform highp mat4 modelMatrix;",
     "uniform highp mat4 viewMatrix;",
     "uniform highp mat4 projectionMatrix;",
@@ -173,111 +203,14 @@ function adaptFragment(source) {
     "uniform int _UseReflectionAlpha;",
   ]);
   out = replaceMembers(out, "_34", fragmentMembers);
+  out = adaptThreeWorldVectorsToUnityDataAxes(out, {
+    bindings: FRAGMENT_BASIS_CONVERSIONS.worldVectors,
+  });
+  out = adaptThreeViewForwardToUnityDataAxes(out, FRAGMENT_BASIS_CONVERSIONS.viewForwards[0]);
   assert.match(out, /discard;/);
   assert.match(out, /_680\s*=\s*vec4\(0\.0\);/);
   if (/_34\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   return `${out.trimEnd()}\n`;
-}
-
-function compiledBindings(commonBindings) {
-  const names = new Map((commonBindings?.nameIndices || []).map(([name, index]) => [index, name]));
-  const textures = [];
-  const constantBuffers = [];
-  for (const [stage, common] of Object.entries(commonBindings?.commonParameters || {})) {
-    for (const item of common.m_TextureParams || []) {
-      textures.push({
-        stage,
-        name: names.get(item.m_NameIndex),
-        binding: item.m_Index & 0xffffff,
-        encodedIndex: item.m_Index,
-        dim: item.m_Dim,
-      });
-    }
-    for (const item of common.m_ConstantBuffers || []) {
-      constantBuffers.push({
-        stage,
-        name: names.get(item.m_NameIndex),
-        size: item.m_Size,
-        partial: item.m_IsPartialCB,
-        matrices: (item.m_MatrixParams || []).map((entry) => ({
-          name: names.get(entry.m_NameIndex),
-          offset: entry.m_Index,
-          rowCount: entry.m_RowCount,
-          type: entry.m_Type,
-        })).sort((a, b) => a.offset - b.offset),
-        vectors: (item.m_VectorParams || []).map((entry) => ({
-          name: names.get(entry.m_NameIndex),
-          offset: entry.m_Index,
-          dim: entry.m_Dim,
-          type: entry.m_Type,
-        })).sort((a, b) => a.offset - b.offset),
-      });
-    }
-  }
-  return { textures, constant_buffers: constantBuffers };
-}
-
-function compiledSamplerBindings(bindings, fragmentReflection) {
-  const byBinding = new Map(bindings.textures.map((row) => [row.binding, row]));
-  const reflected = (fragmentReflection.textures || [])
-    .map(({ name, type, binding }) => ({ name, type, binding }))
-    .sort((a, b) => a.binding - b.binding);
-  const rows = reflected.map((row) => {
-    const official = byBinding.get(row.binding);
-    if (!official || official.dim !== 2 || row.type !== "sampler2D") {
-      throw new Error(`binding ${row.binding} dimension mismatch`);
-    }
-    return {
-      slot: official.name,
-      spirvName: row.name,
-      binding: row.binding,
-      dimension: official.dim,
-      glslType: row.type,
-    };
-  });
-  if (rows.length !== bindings.textures.length) throw new Error("not every official texture binding is reflected");
-  return rows;
-}
-
-function runtimePassContract(passContract, sourceSha256) {
-  const state = passContract?.state;
-  if (!state || state.rtSeparateBlend !== false) throw new Error("Card_Hologram_Tuning MRT blend contract changed");
-  const blend = state.rtBlend0;
-  return {
-    source_sha256: sourceSha256,
-    shared_mrt_blend: true,
-    blend: {
-      src_rgb: officialParam(blend.srcBlend),
-      dst_rgb: officialParam(blend.destBlend),
-      src_alpha: officialParam(blend.srcBlendAlpha),
-      dst_alpha: officialParam(blend.destBlendAlpha),
-      op_rgb: officialParam(blend.blendOp),
-      op_alpha: officialParam(blend.blendOpAlpha),
-      color_mask: officialParam(blend.colMask),
-    },
-    depth: { test: officialParam(state.zTest), write: officialParam(state.zWrite) },
-    culling: officialParam(state.culling),
-    stencil: {
-      ref: officialParam(state.stencilRef),
-      read_mask: officialParam(state.stencilReadMask),
-      write_mask: officialParam(state.stencilWriteMask),
-      generic: Object.fromEntries(Object.entries(state.stencilOp)
-        .map(([key, value]) => [key, officialParam(value)])),
-      front: Object.fromEntries(Object.entries(state.stencilOpFront)
-        .map(([key, value]) => [key, officialParam(value)])),
-      back: Object.fromEntries(Object.entries(state.stencilOpBack)
-        .map(([key, value]) => [key, officialParam(value)])),
-    },
-    fixed: {
-      zClip: officialParam(state.zClip),
-      conservative: officialParam(state.conservative),
-      offsetFactor: officialParam(state.offsetFactor),
-      offsetUnits: officialParam(state.offsetUnits),
-      alphaToMask: officialParam(state.alphaToMask),
-      fogMode: state.fogMode,
-      lighting: state.lighting,
-    },
-  };
 }
 
 try {
@@ -296,6 +229,10 @@ try {
   const metadata = JSON.parse(fs.readFileSync(metadataFile, "utf8"));
   const vertexSpv = path.join(tmp, "card_hologram_tuning_vert.spv");
   const fragmentSpv = path.join(tmp, "card_hologram_tuning_frag.spv");
+  const officialSpirvPrecision = buildOfficialSpirvPrecisionEvidence({
+    vertex: fs.readFileSync(vertexSpv),
+    fragment: fs.readFileSync(fragmentSpv),
+  });
   const vertexReflection = JSON.parse(run(SPIRV_CROSS, [vertexSpv, "--reflect"]));
   const fragmentReflection = JSON.parse(run(SPIRV_CROSS, [fragmentSpv, "--reflect"]));
   assertReflection(vertexReflection, {
@@ -365,8 +302,26 @@ try {
   assert.equal(digest(officialFragment), OFFICIAL_CROSS_SHA256.fragment, "official fragment SPIRV-Cross shape changed");
   const vertex = adaptVertex(officialVertex);
   const fragment = adaptFragment(officialFragment);
-  const bindings = compiledBindings(metadata.commonBindings);
-  const samplerBindings = compiledSamplerBindings(bindings, fragmentReflection);
+  const reflection = { vertex: vertexReflection, fragment: fragmentReflection };
+  const commonBindings = compileCommonBindings(metadata.commonBindings);
+  const programBindings = compileProgramBindings(
+    commonBindings,
+    metadata.parameterReflection,
+    metadata.shaderPropertyDefaults,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    vertexReflection,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
+    assert.equal(set, 0, "Card_Hologram_Tuning sampler must use descriptor set 0");
+    return row;
+  });
   assert.deepEqual(samplerBindings.map(({ slot, spirvName }) => ({ slot, spirvName })), [
     { slot: "_HologramMaskTex", spirvName: "_13" },
     { slot: "_PhaseTex", spirvName: "_488" },
@@ -374,13 +329,44 @@ try {
     { slot: "_RampTex", spirvName: "_458" },
     { slot: "_HologramFrontMaskTex", spirvName: "_595" },
   ]);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Card_Hologram_Tuning",
+    attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2" },
+    engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
+    material_uniforms: {
+      floats: materialFloats,
+      ints: materialInts,
+      vectors: { _Rotation: "vec3" },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: false,
+    mrt_attachments: 2,
+    stencil_normalization: "none",
+    stencil_face_mode: "generic",
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: fileDigest(vertexSpv),
       spirvCrossGlslSha256: digest(officialVertex),
       outputSha256: digest(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position vec4 := vec4(three.position, 1.0)",
         "normal location 1 := three.normal",
@@ -396,10 +382,26 @@ try {
       officialSpirvSha256: fileDigest(fragmentSpv),
       spirvCrossGlslSha256: digest(officialFragment),
       outputSha256: digest(fragment),
-      substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+        "convert Three world normal and reconstructed view-forward vectors to Unity data axes",
+      ],
     },
     interfaceSha256: canonicalJsonDigest({ vertex: vertexReflection, fragment: fragmentReflection }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const outputs = {
     "card_hologram_tuning.vert.glsl": vertex,
     "card_hologram_tuning.frag.glsl": fragment,
@@ -408,6 +410,7 @@ try {
       generated_by: "build/build-exact-card-hologram-tuning.mjs",
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: fileDigest(vertexSpv), fragment: fileDigest(fragmentSpv) },
+      official_spirv_precision: officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -415,10 +418,20 @@ try {
         reflection_sha256: metadata.parameterReflectionSha256,
         ...metadata.parameterReflection,
       },
-      official_pass_runtime: runtimePassContract(metadata.passContract, metadata.identityFields.passStateSha256),
-      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+      official_pass_runtime: compileOfficialPassContract(metadata.passContract, {
+        sourceSha256: metadata.identityFields.passStateSha256,
+        policy: PASS_POLICY,
+      }),
+      official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
+      webgl_sources: {
+        vertex: "public/shaders/card_hologram_tuning.vert.glsl",
+        fragment: "public/shaders/card_hologram_tuning.frag.glsl",
+      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),
@@ -428,17 +441,7 @@ try {
       mrt: { primary: "_678", secondary: "_680", secondary_value: "zero" },
     }, null, 2)}\n`,
   };
-  fs.mkdirSync(OUT, { recursive: true });
-  for (const [name, content] of Object.entries(outputs)) {
-    const file = path.join(OUT, name);
-    if (CHECK) {
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) {
-        throw new Error(`${name} does not match official regeneration`);
-      }
-    } else {
-      fs.writeFileSync(file, content);
-    }
-  }
+  writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
   console.log(`${CHECK ? "verified" : "generated"} Card_Hologram_Tuning from selector-bound official SPIR-V`);
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });

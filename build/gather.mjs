@@ -11,16 +11,16 @@ import { readFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, statSyn
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import {
+  collectGameAssetUrls,
+  gameAssetRelativePath,
+} from "./scene-example-availability.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
 const PUB = join(ROOT, "public");
 const GAME_OUT = join(PUB, "game");
 const MIP_OUT = join(GAME_OUT, ".official-texture-mips");
-const SCENE_PATHS = readdirSync(PUB, { withFileTypes: true })
-  .filter((entry) => entry.isFile() && /^scene(?:\..+)?\.json$/.test(entry.name))
-  .map((entry) => join(PUB, entry.name))
-  .sort();
 
 const SRC = process.argv[2] || process.env.PCR_GAME_SRC || join(ROOT, "..", "ptcg-apk-parser", "apks", "assets");
 const FONT_SRC = process.env.PCR_GAME_FONT_SRC
@@ -32,6 +32,11 @@ const EXTRA = [
   "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex_outline.png",
 ];
 const rels = new Set(EXTRA);
+const DERIVED_GAME_PREFIXES = Object.freeze([
+  ".official-texture-mips/",
+  "tmp-fonts/",
+  "tmp-sprites/",
+]);
 
 const COMMON_UI_DIRS = [
   "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5",
@@ -49,17 +54,20 @@ function addPngDir(relDir) {
 
 COMMON_UI_DIRS.forEach(addPngDir);
 
-// walk every .json under public/ (except public/game) and regex out /game/<rel> references
-const GAME_RE = /\/game\/([^"'\\]+?\.(?:png|glb|gltf|jpg|jpeg|tif|tiff|otf|ttf|woff2))/gi;
+// Walk every JSON document under public/ (except public/game) and traverse its
+// structured values. Resource filenames may legally contain percent signs, so
+// regex extraction followed by unconditional URI decoding is not safe.
 function scanJson(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
     if (e.isDirectory()) { if (p !== GAME_OUT) scanJson(p); continue; }
     if (!e.name.endsWith(".json")) continue;
-    const txt = readFileSync(p, "utf8");
-    let m, c = 0;
-    while ((m = GAME_RE.exec(txt))) { rels.add(decodeURIComponent(m[1])); c++; }
-    if (c) console.log(`  ${p.slice(PUB.length + 1)}: ${c} /game refs`);
+    const document = JSON.parse(readFileSync(p, "utf8"));
+    const references = collectGameAssetUrls(document);
+    for (const url of references) rels.add(gameAssetRelativePath(url));
+    if (references.size) {
+      console.log(`  ${p.slice(PUB.length + 1)}: ${references.size} /game refs`);
+    }
   }
 }
 scanJson(PUB);
@@ -67,6 +75,7 @@ scanJson(PUB);
 if (!existsSync(SRC)) { console.error(`source root not found: ${SRC}\n  pass it as argv[2] or set PCR_GAME_SRC`); process.exit(1); }
 let copied = 0, missing = 0;
 for (const rel of rels) {
+  if (DERIVED_GAME_PREFIXES.some((prefix) => rel.startsWith(prefix))) continue;
   const from = rel.startsWith("Assets/Fonts/")
     ? join(FONT_SRC, basename(rel))
     : join(SRC, rel);
@@ -92,8 +101,9 @@ const python = process.env.PYTHON || "python";
 const extraction = spawnSync(python, [
   join(HERE, "extract_official_texture_sampler.py"),
   "--decrypted-root", DECRYPTED_ROOT,
-  ...SCENE_PATHS.flatMap((scenePath) => ["--scene", scenePath]),
+  "--scene-root", PUB,
   "--emit-rgba-fallback-root", MIP_OUT,
+  "--emit-base-png-root", PUB,
   "--no-json",
 ], {
   cwd: ROOT,

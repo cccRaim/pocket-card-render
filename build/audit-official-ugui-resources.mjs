@@ -127,10 +127,25 @@ for (const file of CANONICAL_LOCALIZED_TEXT_FILES) {
     );
   }
 }
-assert.equal(iconCount, 378);
-assert.equal(directImageCount, 117);
-assert.equal(exactStaticCount, 108);
+assert.equal(iconCount, 387);
+assert.equal(directImageCount, 126);
+assert.equal(exactStaticCount, 117);
 assert.equal(runtimeSpriteCount, 9);
+const exOutlineElements = CANONICAL_LOCALIZED_TEXT_FILES.flatMap((file) => {
+  const composition = JSON.parse(fs.readFileSync(path.join(TEXT_DIR, file), "utf8"));
+  return (composition.elements || [])
+    .filter((element) => element.layoutPath?.endsWith("/ImgExOutlineWhite/ImgExOutlineWhite"))
+    .map((element) => ({ file, element }));
+});
+assert.equal(exOutlineElements.length, 9);
+for (const { file, element } of exOutlineElements) {
+  assert.ok(file.startsWith("PK_20_008900_02."));
+  assert.equal(
+    element.url,
+    "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex_outline_white.png",
+  );
+  assert.equal(staticBinding(element, contract).status, "exact");
+}
 
 const exactElement = JSON.parse(fs.readFileSync(path.join(TEXT_DIR, "PK_20_008900_02.es_ES.json"), "utf8"))
   .elements.find((element) => element.layoutPath?.endsWith("/phase_txt_img_01_es_es419"));

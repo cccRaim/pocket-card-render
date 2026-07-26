@@ -3,9 +3,15 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
   canonicalJsonSha256,
   compileCommonBindings,
+  compileOfficialVertexInputContract,
   compileOfficialPassContract,
+  compileProgramBindings,
+  joinProgramConstantBufferStages,
+  joinProgramSamplerBindings,
   joinSamplerBindings,
   runCommand,
   sha256,
@@ -13,6 +19,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -98,6 +105,14 @@ function adaptFragment(source, cfg) {
   let out = source.replace(/^#version 300 es\s*/m, "");
   out = replaceUbo(out, cfg.block, cfg.owner, cfg.uniforms);
   out = replaceMembers(out, cfg.owner, cfg.mapping);
+  if (cfg.basisConversions) {
+    out = adaptThreeWorldVectorsToUnityDataAxes(out, {
+      bindings: cfg.basisConversions.worldVectors,
+    });
+    for (const viewForward of cfg.basisConversions.viewForwards) {
+      out = adaptThreeViewForwardToUnityDataAxes(out, viewForward);
+    }
+  }
   if (new RegExp(`${cfg.owner}\\._m`).test(out)) throw new Error(`${cfg.block} fragment adaptation incomplete`);
   for (const pattern of cfg.required) if (!pattern.test(out)) throw new Error(`${cfg.block} fragment invariant missing: ${pattern}`);
   return `${out.trimEnd()}\n`;
@@ -167,6 +182,14 @@ const programs = [
         "_RampInterval", "_RampUVOffset", "_RampUVTiltOffset", "_PhaseScale", "_RampScale",
         "_PhaseRotate", "_RampRotate", "_FrontMaskPower", "_AlphaBlend", "_MaskEmissive", "_CutOut", "_Rotation",
       ],
+      basisConversions: {
+        worldVectors: [
+          { source: "cameraPosition", alias: "pcrUnityCameraPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD2", alias: "pcrUnityWorldPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD3", alias: "pcrUnityWorldNormal", expectedOccurrences: 3 },
+        ],
+        viewForwards: [{ matrixName: "viewMatrix", targetName: "_69" }],
+      },
       required: [/discard;/, /_806\s*=\s*vec4\(_91\.x,\s*_91\.y,\s*_91\.z,\s*_806\.w\)/, /_817\s*=\s*_9/],
       reflection: {
         ubo: { name: "_31_33", size: 172, members: [
@@ -344,7 +367,23 @@ for (const program of programs) {
         const vertex = adaptVertex(officialVertex, program.vertex);
         const fragment = adaptFragment(officialFragment, program.fragment);
         const bindings = compileCommonBindings(selectorMetadata.commonBindings);
-        const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+        const typedV2 = program.shader === "Frame-Holo-Tuning"
+          || program.shader === "Opaque-Hologram_Tuning";
+        const isOpaqueShadowBox = program.shader === "Opaque-Hologram_Tuning";
+        const programBindings = typedV2
+          ? joinProgramConstantBufferStages(
+            compileProgramBindings(
+              bindings,
+              selectorMetadata.parameterReflection,
+              selectorMetadata.shaderPropertyDefaults,
+            ),
+            reflection,
+          )
+          : null;
+        const samplerBindings = (typedV2
+          ? joinProgramSamplerBindings(programBindings, reflection)
+          : joinSamplerBindings(bindings, reflection.fragment)
+        ).map(({ set, ...row }) => {
           assert.equal(set, 0, `${program.shader}: WebGL sampler port requires descriptor set 0`);
           return row;
         });
@@ -352,29 +391,119 @@ for (const program of programs) {
           samplerBindings.map(({ slot, spirvName }) => ({ slot, spirvName })),
           program.samplerSlots.map((slot, index) => ({ slot, spirvName: program.manifest.samplers[index] })),
         );
-        const adaptation = {
-          schema: "pocket-card-render/webgl-stage-adaptation@1",
-          backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
-          vertex: {
-            officialSpirvSha256: sha256File(files.vertexSpirv),
-            spirvCrossGlslSha256: sha256(officialVertex),
-            outputSha256: sha256(vertex),
-            substitutions: [
-              ...program.runtime.vertexSubstitutions,
-              "unity_ObjectToWorld := three.modelMatrix",
-              "unity_WorldToObject := inverse(three.modelMatrix)",
-              "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
-              "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
-            ],
+        const vertexInputContract = typedV2
+          ? compileOfficialVertexInputContract(selectorMetadata.programBindChannels, reflection.vertex)
+          : null;
+        const manifestProgramBindings = typedV2 ? {
+          common_source_sha256: selectorMetadata.identityFields.commonBindingsSha256,
+          parameter_reflection_sha256: selectorMetadata.parameterReflectionSha256,
+          ...programBindings,
+        } : null;
+        const runtimeContract = {
+          schema: "pocket-card-render/webgl-runtime-port@1",
+          shader_key: program.shader,
+          attributes: program.runtime.attributes,
+          engine_uniforms: {
+            modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
           },
-          fragment: {
-            officialSpirvSha256: sha256File(files.fragmentSpirv),
-            spirvCrossGlslSha256: sha256(officialFragment),
-            outputSha256: sha256(fragment),
-            substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+          material_uniforms: {
+            floats: program.manifest.floats.filter((name) => !program.manifest.ints.includes(name)),
+            ints: program.manifest.ints,
+            vectors: Object.fromEntries(program.manifest.colors.map((name) => [name, "vec3"])),
           },
-          interfaceSha256: canonicalJsonSha256(reflection),
+          camera_from_view: true,
+          mrt_attachments: 2,
+          stencil_normalization: "disable-when-always-keep",
+          stencil_face_mode: "generic",
+          ...(isOpaqueShadowBox ? { require_complete_active_bindings: true } : {}),
+          ...(typedV2 && program.fragment.basisConversions ? {
+            backend_basis_conversions: {
+              fragment: program.fragment.basisConversions,
+            },
+          } : {}),
         };
+        const adaptation = typedV2
+          ? buildWebglAdaptationV2({
+            vertex: {
+              officialSpirvSha256: sha256File(files.vertexSpirv),
+              spirvCrossGlslSha256: sha256(officialVertex),
+              outputSha256: sha256(vertex),
+              operations: [
+                { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+                { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+                {
+                  kind: "uniform-buffer-flattening",
+                  source: "serialized-common",
+                  preservation: "names-types-precision",
+                },
+                {
+                  kind: "clip-space-y-conversion",
+                  from: "unity-vulkan",
+                  to: "webgl",
+                  operation: "remove-y-inversion",
+                },
+                { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+              ],
+              substitutions: [
+                ...program.runtime.vertexSubstitutions,
+                "unity_ObjectToWorld := three.modelMatrix",
+                "unity_WorldToObject := inverse(three.modelMatrix)",
+                "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+                "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+              ],
+            },
+            fragment: {
+              officialSpirvSha256: sha256File(files.fragmentSpirv),
+              spirvCrossGlslSha256: sha256(officialFragment),
+              outputSha256: sha256(fragment),
+              operations: [
+                { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+                {
+                  kind: "uniform-buffer-flattening",
+                  source: "serialized-common",
+                  preservation: "names-types-precision",
+                },
+                ...(program.fragment.basisConversions
+                  ? [{ kind: "object-basis-conversion", contract: "unity-to-three-basis" }]
+                  : []),
+                { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+              ],
+              substitutions: [
+                "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+                ...(program.fragment.basisConversions ? [
+                  "convert Three camera, world position, and world normal vectors back to the official Unity data basis",
+                  "convert Three view-matrix forward Z to the official Unity data basis",
+                ] : []),
+              ],
+            },
+            interfaceSha256: canonicalJsonSha256(reflection),
+            officialVertexInputs: vertexInputContract,
+            runtimeContract,
+            officialProgramBindings: manifestProgramBindings,
+          })
+          : {
+            schema: "pocket-card-render/webgl-stage-adaptation@1",
+            backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+            vertex: {
+              officialSpirvSha256: sha256File(files.vertexSpirv),
+              spirvCrossGlslSha256: sha256(officialVertex),
+              outputSha256: sha256(vertex),
+              substitutions: [
+                ...program.runtime.vertexSubstitutions,
+                "unity_ObjectToWorld := three.modelMatrix",
+                "unity_WorldToObject := inverse(three.modelMatrix)",
+                "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+                "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+              ],
+            },
+            fragment: {
+              officialSpirvSha256: sha256File(files.fragmentSpirv),
+              spirvCrossGlslSha256: sha256(officialFragment),
+              outputSha256: sha256(fragment),
+              substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+            },
+            interfaceSha256: canonicalJsonSha256(reflection),
+          };
         outputs[`${program.stem}.vert.glsl`] = vertex;
         outputs[`${program.stem}.frag.glsl`] = fragment;
         outputs[`${program.stem}_uniforms.json`] = `${JSON.stringify({
@@ -384,6 +513,7 @@ for (const program of programs) {
           official_spirv_sha256: {
             vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv),
           },
+          official_spirv_precision: selectorMetadata.officialSpirvPrecision,
           official_executable_identity: selectorMetadata.identityFields,
           official_parameter_entry: {
             source_sha256: selectorMetadata.identityFields.parameterEntrySha256,
@@ -406,29 +536,17 @@ for (const program of programs) {
             source_sha256: selectorMetadata.identityFields.commonBindingsSha256,
             ...bindings,
           },
+          ...(typedV2 ? {
+            official_program_bindings: manifestProgramBindings,
+            official_vertex_inputs: vertexInputContract,
+          } : {}),
           official_shader_property_defaults: selectorMetadata.shaderPropertyDefaults,
           webgl_adaptation: adaptation,
           webgl_sources: {
             vertex: `public/shaders/${program.stem}.vert.glsl`,
             fragment: `public/shaders/${program.stem}.frag.glsl`,
           },
-          runtime_contract: {
-            schema: "pocket-card-render/webgl-runtime-port@1",
-            shader_key: program.shader,
-            attributes: program.runtime.attributes,
-            engine_uniforms: {
-              modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
-            },
-            material_uniforms: {
-              floats: program.manifest.floats.filter((name) => !program.manifest.ints.includes(name)),
-              ints: program.manifest.ints,
-              vectors: Object.fromEntries(program.manifest.colors.map((name) => [name, "vec3"])),
-            },
-            camera_from_view: true,
-            mrt_attachments: 2,
-            stencil_normalization: "disable-when-always-keep",
-            stencil_face_mode: "generic",
-          },
+          runtime_contract: runtimeContract,
           sampler_bindings: samplerBindings,
           samplers: samplerBindings.map((row) => row.spirvName),
           sampler_slots: samplerBindings.map((row) => row.slot),

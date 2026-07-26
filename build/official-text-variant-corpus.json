@@ -1,0 +1,5460 @@
+{
+ "schema": "pocket-card-render/official-text-variant-corpus@1",
+ "schemaVersion": 1,
+ "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2",
+ "sampleManifestSha256": "2515cae195ee58f06c32f5d0c7d063c6b7a1f03b5743696e2181786d074d4b4d",
+ "sourcePolicy": {
+  "expectationSources": [
+   "official-card-text-design-contract",
+   "official-card-font-contract",
+   "official-masterdata"
+  ],
+  "forbiddenExpectationSources": [
+   "scene",
+   "screenshot",
+   "compose-output"
+  ],
+  "selectionAlgorithm": "deterministic-greedy-set-cover(max-new-obligations,cardId,illustrationId)"
+ },
+ "inputs": {
+  "cardTextDesignContract": {
+   "logicalPath": "public/render/card-text-design-contract.json",
+   "sha256": "4f3071386be0d28f052f1e456f68aff1ccbbc1ff8ca0008b2f0e8f97139a98b9"
+  },
+  "cardFontContract": {
+   "logicalPath": "public/render/card-font-contract.json",
+   "sha256": "6fe963f942c62b51fa029498abb4b04cd2ab9a90b4efc050807c3231ad4b5d7a"
+  },
+  "pokemonMasterdata": {
+   "logicalPath": "MasterData/PokemonCard.json",
+   "rowCount": 3042,
+   "sha256": "90a141190b0b9dedae410766d0ddb131d2c004d73c9a95d10044d108cfea5e15"
+  },
+  "trainerMasterdata": {
+   "logicalPath": "MasterData/TrainerCard.json",
+   "rowCount": 263,
+   "sha256": "07e02439bf5339edf01809b7d6eca1fcd0a4c90ac2540f37b904f3b1fc0a357a"
+  },
+  "rarityDisplayMasterdata": {
+   "logicalPath": "MasterData/RarityDisplay.json",
+   "rowCount": 11,
+   "sha256": "f1b3c0ede48eb14e97174c33624c2256ec986926be33e69e84f24e293b4f34ad"
+  }
+ },
+ "summary": {
+  "masterdataCardCount": 3305,
+  "sourceCurrentCardCount": 3191,
+  "assetGapCardCount": 114,
+  "kindRarityCount": 16,
+  "visualPairCount": 106,
+  "selectedFontGroupCount": 10,
+  "dynamicUIStateVectorCount": 4,
+  "setCoverUniverseCount": 136
+ },
+ "dimensions": {
+  "kindRarities": [
+   {
+    "id": "Pokemon:100",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "rarityDisplayGroupId": "C",
+    "rarityDisplayId": "DIAMOND_1",
+    "masterdataCardCount": 1010,
+    "sourceCurrentCardCount": 979,
+    "assetGapCardCount": 31
+   },
+   {
+    "id": "Pokemon:200",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "rarityDisplayGroupId": "U",
+    "rarityDisplayId": "DIAMOND_2",
+    "masterdataCardCount": 567,
+    "sourceCurrentCardCount": 545,
+    "assetGapCardCount": 22
+   },
+   {
+    "id": "Pokemon:300",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "rarityDisplayGroupId": "R",
+    "rarityDisplayId": "DIAMOND_3",
+    "masterdataCardCount": 425,
+    "sourceCurrentCardCount": 414,
+    "assetGapCardCount": 11
+   },
+   {
+    "id": "Pokemon:400",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "rarityDisplayGroupId": "RR",
+    "rarityDisplayId": "DIAMOND_4",
+    "masterdataCardCount": 159,
+    "sourceCurrentCardCount": 154,
+    "assetGapCardCount": 5
+   },
+   {
+    "id": "Pokemon:500",
+    "kind": "Pokemon",
+    "rarity": 500,
+    "rarityDisplayGroupId": "AR",
+    "rarityDisplayId": "STAR_1",
+    "masterdataCardCount": 271,
+    "sourceCurrentCardCount": 261,
+    "assetGapCardCount": 10
+   },
+   {
+    "id": "Pokemon:600",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "rarityDisplayGroupId": "SAR_SR",
+    "rarityDisplayId": "STAR_2",
+    "masterdataCardCount": 105,
+    "sourceCurrentCardCount": 101,
+    "assetGapCardCount": 4
+   },
+   {
+    "id": "Pokemon:700",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "rarityDisplayGroupId": "SAR_SR",
+    "rarityDisplayId": "STAR_3",
+    "masterdataCardCount": 155,
+    "sourceCurrentCardCount": 150,
+    "assetGapCardCount": 5
+   },
+   {
+    "id": "Pokemon:800",
+    "kind": "Pokemon",
+    "rarity": 800,
+    "rarityDisplayGroupId": "IM",
+    "rarityDisplayId": "STAR_4",
+    "masterdataCardCount": 27,
+    "sourceCurrentCardCount": 26,
+    "assetGapCardCount": 1
+   },
+   {
+    "id": "Pokemon:830",
+    "kind": "Pokemon",
+    "rarity": 830,
+    "rarityDisplayGroupId": "S",
+    "rarityDisplayId": "EIGHT_STAR_1",
+    "masterdataCardCount": 215,
+    "sourceCurrentCardCount": 205,
+    "assetGapCardCount": 10
+   },
+   {
+    "id": "Pokemon:860",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "rarityDisplayGroupId": "SSR",
+    "rarityDisplayId": "EIGHT_STAR_2",
+    "masterdataCardCount": 84,
+    "sourceCurrentCardCount": 80,
+    "assetGapCardCount": 4
+   },
+   {
+    "id": "Pokemon:900",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "rarityDisplayGroupId": "UR",
+    "rarityDisplayId": "CROWN_1",
+    "masterdataCardCount": 24,
+    "sourceCurrentCardCount": 23,
+    "assetGapCardCount": 1
+   },
+   {
+    "id": "Trainer:100",
+    "kind": "Trainer",
+    "rarity": 100,
+    "rarityDisplayGroupId": "C",
+    "rarityDisplayId": "DIAMOND_1",
+    "masterdataCardCount": 18,
+    "sourceCurrentCardCount": 18,
+    "assetGapCardCount": 0
+   },
+   {
+    "id": "Trainer:200",
+    "kind": "Trainer",
+    "rarity": 200,
+    "rarityDisplayGroupId": "U",
+    "rarityDisplayId": "DIAMOND_2",
+    "masterdataCardCount": 154,
+    "sourceCurrentCardCount": 148,
+    "assetGapCardCount": 6
+   },
+   {
+    "id": "Trainer:700",
+    "kind": "Trainer",
+    "rarity": 700,
+    "rarityDisplayGroupId": "SAR_SR",
+    "rarityDisplayId": "STAR_3",
+    "masterdataCardCount": 79,
+    "sourceCurrentCardCount": 76,
+    "assetGapCardCount": 3
+   },
+   {
+    "id": "Trainer:800",
+    "kind": "Trainer",
+    "rarity": 800,
+    "rarityDisplayGroupId": "IM",
+    "rarityDisplayId": "STAR_4",
+    "masterdataCardCount": 3,
+    "sourceCurrentCardCount": 3,
+    "assetGapCardCount": 0
+   },
+   {
+    "id": "Trainer:900",
+    "kind": "Trainer",
+    "rarity": 900,
+    "rarityDisplayGroupId": "UR",
+    "rarityDisplayId": "CROWN_1",
+    "masterdataCardCount": 9,
+    "sourceCurrentCardCount": 8,
+    "assetGapCardCount": 1
+   }
+  ],
+  "visualPairs": [
+   {
+    "id": "Pokemon_AR::Pokemon_OverNumber",
+    "design": "Pokemon_AR",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 255,
+    "kindRarityIds": [
+     "Pokemon:500"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000010_00",
+      "illustrationId": "cPK_20_000010_00_FUSHIGIDANE_AR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_AR_Paradox_Ancient::Pokemon_OverNumber",
+    "design": "Pokemon_AR_Paradox_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:500"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018700_00",
+      "illustrationId": "cPK_20_018700_00_TAKERURAIKO_AR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_AR_Paradox_Future::Pokemon_OverNumber",
+    "design": "Pokemon_AR_Paradox_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:500"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018440_00",
+      "illustrationId": "cPK_20_018440_00_TETSUNOIWAO_AR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_AR_UB::Pokemon_OverNumber",
+    "design": "Pokemon_AR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 4,
+    "kindRarityIds": [
+     "Pokemon:500"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007260_00",
+      "illustrationId": "cPK_20_007260_00_ZUGADOON_AR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C::Pokemon_Normal",
+    "design": "Pokemon_C",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 249,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_000010_00",
+      "illustrationId": "cPK_10_000010_00_FUSHIGIDANE_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C::Pokemon_Normal_Darkness",
+    "design": "Pokemon_C",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 24,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_001640_00",
+      "illustrationId": "cPK_10_001640_00_ARBO_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C_V02::Pokemon_Normal",
+    "design": "Pokemon_C_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 635,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005040_00",
+      "illustrationId": "cPK_10_005040_00_BIPPA_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_C_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 68,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005600_00",
+      "illustrationId": "cPK_10_005600_00_ARBO_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_C_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018180_00",
+      "illustrationId": "cPK_10_018180_00_ARABURUTAKE_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_C_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:100"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018320_00",
+      "illustrationId": "cPK_10_018320_00_TETSUNOKAINA_C"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_IM::Pokemon_OverNumber",
+    "design": "Pokemon_IM",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 19,
+    "kindRarityIds": [
+     "Pokemon:800"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000360_01",
+      "illustrationId": "cPK_20_000360_01_LIZARDONex_IM"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_IM_Mega::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_IM_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 6,
+    "kindRarityIds": [
+     "Pokemon:800"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_011180_01",
+      "illustrationId": "cPK_20_011180_01_MEGABURSYAMOex_IM"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_IM_UB::Pokemon_OverNumber",
+    "design": "Pokemon_IM_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:800"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007480_01",
+      "illustrationId": "cPK_20_007480_01_MASSIVOONex_IM"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR::Pokemon_Normal",
+    "design": "Pokemon_RR",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 15,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_002880_00",
+      "illustrationId": "cPK_10_002880_00_MEGAYANMAex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR::Pokemon_Normal_Darkness",
+    "design": "Pokemon_RR",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 4,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_003800_00",
+      "illustrationId": "cPK_10_003800_00_MANYULAex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_Effect_Back::Pokemon_Normal",
+    "design": "Pokemon_RR_Effect_Back",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 8,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_000230_00",
+      "illustrationId": "cPK_10_000230_00_NASSYex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_Effect_Front::Pokemon_Normal",
+    "design": "Pokemon_RR_Effect_Front",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 14,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_000040_00",
+      "illustrationId": "cPK_10_000040_00_FUSHIGIBANAex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_Link::Pokemon_Normal",
+    "design": "Pokemon_RR_Link",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_004950_00",
+      "illustrationId": "cPK_10_004950_00_ARCEUSex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_Mega::Pokemon_Normal_Mega",
+    "design": "Pokemon_RR_Mega",
+    "fontGroup": "Pokemon_Normal_Mega",
+    "sourceCurrentCardCount": 26,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_010840_00",
+      "illustrationId": "cPK_10_010840_00_MEGAKAILIOSex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_Mega::Pokemon_Normal_Mega_Darkness",
+    "design": "Pokemon_RR_Mega",
+    "fontGroup": "Pokemon_Normal_Mega_Darkness",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_012330_00",
+      "illustrationId": "cPK_10_012330_00_MEGAABSOLex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New::Pokemon_Normal",
+    "design": "Pokemon_RR_New",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 63,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005290_00",
+      "illustrationId": "cPK_10_005290_00_LIZARDONex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New::Pokemon_Normal_Darkness",
+    "design": "Pokemon_RR_New",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 5,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_006920_00",
+      "illustrationId": "cPK_10_006920_00_ALOLABETBETONex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_RR_New_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018410_00",
+      "illustrationId": "cPK_10_018410_00_HABATAKUKAMIex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_Paradox_Ancient_Physical::Pokemon_Normal_Paradox",
+    "design": "Pokemon_RR_New_Paradox_Ancient_Physical",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018510_00",
+      "illustrationId": "cPK_10_018510_00_KORAIDONex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_RR_New_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018280_00",
+      "illustrationId": "cPK_10_018280_00_TETSUNOTSUTSUMIex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_Paradox_Future_Physical::Pokemon_Normal_Paradox",
+    "design": "Pokemon_RR_New_Paradox_Future_Physical",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018340_00",
+      "illustrationId": "cPK_10_018340_00_MIRAIDONex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_Physical::Pokemon_Normal",
+    "design": "Pokemon_RR_New_Physical",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 7,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_015120_00",
+      "illustrationId": "cPK_10_015120_00_MASQUERNYAex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_UB::Pokemon_Normal",
+    "design": "Pokemon_RR_New_UB",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_007480_00",
+      "illustrationId": "cPK_10_007480_00_MASSIVOONex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_RR_New_UB::Pokemon_Normal_Darkness",
+    "design": "Pokemon_RR_New_UB",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:400"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_007800_00",
+      "illustrationId": "cPK_10_007800_00_AKUZIKINGex_RR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_A",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 92,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_000030_00",
+      "illustrationId": "cPK_10_000030_00_FUSHIGIBANA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_A",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 4,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_001680_00",
+      "illustrationId": "cPK_10_001680_00_NIDOQUEEN_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_A_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 188,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005010_00",
+      "illustrationId": "cPK_10_005010_00_PARMOT_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_A_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 23,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005660_00",
+      "illustrationId": "cPK_10_005660_00_TAGGINGRU_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_A_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018620_00",
+      "illustrationId": "cPK_10_018620_00_TODOROKUTSUKI_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_A_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018420_00",
+      "illustrationId": "cPK_10_018420_00_TETSUNOBUJIN_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02_UB::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_A_V02_UB",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 4,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_007960_00",
+      "illustrationId": "cPK_10_007960_00_TEKKAGUYA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_A_V02_UB::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_A_V02_UB",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 5,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_007790_00",
+      "illustrationId": "cPK_10_007790_00_UTUROID_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_B::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_B",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_003010_00",
+      "illustrationId": "cPK_10_003010_00_LEAFIA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_B_V02::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_B_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 17,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_006490_00",
+      "illustrationId": "cPK_10_006490_00_KAPU-KOKEKO_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_B_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_B_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_012360_00",
+      "illustrationId": "cPK_10_012360_00_DARKRAI_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_B_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_B_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018700_00",
+      "illustrationId": "cPK_10_018700_00_TAKERURAIKO_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_B_V02_UB::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_B_V02_UB",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_90_007290_00",
+      "illustrationId": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_C::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_C",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 5,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_003140_00",
+      "illustrationId": "cPK_10_003140_00_MAMMOO_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_C_V02::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_C_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 32,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_006010_00",
+      "illustrationId": "cPK_10_006010_00_AMAJO_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_C_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_C_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_009750_00",
+      "illustrationId": "cPK_10_009750_00_BANGIRAS_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_C_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018450_00",
+      "illustrationId": "cPK_10_018450_00_TETSUNOKASHIRA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_D",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_003340_00",
+      "illustrationId": "cPK_10_003340_00_JIBACOIL_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_D",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_003900_00",
+      "illustrationId": "cPK_10_003900_00_DARKRAI_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D_V02::Pokemon_Normal",
+    "design": "Pokemon_R_Holo_D_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 12,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_008220_00",
+      "illustrationId": "cPK_10_008220_00_EIFIE_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Holo_D_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_014690_00",
+      "illustrationId": "cPK_10_014690_00_MIKARUGE_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_D_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018690_00",
+      "illustrationId": "cPK_10_018690_00_UGATSUHOMURA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Holo_D_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_R_Holo_D_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018440_00",
+      "illustrationId": "cPK_10_018440_00_TETSUNOIWAO_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Link_Holo_A::Pokemon_Normal",
+    "design": "Pokemon_R_Link_Holo_A",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 8,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_004370_00",
+      "illustrationId": "cPK_10_004370_00_HEATRAN_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Link_Holo_A::Pokemon_Normal_Darkness",
+    "design": "Pokemon_R_Link_Holo_A",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_004740_00",
+      "illustrationId": "cPK_10_004740_00_CROBAT_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Link_Holo_B::Pokemon_Normal",
+    "design": "Pokemon_R_Link_Holo_B",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_004330_00",
+      "illustrationId": "cPK_10_004330_00_MUSKIPPA_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_R_Link_Holo_C::Pokemon_Normal",
+    "design": "Pokemon_R_Link_Holo_C",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:300"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_004790_00",
+      "illustrationId": "cPK_10_004790_00_JIBACOIL_R"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_S::Pokemon_Normal",
+    "design": "Pokemon_S",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:830"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_90_005090_00",
+      "illustrationId": "cPK_90_005090_00_MOTOTOKAGE_S"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SAR::Pokemon_OverNumber",
+    "design": "Pokemon_SAR",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 80,
+    "kindRarityIds": [
+     "Pokemon:600"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000470_01",
+      "illustrationId": "cPK_20_000470_01_FIREex_SAR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SAR_Mega::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_SAR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 15,
+    "kindRarityIds": [
+     "Pokemon:600"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_010840_01",
+      "illustrationId": "cPK_20_010840_01_MEGAKAILIOSex_SAR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SAR_Paradox_Ancient::Pokemon_OverNumber",
+    "design": "Pokemon_SAR_Paradox_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:600"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018410_01",
+      "illustrationId": "cPK_20_018410_01_HABATAKUKAMIex_SAR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SAR_Paradox_Future::Pokemon_OverNumber",
+    "design": "Pokemon_SAR_Paradox_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:600"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018280_01",
+      "illustrationId": "cPK_20_018280_01_TETSUNOTSUTSUMIex_SAR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SAR_UB::Pokemon_OverNumber",
+    "design": "Pokemon_SAR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:600"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007800_01",
+      "illustrationId": "cPK_20_007800_01_AKUZIKINGex_SAR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR::Pokemon_OverNumber",
+    "design": "Pokemon_SR",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 43,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000040_00",
+      "illustrationId": "cPK_20_000040_00_FUSHIGIBANAex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_Mega::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_SR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 15,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_010840_00",
+      "illustrationId": "cPK_20_010840_00_MEGAKAILIOSex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_Mega_V02::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_SR_Mega_V02",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 9,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_016150_00",
+      "illustrationId": "cPK_20_016150_00_MEGALIZARDONXex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_RELIEF::Pokemon_OverNumber",
+    "design": "Pokemon_SR_RELIEF",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 12,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000360_03",
+      "illustrationId": "cPK_20_000360_03_LIZARDONex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_RELIEF_UB::Pokemon_OverNumber",
+    "design": "Pokemon_SR_RELIEF_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007480_02",
+      "illustrationId": "cPK_20_007480_02_MASSIVOONex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_V02::Pokemon_OverNumber",
+    "design": "Pokemon_SR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 50,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_005690_00",
+      "illustrationId": "cPK_20_005690_00_DEKANUCHANex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_V02_UB::Pokemon_OverNumber",
+    "design": "Pokemon_SR_V02_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007480_00",
+      "illustrationId": "cPK_20_007480_00_MASSIVOONex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_V03::Pokemon_OverNumber",
+    "design": "Pokemon_SR_V03",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 13,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_015120_00",
+      "illustrationId": "cPK_20_015120_00_MASQUERNYAex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_V03_Ancient::Pokemon_OverNumber",
+    "design": "Pokemon_SR_V03_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018410_00",
+      "illustrationId": "cPK_20_018410_00_HABATAKUKAMIex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SR_V03_Future::Pokemon_OverNumber",
+    "design": "Pokemon_SR_V03_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:700"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018280_00",
+      "illustrationId": "cPK_20_018280_00_TETSUNOTSUTSUMIex_SR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR::Pokemon_OverNumber",
+    "design": "Pokemon_SSR",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 18,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000040_01",
+      "illustrationId": "cPK_20_000040_01_FUSHIGIBANAex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR_Mega::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_SSR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 8,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_011180_02",
+      "illustrationId": "cPK_20_011180_02_MEGABURSYAMOex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR_Mega_V02::Pokemon_OverNumber_Mega",
+    "design": "Pokemon_SSR_Mega_V02",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_011840_02",
+      "illustrationId": "cPK_20_011840_02_MEGATYLTALISex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR_UB::Pokemon_OverNumber",
+    "design": "Pokemon_SSR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007480_03",
+      "illustrationId": "cPK_20_007480_03_MASSIVOONex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR_V02::Pokemon_OverNumber",
+    "design": "Pokemon_SSR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 49,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000470_02",
+      "illustrationId": "cPK_20_000470_02_FIREex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_SSR_V03::Pokemon_OverNumber",
+    "design": "Pokemon_SSR_V03",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Pokemon:860"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_015120_02",
+      "illustrationId": "cPK_20_015120_02_MASQUERNYAex_SSR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_S_V02::Pokemon_Normal",
+    "design": "Pokemon_S_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 183,
+    "kindRarityIds": [
+     "Pokemon:830"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000010_01",
+      "illustrationId": "cPK_20_000010_01_FUSHIGIDANE_S"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_S_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_S_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 21,
+    "kindRarityIds": [
+     "Pokemon:830"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_001640_00",
+      "illustrationId": "cPK_20_001640_00_ARBO_S"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U::Pokemon_Normal",
+    "design": "Pokemon_U",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 142,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_000020_00",
+      "illustrationId": "cPK_10_000020_00_FUSHIGISOU_U"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U::Pokemon_Normal_Darkness",
+    "design": "Pokemon_U",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 13,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_001650_00",
+      "illustrationId": "cPK_10_001650_00_ARBOK_U"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR::Pokemon_OverNumber",
+    "design": "Pokemon_UR",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 8,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000960_02",
+      "illustrationId": "cPK_20_000960_02_PIKACHUex_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR_LizardonOnly::Pokemon_OverNumber",
+    "design": "Pokemon_UR_LizardonOnly",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_000360_02",
+      "illustrationId": "cPK_20_000360_02_LIZARDONex_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR_Paradox_Ancient_V02::Pokemon_OverNumber",
+    "design": "Pokemon_UR_Paradox_Ancient_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018620_00",
+      "illustrationId": "cPK_20_018620_00_TODOROKUTSUKI_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR_Paradox_Future_V02::Pokemon_OverNumber",
+    "design": "Pokemon_UR_Paradox_Future_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_018420_00",
+      "illustrationId": "cPK_20_018420_00_TETSUNOBUJIN_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR_UB::Pokemon_OverNumber",
+    "design": "Pokemon_UR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_007790_00",
+      "illustrationId": "cPK_20_007790_00_UTUROID_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_UR_V02::Pokemon_OverNumber",
+    "design": "Pokemon_UR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 11,
+    "kindRarityIds": [
+     "Pokemon:900"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_20_008900_02",
+      "illustrationId": "cPK_20_008900_02_HOUOUex_UR"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U_V02::Pokemon_Normal",
+    "design": "Pokemon_U_V02",
+    "fontGroup": "Pokemon_Normal",
+    "sourceCurrentCardCount": 344,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005060_00",
+      "illustrationId": "cPK_10_005060_00_PACHIRISU_U"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U_V02::Pokemon_Normal_Darkness",
+    "design": "Pokemon_U_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 39,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=null"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_005610_00",
+      "illustrationId": "cPK_10_005610_00_ARBOK_U"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "design": "Pokemon_U_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018190_00",
+      "illustrationId": "cPK_10_018190_00_CHIWOHAUHANE_U"
+     }
+    ]
+   },
+   {
+    "id": "Pokemon_U_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "design": "Pokemon_U_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 4,
+    "kindRarityIds": [
+     "Pokemon:200"
+    ],
+    "dynamicUIStateIds": [
+     "ExOutlineWhite=ImgExOutlineWhite"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "PK_10_018200_00",
+      "illustrationId": "cPK_10_018200_00_TETSUNODOKUGA_U"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_C::Trainers_Normal",
+    "design": "Trainers_C",
+    "fontGroup": "Trainers_Normal",
+    "sourceCurrentCardCount": 17,
+    "kindRarityIds": [
+     "Trainer:100"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_normal|Title=normal_ttl_normal"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_000080_00",
+      "illustrationId": "cTR_10_000080_00_KAINOKASEKI_C"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_C_Mirror::Trainers_Normal",
+    "design": "Trainers_C_Mirror",
+    "fontGroup": "Trainers_Normal",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Trainer:100"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_000100_01",
+      "illustrationId": "cTR_10_000100_01_HIMITSUNOKOHAKU_C"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_IM::Trainers_OverNumber",
+    "design": "Trainers_IM",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Trainer:800"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_000550_01",
+      "illustrationId": "cTR_20_000550_01_GUZUMA_IM"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_SR::Trainers_OverNumber",
+    "design": "Trainers_SR",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 23,
+    "kindRarityIds": [
+     "Trainer:700"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_000110_00",
+      "illustrationId": "cTR_20_000110_00_ERIKA_SR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_SR_Paradox_Ancient_V03::Trainers_OverNumber",
+    "design": "Trainers_SR_Paradox_Ancient_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Trainer:700"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_001400_00",
+      "illustrationId": "cTR_20_001400_00_OLIMHAKASE_SR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_SR_Paradox_Future_V03::Trainers_OverNumber",
+    "design": "Trainers_SR_Paradox_Future_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 1,
+    "kindRarityIds": [
+     "Trainer:700"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_001410_00",
+      "illustrationId": "cTR_20_001410_00_FUTUHAKASE_SR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_SR_V02::Trainers_OverNumber",
+    "design": "Trainers_SR_V02",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 38,
+    "kindRarityIds": [
+     "Trainer:700"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_000040_00",
+      "illustrationId": "cTR_20_000040_00_HAKASENOKENKYU_SR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_SR_V03::Trainers_OverNumber",
+    "design": "Trainers_SR_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 13,
+    "kindRarityIds": [
+     "Trainer:700"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_000420_01",
+      "illustrationId": "cTR_20_000420_01_NANJYAMO_SR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_U::Trainers_Normal",
+    "design": "Trainers_U",
+    "fontGroup": "Trainers_Normal",
+    "sourceCurrentCardCount": 122,
+    "kindRarityIds": [
+     "Trainer:200"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_normal|Title=normal_ttl_normal"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_000110_00",
+      "illustrationId": "cTR_10_000110_00_ERIKA_U"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_UR::Trainers_OverNumber",
+    "design": "Trainers_UR",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 5,
+    "kindRarityIds": [
+     "Trainer:900"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_000030_00",
+      "illustrationId": "cTR_20_000030_00_MONSTERBALL_UR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_UR_V02::Trainers_OverNumber",
+    "design": "Trainers_UR_V02",
+    "fontGroup": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 3,
+    "kindRarityIds": [
+     "Trainer:900"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_20_001080_00",
+      "illustrationId": "cTR_20_001080_00_MAMORINOPONCHO_UR"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_U_Mirror::Trainers_Normal",
+    "design": "Trainers_U_Mirror",
+    "fontGroup": "Trainers_Normal",
+    "sourceCurrentCardCount": 22,
+    "kindRarityIds": [
+     "Trainer:200"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_holo|Title=normal_ttl_holo"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_000110_01",
+      "illustrationId": "cTR_10_000110_01_ERIKA_U"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_U_Paradox_Ancient::Trainers_Normal_Paradox",
+    "design": "Trainers_U_Paradox_Ancient",
+    "fontGroup": "Trainers_Normal_Paradox",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Trainer:200"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_normal|Title=normal_ttl_normal"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_001370_00",
+      "illustrationId": "cTR_10_001370_00_BUSUTOENAJIKODAI_U"
+     }
+    ]
+   },
+   {
+    "id": "Trainers_U_Paradox_Future::Trainers_Normal_Paradox",
+    "design": "Trainers_U_Paradox_Future",
+    "fontGroup": "Trainers_Normal_Paradox",
+    "sourceCurrentCardCount": 2,
+    "kindRarityIds": [
+     "Trainer:200"
+    ],
+    "dynamicUIStateIds": [
+     "CardType=card_type_normal|Title=normal_ttl_normal"
+    ],
+    "selectedWitnesses": [
+     {
+      "cardId": "TR_10_001380_00",
+      "illustrationId": "cTR_10_001380_00_BUSUTOENAJIMIRAI_U"
+     }
+    ]
+   }
+  ],
+  "fontGroups": [
+   {
+    "id": "Pokemon_Normal",
+    "sourceCurrentCardCount": 2029,
+    "serializedObjectSha256": "f82d12b18fd0e901e6f8e47d193fe8d64c288f6ad98c6b3f67742a69df8e4878",
+    "rendererBindingCount": 23
+   },
+   {
+    "id": "Pokemon_Normal_Darkness",
+    "sourceCurrentCardCount": 217,
+    "serializedObjectSha256": "d5b0c6b492e728b7ea240c8974e211867e85b9c039f3ded8c935cdf9d20d93d3",
+    "rendererBindingCount": 23
+   },
+   {
+    "id": "Pokemon_Normal_Mega",
+    "sourceCurrentCardCount": 26,
+    "serializedObjectSha256": "66eaa91d385d5944978db0af1d9addc42f942babe1d443735d8d6bfdfd07604e",
+    "rendererBindingCount": 27
+   },
+   {
+    "id": "Pokemon_Normal_Mega_Darkness",
+    "sourceCurrentCardCount": 3,
+    "serializedObjectSha256": "af194846b94542742b9f7d925453534daf872a979171d3761eaa4f7391778bd7",
+    "rendererBindingCount": 27
+   },
+   {
+    "id": "Pokemon_Normal_Paradox",
+    "sourceCurrentCardCount": 22,
+    "serializedObjectSha256": "7d732e2e599a8b74c6a1c06f66cb620981bfec309bacca75d125626bdfa9a491",
+    "rendererBindingCount": 23
+   },
+   {
+    "id": "Pokemon_OverNumber",
+    "sourceCurrentCardCount": 587,
+    "serializedObjectSha256": "473ee2c341157adc6b6743ce5443d233d88608e3ed77018e361c8543cdaaa7da",
+    "rendererBindingCount": 23
+   },
+   {
+    "id": "Pokemon_OverNumber_Mega",
+    "sourceCurrentCardCount": 54,
+    "serializedObjectSha256": "8cb5889dccbcaf1d1d9d53fbc3b3e9a7077a48fefc97e526c4b635e4d542117b",
+    "rendererBindingCount": 27
+   },
+   {
+    "id": "Trainers_Normal",
+    "sourceCurrentCardCount": 162,
+    "serializedObjectSha256": "29398c0ad008265f0dcd774422d8966e0e5222130483eaab133e978a8041bc36",
+    "rendererBindingCount": 13
+   },
+   {
+    "id": "Trainers_Normal_Paradox",
+    "sourceCurrentCardCount": 4,
+    "serializedObjectSha256": "e2427aa06ba943c4bfd853b844b969121cb5fb5498d09eea80da733f5a1afb6f",
+    "rendererBindingCount": 13
+   },
+   {
+    "id": "Trainers_OverNumber",
+    "sourceCurrentCardCount": 87,
+    "serializedObjectSha256": "010d1e9188c0698f9aad30acd7add806c85b2a9cb0c08306a63c3169c8c152c3",
+    "rendererBindingCount": 13
+   }
+  ],
+  "dynamicUIStateVectors": [
+   {
+    "id": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "states": [
+     {
+      "label": "CardType",
+      "controllerPath": "/TrainersCardUI/Base/card_frm_elm/cmn_card_type_txt_elm",
+      "targetName": "card_type_holo",
+      "targetPath": "/TrainersCardUI/Base/card_frm_elm/cmn_card_type_txt_elm/card_type_holo"
+     },
+     {
+      "label": "Title",
+      "controllerPath": "/TrainersCardUI/Base/card_frm_elm/normal_card_frm_elm/normal_ttl_base_elm",
+      "targetName": "normal_ttl_holo",
+      "targetPath": "/TrainersCardUI/Base/card_frm_elm/normal_card_frm_elm/normal_ttl_base_elm/normal_ttl_holo"
+     }
+    ],
+    "sourceCurrentCardCount": 110
+   },
+   {
+    "id": "CardType=card_type_normal|Title=normal_ttl_normal",
+    "states": [
+     {
+      "label": "CardType",
+      "controllerPath": "/TrainersCardUI/Base/card_frm_elm/cmn_card_type_txt_elm",
+      "targetName": "card_type_normal",
+      "targetPath": "/TrainersCardUI/Base/card_frm_elm/cmn_card_type_txt_elm/card_type_normal"
+     },
+     {
+      "label": "Title",
+      "controllerPath": "/TrainersCardUI/Base/card_frm_elm/normal_card_frm_elm/normal_ttl_base_elm",
+      "targetName": "normal_ttl_normal",
+      "targetPath": "/TrainersCardUI/Base/card_frm_elm/normal_card_frm_elm/normal_ttl_base_elm/normal_ttl_normal"
+     }
+    ],
+    "sourceCurrentCardCount": 143
+   },
+   {
+    "id": "ExOutlineWhite=ImgExOutlineWhite",
+    "states": [
+     {
+      "label": "ExOutlineWhite",
+      "controllerPath": "/PokemonCardUI/name_elm/Ex/EX/ImgExOutlineWhite",
+      "targetName": "ImgExOutlineWhite",
+      "targetPath": "/PokemonCardUI/name_elm/Ex/EX/ImgExOutlineWhite/ImgExOutlineWhite"
+     }
+    ],
+    "sourceCurrentCardCount": 609
+   },
+   {
+    "id": "ExOutlineWhite=null",
+    "states": [
+     {
+      "label": "ExOutlineWhite",
+      "controllerPath": "/PokemonCardUI/name_elm/Ex/EX/ImgExOutlineWhite",
+      "targetName": null,
+      "targetPath": null
+     }
+    ],
+    "sourceCurrentCardCount": 2329
+   }
+  ]
+ },
+ "setCover": {
+  "universe": [
+   "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+   "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+   "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+   "dynamic-ui:ExOutlineWhite=null",
+   "font-group:Pokemon_Normal",
+   "font-group:Pokemon_Normal_Darkness",
+   "font-group:Pokemon_Normal_Mega",
+   "font-group:Pokemon_Normal_Mega_Darkness",
+   "font-group:Pokemon_Normal_Paradox",
+   "font-group:Pokemon_OverNumber",
+   "font-group:Pokemon_OverNumber_Mega",
+   "font-group:Trainers_Normal",
+   "font-group:Trainers_Normal_Paradox",
+   "font-group:Trainers_OverNumber",
+   "kind-rarity:Pokemon:100",
+   "kind-rarity:Pokemon:200",
+   "kind-rarity:Pokemon:300",
+   "kind-rarity:Pokemon:400",
+   "kind-rarity:Pokemon:500",
+   "kind-rarity:Pokemon:600",
+   "kind-rarity:Pokemon:700",
+   "kind-rarity:Pokemon:800",
+   "kind-rarity:Pokemon:830",
+   "kind-rarity:Pokemon:860",
+   "kind-rarity:Pokemon:900",
+   "kind-rarity:Trainer:100",
+   "kind-rarity:Trainer:200",
+   "kind-rarity:Trainer:700",
+   "kind-rarity:Trainer:800",
+   "kind-rarity:Trainer:900",
+   "visual-pair:Pokemon_AR::Pokemon_OverNumber",
+   "visual-pair:Pokemon_AR_Paradox_Ancient::Pokemon_OverNumber",
+   "visual-pair:Pokemon_AR_Paradox_Future::Pokemon_OverNumber",
+   "visual-pair:Pokemon_AR_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_C::Pokemon_Normal",
+   "visual-pair:Pokemon_C::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_C_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_C_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_C_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_IM::Pokemon_OverNumber",
+   "visual-pair:Pokemon_IM_Mega::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_IM_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_RR::Pokemon_Normal",
+   "visual-pair:Pokemon_RR::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_RR_Effect_Back::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_Effect_Front::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_Link::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega",
+   "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega_Darkness",
+   "visual-pair:Pokemon_RR_New::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_New::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_RR_New_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_RR_New_Paradox_Ancient_Physical::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_RR_New_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_RR_New_Paradox_Future_Physical::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_RR_New_Physical::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal",
+   "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_B::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_B_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Holo_B_V02_UB::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_C::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_R_Link_Holo_B::Pokemon_Normal",
+   "visual-pair:Pokemon_R_Link_Holo_C::Pokemon_Normal",
+   "visual-pair:Pokemon_S::Pokemon_Normal",
+   "visual-pair:Pokemon_SAR::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SAR_Mega::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_SAR_Paradox_Ancient::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SAR_Paradox_Future::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SAR_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_Mega::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_SR_Mega_V02::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_SR_RELIEF::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_RELIEF_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_V02::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_V02_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_V03::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_V03_Ancient::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SR_V03_Future::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SSR::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SSR_Mega::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_SSR_Mega_V02::Pokemon_OverNumber_Mega",
+   "visual-pair:Pokemon_SSR_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SSR_V02::Pokemon_OverNumber",
+   "visual-pair:Pokemon_SSR_V03::Pokemon_OverNumber",
+   "visual-pair:Pokemon_S_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_S_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_U::Pokemon_Normal",
+   "visual-pair:Pokemon_U::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_UR::Pokemon_OverNumber",
+   "visual-pair:Pokemon_UR_LizardonOnly::Pokemon_OverNumber",
+   "visual-pair:Pokemon_UR_Paradox_Ancient_V02::Pokemon_OverNumber",
+   "visual-pair:Pokemon_UR_Paradox_Future_V02::Pokemon_OverNumber",
+   "visual-pair:Pokemon_UR_UB::Pokemon_OverNumber",
+   "visual-pair:Pokemon_UR_V02::Pokemon_OverNumber",
+   "visual-pair:Pokemon_U_V02::Pokemon_Normal",
+   "visual-pair:Pokemon_U_V02::Pokemon_Normal_Darkness",
+   "visual-pair:Pokemon_U_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+   "visual-pair:Pokemon_U_V02_Paradox_Future::Pokemon_Normal_Paradox",
+   "visual-pair:Trainers_C::Trainers_Normal",
+   "visual-pair:Trainers_C_Mirror::Trainers_Normal",
+   "visual-pair:Trainers_IM::Trainers_OverNumber",
+   "visual-pair:Trainers_SR::Trainers_OverNumber",
+   "visual-pair:Trainers_SR_Paradox_Ancient_V03::Trainers_OverNumber",
+   "visual-pair:Trainers_SR_Paradox_Future_V03::Trainers_OverNumber",
+   "visual-pair:Trainers_SR_V02::Trainers_OverNumber",
+   "visual-pair:Trainers_SR_V03::Trainers_OverNumber",
+   "visual-pair:Trainers_U::Trainers_Normal",
+   "visual-pair:Trainers_UR::Trainers_OverNumber",
+   "visual-pair:Trainers_UR_V02::Trainers_OverNumber",
+   "visual-pair:Trainers_U_Mirror::Trainers_Normal",
+   "visual-pair:Trainers_U_Paradox_Ancient::Trainers_Normal_Paradox",
+   "visual-pair:Trainers_U_Paradox_Future::Trainers_Normal_Paradox"
+  ],
+  "selectedWitnessCount": 106,
+  "selectedWitnesses": [
+   {
+    "rank": 1,
+    "cardId": "PK_10_000010_00",
+    "illustrationId": "cPK_10_000010_00_FUSHIGIDANE_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_C::Pokemon_Normal",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 2,
+    "cardId": "PK_10_018190_00",
+    "illustrationId": "cPK_10_018190_00_CHIWOHAUHANE_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_U_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 3,
+    "cardId": "TR_10_000080_00",
+    "illustrationId": "cTR_10_000080_00_KAINOKASEKI_C",
+    "kind": "Trainer",
+    "rarity": 100,
+    "design": "Trainers_C",
+    "fontGroup": "Trainers_Normal",
+    "visualPairId": "Trainers_C::Trainers_Normal",
+    "kindRarityId": "Trainer:100",
+    "dynamicUIStateId": "CardType=card_type_normal|Title=normal_ttl_normal",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+     "font-group:Trainers_Normal",
+     "kind-rarity:Trainer:100",
+     "visual-pair:Trainers_C::Trainers_Normal"
+    ],
+    "newlyCovered": [
+     "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+     "font-group:Trainers_Normal",
+     "kind-rarity:Trainer:100",
+     "visual-pair:Trainers_C::Trainers_Normal"
+    ]
+   },
+   {
+    "rank": 4,
+    "cardId": "TR_20_000030_00",
+    "illustrationId": "cTR_20_000030_00_MONSTERBALL_UR",
+    "kind": "Trainer",
+    "rarity": 900,
+    "design": "Trainers_UR",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_UR::Trainers_OverNumber",
+    "kindRarityId": "Trainer:900",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:900",
+     "visual-pair:Trainers_UR::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:900",
+     "visual-pair:Trainers_UR::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 5,
+    "cardId": "PK_10_001680_00",
+    "illustrationId": "cPK_10_001680_00_NIDOQUEEN_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_A::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 6,
+    "cardId": "PK_10_010840_00",
+    "illustrationId": "cPK_10_010840_00_MEGAKAILIOSex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_Mega",
+    "fontGroup": "Pokemon_Normal_Mega",
+    "visualPairId": "Pokemon_RR_Mega::Pokemon_Normal_Mega",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Mega",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega"
+    ],
+    "newlyCovered": [
+     "font-group:Pokemon_Normal_Mega",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega"
+    ]
+   },
+   {
+    "rank": 7,
+    "cardId": "PK_20_000010_00",
+    "illustrationId": "cPK_20_000010_00_FUSHIGIDANE_AR",
+    "kind": "Pokemon",
+    "rarity": 500,
+    "design": "Pokemon_AR",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_AR::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:500",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:500",
+     "visual-pair:Pokemon_AR::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:500",
+     "visual-pair:Pokemon_AR::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 8,
+    "cardId": "PK_20_010840_00",
+    "illustrationId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_SR_Mega::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_Mega::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_Mega::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 9,
+    "cardId": "TR_10_001370_00",
+    "illustrationId": "cTR_10_001370_00_BUSUTOENAJIKODAI_U",
+    "kind": "Trainer",
+    "rarity": 200,
+    "design": "Trainers_U_Paradox_Ancient",
+    "fontGroup": "Trainers_Normal_Paradox",
+    "visualPairId": "Trainers_U_Paradox_Ancient::Trainers_Normal_Paradox",
+    "kindRarityId": "Trainer:200",
+    "dynamicUIStateId": "CardType=card_type_normal|Title=normal_ttl_normal",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+     "font-group:Trainers_Normal_Paradox",
+     "kind-rarity:Trainer:200",
+     "visual-pair:Trainers_U_Paradox_Ancient::Trainers_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "font-group:Trainers_Normal_Paradox",
+     "kind-rarity:Trainer:200",
+     "visual-pair:Trainers_U_Paradox_Ancient::Trainers_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 10,
+    "cardId": "PK_10_012330_00",
+    "illustrationId": "cPK_10_012330_00_MEGAABSOLex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_Mega",
+    "fontGroup": "Pokemon_Normal_Mega_Darkness",
+    "visualPairId": "Pokemon_RR_Mega::Pokemon_Normal_Mega_Darkness",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Mega_Darkness",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega_Darkness"
+    ],
+    "newlyCovered": [
+     "font-group:Pokemon_Normal_Mega_Darkness",
+     "visual-pair:Pokemon_RR_Mega::Pokemon_Normal_Mega_Darkness"
+    ]
+   },
+   {
+    "rank": 11,
+    "cardId": "PK_20_000010_01",
+    "illustrationId": "cPK_20_000010_01_FUSHIGIDANE_S",
+    "kind": "Pokemon",
+    "rarity": 830,
+    "design": "Pokemon_S_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_S_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:830",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:830",
+     "visual-pair:Pokemon_S_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Pokemon:830",
+     "visual-pair:Pokemon_S_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 12,
+    "cardId": "PK_20_000040_01",
+    "illustrationId": "cPK_20_000040_01_FUSHIGIBANAex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SSR::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 13,
+    "cardId": "PK_20_000360_01",
+    "illustrationId": "cPK_20_000360_01_LIZARDONex_IM",
+    "kind": "Pokemon",
+    "rarity": 800,
+    "design": "Pokemon_IM",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_IM::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:800",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:800",
+     "visual-pair:Pokemon_IM::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Pokemon:800",
+     "visual-pair:Pokemon_IM::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 14,
+    "cardId": "PK_20_000360_02",
+    "illustrationId": "cPK_20_000360_02_LIZARDONex_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR_LizardonOnly",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR_LizardonOnly::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_LizardonOnly::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_LizardonOnly::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 15,
+    "cardId": "PK_20_000470_01",
+    "illustrationId": "cPK_20_000470_01_FIREex_SAR",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "design": "Pokemon_SAR",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SAR::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:600",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 16,
+    "cardId": "TR_20_000040_00",
+    "illustrationId": "cTR_20_000040_00_HAKASENOKENKYU_SR",
+    "kind": "Trainer",
+    "rarity": 700,
+    "design": "Trainers_SR_V02",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_SR_V02::Trainers_OverNumber",
+    "kindRarityId": "Trainer:700",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR_V02::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR_V02::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 17,
+    "cardId": "TR_20_000550_01",
+    "illustrationId": "cTR_20_000550_01_GUZUMA_IM",
+    "kind": "Trainer",
+    "rarity": 800,
+    "design": "Trainers_IM",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_IM::Trainers_OverNumber",
+    "kindRarityId": "Trainer:800",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:800",
+     "visual-pair:Trainers_IM::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "kind-rarity:Trainer:800",
+     "visual-pair:Trainers_IM::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 18,
+    "cardId": "PK_10_000020_00",
+    "illustrationId": "cPK_10_000020_00_FUSHIGISOU_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_U::Pokemon_Normal",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_U::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 19,
+    "cardId": "PK_10_000030_00",
+    "illustrationId": "cPK_10_000030_00_FUSHIGIBANA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_A::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 20,
+    "cardId": "PK_10_000040_00",
+    "illustrationId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_Effect_Front",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_Effect_Front::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Effect_Front::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_Effect_Front::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 21,
+    "cardId": "PK_10_000230_00",
+    "illustrationId": "cPK_10_000230_00_NASSYex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_Effect_Back",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_Effect_Back::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Effect_Back::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_Effect_Back::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 22,
+    "cardId": "PK_10_001640_00",
+    "illustrationId": "cPK_10_001640_00_ARBO_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_C::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_C::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 23,
+    "cardId": "PK_10_001650_00",
+    "illustrationId": "cPK_10_001650_00_ARBOK_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_U::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_U::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 24,
+    "cardId": "PK_10_002880_00",
+    "illustrationId": "cPK_10_002880_00_MEGAYANMAex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 25,
+    "cardId": "PK_10_003010_00",
+    "illustrationId": "cPK_10_003010_00_LEAFIA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_B",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_B::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_B::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_B::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 26,
+    "cardId": "PK_10_003140_00",
+    "illustrationId": "cPK_10_003140_00_MAMMOO_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_C",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_C::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_C::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_C::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 27,
+    "cardId": "PK_10_003340_00",
+    "illustrationId": "cPK_10_003340_00_JIBACOIL_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_D::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 28,
+    "cardId": "PK_10_003800_00",
+    "illustrationId": "cPK_10_003800_00_MANYULAex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_RR::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 29,
+    "cardId": "PK_10_003900_00",
+    "illustrationId": "cPK_10_003900_00_DARKRAI_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_D::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 30,
+    "cardId": "PK_10_004330_00",
+    "illustrationId": "cPK_10_004330_00_MUSKIPPA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Link_Holo_B",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Link_Holo_B::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Link_Holo_B::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Link_Holo_B::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 31,
+    "cardId": "PK_10_004370_00",
+    "illustrationId": "cPK_10_004370_00_HEATRAN_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Link_Holo_A",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Link_Holo_A::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 32,
+    "cardId": "PK_10_004740_00",
+    "illustrationId": "cPK_10_004740_00_CROBAT_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Link_Holo_A",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Link_Holo_A::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Link_Holo_A::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 33,
+    "cardId": "PK_10_004790_00",
+    "illustrationId": "cPK_10_004790_00_JIBACOIL_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Link_Holo_C",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Link_Holo_C::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Link_Holo_C::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Link_Holo_C::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 34,
+    "cardId": "PK_10_004950_00",
+    "illustrationId": "cPK_10_004950_00_ARCEUSex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_Link",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_Link::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_Link::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_Link::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 35,
+    "cardId": "PK_10_005010_00",
+    "illustrationId": "cPK_10_005010_00_PARMOT_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_A_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 36,
+    "cardId": "PK_10_005040_00",
+    "illustrationId": "cPK_10_005040_00_BIPPA_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_C_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_C_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 37,
+    "cardId": "PK_10_005060_00",
+    "illustrationId": "cPK_10_005060_00_PACHIRISU_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_U_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_U_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 38,
+    "cardId": "PK_10_005290_00",
+    "illustrationId": "cPK_10_005290_00_LIZARDONex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_New::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 39,
+    "cardId": "PK_10_005600_00",
+    "illustrationId": "cPK_10_005600_00_ARBO_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_C_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_C_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 40,
+    "cardId": "PK_10_005610_00",
+    "illustrationId": "cPK_10_005610_00_ARBOK_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_U_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_U_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 41,
+    "cardId": "PK_10_005660_00",
+    "illustrationId": "cPK_10_005660_00_TAGGINGRU_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_A_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 42,
+    "cardId": "PK_10_006010_00",
+    "illustrationId": "cPK_10_006010_00_AMAJO_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_C_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_C_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 43,
+    "cardId": "PK_10_006490_00",
+    "illustrationId": "cPK_10_006490_00_KAPU-KOKEKO_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_B_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_B_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 44,
+    "cardId": "PK_10_006920_00",
+    "illustrationId": "cPK_10_006920_00_ALOLABETBETONex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_RR_New::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 45,
+    "cardId": "PK_10_007480_00",
+    "illustrationId": "cPK_10_007480_00_MASSIVOONex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_UB",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_New_UB::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 46,
+    "cardId": "PK_10_007790_00",
+    "illustrationId": "cPK_10_007790_00_UTUROID_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02_UB",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_A_V02_UB::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 47,
+    "cardId": "PK_10_007800_00",
+    "illustrationId": "cPK_10_007800_00_AKUZIKINGex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_UB",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_RR_New_UB::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_UB::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 48,
+    "cardId": "PK_10_007960_00",
+    "illustrationId": "cPK_10_007960_00_TEKKAGUYA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02_UB",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_A_V02_UB::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02_UB::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 49,
+    "cardId": "PK_10_008220_00",
+    "illustrationId": "cPK_10_008220_00_EIFIE_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D_V02",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_D_V02::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 50,
+    "cardId": "PK_10_009750_00",
+    "illustrationId": "cPK_10_009750_00_BANGIRAS_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_C_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_C_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_C_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 51,
+    "cardId": "PK_10_012360_00",
+    "illustrationId": "cPK_10_012360_00_DARKRAI_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_B_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_B_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_B_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 52,
+    "cardId": "PK_10_014690_00",
+    "illustrationId": "cPK_10_014690_00_MIKARUGE_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_R_Holo_D_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 53,
+    "cardId": "PK_10_015120_00",
+    "illustrationId": "cPK_10_015120_00_MASQUERNYAex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_Physical",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_RR_New_Physical::Pokemon_Normal",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_Physical::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_Physical::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 54,
+    "cardId": "PK_10_018180_00",
+    "illustrationId": "cPK_10_018180_00_ARABURUTAKE_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_C_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_C_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 55,
+    "cardId": "PK_10_018200_00",
+    "illustrationId": "cPK_10_018200_00_TETSUNODOKUGA_U",
+    "kind": "Pokemon",
+    "rarity": 200,
+    "design": "Pokemon_U_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_U_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:200",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:200",
+     "visual-pair:Pokemon_U_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_U_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 56,
+    "cardId": "PK_10_018280_00",
+    "illustrationId": "cPK_10_018280_00_TETSUNOTSUTSUMIex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_RR_New_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 57,
+    "cardId": "PK_10_018320_00",
+    "illustrationId": "cPK_10_018320_00_TETSUNOKAINA_C",
+    "kind": "Pokemon",
+    "rarity": 100,
+    "design": "Pokemon_C_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:100",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:100",
+     "visual-pair:Pokemon_C_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_C_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 58,
+    "cardId": "PK_10_018340_00",
+    "illustrationId": "cPK_10_018340_00_MIRAIDONex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_Paradox_Future_Physical",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_RR_New_Paradox_Future_Physical::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_Paradox_Future_Physical::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_Paradox_Future_Physical::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 59,
+    "cardId": "PK_10_018410_00",
+    "illustrationId": "cPK_10_018410_00_HABATAKUKAMIex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_RR_New_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 60,
+    "cardId": "PK_10_018420_00",
+    "illustrationId": "cPK_10_018420_00_TETSUNOBUJIN_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_A_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 61,
+    "cardId": "PK_10_018440_00",
+    "illustrationId": "cPK_10_018440_00_TETSUNOIWAO_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_D_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 62,
+    "cardId": "PK_10_018450_00",
+    "illustrationId": "cPK_10_018450_00_TETSUNOKASHIRA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_C_V02_Paradox_Future",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_C_V02_Paradox_Future::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_C_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_C_V02_Paradox_Future::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 63,
+    "cardId": "PK_10_018510_00",
+    "illustrationId": "cPK_10_018510_00_KORAIDONex_RR",
+    "kind": "Pokemon",
+    "rarity": 400,
+    "design": "Pokemon_RR_New_Paradox_Ancient_Physical",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_RR_New_Paradox_Ancient_Physical::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:400",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:400",
+     "visual-pair:Pokemon_RR_New_Paradox_Ancient_Physical::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_RR_New_Paradox_Ancient_Physical::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 64,
+    "cardId": "PK_10_018620_00",
+    "illustrationId": "cPK_10_018620_00_TODOROKUTSUKI_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_A_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_A_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_A_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 65,
+    "cardId": "PK_10_018690_00",
+    "illustrationId": "cPK_10_018690_00_UGATSUHOMURA_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_D_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_D_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_D_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 66,
+    "cardId": "PK_10_018700_00",
+    "illustrationId": "cPK_10_018700_00_TAKERURAIKO_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_B_V02_Paradox_Ancient",
+    "fontGroup": "Pokemon_Normal_Paradox",
+    "visualPairId": "Pokemon_R_Holo_B_V02_Paradox_Ancient::Pokemon_Normal_Paradox",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_Normal_Paradox",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_B_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_B_V02_Paradox_Ancient::Pokemon_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 67,
+    "cardId": "PK_20_000040_00",
+    "illustrationId": "cPK_20_000040_00_FUSHIGIBANAex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 68,
+    "cardId": "PK_20_000360_03",
+    "illustrationId": "cPK_20_000360_03_LIZARDONex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_RELIEF",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_RELIEF::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_RELIEF::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_RELIEF::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 69,
+    "cardId": "PK_20_000470_02",
+    "illustrationId": "cPK_20_000470_02_FIREex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SSR_V02::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR_V02::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SSR_V02::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 70,
+    "cardId": "PK_20_000960_02",
+    "illustrationId": "cPK_20_000960_02_PIKACHUex_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_UR::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 71,
+    "cardId": "PK_20_001640_00",
+    "illustrationId": "cPK_20_001640_00_ARBO_S",
+    "kind": "Pokemon",
+    "rarity": 830,
+    "design": "Pokemon_S_V02",
+    "fontGroup": "Pokemon_Normal_Darkness",
+    "visualPairId": "Pokemon_S_V02::Pokemon_Normal_Darkness",
+    "kindRarityId": "Pokemon:830",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal_Darkness",
+     "kind-rarity:Pokemon:830",
+     "visual-pair:Pokemon_S_V02::Pokemon_Normal_Darkness"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_S_V02::Pokemon_Normal_Darkness"
+    ]
+   },
+   {
+    "rank": 72,
+    "cardId": "PK_20_005690_00",
+    "illustrationId": "cPK_20_005690_00_DEKANUCHANex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_V02::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_V02::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_V02::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 73,
+    "cardId": "PK_20_007260_00",
+    "illustrationId": "cPK_20_007260_00_ZUGADOON_AR",
+    "kind": "Pokemon",
+    "rarity": 500,
+    "design": "Pokemon_AR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_AR_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:500",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:500",
+     "visual-pair:Pokemon_AR_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_AR_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 74,
+    "cardId": "PK_20_007480_00",
+    "illustrationId": "cPK_20_007480_00_MASSIVOONex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_V02_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_V02_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_V02_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_V02_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 75,
+    "cardId": "PK_20_007480_01",
+    "illustrationId": "cPK_20_007480_01_MASSIVOONex_IM",
+    "kind": "Pokemon",
+    "rarity": 800,
+    "design": "Pokemon_IM_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_IM_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:800",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:800",
+     "visual-pair:Pokemon_IM_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_IM_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 76,
+    "cardId": "PK_20_007480_02",
+    "illustrationId": "cPK_20_007480_02_MASSIVOONex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_RELIEF_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_RELIEF_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_RELIEF_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_RELIEF_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 77,
+    "cardId": "PK_20_007480_03",
+    "illustrationId": "cPK_20_007480_03_MASSIVOONex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SSR_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SSR_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 78,
+    "cardId": "PK_20_007790_00",
+    "illustrationId": "cPK_20_007790_00_UTUROID_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_UR_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 79,
+    "cardId": "PK_20_007800_01",
+    "illustrationId": "cPK_20_007800_01_AKUZIKINGex_SAR",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "design": "Pokemon_SAR_UB",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SAR_UB::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:600",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR_UB::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SAR_UB::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 80,
+    "cardId": "PK_20_008900_02",
+    "illustrationId": "cPK_20_008900_02_HOUOUex_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR_V02::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_V02::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_UR_V02::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 81,
+    "cardId": "PK_20_010840_01",
+    "illustrationId": "cPK_20_010840_01_MEGAKAILIOSex_SAR",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "design": "Pokemon_SAR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_SAR_Mega::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:600",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR_Mega::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SAR_Mega::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 82,
+    "cardId": "PK_20_011180_01",
+    "illustrationId": "cPK_20_011180_01_MEGABURSYAMOex_IM",
+    "kind": "Pokemon",
+    "rarity": 800,
+    "design": "Pokemon_IM_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_IM_Mega::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:800",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:800",
+     "visual-pair:Pokemon_IM_Mega::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_IM_Mega::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 83,
+    "cardId": "PK_20_011180_02",
+    "illustrationId": "cPK_20_011180_02_MEGABURSYAMOex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR_Mega",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_SSR_Mega::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR_Mega::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SSR_Mega::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 84,
+    "cardId": "PK_20_011840_02",
+    "illustrationId": "cPK_20_011840_02_MEGATYLTALISex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR_Mega_V02",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_SSR_Mega_V02::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR_Mega_V02::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SSR_Mega_V02::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 85,
+    "cardId": "PK_20_015120_00",
+    "illustrationId": "cPK_20_015120_00_MASQUERNYAex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_V03",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_V03::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_V03::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_V03::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 86,
+    "cardId": "PK_20_015120_02",
+    "illustrationId": "cPK_20_015120_02_MASQUERNYAex_SSR",
+    "kind": "Pokemon",
+    "rarity": 860,
+    "design": "Pokemon_SSR_V03",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SSR_V03::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:860",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:860",
+     "visual-pair:Pokemon_SSR_V03::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SSR_V03::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 87,
+    "cardId": "PK_20_016150_00",
+    "illustrationId": "cPK_20_016150_00_MEGALIZARDONXex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_Mega_V02",
+    "fontGroup": "Pokemon_OverNumber_Mega",
+    "visualPairId": "Pokemon_SR_Mega_V02::Pokemon_OverNumber_Mega",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_OverNumber_Mega",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_Mega_V02::Pokemon_OverNumber_Mega"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_Mega_V02::Pokemon_OverNumber_Mega"
+    ]
+   },
+   {
+    "rank": 88,
+    "cardId": "PK_20_018280_00",
+    "illustrationId": "cPK_20_018280_00_TETSUNOTSUTSUMIex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_V03_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_V03_Future::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_V03_Future::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_V03_Future::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 89,
+    "cardId": "PK_20_018280_01",
+    "illustrationId": "cPK_20_018280_01_TETSUNOTSUTSUMIex_SAR",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "design": "Pokemon_SAR_Paradox_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SAR_Paradox_Future::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:600",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR_Paradox_Future::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SAR_Paradox_Future::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 90,
+    "cardId": "PK_20_018410_00",
+    "illustrationId": "cPK_20_018410_00_HABATAKUKAMIex_SR",
+    "kind": "Pokemon",
+    "rarity": 700,
+    "design": "Pokemon_SR_V03_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SR_V03_Ancient::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:700",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:700",
+     "visual-pair:Pokemon_SR_V03_Ancient::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SR_V03_Ancient::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 91,
+    "cardId": "PK_20_018410_01",
+    "illustrationId": "cPK_20_018410_01_HABATAKUKAMIex_SAR",
+    "kind": "Pokemon",
+    "rarity": 600,
+    "design": "Pokemon_SAR_Paradox_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_SAR_Paradox_Ancient::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:600",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:600",
+     "visual-pair:Pokemon_SAR_Paradox_Ancient::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_SAR_Paradox_Ancient::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 92,
+    "cardId": "PK_20_018420_00",
+    "illustrationId": "cPK_20_018420_00_TETSUNOBUJIN_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR_Paradox_Future_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR_Paradox_Future_V02::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_Paradox_Future_V02::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_UR_Paradox_Future_V02::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 93,
+    "cardId": "PK_20_018440_00",
+    "illustrationId": "cPK_20_018440_00_TETSUNOIWAO_AR",
+    "kind": "Pokemon",
+    "rarity": 500,
+    "design": "Pokemon_AR_Paradox_Future",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_AR_Paradox_Future::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:500",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:500",
+     "visual-pair:Pokemon_AR_Paradox_Future::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_AR_Paradox_Future::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 94,
+    "cardId": "PK_20_018620_00",
+    "illustrationId": "cPK_20_018620_00_TODOROKUTSUKI_UR",
+    "kind": "Pokemon",
+    "rarity": 900,
+    "design": "Pokemon_UR_Paradox_Ancient_V02",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_UR_Paradox_Ancient_V02::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:900",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:900",
+     "visual-pair:Pokemon_UR_Paradox_Ancient_V02::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_UR_Paradox_Ancient_V02::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 95,
+    "cardId": "PK_20_018700_00",
+    "illustrationId": "cPK_20_018700_00_TAKERURAIKO_AR",
+    "kind": "Pokemon",
+    "rarity": 500,
+    "design": "Pokemon_AR_Paradox_Ancient",
+    "fontGroup": "Pokemon_OverNumber",
+    "visualPairId": "Pokemon_AR_Paradox_Ancient::Pokemon_OverNumber",
+    "kindRarityId": "Pokemon:500",
+    "dynamicUIStateId": "ExOutlineWhite=ImgExOutlineWhite",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=ImgExOutlineWhite",
+     "font-group:Pokemon_OverNumber",
+     "kind-rarity:Pokemon:500",
+     "visual-pair:Pokemon_AR_Paradox_Ancient::Pokemon_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_AR_Paradox_Ancient::Pokemon_OverNumber"
+    ]
+   },
+   {
+    "rank": 96,
+    "cardId": "PK_90_005090_00",
+    "illustrationId": "cPK_90_005090_00_MOTOTOKAGE_S",
+    "kind": "Pokemon",
+    "rarity": 830,
+    "design": "Pokemon_S",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_S::Pokemon_Normal",
+    "kindRarityId": "Pokemon:830",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:830",
+     "visual-pair:Pokemon_S::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_S::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 97,
+    "cardId": "PK_90_007290_00",
+    "illustrationId": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R",
+    "kind": "Pokemon",
+    "rarity": 300,
+    "design": "Pokemon_R_Holo_B_V02_UB",
+    "fontGroup": "Pokemon_Normal",
+    "visualPairId": "Pokemon_R_Holo_B_V02_UB::Pokemon_Normal",
+    "kindRarityId": "Pokemon:300",
+    "dynamicUIStateId": "ExOutlineWhite=null",
+    "obligations": [
+     "dynamic-ui:ExOutlineWhite=null",
+     "font-group:Pokemon_Normal",
+     "kind-rarity:Pokemon:300",
+     "visual-pair:Pokemon_R_Holo_B_V02_UB::Pokemon_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Pokemon_R_Holo_B_V02_UB::Pokemon_Normal"
+    ]
+   },
+   {
+    "rank": 98,
+    "cardId": "TR_10_000100_01",
+    "illustrationId": "cTR_10_000100_01_HIMITSUNOKOHAKU_C",
+    "kind": "Trainer",
+    "rarity": 100,
+    "design": "Trainers_C_Mirror",
+    "fontGroup": "Trainers_Normal",
+    "visualPairId": "Trainers_C_Mirror::Trainers_Normal",
+    "kindRarityId": "Trainer:100",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_Normal",
+     "kind-rarity:Trainer:100",
+     "visual-pair:Trainers_C_Mirror::Trainers_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_C_Mirror::Trainers_Normal"
+    ]
+   },
+   {
+    "rank": 99,
+    "cardId": "TR_10_000110_00",
+    "illustrationId": "cTR_10_000110_00_ERIKA_U",
+    "kind": "Trainer",
+    "rarity": 200,
+    "design": "Trainers_U",
+    "fontGroup": "Trainers_Normal",
+    "visualPairId": "Trainers_U::Trainers_Normal",
+    "kindRarityId": "Trainer:200",
+    "dynamicUIStateId": "CardType=card_type_normal|Title=normal_ttl_normal",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+     "font-group:Trainers_Normal",
+     "kind-rarity:Trainer:200",
+     "visual-pair:Trainers_U::Trainers_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_U::Trainers_Normal"
+    ]
+   },
+   {
+    "rank": 100,
+    "cardId": "TR_10_000110_01",
+    "illustrationId": "cTR_10_000110_01_ERIKA_U",
+    "kind": "Trainer",
+    "rarity": 200,
+    "design": "Trainers_U_Mirror",
+    "fontGroup": "Trainers_Normal",
+    "visualPairId": "Trainers_U_Mirror::Trainers_Normal",
+    "kindRarityId": "Trainer:200",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_Normal",
+     "kind-rarity:Trainer:200",
+     "visual-pair:Trainers_U_Mirror::Trainers_Normal"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_U_Mirror::Trainers_Normal"
+    ]
+   },
+   {
+    "rank": 101,
+    "cardId": "TR_10_001380_00",
+    "illustrationId": "cTR_10_001380_00_BUSUTOENAJIMIRAI_U",
+    "kind": "Trainer",
+    "rarity": 200,
+    "design": "Trainers_U_Paradox_Future",
+    "fontGroup": "Trainers_Normal_Paradox",
+    "visualPairId": "Trainers_U_Paradox_Future::Trainers_Normal_Paradox",
+    "kindRarityId": "Trainer:200",
+    "dynamicUIStateId": "CardType=card_type_normal|Title=normal_ttl_normal",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_normal|Title=normal_ttl_normal",
+     "font-group:Trainers_Normal_Paradox",
+     "kind-rarity:Trainer:200",
+     "visual-pair:Trainers_U_Paradox_Future::Trainers_Normal_Paradox"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_U_Paradox_Future::Trainers_Normal_Paradox"
+    ]
+   },
+   {
+    "rank": 102,
+    "cardId": "TR_20_000110_00",
+    "illustrationId": "cTR_20_000110_00_ERIKA_SR",
+    "kind": "Trainer",
+    "rarity": 700,
+    "design": "Trainers_SR",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_SR::Trainers_OverNumber",
+    "kindRarityId": "Trainer:700",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_SR::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 103,
+    "cardId": "TR_20_000420_01",
+    "illustrationId": "cTR_20_000420_01_NANJYAMO_SR",
+    "kind": "Trainer",
+    "rarity": 700,
+    "design": "Trainers_SR_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_SR_V03::Trainers_OverNumber",
+    "kindRarityId": "Trainer:700",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR_V03::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_SR_V03::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 104,
+    "cardId": "TR_20_001080_00",
+    "illustrationId": "cTR_20_001080_00_MAMORINOPONCHO_UR",
+    "kind": "Trainer",
+    "rarity": 900,
+    "design": "Trainers_UR_V02",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_UR_V02::Trainers_OverNumber",
+    "kindRarityId": "Trainer:900",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:900",
+     "visual-pair:Trainers_UR_V02::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_UR_V02::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 105,
+    "cardId": "TR_20_001400_00",
+    "illustrationId": "cTR_20_001400_00_OLIMHAKASE_SR",
+    "kind": "Trainer",
+    "rarity": 700,
+    "design": "Trainers_SR_Paradox_Ancient_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_SR_Paradox_Ancient_V03::Trainers_OverNumber",
+    "kindRarityId": "Trainer:700",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR_Paradox_Ancient_V03::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_SR_Paradox_Ancient_V03::Trainers_OverNumber"
+    ]
+   },
+   {
+    "rank": 106,
+    "cardId": "TR_20_001410_00",
+    "illustrationId": "cTR_20_001410_00_FUTUHAKASE_SR",
+    "kind": "Trainer",
+    "rarity": 700,
+    "design": "Trainers_SR_Paradox_Future_V03",
+    "fontGroup": "Trainers_OverNumber",
+    "visualPairId": "Trainers_SR_Paradox_Future_V03::Trainers_OverNumber",
+    "kindRarityId": "Trainer:700",
+    "dynamicUIStateId": "CardType=card_type_holo|Title=normal_ttl_holo",
+    "obligations": [
+     "dynamic-ui:CardType=card_type_holo|Title=normal_ttl_holo",
+     "font-group:Trainers_OverNumber",
+     "kind-rarity:Trainer:700",
+     "visual-pair:Trainers_SR_Paradox_Future_V03::Trainers_OverNumber"
+    ],
+    "newlyCovered": [
+     "visual-pair:Trainers_SR_Paradox_Future_V03::Trainers_OverNumber"
+    ]
+   }
+  ],
+  "uncovered": []
+ },
+ "uncoveredWithReason": [
+  {
+   "scope": "masterdata-cards",
+   "reason": "asset-snapshot-gap",
+   "detail": "Illustration exists in official masterdata but has no CardSettings in the current immutable Face snapshot.",
+   "count": 114,
+   "cards": [
+    {
+     "cardId": "PK_10_018970_00",
+     "illustrationId": "cPK_10_018970_00_YUKIMENOKO_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_018980_00",
+     "illustrationId": "cPK_10_018980_00_RAICHU_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019000_00",
+     "illustrationId": "cPK_10_019000_00_HISUIZORUA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019010_00",
+     "illustrationId": "cPK_10_019010_00_GARDIE_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019020_00",
+     "illustrationId": "cPK_10_019020_00_EMOLGA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019030_00",
+     "illustrationId": "cPK_10_019030_00_KODUCK_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019040_00",
+     "illustrationId": "cPK_10_019040_00_CATERPIE_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019050_00",
+     "illustrationId": "cPK_10_019050_00_TRANSEL_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019060_00",
+     "illustrationId": "cPK_10_019060_00_BUTTERFREE_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019070_00",
+     "illustrationId": "cPK_10_019070_00_SABONEA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019080_00",
+     "illustrationId": "cPK_10_019080_00_TROPIUS_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019090_00",
+     "illustrationId": "cPK_10_019090_00_CHURINE_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019100_00",
+     "illustrationId": "cPK_10_019100_00_HISUIDREDEAR_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019110_00",
+     "illustrationId": "cPK_10_019110_00_ROKON_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019120_00",
+     "illustrationId": "cPK_10_019120_00_KYUKON_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019130_00",
+     "illustrationId": "cPK_10_019130_00_TOSAKINTO_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019140_00",
+     "illustrationId": "cPK_10_019140_00_AZUMAO_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019150_00",
+     "illustrationId": "cPK_10_019150_00_HINBASS_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019160_00",
+     "illustrationId": "cPK_10_019160_00_MILOKAROSSex_RR",
+     "kind": "Pokemon",
+     "rarity": 400,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019170_00",
+     "illustrationId": "cPK_10_019170_00_YUKIWARASHI_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019180_00",
+     "illustrationId": "cPK_10_019180_00_LOVECUS_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019190_00",
+     "illustrationId": "cPK_10_019190_00_POCHAMA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019200_00",
+     "illustrationId": "cPK_10_019200_00_TETSUNOTSUTSUMI_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019210_00",
+     "illustrationId": "cPK_10_019210_00_PIKACHU_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019220_00",
+     "illustrationId": "cPK_10_019220_00_DEDENNEex_RR",
+     "kind": "Pokemon",
+     "rarity": 400,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019230_00",
+     "illustrationId": "cPK_10_019230_00_WANPACHI_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019240_00",
+     "illustrationId": "cPK_10_019240_00_YADON_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019250_00",
+     "illustrationId": "cPK_10_019250_00_YADORAN_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019260_00",
+     "illustrationId": "cPK_10_019260_00_MUNNA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019270_00",
+     "illustrationId": "cPK_10_019270_00_MUSHARNA_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019280_00",
+     "illustrationId": "cPK_10_019280_00_NYMPHIA_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019290_00",
+     "illustrationId": "cPK_10_019290_00_MELECIE_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019300_00",
+     "illustrationId": "cPK_10_019300_00_MEGADIANCIEex_RR",
+     "kind": "Pokemon",
+     "rarity": 400,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019310_00",
+     "illustrationId": "cPK_10_019310_00_LOVETOLOS_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019320_00",
+     "illustrationId": "cPK_10_019320_00_PUPIMOCCHI_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019330_00",
+     "illustrationId": "cPK_10_019330_00_HABATAKUKAMI_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019340_00",
+     "illustrationId": "cPK_10_019340_00_UPAH_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019350_00",
+     "illustrationId": "cPK_10_019350_00_NUOH_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019360_00",
+     "illustrationId": "cPK_10_019360_00_IWANKO_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019370_00",
+     "illustrationId": "cPK_10_019370_00_SUNABA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019380_00",
+     "illustrationId": "cPK_10_019380_00_SIRODETHNA_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019390_00",
+     "illustrationId": "cPK_10_019390_00_MEGAYAMIRAMIex_RR",
+     "kind": "Pokemon",
+     "rarity": 400,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019400_00",
+     "illustrationId": "cPK_10_019400_00_NOCTUS_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019410_00",
+     "illustrationId": "cPK_10_019410_00_MIKARUGE_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019420_00",
+     "illustrationId": "cPK_10_019420_00_ZURUGGU_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019430_00",
+     "illustrationId": "cPK_10_019430_00_ZURUZUKIN_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019440_00",
+     "illustrationId": "cPK_10_019440_00_HIDOIDE_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019450_00",
+     "illustrationId": "cPK_10_019450_00_DOHIDOIDE_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019460_00",
+     "illustrationId": "cPK_10_019460_00_NUMERA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019470_00",
+     "illustrationId": "cPK_10_019470_00_HISUINUMEIL_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019480_00",
+     "illustrationId": "cPK_10_019480_00_HISUINUMELGON_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019490_00",
+     "illustrationId": "cPK_10_019490_00_PURIN_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019500_00",
+     "illustrationId": "cPK_10_019500_00_PUKURIN_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019510_00",
+     "illustrationId": "cPK_10_019510_00_EIEVUI_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019520_00",
+     "illustrationId": "cPK_10_019520_00_GONBE_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019530_00",
+     "illustrationId": "cPK_10_019530_00_KABIGON_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019540_00",
+     "illustrationId": "cPK_10_019540_00_HIMEGUMA_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019550_00",
+     "illustrationId": "cPK_10_019550_00_RINGUMA_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019560_00",
+     "illustrationId": "cPK_10_019560_00_GACHIGUMA_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019570_00",
+     "illustrationId": "cPK_10_019570_00_HISUIZOROARKex_RR",
+     "kind": "Pokemon",
+     "rarity": 400,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019580_00",
+     "illustrationId": "cPK_10_019580_00_TRIMMIEN_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019590_00",
+     "illustrationId": "cPK_10_019590_00_HOSHIGARISU_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_10_019600_00",
+     "illustrationId": "cPK_10_019600_00_YOKUBARISU_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_011340_02",
+     "illustrationId": "cPK_20_011340_02_MEGAGYARADOSex_SSR",
+     "kind": "Pokemon",
+     "rarity": 860,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_011640_00",
+     "illustrationId": "cPK_20_011640_00_MERRIEP_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_011650_00",
+     "illustrationId": "cPK_20_011650_00_MOKOKO_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_011660_00",
+     "illustrationId": "cPK_20_011660_00_DENRYU_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_011670_02",
+     "illustrationId": "cPK_20_011670_02_MEGADENRYUex_SSR",
+     "kind": "Pokemon",
+     "rarity": 860,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_012030_02",
+     "illustrationId": "cPK_20_012030_02_YESSANex_SSR",
+     "kind": "Pokemon",
+     "rarity": 860,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_013060_00",
+     "illustrationId": "cPK_20_013060_00_METAMON_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_014920_00",
+     "illustrationId": "cPK_20_014920_00_GARURA_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_017020_02",
+     "illustrationId": "cPK_20_017020_02_SHOWERSex_SSR",
+     "kind": "Pokemon",
+     "rarity": 860,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019040_00",
+     "illustrationId": "cPK_20_019040_00_CATERPIE_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019050_00",
+     "illustrationId": "cPK_20_019050_00_TRANSEL_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019060_00",
+     "illustrationId": "cPK_20_019060_00_BUTTERFREE_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019110_00",
+     "illustrationId": "cPK_20_019110_00_ROKON_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019160_00",
+     "illustrationId": "cPK_20_019160_00_MILOKAROSSex_SR",
+     "kind": "Pokemon",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019160_01",
+     "illustrationId": "cPK_20_019160_01_MILOKAROSSex_SAR",
+     "kind": "Pokemon",
+     "rarity": 600,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019190_00",
+     "illustrationId": "cPK_20_019190_00_POCHAMA_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019210_00",
+     "illustrationId": "cPK_20_019210_00_PIKACHU_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019220_00",
+     "illustrationId": "cPK_20_019220_00_DEDENNEex_SR",
+     "kind": "Pokemon",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019220_01",
+     "illustrationId": "cPK_20_019220_01_DEDENNEex_IM",
+     "kind": "Pokemon",
+     "rarity": 800,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019250_00",
+     "illustrationId": "cPK_20_019250_00_YADORAN_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019280_00",
+     "illustrationId": "cPK_20_019280_00_NYMPHIA_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019300_00",
+     "illustrationId": "cPK_20_019300_00_MEGADIANCIEex_SR",
+     "kind": "Pokemon",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019300_01",
+     "illustrationId": "cPK_20_019300_01_MEGADIANCIEex_SAR",
+     "kind": "Pokemon",
+     "rarity": 600,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019390_00",
+     "illustrationId": "cPK_20_019390_00_MEGAYAMIRAMIex_SR",
+     "kind": "Pokemon",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019390_01",
+     "illustrationId": "cPK_20_019390_01_MEGAYAMIRAMIex_SAR",
+     "kind": "Pokemon",
+     "rarity": 600,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019440_00",
+     "illustrationId": "cPK_20_019440_00_HIDOIDE_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019490_00",
+     "illustrationId": "cPK_20_019490_00_PURIN_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019520_00",
+     "illustrationId": "cPK_20_019520_00_GONBE_UR",
+     "kind": "Pokemon",
+     "rarity": 900,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019530_00",
+     "illustrationId": "cPK_20_019530_00_KABIGON_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019530_01",
+     "illustrationId": "cPK_20_019530_01_KABIGON_S",
+     "kind": "Pokemon",
+     "rarity": 830,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019570_00",
+     "illustrationId": "cPK_20_019570_00_HISUIZOROARKex_SR",
+     "kind": "Pokemon",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019570_01",
+     "illustrationId": "cPK_20_019570_01_HISUIZOROARKex_SAR",
+     "kind": "Pokemon",
+     "rarity": 600,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_20_019600_00",
+     "illustrationId": "cPK_20_019600_00_YOKUBARISU_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_018960_00",
+     "illustrationId": "cPK_90_018960_00_HINBASS_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_018970_00",
+     "illustrationId": "cPK_90_018970_00_YUKIMENOKO_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_018980_00",
+     "illustrationId": "cPK_90_018980_00_RAICHU_U",
+     "kind": "Pokemon",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_018990_00",
+     "illustrationId": "cPK_90_018990_00_NUOH_C",
+     "kind": "Pokemon",
+     "rarity": 100,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_019000_00",
+     "illustrationId": "cPK_90_019000_00_HISUIZORUA_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_019010_00",
+     "illustrationId": "cPK_90_019010_00_GARDIE_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_019020_00",
+     "illustrationId": "cPK_90_019020_00_EMOLGA_R",
+     "kind": "Pokemon",
+     "rarity": 300,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "PK_90_019030_00",
+     "illustrationId": "cPK_90_019030_00_KODUCK_AR",
+     "kind": "Pokemon",
+     "rarity": 500,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001430_00",
+     "illustrationId": "cTR_10_001430_00_CHIISANAFUUSEN_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001440_00",
+     "illustrationId": "cTR_10_001440_00_YUUGANAMANTO_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001450_00",
+     "illustrationId": "cTR_10_001450_00_KAMITSURE_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001460_00",
+     "illustrationId": "cTR_10_001460_00_KOINUDAISUKIGARL_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001470_00",
+     "illustrationId": "cTR_10_001470_00_MIKURI_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_10_001480_00",
+     "illustrationId": "cTR_10_001480_00_KODOMOBEYA_U",
+     "kind": "Trainer",
+     "rarity": 200,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_20_001430_00",
+     "illustrationId": "cTR_20_001430_00_CHIISANAFUUSEN_UR",
+     "kind": "Trainer",
+     "rarity": 900,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_20_001450_00",
+     "illustrationId": "cTR_20_001450_00_KAMITSURE_SR",
+     "kind": "Trainer",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_20_001460_00",
+     "illustrationId": "cTR_20_001460_00_KOINUDAISUKIGARL_SR",
+     "kind": "Trainer",
+     "rarity": 700,
+     "seriesId": "B"
+    },
+    {
+     "cardId": "TR_20_001470_00",
+     "illustrationId": "cTR_20_001470_00_MIKURI_SR",
+     "kind": "Trainer",
+     "rarity": 700,
+     "seriesId": "B"
+    }
+   ]
+  }
+ ]
+}

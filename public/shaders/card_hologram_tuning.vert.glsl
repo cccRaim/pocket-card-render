@@ -1,7 +1,6 @@
 precision highp float;
 precision highp int;
 
-uniform highp vec3 cameraPosition;
 uniform highp mat4 modelMatrix;
 uniform highp mat4 viewMatrix;
 uniform highp mat4 projectionMatrix;

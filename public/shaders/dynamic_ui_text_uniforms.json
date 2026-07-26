@@ -20,6 +20,204 @@
     "vertex": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
     "fragment": "f76dd3c466cc5e5641cb70558dd5812d44af9b108edfdf4daeabe4ebab4534a2"
   },
+  "official_spirv_precision": {
+    "schema": "pocket-card-render/official-spirv-precision@1",
+    "evidence_scope": "official-vulkan-spirv-structure",
+    "vulkan_to_webgl_equivalence": "not-claimed",
+    "stages": {
+      "vertex": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
+        "byte_size": 2416,
+        "word_count": 604,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 107,
+          "schema_word": 0
+        },
+        "instruction_count": 136,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "6929403a72a6d21e95a8877eafb417a6db325255dde33aab73570742fd60aff6",
+        "facts_sha256": "d2bb788d6f88e5e1a6bda6e76bb46a7b8f76ff7232fc5df250d751ce3dfede63"
+      },
+      "fragment": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "f76dd3c466cc5e5641cb70558dd5812d44af9b108edfdf4daeabe4ebab4534a2",
+        "byte_size": 2120,
+        "word_count": 530,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 88,
+          "schema_word": 0
+        },
+        "instruction_count": 135,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 18,
+              "member_decorate": 2,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 20,
+            "direct_application_count": 20,
+            "group_application_count": 0,
+            "effective_application_count": 20,
+            "operand_sets": [
+              {
+                "operands": [],
+                "declaration_count": 20
+              }
+            ]
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "b1aae951fbdae26113afbe60a71a3e3df62518a2421740dd84f12c825b985f49",
+        "facts_sha256": "f90fe76f504125c1c0de3dc204a9d0fea7e3669e42da555387d2f74ef9da944e"
+      }
+    }
+  },
   "official_executable_identity": {
     "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
     "fragmentSpirvSha256": "f76dd3c466cc5e5641cb70558dd5812d44af9b108edfdf4daeabe4ebab4534a2",
@@ -409,6 +607,34 @@
     ],
     "variant_constant_buffers": []
   },
+  "official_vertex_inputs": {
+    "schema": "pocket-card-render/official-vertex-input-contract@1",
+    "unityVersion": "2022.3.62f2",
+    "sourceSha256": "9de2c7b18b2c1699742d9912d2c14d847643cd68d207c7a4e4ddac89c6aa4b73",
+    "serializedSourceMap": 17,
+    "inputs": [
+      {
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1",
+        "location": 0,
+        "threeAttribute": "position",
+        "spirvName": "_11",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 14,
+        "targetName": "Attrib2",
+        "location": 1,
+        "threeAttribute": "uv",
+        "spirvName": "_87",
+        "spirvType": "vec2"
+      }
+    ]
+  },
   "official_shader_property_defaults": {
     "textures": {
       "_DynamicUITex": "black"
@@ -427,12 +653,34 @@
     "vectors": {}
   },
   "webgl_adaptation": {
-    "schema": "pocket-card-render/webgl-stage-adaptation@1",
+    "schema": "pocket-card-render/webgl-stage-adaptation@2",
     "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
     "vertex": {
       "officialSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
       "spirvCrossGlslSha256": "b58c6793bd83439bc7dacfceef7c95e76d417e0359885f1a4dabb93338ebc38c",
       "outputSha256": "a7fa6595269e9cfb54e4e904136933737d0cc8257c8fe8eec8dba5e95705f247",
+      "operations": [
+        {
+          "kind": "vertex-input-binding",
+          "contract": "official-bind-channels-to-three-r165",
+          "mappingSha256": "0c1f877b92f4b2333eb26b5168ac2e48a9feebe04f869cb530aa2ad7635ef2a6"
+        },
+        {
+          "kind": "engine-uniform-binding",
+          "contract": "unity-builtins-to-three-r165",
+          "runtimeContractSha256": "b4a09a3d20451dfd4dcd8dd74b603297d33d1b47732e4d404be0a9c601eeea06"
+        },
+        {
+          "kind": "clip-space-y-conversion",
+          "from": "unity-vulkan",
+          "to": "webgl",
+          "operation": "remove-y-inversion"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
       "substitutions": [
         "map official position/UV0 locations to Three.js attributes",
         "unity_ObjectToWorld := three.modelMatrix and unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
@@ -443,11 +691,24 @@
       "officialSpirvSha256": "f76dd3c466cc5e5641cb70558dd5812d44af9b108edfdf4daeabe4ebab4534a2",
       "spirvCrossGlslSha256": "0811f250635474de7347241f06e9525a4677cab8b3790e73fa3332adddbdb48d",
       "outputSha256": "ff041f8f05c98836884ef804666d0ff18449ac647eaab2626eb986c60e6b3818",
+      "operations": [
+        {
+          "kind": "uniform-buffer-flattening",
+          "source": "serialized-common",
+          "preservation": "names-types-precision",
+          "bindingContractSha256": "422e0815a9020d032820dccbe8aa634824b6770b0dc03c5ec8de7b1f00722def"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
       "substitutions": [
         "remove the embedded GLSL version directive for Three.js RawShaderMaterial injection"
       ]
     },
-    "interfaceSha256": "c5b67a6ab44c613c1210acdfe5b07d85f269e933ddf3e1964d51a7c32ad18765"
+    "interfaceSha256": "c5b67a6ab44c613c1210acdfe5b07d85f269e933ddf3e1964d51a7c32ad18765",
+    "operationGraphSha256": "89b6f48cb779b27d2c96367223f8fa7a89de6dfb42bf649755bc2543e9fab906"
   },
   "webgl_sources": {
     "vertex": "public/shaders/dynamic_ui_text.vert.glsl",

@@ -46,7 +46,9 @@ function fileOffsetForRva(loadSegments, rva, size = 1) {
 
 runContractCheck();
 const contract = JSON.parse(fs.readFileSync(CONTRACT_PATH, "utf8"));
-assert.equal(contract.schema_version, 5);
+assert.equal(contract.schema_version, 6);
+assert.equal(contract.camera.near_clip_plane, 0.30000001192092896);
+assert.equal(contract.camera.far_clip_plane, 1000);
 assert.deepEqual(
   Object.fromEntries(Object.entries(contract.quality_profiles)
     .map(([name, profile]) => [name, [profile.quality_enum, profile.quality_factor,

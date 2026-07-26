@@ -4,6 +4,9 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  buildWebglAdaptationV2,
+} from "./webgl-adaptation-contract.mjs";
 
 const MODULE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
@@ -52,7 +55,6 @@ export const OFFICIAL_SPIRV_PRECISION_SCHEMA =
   "pocket-card-render/official-spirv-precision@1";
 export const SPIRV_PRECISION_STAGE_SCHEMA =
   "pocket-card-render/spirv-stage-precision@1";
-
 
 export const DEFAULT_TEXTURE_DIMENSION_TYPES = Object.freeze({
   2: "sampler2D",
@@ -505,6 +507,85 @@ export function adaptUnityObjectToWorldDataAxes(source, options) {
   return `${output.slice(0, main)}${helpers.join("\n\n")}\n\n${output.slice(main)}`;
 }
 
+// Three world vectors are related to Unity world vectors by C=diag(1,1,-1). When official shader
+// arithmetic consumes world-space positions, normals, directions or camera values as numeric data,
+// convert those inputs back to Unity's basis before replaying the official SSA.
+export function adaptThreeWorldVectorsToUnityDataAxes(source, options) {
+  nonEmptyString(source, "GLSL source");
+  const config = record(options, "Three-to-Unity world-vector options");
+  const bindings = array(
+    ownDataValue(config, "bindings", "Three-to-Unity world-vector options"),
+    "bindings",
+  );
+  if (bindings.length === 0) fail("world-vector bindings must not be empty");
+  const main = source.indexOf("void main()");
+  if (main < 0) fail("GLSL source has no main function");
+  const brace = source.indexOf("{", main);
+  if (brace < 0) fail("GLSL main function has no body");
+  const header = source.slice(0, brace + 1);
+  let body = source.slice(brace + 1);
+  const declarations = [];
+  const names = new Set();
+  for (const [index, raw] of bindings.entries()) {
+    const binding = record(raw, `bindings[${index}]`);
+    const sourceName = nonEmptyString(ownDataValue(binding, "source", `bindings[${index}]`), `bindings[${index}].source`);
+    const alias = nonEmptyString(ownDataValue(binding, "alias", `bindings[${index}]`), `bindings[${index}].alias`);
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(sourceName) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(alias)) {
+      fail(`bindings[${index}] names must be GLSL identifiers`);
+    }
+    if (sourceName === alias || names.has(sourceName) || names.has(alias) || source.includes(` ${alias}`)) {
+      fail(`bindings[${index}] aliases must be unique and absent from the source`);
+    }
+    names.add(sourceName);
+    names.add(alias);
+    const expected = integer(
+      ownDataValue(binding, "expectedOccurrences", `bindings[${index}]`),
+      `bindings[${index}].expectedOccurrences`,
+      { min: 1 },
+    );
+    const pattern = new RegExp(`\\b${sourceName}\\b`, "g");
+    const count = (body.match(pattern) || []).length;
+    if (count !== expected) {
+      fail(`${sourceName} body occurrence count changed: expected ${expected}, got ${count}`);
+    }
+    body = body.replace(pattern, alias);
+    declarations.push(`    highp vec3 ${alias} = vec3(${sourceName}.xy, -${sourceName}.z);`);
+  }
+  return `${header}\n${declarations.join("\n")}${body}`;
+}
+
+// Unity shader code commonly reconstructs the world-space camera forward vector from row Z of
+// the view matrix. Three's world basis is C=diag(1,1,-1), so only the reconstructed vector's Z
+// component must be flipped before official Unity-basis rotation or directional arithmetic.
+export function adaptThreeViewForwardToUnityDataAxes(source, options) {
+  nonEmptyString(source, "GLSL source");
+  const config = record(options, "Three-to-Unity view-forward options");
+  const matrixName = nonEmptyString(
+    ownDataValue(config, "matrixName", "Three-to-Unity view-forward options"),
+    "matrixName",
+  );
+  const targetName = nonEmptyString(
+    ownDataValue(config, "targetName", "Three-to-Unity view-forward options"),
+    "targetName",
+  );
+  for (const [label, name] of [["matrixName", matrixName], ["targetName", targetName]]) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) fail(`${label} must be a GLSL identifier`);
+  }
+  let output = source;
+  for (const [component, column, sign] of [["x", 0, "-"], ["y", 1, "-"], ["z", 2, ""]]) {
+    const pattern = new RegExp(
+      `(^\\s*${targetName}\\.${component}\\s*=\\s*)-${matrixName}\\[${column}\\]\\.z(\\s*;\\s*$)`,
+      "gm",
+    );
+    const matches = output.match(pattern) || [];
+    if (matches.length !== 1) {
+      fail(`${targetName}.${component} view-forward assignment changed: expected 1, got ${matches.length}`);
+    }
+    output = output.replace(pattern, `$1${sign}${matrixName}[${column}].z$2`);
+  }
+  return output;
+}
+
 export function officialPassParameter(value, label = "official pass parameter") {
   const input = record(value, label);
   const rawValue = ownDataValue(input, "val", label);
@@ -954,6 +1035,64 @@ export function compileProgramBindings(compiledCommonBindings, parameterReflecti
   };
 }
 
+export function joinProgramConstantBufferStages(compiledBindings, reflections) {
+  const bindings = record(compiledBindings, "compiled program bindings");
+  const stages = record(reflections, "program SPIRV-Cross reflections");
+  const lists = [
+    ["common_constant_buffers", array(bindings.common_constant_buffers, "common_constant_buffers")],
+    ["variant_constant_buffers", array(bindings.variant_constant_buffers, "variant_constant_buffers")],
+  ];
+  const compiledRows = lists.flatMap(([, rows]) => rows);
+  const compiledSizeCounts = new Map();
+  for (const [index, raw] of compiledRows.entries()) {
+    const row = record(raw, `compiled constant buffer ${index}`);
+    const size = integer(row.size, `compiled constant buffer ${index}.size`, { min: 1 });
+    compiledSizeCounts.set(size, (compiledSizeCounts.get(size) ?? 0) + 1);
+  }
+  const reflectedByStage = {};
+  for (const stage of ["vertex", "fragment"]) {
+    const reflection = record(ownDataValue(stages, stage, "program SPIRV-Cross reflections"), `${stage} reflection`);
+    reflectedByStage[stage] = array(reflection.ubos ?? [], `${stage} reflection.ubos`).map((raw, index) => {
+      const row = record(raw, `${stage} reflection.ubos[${index}]`);
+      return {
+        name: nonEmptyString(ownDataValue(row, "name", `${stage} reflection.ubos[${index}]`), `${stage} reflection.ubos[${index}].name`),
+        size: integer(ownDataValue(row, "block_size", `${stage} reflection.ubos[${index}]`), `${stage} reflection.ubos[${index}].block_size`, { min: 1 }),
+      };
+    });
+  }
+  const consumed = new Set();
+  const joinRows = (rows, label) => rows.map((raw, index) => {
+    const row = record(raw, `${label}[${index}]`);
+    const size = integer(row.size, `${label}[${index}].size`, { min: 1 });
+    if (compiledSizeCounts.get(size) !== 1) {
+      fail(`${label}[${index}] size ${size} is not unique across official program buffers`);
+    }
+    const matchedStages = [];
+    for (const stage of ["vertex", "fragment"]) {
+      const matches = reflectedByStage[stage].filter((entry) => entry.size === size);
+      if (matches.length > 1) fail(`${stage} reflection has ambiguous ${size}-byte UBOs`);
+      if (matches.length === 1) {
+        matchedStages.push(stage === "vertex" ? "progVertex" : "progFragment");
+        consumed.add(`${stage}:${matches[0].name}:${size}`);
+      }
+    }
+    if (matchedStages.length === 0) {
+      fail(`${label}[${index}] ${row.name} has no reflected stage owner`);
+    }
+    return { ...row, stages: matchedStages };
+  });
+  const joined = {
+    ...bindings,
+    common_constant_buffers: joinRows(lists[0][1], lists[0][0]),
+    variant_constant_buffers: joinRows(lists[1][1], lists[1][0]),
+  };
+  const reflectedCount = reflectedByStage.vertex.length + reflectedByStage.fragment.length;
+  if (consumed.size !== reflectedCount) {
+    fail(`reflected UBO closure is incomplete: consumed ${consumed.size}/${reflectedCount}`);
+  }
+  return joined;
+}
+
 export function joinSamplerBindings(compiledBindings, reflection, options = {}) {
   const bindings = record(compiledBindings, "compiled bindings");
   const reflected = record(reflection, "SPIRV-Cross reflection");
@@ -1286,6 +1425,28 @@ export async function withExtractedSelectorProgram(options, callback) {
       proofGraphSha256,
       portIndexSha256,
     }, tempDir);
+    const officialSpirvPrecision = buildOfficialSpirvPrecisionEvidence({
+      vertex: fs.readFileSync(files.vertexSpirv),
+      fragment: fs.readFileSync(files.fragmentSpirv),
+    });
+    for (const [stage, identityKey] of [
+      ["vertex", "vertexSpirvSha256"],
+      ["fragment", "fragmentSpirvSha256"],
+    ]) {
+      const expectedHash = hashString(
+        ownDataValue(metadata.identityFields, identityKey, "identityFields"),
+        `identityFields.${identityKey}`,
+      );
+      if (officialSpirvPrecision.stages[stage].source_sha256 !== expectedHash) {
+        fail(`${stage} SPIR-V precision evidence does not match official executable identity`);
+      }
+    }
+    Object.defineProperty(metadata, "officialSpirvPrecision", {
+      value: officialSpirvPrecision,
+      enumerable: false,
+      writable: false,
+      configurable: false,
+    });
     if (config.validateSpirv !== false) {
       validateSpirv(files.vertexSpirv, {
         spirvVal: config.spirvVal,
@@ -1310,7 +1471,14 @@ export async function withExtractedSelectorProgram(options, callback) {
         cwd: rootDir,
       }),
     };
-    return await callback({ tempDir, metadataFile, metadata, files, reflection });
+    return await callback({
+      tempDir,
+      metadataFile,
+      metadata,
+      files,
+      reflection,
+      officialSpirvPrecision,
+    });
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
@@ -1394,6 +1562,10 @@ export async function generateExactSelectorPort(options) {
   if (typeof extractor !== "function") fail("exact selector port extractProgram must be a function");
   const rootDir = path.resolve(extraction.rootDir ?? MODULE_ROOT);
   const substitutions = record(config.substitutions ?? {}, "substitutions");
+  const adaptationOperations = record(
+    ownDataValue(config, "adaptationOperations", "exact selector port options"),
+    "adaptationOperations",
+  );
   const webglSources = record(
     ownDataValue(config, "webglSources", "exact selector port options"),
     "webglSources",
@@ -1408,22 +1580,11 @@ export async function generateExactSelectorPort(options) {
     const { metadata, files, reflection } = bundle;
     if (!reflection?.vertex || !reflection?.fragment) fail("selector port requires vertex and fragment reflection");
     validateReflection(reflection, metadata);
-    const officialSpirvPrecision = buildOfficialSpirvPrecisionEvidence({
-      vertex: fs.readFileSync(files.vertexSpirv),
-      fragment: fs.readFileSync(files.fragmentSpirv),
-    });
-    for (const [stage, identityKey] of [
-      ["vertex", "vertexSpirvSha256"],
-      ["fragment", "fragmentSpirvSha256"],
-    ]) {
-      const expectedHash = hashString(
-        ownDataValue(metadata.identityFields, identityKey, "identityFields"),
-        `identityFields.${identityKey}`,
-      );
-      if (officialSpirvPrecision.stages[stage].source_sha256 !== expectedHash) {
-        fail(`${stage} SPIR-V precision evidence does not match official executable identity`);
-      }
-    }
+    const officialSpirvPrecision = bundle.officialSpirvPrecision
+      ?? buildOfficialSpirvPrecisionEvidence({
+        vertex: fs.readFileSync(files.vertexSpirv),
+        fragment: fs.readFileSync(files.fragmentSpirv),
+      });
     const officialVertex = runner(
       spirvCross,
       [files.vertexSpirv, "--version", "300", "--es"],
@@ -1467,23 +1628,37 @@ export async function generateExactSelectorPort(options) {
       metadata.programBindChannels,
       reflection.vertex,
     );
-    const adaptation = {
-      schema: "pocket-card-render/webgl-stage-adaptation@1",
-      backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    const manifestProgramBindings = {
+      common_source_sha256: metadata.identityFields.commonBindingsSha256,
+      parameter_reflection_sha256: metadata.parameterReflectionSha256,
+      ...programBindings,
+    };
+    const adaptation = buildWebglAdaptationV2({
       vertex: {
         officialSpirvSha256: sha256File(files.vertexSpirv),
         spirvCrossGlslSha256: sha256(officialVertex),
         outputSha256: sha256(vertex),
+        operations: array(
+          ownDataValue(adaptationOperations, "vertex", "adaptationOperations"),
+          "adaptationOperations.vertex",
+        ),
         substitutions: Array.isArray(substitutions.vertex) ? substitutions.vertex : [],
       },
       fragment: {
         officialSpirvSha256: sha256File(files.fragmentSpirv),
         spirvCrossGlslSha256: sha256(officialFragment),
         outputSha256: sha256(fragment),
+        operations: array(
+          ownDataValue(adaptationOperations, "fragment", "adaptationOperations"),
+          "adaptationOperations.fragment",
+        ),
         substitutions: Array.isArray(substitutions.fragment) ? substitutions.fragment : [],
       },
       interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-    };
+      officialVertexInputs: vertexInputContract,
+      runtimeContract,
+      officialProgramBindings: manifestProgramBindings,
+    });
     const manifest = {
       shader,
       generated_by: generatedBy,
@@ -1509,11 +1684,7 @@ export async function generateExactSelectorPort(options) {
         source_sha256: metadata.identityFields.commonBindingsSha256,
         ...commonBindings,
       },
-      official_program_bindings: {
-        common_source_sha256: metadata.identityFields.commonBindingsSha256,
-        parameter_reflection_sha256: metadata.parameterReflectionSha256,
-        ...programBindings,
-      },
+      official_program_bindings: manifestProgramBindings,
       official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,

@@ -6,6 +6,8 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
   adaptUnityObjectToWorldDataAxes,
   canonicalJson,
   canonicalJsonSha256,
@@ -14,6 +16,7 @@ import {
   compileOfficialPassContract,
   compileProgramBindings,
   generateExactSelectorPort,
+  joinProgramConstantBufferStages,
   joinProgramSamplerBindings,
   joinSamplerBindings,
   parseSpirvPrecisionFacts,
@@ -355,6 +358,55 @@ void main()
   }), /must name unique columns/);
 });
 
+test("Three world vectors are converted to Unity data axes with exact occurrence counts", () => {
+  const source = `precision highp float;
+uniform vec3 cameraPosition;
+in vec3 worldPosition;
+in vec3 worldNormal;
+void main()
+{
+  vec3 view = cameraPosition - worldPosition;
+  float facing = dot(worldNormal, view) + worldNormal.z;
+}`;
+  const adapted = adaptThreeWorldVectorsToUnityDataAxes(source, {
+    bindings: [
+      { source: "cameraPosition", alias: "unityCameraPosition", expectedOccurrences: 1 },
+      { source: "worldPosition", alias: "unityWorldPosition", expectedOccurrences: 1 },
+      { source: "worldNormal", alias: "unityWorldNormal", expectedOccurrences: 2 },
+    ],
+  });
+  assert.match(adapted, /vec3\(cameraPosition\.xy, -cameraPosition\.z\)/);
+  assert.match(adapted, /unityCameraPosition - unityWorldPosition/);
+  assert.match(adapted, /dot\(unityWorldNormal, view\) \+ unityWorldNormal\.z/);
+  assert.throws(() => adaptThreeWorldVectorsToUnityDataAxes(source, {
+    bindings: [{ source: "worldNormal", alias: "unityWorldNormal", expectedOccurrences: 1 }],
+  }), /occurrence count changed/);
+  assert.throws(() => adaptThreeWorldVectorsToUnityDataAxes(source, {
+    bindings: [{ source: "worldNormal", alias: "worldNormal", expectedOccurrences: 2 }],
+  }), /aliases must be unique/);
+});
+
+test("Three camera forward reconstructed from viewMatrix is converted to Unity data axes", () => {
+  const source = `uniform mat4 viewMatrix;
+void main()
+{
+    _9.x = -viewMatrix[0].z;
+    _9.y = -viewMatrix[1].z;
+    _9.z = -viewMatrix[2].z;
+}`;
+  const adapted = adaptThreeViewForwardToUnityDataAxes(source, {
+    matrixName: "viewMatrix",
+    targetName: "_9",
+  });
+  assert.match(adapted, /_9\.x = -viewMatrix\[0\]\.z;/);
+  assert.match(adapted, /_9\.y = -viewMatrix\[1\]\.z;/);
+  assert.match(adapted, /_9\.z = viewMatrix\[2\]\.z;/);
+  assert.throws(() => adaptThreeViewForwardToUnityDataAxes(
+    source.replace("_9.z = -viewMatrix[2].z;", "_9.z = viewMatrix[2].z;"),
+    { matrixName: "viewMatrix", targetName: "_9" },
+  ), /view-forward assignment changed/);
+});
+
 test("common sampler bindings join by descriptor binding and dimension", () => {
   const bindings = compileCommonBindings(commonBindingsFixture());
   assert.equal(bindings.schema, "pocket-card-render/compiled-common-bindings@1");
@@ -448,6 +500,43 @@ test("program bindings close common and variant-local descriptors into one sampl
     { slot: "_CubeMap", spirvName: "_cube", stages: ["vertex"] },
     { slot: "_DetailTex", spirvName: "_detail", stages: ["fragment"] },
   ]);
+});
+
+test("program UBO stages are joined from official buffer sizes and SPIRV-Cross reflection", () => {
+  const program = {
+    schema: "pocket-card-render/compiled-program-bindings@1",
+    textures: [],
+    common_constant_buffers: [
+      { name: "PGlobals", size: 32 },
+      { name: "VGlobals", size: 296 },
+    ],
+    common_constant_buffer_bindings: [],
+    variant_constant_buffers: [],
+  };
+  const joined = joinProgramConstantBufferStages(program, {
+    vertex: { ubos: [{ name: "_17_19", block_size: 296 }] },
+    fragment: { ubos: [{ name: "_23_25", block_size: 32 }] },
+  });
+  assert.deepEqual(joined.common_constant_buffers.map(({ name, stages }) => ({ name, stages })), [
+    { name: "PGlobals", stages: ["progFragment"] },
+    { name: "VGlobals", stages: ["progVertex"] },
+  ]);
+
+  assert.throws(() => joinProgramConstantBufferStages({
+    ...program,
+    common_constant_buffers: [
+      { name: "PGlobals", size: 32 },
+      { name: "OtherGlobals", size: 32 },
+    ],
+  }, {
+    vertex: { ubos: [] },
+    fragment: { ubos: [{ name: "_23_25", block_size: 32 }] },
+  }), /not unique across official program buffers/);
+
+  assert.throws(() => joinProgramConstantBufferStages(program, {
+    vertex: { ubos: [{ name: "_17_19", block_size: 296 }, { name: "_extra", block_size: 64 }] },
+    fragment: { ubos: [{ name: "_23_25", block_size: 32 }] },
+  }), /reflected UBO closure is incomplete/);
 });
 
 test("program bindings reject a common/variant descriptor collision", () => {
@@ -559,7 +648,9 @@ test("selector extraction validates hashes, reflects both stages, and always rem
     const prefix = option("--prefix");
     const metadataFile = option("--metadata");
     const bytes = {
-      vertex: Buffer.from("vertex"), fragment: Buffer.from("fragment"), parameterEntry: Buffer.from("parameter"),
+      vertex: precisionSpirvFixture(),
+      fragment: precisionSpirvFixture(),
+      parameterEntry: Buffer.from("parameter"),
     };
     const paths = {
       vertex: `${prefix}_vert.spv`, fragment: `${prefix}_frag.spv`, parameterEntry: `${prefix}_parameter.bin`,
@@ -606,7 +697,7 @@ test("selector extraction validates hashes, reflects both stages, and always rem
   const result = await withExtractedSelectorProgram(extractionOptions, ({ tempDir, reflection, files }) => {
     capturedTempDir = tempDir;
     assert.ok(fs.existsSync(tempDir));
-    assert.equal(fs.readFileSync(files.vertexSpirv, "utf8"), "vertex");
+    assert.deepEqual(fs.readFileSync(files.vertexSpirv), precisionSpirvFixture());
     assert.deepEqual(reflection.vertex.textures, []);
     assert.deepEqual(reflection.fragment.textures, []);
     return "validated";
@@ -626,8 +717,10 @@ test("selector extraction validates hashes, reflects both stages, and always rem
   assert.equal(validatedStageCount, 4);
   assert.equal(fs.existsSync(failedTempDir), false);
 
-  const independentlyComputed = crypto.createHash("sha256").update("vertex").digest("hex");
-  assert.equal(independentlyComputed, sha256("vertex"));
+  const independentlyComputed = crypto.createHash("sha256")
+    .update(precisionSpirvFixture())
+    .digest("hex");
+  assert.equal(independentlyComputed, sha256(precisionSpirvFixture()));
 });
 
 test("high-level selector generator closes the standard manifest envelope and fails closed", async (t) => {
@@ -689,8 +782,27 @@ test("high-level selector generator closes the standard manifest envelope and fa
     adaptVertex: (source) => `${source}adapted vertex\n`,
     adaptFragment: (source) => `${source}adapted fragment\n`,
     validateReflection: (value) => assert.equal(value, reflection),
+    substitutions: {
+      vertex: ["remove Unity Vulkan clip-space Y inversion for WebGL clip space"],
+      fragment: ["remove #version directive supplied by Three.js RawShaderMaterial"],
+    },
+    adaptationOperations: {
+      vertex: [{
+        kind: "clip-space-y-conversion",
+        from: "unity-vulkan",
+        to: "webgl",
+        operation: "remove-y-inversion",
+      }, {
+        kind: "glsl-version-ownership",
+        owner: "three-raw-shader-material",
+      }],
+      fragment: [{
+        kind: "glsl-version-ownership",
+        owner: "three-raw-shader-material",
+      }],
+    },
     webglSources: { vertex: "public/shaders/test.vert", fragment: "public/shaders/test.frag" },
-    runtimeContract: { schema: "test", shader_key: "Exact" },
+    runtimeContract: { schema: "test", shader_key: "Exact", engine_uniforms: {} },
     output: { outDir: root, vertex: "test.vert", fragment: "test.frag", manifest: "test.json" },
   };
   const generated = await generateExactSelectorPort(base);
@@ -810,6 +922,8 @@ void main() {
     denominator_unique_stage_hashes: 1,
     status: "not-claimed",
   });
+  assert.equal(generated.manifest.webgl_adaptation.schema, "pocket-card-render/webgl-stage-adaptation@2");
+  assert.match(generated.manifest.webgl_adaptation.operationGraphSha256, /^[0-9a-f]{64}$/);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, "test.json"))).shader, "Lettuce/Test/Exact");
   await generateExactSelectorPort({ ...base, output: { ...base.output, check: true } });
   await assert.rejects(

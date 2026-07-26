@@ -100,14 +100,14 @@ function loadOfficialImageTexture(url, samplerState) {
 
 export function loadOfficialTexture(url, samplerState) {
   const mipCount = samplerState?.mipCount ?? 1;
-  if (mipCount > 1) {
-    if (!samplerState?.fallback?.rgba8MipChain) {
-      return Promise.reject(new Error(`official mip fallback metadata missing: ${url}`));
-    }
+  if (samplerState?.fallback?.rgba8MipChain) {
     return loadOfficialMipTexture(samplerState).then((texture) => {
       texture.userData.sourceUrl = url;
       return texture;
     });
+  }
+  if (mipCount > 1) {
+    return Promise.reject(new Error(`official mip fallback metadata missing: ${url}`));
   }
   return loadOfficialImageTexture(url, samplerState).then((texture) => {
     texture.userData.sourceUrl = url;

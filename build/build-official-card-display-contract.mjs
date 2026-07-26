@@ -407,7 +407,7 @@ assert.equal(plainDisplayMaterial, "PrerenderCard");
 assert.equal(homographyDisplayMaterial, "PrerenderHomographyCard");
 
 const contract = {
-  schema_version: 5,
+  schema_version: 6,
   generated_by: "build/build-official-card-display-contract.mjs",
   official_source: {
     version: "1.6.0",
@@ -644,6 +644,8 @@ const contract = {
   camera: {
     field_of_view_degrees: camera.fieldOfViewDegrees,
     aspect: detail.defaultSourceRenderTexture.width / detail.defaultSourceRenderTexture.height,
+    near_clip_plane: camera.nearClipPlane,
+    far_clip_plane: camera.farClipPlane,
     local_position: camera.localPosition,
     distance: camera.distance.values[0],
     culling_layer: { index: layer.index, bit: layer.bit },

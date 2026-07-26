@@ -23,7 +23,6 @@ uniform float _DarknessOffset;
 uniform int _EmissivePattern;
 uniform vec4 _EmissiveColor;
 uniform vec3 _Rotation;
-uniform int uBloomOnly;
 
 uniform mediump sampler2D _13;
 uniform mediump sampler2D _302;
@@ -320,8 +319,4 @@ void main()
     _1053 = vec4(_1057.x ? _387.x : _20.x, _1057.y ? _387.y : _20.y, _1057.z ? _387.z : _20.z, _1057.w ? _387.w : _20.w);
     _1059 = vec4(_359.x, _359.y, _359.z, _1059.w);
     _1059.w = _9.w;
-    if (uBloomOnly != 0)
-    {
-        _1059 = _1053;
-    }
 }

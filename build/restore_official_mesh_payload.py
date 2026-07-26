@@ -31,7 +31,10 @@ def restore(decrypted_root: Path, check: bool) -> dict:
             (obj for obj in objects.values() if obj.type.name == "MeshFilter"),
             key=lambda obj: int(obj.path_id),
         ):
-            node_path = MESH.game_object_path(mesh_filter, objects)
+            node_path, _ = MESH.game_object_path_and_transform(
+                mesh_filter,
+                objects,
+            )
             try:
                 mesh_obj, mesh_bundle, _ = index.resolve(
                     mesh_filter, prefab, mesh_filter.read_typetree().get("m_Mesh") or {}

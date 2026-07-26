@@ -45,13 +45,30 @@ npm run serve                        # → http://127.0.0.1:8011
 
 ## 样例卡
 
-三张场景已预置好(只含渲染 recipe + 文本,美术在本地收集):
+全局最小的 112 张覆盖集已经全部预置为 scene，另保留 3 张不属于最小集的回归 scene。
+scene 只含渲染数据与文本，美术仍在本地收集。以下是常用的 5 张回归锚点：
 
 | 网址 | 卡片 | 稀有度 |
 |-----|------|--------|
 | `/` 或 `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` | 妙蛙花 ex（Venusaur ex） | RR |
+| `?scene=scene.cPK_20_000010_01_FUSHIGIDANE_S.json` | 妙蛙种子（Bulbasaur） | S |
+| `?scene=scene.cPK_20_008900_02_HOUOUex_UR.json` | 凤王 ex（Ho-Oh ex） | UR |
 | `?scene=scene.cTR_20_000230_00_LEAF_SR.json` | 叶子（Leaf） | SR |
 | `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | 伊布的背包（Eevee's Bag） | UR |
+
+右上角选卡菜单由 `public/card-examples.json` 驱动：它从官方数据计算出全局最小的 112 张 witness，
+覆盖 444 个已知 Design、Shader/state 与卡面语义特征。112 张 exact scene 已全部内置；执行 `gather`
+后可和 3 张补充回归卡一起直接切换。缺少资产的条目会禁用，不会偷偷使用通用 fallback recipe。
+
+需要从自己的官方输入重新生成内置集合时，可先检查、再批量物化：
+
+```bash
+npm run materialize:official-card-examples -- --dry-run
+npm run materialize:official-card-examples -- --gather
+```
+
+该命令只对缺失卡从各自的 `Face/<illId>/L` 与共享 `Common/Shader` 字节生成 exact recipe；
+游戏美术仍只写入已忽略的 `public/game/`，不会进入版本库。
 
 常用查询参数:`?scene=<文件>` 选卡 · `?only=<材质名>` 单独显示某一层 ·
 `?quality=auto|middle|high|low` 选择卡片 RT 质量（默认 `auto` 按物理 drawing buffer 派生同尺寸 source RT，

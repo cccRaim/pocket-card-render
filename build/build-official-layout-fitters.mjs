@@ -43,17 +43,20 @@ assert.deepEqual(extracted.sources, {
   },
 });
 assert.deepEqual(extracted.observed, {
-  componentCount: 84,
+  componentCount: 127,
   componentTypeCounts: {
     AspectRatioFitter: 51,
     ContentSizeFitter: 5,
     HorizontalLayoutGroup: 20,
+    LayoutElement: 43,
     VerticalLayoutGroup: 8,
   },
   contentSizeFitPairs: { "2,0": 5 },
   aspectModes: { 1: 4, 2: 47 },
   aspectEnabledValues: { 0: 51 },
   layoutGroupReverseArrangementValues: { 0: 28 },
+  layoutElementIgnoreValues: { 0: 34, 1: 9 },
+  layoutElementPriorityValues: { 1: 43 },
 });
 assert.deepEqual(
   extracted.prefabs.map((prefab) => [
@@ -69,14 +72,14 @@ assert.deepEqual(
       "Common/CardNew/System/Prefabs/PokemonCardUI.prefab_bundles",
       85874,
       "405a783ca9f7fb58f6c6f55aaa37d6d018b7e83f22c1f5b14bfe09ecc0fb2c05",
-      59,
+      93,
     ],
     [
       "trainer",
       "Common/CardNew/System/Prefabs/TrainersCardUI.prefab_bundles",
       54692,
       "33b3af9be400cf2b6aed6696e2b9eb8d4a78f8cbe41ca3d80a12d2cb6d9fb484",
-      25,
+      34,
     ],
   ],
 );
@@ -103,5 +106,6 @@ console.log(
   + `${extracted.observed.componentTypeCounts.HorizontalLayoutGroup} horizontal, `
   + `${extracted.observed.componentTypeCounts.VerticalLayoutGroup} vertical, `
   + `${extracted.observed.componentTypeCounts.ContentSizeFitter} content-size, `
-  + `${extracted.observed.componentTypeCounts.AspectRatioFitter} aspect-ratio`,
+  + `${extracted.observed.componentTypeCounts.AspectRatioFitter} aspect-ratio, `
+  + `${extracted.observed.componentTypeCounts.LayoutElement} layout-element`,
 );

@@ -47,9 +47,10 @@ vec4 _490;
 
 void main()
 {
-    _9.x = dot(vs_TEXCOORD2, vs_TEXCOORD2);
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD2.xy, -vs_TEXCOORD2.z);
+    _9.x = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _9.x = inversesqrt(_9.x);
-    highp vec3 _27 = _9.xxx * vs_TEXCOORD2;
+    highp vec3 _27 = _9.xxx * pcrUnityWorldNormal;
     _9 = vec4(_27.x, _27.y, _27.z, _9.w);
     _31 = _Rotation * vec3(-0.01745329238474369049072265625);
     _45.x = cos(_31.x);
@@ -81,7 +82,7 @@ void main()
     _9 = vec4(_161.x, _161.y, _161.z, _9.w);
     _78.x = -viewMatrix[0].z;
     _78.y = -viewMatrix[1].z;
-    _78.z = -viewMatrix[2].z;
+    _78.z = viewMatrix[2].z;
     _180 = dot(_78.xyz, _78.xyz);
     _180 = inversesqrt(_180);
     highp vec3 _192 = vec3(_180) * _78.xyz;
@@ -105,7 +106,7 @@ void main()
     _9.x = clamp(_9.x, 0.0, 1.0);
     _290.x = float(_TiltEnabled);
     _9.x *= _290.x;
-    _290 = (vs_TEXCOORD2 * vec3(0.5)) + vec3(0.5);
+    _290 = (pcrUnityWorldNormal * vec3(0.5)) + vec3(0.5);
     _31.x = dot(_290.xy, _239.xy);
     _290 *= vec3(vec3(_RampSpeed, _RampSpeed, _RampSpeed));
     _290.x = dot(_290, _239);

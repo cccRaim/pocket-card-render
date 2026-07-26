@@ -48,6 +48,15 @@
   }
  },
  "scripts": {
+  "LayoutElement": {
+   "pathId": "-8545018526213454877",
+   "objectSha256": "a748fe5b3e7c40ef6bb4dd0e4410f4712723e8e6bef75d0ea4e31dec5c88cf38",
+   "m_Name": "LayoutElement",
+   "m_ExecutionOrder": 0,
+   "m_ClassName": "LayoutElement",
+   "m_Namespace": "UnityEngine.UI",
+   "m_AssemblyName": "UnityEngine.UI"
+  },
   "HorizontalLayoutGroup": {
    "pathId": "-3229211799126679632",
    "objectSha256": "8691e010de3eacc311d45b7eb934729600678be80545fa070462811439c5b19b",
@@ -702,6 +711,124 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "4544877589209289917",
+     "componentObjectSha256": "66a7bbbe8db54d699c8a8f55a8f741055408d065197c39115cef8ec8217a59dc",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8447137833260881085",
+      "objectSha256": "20b8a477f89e3ea2a1856b8204cfd7c1b34c6182b0408fbdd74b71cd238d3c76",
+      "name": "illust_width_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/CollectionView[9]/illustrator_elm[0]/illust_width_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "5344702013183235261",
+      "objectSha256": "0bbbce1a9de382e4ccaca491ecfbe05def849672a925d2dfc57cddd6d35dfdb2",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 15.600000381469727,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "8621745239441609917",
+     "componentObjectSha256": "b33ba288bd3b1a5f2c97a3757fd6e0b6f2502fc61a2b33afd91c14ff49475628",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "6580500109754700989",
+      "objectSha256": "02750e5f6827b8072856d8c3dac2a1ee8176122533c3e87af8198060b39378c8",
+      "name": "margin_6px",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/CollectionView[9]/illustrator_elm[0]/margin_6px[1]"
+     },
+     "rectTransform": {
+      "pathId": "1244149118045787325",
+      "objectSha256": "af719199d0a613540a61cbd1a98f6a5e7706e6d0b993cdd9f0081da2e1ec6597",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 6,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 6,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "HorizontalLayoutGroup",
      "componentPathId": "8911689740693869757",
      "componentObjectSha256": "b9bf17745ff0120b377a63101a08276ff38b29d8a83566c4e32a115e0637ff43",
@@ -765,6 +892,65 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-9202897272559299395",
+     "componentObjectSha256": "802b5e0db89f48e70009dabc0cf6d9fad38328ecc0fd7384b46b94394f39e940",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "489572153393878205",
+      "objectSha256": "7a4d3b6836327830551ca0b4e9a43b1a68354e4fe3d1567696b64f6837024099",
+      "name": "name_width_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/CollectionView[9]/illustrator_elm[0]/name_width_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "7016720286420571325",
+      "objectSha256": "d0aa8c0515b291bd310b2421e3f72701d1a0c47ee502a463c6ec9c6706d7520a",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 140,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": 1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -1721,6 +1907,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "7443962061283398845",
+     "componentObjectSha256": "a09c241daeb20c78569070bb1432cddf6c526a99396c258ef29364c0e6fc132a",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-5654503536196578115",
+      "objectSha256": "284c70e59caa0a65a7f1c5f9a08bde2a8c8628340f513c424dd877657c27c8df",
+      "name": "SkillName",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/SkillName[0]"
+     },
+     "rectTransform": {
+      "pathId": "3539286834459710653",
+      "objectSha256": "3ad0c1662424efcfe7b4ea6330ebd550a49c470321a99ed6062a80b3b44ec1b0",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -20
+       },
+       "m_SizeDelta": {
+        "x": 630,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 630,
+      "m_MinHeight": 40,
+      "m_PreferredWidth": 630,
+      "m_PreferredHeight": 40,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "ContentSizeFitter",
      "componentPathId": "903804591547552957",
      "componentObjectSha256": "bfdbd85f6bc2700a79bbe4b9781d10474fb64c4d424feddabac390a27508a30e",
@@ -1840,6 +2085,360 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "-306445271442647875",
+     "componentObjectSha256": "8acea74da0f3f7d5eb8f9f1a9abd5be39e330bac5faec921e4e106ce6d0b91bc",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "2874536138312520893",
+      "objectSha256": "bb148eaca56eb1eabbfdd692929a5e3d88dea806d793f3ef2a9afee723d003b3",
+      "name": "PokemonCardFaceEnergyContainerView",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/SkillName[0]/PokemonCardFaceEnergyContainerView[0]"
+     },
+     "rectTransform": {
+      "pathId": "4610997191100863677",
+      "objectSha256": "74614e5667b631cb172e823e9c4f6e9e212ef54df7b332f6a10a4158fd7a5279",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -5,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 211.5,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-6599421904503368515",
+     "componentObjectSha256": "06d8985407bdd4a7725b6bf2a76018786bde63d5bd18f155b117e3bee921d4ee",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8181840323464795325",
+      "objectSha256": "354e735a9a840ec7874736c7e58364066b874baa68f7d07844332b2140305916",
+      "name": "damage_num_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/SkillName[0]/damage_num_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "7021846491375146173",
+      "objectSha256": "1acca2936658f2ee8b1bcb19eba753ed3d1258f0234e255615c7d302636d132c",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 74,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 1,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-5571083219222588227",
+     "componentObjectSha256": "4349f990a4e8eb13c61f60d0b9b4c00f45f8ad9b1e2fbb361bd377c09e4111bf",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-8549736815173888835",
+      "objectSha256": "78bd9b4f76075b812de7127ee42760f85c7370de60c0ad6d3805a58b5dbdb7d7",
+      "name": "skill_name_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/SkillName[0]/skill_name_txt[1]"
+     },
+     "rectTransform": {
+      "pathId": "-4237964076314061635",
+      "objectSha256": "95dd0eb64d8fe6c94113e5008d50f6c3441bd4a63d639abc785eedf928be5a72",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 384,
+        "y": -4
+       },
+       "m_SizeDelta": {
+        "x": 332,
+        "y": 34.0099983215332
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 332,
+      "m_MinHeight": 34,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "4605388170209662141",
+     "componentObjectSha256": "87ea443b27ce557491118963afc31cf8b14556ef79b3f0a7d2be098b387111f6",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "5188297185322341565",
+      "objectSha256": "64bd21b0a3de1115580f10b5acee898b1374cf8e579073f33e03687e521ae3f3",
+      "name": "margin",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/margin[1]"
+     },
+     "rectTransform": {
+      "pathId": "-8789478286838393667",
+      "objectSha256": "66fa6fed696c354b4afefe717bba715e732e5a0622da2b03056901c451e29855",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -43.5
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 7
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 628,
+      "m_MinHeight": 7,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": 7,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "3831194132082398397",
+     "componentObjectSha256": "de6e1af73128c0c99cbb498ae93bedf4ec49c1ab1c2b2219ec929ef136dfc7f4",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "273784784314832061",
+      "objectSha256": "25031cbb56a77e06d56b13154323df74dd23a530472dd436550a2166e103ce82",
+      "name": "skill_description_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/PokemonAttackView[1]/skill_description_txt[2]"
+     },
+     "rectTransform": {
+      "pathId": "-5332629927294462787",
+      "objectSha256": "cbd443d5f3c71304e8afe1bfdf448bc8e247771ad09f7f9c035b59593dd1bf14",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -138.08999633789062
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 91.08999633789062
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 0,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-536253851000564547",
+     "componentObjectSha256": "ae8cd140e44828234a5eba9fded3942bd983537b4db8dbaf5eb8feed92f7b26c",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8364365078614643901",
+      "objectSha256": "48a282db52950453115485706b4b1701596f8d8b69e9819f3a714cc7a1a070dd",
+      "name": "ability_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "7272377287599461565",
+      "objectSha256": "3a21b8e96ad506e16f69d38a8a04349953a63c77dd01896b7763dd40af7cff9b",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 337,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 104.05000305175781
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "VerticalLayoutGroup",
      "componentPathId": "-7798849420943485763",
      "componentObjectSha256": "5e57681326320c03f50d3fe189480bfc1004f68a56c78e618127ad2c963ba533",
@@ -1906,6 +2505,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "-5638625254094793539",
+     "componentObjectSha256": "b8f7fcc7aa76826719f2453e2e54cf028f615ad685b3445668d03d3e467cce05",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "2587424172714562749",
+      "objectSha256": "2a0ca93edc96ff79a6f50c7838c654840547ec869b6564809295d16460e6fbe4",
+      "name": "ability_description_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]/ability_description_txt[2]"
+     },
+     "rectTransform": {
+      "pathId": "5990020931064239293",
+      "objectSha256": "53f5e6d638e9d27d7309276dc597960c0c9d1e46b6a0dfab25d699ee8fd216c7",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 314,
+        "y": -104.05000305175781
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 57.04999923706055
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "HorizontalLayoutGroup",
      "componentPathId": "1270336701448131773",
      "componentObjectSha256": "55bfae8e4dee6d97c43a60b5e849d48ce7e82bc722fe3e8d2987b293617cb711",
@@ -1969,6 +2627,242 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "3664871717225436349",
+     "componentObjectSha256": "2aa13e0f6bdbcabcf05edf01b67d07f9753d39508a01ed542c934cac22289367",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "1298226278069441725",
+      "objectSha256": "63244cdd25ad4976bd9e87b76002af1194f5c90f3d4cdb9ee88ae80ec2f4938b",
+      "name": "ability_name_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]/ability_name_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "2207113496687219901",
+      "objectSha256": "c98f62dc8e7ab8746349d7f0a526b6098f92b45a2d488a96f593bee5f0dbb8bd",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 314,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 40,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "3505703488077436093",
+     "componentObjectSha256": "740bd489631d34577543a04c33834346ea7d3799061d8da50eb843ae620f2196",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "1004365319889687741",
+      "objectSha256": "bd35442168b84274ee625d5d49f48c858a5d39187725d04f59d1a567fb5f7370",
+      "name": "ability_icn",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]/ability_name_elm[0]/ability_icn[0]"
+     },
+     "rectTransform": {
+      "pathId": "-8677141937049168707",
+      "objectSha256": "19f74177dd6b87430cb9a64db304efc2580eb477c7ae01d5a9f3b6f7851a6fc9",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": -2
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 0
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "545360659765007549",
+     "componentObjectSha256": "891ec4bc30897909bd9a5303c41f64b30964c16d355d28f8f9fb79d65665b078",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-7000920705947462467",
+      "objectSha256": "8774cd73ae11e9474f22449fbda676fc14ccd2f6c1136ad9a983ca0f6e4295b8",
+      "name": "ability_name_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]/ability_name_elm[0]/ability_name_txt[1]"
+     },
+     "rectTransform": {
+      "pathId": "-816699052079639363",
+      "objectSha256": "e63c9f2be15bb47e6f4c9f6b8d450ce7472e20555892c4c5fca74f7cafd646ed",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 383,
+        "y": -4
+       },
+       "m_SizeDelta": {
+        "x": 330,
+        "y": 34.0099983215332
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 34,
+      "m_PreferredWidth": 600,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "671084929385764029",
+     "componentObjectSha256": "a3e864b11e1e9aab52cae2794228763540659430c0c55642f86e5a1f4563bcae",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "5982240290915095741",
+      "objectSha256": "bf2ba1fa155a9984d6bb19e4a155c8e3f44d81289f3b9bfacde6c31cd9d13ccc",
+      "name": "margin",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonAbilityContainerView[0]/ability_elm[0]/margin[1]"
+     },
+     "rectTransform": {
+      "pathId": "431583847198299325",
+      "objectSha256": "6eddb116928b2460b4580fe412ecc388432a6d9851a078423e98e941d1209978",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 314,
+        "y": -43.5
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 7
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 628,
+      "m_MinHeight": 7,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": 7,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -2170,6 +3064,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "-6505140097820126019",
+     "componentObjectSha256": "614a0a0025e4de24e74a43b758af51d30a75cbd9e245c378a9ed069d68014184",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8789227572437783741",
+      "objectSha256": "b6e7051b56079dbb444095ed64b4ea4607821dea08d918302d07d9a0a52dade0",
+      "name": "SkillName",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/SkillName[0]"
+     },
+     "rectTransform": {
+      "pathId": "-3177955629178743619",
+      "objectSha256": "6dd10c53afc706b906f4113016a23cdfd9359b6e99c1dc30775720d9b7db0950",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -20
+       },
+       "m_SizeDelta": {
+        "x": 630,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 630,
+      "m_MinHeight": 40,
+      "m_PreferredWidth": 630,
+      "m_PreferredHeight": 40,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "ContentSizeFitter",
      "componentPathId": "3292094806586168509",
      "componentObjectSha256": "9a72d717ef9712e197030e8ad910b5394861bffc5c8544dd2e632fa29f474847",
@@ -2286,6 +3239,301 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-4633127957391469379",
+     "componentObjectSha256": "e1ce3b703cc301a48f4bfa485c11c8fc19a911a3a4ae7eab42e91a1431877550",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "4758509312594154685",
+      "objectSha256": "800dfa928f87cb15f166d555fc132cced74c55e5cbefa0ad49c85c78048b6e14",
+      "name": "PokemonCardFaceEnergyContainerView",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/SkillName[0]/PokemonCardFaceEnergyContainerView[0]"
+     },
+     "rectTransform": {
+      "pathId": "-3291549283961334595",
+      "objectSha256": "33a12e4419e62f0cb65afcc76411d3b365fa246082d711dc2984718b1ba78d3f",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -5,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 211.5,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-736720119860489027",
+     "componentObjectSha256": "a08b38d3b020ddf7d94892f520e700624ef082369412c7d4a9a1d4013d7a25c0",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8854747873535792317",
+      "objectSha256": "cd96d96a4bc955dff4a4ff184c51cfd984e6dfddfcc84380da323157827528c1",
+      "name": "damage_num_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/SkillName[0]/damage_num_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "-5068963409051904835",
+      "objectSha256": "a7cb169cf1f825add1a3777cca97a7eedcf9c2a2f35fb249d32b8c8b4658614b",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 74,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 1,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "2689496735030777021",
+     "componentObjectSha256": "c55c1c43c68f2a53a1ddabd73710938fa8226cbf5837f0a48fb8ea3e616dc67f",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "3745998336534844605",
+      "objectSha256": "0afbc2275a34cf1fa826a055e6acab7b65342b190ada647a09b181bf7391297d",
+      "name": "skill_name_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/SkillName[0]/skill_name_txt[1]"
+     },
+     "rectTransform": {
+      "pathId": "-6927311790851156803",
+      "objectSha256": "d3d0bf5ecb8c36135181c182b9a6b7e407116962ff5a46a01f968a8880f4d0b5",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 384,
+        "y": -4
+       },
+       "m_SizeDelta": {
+        "x": 332,
+        "y": 34.0099983215332
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 332,
+      "m_MinHeight": 34,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-2490273907494415171",
+     "componentObjectSha256": "2185dffdec50e2cab6e6179c2784289555e22695bac07b4af704832de2441916",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "2872623425316066493",
+      "objectSha256": "a6d5ab8887f574ce2da75f08cde66a6efa5ca0d63e329d6af6a99bba3a481542",
+      "name": "margin",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/margin[1]"
+     },
+     "rectTransform": {
+      "pathId": "1572458559828726973",
+      "objectSha256": "ef9bc8df9599f0fac73254f9c03a73999c4966671752035162cdb21fa2f84cf2",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -43.5
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 7
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 628,
+      "m_MinHeight": 7,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": 7,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-411691782671493955",
+     "componentObjectSha256": "1037431178de65b9dd736c9f03a9d4d75228b4e6789f91461ef37f0312ced694",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-5339165645232204611",
+      "objectSha256": "0f195bdab088b683240e061c994a8ef3b8f5471f8bab10787e0035f709e1ec4d",
+      "name": "skill_description_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_01[1]/PokemonAttackView[0]/skill_description_txt[2]"
+     },
+     "rectTransform": {
+      "pathId": "689754022898242749",
+      "objectSha256": "672b6e08ffcfac0cad87b86483f1d1c7d30130d27df024d408411939664c0dec",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -138.08999633789062
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 91.08999633789062
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 0,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -2487,6 +3735,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "-286943645622528835",
+     "componentObjectSha256": "189804dafa9dfa3eb7d2503acdf3f5232c06999fe0be5e4196b43d50410311f2",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "5221284333630526653",
+      "objectSha256": "0e5bf51453f1738f08debf4a4c785f792d41b780a0d13f1539e61dc803375401",
+      "name": "SkillName",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/SkillName[0]"
+     },
+     "rectTransform": {
+      "pathId": "2667995208460211389",
+      "objectSha256": "62bee82a5574d4d3a0993df66e415d9c6ff0bc8d2b021cb573090154ef350dbb",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -20
+       },
+       "m_SizeDelta": {
+        "x": 630,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 630,
+      "m_MinHeight": 40,
+      "m_PreferredWidth": 630,
+      "m_PreferredHeight": 40,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "ContentSizeFitter",
      "componentPathId": "4380522864604943549",
      "componentObjectSha256": "fbba3b6cf35de8ea3c12fb73f335309dd21a0a6fb78a3053f8c0a8e329a6bc8b",
@@ -2603,6 +3910,301 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-5096059758873602883",
+     "componentObjectSha256": "e3d4dc4459fe6ceea0a6b87ffe27fedffec3593e2fd22e87581fe2a7afd9b517",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "3361736926544663741",
+      "objectSha256": "7f887b373c9eb7fed65ebc9c34ac53eb625ede450df68933375a747c15383c8c",
+      "name": "PokemonCardFaceEnergyContainerView",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/SkillName[0]/PokemonCardFaceEnergyContainerView[0]"
+     },
+     "rectTransform": {
+      "pathId": "4070960920817046717",
+      "objectSha256": "e3d0c6f395ccf7aabc91731210859e26efb93fb17082719c8d54bb50ebd4f417",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -5,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 211.5,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "596085555562222781",
+     "componentObjectSha256": "77aa7037c318febc0aaca4725d67d87c42959c6c0278fff631c31c81b16491ec",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "11380361784333501",
+      "objectSha256": "e8b2d17111f0ac87dabc37d68454fea475a72a147f61df6a81d90cd260996593",
+      "name": "damage_num_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/SkillName[0]/damage_num_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "-8535660754469514051",
+      "objectSha256": "8849412fdf724094ae0adcdd57f522baa9e80e68d741fd96901ac73936aa8b03",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 74,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 1,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "6253171890907452605",
+     "componentObjectSha256": "e2226d1363658f9e280df2b824294a571183f19813b6c415d640c53e84ca282c",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-8766260518972746563",
+      "objectSha256": "a8e3c318ccf333c2662b2a5df1944fb9ee5abc47c5306e16319add2a9522ffc3",
+      "name": "skill_name_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/SkillName[0]/skill_name_txt[1]"
+     },
+     "rectTransform": {
+      "pathId": "-5761453620179757891",
+      "objectSha256": "dd9c3596ea11a7973391bab4dff7a174368e041eb29944ec45e3e426dfc57dee",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 384,
+        "y": -4
+       },
+       "m_SizeDelta": {
+        "x": 332,
+        "y": 34.0099983215332
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 332,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "6465114063358530749",
+     "componentObjectSha256": "aab0902d0478a27a0f255a95f9824f7725e0df4497c919581eda5d0ffd1efe80",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-3128711805326584643",
+      "objectSha256": "c17b531f165bcfb7972a0c8ab4f96fe3517757f49b0d1b850409d0ac2011661a",
+      "name": "margin",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/margin[1]"
+     },
+     "rectTransform": {
+      "pathId": "-7916725663438531395",
+      "objectSha256": "472de8d891940548170bac7dc162456719927e203c613490e928240ad1a0dcb0",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -43.5
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 7
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 628,
+      "m_MinHeight": 7,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": 7,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-5025261748234873667",
+     "componentObjectSha256": "306996fc62525c29d3d0c1955857d727705a92fcc5e199ea9a0622ef0742e5a9",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "6397239365572433085",
+      "objectSha256": "89de54cb7cf240ab671f64902eff38819987aa5a76fd5213e039de03c968d3dd",
+      "name": "skill_description_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView1[0]/skill_description_txt[2]"
+     },
+     "rectTransform": {
+      "pathId": "4951278659549140157",
+      "objectSha256": "a7bac3e707d8f8b55273c35cfcaf9d71012365767a2374da47685836af06dec2",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -70.01000213623047
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 23.010000228881836
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 0,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -2738,6 +4340,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "8717872679959598269",
+     "componentObjectSha256": "1916fb2f75fe7e0176f5ef4f2396e620a2996e059a3f2c21131a3386000fdf49",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-8457970088761027395",
+      "objectSha256": "bb1a7963f7d4e34b41e654df91343c63e1272aa4b962f6f2deb32155ac1f7171",
+      "name": "SkillName",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/SkillName[0]"
+     },
+     "rectTransform": {
+      "pathId": "-3746492096419326787",
+      "objectSha256": "fa903e78567f7f1c0f232780d4f26249c86e45d4b787a5a521667b5010551139",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -20
+       },
+       "m_SizeDelta": {
+        "x": 630,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 630,
+      "m_MinHeight": 40,
+      "m_PreferredWidth": 630,
+      "m_PreferredHeight": 40,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "ContentSizeFitter",
      "componentPathId": "-3374152714873400131",
      "componentObjectSha256": "8b867c942b439af776d577de92edbbe2078849c57e69ddd516747e4610af40b4",
@@ -2854,6 +4515,301 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-5772672462838557507",
+     "componentObjectSha256": "3c80f61a0191828ca8d92ccd3a24e2850a8e0af21c0700f1005fb5c5d5680391",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8958848105958610109",
+      "objectSha256": "fbb6c779e5dffb65cf4d1afd646b57ae524c986ebcebeba2807eff9f1229c4b6",
+      "name": "PokemonCardFaceEnergyContainerView",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/SkillName[0]/PokemonCardFaceEnergyContainerView[0]"
+     },
+     "rectTransform": {
+      "pathId": "1563204585709573309",
+      "objectSha256": "c434d0c2262162b2ff3a05a0a789892a121314b9366277efcd3bb3c291e32b17",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -5,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 211.5,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-8448481162220596035",
+     "componentObjectSha256": "67f0ec6fbcb6562d8544168e958d930cc16bdcc9e34cd4d9351475053526dd32",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-4152664432080972611",
+      "objectSha256": "534f379696735c76b7017bb301603663e263d17c97c7d77435dbff11634ae13b",
+      "name": "damage_num_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/SkillName[0]/damage_num_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "-3346873388412562243",
+      "objectSha256": "b20d52a1ae066cbe621f4636f4d50397635cb291c6e15ffd587ec8c0827c25ca",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 1,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 74,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 1,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 1,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-2056553753275263811",
+     "componentObjectSha256": "e9a05ee195264aaf65c05ea07c27c322f856467ea921d2a9f88d463ffc67dedf",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "8103069552730510525",
+      "objectSha256": "a9889576389580238f8bf5172815a21b7c36315b6452b3d1352de9563e1941f4",
+      "name": "skill_name_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/SkillName[0]/skill_name_txt[1]"
+     },
+     "rectTransform": {
+      "pathId": "2687600773076096189",
+      "objectSha256": "308f0006f9d2c8e967d88b7a3e9a8e46c97c33474a47a2fab88e8ff62d40514e",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 384,
+        "y": -4
+       },
+       "m_SizeDelta": {
+        "x": 332,
+        "y": 34.0099983215332
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 1
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 332,
+      "m_MinHeight": 34,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-3357686213735934787",
+     "componentObjectSha256": "e3816f632c44d4c2aa39c7f5a4d8830753fb50bf52668c8eb270fa3db135ec33",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "4699125248878122173",
+      "objectSha256": "c422d17f7d801329d4f1634cb1eea4de1e81cda490b83aecdcb73993748abcc4",
+      "name": "margin",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/margin[1]"
+     },
+     "rectTransform": {
+      "pathId": "1094999811619034301",
+      "objectSha256": "74028c94650da4ad31da4b78fbb414dc5a3b27a9181516f4ba08b453f9784d5a",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -43.5
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 7
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 628,
+      "m_MinHeight": 7,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": 7,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "1116133358813648061",
+     "componentObjectSha256": "f30fabd59c7bfa7b6040088c89c2a215d19e67141f4755377e3064ceebcc806d",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "4928203688956531901",
+      "objectSha256": "816dcdaeae6a5a444a3ace034afdcce5eebd1e51155ff9129508fb4f96878f78",
+      "name": "skill_description_txt",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/PokemonSkillContainerView[6]/PokemonSkillContainerView_02[2]/PokemonAttackView2[1]/skill_description_txt[2]"
+     },
+     "rectTransform": {
+      "pathId": "8727386182806082749",
+      "objectSha256": "592436293d4953ca2e0fe814def8a74f02b9dfbcec4437c533a79dc891f2fa55",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 315,
+        "y": -70.01000213623047
+       },
+       "m_SizeDelta": {
+        "x": 628,
+        "y": 23.010000228881836
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": 0,
+      "m_PreferredWidth": 628,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -3504,6 +5460,65 @@
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
      }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-2296936576335735619",
+     "componentObjectSha256": "d544b1fa7461efc04ab90ffabdffdca695ea426830176d3ca38fc3ba09f65a27",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-532380874149194563",
+      "objectSha256": "8455c802ac6f58856a55dd454ef5aaf95e509ef727f76616f71329d8c1823868",
+      "name": "hp_txt_elm",
+      "activeSelf": true,
+      "hierarchyPath": "PokemonCardUI[0]/hp_elm[2]/hp_txt_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "8326300499596285117",
+      "objectSha256": "046446f2e6e58068352efc211ac091b8894d282a0cf32d8a759f3c7bb77b0824",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 54
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 30,
+      "m_PreferredHeight": 54,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
     }
    ]
   },
@@ -4057,6 +6072,65 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "5374355205215212204",
+     "componentObjectSha256": "1f4b70017b5b79ccb1092a275fc8bf39f16f782f7bb3cd6bd0c2b75dad3036a2",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "7698685261009572524",
+      "objectSha256": "0fc97c184669808f9d8667b6d20f9304958052b9f0be97cd870d64188a6de056",
+      "name": "hp_txt_elm",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtFossilCardNameElm[4]/hp_elm[0]/hp_txt_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "5480189989665690284",
+      "objectSha256": "12c43ed0cf3d855fe1c6c4e7f89c91b97a7f74427f1308ca70da5ea4b6b1f30b",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 80.80999755859375,
+        "y": -27
+       },
+       "m_SizeDelta": {
+        "x": 30,
+        "y": 54
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 30,
+      "m_PreferredHeight": 54,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "HorizontalLayoutGroup",
      "componentPathId": "-359728518331706708",
      "componentObjectSha256": "6e52e369012cda947d46b36e0d90e4c3588b8c336462d7963934a1c9ca5ab0e6",
@@ -4120,6 +6194,183 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "1028505657994039980",
+     "componentObjectSha256": "78da6ff99a62db988ebdbf142dcd73f5d79ba6b9722fcaaaa72dae0efe645e11",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "228648132076491436",
+      "objectSha256": "da57231b11a143e7c45fa0787b6ce2ec7c301ab8be4125a9dabc8c70bfdc04fe",
+      "name": "TxtItemCardNameElm",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtItemCardNameElm[2]"
+     },
+     "rectTransform": {
+      "pathId": "-2158951339334446420",
+      "objectSha256": "43adbb2e6d15721b36f03aa9caaf8753d5be85628bde307995e7c041f3f07603",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0.5,
+        "y": 0.5
+       },
+       "m_AnchorMax": {
+        "x": 0.5,
+        "y": 0.5
+       },
+       "m_AnchoredPosition": {
+        "x": -15,
+        "y": 408
+       },
+       "m_SizeDelta": {
+        "x": 630,
+        "y": 65
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 630,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "4499402746263163564",
+     "componentObjectSha256": "81e3a76291214f9e005c1890a04bc30bbf420e104960844d8a4dbe63c9c7550b",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-7803088640893267284",
+      "objectSha256": "71d04e0db5b5dd3cbc8d0b3ca0e18c24659d0fe4341dd81d2d14b4b79a620cfa",
+      "name": "txt_item_card_name_sub",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtItemCardNameElm[2]/txt_item_card_name_sub[1]"
+     },
+     "rectTransform": {
+      "pathId": "-5427980655128882516",
+      "objectSha256": "aadc17944d62d4dd732ceeb7d2eb9dc61ea6b28b540001291886bbec7e0fbb89",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 200.00999450683594,
+        "y": -32.5
+       },
+       "m_SizeDelta": {
+        "x": 259.989990234375,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 130,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": 1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "2719594942975038124",
+     "componentObjectSha256": "2b98c1b6a4d93c8ddca55668194170e277398016c765dc3a083483327f532080",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "2166199020915511980",
+      "objectSha256": "e885d53523509206064e189cabc7d271469403956c8aea904cffc623d1544af8",
+      "name": "TxtStadiumCardNameElm",
+      "activeSelf": false,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtStadiumCardNameElm[3]"
+     },
+     "rectTransform": {
+      "pathId": "-8396043086955294036",
+      "objectSha256": "1296730fdb3a81d0b3c2c32bc8f1a42620fdf8a0d209f73a95b9dadecdf52f94",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0.5,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0.5,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -100,
+        "y": -104
+       },
+       "m_SizeDelta": {
+        "x": 460,
+        "y": 65
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 460,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -4239,6 +6490,124 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "3710476759093072556",
+     "componentObjectSha256": "8094c1a0ebba144d87b61bd71ed7afdb4e1eeebe09a9b55b5c91b1b66cb0e24c",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "5932435826397467308",
+      "objectSha256": "1768f4f028d8f81582d1b7ce19e2e90b12f64765a5f40c2a0052841982110017",
+      "name": "TxtToolsCardNameElm",
+      "activeSelf": false,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtToolsCardNameElm[1]"
+     },
+     "rectTransform": {
+      "pathId": "-7799200366290939220",
+      "objectSha256": "4ba3f85f79bfa027690344f77fb2fb5f93ad504ef1bea3713a8a4fdc68f41a4b",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0.5,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0.5,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": -100,
+        "y": -104
+       },
+       "m_SizeDelta": {
+        "x": 460,
+        "y": 65
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 460,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "7087102509696406188",
+     "componentObjectSha256": "bba4eb9e4c7c3f292963b1feab43a83a6d0e08ed47d0a29b7a6eaaac023f426c",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-6887291637834788180",
+      "objectSha256": "0d391920d895e5e5795700b997f786854b03285ada50cefbebfb55e0e877dece",
+      "name": "txt_tools_card_name_sub",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/TxtToolsCardNameElm[1]/txt_tools_card_name_sub[1]"
+     },
+     "rectTransform": {
+      "pathId": "2317242956086629036",
+      "objectSha256": "ffeb8e2d13575509d735d92634e3699af13dc1990e72d57cf954feab1a7441ef",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 1
+       },
+       "m_AnchoredPosition": {
+        "x": 200.00999450683594,
+        "y": -32.5
+       },
+       "m_SizeDelta": {
+        "x": 259.989990234375,
+        "y": 40
+       },
+       "m_Pivot": {
+        "x": 0,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 130,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": 1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -4374,6 +6743,124 @@
      }
     },
     {
+     "componentType": "LayoutElement",
+     "componentPathId": "-7030773606443199828",
+     "componentObjectSha256": "aa85af685ee294391c74f68a1b1390e20085a330287d6ef379ae42ae4df3492f",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "-215478081818471764",
+      "objectSha256": "8c186647a570ed9b93001abd3a92a02974c6074ecd182fd5296c10ca9cbe81b8",
+      "name": "illust_width_elm",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/illustrator_elm[7]/illust_width_elm[0]"
+     },
+     "rectTransform": {
+      "pathId": "1678593726864544428",
+      "objectSha256": "092b7643708d15deb8f7fcc236713b9f24df18cb7264b7b811e3d2e5d864bc46",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 15.600000381469727,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": -1,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-597281893935492436",
+     "componentObjectSha256": "37f8b6efae9fa193f1297b73bfaa5e2937c0af6c901bdb64290bba1401641857",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "4165136939165799084",
+      "objectSha256": "71b545dc8e07589bc705d9f1553b9b40ce0c65138bbc4b5f0d7d5385543c145e",
+      "name": "margin_6px",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/illustrator_elm[7]/margin_6px[1]"
+     },
+     "rectTransform": {
+      "pathId": "9031711218470539948",
+      "objectSha256": "5fb1bd114a13fe83d6ec970fc7c024b6cfd42e2a29ad0938dfe6f7d4bb0c9fa8",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": 6,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 6,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": -1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
+     }
+    },
+    {
      "componentType": "HorizontalLayoutGroup",
      "componentPathId": "7990724621987140268",
      "componentObjectSha256": "b96fdaecce7e03f82602d5556c7c41d91dadc68468f898058d44cda4fc594ccd",
@@ -4437,6 +6924,65 @@
       "m_ChildScaleWidth": 0,
       "m_ChildScaleHeight": 0,
       "m_ReverseArrangement": 0
+     }
+    },
+    {
+     "componentType": "LayoutElement",
+     "componentPathId": "-3479372130084400468",
+     "componentObjectSha256": "61d60d8892ccea152da4538b76a17e5065fa48c24a694f2d521d0f2d74266059",
+     "script": {
+      "fileId": 1,
+      "pathId": "-8545018526213454877"
+     },
+     "gameObject": {
+      "pathId": "4849091029870629548",
+      "objectSha256": "281a812203e69f2738d5c60a93dea53aa08f5f9c08f7c77566b308f644cee952",
+      "name": "name_width_elm",
+      "activeSelf": true,
+      "hierarchyPath": "TrainersCardUI[0]/CollectionView[1]/illustrator_elm[7]/name_width_elm[2]"
+     },
+     "rectTransform": {
+      "pathId": "6120621634104578732",
+      "objectSha256": "545da2d67e0f92e7534bcd2bf0e83d4d261b8145d5d1f1edb98a421a83ff670d",
+      "serialized": {
+       "m_LocalScale": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+       },
+       "m_AnchorMin": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchorMax": {
+        "x": 0,
+        "y": 0
+       },
+       "m_AnchoredPosition": {
+        "x": 0,
+        "y": 0
+       },
+       "m_SizeDelta": {
+        "x": 0,
+        "y": 24
+       },
+       "m_Pivot": {
+        "x": 0.5,
+        "y": 0.5
+       }
+      }
+     },
+     "serialized": {
+      "m_Enabled": 1,
+      "m_Name": "",
+      "m_IgnoreLayout": 0,
+      "m_MinWidth": -1,
+      "m_MinHeight": -1,
+      "m_PreferredWidth": 140,
+      "m_PreferredHeight": -1,
+      "m_FlexibleWidth": 1,
+      "m_FlexibleHeight": -1,
+      "m_LayoutPriority": 1
      }
     },
     {
@@ -4920,11 +7466,12 @@
   }
  ],
  "observed": {
-  "componentCount": 84,
+  "componentCount": 127,
   "componentTypeCounts": {
    "AspectRatioFitter": 51,
    "ContentSizeFitter": 5,
    "HorizontalLayoutGroup": 20,
+   "LayoutElement": 43,
    "VerticalLayoutGroup": 8
   },
   "contentSizeFitPairs": {
@@ -4939,6 +7486,13 @@
   },
   "layoutGroupReverseArrangementValues": {
    "0": 28
+  },
+  "layoutElementIgnoreValues": {
+   "0": 34,
+   "1": 9
+  },
+  "layoutElementPriorityValues": {
+   "1": 43
   }
  },
  "nativeProducerBoundaries": [
@@ -4950,7 +7504,7 @@
     "TMPro.TextMeshProUGUI.CalculateLayoutInputHorizontal",
     "TMPro.TextMeshProUGUI.CalculateLayoutInputVertical"
    ],
-   "requiredEvidence": "official enabled ILayoutElement set, priorities, and per-frame min/preferred/flexible outputs"
+   "requiredEvidence": "official implicit TMP/Image ILayoutElement outputs and per-frame preferred metrics; serialized LayoutElement components are extracted above"
   },
   {
    "id": "layout-child-discovery",

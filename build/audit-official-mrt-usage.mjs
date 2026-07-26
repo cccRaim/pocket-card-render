@@ -13,6 +13,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { exactShaderHasActiveBloomOutput } from "../public/render/pipeline/bloom-activation.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -77,10 +78,31 @@ function localBloomSource(src, shader) {
   return shaderEq.test(src);
 }
 
-function identifierRgbWasZeroed(glsl, name, beforeIndex) {
+function exactMrtPortShaders() {
+  const contract = JSON.parse(fs.readFileSync(
+    path.join(ROOT, "public", "shaders", "official_program_port_contract.json"),
+    "utf8",
+  ));
+  const manifestsByShader = new Map();
+  for (const port of contract.ports || []) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, port.manifest), "utf8"));
+    const shader = manifest.runtime_contract?.shader_key;
+    if (typeof shader !== "string" || !shader) continue;
+    if (!manifestsByShader.has(shader)) manifestsByShader.set(shader, []);
+    manifestsByShader.get(shader).push(manifest);
+  }
+  return {
+    all: new Set(manifestsByShader.keys()),
+    bloom: new Set([...manifestsByShader.entries()]
+      .filter(([, manifests]) => exactShaderHasActiveBloomOutput({ manifests }))
+      .map(([shader]) => shader)),
+  };
+}
+
+function identifierChannelsWereZeroed(glsl, name, channels, beforeIndex) {
   const before = glsl.slice(0, beforeIndex);
   const whole = [...before.matchAll(new RegExp(`${name}\\s*=\\s*`, "g"))].at(-1)?.index ?? -1;
-  return ["x", "y", "z"].every((ch) => {
+  return channels.every((ch) => {
     const matches = [...before.matchAll(new RegExp(`${name}\\.${ch}\\s*=\\s*0(?:\\.0)?\\s*;`, "g"))];
     const last = matches.at(-1)?.index ?? -1;
     return last > whole;
@@ -95,7 +117,11 @@ function loc1Usage(glsl, outName) {
     const rhs = m[1].trim();
     if (zeroRe.test(rhs)) return false;
     const ident = rhs.match(/^([A-Za-z_][A-Za-z0-9_]*)$/)?.[1];
-    if (ident && identifierRgbWasZeroed(glsl, ident, m.index)) return false;
+    if (ident && identifierChannelsWereZeroed(glsl, ident, ["x", "y", "z"], m.index)) return false;
+    const swizzle = rhs.match(/^([A-Za-z_][A-Za-z0-9_]*)\.([xyzw]{4})$/);
+    if (swizzle && identifierChannelsWereZeroed(glsl, swizzle[1], [...swizzle[2].slice(0, 3)], m.index)) {
+      return false;
+    }
     return true;
   });
   return {
@@ -192,17 +218,24 @@ function activeAlphaMaskMaterials(shader) {
 }
 
 const sourceByKind = materialSourceByKind();
+const exactMrtShaders = exactMrtPortShaders();
+const appSource = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
+if (!/sceneUsesBloomProducer\(scene_data\.materials,\s*exactShaders\)/.test(appSource)) {
+  throw new Error("selector-resolved MRT bloom producers are not wired into the scene bloom activation predicate");
+}
 const rows = officialMrtRows().map((row) => {
   const cfg = SHADER[row.shader] || {};
   const src = sourceByKind.get(cfg.kind) || "";
-  const localBloom = localBloomSource(src, row.shader);
+  const localBloom = exactMrtShaders.all.has(row.shader)
+    ? exactMrtShaders.bloom.has(row.shader)
+    : localBloomSource(src, row.shader);
   const activeAlphaMasks = row.nonzero && !row.rgbNonzero ? activeAlphaMaskMaterials(row.shader) : [];
   let status = "OK";
   let reason = row.reason;
   if (!row.ok) status = "BAD";
   else if (row.rgbNonzero && !localBloom) {
     status = strict ? "BAD" : "WARN";
-    reason = `${row.reason}; local kind has no uBloomOnly simulation`;
+    reason = `${row.reason}; local pipeline has no active MRT1 bloom route`;
   } else if (activeAlphaMasks.length) {
     status = strict ? "BAD" : "WARN";
     reason = `${row.reason}; active scene alpha mask is not simulated`;

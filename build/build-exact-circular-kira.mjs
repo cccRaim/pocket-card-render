@@ -8,6 +8,7 @@ import {
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
+  compileOfficialVertexInputContract,
   compileProgramBindings,
   joinProgramSamplerBindings,
   runCommand,
@@ -16,6 +17,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -328,12 +330,53 @@ async function buildPort(spec) {
     equal(samplerBindings.map((row) => row.slot), expectedSlots, `${spec.id} sampler binding-number join`);
 
     const baseName = `circular_${spec.id}`;
-    const adaptation = {
-      schema: "pocket-card-render/webgl-stage-adaptation@1",
-      backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    const manifestProgramBindings = {
+      common_source_sha256: metadata.identityFields.commonBindingsSha256,
+      parameter_reflection_sha256: metadata.parameterReflectionSha256,
+      ...programBindings,
+    };
+    const vertexInputContract = compileOfficialVertexInputContract(
+      metadata.programBindChannels,
+      reflection.vertex,
+    );
+    const runtimeContract = {
+      schema: "pocket-card-render/webgl-runtime-port@1",
+      shader_key: spec.shaderKey,
+      attributes: moving ? { position: "vec3", uv: "vec2", uv1: "vec2" } : { position: "vec3", uv: "vec2" },
+      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
+      material_uniforms: { floats: spec.staticFloats, ints: spec.staticInts, vectors: {} },
+      dynamic_uniforms: spec.dynamic,
+      require_complete_active_bindings: true,
+      camera_from_view: false,
+      mrt_attachments: 2,
+      stencil_normalization: "none",
+      stencil_face_mode: "generic",
+      ordered_pass: { subshader: 0, pass: spec.pass, name: spec.passName },
+    };
+    const adaptation = buildWebglAdaptationV2({
       vertex: {
         officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVertex),
         outputSha256: sha256(vertex),
+        operations: [
+          { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+          { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+          {
+            kind: "uniform-buffer-flattening",
+            source: "serialized-common",
+            preservation: "names-types-precision",
+          },
+          {
+            kind: "dynamic-uniform-producer-binding",
+            contract: "runtime-producer-to-three-uniforms",
+          },
+          {
+            kind: "clip-space-y-conversion",
+            from: "unity-vulkan",
+            to: "webgl",
+            operation: "remove-y-inversion",
+          },
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+        ],
         substitutions: [
           moving
             ? "map official mesh locations to Three.js position/uv/uv1 attributes"
@@ -346,16 +389,32 @@ async function buildPort(spec) {
       fragment: {
         officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFragment),
         outputSha256: sha256(fragment),
+        operations: [
+          {
+            kind: "uniform-buffer-flattening",
+            source: "serialized-common",
+            preservation: "names-types-precision",
+          },
+          {
+            kind: "dynamic-uniform-producer-binding",
+            contract: "runtime-producer-to-three-uniforms",
+          },
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+        ],
         substitutions: ["expand official common-buffer fields and fixed-size arrays into same-name WebGL uniforms"],
       },
       interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-    };
+      officialVertexInputs: vertexInputContract,
+      runtimeContract,
+      officialProgramBindings: manifestProgramBindings,
+    });
     const manifest = {
       shader: spec.shaderName,
       generated_by: "build/build-exact-circular-kira.mjs",
       selected_keywords: [],
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -368,31 +427,15 @@ async function buildPort(spec) {
         policy: PASS_POLICY,
       }),
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
-      official_program_bindings: {
-        common_source_sha256: metadata.identityFields.commonBindingsSha256,
-        parameter_reflection_sha256: metadata.parameterReflectionSha256,
-        ...programBindings,
-      },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
         vertex: `public/shaders/${baseName}.vert.glsl`,
         fragment: `public/shaders/${baseName}.frag.glsl`,
       },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: spec.shaderKey,
-        attributes: moving ? { position: "vec3", uv: "vec2", uv1: "vec2" } : { position: "vec3", uv: "vec2" },
-        engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
-        material_uniforms: { floats: spec.staticFloats, ints: spec.staticInts, vectors: {} },
-        dynamic_uniforms: spec.dynamic,
-        require_complete_active_bindings: true,
-        camera_from_view: true,
-        mrt_attachments: 2,
-        stencil_normalization: "none",
-        stencil_face_mode: "generic",
-        ordered_pass: { subshader: 0, pass: spec.pass, name: spec.passName },
-      },
+      runtime_contract: runtimeContract,
       runtime_boundaries: moving ? [
         { status: "runtime-required", producer: "CircularKiraObject.UpdateTilt/UpdateParticleParams/ApplyParams", payload: "MaterialPropertyBlock scalar and 20-element arrays" },
       ] : [
@@ -405,7 +448,7 @@ async function buildPort(spec) {
       compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       implicit_defaults: metadata.shaderPropertyDefaults.textures,
       floats: Object.fromEntries([...spec.staticFloats, ...spec.staticInts, ...Object.keys(spec.dynamic)].map((name) => [name, name])),
-      mrt: spec.outputs,
+      mrt: { ...spec.outputs, secondary_rgb: "active" },
     };
     writeOrCheckOutputs({
       [`${baseName}.vert.glsl`]: vertex,

@@ -6,6 +6,7 @@ import {
   layoutOfficialTmpSprite,
   resolveOfficialTmpSprite,
 } from "../public/render/tmp-sprite-data.js";
+import { composeFace } from "./compose.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contract = JSON.parse(fs.readFileSync(
@@ -42,17 +43,64 @@ const generated = fs.readdirSync(path.join(ROOT, "public", "text"))
   .filter((name) => /^PK_.+\.json$/.test(name))
   .map((name) => [name, JSON.parse(fs.readFileSync(path.join(ROOT, "public", "text", name), "utf8"))]);
 const exBodies = generated.flatMap(([name, value]) => (value.elements || [])
-  .filter((entry) => entry.layoutPath?.endsWith("/ex_rule_description_txt_02") && entry.text.includes("\x03"))
+  .filter((entry) => entry.layoutPath?.endsWith("/ex_rule_description_txt_01") && entry.text.includes("\x03"))
   .map((entry) => [name, entry]));
-assert(exBodies.length > 0, "canonical generated corpus has no [Img:ex] body");
+assert(exBodies.length > 0, "canonical generated corpus has no normal [Img:ex] body");
 for (const [name, body] of exBodies) {
   assert.equal(body.inlineEx?.spriteAssetId, contract.spriteAsset.pathId, `${name}: SpriteAsset identity`);
   assert.equal(body.inlineEx?.materialId, contract.material.pathId, `${name}: material identity`);
   assert.equal(body.inlineEx?.textureId, contract.texture.pathId, `${name}: texture identity`);
   assert.equal(body.inlineEx?.spriteIndex, 3, `${name}: normal ex sprite index`);
   assert.equal(body.inlineEx?.fontSize, 16, `${name}: localized tag font size`);
+  assert.equal(body.fs, body.fsbase, `${name}: normal EX body base size`);
+  assert.equal(body.fsmax, body.fsbase, `${name}: normal EX body max size`);
+  assert.equal(body.fsmin, body.fsbase / 2, `${name}: normal EX body min size`);
+  assert.equal(body.wrap, true, `${name}: normal EX body wrapping`);
+  assert.equal(body.autosize, true, `${name}: normal EX body autosizing`);
   assert.match(body.inlineEx?.tagSizeObjectSha256 || "", /^[0-9a-f]{64}$/, `${name}: tag-size source hash`);
 }
 
+const mega = composeFace(
+  "PK_10_010840_00",
+  "en_US",
+  "cPK_10_010840_00_MEGAKAILIOSex_RR",
+);
+const megaBody = mega.elements.find((entry) => (
+  entry.layoutPath?.endsWith("/PokemoMegaExRuleView/ex_rule_description_txt_02")
+  && entry.text.includes("\x03")
+));
+assert(megaBody, "source-current Mega corpus witness has no Mega [Img:ex] body");
+assert.equal(megaBody.inlineEx?.spriteAssetId, contract.spriteAsset.pathId);
+assert.equal(megaBody.inlineEx?.materialId, contract.material.pathId);
+assert.equal(megaBody.inlineEx?.textureId, contract.texture.pathId);
+assert.equal(megaBody.inlineEx?.spriteIndex, 2, "Mega ex uses the official white sprite");
+assert.equal(megaBody.inlineEx?.characterName, "ex_wh");
+assert.equal(megaBody.inlineEx?.fontType, "White");
+assert.equal(megaBody.inlineEx?.fontSize, 16);
+assert.equal(megaBody.wrap, true, "Mega _02 rule component enables word wrapping");
+assert.equal(megaBody.autosize, true, "Mega _02 rule component enables autosizing");
+assert.match(megaBody.inlineEx?.tagSizeObjectSha256 || "", /^[0-9a-f]{64}$/);
+
+const tauros = composeFace(
+  "PK_10_002730_00",
+  "zh_TW",
+  "cPK_10_002730_00_KENTAUROS_R",
+);
+const taurosAttack = tauros.elements.find((entry) => (
+  entry.layoutPath?.endsWith("/PokemonAttackView/skill_description_txt")
+  && entry.text.includes("\x03")
+));
+assert(taurosAttack, "source-current Tauros R witness has no attack-text [Img:ex]");
+assert.equal(taurosAttack.inlineEx?.spriteAssetId, contract.spriteAsset.pathId);
+assert.equal(taurosAttack.inlineEx?.materialId, contract.material.pathId);
+assert.equal(taurosAttack.inlineEx?.textureId, contract.texture.pathId);
+assert.equal(taurosAttack.inlineEx?.spriteIndex, 0);
+assert.equal(taurosAttack.inlineEx?.characterName, "ex_wh_ol");
+assert.equal(taurosAttack.inlineEx?.fontType, "Black");
+assert.equal(taurosAttack.inlineEx?.fontSize, 23);
+assert.match(taurosAttack.inlineEx?.tagSizeObjectSha256 || "", /^[0-9a-f]{64}$/);
+
 console.log("Official TMP ex-sprite layout test OK");
-console.log(`  ${exBodies.length} generated ex-rule bodies use TextExSprite index 3 at tag size 16`);
+console.log(`  ${exBodies.length} normal ex-rule bodies use TextExSprite index 3 at tag size 16`);
+console.log("  source-current Mega witness uses TextExSprite index 2 with wrapped autosize layout");
+console.log("  source-current Tauros R attack text uses FontGroup Black sprite index 0 at tag size 23");

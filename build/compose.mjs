@@ -7,6 +7,23 @@ import { join } from "node:path";
 import { buildCardData } from "./carddata.mjs";
 import { inlineElementTypeFromSentinel } from "./card-text-resolver.mjs";
 import { compactOfficialUIImageState } from "../public/render/official-ugui-image.js";
+import {
+  IDENTITY_UI_AFFINE,
+  rectTransformUiAffine,
+} from "../public/render/ui-affine-transform.js";
+import {
+  replayUGUIState,
+  UGUI_STATE_REPLAY_SCHEMA,
+} from "../public/render/ugui-state-reducer.js";
+import {
+  indexOfficialTmpFonts,
+} from "../public/render/tmp-font-data.js";
+import {
+  resolveOfficialCardLayout,
+} from "../public/render/official-card-layout.js";
+import {
+  resolveOfficialImgTagFontType,
+} from "../public/render/official-img-tag-font-type.js";
 
 function firstExistingDir(paths) {
   return paths.find((p) => p && existsSync(p)) || paths[0];
@@ -32,8 +49,35 @@ const TMP_SPRITE = JSON.parse(readFileSync(
   "utf8",
 ));
 if (TMP_SPRITE.schemaVersion !== 1) throw new Error("unsupported TMP sprite contract schema");
+const CARD_TEXT_DESIGN = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "render", "card-text-design-contract.json"),
+  "utf8",
+));
+if (CARD_TEXT_DESIGN.schemaVersion !== 1) {
+  throw new Error("unsupported card text design contract schema");
+}
+const LAYOUT_FITTERS = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "render", "official-layout-fitters.json"),
+  "utf8",
+));
+if (LAYOUT_FITTERS.schemaVersion !== 1) {
+  throw new Error("unsupported official layout fitter contract schema");
+}
+const TMP_SETTINGS = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "render", "tmp-settings-contract.json"),
+  "utf8",
+));
+const TMP_FONT_MANIFEST = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "game", "tmp-fonts", "manifest.json"),
+  "utf8",
+));
+const TMP_FONTS = indexOfficialTmpFonts(TMP_FONT_MANIFEST, TMP_SETTINGS);
 
 const xy = (value) => [Number(value?.x || 0), Number(value?.y || 0)];
+const xyScale = (value) => [Number(value?.x ?? 1), Number(value?.y ?? 1)];
+const quaternion = (value) => [
+  Number(value?.x ?? 0), Number(value?.y ?? 0), Number(value?.z ?? 0), Number(value?.w ?? 1),
+];
 const rgba = (value) => [
   Number(value?.r ?? 1), Number(value?.g ?? 1), Number(value?.b ?? 1), Number(value?.a ?? 1),
 ];
@@ -41,7 +85,14 @@ function contractNode(entry) {
   const rect = entry.rectTransform;
   const tmp = entry.tmp;
   return {
+    gameObjectId: String(entry.gameObject.pathId),
+    gameObjectObjectSha256: entry.gameObject.objectSha256,
+    rectTransformId: String(rect.pathId),
+    rectTransformObjectSha256: rect.objectSha256,
+    tmpId: tmp ? String(tmp.pathId) : null,
+    tmpEnabled: tmp ? Boolean(tmp.m_Enabled) : null,
     go: entry.gameObject.name,
+    unityLayer: Number(entry.gameObject.layer),
     active: entry.gameObject.active,
     siblingIndex: Number(entry.siblingIndex || 0),
     pos: xy(rect.m_AnchoredPosition),
@@ -49,6 +100,8 @@ function contractNode(entry) {
     aMin: xy(rect.m_AnchorMin),
     aMax: xy(rect.m_AnchorMax),
     piv: xy(rect.m_Pivot),
+    rotation: quaternion(rect.m_LocalRotation),
+    scale: xyScale(rect.m_LocalScale),
     children: (entry.children || []).map(contractNode),
     style: tmp ? {
       fs: Number(tmp.m_fontSize),
@@ -183,8 +236,8 @@ const sdfContract = (style) => style?.font && style?.material ? {
   faceColor: style.material.faceColor,
   outlineColor: style.material.outlineColor,
 } : null;
-const fontTable = (lc, group) => Object.fromEntries(
-  Object.entries(CARD_FONT.groups?.[group] || {}).map(([key, preset]) => [
+const fontTable = (lc, group) => {
+  const table = Object.fromEntries(Object.entries(CARD_FONT.groups?.[group] || {}).map(([key, preset]) => [
     key,
     preset ? (() => {
       const selected = CARD_FONT.locales?.[lc]?.presets?.[preset];
@@ -194,30 +247,167 @@ const fontTable = (lc, group) => Object.fromEntries(
         types: Object.fromEntries(Object.entries(selected.types || {}).map(([name, style]) => [name, resolveFontStyle(style)])),
       };
     })() : null,
-  ]),
-);
+  ]));
+  const serializedType = CARD_TEXT_DESIGN.fontGroups?.[group]?.imgTagFontType;
+  const imgTagFontType = resolveOfficialImgTagFontType(serializedType, group);
+  Object.defineProperty(table, "imgTagFontType", {
+    value: imgTagFontType,
+    enumerable: false,
+  });
+  return table;
+};
 
 // recipe manifest for a card (per-card if present else per-type default) — used to tell full-art from windowed.
-function recipeFor(illId) {
-  const per = `${illId}_render_full.json`;
-  if (illId && existsSync(join(OUTDIR, per))) return per;
-  return /^cTR/.test(illId || "") ? "tr_render_full.json" : "card_render_full.json";
+function officialTextDesign(cardId, illId) {
+  if (!illId) {
+    throw new Error(`official CardSettings illustration id is required for ${cardId}`);
+  }
+  const card = CARD_TEXT_DESIGN.cards?.[illId];
+  if (!card) {
+    throw new Error(
+      `official CardSettings is unavailable for ${illId}; `
+      + "the selected official Face snapshot cannot prove this card's text design",
+    );
+  }
+  if (card.id !== cardId) {
+    throw new Error(
+      `official CardSettings ${illId} belongs to ${card.id}, not ${cardId}`,
+    );
+  }
+  const design = CARD_TEXT_DESIGN.designs?.[card.design];
+  if (!design) throw new Error(`official CardDesignSettings ${card.design} is absent`);
+  if (!CARD_FONT.groups?.[card.fontGroup]) {
+    throw new Error(
+      `official FontGroupSettings ${card.fontGroup} for ${illId} is absent`,
+    );
+  }
+  return {
+    card,
+    design,
+    fontGroup: card.fontGroup,
+    dynamicUIProgram: design.dynamicUIs,
+    dynamicUI: Object.fromEntries(
+      design.dynamicUIs.map((entry) => [entry.label, entry.target]),
+    ),
+  };
 }
-// full-art = the card composites text OVER the illustration (has L_*_Full_* layers, no _Window_ image). That
-// selects the "OverNumber" FontGroup (white outline); a windowed layout selects "Normal" (plain).
-function trainerFontGroup(illId) {
-  try {
-    const full = JSON.parse(readFileSync(join(OUTDIR, recipeFor(illId)), "utf8"));
-    const windowed = full.layers.some((l) => /_Window_/.test(l.go || "") || /Window/.test(l.material || ""));
-    return windowed ? "Trainers_Normal" : "Trainers_OverNumber";
-  } catch { return "Trainers_OverNumber"; }
+
+export function replayDynamicUIHierarchy(root, dynamicUIProgram = []) {
+  const entries = [];
+  function collect(node, parent = null) {
+    const path = `${parent?.path || ""}/${node.go}`;
+    const hierarchyOrder = entries.length;
+    const entry = {
+      node,
+      identity: `node:${hierarchyOrder}`,
+      path,
+      hierarchyOrder,
+      parentIdentity: parent?.identity || null,
+      parentHierarchyOrder: parent?.hierarchyOrder ?? null,
+    };
+    entries.push(entry);
+    for (const child of node.children || []) collect(child, entry);
+  }
+  collect(root);
+
+  const entriesByPath = new Map();
+  for (const entry of entries) {
+    const matches = entriesByPath.get(entry.path) || [];
+    matches.push(entry);
+    entriesByPath.set(entry.path, matches);
+  }
+  const controlledIdentities = new Set();
+  const groups = [];
+  const operations = [];
+  for (const [programIndex, program] of dynamicUIProgram.entries()) {
+    const controllerPath = program?.controller?.path;
+    if (!controllerPath) throw new Error("DynamicUI controller path is missing");
+    const controllers = entriesByPath.get(controllerPath) || [];
+    if (controllers.length !== 1) {
+      throw new Error(
+        `DynamicUI controller ${controllerPath} resolved to ${controllers.length} hierarchy nodes`,
+      );
+    }
+    const controller = controllers[0];
+    const candidates = entries
+      .filter((entry) => entry.parentIdentity === controller.identity)
+      .sort((left, right) => (
+        left.node.siblingIndex - right.node.siblingIndex
+        || left.hierarchyOrder - right.hierarchyOrder
+      ));
+    if (!candidates.length) {
+      throw new Error(`DynamicUI controller ${controllerPath} has no direct children`);
+    }
+    const targetPath = program.target?.path || null;
+    const targets = targetPath
+      ? candidates.filter((entry) => entry.path === targetPath)
+      : [];
+    if (targetPath && targets.length !== 1) {
+      throw new Error(
+        `DynamicUI target ${targetPath} resolved to ${targets.length} direct children of ${controllerPath}`,
+      );
+    }
+    const targetIdentity = targets[0]?.identity || null;
+    const operationIndices = [];
+    for (const candidate of candidates) {
+      controlledIdentities.add(candidate.identity);
+      operationIndices.push(operations.length);
+      operations.push({
+        opcode: "SetActive",
+        target: candidate.identity,
+        value: candidate.identity === targetIdentity,
+      });
+    }
+    groups.push({
+      programIndex,
+      label: program.label,
+      controllerPath,
+      targetPath,
+      candidates,
+      operationIndices,
+    });
+  }
+
+  const replay = replayUGUIState({
+    schema: UGUI_STATE_REPLAY_SCHEMA,
+    sprites: [],
+    nodes: entries.map((entry) => ({
+      identity: entry.identity,
+      parent: entry.parentIdentity,
+      siblingIndex: Number(entry.node.siblingIndex),
+      initialActive: Boolean(entry.node.active),
+      rectTransform: {
+        localRotation: entry.node.rotation,
+        localScale: [
+          Number(entry.node.scale[0]),
+          Number(entry.node.scale[1]),
+          Number(entry.node.scale[2] ?? 1),
+        ],
+      },
+      components: [],
+    })),
+    operations,
+  });
+  const stateByIdentity = new Map(
+    replay.hierarchy.map((state) => [state.identity, state]),
+  );
+  return {
+    entries,
+    groups,
+    controlledIdentities,
+    replay,
+    stateByIdentity,
+  };
 }
 
 // UGUI RectTransform → normalised box {l,r,t,b}∈[0,1] AND the node's real TMP style, carried together so the
 // composer is fully DATA-DRIVEN (fs/align/colour/autosize/wrap from the prefab, never guessed). Math = build_face.py:91-109.
-function resolveBoxes(root) {
+export function resolveBoxes(root, dynamicUIProgram = []) {
   const out = {};
   const entries = [];
+  const runtimeActiveByGameObjectId = new Map();
+  const activeOverrides = new Map();
+  const hierarchyReplay = replayDynamicUIHierarchy(root, dynamicUIProgram);
   let hierarchyOrder = 0;
   function walk(n, P) {
     const aL = P.L + n.aMin[0] * P.w, aR = P.L + n.aMax[0] * P.w;
@@ -225,20 +415,43 @@ function resolveBoxes(root) {
     const w = (aR - aL) + n.size[0], h = (aT - aB) + n.size[1];
     const pivX = aL + n.piv[0] * (aR - aL) + n.pos[0], pivY = aB + n.piv[1] * (aT - aB) + n.pos[1];
     const L = pivX - n.piv[0] * w, B = pivY - n.piv[1] * h;
-    const activeInHierarchy = P.activeInHierarchy !== false && n.active;
+    const uiTransform = rectTransformUiAffine({
+      pivot: [pivX, pivY],
+      rotation: n.rotation,
+      scale: n.scale,
+    }, P.uiTransform || IDENTITY_UI_AFFINE);
+    const nodePath = (P.path || "") + "/" + n.go;
+    const replayIdentity = `node:${hierarchyOrder}`;
+    const replayState = hierarchyReplay.stateByIdentity.get(replayIdentity);
+    if (!replayState) throw new Error(`UGUI replay lost hierarchy node ${replayIdentity}`);
+    const runtimeGameObjectActive = replayState.selfActive;
+    const activeInHierarchy = replayState.effectiveActive;
     const node = {
       go: n.go,
+      unityLayer: n.unityLayer,
+      gameObjectId: n.gameObjectId,
+      gameObjectObjectSha256: n.gameObjectObjectSha256,
+      rectTransformId: n.rectTransformId,
+      rectTransformObjectSha256: n.rectTransformObjectSha256,
+      tmpId: n.tmpId,
       L, R: L + w, B, T: B + h, w, h,
       style: n.style,
       tagFontSizes: n.tagFontSizes,
       image: n.image,
       canvasRenderer: n.canvasRenderer,
       prefabGameObjectActive: n.active,
-      prefabActiveInHierarchy: activeInHierarchy,
+      prefabActiveInHierarchy: P.prefabActiveInHierarchy !== false && n.active,
+      runtimeGameObjectActive,
+      dynamicUIControlled: hierarchyReplay.controlledIdentities.has(replayIdentity),
       hierarchyOrder: hierarchyOrder++,
       activeInHierarchy,
+      uiTransform,
     };
-    node.path = (P.path || "") + "/" + n.go;
+    node.path = nodePath;
+    runtimeActiveByGameObjectId.set(
+      String(n.gameObjectId),
+      runtimeGameObjectActive,
+    );
     entries.push(node);
     out[n.go] = out[n.go] || node;             // first (highest) wins for duplicate names
     for (const c of (n.children || [])) walk(c, node);
@@ -254,19 +467,85 @@ function resolveBoxes(root) {
   const nodeByPrefix = (prefix) => { const g = Object.keys(out).find((k) => k.startsWith(prefix)); return g ? node(g) : null; };
   const fromEntry = (n) => n ? {
     go: n.go,
+    layoutNodeId: n.gameObjectId,
+    gameObjectObjectSha256: n.gameObjectObjectSha256,
+    rectTransformId: n.rectTransformId,
+    rectTransformObjectSha256: n.rectTransformObjectSha256,
+    tmpComponentId: n.tmpId,
     path: n.path,
+    unityLayer: n.unityLayer,
     box: box(n),
     style: n.style,
     tagFontSizes: n.tagFontSizes,
     uiImage: compactOfficialUIImageState(n.image, n.canvasRenderer, n),
+    uiTransform: n.uiTransform,
     prefabGameObjectActive: n.prefabGameObjectActive,
     prefabActiveInHierarchy: n.prefabActiveInHierarchy,
+    runtimeGameObjectActive: n.runtimeGameObjectActive,
+    activeInHierarchy: n.activeInHierarchy,
+    dynamicUIControlled: n.dynamicUIControlled,
     hierarchyOrder: n.hierarchyOrder,
   } : null;
   const nodeByPath = (suffix) => fromEntry(entries.find((n) => n.path.endsWith(suffix)));
   const nodesByPath = (suffix) => entries.filter((n) => n.path.endsWith(suffix)).map(fromEntry);
   const nodeByPrefixPath = (prefix) => fromEntry(entries.find((n) => n.path.split("/").pop().startsWith(prefix)));
-  return { node, nodeByPrefix, nodeByPath, nodesByPath, nodeByPrefixPath, CW, CH };
+  const setActive = (target, value) => {
+    if (!target?.layoutNodeId) {
+      throw new Error("official layout active override target is absent");
+    }
+    activeOverrides.set(String(target.layoutNodeId), Boolean(value));
+  };
+  const setActiveCount = (targets, count) => {
+    const enabledCount = Math.max(0, Math.min(Number(count) || 0, targets.length));
+    targets.forEach((target, index) => setActive(target, index < enabledCount));
+  };
+  const dynamicUIState = hierarchyReplay.groups.map((group) => ({
+    label: group.label,
+    controllerPath: group.controllerPath,
+    targetPath: group.targetPath,
+    operationIndices: group.operationIndices,
+    candidates: group.candidates.map((candidate) => {
+      const state = hierarchyReplay.stateByIdentity.get(candidate.identity);
+      return {
+        path: candidate.path,
+        hierarchyOrder: candidate.hierarchyOrder,
+        active: state.selfActive,
+        effectiveActive: state.effectiveActive,
+      };
+    }),
+  }));
+  const dynamicUIReplay = {
+    schema: hierarchyReplay.replay.schema,
+    operationCount: hierarchyReplay.replay.appliedOperations.length,
+    appliedOperations: hierarchyReplay.replay.appliedOperations.map((operation) => {
+      const target = hierarchyReplay.entries.find(
+        (entry) => entry.identity === operation.target,
+      );
+      return {
+        operationIndex: operation.operationIndex,
+        opcode: operation.opcode,
+        targetPath: target.path,
+        targetHierarchyOrder: target.hierarchyOrder,
+        value: operation.value,
+      };
+    }),
+  };
+  return {
+    node,
+    nodeByPrefix,
+    nodeByPath,
+    nodesByPath,
+    nodeByPrefixPath,
+    dynamicUIState,
+    dynamicUIReplay,
+    root,
+    runtimeActiveByGameObjectId,
+    activeOverrides,
+    setActive,
+    setActiveCount,
+    CW,
+    CH,
+  };
 }
 
 // a localized label SPRITE (Supporter / Trainer …) drawn as an icon at its real prefab box. `prefix` = sprite-file
@@ -286,9 +565,16 @@ function officialIcon(nodeObj, url, fallbackFit = "contain", extra = {}) {
   const element = {
     kind: "icon",
     box: nodeObj.box,
+    layoutNodeId: nodeObj.layoutNodeId,
+    gameObjectObjectSha256: nodeObj.gameObjectObjectSha256,
+    rectTransformId: nodeObj.rectTransformId,
+    rectTransformObjectSha256: nodeObj.rectTransformObjectSha256,
     fit: fallbackFit,
     url,
     layoutPath: nodeObj.path,
+    unityLayer: nodeObj.unityLayer,
+    uiTransform: nodeObj.uiTransform,
+    hierarchyOrder: nodeObj.hierarchyOrder,
     ...extra,
   };
   if (nodeObj.uiImage) {
@@ -357,6 +643,34 @@ function inlineElementSprites(text, fontStyle, color) {
   return sprites;
 }
 
+function inlineExSpriteBinding(nodeObj, fontType) {
+  const spriteIndex = TMP_SPRITE.preprocessor.fontTypeToSpriteIndex[fontType];
+  if (!Number.isInteger(spriteIndex)) {
+    throw new Error(`official TMP EX sprite has no FontType ${fontType}`);
+  }
+  const spriteCharacter = TMP_SPRITE.spriteAsset.characters.find(
+    (entry) => entry.glyphIndex === spriteIndex,
+  );
+  if (!spriteCharacter) {
+    throw new Error(`official TMP EX sprite index ${spriteIndex} is absent`);
+  }
+  return {
+    spriteAssetId: TMP_SPRITE.spriteAsset.pathId,
+    materialId: TMP_SPRITE.material.pathId,
+    textureId: TMP_SPRITE.texture.pathId,
+    textureUrl: TMP_SPRITE.texture.url,
+    spriteIndex,
+    characterName: spriteCharacter.name,
+    fontType,
+    fontSize: Number(
+      nodeObj?.tagFontSizes?.ex
+        || TMP_SPRITE.preprocessor.defaultFontSize,
+    ),
+    tagSizePathId: nodeObj?.tagFontSizes?.pathId || null,
+    tagSizeObjectSha256: nodeObj?.tagFontSizes?.objectSha256 || null,
+  };
+}
+
 function energyOutline(nodeObj, fit = "contain", extra = {}) {
   return publicIcon(nodeObj, `${POKEMON_UI8}/card_icn_attribute_outline.png`, fit, extra);
 }
@@ -421,7 +735,12 @@ function pokemonAbilityElements(layout, ability, lc, ol) {
     { sprite: `card_plate_ability_txt_${spriteSuffix}`, abilityPlate: "locale" },
   );
   const name = textEl(layout.nodeByPath(`${root}/ability_name_elm/ability_name_txt`), ability.name, ol);
-  const desc = textEl(layout.nodeByPath(`${root}/ability_description_txt`), ability.desc, ol);
+  const desc = textEl(
+    layout.nodeByPath(`${root}/ability_description_txt`),
+    ability.desc || "",
+    ol,
+    { allowEmpty: true },
+  );
   if (base) els.push(base);
   if (localized) els.push(localized);
   if (name) els.push(name);
@@ -429,13 +748,16 @@ function pokemonAbilityElements(layout, ability, lc, ol) {
   return els;
 }
 
-function boxFromLeft(proto, left, width, gap, index) {
-  const l = left + index * (width + gap);
-  return { ...proto.box, l: +l.toFixed(4), r: +(l + width).toFixed(4) };
-}
-
 function nameWithoutEx(name, isEX) {
   return isEX ? String(name || "").replace(/\s*ex$/i, "") : name;
+}
+
+function pokemonNameLayoutPath(cardData) {
+  if (cardData.isMega) return "/PokemonCardUI/mega_name_elm/card_name_txt";
+  const nodeName = /\r\n|\r|\n/.test(String(cardData.name || ""))
+    ? "card_name_two_line_txt"
+    : "card_name_txt";
+  return `/PokemonCardUI/name_elm/${nodeName}`;
 }
 
 function prefabTree(name) {
@@ -447,12 +769,21 @@ function prefabTree(name) {
 // Build a text draw-op from a resolved node + string — fs/align/colour/autosize/wrap ALL from the node's real
 // prefab TMP style (build_face.py parity). White placeholder colour → the real dark face colour. Returns null
 // if the node/string is missing, so callers can .filter(Boolean).
-function textEl(node, text, outlineTbl) {
-  if (!node || !node.style || text == null || text === "") return null;
+function textEl(node, text, outlineTbl, { allowEmpty = false } = {}) {
+  if (!node || !node.style || text == null || (!allowEmpty && text === "")) return null;
   const s = node.style;
   let color = s.color.slice();
   if (color[0] > 0.9 && color[1] > 0.9 && color[2] > 0.9) color = [...DARK, color[3] ?? 1];
-  const el = { kind: "text", text, box: node.box, layoutPath: node.path, font: fontRole(node.go),
+  const el = { kind: "text", text, box: node.box,
+               layoutNodeId: node.layoutNodeId,
+               tmpComponentId: node.tmpComponentId,
+               gameObjectObjectSha256: node.gameObjectObjectSha256,
+               rectTransformId: node.rectTransformId,
+               rectTransformObjectSha256: node.rectTransformObjectSha256,
+               layoutPath: node.path, unityLayer: node.unityLayer,
+               uiTransform: node.uiTransform,
+               hierarchyOrder: node.hierarchyOrder,
+               font: fontRole(node.go),
                fs: s.fs, fsbase: s.fsbase, fsmin: s.fsmin, fsmax: s.fsmax,
                align: ALIGN[s.align] || "left", valign: VALIGN[s.valign] || "middle",
                horizontalAlignment: s.align, verticalAlignment: s.valign,
@@ -471,6 +802,9 @@ function textEl(node, text, outlineTbl) {
   el.sdf = sdfContract(fontStyle);
   const inlineSprites = inlineElementSprites(text, fontStyle, color);
   if (Object.keys(inlineSprites).length) el.inlineSprites = inlineSprites;
+  if (String(text).includes("\x03")) {
+    el.inlineEx = inlineExSpriteBinding(node, outlineTbl.imgTagFontType);
+  }
   const boldStyle = fontStyle?.types?.Bold;
   if (boldStyle?.font && boldStyle?.material) {
     el.boldStyle = {
@@ -489,17 +823,24 @@ function textEl(node, text, outlineTbl) {
   return el;
 }
 
-// illustrator credit: box from the width-having parent illustrator_elm, style from the illustrator_name_txt child.
-function illustratorNode(node) {
-  const elm = node("illustrator_elm"), txt = node("illustrator_name_txt") || node("Illustrator_txt");
-  if (elm && txt) return { go: txt.go, path: txt.path, box: elm.box, style: txt.style };
-  return txt || elm;
+function finalizeOfficialLayout(layout, kind, elements) {
+  return resolveOfficialCardLayout({
+    kind,
+    root: layout.root,
+    fitterContract: LAYOUT_FITTERS,
+    elements,
+    fonts: TMP_FONTS,
+    spriteContract: TMP_SPRITE,
+    runtimeActiveByGameObjectId: layout.runtimeActiveByGameObjectId,
+    activeOverrides: layout.activeOverrides,
+  });
 }
 
 function pokemonAttackElements(layout, attack, basePath, ol) {
   const { nodeByPath, nodesByPath } = layout;
   const els = [];
   const energyNodes = nodesByPath(`${basePath}/SkillName/PokemonCardFaceEnergyContainerView/CardEnergyIconView`);
+  layout.setActiveCount(energyNodes, (attack.cost || []).length);
   (attack.cost || []).slice(0, energyNodes.length).forEach((type, i) => {
     const outline = energyOutline(energyNodes[i]);
     const icon = energyIcon(energyNodes[i], type);
@@ -508,12 +849,18 @@ function pokemonAttackElements(layout, attack, basePath, ol) {
   });
   const name = textEl(nodeByPath(`${basePath}/SkillName/skill_name_txt`), attack.name, ol);
   if (name) { name.font = "name"; name.autosize = true; name.fsmin = name.fsmin || name.fs * 0.1; els.push(name); }
-  const damage = attack.damage ? textEl(nodeByPath(`${basePath}/SkillName/damage_num_elm/damage_txt`), String(attack.damage), ol) : null;
+  const damage = textEl(
+    nodeByPath(`${basePath}/SkillName/damage_num_elm/damage_txt`),
+    attack.damage ? String(attack.damage) : "",
+    ol,
+    { allowEmpty: true },
+  );
   if (damage) { damage.font = "num"; els.push(damage); }
   const symbol = textEl(
     nodeByPath(`${basePath}/SkillName/damage_num_elm/plus_txt`),
     DAMAGE_SYMBOL[attack.damageSymbol] ?? "",
     ol,
+    { allowEmpty: true },
   );
   if (symbol) {
     symbol.font = "num";
@@ -521,20 +868,28 @@ function pokemonAttackElements(layout, attack, basePath, ol) {
     symbol.evidence = attack.damageSymbol <= 1 ? "exact" : "inferred";
     els.push(symbol);
   }
-  const desc = textEl(nodeByPath(`${basePath}/skill_description_txt`), attack.desc, ol);
+  const desc = textEl(
+    nodeByPath(`${basePath}/skill_description_txt`),
+    attack.desc || "",
+    ol,
+    { allowEmpty: true },
+  );
   if (desc) els.push(desc);
   return els;
 }
 
-function composePokemonFace(cd, lc) {
+function composePokemonFace(cd, lc, officialDesign) {
   const tree = prefabTree("PokemonCardUI");
   if (!tree) throw new Error("PokemonCardUI layout is absent from the official layout contract");
-  const layout = resolveBoxes(tree);
+  const layout = resolveBoxes(tree, officialDesign.dynamicUIProgram);
   const { node, nodeByPath, nodeByPrefixPath, nodesByPath, CW, CH } = layout;
-  const ol = fontTable(lc, cd.isMega ? "Pokemon_Normal_Mega" : "Pokemon_Normal");
+  const ol = fontTable(lc, officialDesign.fontGroup);
   const els = [];
 
-  const topEnergy = energyIcon(node("energy_view"), cd.type);
+  const topEnergyRoot = "/PokemonCardUI/energy_view/CardEnergyIconView";
+  const topEnergyOutline = energyOutline(nodeByPath(`${topEnergyRoot}/Outline`));
+  const topEnergy = energyIcon(nodeByPath(`${topEnergyRoot}/icn_gra_img`), cd.type);
+  if (topEnergyOutline) els.push(topEnergyOutline);
   if (topEnergy) els.push(topEnergy);
   const stagePrefix = STAGE_SPRITE[cd.stage];
   if (stagePrefix) {
@@ -556,41 +911,101 @@ function composePokemonFace(cd, lc) {
     if (sourceText) els.push(sourceText);
   }
   els.push(...categoryElements(layout, cd.additionalCategories, lc, "/PokemonCardUI"));
-  const name = textEl(node("card_name_txt"), nameWithoutEx(cd.name, cd.isEX), ol);
+  const namePath = pokemonNameLayoutPath(cd);
+  const name = textEl(nodeByPath(namePath), nameWithoutEx(cd.name, cd.isEX), ol);
   if (name) {
     name.autosize = true; name.fsmin = name.fsmin || name.fs * 0.1;
     if (cd.isEX) {
-      const nameElm = node("name_elm");
-      name.exAfter = true;
-      name.exH = 55 / CH;
-      name.exAnchorX = nameElm?.box?.l ?? name.box.l;
-      name.exMaxW = 300 / CW;
+      const nameElmPath = cd.isMega
+        ? "/PokemonCardUI/mega_name_elm"
+        : "/PokemonCardUI/name_elm";
+      const exPath = `${nameElmPath}/Ex`;
+      const exVariantPath = `${exPath}/${cd.isMega ? "MegaEX" : "EX"}`;
+      const nameElm = nodeByPath(nameElmPath);
+      const exParent = nodeByPath(exPath);
+      if (!nameElm || !exParent) {
+        throw new Error(`official Pokemon EX hierarchy is absent for ${officialDesign.design.name}`);
+      }
+      name.nameExLayout = {
+        contractId: "PokemonCardNameView.UpdateExLayout",
+        parentPath: exPath,
+        anchorX: nameElm.box.l,
+        authoredParentX: exParent.box.l,
+        maxW: 300 / CW,
+      };
+      const exLayers = [];
+      const exOutlineTarget = officialDesign.dynamicUI.ExOutlineWhite;
+      if (!cd.isMega && exOutlineTarget) {
+        exLayers.push([
+          "white-outline",
+          exOutlineTarget.path,
+          {
+            dynamicUILabel: "ExOutlineWhite",
+            dynamicUIDesign: officialDesign.design.name,
+          },
+        ]);
+      }
+      exLayers.push(
+        ["base", `${exVariantPath}/ImgEx`, {}],
+        ["outline", `${exVariantPath}/ImgExOutline`, {}],
+      );
+      for (const [layer, layoutPath, extra] of exLayers) {
+        const icon = officialPrefabIcon(nodeByPath(layoutPath), "stretch", {
+          ...extra,
+          nameExLayer: layer,
+          nameExOwnerPath: namePath,
+        });
+        if (!icon) {
+          throw new Error(`official Pokemon EX Image is absent at ${layoutPath}`);
+        }
+        els.push(icon);
+      }
     }
     els.push(name);
   }
-  const hpNode = node("hp_elm");
-  if (hpNode && cd.hp) {
-    const hpNumberStyle = textEl(node("hp_num_txt"), String(cd.hp), ol);
-    const hpLabelStyle = textEl(node("hp_txt"), cd.ui.hpLabel || "HP", ol);
-    els.push({
-      kind: "hp", box: hpNode.box, layoutPath: hpNode.path, num: String(cd.hp), label: cd.ui.hpLabel || "HP",
-      numFs: 46, labelFs: 22, font: "num", spacing: 1 / CW, labelCellW: 30 / CW, labelDY: 8, color: DARK,
-      numSdf: hpNumberStyle?.sdf || null,
-      labelSdf: hpLabelStyle?.sdf || null,
-      numVertexColor: hpNumberStyle?.vertexColor || [1, 1, 1, 1],
-      labelVertexColor: hpLabelStyle?.vertexColor || [1, 1, 1, 1],
-    });
+  if (cd.hp) {
+    const hpLabel = textEl(
+      nodeByPath("/PokemonCardUI/hp_elm/hp_txt_elm/hp_txt"),
+      cd.ui.hpLabel || "HP",
+      ol,
+    );
+    const hpNumber = textEl(
+      nodeByPath("/PokemonCardUI/hp_elm/hp_num_txt"),
+      String(cd.hp),
+      ol,
+    );
+    if (hpLabel) els.push(hpLabel);
+    if (hpNumber) {
+      hpNumber.font = "num";
+      els.push(hpNumber);
+    }
   }
 
   const attacks = cd.attacks || [];
   const abilities = cd.abilities || [];
-  if (abilities.length === 1 && attacks.length === 1) {
+  const abilityBranch = nodeByPath(
+    "/PokemonCardUI/PokemonSkillContainerView/PokemonAbilityContainerView",
+  );
+  const oneAttackBranch = nodeByPath(
+    "/PokemonCardUI/PokemonSkillContainerView/PokemonSkillContainerView_01",
+  );
+  const twoAttackBranch = nodeByPath(
+    "/PokemonCardUI/PokemonSkillContainerView/PokemonSkillContainerView_02",
+  );
+  const usesAbilityBranch = abilities.length === 1 && attacks.length === 1;
+  const usesTwoAttackBranch = !usesAbilityBranch && attacks.length >= 2;
+  const usesOneAttackBranch = !usesAbilityBranch && !usesTwoAttackBranch
+    && attacks.length === 1;
+  layout.setActive(abilityBranch, usesAbilityBranch);
+  layout.setActive(oneAttackBranch, usesOneAttackBranch);
+  layout.setActive(twoAttackBranch, usesTwoAttackBranch);
+  if (usesAbilityBranch) {
     els.push(...pokemonAbilityElements(layout, abilities[0], lc, ol));
     els.push(...pokemonAttackElements(layout, attacks[0], "/PokemonCardUI/PokemonSkillContainerView/PokemonAbilityContainerView/PokemonAttackView", ol));
-  } else if (attacks.length >= 2) {
+  } else if (usesTwoAttackBranch) {
     els.push(...pokemonAttackElements(layout, attacks[0], "/PokemonCardUI/PokemonSkillContainerView/PokemonSkillContainerView_02/PokemonAttackView1", ol));
     els.push(...pokemonAttackElements(layout, attacks[1], "/PokemonCardUI/PokemonSkillContainerView/PokemonSkillContainerView_02/PokemonAttackView2", ol));
-  } else if (attacks.length === 1) {
+  } else if (usesOneAttackBranch) {
     els.push(...pokemonAttackElements(layout, attacks[0], "/PokemonCardUI/PokemonSkillContainerView/PokemonSkillContainerView_01/PokemonAttackView", ol));
   }
 
@@ -606,24 +1021,48 @@ function composePokemonFace(cd, lc) {
   const retreatLabel = textEl(nodeByPrefixPath("escape_txt_"), cd.ui.retreatLabel, ol);
   if (retreatLabel) els.push(retreatLabel);
   const retreatNodes = nodesByPath("/PokemonCardUI/PokemonEscapeView/Attributes/CardEnergyIconView");
-  const retreatProto = retreatNodes[0];
-  const retreatWidth = retreatProto ? retreatProto.box.r - retreatProto.box.l : 0;
-  const retreatLeft = retreatProto ? (retreatProto.box.l + retreatProto.box.r) / 2 : 0;
+  layout.setActiveCount(retreatNodes, cd.retreat || 0);
   for (let i = 0; i < Math.min(cd.retreat || 0, retreatNodes.length); i++) {
-    const iconNode = retreatProto ? { ...retreatProto, box: boxFromLeft(retreatProto, retreatLeft, retreatWidth, 1 / CW, i) } : retreatNodes[i];
-    const icon = energyIcon(iconNode, "Colorless");
+    const icon = energyIcon(retreatNodes[i], "Colorless");
     if (icon) els.push(icon);
   }
 
-  const ill = textEl(illustratorNode(node), cd.illustrator ? `Illus. ${cd.illustrator}` : "", ol);
-  if (ill) els.push(ill);
+  if (!cd.isMega) {
+    const flavor = textEl(
+      nodeByPath("/PokemonCardUI/library_flavor_txt"),
+      cd.flavor,
+      ol,
+    );
+    if (flavor) els.push(flavor);
+  }
+
+  if (cd.illustrator) {
+    const illustratorLabel = textEl(
+      nodeByPath(
+        "/PokemonCardUI/CollectionView/illustrator_elm/illust_width_elm/Illustrator_txt",
+      ),
+      "Illus.",
+      ol,
+    );
+    const illustratorName = textEl(
+      nodeByPath(
+        "/PokemonCardUI/CollectionView/illustrator_elm/name_width_elm/illustrator_name_txt",
+      ),
+      cd.illustrator,
+      ol,
+    );
+    if (illustratorLabel) els.push(illustratorLabel);
+    if (illustratorName) els.push(illustratorName);
+  }
 
   if (cd.isEX) {
     const root = cd.isMega ? "/PokemonCardUI/PokemoMegaExRuleView" : "/PokemonCardUI/PokemonExRuleView";
     const shadow = publicIcon(nodeByPath(`${root}/frm_bg_shadow`), `${POKEMON_UI5}/card_pla_rule_bg_shadow.png`, "stretch", { sprite: "card_pla_rule_bg_shadow" });
     const bg = publicIcon(nodeByPath(`${root}/frm_bg`), `${POKEMON_UI5}/card_pla_rule_bg.png`, "stretch", { sprite: "card_pla_rule_bg" });
+    const titleBg = publicIcon(nodeByPath(`${root}/frm`), `${POKEMON_UI5}/card_pla_rule_txt_bg.png`, "stretch", { sprite: "card_pla_rule_txt_bg" });
     if (shadow) els.push(shadow);
     if (bg) els.push(bg);
+    if (titleBg) els.push(titleBg);
     const ruleSuffix = EX_RULE_NODE_SUF[lc] || "en";
     const ttl = pokemonUiSprite(
       nodeByPath(`${root}/ex_rule_ttl_txt/ex_rule_ttl_txt_${ruleSuffix}`),
@@ -633,56 +1072,70 @@ function composePokemonFace(cd, lc) {
       { sprite: "card_pla_rule_txt" },
     );
     if (ttl) els.push(ttl);
-    const body = textEl(nodeByPath(`${root}/ex_rule_description_txt_02`), cd.ui.exRuleBody, ol);
+    const bodyNode = nodeByPath(
+      `${root}/${cd.isMega ? "ex_rule_description_txt_02" : "ex_rule_description_txt_01"}`,
+    );
+    const body = textEl(bodyNode, cd.ui.exRuleBody, ol);
     if (body) {
       const fontType = cd.isMega
         ? TMP_SPRITE.preprocessor.pokemonRuleSelection.megaEx
         : TMP_SPRITE.preprocessor.pokemonRuleSelection.normalEx;
-      const spriteIndex = TMP_SPRITE.preprocessor.fontTypeToSpriteIndex[fontType];
-      const spriteCharacter = TMP_SPRITE.spriteAsset.characters.find((entry) => entry.glyphIndex === spriteIndex);
-      body.inlineEx = {
-        spriteAssetId: TMP_SPRITE.spriteAsset.pathId,
-        materialId: TMP_SPRITE.material.pathId,
-        textureId: TMP_SPRITE.texture.pathId,
-        textureUrl: TMP_SPRITE.texture.url,
-        spriteIndex,
-        characterName: spriteCharacter.name,
-        fontType,
-        fontSize: Number(nodeByPath(`${root}/ex_rule_description_txt_02`).tagFontSizes?.ex
-          ?? TMP_SPRITE.preprocessor.defaultFontSize),
-        tagSizePathId: nodeByPath(`${root}/ex_rule_description_txt_02`).tagFontSizes?.pathId || null,
-        tagSizeObjectSha256: nodeByPath(`${root}/ex_rule_description_txt_02`).tagFontSizes?.objectSha256 || null,
-      };
+      body.inlineEx = inlineExSpriteBinding(bodyNode, fontType);
       body.indent = (cd.ui.exRuleIndent || 0) / CW;
-      body.fsmin = Math.max(body.fsmin || 0, 8);
+      body.layoutIndent = Number(cd.ui.exRuleIndent || 0);
+      if (!cd.isMega) {
+        // PokemonCardRuleView switches the normal EX body from the authored compact
+        // placeholder size to the TMP base size, then lets TMP wrap and shrink it.
+        body.fs = body.fsbase;
+        body.fsmax = body.fsbase;
+        body.fsmin = body.fsbase / 2;
+        body.wrap = true;
+        body.autosize = true;
+      }
       els.push(body);
     }
   }
 
-  return { card: cd.cardId, locale: lc, kind: "pokemon", fontGroup: cd.isMega ? "Pokemon_Normal_Mega" : "Pokemon_Normal",
-           canvasWH: [Math.round(CW), Math.round(CH)], elements: els };
+  const resolvedLayout = finalizeOfficialLayout(layout, "pokemon", els);
+  return {
+    card: cd.cardId,
+    locale: lc,
+    kind: "pokemon",
+    design: officialDesign.design.name,
+    fontCondition: officialDesign.card.fontCondition,
+    fontGroup: officialDesign.fontGroup,
+    branchEvidence: "official-card-design-settings",
+    dynamicUI: officialDesign.dynamicUI,
+    dynamicUIState: layout.dynamicUIState,
+    dynamicUIReplay: layout.dynamicUIReplay,
+    layoutRuntime: resolvedLayout.diagnostics,
+    canvasWH: [Math.round(CW), Math.round(CH)],
+    elements: resolvedLayout.elements,
+  };
 }
 
 export function composeFace(cardId, lc = "zh_TW", illId = "") {
   const cd = buildCardData(cardId, lc);
+  const officialDesign = officialTextDesign(cardId, illId);
 
   if (cd.kind === "trainer") {
     const tree = prefabTree("TrainersCardUI");
     if (!tree) throw new Error("TrainersCardUI layout is absent from the official layout contract");
-    const layout = resolveBoxes(tree);
-    const { node, nodeByPath, CW, CH } = layout;
+    const layout = resolveBoxes(tree, officialDesign.dynamicUIProgram);
+    const { nodeByPath, CW, CH } = layout;
     const type = TRAINER_TYPE[cd.trainerType];
     if (!type) throw new Error(`unsupported TrainerType ${cd.trainerType}`);
 
-    const baseFontGroup = trainerFontGroup(illId);
-    const hasParadoxCategory = (cd.additionalCategories || []).some((category) => category === 2 || category === 3);
-    const fontGroup = baseFontGroup === "Trainers_Normal" && hasParadoxCategory
-      ? "Trainers_Normal_Paradox"
-      : baseFontGroup;
+    const fontGroup = officialDesign.fontGroup;
     const ol = fontTable(lc, fontGroup);
-    const isHolo = Number(cd.rarity) >= 700;
-    const typeBranch = isHolo ? "card_type_holo" : "card_type_normal";
-    const titleBranch = isHolo ? "normal_ttl_holo" : "normal_ttl_normal";
+    const typeBranch = officialDesign.dynamicUI.CardType?.name;
+    const titleBranch = officialDesign.dynamicUI.Title?.name;
+    if (!typeBranch || !titleBranch) {
+      throw new Error(
+        `official CardDesignSettings ${officialDesign.design.name} `
+        + "does not select Trainer Title/CardType DynamicUI targets",
+      );
+    }
     const trainerSuffix = TRAINER_NODE_SUF[lc] || "en_id";
     const labelSuffix = cd.trainerType === 5 ? CATEGORY_NODE_SUF[lc] || "en" : trainerSuffix;
     const typeLabelPath = `/TrainersCardUI/Base/card_frm_elm/cmn_card_type_txt_elm/${typeBranch}/${type.label}_${labelSuffix}`;
@@ -695,10 +1148,31 @@ export function composeFace(cardId, lc = "zh_TW", illId = "") {
       labelIcon(nodeByPath(typeLabelPath), type.sprite, lc),
       labelIcon(nodeByPath(categoryLabelPath), "card_fra_trainers_top_txt_nor", lc),
       textEl(nodeByPath(`/TrainersCardUI/CollectionView/${type.name}`), cd.name, ol),
-      type.sub ? textEl(nodeByPath(`/TrainersCardUI/CollectionView/${type.sub}`), cd.rightEndDisplayName, ol) : null,
+      type.sub
+        ? textEl(
+          nodeByPath(`/TrainersCardUI/CollectionView/${type.sub}`),
+          cd.rightEndDisplayName || "",
+          ol,
+          { allowEmpty: true },
+        )
+        : null,
       textEl(nodeByPath("/TrainersCardUI/description_txt"), cd.rule, ol),
       textEl(footerNode, cd.ui.footer, ol),
-      textEl(illustratorNode(node), cd.illustrator ? `Illus. ${cd.illustrator}` : "", ol),
+      textEl(
+        nodeByPath(
+          "/TrainersCardUI/CollectionView/illustrator_elm/illust_width_elm/Illustrator_txt",
+        ),
+        "Illus.",
+        ol,
+      ),
+      textEl(
+        nodeByPath(
+          "/TrainersCardUI/CollectionView/illustrator_elm/name_width_elm/illustrator_name_txt",
+        ),
+        cd.illustrator || "",
+        ol,
+        { allowEmpty: true },
+      ),
     ].filter(Boolean);
 
     if (cd.trainerType === 4 && cd.fossilHp) {
@@ -709,14 +1183,27 @@ export function composeFace(cardId, lc = "zh_TW", illId = "") {
     }
     els.push(...categoryElements(layout, cd.additionalCategories, lc, "/TrainersCardUI"));
 
-    return { card: cardId, locale: lc, kind: "trainer", fontGroup,
-             branchEvidence: "rarity-derived",
-             canvasWH: [Math.round(CW), Math.round(CH)], elements: els };
+    const resolvedLayout = finalizeOfficialLayout(layout, "trainer", els);
+    return {
+      card: cardId,
+      locale: lc,
+      kind: "trainer",
+      design: officialDesign.design.name,
+      fontCondition: officialDesign.card.fontCondition,
+      fontGroup,
+      branchEvidence: "official-card-design-settings",
+      dynamicUI: officialDesign.dynamicUI,
+      dynamicUIState: layout.dynamicUIState,
+      dynamicUIReplay: layout.dynamicUIReplay,
+      layoutRuntime: resolvedLayout.diagnostics,
+      canvasWH: [Math.round(CW), Math.round(CH)],
+      elements: resolvedLayout.elements,
+    };
   }
 
   // pokemon: reuse the existing static card_face for now (the Pokémon path already works); the generic
   // pokemon composer (name/hp/attacks boxes from PokemonCardUI) is the next iteration.
-  return composePokemonFace(cd, lc);
+  return composePokemonFace(cd, lc, officialDesign);
 }
 
 if (process.argv[1] && process.argv[1].endsWith("compose.mjs")) {

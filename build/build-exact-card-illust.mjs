@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import {
   canonicalJsonSha256,
   compileCommonBindings,
+  compileOfficialVertexInputContract,
   compileOfficialPassContract,
   compileProgramBindings,
   joinProgramSamplerBindings,
@@ -14,6 +15,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -128,6 +130,15 @@ await withExtractedSelectorProgram({
   const fragment = adaptFragment(officialFragment);
   const commonBindings = compileCommonBindings(metadata.commonBindings);
   const programBindings = compileProgramBindings(commonBindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
   const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
     return row;
@@ -136,13 +147,38 @@ await withExtractedSelectorProgram({
     { slot: "_MainTex", spirvName: "_13", binding: 0 },
   ], "sampler bindings");
 
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Card_Illust",
+    attributes: { position: "vec3", uv: "vec2", uv1: "vec2" },
+    engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
+    material_uniforms: { floats: [], ints: ["_UseUv"], vectors: {} },
+    require_complete_active_bindings: true,
+    camera_from_view: false,
+    mrt_attachments: 2,
+    stencil_face_mode: "generic",
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(files.vertexSpirv),
       spirvCrossGlslSha256: sha256(officialVertex),
       outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "map official position/UV0/UV1 locations to Three.js attributes",
         "unity_ObjectToWorld := three.modelMatrix and unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
@@ -153,16 +189,24 @@ await withExtractedSelectorProgram({
       officialSpirvSha256: sha256File(files.fragmentSpirv),
       spirvCrossGlslSha256: sha256(officialFragment),
       outputSha256: sha256(fragment),
+      operations: [{
+        kind: "glsl-version-ownership",
+        owner: "three-raw-shader-material",
+      }],
       substitutions: ["remove the embedded GLSL version directive for Three.js RawShaderMaterial injection"],
     },
     interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const manifest = {
     shader: "Lettuce/Common/CardNew/Face/Card_Illust",
     generated_by: "build/build-exact-card-illust.mjs",
     selected_keywords: [],
     official_selector: metadata.selector,
     official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+    official_spirv_precision: metadata.officialSpirvPrecision,
     official_executable_identity: metadata.identityFields,
     official_parameter_entry: {
       source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -175,28 +219,15 @@ await withExtractedSelectorProgram({
       policy: PASS_POLICY,
     }),
     official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
-    official_program_bindings: {
-      common_source_sha256: metadata.identityFields.commonBindingsSha256,
-      parameter_reflection_sha256: metadata.parameterReflectionSha256,
-      ...programBindings,
-    },
+    official_program_bindings: manifestProgramBindings,
+    official_vertex_inputs: vertexInputContract,
     official_shader_property_defaults: metadata.shaderPropertyDefaults,
     webgl_adaptation: adaptation,
     webgl_sources: {
       vertex: "public/shaders/card_illust.vert.glsl",
       fragment: "public/shaders/card_illust.frag.glsl",
     },
-    runtime_contract: {
-      schema: "pocket-card-render/webgl-runtime-port@1",
-      shader_key: "Card_Illust",
-      attributes: { position: "vec3", uv: "vec2", uv1: "vec2" },
-      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
-      material_uniforms: { floats: [], ints: ["_UseUv"], vectors: {} },
-      require_complete_active_bindings: true,
-      camera_from_view: false,
-      mrt_attachments: 2,
-      stencil_face_mode: "generic",
-    },
+    runtime_contract: runtimeContract,
     sampler_bindings: samplerBindings,
     samplers: samplerBindings.map((row) => row.spirvName),
     sampler_slots: samplerBindings.map((row) => row.slot),

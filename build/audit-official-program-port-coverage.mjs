@@ -13,6 +13,7 @@ import {
   preloadOfficialProgramExtractions,
   verify as verifyOfficialPortField,
 } from "./official-port-verifier-lib.mjs";
+import { auditFullRuntimeEvidence } from "./audit-full-runtime-evidence.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const INVENTORY = path.resolve(process.env.PCR_MATERIAL_PROGRAM_INVENTORY
@@ -197,6 +198,8 @@ const fieldVerdicts = Object.fromEntries(FIELDS.map((field) => [field, Object.fr
   [...VERDICTS].map((verdict) => [verdict, [...verificationResults.values()]
     .filter((result) => result[field].verdict === verdict).length]),
 )]));
+const runtimeEvidence = auditFullRuntimeEvidence(FULL_RUNTIME);
+const freshRuntimeEvidence = runtimeEvidence.status === "pass";
 
 const summary = {
   officialSemanticExecutables: inventory.summary.semanticExecutableArchetypes,
@@ -231,13 +234,26 @@ const expectedSummary = {
   stageBoundMaterialSlotUsages: 50501,
   completeExecutableClosures: 0,
   verifierChecks: 205,
-  exactFieldObligations: 41,
+  exactFieldObligations: freshRuntimeEvidence ? 125 : 41,
   selectorExtractionBatches: 1,
   selectorExtractionInventoryLoads: 1,
   selectorExtractions: 41,
   generatorChecks: GENERATORS_EXTERNALLY_VERIFIED ? 0 : 27,
   runtimeVariantOnlyManifests: 1,
   unmatchedContractRows: 0,
+};
+const expectedFieldVerdicts = freshRuntimeEvidence ? {
+  stageProgram: { exact: 0, "source-hash-bound": 41, "runtime-required": 0, unproved: 0 },
+  parameterEntry: { exact: 41, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
+  passState: { exact: 28, "source-hash-bound": 0, "runtime-required": 13, unproved: 0 },
+  commonBindings: { exact: 27, "source-hash-bound": 0, "runtime-required": 14, unproved: 0 },
+  runtimeDispatch: { exact: 29, "source-hash-bound": 0, "runtime-required": 12, unproved: 0 },
+} : {
+  stageProgram: { exact: 0, "source-hash-bound": 41, "runtime-required": 0, unproved: 0 },
+  parameterEntry: { exact: 41, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
+  passState: { exact: 0, "source-hash-bound": 0, "runtime-required": 41, unproved: 0 },
+  commonBindings: { exact: 0, "source-hash-bound": 0, "runtime-required": 41, unproved: 0 },
+  runtimeDispatch: { exact: 0, "source-hash-bound": 0, "runtime-required": 41, unproved: 0 },
 };
 const reportCurrent = process.argv.includes("--report-current");
 if (reportCurrent) {
@@ -248,6 +264,7 @@ if (reportCurrent) {
   );
 } else {
   assert.deepEqual(summary, expectedSummary);
+  assert.deepEqual(fieldVerdicts, expectedFieldVerdicts);
 }
 
 // Mutation proofs: selector swaps, stage hash changes, and unverified closure
@@ -270,6 +287,10 @@ const report = {
   schema: "pocket-card-render/official-program-port-coverage@2",
   inventory: { path: INVENTORY, proofGraphSha256: EXPECTED_PROOF, portIndexSha256: EXPECTED_PORT_INDEX },
   contract: path.relative(ROOT, CONTRACT).replaceAll("\\", "/"),
+  runtimeEvidence: {
+    status: runtimeEvidence.status,
+    validCaptureCount: runtimeEvidence.validCaptureCount,
+  },
   summary,
   stageBound,
   fieldVerdicts,

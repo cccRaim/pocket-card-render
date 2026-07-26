@@ -34,6 +34,7 @@ PREFABS = {
     "trainer": "Common/CardNew/System/Prefabs/TrainersCardUI.prefab_bundles",
 }
 SCRIPT_PATH_IDS = {
+    "LayoutElement": -8545018526213454877,
     "HorizontalLayoutGroup": -3229211799126679632,
     "VerticalLayoutGroup": -4621643977240678714,
     "ContentSizeFitter": 93356951997354507,
@@ -55,6 +56,18 @@ GROUP_FIELDS = (
     "m_ReverseArrangement",
 )
 COMPONENT_FIELDS = {
+    "LayoutElement": (
+        "m_Enabled",
+        "m_Name",
+        "m_IgnoreLayout",
+        "m_MinWidth",
+        "m_MinHeight",
+        "m_PreferredWidth",
+        "m_PreferredHeight",
+        "m_FlexibleWidth",
+        "m_FlexibleHeight",
+        "m_LayoutPriority",
+    ),
     "HorizontalLayoutGroup": GROUP_FIELDS,
     "VerticalLayoutGroup": GROUP_FIELDS,
     "ContentSizeFitter": (
@@ -278,9 +291,14 @@ def observed_contract(prefabs: list[dict]) -> dict:
     aspect_modes = Counter()
     aspect_enabled = Counter()
     reverse_values = Counter()
+    layout_ignore_values = Counter()
+    layout_priority_values = Counter()
     for record in records:
         serialized = record["serialized"]
-        if record["componentType"] == "ContentSizeFitter":
+        if record["componentType"] == "LayoutElement":
+            layout_ignore_values[str(serialized["m_IgnoreLayout"])] += 1
+            layout_priority_values[str(serialized["m_LayoutPriority"])] += 1
+        elif record["componentType"] == "ContentSizeFitter":
             content_modes[f"{serialized['m_HorizontalFit']},{serialized['m_VerticalFit']}"] += 1
         elif record["componentType"] == "AspectRatioFitter":
             aspect_modes[str(serialized["m_AspectMode"])] += 1
@@ -294,6 +312,8 @@ def observed_contract(prefabs: list[dict]) -> dict:
         "aspectModes": dict(sorted(aspect_modes.items())),
         "aspectEnabledValues": dict(sorted(aspect_enabled.items())),
         "layoutGroupReverseArrangementValues": dict(sorted(reverse_values.items())),
+        "layoutElementIgnoreValues": dict(sorted(layout_ignore_values.items())),
+        "layoutElementPriorityValues": dict(sorted(layout_priority_values.items())),
     }
 
 
@@ -384,7 +404,7 @@ def extract(decrypted_root: Path) -> dict:
                     "TMPro.TextMeshProUGUI.CalculateLayoutInputHorizontal",
                     "TMPro.TextMeshProUGUI.CalculateLayoutInputVertical",
                 ],
-                "requiredEvidence": "official enabled ILayoutElement set, priorities, and per-frame min/preferred/flexible outputs",
+                "requiredEvidence": "official implicit TMP/Image ILayoutElement outputs and per-frame preferred metrics; serialized LayoutElement components are extracted above",
             },
             {
                 "id": "layout-child-discovery",

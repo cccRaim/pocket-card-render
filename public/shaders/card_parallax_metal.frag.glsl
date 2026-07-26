@@ -30,7 +30,10 @@ vec3 _254;
 
 void main()
 {
-    highp vec3 _23 = (-vs_TEXCOORD1) + cameraPosition;
+    highp vec3 pcrUnityCameraPosition = vec3(cameraPosition.xy, -cameraPosition.z);
+    highp vec3 pcrUnityWorldPosition = vec3(vs_TEXCOORD1.xy, -vs_TEXCOORD1.z);
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD2.xy, -vs_TEXCOORD2.z);
+    highp vec3 _23 = (-pcrUnityWorldPosition) + pcrUnityCameraPosition;
     _9 = vec4(_23.x, _23.y, _23.z, _9.w);
     _27 = dot(_9.xyz, _9.xyz);
     _27 = inversesqrt(_27);
@@ -58,9 +61,9 @@ void main()
     _105.z = _101;
     _105.y = -_101;
     _126.y = dot(_105.zx, _68.xy);
-    _144 = dot(vs_TEXCOORD2, vs_TEXCOORD2);
+    _144 = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _144 = inversesqrt(_144);
-    highp vec3 _154 = vec3(_144) * vs_TEXCOORD2;
+    highp vec3 _154 = vec3(_144) * pcrUnityWorldNormal;
     _68 = vec4(_154.x, _154.y, _154.z, _68.w);
     _68.w = dot(_52.zx, _68.yz);
     _52.y = dot(_52.xy, _68.yz);

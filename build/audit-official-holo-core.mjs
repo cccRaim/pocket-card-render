@@ -96,6 +96,10 @@ try {
 const holoSrc = fs.readFileSync(path.join(ROOT, "public/render/materials/holo.js"), "utf8");
 const exactRarityVert = fs.readFileSync(path.join(ROOT, "public/shaders/opaque_hologram_tuning.vert.glsl"), "utf8");
 const exactRarityFrag = fs.readFileSync(path.join(ROOT, "public/shaders/opaque_hologram_tuning.frag.glsl"), "utf8");
+const exactRarityManifest = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public/shaders/opaque_hologram_tuning_uniforms.json"),
+  "utf8",
+));
 const local = {
   holo: blockFrom(holoSrc, "function holoMaterial"),
   frameHolo: blockFrom(holoSrc, "function frameHoloMaterial"),
@@ -166,13 +170,18 @@ const localChecks = [
     msg: "local rarity strategy must keep holo ramp core and data-shaped alpha cutout",
   },
   {
-    ok: /exactShaders\?\.Opaque_Hologram_Tuning/.test(local.rarity)
-      && /layerCubeDefault\(r\)/.test(local.rarity),
+    ok: /exactShaderPort\(r,\s*"Opaque_Hologram_Tuning"\)/.test(local.rarity)
+      && /exactPortUniforms\(r,\s*exact/.test(local.rarity)
+      && /ctx\.layerCubeDefault\(r,\s*binding\.slot\)/.test(local.rarity),
     msg: "local rarity strategy must wire the exact program and data-driven implicit cubemap default",
   },
   {
-    ok: /transpose\(inverse\(mat3\(modelMatrix\)\)\)/.test(exactRarityVert)
-      && /mix\(base\.rgb,\s*shaded,\s*hologramMask\)/.test(exactRarityFrag)
+    ok: exactRarityManifest.webgl_adaptation?.schema === "pocket-card-render/webgl-stage-adaptation@2"
+      && exactRarityManifest.runtime_contract?.backend_basis_conversions?.fragment?.worldVectors
+        ?.some(({ alias }) => alias === "pcrUnityWorldNormal")
+      && /_WorldToObject\s*=\s*inverse\(modelMatrix\)/.test(exactRarityVert)
+      && /pcrUnityWorldNormal/.test(exactRarityFrag)
+      && /_22\s*=\s*\(vec3\(_589\)\s*\*\s*_22\)\s*\+\s*_9\.xyz/.test(exactRarityFrag)
       && /_611\s*=\s*vec4\(0\.0\)/.test(exactRarityFrag)
       && !/discard/.test(exactRarityFrag),
     msg: "local exact rarity program must preserve official world normal, masked combine, coverage, and MRT behavior",

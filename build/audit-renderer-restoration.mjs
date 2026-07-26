@@ -28,7 +28,7 @@ import {
 } from "./restoration-proof-graph.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const DEFINITION_VERSION = 33;
+const DEFINITION_VERSION = 34;
 const STATUS = new Set(["exact", "partial-exact", "inferred", "runtime-required", "missing", "unknown"]);
 const CANONICAL_SCENES = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file);
 const PIPELINE_PROOF_NODES = validatePipelineProofGraph({
@@ -174,6 +174,7 @@ const VERIFIERS = [
   ["official-kira-puyo", process.execPath, "build/audit-official-kira-puyo.mjs"],
   ["official-circular-kira", process.execPath, "build/audit-official-circular-kira.mjs"],
   ["circular-kira-state", process.execPath, "build/test-circular-kira.mjs"],
+  ["bloom-activation", process.execPath, "build/test-bloom-activation.mjs"],
   ["official-pass-partition", process.execPath, "build/audit-official-pass-partition.mjs"],
   ["official-material-sort-inputs", process.execPath, "build/audit-official-material-sort-inputs.mjs"],
   ["official-reference-sort-inputs", process.execPath, "build/audit-official-reference-sort-inputs.mjs"],
@@ -182,8 +183,18 @@ const VERIFIERS = [
   ["official-local-keyword-state", process.execPath, "build/audit-official-local-keyword-state.mjs"],
   ["official-pass-candidates", process.execPath, "build/audit-official-pass-candidates.mjs"],
   ["official-camera-transform", process.execPath, "build/audit-official-camera-transform.mjs"],
+  ["display-density-integration", process.execPath, "build/test-display-density-integration.mjs"],
   ["official-card-font-contract", process.execPath, "build/audit-official-card-font-contract.mjs"],
+  ["official-card-text-design", process.execPath, "build/build-official-card-text-design-contract.mjs", { PCR_CARD_TEXT_DESIGN_CHECK: "1" }],
+  ["card-text-design-unicode", process.execPath, "build/test-card-text-design-unicode.mjs"],
+  ["official-text-variant-corpus", process.execPath, "build/build-official-text-variant-corpus.mjs", { PCR_OFFICIAL_TEXT_VARIANT_CORPUS_CHECK: "1" }],
+  ["official-text-variant-corpus-mutations", process.execPath, "build/test-official-text-variant-corpus.mjs"],
+  ["official-text-variant-execution", process.execPath, "build/test-official-text-variant-execution.mjs"],
+  ["official-card-examples", process.execPath, "build/build-official-card-examples.mjs", { PCR_OFFICIAL_CARD_EXAMPLES_CHECK: "1" }],
+  ["official-card-example-mutations", process.execPath, "build/test-official-card-examples.mjs"],
+  ["official-card-example-materialization", process.execPath, "build/test-materialize-official-card-examples.mjs"],
   ["official-card-ui-layout", process.execPath, "build/build-official-card-ui-layout.mjs", { PCR_CARD_UI_LAYOUT_CHECK: "1" }],
+  ["dynamic-ui-layout", process.execPath, "build/audit-dynamic-ui-layout.mjs"],
   ["official-ugui-image-state", process.execPath, "build/audit-official-ugui-image-state.mjs"],
   ["official-ugui-resources", process.execPath, "build/audit-official-ugui-resources.mjs"],
   ["official-ugui-runtime-state", process.execPath, "build/audit-official-ugui-runtime-state.mjs"],
@@ -193,6 +204,16 @@ const VERIFIERS = [
   ["official-material-program-inventory", process.execPath, "build/audit-official-material-program-inventory.mjs"],
   ["official-program-port-contract", process.execPath, "build/build-official-program-port-contract.mjs", { PCR_PROGRAM_PORT_CONTRACT_CHECK: "1" }],
   ["official-program-port-generators", process.execPath, "build/audit-official-program-port-generators.mjs"],
+  ["webgl-adaptation-contract-mutations", process.execPath, "build/test-webgl-adaptation-contract.mjs"],
+  ["ui-affine-transform-integration", process.execPath, "build/test-ui-affine-transform-integration.mjs"],
+  ["ugui-state-reducer", process.execPath, "build/test-ugui-state-reducer.mjs"],
+  ["ugui-state-replay-integration", process.execPath, "build/test-ugui-state-replay-integration.mjs"],
+  ["official-layout-fitters", process.execPath, "build/build-official-layout-fitters.mjs", { PCR_OFFICIAL_LAYOUT_FITTERS_CHECK: "1" }],
+  ["layout-fitter-mutations", process.execPath, "build/test-layout-fitters.mjs"],
+  ["layout-rebuilder-mutations", process.execPath, "build/test-layout-rebuilder.mjs"],
+  ["webgl-runtime-port-contract-mutations", process.execPath, "build/test-webgl-runtime-port-contract.mjs"],
+  ["dynamic-uniform-producer-mutations", process.execPath, "build/test-dynamic-uniform-producer.mjs"],
+  ["webgl-adaptation-contract", process.execPath, "build/audit-webgl-adaptation-contract.mjs"],
   ["official-program-port-coverage", process.execPath, "build/audit-official-program-port-coverage.mjs"],
   ["official-vertex-input-mutations", process.env.PYTHON || "python", "build/test_official_vertex_inputs.py"],
   ["official-vertex-inputs", process.env.PYTHON || "python", "build/audit_official_vertex_inputs.py"],
@@ -210,6 +231,9 @@ const VERIFIERS = [
   ["official-inline-elements", process.execPath, "build/audit-official-inline-elements.mjs"],
   ["official-tmp-sprite-contract", process.execPath, "build/build-official-tmp-sprite.mjs", { PCR_TMP_SPRITE_CHECK: "1" }],
   ["official-tmp-sprite", process.execPath, "build/audit-official-tmp-sprite.mjs"],
+  ["official-tmp-sprite-program", process.execPath, "build/build-official-tmp-sprite-program.mjs", { PCR_OFFICIAL_TMP_SPRITE_PROGRAM_CHECK: "1" }],
+  ["official-tmp-sprite-program-mutations", process.execPath, "build/test-official-tmp-sprite-program.mjs"],
+  ["official-tmp-sprite-runtime", process.execPath, "build/test-official-tmp-sprite-runtime.mjs"],
   ["official-tmp-sprite-layout", process.execPath, "build/test-official-tmp-sprite-layout.mjs"],
   ["official-tmp-settings", process.execPath, "build/build-official-tmp-settings.mjs", { PCR_TMP_SETTINGS_CHECK: "1" }],
   ["official-tmp-fallback", process.execPath, "build/audit-official-tmp-fallback.mjs"],
@@ -260,6 +284,36 @@ const tmpFontManifest = fs.existsSync(tmpFontManifestPath)
   : null;
 const inlineElementAudit = auditOfficialInlineElements();
 const tmpSpriteAudit = auditOfficialTmpSprite();
+const tmpSpriteProgramAuditResult = spawnSync(
+  process.execPath,
+  ["build/build-official-tmp-sprite-program.mjs", "--check"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const tmpSpriteProgramMutationResult = spawnSync(
+  process.execPath,
+  ["build/test-official-tmp-sprite-program.mjs"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const tmpSpriteProgramAuditPass = tmpSpriteProgramAuditResult.status === 0
+  && tmpSpriteProgramMutationResult.status === 0;
+const tmpSpriteRuntimeRouteResult = spawnSync(
+  process.execPath,
+  ["build/test-official-tmp-sprite-runtime.mjs"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const tmpSpriteRuntimeRoutePass = tmpSpriteRuntimeRouteResult.status === 0;
 const tmpFallbackAudit = auditOfficialTmpFallback();
 const tmpAutoSizeAudit = auditOfficialTmpAutoSize();
 const tmpGlyphQuadAudit = auditOfficialTmpGlyphQuad();
@@ -299,6 +353,36 @@ const uguiRuntimeStateAuditResult = spawnSync(process.execPath, ["build/audit-of
   windowsHide: true,
 });
 const uguiRuntimeStateAuditPass = uguiRuntimeStateAuditResult.status === 0;
+const officialLayoutFittersAuditResult = spawnSync(
+  process.execPath,
+  ["build/build-official-layout-fitters.mjs", "--check"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const officialLayoutFittersAuditPass = officialLayoutFittersAuditResult.status === 0;
+const layoutFitterMutationResult = spawnSync(
+  process.execPath,
+  ["build/test-layout-fitters.mjs"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const layoutFitterMutationPass = layoutFitterMutationResult.status === 0;
+const layoutRebuilderMutationResult = spawnSync(
+  process.execPath,
+  ["build/test-layout-rebuilder.mjs"],
+  {
+    cwd: ROOT,
+    encoding: "utf8",
+    windowsHide: true,
+  },
+);
+const layoutRebuilderMutationPass = layoutRebuilderMutationResult.status === 0;
 const illustrationInventoryAuditResult = spawnSync(process.execPath, ["build/audit-official-illustration-inventory.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
@@ -365,6 +449,9 @@ const PRECOMPUTED_VERIFIER_RESULTS = new Map([
   ["official-ugui-image-state", uguiImageStateAuditResult],
   ["official-ugui-resources", uguiResourceAuditResult],
   ["official-ugui-runtime-state", uguiRuntimeStateAuditResult],
+  ["official-layout-fitters", officialLayoutFittersAuditResult],
+  ["layout-fitter-mutations", layoutFitterMutationResult],
+  ["layout-rebuilder-mutations", layoutRebuilderMutationResult],
   ["official-illustration-inventory", illustrationInventoryAuditResult],
   ["official-program-port-generators", programPortGeneratorAuditResult],
   ["official-program-port-coverage", programPortCoverageResult],
@@ -515,14 +602,16 @@ const hououTmpCapture = tmpRuntimeEvidence.captures.find((capture) =>
   && capture.locale === "zh_TW");
 const inlineElementRuntimeExact = hououTmpCapture?.status === "exact-local-runtime"
   && hououTmpCapture.inlineElementBindingCount > 0;
-const tmpSpriteRuntimeExact = [
+const tmpSpriteLayoutRuntimeExact = [
   "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
   "scene.cPK_20_008900_02_HOUOUex_UR.json",
 ].every((scene) => tmpRuntimeEvidence.captures.some((capture) =>
   capture.scene === scene
   && capture.locale === "zh_TW"
   && capture.status === "exact-local-runtime"
-  && capture.tmpSpriteBindingCount > 0));
+  && capture.tmpSpriteBindingCount > 0
+  && capture.tmpSpriteDrawCount > 0
+  && capture.tmpSpriteProgramBound));
 const allCardFontLocalFallbacksEmpty = tmpFontManifest
   && Object.keys(tmpFontManifest.fonts || {}).length >= 14
   && Object.values(tmpFontManifest.fonts || {}).every((font) =>
@@ -580,7 +669,15 @@ const tmpRuntimeWired = verifierPassed("exact-tmp-sdf");
 const officialTmpLayoutStatic = verifierPassed("official-card-ui-layout", "official-tmp-settings");
 const carddataCorpusCovered = verifierPassed("carddata-corpus");
 const composeCorpusCovered = verifierPassed("compose-corpus");
+const officialCardLayoutExecutionCovered = verifierPassed(
+  "official-text-variant-execution",
+);
+const dynamicUILayoutCovered = verifierPassed("dynamic-ui-layout");
 const cardTextRuntimeCovered = verifierPassed("official-card-text-runtime", "card-text-resolver");
+const officialCardExamplesCovered = verifierPassed(
+  "official-card-examples",
+  "official-card-example-mutations",
+);
 const fieldDiffInfrastructure = verifierPassed(
   "official-local-field-diff",
   "official-port-renderer-draw-matching",
@@ -1093,23 +1190,49 @@ const dimensions = [
       }),
       requirement({
         id: "tmp-ex-sprite-layout",
-        label: "[Img:ex] TextExSprite asset, preprocessing, layout and runtime binding",
+        label: "[Img:ex] TextExSprite asset, preprocessing, layout, shader and runtime binding",
         status: tmpSpriteAudit.status === "pass"
-          ? (tmpSpriteRuntimeExact ? "exact" : "partial-exact")
+          ? "partial-exact"
           : "missing",
-        exactUnits: tmpSpriteAudit.status === "pass" ? (tmpSpriteRuntimeExact ? 3 : 2) : 0,
-        knownUnits: tmpSpriteAudit.status === "pass" ? (tmpSpriteRuntimeExact ? 3 : 2) : 0,
-        totalUnits: 3,
+        exactUnits: tmpSpriteAudit.status === "pass"
+          ? 2
+            + Number(tmpSpriteLayoutRuntimeExact)
+            + Number(tmpSpriteProgramAuditPass)
+          : 0,
+        knownUnits: tmpSpriteAudit.status === "pass"
+          ? 2
+            + Number(tmpSpriteLayoutRuntimeExact)
+            + 2 * Number(tmpSpriteProgramAuditPass)
+            + Number(tmpSpriteRuntimeRoutePass)
+          : 0,
+        totalUnits: 7,
         evidence: tmpSpriteAudit.status === "pass" ? [
           "official TextExSprite SpriteAsset, Material, ASTC payload, decoded RGBA and four glyph rects are hash-pinned",
           "PreProcessEX format string, [0,2,1,3] index table, normal/Mega selection and localizer tag size are byte/object-pinned",
           "Unity 2022.3.62f2 pointSize-zero sprite scale, baseline, crop and negative-em advance formulas are ported and tested",
-          ...(tmpSpriteRuntimeExact
-            ? ["source-hash-bound Venusaur and Ho-Oh runtime evidence executes the official index-3 binding"]
+          ...(tmpSpriteLayoutRuntimeExact
+            ? ["source-current Venusaur and Ho-Oh runtime evidence executes the expected SpriteAsset/index binding and layout"]
             : []),
+          ...(tmpSpriteProgramAuditPass ? [
+            "the official empty-keyword selector, candidate witness, SMOL-V modules, parameter entry, pass state and common bindings are byte- and identity-pinned",
+            "the generated WebGL2 source is source-hash-bound; this records implementation knowledge without claiming Vulkan-to-WebGL semantic equivalence",
+          ] : []),
+          ...(tmpSpriteRuntimeRoutePass ? [
+            "inline sprite quads are routed as dedicated TMP-Sprite draws with selector evidence and premultiplied One/OneMinusSrcAlpha material state",
+          ] : []),
         ] : [],
-        remaining: tmpSpriteRuntimeExact ? [] : [
-          "refresh Venusaur and Ho-Oh ?auditrt=1 evidence to prove the exact SpriteAsset binding executes",
+        remaining: [
+          ...(!tmpSpriteLayoutRuntimeExact ? [
+            "refresh Venusaur and Ho-Oh ?auditrt=1 evidence to prove the expected SpriteAsset/index binding executes",
+          ] : []),
+          ...(!tmpSpriteProgramAuditPass ? [
+            "extract and verify the selector-bound Lettuce/Common/Card/TextMeshPro/Sprite(to RT) executable and premultiplied pass",
+          ] : []),
+          ...(!tmpSpriteRuntimeRoutePass ? [
+            "route inline TMP sprite quads through the dedicated Sprite(to RT) program instead of the UIImage producer",
+          ] : []),
+          "independently prove Vulkan-to-WebGL stage semantics for the generated source",
+          "capture official guest Canvas dynamic stencil, clip, attachment and submitted descriptor/uniform state",
         ],
         cost: "textmeshpro-runtime-port",
       }),
@@ -1130,16 +1253,30 @@ const dimensions = [
       requirement({
         id: "dynamic-ui-composition",
         label: "UGUI hierarchy, sprites, masks and text composition into _DynamicUITex",
-        status: composeCorpusCovered ? "partial-exact" : "inferred",
-        exactUnits: composeCorpusCovered
-          ? 2 + Number(uguiImageStateAuditPass) + Number(uguiResourceAuditPass) + Number(uguiRuntimeStateAuditPass)
+        status: composeCorpusCovered && dynamicUILayoutCovered ? "partial-exact" : "inferred",
+        exactUnits: composeCorpusCovered && dynamicUILayoutCovered
+          ? 2
+            + Number(uguiImageStateAuditPass)
+            + Number(uguiResourceAuditPass)
+            + Number(uguiRuntimeStateAuditPass)
+            + Number(officialLayoutFittersAuditPass)
+            + Number(layoutFitterMutationPass)
+            + Number(layoutRebuilderMutationPass)
+            + Number(officialCardLayoutExecutionCovered)
           : 0,
-        knownUnits: composeCorpusCovered
-          ? 2 + Number(uguiImageStateAuditPass) + Number(uguiResourceAuditPass) + Number(uguiRuntimeStateAuditPass)
+        knownUnits: composeCorpusCovered && dynamicUILayoutCovered
+          ? 2
+            + Number(uguiImageStateAuditPass)
+            + Number(uguiResourceAuditPass)
+            + Number(uguiRuntimeStateAuditPass)
+            + Number(officialLayoutFittersAuditPass)
+            + Number(layoutFitterMutationPass)
+            + Number(layoutRebuilderMutationPass)
+            + Number(officialCardLayoutExecutionCovered)
           : 1,
-        totalUnits: 7,
-        evidence: composeCorpusCovered ? [
-          "3305-card zh_TW composition and nine-locale archetype matrix resolve every element through hash-pinned official RectTransform/TMP paths",
+        totalUnits: 10,
+        evidence: composeCorpusCovered && dynamicUILayoutCovered ? [
+          "3191 source-current zh_TW compositions and the 112-witness x nine-locale matrix resolve every element through hash-pinned official RectTransform/TMP paths; 114 version-gap cards fail closed",
           "Trainer Type 1-5, A1T1 Ability, category, evolution source and damage-symbol branches use their official prefab nodes",
           ...(uguiImageStateAuditPass ? [
             "all 314 official Image and 171 Canvas serialized states are object/hash-pinned; direct icon draw ops consume Image color, preserveAspect and enabled state",
@@ -1147,14 +1284,29 @@ const dimensions = [
           ] : []),
           ...(uguiResourceAuditPass ? [
             "all 314 Image PPtrs resolve through 168 official Sprite/Texture2D pairs and the UI-Default-ToRT Material/Shader chain with bundle, object and streamed-payload hashes",
-            "108 static direct Image icon draws bind the exact prefab Texture2D URL; nine evolution-source draws remain explicit IL2CPP runtime Sprite assignments",
+            "117 static direct Image icon draws bind the exact prefab Texture2D URL; nine evolution-source draws remain explicit IL2CPP runtime Sprite assignments",
           ] : []),
           ...(uguiRuntimeStateAuditPass ? [
             "21 official Card UI producer/dispatcher ARM64 method bodies and all direct UGUI mutation call sites are byte-pinned",
             "Card Core direct-call census proves SetActive/Image.sprite/Behaviour.enabled writers and zero direct color/material/fill/maskable/CanvasRenderer writers",
           ] : []),
+          ...(officialLayoutFittersAuditPass ? [
+            "84/84 serialized Horizontal/Vertical LayoutGroup, ContentSizeFitter and AspectRatioFitter components are object- and prefab-hash-pinned",
+          ] : []),
+          ...(layoutFitterMutationPass ? [
+            "the pure layout executor covers all official enum modes, LayoutUtility priority, padding/alignment/spacing/control/expand/scale/reverse behavior and fail-closed schema mutations",
+          ] : []),
+          ...(layoutRebuilderMutationPass ? [
+            "the pure LayoutRebuilder scheduler executes official horizontal calculate/control then vertical calculate/control ordering with bottom-up/top-down traversal and deterministic dirty-root convergence",
+          ] : []),
+          ...(officialCardLayoutExecutionCovered ? [
+            "all 112 globally minimal witnesses across nine locales feed official TMP and serialized LayoutElement metrics through LayoutRebuilder convergence; every emitted draw retains its official GameObject identity, authored box and final composed RectTransform",
+          ] : []),
         ] : ["bundle- and object-hash-pinned PokemonCardUI/TrainersCardUI hierarchy drives the composition path"],
         remaining: [
+          ...(!officialCardLayoutExecutionCovered ? [
+            "feed actual TMP/ILayoutElement min, preferred and flexible metrics through LayoutRebuilder horizontal/vertical convergence into composed RectTransforms",
+          ] : []),
           "capture which byte-pinned IL2CPP activation and sprite branches execute for each target card",
           "compare composed DynamicUI attachments against the official target-runtime draw and resource state",
         ],
@@ -1293,12 +1445,19 @@ const dimensions = [
         id: "all-card-generalization",
         label: "Renderer generalizes to every official card/material archetype",
         status: carddataCorpusCovered && composeCorpusCovered ? "partial-exact" : "unknown",
-        exactUnits: carddataCorpusCovered && composeCorpusCovered ? 2 : 0,
-        knownUnits: carddataCorpusCovered && composeCorpusCovered ? 2 : 0,
-        totalUnits: 4,
+        exactUnits: carddataCorpusCovered && composeCorpusCovered
+          ? 2 + Number(officialCardExamplesCovered)
+          : 0,
+        knownUnits: carddataCorpusCovered && composeCorpusCovered
+          ? 2 + Number(officialCardExamplesCovered)
+          : 0,
+        totalUnits: 5,
         evidence: carddataCorpusCovered && composeCorpusCovered ? [
           "all 3305 CardIDs pass authoritative masterdata parsing",
           "all 3305 CardIDs pass official-layout composition in zh_TW plus a nine-locale archetype matrix",
+          ...(officialCardExamplesCovered ? [
+            "a deterministic 444-obligation matrix joins serialized card design, 76 semantic executables, 165 material-state archetypes, two explicit locator boundaries, one engine-owned variant boundary and 64 card-face semantic branches; deterministic greedy selects 112 witnesses and an independent HiGHS MILP proves 112 is the global minimum",
+          ] : []),
           ...(illustrationInventoryAuditPass ? [
             "the business-masterdata/decrypted-asset version inventory hash-pins 3191/3305 Face L bundles (1,181,259,080 bytes) and identifies exactly 114 absent Series B illustrations",
           ] : []),

@@ -179,6 +179,40 @@ const result = await generateExactSelectorPort({
     ],
     fragment: ["expand serialized common-buffer values into same-name material and FlowParams uniforms"],
   },
+  adaptationOperations: {
+    vertex: [
+      { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+      { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+      {
+        kind: "uniform-buffer-flattening",
+        source: "serialized-common",
+        preservation: "names-types-precision",
+      },
+      {
+        kind: "dynamic-uniform-producer-binding",
+        contract: "runtime-producer-to-three-uniforms",
+      },
+      {
+        kind: "clip-space-y-conversion",
+        from: "unity-vulkan",
+        to: "webgl",
+        operation: "remove-y-inversion",
+      },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+    ],
+    fragment: [
+      {
+        kind: "uniform-buffer-flattening",
+        source: "serialized-common",
+        preservation: "names-types-precision",
+      },
+      {
+        kind: "dynamic-uniform-producer-binding",
+        contract: "runtime-producer-to-three-uniforms",
+      },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+    ],
+  },
   webglSources: {
     vertex: "public/shaders/glitter.vert.glsl",
     fragment: "public/shaders/glitter.frag.glsl",

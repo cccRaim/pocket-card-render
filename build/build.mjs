@@ -29,7 +29,8 @@ const PUB = join(ROOT, "public");
 const SKIP_GO = new Set();
 const SKIP_SHADER = new Set(["Text_Alpha"]);
 const short = (s) => (s || "").split("/").pop();
-const toUrl = (abs) => "/game/" + relative(ASSETS, abs).replace(/\\/g, "/");
+const toUrl = (abs) =>
+  encodeURI("/game/" + relative(ASSETS, abs).replace(/\\/g, "/"));
 export const sceneFileName = (cardId) => `scene.${cardId}.json`;
 
 const rotl32 = (value, bits) => ((value << bits) | (value >>> (32 - bits))) >>> 0;
@@ -365,14 +366,25 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
     for (const [slot, t] of Object.entries(l.textures || {})) {
       const nm = (t && t.tex) || (typeof t === "string" ? t : null);
       if (!nm || nm.startsWith("pptr:")) continue;
+      const scale = typeof t === "object" ? t.scale : null;
+      const offset = typeof t === "object" ? t.offset : null;
+      if (![scale?.x, scale?.y, offset?.x, offset?.y].every(Number.isFinite)) {
+        throw new Error(`${CARD_ID}: texture ${mat}.${slot} is missing official TexEnv scale/offset`);
+      }
       const url = useTexture(nm);
-      textures[slot] = { name: nm, url };   // url=null if missing (renderer/validator can flag)
+      textures[slot] = {
+        name: nm,
+        url,
+        scale: { x: scale.x, y: scale.y },
+        offset: { x: offset.x, y: offset.y },
+      }; // url=null if missing (renderer/validator can flag)
       if (!texSlots.has(nm)) texSlots.set(nm, new Set());
       texSlots.get(nm).add(slot);
     }
-    // stencil region: the material's _Stencil float is the authority (==2 → the inner/window region, e.g. the
-    // trainer's EFM3/SBM1). Fall back to the prefab GO name ("…Window…" → window) which is how the Pokémon
-    // window layers (no _Stencil float) are clipped. The Venusaur has no _Stencil==2 layer → unchanged.
+    // Renderer-level stencil region. _Stencil=2 is serialized evidence for the inner/window bit; otherwise
+    // the official prefab GameObject name carries the region assignment used by Pokémon window renderers.
+    // This is distinct from the static Shader pass: several _StencilRef materials serialize zero and receive
+    // their region bit only when the renderer is bound at runtime.
     const stencil = l.floats && l.floats._Stencil;
     const clip = (stencil === 2) ? "window" : (/Window/.test(go) ? "window" : "card");
     materials[mat] = { shader, queue: resolveQueue(l), sort, official: {

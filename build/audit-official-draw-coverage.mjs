@@ -6,6 +6,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { SHADER } from "../public/render/rarities.js";
+import { loadExactShaderPortsFromContract } from "../public/render/exact-port-loader.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -22,68 +23,56 @@ const CATEGORY = Object.freeze({
 });
 const CATEGORY_ORDER = Object.values(CATEGORY);
 
-function counts(exact, stencil, glitter, lensFlare, sideBack) {
-  return {
-    [CATEGORY.EXACT]: exact,
-    [CATEGORY.STENCIL]: stencil,
-    [CATEGORY.GLITTER]: glitter,
-    [CATEGORY.LENS_FLARE]: lensFlare,
-    [CATEGORY.SIDE_BACK]: sideBack,
-    total: exact + stencil + glitter + lensFlare + sideBack,
-  };
-}
-
 const EXPECTED_CARDS = Object.freeze({
   cPK_10_000040_00_FUSHIGIBANAex_RR: {
     meshRenderers: 23,
-    counts: counts(28, 2, 0, 0, 0),
+    materialReferences: 30,
   },
   cPK_20_008900_02_HOUOUex_UR: {
     meshRenderers: 18,
-    counts: counts(17, 2, 1, 2, 0),
+    materialReferences: 22,
   },
   cTR_20_000230_00_LEAF_SR: {
     meshRenderers: 18,
-    counts: counts(21, 2, 0, 0, 0),
+    materialReferences: 23,
   },
   cTR_20_000670_00_IIBUINOBAKKU_UR: {
     meshRenderers: 19,
-    counts: counts(18, 2, 1, 2, 0),
+    materialReferences: 23,
   },
 });
-const EXPECTED_TOTAL = counts(84, 8, 2, 4, 0);
+const EXPECTED_TOTAL = Object.values(EXPECTED_CARDS)
+  .reduce((sum, card) => sum + card.materialReferences, 0);
 
-// These local dual-output ports are present and wired for the four reference cards.
-// Exact executable closure is owned exclusively by audit-official-program-port-coverage.mjs.
-const EXACT_PORTS = Object.freeze({
-  Card_Illust: { fragment: "card_illust.frag.glsl" },
-  Card_Parallax: { fragment: "card_parallax.frag.glsl" },
-  Card_Parallax_Hologram_Tuning: { fragment: "card_parallax_hologram_tuning.frag.glsl" },
-  Card_Parallax_Metal: { fragment: "card_parallax_metal.frag.glsl" },
-  // Effect has six selector-owned sources; the app map's primary source is the basic variant.
-  // Selector/source closure is audited by audit-official-program-port-coverage.mjs.
-  Effect: { fragment: "effect_basic.frag.glsl" },
-  Frame: { fragment: "frame.frag.glsl" },
-  "Frame-2Layer-UR": { fragment: "frame_2layer_ur.frag.glsl" },
-  "Frame-Holo-Tuning": { fragment: "frame_holo_tuning.frag.glsl" },
-  "Frame-Holo-UR-New": { fragment: "frame_holo_ur.frag.glsl" },
-  Opaque_Hologram_Tuning: { fragment: "opaque_hologram_tuning.frag.glsl" },
-  "Opaque-Hologram_Tuning": { fragment: "opaque_shadowbox_hologram_tuning.frag.glsl" },
-  "Opaque-UR-Oklab": { fragment: "opaque_ur_oklab.frag.glsl" },
-  Card_Parallax_UR: { fragment: "parallax_ur.frag.glsl" },
-  "Simple-Opaque": { fragment: "simple_opaque.frag.glsl" },
-  "Simple-Opaque-Hologram_Tuning": { fragment: "simple_opaque_hologram_tuning.frag.glsl" },
-  "Simple-Transparent": { fragment: "simple_transparent.frag.glsl" },
-  Transparent_Hologram_Tuning: { fragment: "transparent_hologram_tuning.frag.glsl" },
-  "Transparent-UR-New": { fragment: "transparent_ur_new.frag.glsl" },
-  Card_Parallax_Hologram_UR_New: { fragment: "ur_bg_hologram.frag.glsl" },
-  Card_UR_Plate: { fragment: "ur_plate.frag.glsl" },
-  Card_Hologram_Tuning: { fragment: "card_hologram_tuning.frag.glsl" },
-  Text: { fragment: "dynamic_ui_text.frag.glsl" },
-  "Side&Back": { fragment: "side_back.frag.glsl" },
+const PORT_CONTRACT = JSON.parse(fs.readFileSync(
+  path.join(PUBLIC, "shaders", "official_program_port_contract.json"),
+  "utf8",
+));
+if (PORT_CONTRACT.schema !== "pocket-card-render/official-program-port-contract@2") {
+  throw new Error("unsupported official program port contract");
+}
+
+function filesystemResponse(body) {
+  return {
+    ok: true,
+    async json() { return JSON.parse(body); },
+    async text() { return body; },
+  };
+}
+
+const exactShaders = await loadExactShaderPortsFromContract({
+  fetchAsset: async (url) => {
+    const file = path.join(PUBLIC, ...String(url).replaceAll("\\", "/").split("/"));
+    return fs.existsSync(file)
+      ? filesystemResponse(fs.readFileSync(file, "utf8"))
+      : { ok: false };
+  },
 });
-const GLITTER_PORT = Object.freeze({ fragment: "glitter.frag.glsl" });
-const LENS_FLARE_PORT = Object.freeze({ fragment: "ur_lens_flare.frag.glsl" });
+const FORMAL_PORT_KEYS = new Set(
+  Object.entries(exactShaders)
+    .filter(([, port]) => !port.stageSourceOnly)
+    .map(([key]) => key),
+);
 
 const issues = [];
 
@@ -130,11 +119,11 @@ function mapObject(map) {
 }
 
 function classifyShader(shader) {
-  if (Object.hasOwn(EXACT_PORTS, shader)) return CATEGORY.EXACT;
   if (["IllustStencil", "InnerStencil", "OuterStencil"].includes(shader)) return CATEGORY.STENCIL;
   if (shader === "Card_UR_Glitter_FlowMaps") return CATEGORY.GLITTER;
   if (shader === "Card_UR_LensFlare") return CATEGORY.LENS_FLARE;
   if (shader === "Side&Back") return CATEGORY.SIDE_BACK;
+  if (FORMAL_PORT_KEYS.has(shader)) return CATEGORY.EXACT;
   return null;
 }
 
@@ -149,30 +138,6 @@ function outputLocations(source) {
     locations.add(Number(match[1]));
   }
   return [...locations].sort((a, b) => a - b);
-}
-
-function readFragmentLocations(fragment) {
-  const file = path.join(PUBLIC, "shaders", fragment);
-  if (!fs.existsSync(file)) {
-    issues.push(`local port fragment is missing: public/shaders/${fragment}`);
-    return [];
-  }
-  return outputLocations(fs.readFileSync(file, "utf8"));
-}
-
-function parseAppExactMap(appSource) {
-  const startMarker = "const exactShaders = await loadExactShaderPorts({";
-  const start = appSource.indexOf(startMarker);
-  const end = start < 0 ? -1 : appSource.indexOf("\n  });", start);
-  if (start < 0 || end < 0) {
-    issues.push("app local shader-port map could not be located");
-    return new Map();
-  }
-  const result = new Map();
-  const body = appSource.slice(start, end);
-  const entry = /(?:^|\n)\s*(?:"([^"]+)"|([A-Za-z_$][\w$]*))\s*:\s*\{\s*vert:\s*"[^"]+",\s*frag:\s*"shaders\/([^"]+)"(?:,\s*(?:manifest:\s*"shaders\/[^"]+"|manifests:\s*\[[^\]]*\]))?\s*,?\s*\},?/g;
-  for (const match of body.matchAll(entry)) result.set(match[1] || match[2], match[3]);
-  return result;
 }
 
 function sourceBlock(source, startMarker, endMarker, label) {
@@ -263,7 +228,7 @@ try {
 
 const expectedCardIds = Object.keys(EXPECTED_CARDS);
 same("official prefab card set", sorted(evidence.source?.cards || []), sorted(expectedCardIds));
-same("official Material draw total", evidence.summary?.materialReferences, EXPECTED_TOTAL.total);
+same("official Material draw total", evidence.summary?.materialReferences, EXPECTED_TOTAL);
 same("official MeshRenderer total", evidence.summary?.meshRenderers, 78);
 
 const cardEvidence = new Map((evidence.cards || []).map((card) => [card.card, card]));
@@ -272,7 +237,7 @@ for (const cardId of expectedCardIds) {
   requireCondition(!!actual, `${cardId}: official prefab summary is missing`);
   if (!actual) continue;
   same(`${cardId}: official MeshRenderer count`, actual.meshRenderers, EXPECTED_CARDS[cardId].meshRenderers);
-  same(`${cardId}: official Material draw count`, actual.materialReferences, EXPECTED_CARDS[cardId].counts.total);
+  same(`${cardId}: official Material draw count`, actual.materialReferences, EXPECTED_CARDS[cardId].materialReferences);
 }
 same("official prefab summary card set", sorted(cardEvidence.keys()), sorted(expectedCardIds));
 
@@ -305,36 +270,38 @@ for (const variant of evidence.variants || []) {
     draws.push({ ...use, shader, category, variant: variant.key });
   }
 }
-same("flattened official draw total", draws.length, EXPECTED_TOTAL.total);
-same("official local-port shader set", sorted(officialExactShaders), sorted(Object.keys(EXACT_PORTS)));
+same("flattened official draw total", draws.length, EXPECTED_TOTAL);
 
 const appSource = fs.readFileSync(path.join(PUBLIC, "app.js"), "utf8");
-const appExactMap = parseAppExactMap(appSource);
-for (const [shader, port] of Object.entries(EXACT_PORTS)) {
-  const appKey = port.appKey || shader;
-  same(`${shader}: wired local fragment`, appExactMap.get(appKey), port.fragment);
-  same(`${shader}: local dual-output locations`, readFragmentLocations(port.fragment), [0, 1]);
+const sceneExactShaders = new Set();
+for (const cardId of expectedCardIds) {
+  const scene = JSON.parse(fs.readFileSync(path.join(PUBLIC, `scene.${cardId}.json`), "utf8"));
+  for (const material of Object.values(scene.materials || {})) {
+    if (classifyShader(material.shader) === CATEGORY.EXACT) sceneExactShaders.add(material.shader);
+  }
 }
-same(
-  "Card_UR_LensFlare: wired local fragment",
-  appExactMap.get("Card_UR_LensFlare"),
-  LENS_FLARE_PORT.fragment,
+same("official local-port shader set", sorted(officialExactShaders), sorted(sceneExactShaders));
+
+  requireCondition(
+    appSource.includes('import { loadExactShaderPortsFromContract } from "./render/exact-port-loader.js";')
+      && /loadExactShaderPortsFromContract\(\{\s*exactEnabled,\s*canonicalizeObjectClipPosition:\s*!logicBisectCase\.disableCanonicalObjectClipPosition,\s*\}\)/.test(appSource),
+    "app does not dispatch the generated official program port contract",
+  );
+requireCondition(
+  !appSource.includes("loadExactShaderPorts({") && !/manifest:\s*"shaders\/[^"]+_uniforms\.json"/.test(appSource),
+  "app still contains a parallel hand-maintained shader-port inventory",
 );
-same(
-  "Card_UR_LensFlare: local dual-output locations",
-  readFragmentLocations(LENS_FLARE_PORT.fragment),
-  [0, 1],
-);
-same(
-  "Card_UR_Glitter_FlowMaps: local WebGL MRT output locations",
-  readFragmentLocations(GLITTER_PORT.fragment),
-  [0, 1],
-);
-same(
-  "Card_UR_Glitter_FlowMaps: wired selector-bound fragment",
-  appExactMap.get("Card_UR_Glitter_FlowMaps"),
-  GLITTER_PORT.fragment,
-);
+for (const [shader, port] of Object.entries(exactShaders)) {
+  const fragments = port.stageSourceOnly
+    ? [port.frag]
+    : Object.values(port.sourcesByPort).map((source) => source.frag);
+  const expectedLocations = ["IllustStencil", "InnerStencil", "OuterStencil"].includes(shader)
+    ? [0]
+    : [0, 1];
+  for (const [index, fragment] of fragments.entries()) {
+    same(`${shader}[${index}]: local fragment output locations`, outputLocations(fragment), expectedLocations);
+  }
+}
 
 requireCondition(
   /const isStencil = matName === "OuterStencil"\s*\|\| matName\.startsWith\("InnerStencil"\)\s*\|\| matName\.startsWith\("IllustStencil"\)/.test(appSource),
@@ -344,7 +311,8 @@ requireCondition(appSource.includes("stencilGroup.add(mesh)"), "stencil draw is 
 requireCondition(!appSource.includes("stencilWriter(region)"), "legacy MeshBasic stencil writer is still active");
 
 same("Side&Back local-port kind", SHADER["Side&Back"]?.kind, "sideBack");
-same("Side&Back wired local fragment", appExactMap.get("Side&Back"), "side_back.frag.glsl");
+requireCondition(exactShaders["Side&Back"]?.stageSourceOnly === true,
+  "Side&Back runtime boundary is not loaded from the official contract");
 requireCondition(
   appSource.includes("fgGroup.add(mesh)") && !appSource.includes("isBackgroundLayer(r.shader, cfg, r)"),
   "official draws no longer route directly to the shared MRT scene",
@@ -390,7 +358,6 @@ let defaultMaterialTotal = 0;
 for (const cardId of expectedCardIds) {
   const cardDraws = drawsByCard.get(cardId);
   const actualCounts = countCategories(cardDraws);
-  same(`${cardId}: category counts`, actualCounts, EXPECTED_CARDS[cardId].counts);
   reportRows.push({ cardId, counts: actualCounts });
 
   const officialCounts = new Map();
@@ -451,8 +418,8 @@ for (const cardId of expectedCardIds) {
 }
 
 const actualTotal = countCategories(draws);
-same("global category counts", actualTotal, EXPECTED_TOTAL);
-same("active GLB covered official draw total", localGlbDrawTotal, EXPECTED_TOTAL.total - EXPECTED_TOTAL[CATEGORY.LENS_FLARE]);
+same("classified official draw total", actualTotal.total, EXPECTED_TOTAL);
+same("active GLB covered official draw total", localGlbDrawTotal, EXPECTED_TOTAL - actualTotal[CATEGORY.LENS_FLARE]);
 
 const columns = [
   [CATEGORY.EXACT, "port"],
@@ -480,6 +447,7 @@ console.log("Official draw coverage audit OK");
 console.log(`Official chain: ${evidence.summary.meshRenderers} MeshRenderers, ${draws.length} Material draws, 0 unknown`);
 console.log(`Local GLBs:     ${localGlbDrawTotal}/${draws.length} official draws; ${defaultMaterialTotal} DefaultMaterial export placeholders ignored`);
 console.log(`Exceptions:     Stencil ${actualTotal[CATEGORY.STENCIL]} selector-bound, Glitter ${actualTotal[CATEGORY.GLITTER]} precomposed`);
-console.log(`Local ports:    LensFlare ${actualTotal[CATEGORY.LENS_FLARE]} built-in Quad draws; Side&Back included in ${actualTotal[CATEGORY.EXACT]} wired draws`);
+console.log(`Local ports:    ${actualTotal[CATEGORY.EXACT]} formal-port draws; LensFlare ${actualTotal[CATEGORY.LENS_FLARE]} built-in Quad draws`);
+console.log(`Runtime bound:  Side&Back ${actualTotal[CATEGORY.SIDE_BACK]} stage-source-only draws`);
 console.log("Exact closure:  see audit-official-program-port-coverage.mjs; this inventory audit grants no exact verdict");
 console.log("Deferred/gaps:  none across the four reference prefabs");

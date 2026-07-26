@@ -12,15 +12,20 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
+import shutil
+import subprocess
 import sys
+import tempfile
 import warnings
 
 try:
     import UnityPy
     from UnityPy.enums import TextureFormat
     from UnityPy.export.Texture2DConverter import parse_image_data
+    from PIL import Image
 except ImportError as exc:
     raise SystemExit("UnityPy is required: python -m pip install UnityPy") from exc
 
@@ -48,6 +53,20 @@ TEXTURE_TYPES = {"Texture2D", "Cubemap"}
 FILTER_NAMES = {0: "Point", 1: "Bilinear", 2: "Trilinear"}
 WRAP_NAMES = {0: "Repeat", 1: "Clamp", 2: "Mirror", 3: "MirrorOnce"}
 RGBA_FALLBACK_DIR = ".official-texture-mips"
+ASTC_MAGIC = b"\x13\xab\xa1\x5c"
+ASTCENC_NAMES = (
+    "astcenc-avx2.exe",
+    "astcenc-sse4.1.exe",
+    "astcenc-sse2.exe",
+    "astcenc-native.exe",
+    "astcenc.exe",
+    "astcenc-avx2",
+    "astcenc-sse4.1",
+    "astcenc-sse2",
+    "astcenc-native",
+    "astcenc",
+)
+_ASTCENC_CACHE: tuple[Path, dict] | None = None
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -94,6 +113,8 @@ def mip_level_byte_length(texture_format: int, width: int, height: int, image_co
     fmt = TextureFormat(texture_format)
     if fmt == TextureFormat.R8:
         return width * height * image_count
+    if fmt == TextureFormat.R16:
+        return width * height * 2 * image_count
     if fmt == TextureFormat.RGB24:
         return width * height * 3 * image_count
     if fmt == TextureFormat.RGBA32:
@@ -140,25 +161,232 @@ def split_mip_payload(data: object, obj: object, payload: bytes) -> list[dict]:
     return levels
 
 
+def u24le(value: int) -> bytes:
+    if not 0 < value < (1 << 24):
+        raise ValueError(f"ASTC dimension outside uint24 range: {value}")
+    return value.to_bytes(3, "little")
+
+
+def build_astc_container(
+    chunk: bytes,
+    width: int,
+    height: int,
+    block_width: int,
+    block_height: int,
+) -> bytes:
+    return b"".join(
+        (
+            ASTC_MAGIC,
+            bytes((block_width, block_height, 1)),
+            u24le(width),
+            u24le(height),
+            u24le(1),
+            chunk,
+        )
+    )
+
+
+def parse_radiance_hdr(raw: bytes, expected_width: int, expected_height: int) -> list[tuple[float, float, float]]:
+    position = 0
+    header = []
+    while True:
+        end = raw.find(b"\n", position)
+        if end < 0:
+            raise ValueError("Radiance HDR header is truncated")
+        line = raw[position:end].decode("ascii")
+        position = end + 1
+        if not line:
+            break
+        header.append(line)
+    if not header or header[0] != "#?RADIANCE" or "FORMAT=32-bit_rle_rgbe" not in header:
+        raise ValueError("unsupported Radiance HDR header")
+    end = raw.find(b"\n", position)
+    if end < 0:
+        raise ValueError("Radiance HDR resolution line is truncated")
+    resolution = raw[position:end].decode("ascii").split()
+    position = end + 1
+    if len(resolution) != 4 or resolution[0] != "-Y" or resolution[2] != "+X":
+        raise ValueError(f"unsupported Radiance HDR orientation: {' '.join(resolution)}")
+    height = int(resolution[1])
+    width = int(resolution[3])
+    if (width, height) != (expected_width, expected_height):
+        raise ValueError(
+            f"Radiance HDR dimensions {(width, height)} != {(expected_width, expected_height)}"
+        )
+
+    pixels: list[tuple[float, float, float]] = []
+    for _ in range(height):
+        scanline: list[tuple[int, int, int, int]]
+        if 8 <= width <= 32767 and raw[position : position + 2] == b"\x02\x02":
+            if position + 4 > len(raw):
+                raise ValueError("Radiance HDR scanline header is truncated")
+            encoded_width = (raw[position + 2] << 8) | raw[position + 3]
+            position += 4
+            if encoded_width != width:
+                raise ValueError(f"Radiance HDR scanline width {encoded_width} != {width}")
+            channels: list[list[int]] = []
+            for _channel in range(4):
+                values: list[int] = []
+                while len(values) < width:
+                    if position >= len(raw):
+                        raise ValueError("Radiance HDR RLE payload is truncated")
+                    count = raw[position]
+                    position += 1
+                    if count > 128:
+                        run = count - 128
+                        if run == 0 or position >= len(raw):
+                            raise ValueError("Radiance HDR RLE run is invalid")
+                        value = raw[position]
+                        position += 1
+                        values.extend([value] * run)
+                    else:
+                        if count == 0 or position + count > len(raw):
+                            raise ValueError("Radiance HDR literal run is invalid")
+                        values.extend(raw[position : position + count])
+                        position += count
+                    if len(values) > width:
+                        raise ValueError("Radiance HDR RLE run exceeds scanline width")
+                channels.append(values)
+            scanline = [
+                (channels[0][x], channels[1][x], channels[2][x], channels[3][x])
+                for x in range(width)
+            ]
+        else:
+            byte_length = width * 4
+            if position + byte_length > len(raw):
+                raise ValueError("Radiance HDR flat scanline is truncated")
+            scanline = [
+                tuple(raw[position + x * 4 : position + x * 4 + 4])
+                for x in range(width)
+            ]
+            position += byte_length
+
+        for red, green, blue, exponent in scanline:
+            scale = math.ldexp(1.0, exponent - 136) if exponent else 0.0
+            pixels.append((red * scale, green * scale, blue * scale))
+
+    if position != len(raw):
+        raise ValueError(f"Radiance HDR has {len(raw) - position} unexplained trailing bytes")
+    return pixels
+
+
+def resolve_astcenc() -> tuple[Path, dict]:
+    global _ASTCENC_CACHE
+    if _ASTCENC_CACHE is not None:
+        return _ASTCENC_CACHE
+    candidates = []
+    configured = os.environ.get("PCR_ASTCENC")
+    if configured:
+        candidates.append(Path(configured))
+    candidates.extend(ROOT / ".tools" / name for name in ASTCENC_NAMES)
+    candidates.extend(Path(found) for name in ASTCENC_NAMES if (found := shutil.which(name)))
+    executable = next((path.resolve() for path in candidates if path.is_file()), None)
+    if executable is None:
+        raise RuntimeError(
+            "official ASTC_HDR texture requires ARM astcenc; set PCR_ASTCENC or place "
+            "astcenc in .tools/ (https://github.com/ARM-software/astc-encoder/releases)"
+        )
+    version_result = subprocess.run(
+        [str(executable), "-version"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    version_line = (version_result.stdout or version_result.stderr).splitlines()[0].strip()
+    metadata = {
+        "name": "ARM astcenc",
+        "version": version_line,
+        "executableSha256": sha256_file(executable),
+        "profile": "HDR RGB/LDR alpha (-dh; alpha recovered with -dsw aaa1)",
+    }
+    _ASTCENC_CACHE = executable, metadata
+    return _ASTCENC_CACHE
+
+
+def decode_astc_hdr_level(
+    chunk: bytes,
+    width: int,
+    height: int,
+    block_width: int,
+    block_height: int,
+) -> tuple[bytes, dict]:
+    executable, metadata = resolve_astcenc()
+    container = build_astc_container(chunk, width, height, block_width, block_height)
+    with tempfile.TemporaryDirectory(prefix="pcr-astc-hdr-") as temporary:
+        temporary_root = Path(temporary)
+        source = temporary_root / "level.astc"
+        rgb_output = temporary_root / "rgb.hdr"
+        alpha_output = temporary_root / "alpha.hdr"
+        source.write_bytes(container)
+        for output, extra in ((rgb_output, []), (alpha_output, ["-dsw", "aaa1"])):
+            result = subprocess.run(
+                [str(executable), "-dh", str(source), str(output), *extra],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode != 0 or not output.is_file():
+                detail = (result.stderr or result.stdout or "unknown astcenc failure").strip()
+                raise RuntimeError(f"astcenc HDR decode failed: {detail}")
+        rgb = parse_radiance_hdr(rgb_output.read_bytes(), width, height)
+        alpha_rgb = parse_radiance_hdr(alpha_output.read_bytes(), width, height)
+
+    # UnityPy's established fallback path flips decoded rows before upload.
+    rgba = bytearray(width * height * 4)
+    for output_y in range(height):
+        source_y = height - 1 - output_y
+        for x in range(width):
+            source_index = source_y * width + x
+            target_index = (output_y * width + x) * 4
+            values = (*rgb[source_index], alpha_rgb[source_index][0])
+            for channel, value in enumerate(values):
+                if not math.isfinite(value) or value < 0.0 or value > 1.0:
+                    raise ValueError(
+                        f"ASTC HDR value {value} cannot be represented by deterministic RGBA8 fallback"
+                    )
+                rgba[target_index + channel] = min(255, math.floor(value * 255.0 + 0.5))
+    return bytes(rgba), metadata
+
+
 def build_rgba8_fallback(data: object, obj: object, payload: bytes, levels: list[dict]) -> tuple[bytes, dict] | None:
-    if obj.type.name != "Texture2D" or len(levels) <= 1:
+    texture_format = as_int(data.m_TextureFormat)
+    format_name = texture_format_name(texture_format)
+    is_astc_hdr = format_name.startswith("ASTC_HDR_")
+    if obj.type.name != "Texture2D" or (len(levels) <= 1 and not is_astc_hdr):
         return None
     output = bytearray()
     fallback_levels = []
-    texture_format = as_int(data.m_TextureFormat)
+    decoder_metadata = {
+        "name": "UnityPy Texture2DConverter",
+        "version": getattr(UnityPy, "__version__", "unknown"),
+        "profile": "parse_image_data RGBA8 with vertical flip",
+    }
+    block_width = block_height = None
+    if is_astc_hdr:
+        block_width, block_height = (
+            int(item) for item in format_name.rsplit("_", 1)[1].split("x")
+        )
     for level in levels:
         chunk = payload[level["offset"] : level["offset"] + level["length"]]
-        image = parse_image_data(
-            chunk,
-            level["width"],
-            level["height"],
-            texture_format,
-            obj.version,
-            obj.platform,
-            getattr(data, "m_PlatformBlob", None),
-            True,
-        ).convert("RGBA")
-        rgba = image.tobytes()
+        if is_astc_hdr:
+            rgba, decoder_metadata = decode_astc_hdr_level(
+                chunk,
+                level["width"],
+                level["height"],
+                block_width,
+                block_height,
+            )
+        else:
+            image = parse_image_data(
+                chunk,
+                level["width"],
+                level["height"],
+                texture_format,
+                obj.version,
+                obj.platform,
+                getattr(data, "m_PlatformBlob", None),
+                True,
+            ).convert("RGBA")
+            rgba = image.tobytes()
         expected = level["width"] * level["height"] * 4
         if len(rgba) != expected:
             raise ValueError(f"{data.m_Name}: mip {level['level']} RGBA length {len(rgba)} != {expected}")
@@ -182,6 +410,8 @@ def build_rgba8_fallback(data: object, obj: object, payload: bytes, levels: list
         "byteLength": len(raw),
         "sha256": sha256_bytes(raw),
         "levels": fallback_levels,
+        "sourceEncoding": format_name,
+        "decoder": decoder_metadata,
     }
 
 
@@ -437,8 +667,14 @@ def parse_args() -> argparse.Namespace:
         default=Path(os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)),
     )
     parser.add_argument("--scene", action="append", type=Path, default=[])
+    parser.add_argument(
+        "--scene-root",
+        type=Path,
+        help="read every scene*.json in this directory; avoids long argv lists",
+    )
     parser.add_argument("--pretty", action="store_true")
     parser.add_argument("--emit-rgba-fallback-root", type=Path)
+    parser.add_argument("--emit-base-png-root", type=Path)
     parser.add_argument("--no-json", action="store_true")
     return parser.parse_args()
 
@@ -446,7 +682,19 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     decrypted_root = args.decrypted_root.resolve()
-    scene_paths = [path.resolve() for path in args.scene]
+    if args.scene and args.scene_root:
+        raise SystemExit("--scene and --scene-root are mutually exclusive")
+    if args.scene_root:
+        scene_root = args.scene_root.resolve()
+        if not scene_root.is_dir():
+            raise SystemExit(f"scene root does not exist: {scene_root}")
+        scene_paths = sorted(
+            path.resolve()
+            for path in scene_root.glob("scene*.json")
+            if path.is_file()
+        )
+    else:
+        scene_paths = [path.resolve() for path in args.scene]
     if not scene_paths:
         scene_paths = [(ROOT / "public" / name).resolve() for name in DEFAULT_SCENES]
     if not decrypted_root.is_dir():
@@ -501,6 +749,28 @@ def main() -> int:
         for url, fallback_bytes in sorted(emitted_files.items()):
             destination = output_root / PurePosixPath(url).name
             destination.write_bytes(fallback_bytes)
+    if args.emit_base_png_root:
+        output_root = args.emit_base_png_root.resolve()
+        for item in textures.values():
+            chain = item.get("fallback", {}).get("rgba8MipChain")
+            if not chain:
+                continue
+            fallback_bytes = emitted_files.get(chain["url"])
+            if fallback_bytes is None:
+                raise RuntimeError(f"{item['url']}: selected fallback bytes were not retained")
+            base_level = chain["levels"][0]
+            base_rgba = fallback_bytes[
+                base_level["offset"] : base_level["offset"] + base_level["length"]
+            ]
+            destination = output_root.joinpath(
+                *PurePosixPath(item["url"].removeprefix("/")).parts
+            )
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            Image.frombytes(
+                "RGBA",
+                (base_level["width"], base_level["height"]),
+                base_rgba,
+            ).save(destination, format="PNG")
 
     output = {
         "schemaVersion": 1,

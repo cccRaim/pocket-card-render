@@ -51,9 +51,12 @@ vec3 _577;
 
 void main()
 {
+    highp vec3 pcrUnityCameraPosition = vec3(cameraPosition.xy, -cameraPosition.z);
+    highp vec3 pcrUnityWorldPosition = vec3(vs_TEXCOORD1.xy, -vs_TEXCOORD1.z);
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD2.xy, -vs_TEXCOORD2.z);
     _9.x = -viewMatrix[0].z;
     _9.y = -viewMatrix[1].z;
-    _9.z = -viewMatrix[2].z;
+    _9.z = viewMatrix[2].z;
     _38 = dot(_9.xyz, _9.xyz);
     _38 = inversesqrt(_38);
     highp vec3 _50 = vec3(_38) * _9.xyz;
@@ -90,9 +93,9 @@ void main()
     _100.y = -_95.x;
     _116.y = dot(_100.zx, _53.xy);
     _187 = (_116 * vec3(0.5)) + vec3(0.5);
-    _193.x = dot(vs_TEXCOORD2, vs_TEXCOORD2);
+    _193.x = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _193.x = inversesqrt(_193.x);
-    highp vec3 _207 = _193.xxx * vs_TEXCOORD2;
+    highp vec3 _207 = _193.xxx * pcrUnityWorldNormal;
     _53 = vec4(_207.x, _207.y, _207.z, _53.w);
     _53.w = dot(_64.zx, _53.yz);
     _84.x = dot(_90, _53.xw);
@@ -134,7 +137,7 @@ void main()
     _359 = _193.y + _193.x;
     _187 = vec3(_359) * _187;
     _359 = (_AlphaBlend * (-_359)) + 1.0;
-    highp vec3 _428 = (-vs_TEXCOORD1) + cameraPosition;
+    highp vec3 _428 = (-pcrUnityWorldPosition) + pcrUnityCameraPosition;
     _53 = vec4(_428.x, _428.y, _428.z, _53.w);
     _193.x = dot(_53.xyz, _53.xyz);
     _193.x = inversesqrt(_193.x);

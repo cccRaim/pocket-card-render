@@ -31,10 +31,12 @@ export function indexOfficialTmpFonts(manifest, settingsContract = null) {
     const characters = new Map([
       ...(source.characters || []).map((entry) => [entry.unicode, { ...entry, source: "official-preloaded" }]),
       ...(source.runtimeCharacters || []).map((entry) => [entry.unicode, { ...entry, source: "native-generated" }]),
+      ...(source.syntheticCharacters || []).map((entry) => [entry.unicode, { ...entry, source: "game-tag-synthetic" }]),
     ]);
     const glyphs = new Map([
       ...(source.glyphs || []).map((entry) => [entry.index, { ...entry, source: "official-preloaded" }]),
       ...(source.runtimeGlyphs || []).map((entry) => [entry.glyphIndex, { ...entry, source: "native-generated" }]),
+      ...(source.syntheticGlyphs || []).map((entry) => [entry.glyphIndex, { ...entry, source: "game-tag-synthetic" }]),
     ]);
     const pairs = new Map();
     for (const pair of source.fontFeatureTable?.m_GlyphPairAdjustmentRecords || []) {
@@ -82,7 +84,9 @@ export function resolveOfficialTmpGlyph(index, fontId, codePoint) {
   if (!glyph) return null;
   const atlas = glyph.source === "native-generated"
     ? font.runtimeAtlases?.[glyph.page]
-    : font.atlases?.[glyph.atlasIndex];
+    : glyph.source === "official-preloaded"
+      ? font.atlases?.[glyph.atlasIndex]
+      : null;
   return { fontId: String(fontId), font, characterRecord, glyph, atlas };
 }
 

@@ -25,14 +25,46 @@ const close = (actual, expected, label) => {
   assert.ok(Math.abs(actual - expected) < 1e-9, `${label}: ${actual} != ${expected}`);
 };
 
-assert.equal(records.length, 84);
+assert.equal(records.length, 127);
 const decoded = records.map(decodeSerializedLayoutComponent);
 assert.deepEqual(
   decoded.reduce((counts, component) => {
     counts[component.kind] = (counts[component.kind] || 0) + 1;
     return counts;
   }, {}),
-  { "aspect-ratio": 51, "content-size": 5, horizontal: 20, vertical: 8 },
+  {
+    "aspect-ratio": 51,
+    "content-size": 5,
+    horizontal: 20,
+    "layout-element": 43,
+    vertical: 8,
+  },
+);
+
+const serializedLayoutElements = decoded.filter(
+  (component) => component.kind === "layout-element",
+);
+assert.equal(serializedLayoutElements.length, 43);
+assert.equal(serializedLayoutElements.filter((component) => component.ignoreLayout).length, 9);
+assert(serializedLayoutElements.every((component) => component.layoutPriority === 1));
+const sixPixelSpacer = serializedLayoutElements.find(
+  (component) => component.min[0] === 6 && component.preferred[0] === 6,
+);
+assert(sixPixelSpacer, "official illustrator spacing LayoutElement is absent");
+const layoutElementRecord = records.find(
+  (record) => record.componentType === "LayoutElement",
+);
+const badLayoutPriority = clone(layoutElementRecord);
+badLayoutPriority.serialized.m_LayoutPriority = 1.5;
+assert.throws(
+  () => decodeSerializedLayoutComponent(badLayoutPriority),
+  /must be an integer/,
+);
+const badIgnoreLayout = clone(layoutElementRecord);
+badIgnoreLayout.serialized.m_IgnoreLayout = 2;
+assert.throws(
+  () => decodeSerializedLayoutComponent(badIgnoreLayout),
+  /must be boolean/,
 );
 
 for (const record of records.filter((item) => item.componentType === "AspectRatioFitter")) {
@@ -333,4 +365,4 @@ assert.throws(
 );
 
 console.log("Official layout fitter contract/executor mutation tests OK");
-console.log("  84/84 serialized components decoded; all fitter modes and group controls gated");
+console.log("  127/127 serialized components decoded; all layout elements, fitter modes and group controls gated");

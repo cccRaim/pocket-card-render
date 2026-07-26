@@ -6,7 +6,7 @@
 // pipeline + their own game data); the default demo uses the prebuilt static scene.*.json.
 import { createServer } from "node:http";
 import { createHash, randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, readdir, rename, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { join, extname, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { tmpRuntimeSourceFiles, tmpRuntimeSourceIdentityMatches } from "./build/tmp-runtime-sources.mjs";
@@ -24,6 +24,7 @@ import {
   signRuntimeArtifact,
   sourceSetRoot,
 } from "./build/runtime-evidence-provenance.mjs";
+import { sceneExampleAvailability } from "./build/scene-example-availability.mjs";
 
 const HERE = join(fileURLToPath(new URL(".", import.meta.url)));
 const PUB = join(HERE, "public");
@@ -39,6 +40,14 @@ const SHA256 = /^[0-9a-f]{64}$/;
 let fullRuntimeEvidenceWrite = Promise.resolve();
 const fullRuntimeSessions = new Map();
 const FULL_RUNTIME_SESSION_TTL_MS = 30 * 60 * 1000;
+
+function safeDecodeRequestPath(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
 
 const MIME = {
   ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8",
@@ -240,6 +249,7 @@ async function serveScenes(_req, res) {
         name: data.card?.name || file.replace(/\.json$/i, ""),
         names: await localizedSceneNames(data, locales),
         rarityToken: data.card?.rarityToken || "",
+        availability: await sceneExampleAvailability(data, PUB),
       });
     }
     res.writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-cache" });
@@ -461,7 +471,12 @@ async function writeFullRuntimeCapture(body, session, identity) {
   artifact.attestation.hmacSha256 = signRuntimeArtifact(artifact, key);
   await mkdir(join(HERE, "$cache"), { recursive: true });
   await writeFile(FULL_RUNTIME_EVIDENCE_STAGING, `${JSON.stringify(artifact, null, 2)}\n`);
-  if (complete) await rename(FULL_RUNTIME_EVIDENCE_STAGING, FULL_RUNTIME_EVIDENCE);
+  if (complete) {
+    // Windows rename does not reliably replace an existing target, especially
+    // when the previous evidence file inherited a different local ACL.
+    if (process.platform === "win32") await rm(FULL_RUNTIME_EVIDENCE, { force: true });
+    await rename(FULL_RUNTIME_EVIDENCE_STAGING, FULL_RUNTIME_EVIDENCE);
+  }
 }
 
 async function recordFullRuntimeEvidence(req, res) {
@@ -511,7 +526,7 @@ async function recordFullRuntimeEvidence(req, res) {
 
 createServer(async (req, res) => {
   try {
-    let p = decodeURIComponent(req.url.split("?")[0]);
+    let p = safeDecodeRequestPath(req.url.split("?")[0]);
     if (p === "/") p = "/index.html";
     if (p === "/scenes") return await serveScenes(req, res);
     if (p === "/compose") return await serveCompose(req, res);

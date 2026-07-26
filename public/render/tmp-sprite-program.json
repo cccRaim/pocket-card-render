@@ -1,0 +1,659 @@
+{
+  "schema": "pocket-card-render/tmp-sprite-program@1",
+  "schemaVersion": 1,
+  "generatedBy": "build/build-official-tmp-sprite-program.mjs",
+  "status": "exact-static-official-source-with-runtime-boundaries",
+  "provenance": {
+    "gameVersion": "1.6.0",
+    "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2",
+    "sampleManifestSha256": "2515cae195ee58f06c32f5d0c7d063c6b7a1f03b5743696e2181786d074d4b4d",
+    "unityVersion": "2022.3.62f2"
+  },
+  "evidencePolicy": {
+    "excludedInputs": [
+      "scene JSON",
+      "render recipes",
+      "generated WebGL sources",
+      "browser or guest runtime",
+      "screenshots"
+    ],
+    "officialInputs": [
+      "Common/Font_bundles",
+      "Common/Shader/Common/CardNew/UI/Card_TextMeshPro_Sprite_ToRT.shader_bundles",
+      "build/official-samples/current.json"
+    ]
+  },
+  "role": "TMP_SubMeshUI inline sprite producer to DynamicUI render target",
+  "classification": {
+    "textLayoutOwner": "TextMeshProUGUI",
+    "meshOwner": "TMP_SubMeshUI",
+    "materialOwner": "TMP_SpriteAsset.material",
+    "shaderFamily": "TextMeshPro/Sprite(to RT)",
+    "isTmpSdfGlyph": false,
+    "isUnityUiImage": false
+  },
+  "officialAssetChain": {
+    "fontBundle": {
+      "byteSize": 79168397,
+      "serializedFile": "CAB-31d82d0d65bdfa6728d746c34920e08d",
+      "sha256": "88364448d71939764df209474b760b8d30623eba85a165d7b822e2488cc10589",
+      "sourceId": "Common/Font_bundles"
+    },
+    "material": {
+      "byteSize": 1028,
+      "customRenderQueue": -1,
+      "disabledShaderPasses": [],
+      "enableInstancingVariants": false,
+      "identity": "CAB-31d82d0d65bdfa6728d746c34920e08d:-1050951510632854060",
+      "invalidKeywords": [],
+      "keywords": [],
+      "name": "TextExSprite",
+      "serializedProperties": {
+        "canvasStateDefaults": {
+          "_ColorMask": 15,
+          "_Stencil": 0,
+          "_StencilComp": 8,
+          "_StencilOp": 0,
+          "_StencilReadMask": 255,
+          "_StencilWriteMask": 255
+        },
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "mainTexture": {
+          "fileId": 0,
+          "offset": [
+            0,
+            0
+          ],
+          "pathId": "3209478181533236899",
+          "scale": [
+            1,
+            1
+          ]
+        }
+      },
+      "sha256": "d5161b0bbbe99257643d3b9fd127b0433029beee5b87386eb796e20a5911b984",
+      "shaderIdentity": "CAB-5defc05c0250f5fe935b9cd9b28fdca5:2168984029091550199",
+      "shaderPPtr": {
+        "fileId": 6,
+        "pathId": "2168984029091550199"
+      }
+    },
+    "shader": {
+      "byteSize": 6532,
+      "identity": "CAB-5defc05c0250f5fe935b9cd9b28fdca5:2168984029091550199",
+      "keywordNames": [
+        "STEREO_INSTANCING_ON",
+        "UNITY_SINGLE_PASS_STEREO",
+        "STEREO_MULTIVIEW_ON",
+        "STEREO_CUBEMAP_RENDER_ON",
+        "UNITY_UI_CLIP_RECT",
+        "UNITY_UI_ALPHACLIP"
+      ],
+      "name": "Lettuce/Common/Card/TextMeshPro/Sprite(to RT)",
+      "platforms": [
+        18
+      ],
+      "sha256": "bb8dbbecf77225be55cf713731e31a9e6e997548838dcd8ed737c89ca09d1bc6"
+    },
+    "shaderBundle": {
+      "byteSize": 19922,
+      "serializedFile": "CAB-5defc05c0250f5fe935b9cd9b28fdca5",
+      "sha256": "4aa7b6424b855d05c2e3da29a388983a121cb62e683496dabb404e5a0423bbbc",
+      "sourceId": "Common/Shader/Common/CardNew/UI/Card_TextMeshPro_Sprite_ToRT.shader_bundles"
+    },
+    "spriteAsset": {
+      "byteSize": 572,
+      "identity": "CAB-31d82d0d65bdfa6728d746c34920e08d:840073264968542736",
+      "materialPPtr": {
+        "fileId": 0,
+        "pathId": "-1050951510632854060"
+      },
+      "name": "TextExSprite",
+      "sha256": "e6f1c89e38810a0d8f99ae1a382a3e2f0a0ed05b03281f40f0c57644eea2dd55",
+      "spriteSheetPPtr": {
+        "fileId": 0,
+        "pathId": "3209478181533236899"
+      }
+    },
+    "texture": {
+      "byteSize": 216,
+      "identity": "CAB-31d82d0d65bdfa6728d746c34920e08d:3209478181533236899",
+      "name": "TextExSprite",
+      "sha256": "579de24c79adec19a721dc8e786acd527f5d6648f9506d6c30ce6da5856e24ea"
+    }
+  },
+  "officialSelector": {
+    "selectorId": "efa03dcbfe79cd09734a60516654ad6dcd6a92d717eb54b9b01baccf92f56c17",
+    "candidateWitnessId": "d3e59c58da95b14e62179d5f3b0fc1f546289eb4f1f469f80be2ebc3c52de8d4",
+    "compositeIdentitySha256": "e4cd3aa711681963d1b241450d400cff2d8b7a709627cdc33845a679bde60288",
+    "shaderIdentity": "CAB-5defc05c0250f5fe935b9cd9b28fdca5:2168984029091550199",
+    "shaderName": "Lettuce/Common/Card/TextMeshPro/Sprite(to RT)",
+    "keywords": [],
+    "candidateSelection": "exact-keywords",
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "candidate": {
+      "gpuProgramType": 25,
+      "keywordIndices": [],
+      "keywords": [],
+      "parameterBlobIndex": 0,
+      "pass": 0,
+      "programBlobIndex": 4,
+      "shaderRequirements": 33,
+      "stages": [
+        {
+          "playerGroup": 3,
+          "stageMetadata": "progVertex",
+          "variantIndex": 0
+        }
+      ],
+      "subshader": 0
+    },
+    "executableId": "983d233751c4653fbb7fcc71082de5994a5ce85952b54622f97ffff5c82d4d6e",
+    "semanticExecutableId": "d349fa456062441c91a51916b1c8ac03efaffd15112cf55052a209e7e5cca9f3"
+  },
+  "officialProgram": {
+    "compilerPlatform": 18,
+    "gpuProgramType": 25,
+    "segment": {
+      "compressedByteSize": 2810,
+      "compressedOffset": 0,
+      "compressedSha256": "36d309ef72f8cc48fe474d6457c7e85a2d6fab5c463563a4b886ec6e4b233a0c",
+      "decompressedByteSize": 8904,
+      "decompressedSha256": "55bdb324d017a03b3e4c0e0d25a0f9173095cd61e7e44fff434210338af09a2b",
+      "segmentIndex": 0
+    },
+    "programEntry": {
+      "byteSize": 1536,
+      "index": 4,
+      "offset": 1572,
+      "sha256": "e941539c07c7193a7138d5f8ab12ef7e6834fdb25d88e6a50fc8b77d2be4d388",
+      "unknownWord": 0
+    },
+    "parameterEntry": {
+      "byteSize": 348,
+      "index": 0,
+      "offset": 100,
+      "sha256": "a70bdad59d44e675a9b67fbdfe43ed639f4945fb56a0627c54e4694437f6691d",
+      "unknownWord": 0
+    },
+    "programContainerLayoutSha256": "184f5b165034b2bcf9bd6cf0dc1d40d2e6f056864d65fd3232dce223a87be47a",
+    "identityFields": {
+      "commonBindingsSha256": "3ebda9f44bdf3c693cfbf91fc1e1c9e5334d70590e7a32f19300fddf198b3df4",
+      "compilerPlatform": 18,
+      "fragmentSpirvSha256": "43e4c386774200c649e187ccec51e9fa4ec7671af3cfb84aa7b368e83de72f14",
+      "gpuProgramType": 25,
+      "parameterEntrySha256": "a70bdad59d44e675a9b67fbdfe43ed639f4945fb56a0627c54e4694437f6691d",
+      "passStateSha256": "749196a0b5b748f75aed6e40f084fe22429407480f09a8688bfc51e2fd87f0cf",
+      "programContainerLayoutSha256": "184f5b165034b2bcf9bd6cf0dc1d40d2e6f056864d65fd3232dce223a87be47a",
+      "programEntrySha256": "e941539c07c7193a7138d5f8ab12ef7e6834fdb25d88e6a50fc8b77d2be4d388",
+      "schemaVersion": 1,
+      "vertexSpirvSha256": "5f2f316db1877ae0c0a1a1801384fcc7244a353961145e454878205eb7a4b058"
+    },
+    "semanticIdentityFields": {
+      "commonBindingsSha256": "3ebda9f44bdf3c693cfbf91fc1e1c9e5334d70590e7a32f19300fddf198b3df4",
+      "fragmentSpirvSha256": "43e4c386774200c649e187ccec51e9fa4ec7671af3cfb84aa7b368e83de72f14",
+      "parameterEntrySha256": "a70bdad59d44e675a9b67fbdfe43ed639f4945fb56a0627c54e4694437f6691d",
+      "passStateSha256": "749196a0b5b748f75aed6e40f084fe22429407480f09a8688bfc51e2fd87f0cf",
+      "vertexSpirvSha256": "5f2f316db1877ae0c0a1a1801384fcc7244a353961145e454878205eb7a4b058"
+    },
+    "modules": {
+      "vertex": {
+        "byteSize": 2736,
+        "spirvSha256": "5f2f316db1877ae0c0a1a1801384fcc7244a353961145e454878205eb7a4b058",
+        "spirvCrossSourceSha256": "6e7d90c825011ec9a85718ff22dac339ea44c71e1cc886c82ad26c26dd5d2210",
+        "reflectionSha256": "49b1a663f902daf4be842c693ff885f6891fdfb180a67cc26c6c0d6e456ced09"
+      },
+      "fragment": {
+        "byteSize": 1740,
+        "spirvSha256": "43e4c386774200c649e187ccec51e9fa4ec7671af3cfb84aa7b368e83de72f14",
+        "spirvCrossSourceSha256": "ee8942c929f5eb547bf0101f31494d79c6742a78f3373ef112756dd5643ed48e",
+        "reflectionSha256": "df4cbd928d5b1b6a43b9034c8d484fc90cfdeec50ad7982df0519a91c55f3734"
+      }
+    },
+    "stageProgramStatus": "source-hash-bound",
+    "backendSemanticEquivalenceStatus": "unproved"
+  },
+  "officialPass": {
+    "passStateSha256": "749196a0b5b748f75aed6e40f084fe22429407480f09a8688bfc51e2fd87f0cf",
+    "commonBindingsSha256": "3ebda9f44bdf3c693cfbf91fc1e1c9e5334d70590e7a32f19300fddf198b3df4",
+    "serializedState": {
+      "alphaToMask": {
+        "property": null,
+        "value": 0
+      },
+      "blend": {
+        "alphaOp": {
+          "property": null,
+          "value": 0
+        },
+        "colorMask": {
+          "property": "_ColorMask",
+          "value": 0
+        },
+        "colorOp": {
+          "property": null,
+          "value": 0
+        },
+        "dstAlpha": {
+          "property": null,
+          "value": 10
+        },
+        "dstColor": {
+          "property": null,
+          "value": 10
+        },
+        "separate": false,
+        "srcAlpha": {
+          "property": null,
+          "value": 0
+        },
+        "srcColor": {
+          "property": null,
+          "value": 1
+        }
+      },
+      "cull": {
+        "property": null,
+        "value": 0
+      },
+      "depth": {
+        "clip": {
+          "property": null,
+          "value": 1
+        },
+        "test": {
+          "property": "unity_GUIZTestMode",
+          "value": 0
+        },
+        "write": {
+          "property": null,
+          "value": 0
+        }
+      },
+      "stencil": {
+        "compare": {
+          "property": "_StencilComp",
+          "value": 0
+        },
+        "depthFail": {
+          "property": null,
+          "value": 0
+        },
+        "fail": {
+          "property": null,
+          "value": 0
+        },
+        "pass": {
+          "property": "_StencilOp",
+          "value": 0
+        },
+        "readMask": {
+          "property": "_StencilReadMask",
+          "value": 0
+        },
+        "reference": {
+          "property": "_Stencil",
+          "value": 0
+        },
+        "writeMask": {
+          "property": "_StencilWriteMask",
+          "value": 0
+        }
+      }
+    },
+    "fixedSerializedState": {
+      "blend": {
+        "source": "One",
+        "destination": "OneMinusSrcAlpha",
+        "sourceValue": 1,
+        "destinationValue": 10,
+        "separate": false
+      },
+      "depthWrite": false,
+      "depthClip": true,
+      "cull": "Off",
+      "alphaToCoverage": false
+    },
+    "dynamicProperties": {
+      "depthTest": {
+        "shaderPath": "depth.test",
+        "property": "unity_GUIZTestMode",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": null,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "colorMask": {
+        "shaderPath": "blend.colorMask",
+        "property": "_ColorMask",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 15,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "stencilReference": {
+        "shaderPath": "stencil.reference",
+        "property": "_Stencil",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 0,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "stencilCompare": {
+        "shaderPath": "stencil.compare",
+        "property": "_StencilComp",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 8,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "stencilPass": {
+        "shaderPath": "stencil.pass",
+        "property": "_StencilOp",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 0,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "stencilReadMask": {
+        "shaderPath": "stencil.readMask",
+        "property": "_StencilReadMask",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 255,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      },
+      "stencilWriteMask": {
+        "shaderPath": "stencil.writeMask",
+        "property": "_StencilWriteMask",
+        "serializedPlaceholder": 0,
+        "materialSerializedDefault": 255,
+        "guestResolvedValue": null,
+        "status": "runtime-required"
+      }
+    },
+    "guestResolvedStateStatus": "runtime-required"
+  },
+  "officialBindings": {
+    "programBindChannelsSha256": "6bd2091b9d4440220fac808104895bb7c6d9b2a5609def65f59adb73b1f358c0",
+    "bindChannels": [
+      {
+        "index": 0,
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1"
+      },
+      {
+        "index": 1,
+        "source": 3,
+        "sourceName": "Color",
+        "target": 14,
+        "targetName": "Attrib2"
+      },
+      {
+        "index": 2,
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 15,
+        "targetName": "Attrib3"
+      }
+    ],
+    "parameterReflectionSha256": "5c87c1fdd1145ccaf302f496aa214838bdf07b82169192c1770aa01f01780200",
+    "parameterReflection": {
+      "constantBlockCount": 3,
+      "constantBufferBindings": [
+        {
+          "descriptor": [
+            1,
+            134283264,
+            0
+          ],
+          "name": "PGlobals610448065"
+        },
+        {
+          "descriptor": [
+            1,
+            67174401,
+            0
+          ],
+          "name": "VGlobals610448065"
+        }
+      ],
+      "constantBuffers": [
+        {
+          "fields": [],
+          "name": "",
+          "size": 0
+        },
+        {
+          "fields": [
+            {
+              "descriptor": [
+                0,
+                1,
+                4,
+                0,
+                0,
+                0
+              ],
+              "name": "_TextureSampleAdd",
+              "offset": 0
+            }
+          ],
+          "name": "PGlobals610448065",
+          "size": 16
+        },
+        {
+          "fields": [
+            {
+              "descriptor": [
+                0,
+                1,
+                4,
+                0,
+                0,
+                128
+              ],
+              "name": "_Color",
+              "offset": 128
+            },
+            {
+              "descriptor": [
+                0,
+                4,
+                4,
+                1,
+                0,
+                64
+              ],
+              "name": "unity_MatrixVP",
+              "offset": 64
+            },
+            {
+              "descriptor": [
+                0,
+                4,
+                4,
+                1,
+                0,
+                0
+              ],
+              "name": "unity_ObjectToWorld",
+              "offset": 0
+            }
+          ],
+          "name": "VGlobals610448065",
+          "size": 144
+        }
+      ],
+      "resourceCount": 2,
+      "resourceDecoding": "material-property-disambiguated",
+      "textures": [],
+      "version": 202012090
+    },
+    "common": {
+      "constantBuffers": [],
+      "textures": [
+        {
+          "binding": 0,
+          "dimension": 2,
+          "encodedIndex": 134217728,
+          "multisampled": false,
+          "name": "_MainTex",
+          "samplerIndex": -1,
+          "stages": [
+            "progVertex"
+          ]
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "officialChannel": "Vertex",
+        "officialTarget": "Attrib1",
+        "spirvLocation": 0,
+        "spirvType": "vec4",
+        "webglName": "position",
+        "webglType": "vec3"
+      },
+      {
+        "officialChannel": "Color",
+        "officialTarget": "Attrib2",
+        "spirvLocation": 1,
+        "spirvType": "vec4",
+        "webglName": "color",
+        "webglType": "vec4"
+      },
+      {
+        "officialChannel": "UV0",
+        "officialTarget": "Attrib3",
+        "spirvLocation": 2,
+        "spirvType": "vec2",
+        "webglName": "uv",
+        "webglType": "vec2"
+      }
+    ],
+    "samplers": [
+      {
+        "slot": "_MainTex",
+        "spirvName": "_13",
+        "set": 0,
+        "binding": 0,
+        "dimension": 2,
+        "source": "serialized-common"
+      }
+    ],
+    "uniforms": {
+      "fragment": {
+        "_TextureSampleAdd": {
+          "buffer": "PGlobals610448065",
+          "offset": 0,
+          "type": "vec4",
+          "precision": "highp"
+        }
+      },
+      "vertex": {
+        "unity_ObjectToWorld": {
+          "buffer": "VGlobals610448065",
+          "offset": 0,
+          "type": "mat4",
+          "webglName": "modelMatrix"
+        },
+        "unity_MatrixVP": {
+          "buffer": "VGlobals610448065",
+          "offset": 64,
+          "type": "mat4",
+          "webglExpression": "projectionMatrix * viewMatrix"
+        },
+        "_Color": {
+          "buffer": "VGlobals610448065",
+          "offset": 128,
+          "type": "vec4",
+          "precision": "mediump"
+        }
+      }
+    }
+  },
+  "fragmentSemantics": {
+    "sampled": "sample = texture(_MainTex, uv) + _TextureSampleAdd",
+    "tinted": "p = sample * vertexColor * _Color",
+    "primaryRgb": "p.rgb * p.a",
+    "primaryAlpha": "p.a",
+    "secondary": "vec4(0.0)",
+    "alphaModel": "premultiplied"
+  },
+  "webglSources": {
+    "vertex": {
+      "path": "public/shaders/tmp_sprite_to_rt.vert.glsl",
+      "sha256": "4b47287cbf320205fb31828d43cdbaafeae1e692e995381b2dc2021cb17cccc2"
+    },
+    "fragment": {
+      "path": "public/shaders/tmp_sprite_to_rt.frag.glsl",
+      "sha256": "d90534764b7c6d960ce3c34649c79116513a40330af8c47d1b621850586a37cf"
+    }
+  },
+  "webglAdaptation": {
+    "status": "source-hash-bound",
+    "operations": [
+      "flatten official std140 buffers into named WebGL uniforms",
+      "map Vertex/Color/UV0 to position/color/uv using the official bind-channel table",
+      "construct vec4(position, 1.0) for the official vec4 position input",
+      "map unity_ObjectToWorld and unity_MatrixVP without changing matrix dataflow",
+      "remove the Vulkan clip-space Y inversion once",
+      "rename stage interfaces, sampler, and MRT outputs without changing fragment math"
+    ],
+    "prohibitedTransforms": [
+      "no _MainTex_ST transform",
+      "no texture-coordinate Y flip",
+      "no SDF atlas or UV2 glyph packing",
+      "no straight-alpha rewrite"
+    ]
+  },
+  "runtimeBoundaries": [
+    {
+      "claim": "the guest Canvas draw selects this empty-keyword selector candidate; the serialized Material candidate is not a guest dispatch capture",
+      "id": "guest-runtime-dispatch",
+      "status": "runtime-required"
+    },
+    {
+      "claim": "the guest UNITY_UI_CLIP_RECT and UNITY_UI_ALPHACLIP keyword state",
+      "id": "dynamic-canvas-keywords",
+      "status": "runtime-required"
+    },
+    {
+      "claim": "resolved unity_GUIZTestMode, _ColorMask, _Stencil, _StencilComp, _StencilOp, _StencilReadMask, and _StencilWriteMask per draw",
+      "id": "dynamic-canvas-fixed-function-state",
+      "status": "runtime-required"
+    },
+    {
+      "claim": "the guest _TextureSampleAdd value for the TextExSprite atlas draw",
+      "id": "texture-sample-add-value",
+      "status": "runtime-required"
+    },
+    {
+      "claim": "guest MRT attachment formats, colorspace, clear, viewport, and destination contents",
+      "id": "render-target-attachments",
+      "status": "runtime-required"
+    },
+    {
+      "claim": "the submitted TMP_SubMeshUI sibling/draw order in the official Canvas batch",
+      "id": "tmp-submesh-canvas-order",
+      "status": "runtime-required"
+    }
+  ],
+  "exactStaticClaims": [
+    "SpriteAsset -> Material -> Shader PPtr chain",
+    "serialized empty-keyword selector and unique Vulkan candidate witness",
+    "program and parameter entries, SPIR-V modules, pass bytes, and common bindings",
+    "Vertex/Color/UV0 bind channels and static premultiplied MRT fragment dataflow",
+    "serialized fixed blend, depth-write, cull, and alpha-to-coverage state"
+  ]
+}

@@ -259,6 +259,16 @@ try {
     "side_back_program.json": `${JSON.stringify({
       shader: evidence.shader.name,
       generated_by: "build/build-exact-side-back.mjs",
+      runtime_contract: {
+        schema: "pocket-card-render/stage-source-runtime-contract@1",
+        shader_key: "Side&Back",
+        stage_source_only: true,
+        object_clip_position: "standard-object-to-clip",
+      },
+      webgl_sources: {
+        vertex: "public/shaders/side_back.vert.glsl",
+        fragment: "public/shaders/side_back.frag.glsl",
+      },
       official_source: {
         bundle_relative_path: evidence.source.bundleRelativePath,
         bundle_sha256: PINNED.bundle,

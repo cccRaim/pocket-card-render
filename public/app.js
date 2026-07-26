@@ -15,7 +15,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { SHADER } from "./render/rarities.js";
 import { getMaterial } from "./render/registry.js";
-import { makeRenderContext, setBlend, applyRenderQueueState, applyDepthState, applyCullState, applyStencilState, applyOfficialPassState, applyClip } from "./render/context.js";
+import { makeRenderContext, setBlend, applyRenderQueueState, applyDepthState, applyCullState, applyStencilState, applyOfficialPassState } from "./render/context.js";
 import { threeWorldForwardToUnity, updateGlitterFlow } from "./render/glitter-flow.js";
 import { updateKiraPuyo } from "./render/kira-puyo.js";
 import { OfficialClock, syncOfficialClockVisibility } from "./render/official-clock.js";
@@ -40,6 +40,7 @@ import {
   loadOfficialBloomPrograms,
   loadOfficialFinalBlitProgram,
 } from "./render/pipeline/official-bloom.js";
+import { sceneUsesBloomProducer } from "./render/pipeline/bloom-activation.js";
 import {
   createHomographyDisplayMaterial,
   loadHomographyDisplayProgram,
@@ -49,13 +50,23 @@ import { applyOfficialSampler, loadOfficialTexture } from "./render/official-tex
 import { attachLocalDrawAudit } from "./render/local-draw-audit.js";
 import { createOfficialHoloDynamicTexture } from "./render/dynamic-ui-texture.js";
 import { selectCardQualityProfile, selectDynamicUIRenderScale } from "./render/quality-profile.js";
+import {
+  applyUiAffineToCanvas,
+  IDENTITY_UI_AFFINE,
+} from "./render/ui-affine-transform.js";
 import { resolveOfficialUIImageDrawState } from "./render/official-ugui-image.js";
 import { computeOfficialTmpJustificationOffsets, loadOfficialTmpFonts, layoutOfficialTmpRun, measureOfficialTmpText, wrapOfficialTmpItems } from "./render/tmp-font-data.js";
 import { loadOfficialTmpSdfProgram, renderOfficialTmpDynamicTexture } from "./render/tmp-sdf-renderer.js";
+import { loadOfficialUIRTPrograms } from "./render/official-ui-rt.js";
+import { loadOfficialTmpSpriteProgram } from "./render/tmp-sprite-program.js";
 import { parseOfficialTmpRuns } from "./render/tmp-rich-text.js";
 import { layoutOfficialTmpSprite } from "./render/tmp-sprite-data.js";
 import { resolveOfficialTmpAutoSize } from "./render/tmp-autosize.js";
 import { officialTmpGlyphInkRight, resolveOfficialTmpItalic } from "./render/tmp-glyph-mesh.js";
+import {
+  computeOfficialNameExParentDelta,
+  shiftOfficialNameExBox,
+} from "./render/official-name-ex-layout.js";
 import {
   OFFICIAL_DISTANCE_METRIC,
   OFFICIAL_PASS_CRITERIA,
@@ -63,10 +74,19 @@ import {
   officialDistanceKey,
 } from "./render/official-draw-order.js";
 import { createOfficialCapturedSortResolver } from "./render/official-sort-capture.js";
+import { orderOfficialPasses } from "./render/official-port-identity.js";
+import { loadExactShaderPortsFromContract } from "./render/exact-port-loader.js";
 import {
-  officialPortIdentityKey,
-  orderOfficialPasses,
-} from "./render/official-port-identity.js";
+  answerLayerBisect,
+  createLayerBisectState,
+  layerBisectProbe,
+  parseHiddenLayerNumbers,
+} from "./render/layer-bisect.js";
+import {
+  LOGIC_BISECT_CASES,
+  logicBisectCaseUrl,
+  resolveLogicBisectCase,
+} from "./render/logic-bisect.js";
 import "./render/materials/index.js";   // registers every material strategy (side effect)
 
 const errEl = document.getElementById("err");
@@ -108,7 +128,6 @@ const fail = (m) => {   // surface load errors in the overlay instead of an endl
 
 // the name-adjacent "ex" glyph sprites (placed dynamically after the measured card name)
 const EX_GLYPH = "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex.png";
-const EX_GLYPH_OUTLINE = "/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex_outline.png";
 
 // TMP font role -> CSS family, resolved PER POSITION from the game's FontGroup presets (zh_TW = _language 7),
 // using the REAL fonts from the decrypted Common/Font bundle. The WEIGHT differs by role:
@@ -180,6 +199,8 @@ function buildDynamicUITexture(
   tmpFonts = null,
   renderer = null,
   tmpProgram = null,
+  uiRTPrograms = null,
+  tmpSpriteProgram = null,
   collectTmpReadback = false,
   tmpSpriteContract = null,
 ) {
@@ -193,14 +214,18 @@ function buildDynamicUITexture(
   const foilCtx = foilCv.getContext("2d");
   foilCtx.scale(textureW / W, textureH / H);
   const tmpDraws = [];
+  const imageDraws = [];
+  const tmpSpriteDraws = [];
   const tmpSpriteBindings = [];
+  const nameExParentDeltas = new Map();
   let tmpFallbackCount = 0;
-  const exactTmp = !!(tmpFonts && renderer && tmpProgram);
+  let drawSequence = 0;
+  const exactTmp = !!(tmpFonts && renderer && tmpProgram && uiRTPrograms);
   const faceEls = (face && face.elements) || [];
   const loadImg = (url) => new Promise((res) => {
     const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => res(i); i.onerror = () => { console.warn("ui tex fail", url); res(null); }; i.src = url;
   });
-  const urls = new Set([EX_GLYPH, EX_GLYPH_OUTLINE]);
+  const urls = new Set([EX_GLYPH]);
   cardUI.elements.forEach((e) => urls.add(e.url));
   faceEls.forEach((e) => {
     if (e.kind === "icon") urls.add(e.url);
@@ -208,12 +233,81 @@ function buildDynamicUITexture(
     if (e.inlineEx?.textureUrl) urls.add(e.inlineEx.textureUrl);
   });
 
+  const hierarchyOrderOf = (element) => Number(
+    element?.hierarchyOrder
+      ?? element?.uiImage?.hierarchyOrder
+      ?? element?.order
+      ?? 0,
+  );
+  function registerImageDraw(source, rect, element, {
+    color = [1, 1, 1, 1],
+    sourceRect = null,
+    role = "image",
+  } = {}) {
+    if (!source) return;
+    imageDraws.push({
+      source,
+      sourceRect,
+      rect,
+      color,
+      role,
+      unityLayer: Number(element?.unityLayer),
+      hierarchyOrder: hierarchyOrderOf(element),
+      sequence: drawSequence++,
+      uiTransform: element?.uiTransform || IDENTITY_UI_AFFINE,
+      layoutPath: element?.layoutPath || null,
+    });
+  }
+  function registerTmpSpriteDraw(source, rect, element, {
+    sourceRect,
+    role = "inline-sprite",
+    textureSampleAdd = [0, 0, 0, 0],
+  } = {}) {
+    if (!source) return;
+    tmpSpriteDraws.push({
+      source,
+      sourceRect,
+      rect,
+      color: [1, 1, 1, 1],
+      materialColor: [1, 1, 1, 1],
+      textureSampleAdd,
+      role,
+      unityLayer: Number(element?.unityLayer),
+      hierarchyOrder: hierarchyOrderOf(element),
+      sequence: drawSequence++,
+      uiTransform: element?.uiTransform || IDENTITY_UI_AFFINE,
+      layoutPath: element?.layoutPath || null,
+    });
+  }
+
   function drawSprite(e, img, target) {                // card_ui.json image element (tint / contain / stretch)
+    const primaryTarget = !target || target === ctx;
     target = target || ctx;
     if (!img) return;
     const imageState = resolveOfficialUIImageDrawState(e);
     if (!imageState.visible) return;
     const b = e.box, bx = b.l * W, by = b.t * H, bw = (b.r - b.l) * W, bh = (b.b - b.t) * H;
+    let rect;
+    if (imageState.fit === "contain") {
+      const scale = Math.min(bw / img.width, bh / img.height);
+      const width = img.width * scale;
+      const height = img.height * scale;
+      rect = {
+        left: bx + (bw - width) / 2,
+        top: by + (bh - height) / 2,
+        width,
+        height,
+      };
+    } else {
+      rect = { left: bx, top: by, width: bw, height: bh };
+    }
+    if (exactTmp && primaryTarget) {
+      registerImageDraw(img, rect, e, {
+        color: imageState.color,
+        role: e.sprite ? `image:${e.sprite}` : "image",
+      });
+      return;
+    }
     let src = img;
     const tintColor = imageState.color;
     if (tintColor && tintColor.some((value) => Math.abs(value - 1) > 1e-6)) {
@@ -223,11 +317,19 @@ function buildDynamicUITexture(
       tc.fillStyle = `rgba(${(tintColor[0]*255)|0},${(tintColor[1]*255)|0},${(tintColor[2]*255)|0},${tintColor[3]})`;
       tc.fillRect(0, 0, img.width, img.height); src = t;
     }
-    if (imageState.fit === "contain") {                 // preserve aspect, center in box (pre-evo / energy icon)
-      const s = Math.min(bw / img.width, bh / img.height), dw = img.width * s, dh = img.height * s;
-      target.drawImage(src, bx + (bw - dw) / 2, by + (bh - dh) / 2, dw, dh);
-    } else {
-      target.drawImage(src, bx, by, bw, bh);
+    target.drawImage(src, rect.left, rect.top, rect.width, rect.height);
+  }
+
+  function withUiTransform(targets, element, draw) {
+    const contexts = targets.filter(Boolean);
+    for (const target of contexts) {
+      target.save();
+      applyUiAffineToCanvas(target, element.uiTransform || IDENTITY_UI_AFFINE);
+    }
+    try {
+      return draw();
+    } finally {
+      for (const target of contexts.reverse()) target.restore();
     }
   }
 
@@ -333,11 +435,29 @@ function buildDynamicUITexture(
     const layout = exSpriteLayout(e, item, currentSize, x, baseline);
     if (!source || !layout) return layout;
     const crop = layout.source;
-    target.drawImage(
-      source,
-      crop.x, crop.y, crop.width, crop.height,
-      layout.left, layout.top, layout.width, layout.height,
-    );
+    if (exactTmp && tmpSpriteProgram && target === ctx) {
+      registerTmpSpriteDraw(
+        source,
+        {
+          left: layout.left,
+          top: layout.top,
+          width: layout.width,
+          height: layout.height,
+        },
+        e,
+        {
+          sourceRect: crop,
+          role: "inline-ex-sprite",
+        },
+      );
+    } else {
+      if (exactTmp && target === ctx) tmpFallbackCount += 1;
+      target.drawImage(
+        source,
+        crop.x, crop.y, crop.width, crop.height,
+        layout.left, layout.top, layout.width, layout.height,
+      );
+    }
     tmpSpriteBindings.push({
       role: "inline-ex-sprite",
       spriteAssetId: item.spriteAssetId,
@@ -536,6 +656,11 @@ function buildDynamicUITexture(
           sdfScale: layout.scale,
           vertexColor: componentColor,
           role: e.tmpRole || "text",
+          unityLayer: Number(e.unityLayer),
+          layoutPath: e.layoutPath || null,
+          uiTransform: e.uiTransform || IDENTITY_UI_AFFINE,
+          hierarchyOrder: hierarchyOrderOf(e),
+          sequence: drawSequence++,
         });
         return;
       } catch (error) { tmpFallbackCount += 1; console.warn("TMP glyph fallback", error); }
@@ -648,8 +773,21 @@ function buildDynamicUITexture(
             const eh = fs, ew = eh * (source?.height ? source.width / source.height : 1);
             const lineTop = baseline - (metrics.lineMetrics[i]?.ascent || firstAscent);
             if (source) {
-              const image = seg.img === "ex" ? tint(source, e.color) : source;
-              ctx.drawImage(image, drawX, lineTop + lh - eh - fs * 0.12, ew, eh);
+              const top = lineTop + lh - eh - fs * 0.12;
+              if (exactTmp) {
+                registerImageDraw(
+                  source,
+                  { left: drawX, top, width: ew, height: eh },
+                  e,
+                  {
+                    color: seg.img === "ex" ? e.color : [1, 1, 1, 1],
+                    role: "inline-image",
+                  },
+                );
+              } else {
+                const image = seg.img === "ex" ? tint(source, e.color) : source;
+                ctx.drawImage(image, drawX, top, ew, eh);
+              }
             }
             advance += ew;
           } else {
@@ -748,8 +886,21 @@ function buildDynamicUITexture(
           drawSdfText(ctx, segment.element, segment.glyph, cursor, baseline, segment.size);
         } else if (segment.img) {
           if (segment.source) {
-            const image = segment.img === "ex" ? tint(segment.source, e.color) : segment.source;
-            ctx.drawImage(image, cursor, baseline - segment.size * 0.88, segment.advance, segment.size);
+            const rect = {
+              left: cursor,
+              top: baseline - segment.size * 0.88,
+              width: segment.advance,
+              height: segment.size,
+            };
+            if (exactTmp) {
+              registerImageDraw(segment.source, rect, e, {
+                color: segment.img === "ex" ? e.color : [1, 1, 1, 1],
+                role: "inline-image",
+              });
+            } else {
+              const image = segment.img === "ex" ? tint(segment.source, e.color) : segment.source;
+              ctx.drawImage(image, rect.left, rect.top, rect.width, rect.height);
+            }
           }
         } else {
           drawSdfText(ctx, e, segment.t, cursor, baseline, fs, segment.bold, segment.italic);
@@ -783,64 +934,47 @@ function buildDynamicUITexture(
     const c = e.color;
     ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
     drawSdfText(ctx, e, e.text, x, y, fs, false, false, e.align);
-    if (e.exAfter) {                                    // PokemonCardNameView.UpdateExLayout (byte-traced):
-      const mn = inkBounds(e, e.text, fs);               //   ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx)
-      // use the INK right edge (not the advance width) so the ex follows the VISIBLE name end — the advance
-      // includes the last glyph's right side-bearing, which made the name↔ex gap look a touch wide for latin names.
-      const nw = mn.right > 0 ? mn.right : mn.advance;
-      const ex = imap.get(EX_GLYPH), exo = imap.get(EX_GLYPH_OUTLINE);
-      if (ex) {
-        const exH = (e.exH ? e.exH * H : fs * 0.95), ar = ex.width / ex.height, exW = exH * ar;  // size from prefab box
-        const maxW = (e.exMaxW ?? 0.41) * W;           // _textMaxWidthForEx (300) — clamp for very long names
-        const nameMidY = (b.t + b.b) / 2 * H;          // ex centred on the name box centre (y is now the baseline)
-        // Official PokemonCardNameView.UpdateExLayout anchors the glyph to name_elm, not card_name_txt:
-        // _ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx).
-        const x0 = (e.exAnchorX ?? b.l) * W + Math.min(nw, maxW), yTop = nameMidY - exH / 2;
-        if (exo) ctx.drawImage(exo, x0, yTop, exW, exH);
-        ctx.drawImage(ex, x0, yTop, exW, exH);
-        foilCtx.drawImage(ex, x0, yTop, exW, exH);      // the ex glyph foils → into the mask
-      }
+    if (e.nameExLayout) {                               // PokemonCardNameView.UpdateExLayout (byte-traced):
+      const mn = inkBounds(e, e.text, fs);              //   ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx)
+      const nameWidth = mn.right > 0 ? mn.right : mn.advance;
+      nameExParentDeltas.set(
+        e.layoutPath,
+        computeOfficialNameExParentDelta(e.nameExLayout, nameWidth, W),
+      );
     }
-  }
-
-  // HP: hp_elm's HorizontalLayoutGroup (LowerRight) — number right-aligned at the container right edge, the
-  // localized label (HP/PS/PV/KP) just to its left, both sitting on the container bottom (shared baseline).
-  function drawHP(e) {
-    // hp_elm HorizontalLayoutGroup (LowerRight): number right-aligned at hp_elm.r, vertically centred (Valign=Middle).
-    // label = center-aligned in a 30px cell whose right edge sits one spacing left of the number, and nudged down
-    // by hp_txt's ap.y (=8px) so the small label baseline-aligns with the big number.
-    const b = e.box, midY = (b.t + b.b) / 2 * H, rx = b.r * W, c = e.color;
-    ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
-    const numElement = { ...e, sdf: e.numSdf, vertexColor: e.numVertexColor };
-    const numBounds = inkBounds(numElement, e.num, e.numFs);
-    const numBaseline = midY + (numBounds.ascent - numBounds.descent) / 2;
-    ctx.font = faceFont(e.font, e.numFs);
-    drawSdfText(ctx, numElement, e.num, rx, numBaseline, e.numFs, false, false, "right");
-    const numW = e.numSdf?.fontId && tmpFonts
-      ? measureOfficialTmpText(tmpFonts, e.numSdf.fontId, e.num, e.numFs, tmpLayoutOptions(e))
-      : ctx.measureText(e.num).width;
-    const cellRight = rx - numW - (e.spacing || 0) * W, cellCenter = cellRight - (e.labelCellW || 0) * W / 2;
-    const labelElement = { ...e, sdf: e.labelSdf, vertexColor: e.labelVertexColor };
-    const labelBounds = inkBounds(labelElement, e.label, e.labelFs);
-    const labelMid = midY + (e.labelDY || 0);
-    const labelBaseline = labelMid + (labelBounds.ascent - labelBounds.descent) / 2;
-    ctx.font = faceFont(e.font, e.labelFs);
-    drawSdfText(ctx, labelElement, e.label, cellCenter, labelBaseline, e.labelFs, false, false, "center");
   }
 
   return Promise.all([...urls].map((u) => loadImg(u).then((img) => [u, img]))).then((pairs) => {
     const imap = new Map(pairs);
     return (document.fonts ? document.fonts.ready : Promise.resolve()).then(async () => {
-      // 1. sprite layers (UGUI hierarchy order: children paint after parents = back-to-front). Ex-rule banner
-      //    sprites are also drawn into the foil mask.
-      cardUI.elements.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0)).forEach((e) => {
-        const img = imap.get(e.url); drawSprite(e, img);
-        if (isFoilSprite(e)) drawSprite(e, img, foilCtx);
-      });
-      // 2. energy icons (contain-fit), then 3. text on top (drawText also feeds the ex glyph into the foil mask)
-      faceEls.filter((e) => e.kind === "icon").forEach((e) => drawSprite({ ...e, fit: e.fit || "contain" }, imap.get(e.url)));
-      faceEls.filter((e) => e.kind === "text").forEach((e) => drawText(e, imap));
-      faceEls.filter((e) => e.kind === "hp").forEach((e) => drawHP(e));
+      const orderedElements = [...cardUI.elements, ...faceEls]
+        .map((element, stableOrder) => ({ element, stableOrder }))
+        .sort((left, right) => (
+          hierarchyOrderOf(left.element) - hierarchyOrderOf(right.element)
+          || left.stableOrder - right.stableOrder
+        ));
+      for (const { element: e } of orderedElements) {
+        if (e.kind === "icon" || e.url) {
+          const deltaX = e.nameExOwnerPath
+            ? nameExParentDeltas.get(e.nameExOwnerPath)
+            : null;
+          if (e.nameExOwnerPath && !Number.isFinite(deltaX)) {
+            throw new Error(`official Pokemon EX parent layout was not resolved for ${e.nameExOwnerPath}`);
+          }
+          const drawElement = e.nameExOwnerPath
+            ? { ...e, box: shiftOfficialNameExBox(e.box, deltaX, W) }
+            : e;
+          const img = imap.get(drawElement.url);
+          withUiTransform([ctx], drawElement, () => (
+            drawSprite({ ...drawElement, fit: drawElement.fit || "contain" }, img)
+          ));
+          if (drawElement.nameExLayer === "base" || isFoilSprite(drawElement)) {
+            withUiTransform([foilCtx], drawElement, () => drawSprite(drawElement, img, foilCtx));
+          }
+        } else if (e.kind === "text") {
+          withUiTransform([ctx, foilCtx], e, () => drawText(e, imap));
+        }
+      }
       const mk = (canvas) => {
         const t = new THREE.CanvasTexture(canvas);
         t.colorSpace = THREE.NoColorSpace;
@@ -851,13 +985,18 @@ function buildDynamicUITexture(
         return t;
       };
       const foil = mk(foilCv);
-      if (exactTmp && tmpDraws.length) {
+      if (exactTmp && (tmpDraws.length || imageDraws.length || tmpSpriteDraws.length)) {
         const rendered = await renderOfficialTmpDynamicTexture({
           renderer,
           baseCanvas: cv,
+          includeBaseCanvas: tmpFallbackCount > 0,
+          imageDraws,
+          tmpSpriteDraws,
           draws: tmpDraws,
           fonts: tmpFonts,
           program: tmpProgram,
+          uiRTPrograms,
+          tmpSpriteProgram,
           samplerState,
           logicalWidth: W,
           logicalHeight: H,
@@ -893,6 +1032,26 @@ function compactCardName(name) {
   return String(name || "").replace(/ex$/i, " ex").replace(/_/g, " ");
 }
 
+function exampleLabel(example, lc) {
+  const bits = [
+    example.names?.[lc] || example.names?.en_US || example.illustrationId,
+    example.rarityDisplayGroupId || example.rarityDisplayId,
+  ];
+  return bits.filter(Boolean).join(" · ");
+}
+
+const EXAMPLE_GROUP_LABELS = Object.freeze({
+  de_DE: ["Minimale Abdeckung · bereit", "Lokale Regression", "Minimale Abdeckung · Assets erforderlich"],
+  en_US: ["Minimum coverage · ready", "Local regression", "Minimum coverage · assets required"],
+  es_ES: ["Cobertura minima · lista", "Regresion local", "Cobertura minima · requiere recursos"],
+  fr_FR: ["Couverture minimale · prete", "Regression locale", "Couverture minimale · ressources requises"],
+  it_IT: ["Copertura minima · pronta", "Regressione locale", "Copertura minima · risorse richieste"],
+  ja_JP: ["最小カバレッジ · 実行可能", "ローカル回帰", "最小カバレッジ · アセット未収集"],
+  ko_KR: ["최소 커버리지 · 실행 가능", "로컬 회귀", "최소 커버리지 · 애셋 필요"],
+  pt_BR: ["Cobertura minima · pronta", "Regressao local", "Cobertura minima · requer recursos"],
+  zh_TW: ["最小覆蓋集 · 可執行", "本機回歸樣本", "最小覆蓋集 · 尚未收集資產"],
+});
+
 function sceneLabel(scene, repeatedIds, lc) {
   const localized = scene.names && scene.names[lc];
   const bits = [localized || compactCardName(scene.name)];
@@ -903,18 +1062,42 @@ function sceneLabel(scene, repeatedIds, lc) {
 
 async function main() {
   // ?scene=scene.<cardId>.json renders an alternate prebuilt card.
-  // debug URL params (for headless screenshots): ?only=<substr> solos layers, ?nohud hides the overlays.
+  // Debug URL params: ?only=<substr> solos layers, ?bisect=1 enables exclusion bisection,
+  // and ?nohud hides the overlays.
   const qp = new URLSearchParams(location.search);
   const fullRuntimeAudit = qp.get("auditrt") === "1";
+  const layerBisectRequested = qp.get("bisect") === "1";
+  const logicBisectRequested = qp.get("logicbisect") === "1";
+  const logicBisectCase = logicBisectRequested
+    ? resolveLogicBisectCase(qp.get("logiccase"))
+    : resolveLogicBisectCase("baseline");
   // ?card=<illustrationId> builds the scene DYNAMICALLY for any card (server /scene). ?scene=<file> still works
   // (a prebuilt scene). Missing scene files fall back to the first prebuilt scene returned by /scenes.
   const cardParam = qp.get("card");
-  const sceneList = await fetch("/scenes")
-    .then((r) => r.ok ? r.json() : null)
-    .then((j) => (j && Array.isArray(j.scenes)) ? j.scenes : [])
-    .catch(() => []);
+  const [sceneList, exampleManifest] = await Promise.all([
+    fetch("/scenes")
+      .then((r) => r.ok ? r.json() : null)
+      .then((j) => (j && Array.isArray(j.scenes)) ? j.scenes : [])
+      .catch(() => []),
+    fetch("/card-examples.json")
+      .then((r) => r.ok ? r.json() : null)
+      .catch(() => null),
+  ]);
+  const coverageExamples =
+    exampleManifest?.schemaVersion === 1
+    && Array.isArray(exampleManifest.coverageSet?.selectedWitnesses)
+      ? exampleManifest.coverageSet.selectedWitnesses
+      : [];
+  const supplementalExamples =
+    exampleManifest?.schemaVersion === 1
+    && Array.isArray(exampleManifest.supplementalBundledExamples)
+      ? exampleManifest.supplementalBundledExamples
+      : [];
   const requestedScene = qp.get("scene");
-  const firstSceneFile = sceneList[0]?.file || DEFAULT_SCENE;
+  const firstSceneFile =
+    sceneList.find((sceneInfo) => sceneInfo.availability?.selectable !== false)?.file
+    || sceneList[0]?.file
+    || DEFAULT_SCENE;
   const sceneFile = (!requestedScene || sceneList.some((s) => s.file === requestedScene)) ? (requestedScene || firstSceneFile) : firstSceneFile;
   const sceneSrc = cardParam ? `/scene?card=${encodeURIComponent(cardParam)}` : sceneFile;
   if (!cardParam && requestedScene && requestedScene !== sceneFile) {
@@ -927,7 +1110,9 @@ async function main() {
   const noExactParam = qp.get("noexact") || "";
   const exactAllOff = qp.has("noexact") && !noExactParam;
   const exactDisabled = new Set(noExactParam.split(",").map((s) => s.trim()).filter(Boolean));
-  const exactEnabled = (name) => !exactAllOff && !exactDisabled.has(name);
+  const exactEnabled = (name) => !exactAllOff
+    && !exactDisabled.has(name)
+    && !logicBisectCase.disableExactShaders.includes(name);
   const shotMode = qp.has("shot");
   const frameCap = Number(qp.get("fps") || 0);
   window.__frameInterval = Number.isFinite(frameCap) && frameCap > 0 ? 1000 / frameCap : 0;
@@ -980,12 +1165,19 @@ async function main() {
       return null;
     })
     : null;
-  const hasOfficialEmissive = !qp.has("nobloom") && Object.values(scene_data.materials || {}).some((m) => {
-    const p = m.floats?._EmissivePattern ?? 0;
-    const e = m.colors?._EmissiveColor;
-    const rgb = e ? Math.max(e.r || 0, e.g || 0, e.b || 0) : 0;
-    return rgb > 0 && (p > 0 || m.shader === "Opaque-UR-Oklab");
-  });
+  const officialUIRTPrograms = exactEnabled("UI_RT")
+    ? await loadOfficialUIRTPrograms().catch((error) => {
+      console.warn("official UI ToRT/FromRT programs unavailable; retaining Canvas texture fallback", error);
+      return null;
+    })
+    : null;
+  const officialTmpSpriteProgram = exactEnabled("TMP_SPRITE")
+    ? await loadOfficialTmpSpriteProgram().catch((error) => {
+      console.warn("official TMP Sprite program unavailable; retaining Canvas sprite fallback", error);
+      return null;
+    })
+    : null;
+  let hasBloomProducer = false;
   const currentSceneFile = cardParam ? "" : sceneSrc.replace(/^\.?\//, "");
   // ── locale: load per-language content + fonts from locales/manifest.json (falls back to the legacy single files) ──
   const manifest = await fetch("locales/manifest.json").then((r) => r.json()).catch(() => null);
@@ -1045,276 +1237,41 @@ async function main() {
   // card's name/attacks onto it. (This was the "Venusaur text on the trainer" leak.)
   // the card's masterdata id (strip leading 'c' + the trailing _NAME_RARITY): cTR_20_000230_00_LEAF_SR → TR_20_000230_00
   const mdId = (/^c?((?:TR|PK)_\d+_\d+_\d+)/.exec(scene_data.card.id || "") || [])[1];
-  // "default" = the card the prebuilt cardUI/card_face was baked for (Venusaur, card_ui.json.card). Keyed on the
-  // card IDENTITY (not the scene filename) so it holds whether loaded via a prebuilt scene OR ?card=. Any OTHER card is
-  // composed dynamically from masterdata+locale via /compose.
-  const isDefaultCard = !!(cardUI && cardUI.card && mdId === cardUI.card);
-  // DynamicUI (the L_FullFace_Text overlay). Built GENERICALLY for ANY card: the default Venusaur uses the
-  // prebuilt cardUI/cardFace; any other card is composed DYNAMICALLY from masterdata+locale via /compose
+  // DynamicUI is composed generically for every card. The old per-locale card_ui files remain
+  // offline fallbacks only; mixing them with /compose would draw shared UGUI Images twice.
   // (server runs carddata.mjs + compose.mjs — no per-card offline pre-gen, no _UT bake).
   let dynamicUIRenderScale = 1;
   async function buildFace(lc) {
     if (!mdId) return null;
-    // prefer the prebaked static composed-text file (public/text/<mdId>.<lc>.json); fall back to the live
-    // /compose endpoint (advanced — only works if you run the server with your own masterdata).
+    // Prefer source-current live composition; the prebaked text file is only an offline fallback.
     const composeUrl = `/compose?id=${mdId}&lc=${lc}&ill=${encodeURIComponent(scene_data.card.id || "")}`;
-    let composed = null;
-    if (mdId.startsWith("PK_")) composed = await fetch(composeUrl).then((r) => r.ok ? r.json() : null).catch(() => null);
+    let composed = await fetch(composeUrl).then((r) => r.ok ? r.json() : null).catch(() => null);
     if (!composed) composed = await fetch(`text/${mdId}.${lc}.json`).then((r) => r.ok ? r.json() : null).catch(() => null);
-    if (!composed && !mdId.startsWith("PK_")) composed = await fetch(composeUrl).then((r) => r.ok ? r.json() : null).catch(() => null);
     if (!composed || !composed.elements || !composed.elements.length) return null;
     return buildDynamicUITexture(
-      isDefaultCard && cardUI?.elements?.length
-        ? { ...cardUI, canvasWH: composed.canvasWH }
-        : { canvasWH: composed.canvasWH, elements: [] },
+      { canvasWH: composed.canvasWH, elements: [] },
       { elements: composed.elements },
       dynamicUISamplerState,
       dynamicUIRenderScale,
       officialTmpFonts,
       renderer,
       officialTmpSdfProgram,
+      officialUIRTPrograms,
+      officialTmpSpriteProgram,
       fullRuntimeAudit,
       officialTmpSpriteContract,
     );
   }
 
-  // Selector-bound shader ports are loaded with their official identity and
-  // generated manifest. A missing or mismatched port falls back non-exactly.
-  async function loadExactShaderPorts(spec) {
-    const out = {};
-    await Promise.all(Object.entries(spec).map(async ([name, files]) => {
-      if (!exactEnabled(name)) return;
-      const manifestFiles = Array.isArray(files.manifests)
-        ? files.manifests
-        : files.manifest ? [files.manifest] : [];
-      const [fallbackVert, fallbackFrag, manifests] = await Promise.all([
-        fetch(files.vert).then((r) => r.ok ? r.text() : null).catch(() => null),
-        fetch(files.frag).then((r) => r.ok ? r.text() : null).catch(() => null),
-        Promise.all(manifestFiles.map((file) => (
-          fetch(file).then((r) => r.ok ? r.json() : null).catch(() => null)
-        ))),
-      ]);
-      if (!manifests.every(Boolean)) return;
-      const browserAssetPath = (value) => (
-        typeof value === "string" && value.startsWith("public/") ? value.slice("public/".length) : value
-      );
-      const manifestSources = await Promise.all(manifests.map(async (manifest) => {
-        const declared = manifest.webgl_sources || {};
-        const [vert, frag] = await Promise.all([
-          declared.vertex
-            ? fetch(browserAssetPath(declared.vertex)).then((r) => r.ok ? r.text() : null).catch(() => null)
-            : fallbackVert,
-          declared.fragment
-            ? fetch(browserAssetPath(declared.fragment)).then((r) => r.ok ? r.text() : null).catch(() => null)
-            : fallbackFrag,
-        ]);
-        return vert && frag ? { vert, frag } : null;
-      }));
-      const stageSourceOnly = manifestFiles.length === 0;
-      if ((stageSourceOnly && fallbackVert && fallbackFrag)
-          || (!stageSourceOnly && manifestSources.every(Boolean))) {
-        const sourcesByPort = {};
-        manifests.forEach((manifest, index) => {
-          const identityKey = officialPortIdentityKey(manifest?.official_selector);
-          if (!identityKey) throw new Error(`${name}: exact manifest has an incomplete port identity`);
-          if (Object.hasOwn(sourcesByPort, identityKey)) {
-            throw new Error(`${name}: duplicate exact port identity ${identityKey}`);
-          }
-          sourcesByPort[identityKey] = manifestSources[index];
-        });
-        const primary = manifestSources[0] || { vert: fallbackVert, frag: fallbackFrag };
-        out[name] = {
-          vert: primary.vert,
-          frag: primary.frag,
-          manifest: manifests[0] || null,
-          manifests,
-          sourcesByPort,
-          stageSourceOnly,
-        };
-      }
-    }));
-    return out;
-  }
-  const exactShaders = await loadExactShaderPorts({
-    OuterStencil: {
-      vert: "shaders/outer_stencil.vert.glsl",
-      frag: "shaders/outer_stencil.frag.glsl",
-      manifest: "shaders/outer_stencil_uniforms.json",
-    },
-    InnerStencil: {
-      vert: "shaders/inner_stencil.vert.glsl",
-      frag: "shaders/inner_stencil.frag.glsl",
-      manifest: "shaders/inner_stencil_uniforms.json",
-    },
-    IllustStencil: {
-      vert: "shaders/illust_stencil.vert.glsl",
-      frag: "shaders/illust_stencil.frag.glsl",
-      manifest: "shaders/illust_stencil_uniforms.json",
-    },
-    Text: {
-      vert: "shaders/dynamic_ui_text.vert.glsl",
-      frag: "shaders/dynamic_ui_text.frag.glsl",
-      manifest: "shaders/dynamic_ui_text_uniforms.json",
-    },
-    Card_Illust: {
-      vert: "shaders/card_illust.vert.glsl",
-      frag: "shaders/card_illust.frag.glsl",
-      manifest: "shaders/card_illust_uniforms.json",
-    },
-    Card_Scaling_Kira: {
-      vert: "shaders/card_scaling_kira.vert.glsl",
-      frag: "shaders/card_scaling_kira.frag.glsl",
-      manifest: "shaders/card_scaling_kira_uniforms.json",
-    },
-    Card_Circular_Moving_Kira: {
-      vert: "shaders/circular_moving_p0.vert.glsl",
-      frag: "shaders/circular_moving_p0.frag.glsl",
-      manifests: [
-        "shaders/circular_moving_p0_uniforms.json",
-        "shaders/circular_moving_p1_uniforms.json",
-      ],
-    },
-    Card_Circular_Trail_Kira: {
-      vert: "shaders/circular_trail_p0.vert.glsl",
-      frag: "shaders/circular_trail_p0.frag.glsl",
-      manifests: [
-        "shaders/circular_trail_p0_uniforms.json",
-        "shaders/circular_trail_p1_uniforms.json",
-      ],
-    },
-    Card_Prism: {
-      vert: "shaders/card_prism.vert.glsl",
-      frag: "shaders/card_prism.frag.glsl",
-      manifest: "shaders/card_prism_uniforms.json",
-    },
-    Card_UR_Glitter_FlowMaps: {
-      vert: "shaders/glitter.vert.glsl",
-      frag: "shaders/glitter.frag.glsl",
-      manifest: "shaders/glitter_uniforms.json",
-    },
-    Frame: {
-      vert: "shaders/textured.vert.glsl",
-      frag: "shaders/frame.frag.glsl",
-      manifest: "shaders/frame_uniforms.json",
-    },
-    "Simple-Opaque": {
-      vert: "shaders/simple_opaque.vert.glsl",
-      frag: "shaders/simple_opaque.frag.glsl",
-      manifest: "shaders/simple_opaque_uniforms.json",
-    },
-    "Simple-Transparent": {
-      vert: "shaders/textured.vert.glsl",
-      frag: "shaders/simple_transparent.frag.glsl",
-      manifest: "shaders/simple_transparent_uniforms.json",
-    },
-    "Simple-PreMultiply-Hologram": {
-      vert: "shaders/simple_premultiply_hologram.vert.glsl",
-      frag: "shaders/simple_premultiply_hologram.frag.glsl",
-      manifest: "shaders/simple_premultiply_hologram_uniforms.json",
-    },
-    "Side&Back": { vert: "shaders/side_back.vert.glsl", frag: "shaders/side_back.frag.glsl" },
-    Effect: {
-      vert: "shaders/effect_basic.vert.glsl",
-      frag: "shaders/effect_basic.frag.glsl",
-      manifests: [
-        "shaders/effect_eff1_uniforms.json",
-        "shaders/effect_eff2_uniforms.json",
-        "shaders/effect_eff3_uniforms.json",
-        "shaders/effect_eff3_grad_uniforms.json",
-        "shaders/effect_eff1_grad_view_uniforms.json",
-        "shaders/effect_eff2_grad_view_uniforms.json",
-      ],
-    },
-    Card_Parallax: {
-      vert: "shaders/card_parallax.vert.glsl",
-      frag: "shaders/card_parallax.frag.glsl",
-      manifests: [
-        "shaders/card_parallax_uniforms.json",
-        "shaders/card_parallax_native_best_match_uniforms.json",
-      ],
-    },
-    Card_Parallax_Metal: {
-      vert: "shaders/card_parallax_metal.vert.glsl",
-      frag: "shaders/card_parallax_metal.frag.glsl",
-      manifest: "shaders/card_parallax_metal_uniforms.json",
-    },
-    Card_Parallax_MatCap_Lighting: {
-      vert: "shaders/card_parallax_matcap_lighting.vert.glsl",
-      frag: "shaders/card_parallax_matcap_lighting.frag.glsl",
-      manifest: "shaders/card_parallax_matcap_lighting_uniforms.json",
-    },
-    Card_Parallax_UR: {
-      vert: "shaders/parallax_ur.vert.glsl",
-      frag: "shaders/parallax_ur.frag.glsl",
-      manifest: "shaders/parallax_ur_uniforms.json",
-    },
-    Opaque_Hologram_Tuning: {
-      vert: "shaders/opaque_hologram_tuning.vert.glsl",
-      frag: "shaders/opaque_hologram_tuning.frag.glsl",
-      manifest: "shaders/opaque_hologram_tuning_uniforms.json",
-    },
-    "Frame-Holo-UR-New": {
-      vert: "shaders/frame_holo_ur.vert.glsl",
-      frag: "shaders/frame_holo_ur.frag.glsl",
-      manifest: "shaders/frame_holo_ur_uniforms.json",
-    },
-    Transparent_Hologram_Tuning: {
-      vert: "shaders/transparent_hologram_tuning.vert.glsl",
-      frag: "shaders/transparent_hologram_tuning.frag.glsl",
-      manifest: "shaders/transparent_hologram_tuning_uniforms.json",
-    },
-    Card_Parallax_Hologram_Tuning: {
-      vert: "shaders/card_parallax_hologram_tuning.vert.glsl",
-      frag: "shaders/card_parallax_hologram_tuning.frag.glsl",
-      manifest: "shaders/card_parallax_hologram_tuning_uniforms.json",
-    },
-    Card_Hologram_Tuning: {
-      vert: "shaders/card_hologram_tuning.vert.glsl",
-      frag: "shaders/card_hologram_tuning.frag.glsl",
-      manifest: "shaders/card_hologram_tuning_uniforms.json",
-    },
-    "Frame-Holo-Tuning": {
-      vert: "shaders/frame_holo_tuning.vert.glsl",
-      frag: "shaders/frame_holo_tuning.frag.glsl",
-      manifest: "shaders/frame_holo_tuning_uniforms.json",
-    },
-    "Opaque-Hologram_Tuning": {
-      vert: "shaders/opaque_shadowbox_hologram_tuning.vert.glsl",
-      frag: "shaders/opaque_shadowbox_hologram_tuning.frag.glsl",
-      manifest: "shaders/opaque_shadowbox_hologram_tuning_uniforms.json",
-    },
-    "Simple-Opaque-Hologram_Tuning": {
-      vert: "shaders/simple_opaque_hologram_tuning.vert.glsl",
-      frag: "shaders/simple_opaque_hologram_tuning.frag.glsl",
-      manifest: "shaders/simple_opaque_hologram_tuning_uniforms.json",
-    },
-    "Opaque-UR-Oklab": {
-      vert: "shaders/opaque_ur_oklab.vert.glsl",
-      frag: "shaders/opaque_ur_oklab.frag.glsl",
-      manifest: "shaders/opaque_ur_oklab_uniforms.json",
-    },
-    Card_Parallax_Hologram_UR_New: {
-      vert: "shaders/ur_bg_hologram.vert.glsl",
-      frag: "shaders/ur_bg_hologram.frag.glsl",
-      manifest: "shaders/ur_bg_hologram_uniforms.json",
-    },
-    Card_UR_Plate: { vert: "shaders/ur_plate.vert.glsl", frag: "shaders/ur_plate.frag.glsl", manifest: "shaders/ur_plate_uniforms.json" },
-    Card_UR_LensFlare: {
-      vert: "shaders/ur_lens_flare.vert.glsl",
-      frag: "shaders/ur_lens_flare.frag.glsl",
-      manifest: "shaders/ur_lens_flare_uniforms.json",
-    },
-    "Frame-2Layer-UR": {
-      vert: "shaders/frame_2layer_ur.vert.glsl",
-      frag: "shaders/frame_2layer_ur.frag.glsl",
-      manifest: "shaders/frame_2layer_ur_uniforms.json",
-    },
-    "Transparent-UR-New": {
-      vert: "shaders/transparent_ur_new.vert.glsl",
-      frag: "shaders/transparent_ur_new.frag.glsl",
-      manifest: "shaders/transparent_ur_new_uniforms.json",
-    },
+  // The generated contract is the only browser port inventory. Adding or migrating a port updates
+  // the contract and its manifest; app.js owns no parallel shader/manifest/source list.
+  const exactShaders = await loadExactShaderPortsFromContract({
+    exactEnabled,
+    canonicalizeObjectClipPosition: !logicBisectCase.disableCanonicalObjectClipPosition,
   });
+  hasBloomProducer = !qp.has("nobloom")
+    && !logicBisectCase.disableBloom
+    && sceneUsesBloomProducer(scene_data.materials, exactShaders);
   const [officialBloomPrograms, officialFinalBlitProgram, cardDisplayContract, homographyDisplayProgram] = await Promise.all([
     loadOfficialBloomPrograms(),
     loadOfficialFinalBlitProgram(),
@@ -1324,7 +1281,7 @@ async function main() {
     }),
     loadHomographyDisplayProgram(),
   ]);
-  if (cardDisplayContract.schema_version !== 5) throw new Error("unsupported card display contract schema");
+  if (cardDisplayContract.schema_version !== 6) throw new Error("unsupported card display contract schema");
   const detailDisplayProfile = cardDisplayContract.profiles
     ?.ordinary_android_default_middle_without_persisted_override;
   if (!detailDisplayProfile?.display_mode?.clamp_parallax
@@ -1348,12 +1305,29 @@ async function main() {
   // while preventing the fixed mobile source RT from being enlarged during the desktop display pass.
   const drawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
   const requestedDisplaySide = Math.round(Math.min(drawingBuffer.x, drawingBuffer.y));
-  const selectedQualityProfile = selectCardQualityProfile(
+  const baseQualityProfile = selectCardQualityProfile(
     qualityParam,
     qualityProfiles,
     requestedDisplaySide,
     renderer.capabilities.maxTextureSize,
   );
+  const selectedQualityProfile = logicBisectCase.sourceRenderScale
+    ? {
+      ...baseQualityProfile,
+      quality_name: `${baseQualityProfile.quality_name}Diagnostic${logicBisectCase.sourceRenderScale}x`,
+      source_render_target_request: {
+        ...baseQualityProfile.source_render_target_request,
+        width: Math.min(
+          renderer.capabilities.maxTextureSize,
+          Math.round(baseQualityProfile.source_render_target_request.width * logicBisectCase.sourceRenderScale),
+        ),
+        height: Math.min(
+          renderer.capabilities.maxTextureSize,
+          Math.round(baseQualityProfile.source_render_target_request.height * logicBisectCase.sourceRenderScale),
+        ),
+      },
+    }
+    : baseQualityProfile;
   dynamicUIRenderScale = selectDynamicUIRenderScale(
     qualityParam,
     selectedQualityProfile,
@@ -1367,8 +1341,8 @@ async function main() {
   console.log(`dynamic UI texture scale: ${dynamicUIRenderScale.toFixed(4)}`);
   let dynTex = await buildFace(curLoc);
   publishTmpSdfStatus(dynTex?.evidence);
-  const dynUITex = dynTex && dynTex.ui;       // full UI text canvas (mapped onto the L_FullFace_Text quad)
-  const dynHoloTex = dynTex && dynTex.holo;   // DynamicUI encoded like the game's holo RT (alpha inverted)
+  const dynUITex = dynTex && dynTex.ui;       // DynamicUIType.Text (Unity layer 17 / CardUIText)
+  const dynHoloTex = dynTex && dynTex.holo;   // DynamicUIType.Holo (Unity layer 18 / CardUIMetallic)
   const foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
   // real environment cubemap for the holo/foil reflections (samplerCube, not a 2D matcap)
   const envCubeUrl = (Object.values(scene_data.materials).find((m) => m.textures && m.textures._CubeMap) || {}).textures?._CubeMap?.url;
@@ -1387,14 +1361,14 @@ async function main() {
   const camera = new THREE.PerspectiveCamera(
     cardDisplayContract.camera.field_of_view_degrees,
     cardDisplayContract.camera.aspect,
-    0.01,
-    100,
+    cardDisplayContract.camera.near_clip_plane,
+    cardDisplayContract.camera.far_clip_plane,
   );
   const displayCamera = new THREE.PerspectiveCamera(
     cardDisplayContract.camera.field_of_view_degrees,
     innerWidth / innerHeight,
-    0.01,
-    100,
+    cardDisplayContract.camera.near_clip_plane,
+    cardDisplayContract.camera.far_clip_plane,
   );
 
   const sortLocalCenter = new THREE.Vector3();
@@ -1766,7 +1740,50 @@ async function main() {
           mat.depthTest = true;
           mat.depthWrite = cfg.blend === "opaque";
         }
+        if (r.shader === "Card_Parallax" && logicBisectCase.id !== "baseline") {
+          if (logicBisectCase.freezeParallaxUv) {
+            const heightPower = mat.uniforms?._HeightPower || mat.uniforms?.uHeightPower;
+            if (!heightPower) throw new Error(`${matName}: logic bisect cannot find Card_Parallax _HeightPower`);
+            heightPower.value = 0;
+          }
+          if (logicBisectCase.forceParallaxUv0) {
+            const useUv = mat.uniforms?._UseUv || mat.uniforms?.uUseUv;
+            if (!useUv) throw new Error(`${matName}: logic bisect cannot find Card_Parallax _UseUv`);
+            useUv.value = 0;
+          }
+          if (logicBisectCase.forceParallaxLowpass) {
+            const textureUniforms = Object.values(mat.uniforms || {})
+              .filter((uniform) => uniform?.value?.isTexture);
+            if (textureUniforms.length !== 1) {
+              throw new Error(`${matName}: logic bisect expected one Card_Parallax texture sampler`);
+            }
+            const sourceTexture = textureUniforms[0].value;
+            const diagnosticTexture = sourceTexture.clone();
+            diagnosticTexture.generateMipmaps = true;
+            diagnosticTexture.minFilter = THREE.LinearMipmapLinearFilter;
+            diagnosticTexture.magFilter = THREE.LinearFilter;
+            diagnosticTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+            diagnosticTexture.userData = {
+              ...sourceTexture.userData,
+              logicBisectSampler: "trilinear-generated-mips-max-anisotropy",
+            };
+            diagnosticTexture.needsUpdate = true;
+            textureUniforms[0].value = diagnosticTexture;
+          }
+          if (logicBisectCase.disableParallaxDepthWrite) mat.depthWrite = false;
+          if (logicBisectCase.disableParallaxStencil) mat.stencilWrite = false;
+          mat.userData.logicBisectCase = logicBisectCase.id;
+        }
+        if (logicBisectCase.disableAllDepth) {
+          mat.depthTest = false;
+          mat.depthWrite = false;
+          mat.userData.logicBisectCase = logicBisectCase.id;
+        }
         const mesh = new THREE.Mesh(o.geometry, mat);
+        if (r.shader === "Card_Parallax" && logicBisectCase.hideParallaxDraws) {
+          mesh.visible = false;
+          mesh.userData.logicBisectHidden = true;
+        }
         mesh.applyMatrix4(o.matrixWorld);
         if (mat.userData.glitterFlow) mat.userData.glitterTransform = mesh;
         if (mat.userData.kiraPuyoState) mat.userData.kiraPuyoTransform = mesh;
@@ -1777,6 +1794,7 @@ async function main() {
         mesh.frustumCulled = false;
         mesh.userData.officialSort = r.sort;
         mesh.userData.officialPassOrdinal = passOrdinal;
+        mesh.userData.recipeShader = r.shader;
         attachOfficialDrawIdentity(mesh, matName, resolvedOfficialDraw);
         attachAuditDescriptor(mesh, matName, r);
         const selector = mat.userData.officialSelector;
@@ -1853,7 +1871,7 @@ async function main() {
     window.__tilt = assetRoot;
 
     // ── LANGUAGE SWITCH: rebuild only the DynamicUI canvas (content + fonts) and swap the textures in place ──
-    window.__post = makeBloomPass(hasOfficialEmissive);
+    window.__post = makeBloomPass(hasBloomProducer);
     window.__displayPost = makeDisplayPass();
     const displayGeometry = new THREE.BufferGeometry();
     displayGeometry.setAttribute("position", new THREE.Float32BufferAttribute([
@@ -1915,11 +1933,34 @@ async function main() {
     // its own font download + canvas rebuild takes a beat, so show the small busy spinner and lock the dropdown.
     let switching = false;
     let cardSel = null, repeatedSceneIds = new Set();
+    const sceneByFile = new Map(sceneList.map((sceneInfo) => [sceneInfo.file, sceneInfo]));
+    const localSceneByIllustration = new Map(
+      sceneList
+        .filter((sceneInfo) => sceneInfo.id)
+        .map((sceneInfo) => [sceneInfo.id, sceneInfo.file]),
+    );
+    const exampleSceneFile = (example) =>
+      example.bundledSceneFile
+      || localSceneByIllustration.get(example.illustrationId)
+      || null;
+    const exampleByIllustration = new Map([
+      ...coverageExamples,
+      ...supplementalExamples,
+    ].map((example) => [example.illustrationId, example]));
     function refreshCardSelectLabels() {
       if (!cardSel) return;
       for (const op of cardSel.options) {
-        const sceneInfo = sceneList.find((s) => s.file === op.value);
+        const example = exampleByIllustration.get(op.dataset.illustrationId);
+        if (example) {
+          op.textContent = exampleLabel(example, curLoc);
+          continue;
+        }
+        const sceneInfo = sceneByFile.get(op.value);
         if (sceneInfo) op.textContent = sceneLabel(sceneInfo, repeatedSceneIds, curLoc);
+      }
+      const labels = EXAMPLE_GROUP_LABELS[curLoc] || EXAMPLE_GROUP_LABELS.en_US;
+      for (const group of cardSel.querySelectorAll("optgroup[data-example-group]")) {
+        group.label = labels[Number(group.dataset.exampleGroup)];
       }
     }
     async function switchLocale(lc, selEl) {
@@ -1933,7 +1974,7 @@ async function main() {
           if (!uniformName || !dynUIMat.uniforms[uniformName]) {
             throw new Error("L_FullFace_Text: missing exact DynamicUI sampler binding");
           }
-          dynUIMat.uniforms[uniformName].value = t.holo;
+          dynUIMat.uniforms[uniformName].value = t.ui;
         }
         if (t) for (const m of exHoloMats) {
           if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
@@ -1958,7 +1999,7 @@ async function main() {
         history.replaceState(null, "", next);
       }
     }
-    if (controlsEl && sceneList.length > 1) {
+    if (controlsEl && (sceneList.length > 1 || coverageExamples.length > 0)) {
       const counts = new Map();
       for (const s of sceneList) {
         const key = s.id || s.name || s.file;
@@ -1968,14 +2009,61 @@ async function main() {
       const sel = document.createElement("select");
       cardSel = sel;
       sel.setAttribute("aria-label", "Card");
-      for (const s of sceneList) {
-        const op = document.createElement("option"); op.value = s.file; op.textContent = sceneLabel(s, repeatedSceneIds, curLoc);
-        if (s.file === currentSceneFile) op.selected = true; sel.appendChild(op);
+      const appendExampleGroup = (groupIndex, examples, disabled = false) => {
+        if (!examples.length) return;
+        const group = document.createElement("optgroup");
+        group.dataset.exampleGroup = String(groupIndex);
+        for (const example of examples) {
+          const op = document.createElement("option");
+          const sceneFile = exampleSceneFile(example);
+          op.value = sceneFile || "";
+          op.dataset.illustrationId = example.illustrationId;
+          op.textContent = exampleLabel(example, curLoc);
+          op.disabled = disabled || !sceneFile || !sceneByFile.has(sceneFile);
+          if (sceneFile === currentSceneFile) op.selected = true;
+          group.appendChild(op);
+        }
+        sel.appendChild(group);
+      };
+      const selectedReady = coverageExamples.filter(
+        (example) =>
+          exampleSceneFile(example)
+          && sceneByFile.has(exampleSceneFile(example))
+          && sceneByFile.get(exampleSceneFile(example))?.availability?.selectable !== false,
+      );
+      const selectedCatalog = coverageExamples.filter(
+        (example) =>
+          !exampleSceneFile(example)
+          || !sceneByFile.has(exampleSceneFile(example))
+          || sceneByFile.get(exampleSceneFile(example))?.availability?.selectable === false,
+      );
+      const supplementalReady = supplementalExamples.filter(
+        (example) =>
+          exampleSceneFile(example)
+          && sceneByFile.has(exampleSceneFile(example))
+          && sceneByFile.get(exampleSceneFile(example))?.availability?.selectable !== false,
+      );
+      appendExampleGroup(0, selectedReady);
+      appendExampleGroup(1, supplementalReady);
+      appendExampleGroup(2, selectedCatalog, true);
+      const representedSceneFiles = new Set([
+        ...selectedReady,
+        ...supplementalReady,
+      ].map(exampleSceneFile));
+      for (const sceneInfo of sceneList) {
+        if (representedSceneFiles.has(sceneInfo.file)) continue;
+        const op = document.createElement("option");
+        op.value = sceneInfo.file;
+        op.textContent = sceneLabel(sceneInfo, repeatedSceneIds, curLoc);
+        op.disabled = sceneInfo.availability?.selectable === false;
+        if (sceneInfo.file === currentSceneFile) op.selected = true;
+        sel.appendChild(op);
       }
       if (cardParam) {
         const op = document.createElement("option"); op.value = ""; op.textContent = compactCardName(scene_data.card.name) || cardParam;
         op.selected = true; sel.prepend(op);
       }
+      refreshCardSelectLabels();
       sel.onchange = () => {
         if (!sel.value || sel.value === currentSceneFile) return;
         busy(true, "Loading…");
@@ -1999,6 +2087,75 @@ async function main() {
       (controlsEl || document.body).appendChild(sel);
     }
 
+    if (logicBisectRequested && !window.__nohud) {
+      const logicHud = document.createElement("div");
+      logicHud.style.cssText = [
+        "position:fixed",
+        "right:8px",
+        "top:8px",
+        "width:min(390px,calc(100vw - 16px))",
+        "max-height:calc(100vh - 16px)",
+        "overflow:auto",
+        "font:12px/1.45 monospace",
+        "color:#fff",
+        "background:rgba(0,0,0,.9)",
+        "padding:10px",
+        "z-index:11",
+        "border:1px solid #666",
+        "border-radius:4px",
+        "box-sizing:border-box",
+      ].join(";");
+      const heading = document.createElement("div");
+      heading.textContent = "逻辑对照（仅诊断，不改变正式默认路径）";
+      heading.style.cssText = "font-weight:700;margin-bottom:5px";
+      const active = document.createElement("div");
+      active.textContent = `当前：${logicBisectCase.label}\n${logicBisectCase.description}`;
+      active.style.cssText = "white-space:pre-wrap;color:#d8e7ff;margin-bottom:8px";
+      const hint = document.createElement("div");
+      hint.textContent = "每次切换会干净重载。请在同一倾角判断彩色纹路是否仍出现。";
+      hint.style.cssText = "white-space:pre-wrap;color:#bbb;margin-bottom:8px";
+      const caseList = document.createElement("div");
+      caseList.style.cssText = "display:grid;grid-template-columns:1fr 1fr;gap:6px";
+      for (const candidate of LOGIC_BISECT_CASES) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = `${candidate.group} · ${candidate.label}`;
+        button.title = candidate.description;
+        button.disabled = candidate.id === logicBisectCase.id;
+        button.style.cssText = [
+          "font:11px/1.3 monospace",
+          "min-height:38px",
+          "padding:5px 7px",
+          "border:1px solid #777",
+          "border-radius:3px",
+          candidate.id === logicBisectCase.id ? "background:#315a88" : "background:#20242a",
+          "color:#fff",
+          candidate.id === logicBisectCase.id ? "cursor:default" : "cursor:pointer",
+        ].join(";");
+        button.addEventListener("click", () => {
+          location.href = logicBisectCaseUrl(location.href, candidate.id);
+        });
+        caseList.appendChild(button);
+      }
+      const exit = document.createElement("button");
+      exit.type = "button";
+      exit.textContent = "退出逻辑对照";
+      exit.style.cssText = "margin-top:8px;font:11px monospace;padding:5px 8px;border:1px solid #777;border-radius:3px;background:#20242a;color:#fff;cursor:pointer";
+      exit.addEventListener("click", () => {
+        const next = new URL(location.href);
+        next.searchParams.delete("logicbisect");
+        next.searchParams.delete("logiccase");
+        location.href = next;
+      });
+      logicHud.append(heading, active, hint, caseList, exit);
+      document.body.appendChild(logicHud);
+      window.__logicBisect = {
+        schema: "pocket-card-render/logic-bisect-runtime@1",
+        activeCase: logicBisectCase,
+      };
+      document.documentElement.dataset.logicBisectCase = logicBisectCase.id;
+    }
+
     // ── DEBUG MODE: isolate layers to find which RESOURCE has an artifact (the face lines, AM, ILL …) ──
     // Each built mesh is tagged userData.label (material · shader · queue, or "DynamicUI"). Cycle through
     // them solo, with the current resource shown on screen. Plus PREVIEW (flat, no tilt) vs SELECT (tilt).
@@ -2006,6 +2163,37 @@ async function main() {
     cardGroup.traverse((o) => { if (o.isMesh && o.userData.label) dbgLayers.push(o); });
     dbgLayers.sort((a, b) => a.renderOrder - b.renderOrder);
     window.__layerLabels = dbgLayers.map((mesh) => mesh.userData.label);
+    const compositionDiagnostics = dbgLayers.map((mesh, index) => {
+      if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+      const localBox = mesh.geometry.boundingBox;
+      const cardBox = localBox.clone().applyMatrix4(mesh.matrix);
+      return {
+        layer: index + 1,
+        label: mesh.userData.label,
+        shader: mesh.userData.recipeShader,
+        queue: mesh.renderOrder,
+        depthTest: mesh.material.depthTest,
+        depthWrite: mesh.material.depthWrite,
+        depthFunc: mesh.material.depthFunc,
+        cardMinZ: cardBox.min.z,
+        cardMaxZ: cardBox.max.z,
+        cardDepthSpan: cardBox.max.z - cardBox.min.z,
+        drawId: mesh.userData.officialDraw?.drawId || null,
+        goPath: mesh.userData.officialDraw?.goPath || null,
+      };
+    });
+    window.__compositionDiagnostics = compositionDiagnostics;
+    document.documentElement.dataset.compositionDiagnostics = JSON.stringify(compositionDiagnostics);
+    console.log("=== composition diagnostics ===\n" + JSON.stringify(compositionDiagnostics));
+    const diagnosticHiddenLayerNumbers = parseHiddenLayerNumbers(qp.get("hideLayer"));
+    const diagnosticHiddenLayerIds = new Set(
+      diagnosticHiddenLayerNumbers.map((number) => number - 1),
+    );
+    for (const layerId of diagnosticHiddenLayerIds) {
+      if (layerId >= dbgLayers.length) {
+        throw new RangeError(`hideLayer ${layerId + 1} exceeds ${dbgLayers.length} rendered layers`);
+      }
+    }
     const hud = document.createElement("div");
     // selectable (so you can copy the label) + above the canvas
     hud.style.cssText = "position:fixed;left:8px;bottom:8px;font:12px/1.5 monospace;color:#fff;background:rgba(0,0,0,.78);padding:7px 10px;white-space:pre;user-select:text;-webkit-user-select:text;z-index:9;border-radius:4px;max-width:94vw";
@@ -2013,14 +2201,125 @@ async function main() {
     // full numbered layer list to the console (copyable; reference a layer by its number)
     console.log("=== card layers (renderOrder) ===\n" + dbgLayers.map((m, i) => `[${i + 1}/${dbgLayers.length}] ${m.userData.label}`).join("\n"));
     let solo = -1;
+    const isRegionStencilWriter = (mesh) => {
+      const shader = mesh.material?.userData?.exactShader;
+      return shader === "OuterStencil" || shader === "InnerStencil" || shader === "IllustStencil";
+    };
+    const effectBisectShaders = new Set([
+      "Card_Parallax_Metal",
+      "Card_Parallax_Hologram_Tuning",
+      "Frame-Holo-Tuning",
+      "Effect",
+      "Transparent_Hologram_Tuning",
+      "Opaque_Hologram_Tuning",
+    ]);
+    const bisectCandidateIds = dbgLayers
+      .map((mesh, index) => ({ mesh, index }))
+      .filter(({ mesh }) => (
+        !isRegionStencilWriter(mesh)
+        && !mesh.userData.logicBisectHidden
+        && !(logicBisectCase.excludeParallaxFromBisect && mesh.userData.recipeShader === "Card_Parallax")
+        && (!logicBisectCase.bisectEffectDraws || effectBisectShaders.has(mesh.userData.recipeShader))
+      ))
+      .map(({ index }) => index);
+    const bisectCandidateIdSet = new Set(bisectCandidateIds);
+    const fixedBisectIds = dbgLayers
+      .map((_, index) => index)
+      .filter((index) => !bisectCandidateIdSet.has(index));
+    let bisectState = layerBisectRequested
+      ? createLayerBisectState(bisectCandidateIds)
+      : null;
+    const bisectHud = document.createElement("div");
+    bisectHud.style.cssText = [
+      "position:fixed",
+      "left:8px",
+      "top:8px",
+      "width:min(440px,calc(100vw - 16px))",
+      "font:12px/1.45 monospace",
+      "color:#fff",
+      "background:rgba(0,0,0,.88)",
+      "padding:10px",
+      "z-index:10",
+      "border:1px solid #555",
+      "border-radius:4px",
+      "box-sizing:border-box",
+    ].join(";");
+    const bisectText = document.createElement("div");
+    bisectText.style.cssText = "white-space:pre-wrap;margin-bottom:8px";
+    const bisectActions = document.createElement("div");
+    bisectActions.style.cssText = "display:flex;gap:6px;flex-wrap:wrap";
+    const bisectButton = (text, action, title) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = text;
+      button.title = title;
+      button.dataset.bisectAction = action;
+      button.style.cssText = "font:12px monospace;padding:5px 8px;border:1px solid #777;border-radius:3px;background:#20242a;color:#fff;cursor:pointer";
+      bisectActions.appendChild(button);
+      return button;
+    };
+    const artifactStillButton = bisectButton("纹路仍在", "still", "当前隐藏层不是必要条件，继续检查仍显示的半组");
+    const artifactGoneButton = bisectButton("纹路消失", "gone", "当前隐藏半组包含必要图层，恢复其余层并继续细分");
+    const resetBisectButton = bisectButton("重新开始", "reset", "从全部非 stencil 图层重新二分");
+    const exitBisectButton = bisectButton("退出二分", "exit", "恢复全部图层");
+    bisectHud.append(bisectText, bisectActions);
+    if (!window.__nohud) document.body.appendChild(bisectHud);
+    bisectHud.style.display = bisectState ? "block" : "none";
     window.__preview = window.__preview ?? false;
+    const formatLayerSet = (indices) => {
+      if (!indices.length) return "(无)";
+      const numbers = indices.map((index) => index + 1);
+      return numbers.length <= 12
+        ? numbers.join(", ")
+        : `${numbers.slice(0, 6).join(", ")} ... ${numbers.slice(-3).join(", ")} (${numbers.length}层)`;
+    };
+    function updateBisectHud(probe) {
+      bisectHud.style.display = bisectState && !window.__nohud ? "block" : "none";
+      if (!bisectState) return;
+      if (probe.done) {
+        const label = dbgLayers[probe.candidate]?.userData?.label || "(missing label)";
+        bisectText.textContent = [
+          `二分完成 · 必要图层 [${probe.candidate + 1}/${dbgLayers.length}]`,
+          label,
+          `保留上下文: ${formatLayerSet(bisectState.context)}`,
+          `已排除: ${formatLayerSet(bisectState.removed)}`,
+        ].join("\n");
+        artifactStillButton.disabled = true;
+        artifactGoneButton.disabled = true;
+        return;
+      }
+      artifactStillButton.disabled = false;
+      artifactGoneButton.disabled = false;
+      bisectText.textContent = [
+        `排除式二分 · 第 ${bisectState.round} 轮 · 候选 ${bisectState.candidates.length} 层`,
+        `本轮隐藏: ${formatLayerSet(probe.hidden)}`,
+        `当前显示候选: ${formatLayerSet(probe.shownCandidates)}`,
+        `固定非候选: ${formatLayerSet(fixedBisectIds)}`,
+        `固定候选上下文: ${formatLayerSet(bisectState.context)}`,
+        "保持当前倾角，判断彩色纹路是否还存在。",
+      ].join("\n");
+    }
     function applyDbg() {
+      const bisectProbe = bisectState ? layerBisectProbe(bisectState) : null;
+      const bisectVisible = bisectProbe ? new Set(bisectProbe.visible) : null;
       const selected = solo >= 0 ? dbgLayers[solo] : null;
       const selectedNeedsStencil = !!(
         selected?.material?.stencilWrite
         && selected.material.stencilFunc !== THREE.AlwaysStencilFunc
       );
       dbgLayers.forEach((m, i) => {
+        if (diagnosticHiddenLayerIds.has(i)) {
+          m.visible = false;
+          return;
+        }
+        if (m.userData.logicBisectHidden) {
+          m.visible = false;
+          return;
+        }
+        if (bisectVisible) {
+          m.visible = !bisectCandidateIdSet.has(i) || bisectVisible.has(i);
+          return;
+        }
         const stencilDependency = selectedNeedsStencil
           && m.material?.stencilWrite
           && m.material.stencilFunc === THREE.AlwaysStencilFunc;
@@ -2028,10 +2327,47 @@ async function main() {
       });
       const mode = window.__preview ? "PREVIEW (flat, no tilt)" : "SELECT (mouse-tilt)";
       const cur = solo < 0 ? `ALL — ${dbgLayers.length} layers` : `SOLO [${solo + 1}/${dbgLayers.length}]  ${dbgLayers[solo].userData.label}`;
-      hud.textContent = `mode: ${mode}\nlayer: ${cur}\n[←/→] solo prev/next   [a] all   [p] preview/select   [h] hide`;
+      const hidden = diagnosticHiddenLayerNumbers.length
+        ? `\nhidden: ${diagnosticHiddenLayerNumbers.join(", ")}`
+        : "";
+      hud.textContent = `mode: ${mode}\nlayer: ${cur}${hidden}\n[←/→] solo prev/next   [a] all   [p] preview/select   [h] hide`;
+      updateBisectHud(bisectProbe);
       if (solo >= 0) console.log(`SOLO [${solo + 1}/${dbgLayers.length}] ${dbgLayers[solo].userData.label}`);
     }
+    function answerBisect(artifactStillVisible) {
+      if (!bisectState || layerBisectProbe(bisectState).done) return;
+      bisectState = answerLayerBisect(bisectState, artifactStillVisible);
+      solo = -1;
+      applyDbg();
+    }
+    artifactStillButton.addEventListener("click", () => answerBisect(true));
+    artifactGoneButton.addEventListener("click", () => answerBisect(false));
+    resetBisectButton.addEventListener("click", () => {
+      bisectState = createLayerBisectState(bisectCandidateIds);
+      solo = -1;
+      applyDbg();
+    });
+    exitBisectButton.addEventListener("click", () => {
+      bisectState = null;
+      solo = -1;
+      applyDbg();
+    });
     addEventListener("keydown", (e) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === "y" && bisectState) { answerBisect(true); return; }
+      if (e.key === "n" && bisectState) { answerBisect(false); return; }
+      if (e.key === "r" && bisectState) {
+        bisectState = createLayerBisectState(bisectCandidateIds);
+        solo = -1;
+        applyDbg();
+        return;
+      }
+      if (e.key === "b") {
+        bisectState = bisectState ? null : createLayerBisectState(bisectCandidateIds);
+        solo = -1;
+        applyDbg();
+        return;
+      }
       if (e.key === "ArrowRight" || e.key === "]") solo = solo + 1 >= dbgLayers.length ? -1 : solo + 1;
       else if (e.key === "ArrowLeft" || e.key === "[") solo = solo < 0 ? dbgLayers.length - 1 : solo - 1;
       else if (e.key === "a" || e.key === "0") solo = -1;
@@ -2355,6 +2691,18 @@ async function main() {
         material.uniforms._ScrollOffset.value = values.scrollOffset;
         material.uniforms._KiraScale.value = values.kiraScale;
         material.uniforms._Anim.value = values.anim;
+        material.userData.rendererPropertyBlockAudit = {
+          schema: "pocket-card-render/renderer-property-block@1",
+          producer: "KiraPuyoObject.UpdateMPB",
+          unityLocalFront: [...unityLocalFront],
+          values: {
+            _RampRepeat: values.rampRepeat,
+            _ScrollScale: values.scrollScale,
+            _ScrollOffset: values.scrollOffset,
+            _KiraScale: values.kiraScale,
+            _Anim: values.anim,
+          },
+        };
       }
       for (const state of circularKiraComponents.values()) {
         const transform = state.componentTransform;
@@ -2392,7 +2740,7 @@ async function main() {
       post.apply();
       const sourcePixelProbe = shotMode ? readCenterProbe(post.sceneRT) : null;
       const cardDisplay = window.__cardDisplay;
-      if (cardDisplay) {
+      if (cardDisplay && !logicBisectCase.bypassHomography) {
         const viewportPoints = cardDisplay.projectedKeypoints();
         const matrices = setHomographyDisplayPoints(cardDisplay.material, viewportPoints);
         const displayPost = window.__displayPost;

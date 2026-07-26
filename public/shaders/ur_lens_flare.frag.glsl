@@ -4,7 +4,6 @@ precision highp int;
 uniform highp float _RemoveTextureArtifact;
 uniform int _EmissivePattern;
 uniform highp vec4 _EmissiveColor;
-uniform int uBloomOnly;
 
 uniform mediump sampler2D _13;
 
@@ -27,8 +26,4 @@ void main()
     _66 = _EmissivePattern == 1;
     bvec4 _77 = bvec4(_66);
     _72 = vec4(_77.x ? _20.x : vec4(0.0).x, _77.y ? _20.y : vec4(0.0).y, _77.z ? _20.z : vec4(0.0).z, _77.w ? _20.w : vec4(0.0).w);
-    if (uBloomOnly != 0)
-    {
-        _56 = _72;
-    }
 }

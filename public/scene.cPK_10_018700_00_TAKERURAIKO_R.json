@@ -1,0 +1,2245 @@
+{
+ "officialDrawSchemaVersion": 2,
+ "card": {
+  "id": "cPK_10_018700_00_TAKERURAIKO_R",
+  "name": "TAKERURAIKO",
+  "rarityToken": "R"
+ },
+ "prefabGlb": "/game/Assets/PrefabHierarchyObject/cPK_10_018700_00_TAKERURAIKO_R_L.glb",
+ "materials": {
+  "IllustStencil_Pokemon": {
+   "shader": "IllustStencil",
+   "queue": 1000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-378b85e7a26f3511a16d4be98a526e3a:-4945952737109894400",
+    "shader": "CAB-d2eee03d934a8dca5a2dfd1194c0d206:-4357900850690044614",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "IllustStencil",
+   "floats": {
+    "_AlphaThreshold": 0.35199999809265137
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_inner_stencil_mask_pokemon_window",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "InnerStencil_Window": {
+   "shader": "InnerStencil",
+   "queue": 1000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-40edce138949e7d8493c275431592e5c:5632862269281222530",
+    "shader": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "InnerStencil",
+   "floats": {
+    "_AlphaThreshold": 0.35199999809265137
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_inner_stencil_mask_pokemon_window",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Card_R_M": {
+   "shader": "Side&Back",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 1,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+    "shader": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": true,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_EnableFog",
+     "_MODE_NONE"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "INSTANCING_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_EnableFog": 1,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 48,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularIntensity": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.5,
+     "g": 0.5,
+     "b": 0.5,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 0.8726415038108826,
+     "g": 0.9632075428962708,
+     "b": 1,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "Card_Back",
+     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Card_S_M": {
+   "shader": "Side&Back",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 2,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+    "shader": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": true,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_MODE_NONE",
+     "_SPECULARENABLED_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "INSTANCING_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_DiffuseSmooth": 0.34299999475479126,
+    "_DiffuseStep": 0,
+    "_EnableFog": 0,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 10,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularEnabled": 1,
+    "_SpecularIntensity": 1,
+    "_SpecularSmooth": 0.36500000953674316,
+    "_SpecularStep": 0.4050000011920929,
+    "_UseMask": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.43396228551864624,
+     "g": 0.43396228551864624,
+     "b": 0.43396228551864624,
+     "a": 1
+    },
+    "_Color": {
+     "r": 0.7529411911964417,
+     "g": 0.7529411911964417,
+     "b": 0.7529411911964417,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_LightDir": {
+     "r": -1,
+     "g": -3.700000047683716,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecularColor": {
+     "r": 0.09251514077186584,
+     "g": 0.10015178471803665,
+     "b": 0.10377359390258789,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "SimpleCard_Side02",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_FullFace_Holo_CategoryTag_Paradox": {
+   "shader": "Transparent_HologramLayer",
+   "queue": 2910,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 6,
+    "serializedLocalKeywordStateHex": "3000000000000000",
+    "serializedLocalKeywordHash": 3914752432,
+    "serializedLocalKeywordHashLow8": 176,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-0aabd99f5da2b397b7f8c322b0380fa4:3817850591173318724",
+    "shader": "CAB-ff1f54b99c3cbd88ceab7164162bd41d:-2814824103247948085",
+    "customRenderQueue": 2910,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_USE_DYNAMIC_UI_AS_HOLO_MASK",
+     "_USE_DYNAMIC_UI_AS_METALLIC_MASK"
+    ],
+    "invalidKeywords": [
+     "DYNAMIC_UI",
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_USE_DYNAMIC_UI_AS_METALLIC_MASK",
+     "_USE_DYNAMIC_UI_AS_HOLO_MASK"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Hologram_CategoryTag",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_BaseColorIntensity": 0.75,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1.100000023841858,
+    "_DiffractionPower": 40,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 0,
+    "_MetallicMaskPower": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.020999999716877937,
+    "_RampRepeat": 2,
+    "_RampSpeed": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75,
+    "_USE_DYNAMIC_UI_AS_HOLO_MASK": 1,
+    "_USE_DYNAMIC_UI_AS_METALLIC_MASK": 1,
+    "_UseDynamicUI": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [
+    "_USE_DYNAMIC_UI_AS_HOLO_MASK",
+    "_USE_DYNAMIC_UI_AS_METALLIC_MASK"
+   ],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_Tag_Paradox_Pokemon",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Tag_Paradox_Pokemon.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "ALL_RMPmask_EX_135",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "UB_RMP_CategoryTag",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/_Test/RMP_folder/UB_RMP_CategoryTag.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_FullFace_Text_AT0": {
+   "shader": "Text",
+   "queue": 2900,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-4b566974de1902a272a67afdc903696a:-3683775528552924619",
+    "shader": "CAB-8a93e31cb5e318823fe7c18ec9b8c0f9:2245828404536736759",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Dynamic_Text",
+   "floats": {
+    "_AlphaThreshold": 0,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 0.550000011920929,
+    "_DiffractionPower": 16,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {}
+  },
+  "L_RaremarkFlame_a": {
+   "shader": "Simple-Opaque",
+   "queue": 2801,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+    "shader": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+    "customRenderQueue": 2801,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_RareMark_Diamond_a",
+   "floats": {
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "card_rarity_outline",
+     "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Raremark_Diamond_a": {
+   "shader": "Opaque_Hologram_Tuning",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 1,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+    "shader": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+    "customRenderQueue": 2800,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 0,
+   "go": "L_UI_RareMark_Diamond_a",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 10,
+    "_DiffuseIntensity": 0.75,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.2639999985694885,
+    "_RampRepeat": 1,
+    "_RampSpeed": 2,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.6499999761581421,
+    "_Stencil": 0,
+    "_UseMask": 0,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_OutlineColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "card_rarity_diamond_a",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_Rarity_Diamond",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RMP_MASK_RareMark",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "ALL_RMP_RareMark_Diamond",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "OuterStencil": {
+   "shader": "OuterStencil",
+   "queue": 1000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+    "shader": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "OuterStencil",
+   "floats": {},
+   "colors": {},
+   "keywords": [],
+   "textures": {}
+  },
+  "Panel_Pokemon_Normal_Base": {
+   "shader": "Frame",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-b86cc2401bf0fdf06fd21b63a8ba3d66:4148976663348992252",
+    "shader": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+    "customRenderQueue": 2800,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Panel_Pokemon",
+   "floats": {
+    "_ChangeSpeed": 5.599999904632568,
+    "_CullMode": 0,
+    "_DiffractionIntensity": 0.800000011920929,
+    "_DiffractionPower": 16,
+    "_DiffuseIntensity": 1,
+    "_EmitMasking": 0,
+    "_OrientationU": 1,
+    "_OrientationV": -0.08699999749660492,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.10000000149011612,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_pokemon_normal_base",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "Pokemon_EnergyType_Paradox_Ancient_Holo_R_Dra": {
+   "shader": "Card_Illust_DoubleTexture",
+   "queue": 2100,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "1000000000000000",
+    "serializedLocalKeywordHash": 3159871262,
+    "serializedLocalKeywordHashLow8": 30,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-67423e68e1417bcbb062c0fe72c78325:-7692185638786826951",
+    "shader": "CAB-cf5d8819979a0655496f9db913e931ee:5991589351999993912",
+    "customRenderQueue": 2100,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_USEGRADATIONTEXTURE_ON"
+    ],
+    "invalidKeywords": [
+     "_LAYER2BLENDMODE_ALPHABLEND"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_USEGRADATIONTEXTURE_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Pokemon_Full_EnergyType_BG",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_CutOut": 0.0010000000474974513,
+    "_DiffractionIntensity": 0.20000000298023224,
+    "_DiffractionPower": 30,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_FrontMaskPower": 64,
+    "_GradationEndPos": 1,
+    "_GradationPower": 1,
+    "_GradationStartPos": 0,
+    "_Height": -0.4000000059604645,
+    "_Height1": -0.4000000059604645,
+    "_Height2": -0.20000000298023224,
+    "_HeightPower": 0.4000000059604645,
+    "_HeightPower1": 0.4000000059604645,
+    "_HeightPower2": 0,
+    "_HoloAlphaBlend": 0,
+    "_HoloMaskPower": 1.7999999523162842,
+    "_IsPreMultiply": 0,
+    "_Layer1BaseColorIntensity": 0.800000011920929,
+    "_Layer1DiffractionIntensity": 0.5,
+    "_Layer1DiffractionPower": 64,
+    "_Layer1Shininess": 2,
+    "_Layer1SpecularIntensity": 0.20000000298023224,
+    "_Layer2BlendMode": 0,
+    "_MaskEmissive": 0,
+    "_MetallicMaskPower": 4,
+    "_MetallicUseR": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_PhaseRotate": 0,
+    "_PhaseScale": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.44699999690055847,
+    "_RampOffset2": 0,
+    "_RampRepeat": 1.5,
+    "_RampRotate": 0,
+    "_RampScale": 1,
+    "_RampSpeed": 2,
+    "_RampUVOffset": 0,
+    "_RampUVTiltOffset": 0,
+    "_Scale": 1.5499999523162842,
+    "_Scale1": 1.5499999523162842,
+    "_Scale2": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_SrcFactor": 5,
+    "_SrcFactorA": 0,
+    "_StencilRef": 0,
+    "_UseGradationTexture": 1,
+    "_UseUv": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_GradationEndPos": {
+     "r": 0.5,
+     "g": 0.5,
+     "b": 0,
+     "a": 0
+    },
+    "_GradationStartPos": {
+     "r": 0.5,
+     "g": 0.5,
+     "b": 0,
+     "a": 0
+    },
+    "_HologramBaseColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [
+    "_USEGRADATIONTEXTURE_ON"
+   ],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "card_bg_dra",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_dra.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MaskTex": {
+     "name": "card_frame_mask_Paradox_normal",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/Paradox/card_frame_mask_Paradox_normal.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_OverlapTex": {
+     "name": "card_bg_paradox_ancient_normal",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/Paradox/card_bg_paradox_ancient_normal.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_R_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "R_RMPmask_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "R_RMP_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "Pokemon_Frame_R": {
+   "shader": "Frame-Holo-Tuning",
+   "queue": 2200,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-b7a7b985cdfe6c4945169e2778f94574:1288404141627760905",
+    "shader": "CAB-9b1fddc69a06018d6cd2d88f6347b41d:1941244596869971441",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_AlphaClip": 0,
+    "_BaseColorIntensity": 0.5,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_Cull": 2,
+    "_CutOut": 0.009999999776482582,
+    "_Cutoff": 0.5,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 30,
+    "_DstBlend": 0,
+    "_EnvironmentReflections": 1,
+    "_FrontMaskPower": 64,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_MaskEmissive": 0,
+    "_Metallic": 0,
+    "_OcclusionStrength": 1,
+    "_Parallax": 0.004999999888241291,
+    "_PhaseRotate": 0,
+    "_PhaseScale": 1,
+    "_QueueOffset": 0,
+    "_RampInterval": 0,
+    "_RampOffset": -0.44699999690055847,
+    "_RampRepeat": 1.5,
+    "_RampRotate": 0,
+    "_RampScale": 1,
+    "_RampSpeed": 2,
+    "_RampUVOffset": 0,
+    "_RampUVTiltOffset": 0,
+    "_ReceiveShadows": 1,
+    "_RemoveMetallic": 0,
+    "_Shininess": 2,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SpecularIntensity": 0.5,
+    "_SrcBlend": 1,
+    "_Surface": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_pokemon_base_r",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_r.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "card_frame_mask_R_SR",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_R_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "R_RMPmask_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "R_RMP_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_10_018700_00_TAKERURAIKO_R_L_HOLO": {
+   "shader": "Card_Hologram_Tuning",
+   "queue": 2020,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:494530653445615532",
+    "shader": "CAB-862ac57a79e07c4fc42c3b8fe0d2b8ce:-4614034991828446706",
+    "customRenderQueue": 2020,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_USEREFLECTIONALPHA_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Pokemon_Full_Hologram",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_CutOut": 0,
+    "_DiffractionIntensity": 4,
+    "_DiffractionPower": 35,
+    "_MaskPower": 64,
+    "_PhaseRotate": 0,
+    "_PhaseScale": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.30000001192092896,
+    "_RampRepeat": 7,
+    "_RampRotate": 0,
+    "_RampScale": 1,
+    "_RampSpeed": 2,
+    "_RampUVOffset": 0,
+    "_RampUVTiltOffset": 0,
+    "_StencilRef": 0,
+    "_UseAlphaAsAlphaBlendMask": 0,
+    "_UseMaskUv": 1,
+    "_UseReflectionAlpha": 1,
+    "_UseUv": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_HologramMaskTex": {
+     "name": "cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK",
+     "url": "/game/Assets/Texture2D/cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_R_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "R_RMPmask_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "R_RMP_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL": {
+   "shader": "Card_Parallax",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 7,
+    "serializedLocalKeywordStateHex": "1000000000000000",
+    "serializedLocalKeywordHash": 3159871262,
+    "serializedLocalKeywordHashLow8": 30,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-6407790247805427057",
+    "shader": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+    "customRenderQueue": 2000,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_UVASPECTRATIO_SQUARE"
+    ],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_UVASPECTRATIO_SQUARE",
+     "_UVASPECTRATIO_CARDFULL",
+     "_UVASPECTRATIO_CARDWINDOW"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "L_Pokemon_Window_Parallax",
+   "floats": {
+    "_BlendMode": 0,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": 0,
+    "_HeightPower": 0,
+    "_Scale": 1,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_StencilRef": 0,
+    "_UVAspectRatio": 0,
+    "_UseUv": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {},
+   "keywords": [
+    "_UVASPECTRATIO_SQUARE"
+   ],
+   "textures": {
+    "_MainTex": {
+     "name": "cPK_10_018700_00_TAKERURAIKO_R_L_ILL",
+     "url": "/game/Assets/Texture2D/cPK_10_018700_00_TAKERURAIKO_R_L_ILL.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_10_018700_00_TAKERURAIKO_R_L_METAL": {
+   "shader": "Card_Parallax_Metal",
+   "queue": 2010,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:5082683707154880830",
+    "shader": "CAB-d1582aca8a9778d6408528fab4637fc4:-3392042766667377368",
+    "customRenderQueue": 2010,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_USEUV2_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "L_Pokemon_Window_Metalic",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_FakeCameraHeight": 0,
+    "_Height": 0,
+    "_HeightPower": 0,
+    "_MetalMaskIntensity": 3.5714290142059326,
+    "_Scale": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_StencilRef": 0,
+    "_UseUv": 1,
+    "_UseUv2": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MetalMaskTex": {
+     "name": "cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK",
+     "url": "/game/Assets/Texture2D/cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  }
+ },
+ "officialDraws": [
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:3538997781243744125#0",
+   "go": "IllustStencil",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/Stencil_Pokemon_Low/IllustStencil",
+   "meshName": "Card_F",
+   "materialName": "IllustStencil_Pokemon",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:3538997781243744125",
+   "materialIdentity": "CAB-378b85e7a26f3511a16d4be98a526e3a:-4945952737109894400",
+   "shaderIdentity": "CAB-d2eee03d934a8dca5a2dfd1194c0d206:-4357900850690044614",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-358874543825301635#0",
+   "go": "InnerStencil",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/Stencil_Pokemon_Low/InnerStencil",
+   "meshName": "Card_F",
+   "materialName": "InnerStencil_Window",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-358874543825301635",
+   "materialIdentity": "CAB-40edce138949e7d8493c275431592e5c:5632862269281222530",
+   "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051#1",
+   "go": "Card_F",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "L_Card_R_M",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051",
+   "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+   "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051#2",
+   "go": "Card_F",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "L_Card_S_M",
+   "materialSlot": 2,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051",
+   "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+   "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-8603589107902853251#0",
+   "go": "L_UI_Hologram_CategoryTag",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Hologram_CategoryTag",
+   "meshName": "CategoryTag",
+   "materialName": "L_FullFace_Holo_CategoryTag_Paradox",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-8603589107902853251",
+   "materialIdentity": "CAB-0aabd99f5da2b397b7f8c322b0380fa4:3817850591173318724",
+   "shaderIdentity": "CAB-ff1f54b99c3cbd88ceab7164162bd41d:-2814824103247948085",
+   "meshIdentity": "CAB-c366eea3f9afef2531ab5311be10c965:-1408101755113958319",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:1331421276075904893#0",
+   "go": "L_UI_Dynamic_Text",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Dynamic_Text",
+   "meshName": "Card_Base_UI",
+   "materialName": "L_FullFace_Text_AT0",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:1331421276075904893",
+   "materialIdentity": "CAB-4b566974de1902a272a67afdc903696a:-3683775528552924619",
+   "shaderIdentity": "CAB-8a93e31cb5e318823fe7c18ec9b8c0f9:2245828404536736759",
+   "meshIdentity": "CAB-9a3847ea880de0a021b6ce6e82673242:-7382184488764102",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-2349931700414525571#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-2349931700414525571",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6650096988925644669#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a (1)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6650096988925644669",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:7419893121470287741#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a (2)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:7419893121470287741",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-2349931700414525571#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-2349931700414525571",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6650096988925644669#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a (1)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6650096988925644669",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:7419893121470287741#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Rare_R/L_UI_RareMark_Diamond_a (2)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:7419893121470287741",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-4368849877471342723#0",
+   "go": "OuterStencil",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/Stencil_Pokemon_Low/OuterStencil",
+   "meshName": "Card_F",
+   "materialName": "OuterStencil",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-4368849877471342723",
+   "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+   "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-3275202326656790659#0",
+   "go": "L_UI_Panel_Pokemon",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_UI_Panel_Pokemon",
+   "meshName": "Card_F",
+   "materialName": "Panel_Pokemon_Normal_Base",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-3275202326656790659",
+   "materialIdentity": "CAB-b86cc2401bf0fdf06fd21b63a8ba3d66:4148976663348992252",
+   "shaderIdentity": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-8056915042068279427#0",
+   "go": "L_Pokemon_Full_EnergyType_BG",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Pokemon_Full_EnergyType_BG",
+   "meshName": "Card_F",
+   "materialName": "Pokemon_EnergyType_Paradox_Ancient_Holo_R_Dra",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-8056915042068279427",
+   "materialIdentity": "CAB-67423e68e1417bcbb062c0fe72c78325:-7692185638786826951",
+   "shaderIdentity": "CAB-cf5d8819979a0655496f9db913e931ee:5991589351999993912",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051#0",
+   "go": "Card_F",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "Pokemon_Frame_R",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-5773724651968082051",
+   "materialIdentity": "CAB-b7a7b985cdfe6c4945169e2778f94574:1288404141627760905",
+   "shaderIdentity": "CAB-9b1fddc69a06018d6cd2d88f6347b41d:1941244596869971441",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6259430312491011965#0",
+   "go": "L_Pokemon_Full_Hologram",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Pokemon_Full_Hologram",
+   "meshName": "Card_F_V02",
+   "materialName": "cPK_10_018700_00_TAKERURAIKO_R_L_HOLO",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:6259430312491011965",
+   "materialIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:494530653445615532",
+   "shaderIdentity": "CAB-862ac57a79e07c4fc42c3b8fe0d2b8ce:-4614034991828446706",
+   "meshIdentity": "CAB-2ec0fdd9a44b770b6887bb127d1f4d3a:7314480424645497523",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-443204625058771075#0",
+   "go": "L_Pokemon_Window_Parallax",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Pokemon_Window_Parallax",
+   "meshName": "Card_F_V02",
+   "materialName": "cPK_10_018700_00_TAKERURAIKO_R_L_ILL",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-443204625058771075",
+   "materialIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-6407790247805427057",
+   "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+   "meshIdentity": "CAB-2ec0fdd9a44b770b6887bb127d1f4d3a:7314480424645497523",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-6038310512630378627#0",
+   "go": "L_Pokemon_Window_Metalic",
+   "goPath": "cPK_10_018700_00_TAKERURAIKO_R_L/L_Pokemon_Window_Metalic",
+   "meshName": "Card_F_V02",
+   "materialName": "cPK_10_018700_00_TAKERURAIKO_R_L_METAL",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:-6038310512630378627",
+   "materialIdentity": "CAB-6f5a55942f947ebd9f3e6b75cf4b00f0:5082683707154880830",
+   "shaderIdentity": "CAB-d1582aca8a9778d6408528fab4637fc4:-3392042766667377368",
+   "meshIdentity": "CAB-2ec0fdd9a44b770b6887bb127d1f4d3a:7314480424645497523",
+   "rendererProperties": {}
+  }
+ ],
+ "runtimeSettings": {
+  "kiraPuyo": {},
+  "circularKira": {}
+ },
+ "textures": {
+  "card_inner_stencil_mask_pokemon_window": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+  "L_001_ENV": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+  "Phase_Tag_Paradox_Pokemon": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Tag_Paradox_Pokemon.png",
+  "ALL_RMPmask_EX_135": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+  "UB_RMP_CategoryTag": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/_Test/RMP_folder/UB_RMP_CategoryTag.png",
+  "card_rarity_outline": "/game/Assets/Texture2D/card_rarity_outline.png",
+  "mask_white": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+  "card_rarity_diamond_a": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+  "Phase_Rarity_Diamond": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+  "RMP_MASK_RareMark": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+  "ALL_RMP_RareMark_Diamond": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+  "card_pokemon_normal_base": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+  "card_bg_dra": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_dra.png",
+  "card_frame_mask_Paradox_normal": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/Paradox/card_frame_mask_Paradox_normal.png",
+  "card_bg_paradox_ancient_normal": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/Paradox/card_bg_paradox_ancient_normal.png",
+  "Phase_R_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_Border.png",
+  "R_RMPmask_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_Border.png",
+  "R_RMP_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_Border.png",
+  "card_pokemon_base_r": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_r.png",
+  "card_frame_mask_R_SR": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK": "/game/Assets/Texture2D/cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK.png",
+  "Phase_R_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_BG.png",
+  "R_RMPmask_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_BG.png",
+  "R_RMP_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_BG.png",
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL": "/game/Assets/Texture2D/cPK_10_018700_00_TAKERURAIKO_R_L_ILL.png"
+ },
+ "alphaMode": {
+  "card_inner_stencil_mask_pokemon_window": "opaque",
+  "Card_Back": "opaque",
+  "SimpleCard_Side02": "opaque",
+  "L_001_ENV": "opaque",
+  "Phase_Tag_Paradox_Pokemon": "opaque",
+  "ALL_RMPmask_EX_135": "opaque",
+  "UB_RMP_CategoryTag": "opaque",
+  "card_rarity_outline": "opaque",
+  "mask_white": "opaque",
+  "card_rarity_diamond_a": "straight",
+  "Phase_Rarity_Diamond": "opaque",
+  "RMP_MASK_RareMark": "opaque",
+  "ALL_RMP_RareMark_Diamond": "opaque",
+  "card_pokemon_normal_base": "premult",
+  "card_bg_dra": "straight",
+  "card_frame_mask_Paradox_normal": "opaque",
+  "card_bg_paradox_ancient_normal": "straight",
+  "Phase_R_Border": "opaque",
+  "R_RMPmask_Border": "opaque",
+  "R_RMP_Border": "opaque",
+  "card_pokemon_base_r": "premult",
+  "card_frame_mask_R_SR": "opaque",
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK": "opaque",
+  "Phase_R_BG": "opaque",
+  "R_RMPmask_BG": "opaque",
+  "R_RMP_BG": "opaque",
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL": "opaque"
+ },
+ "textureColorSpace": {
+  "card_inner_stencil_mask_pokemon_window": 1,
+  "Card_Back": 1,
+  "SimpleCard_Side02": 1,
+  "L_001_ENV": 1,
+  "Phase_Tag_Paradox_Pokemon": 0,
+  "ALL_RMPmask_EX_135": 0,
+  "UB_RMP_CategoryTag": 1,
+  "card_rarity_outline": 1,
+  "mask_white": 0,
+  "card_rarity_diamond_a": 1,
+  "Phase_Rarity_Diamond": 0,
+  "RMP_MASK_RareMark": 0,
+  "ALL_RMP_RareMark_Diamond": 1,
+  "card_pokemon_normal_base": 1,
+  "card_bg_dra": 1,
+  "card_frame_mask_Paradox_normal": 0,
+  "card_bg_paradox_ancient_normal": 1,
+  "Phase_R_Border": 0,
+  "R_RMPmask_Border": 0,
+  "R_RMP_Border": 1,
+  "card_pokemon_base_r": 1,
+  "card_frame_mask_R_SR": 0,
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL_MASK": 0,
+  "Phase_R_BG": 0,
+  "R_RMPmask_BG": 0,
+  "R_RMP_BG": 1,
+  "cPK_10_018700_00_TAKERURAIKO_R_L_ILL": 1
+ },
+ "_missing": []
+}

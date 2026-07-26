@@ -137,11 +137,13 @@ export function evaluateKiraPuyoCurve(curve, time) {
 export function createKiraPuyoState(component, settings) {
   if (!component || !settings?.curve) throw new TypeError("KiraPuyo component/settings are required");
   validateCurve(settings.curve);
+  const rawTime = add(component.scaleAnimationOffset, mul(component.vertScaleSpeed, f32(0.5)));
+  const curveTime = sub(rawTime, f32(Math.floor(rawTime)));
   return {
     component,
     settings,
     anim: f32(0.5),
-    kiraScale: evaluateKiraPuyoCurve(settings.curve, f32(component.scaleAnimationOffset + component.vertScaleSpeed * 0.5)),
+    kiraScale: evaluateKiraPuyoCurve(settings.curve, Math.min(curveTime, ONE)),
   };
 }
 
@@ -156,7 +158,7 @@ export function updateKiraPuyo(state, unityLocalFront) {
   const anim = add(mul(x01, HALF), mul(y01, HALF));
   const rawTime = add(state.component.scaleAnimationOffset, mul(state.component.vertScaleSpeed, anim));
   const fractional = sub(rawTime, f32(Math.floor(rawTime)));
-  const curveTime = rawTime < 0 ? f32(0) : Math.min(fractional, ONE);
+  const curveTime = Math.min(fractional, ONE);
   state.anim = anim;
   state.kiraScale = evaluateKiraPuyoCurve(state.settings.curve, curveTime);
   return {

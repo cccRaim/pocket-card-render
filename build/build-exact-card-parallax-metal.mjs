@@ -4,9 +4,11 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  adaptThreeWorldVectorsToUnityDataAxes,
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
+  compileOfficialVertexInputContract,
   compileProgramBindings,
   joinProgramSamplerBindings,
   runCommand,
@@ -15,6 +17,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -37,6 +40,14 @@ const PASS_POLICY = {
     offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
     alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
   },
+};
+const FRAGMENT_BASIS_CONVERSIONS = {
+  worldVectors: [
+    { source: "cameraPosition", alias: "pcrUnityCameraPosition", expectedOccurrences: 1 },
+    { source: "vs_TEXCOORD1", alias: "pcrUnityWorldPosition", expectedOccurrences: 1 },
+    { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 3 },
+  ],
+  viewForwards: [],
 };
 
 function rows(items = []) {
@@ -139,6 +150,9 @@ function adaptFragment(source) {
     .replaceAll("_17._m3", "_SpecularIntensity")
     .replaceAll("_17._m4", "_MetalMaskIntensity")
     .replaceAll("_17._m5", "_Rotation");
+  output = adaptThreeWorldVectorsToUnityDataAxes(output, {
+    bindings: FRAGMENT_BASIS_CONVERSIONS.worldVectors,
+  });
   if (/_17\._m|uniform _15_17/.test(output)) {
     throw new Error("Card_Parallax_Metal fragment adaptation is incomplete");
   }
@@ -170,6 +184,15 @@ await withExtractedSelectorProgram({
   const fragment = adaptFragment(officialFragment);
   const commonBindings = compileCommonBindings(metadata.commonBindings);
   const programBindings = compileProgramBindings(commonBindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
   const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "Card_Parallax_Metal sampler must use descriptor set 0");
     return row;
@@ -179,13 +202,50 @@ await withExtractedSelectorProgram({
     { slot: "_MetalMaskTex", spirvName: "_277", binding: 1 },
   ]);
 
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Card_Parallax_Metal",
+    attributes: { position: "vec3", normal: "vec3", tangent: "vec4", uv: "vec2", uv1: "vec2" },
+    engine_uniforms: {
+      modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+    },
+    material_uniforms: {
+      floats: [
+        "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_BaseColorIntensity",
+        "_Shininess", "_SpecularIntensity", "_MetalMaskIntensity",
+      ],
+      ints: ["_UseUv"],
+      vectors: { _Rotation: "vec3" },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: true,
+    mrt_attachments: 2,
+    stencil_normalization: "none",
+    stencil_face_mode: "generic",
+    backend_texture_defaults: { _CubeMap: "neutral-gray-cube" },
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(files.vertexSpirv),
       spirvCrossGlslSha256: sha256(officialVertex),
       outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "map official position/normal/UV0/UV1/tangent locations to Three.js attributes",
         "map Unity object/world/view-projection matrices and camera position to Three.js engine uniforms",
@@ -196,19 +256,33 @@ await withExtractedSelectorProgram({
       officialSpirvSha256: sha256File(files.fragmentSpirv),
       spirvCrossGlslSha256: sha256(officialFragment),
       outputSha256: sha256(fragment),
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "map the official PGlobals constant buffer to typed Three.js uniforms",
         "remove the embedded GLSL version directive for Three.js RawShaderMaterial injection",
       ],
     },
     interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const manifest = {
     shader: "Lettuce/Common/CardNew/Face/Card_Parallax_Metal",
     generated_by: "build/build-exact-card-parallax-metal.mjs",
     selected_keywords: [],
     official_selector: metadata.selector,
     official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+    official_spirv_precision: metadata.officialSpirvPrecision,
     official_executable_identity: metadata.identityFields,
     official_parameter_entry: {
       source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -221,38 +295,15 @@ await withExtractedSelectorProgram({
       policy: PASS_POLICY,
     }),
     official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
-    official_program_bindings: {
-      common_source_sha256: metadata.identityFields.commonBindingsSha256,
-      parameter_reflection_sha256: metadata.parameterReflectionSha256,
-      ...programBindings,
-    },
+    official_program_bindings: manifestProgramBindings,
+    official_vertex_inputs: vertexInputContract,
     official_shader_property_defaults: metadata.shaderPropertyDefaults,
     webgl_adaptation: adaptation,
     webgl_sources: {
       vertex: "public/shaders/card_parallax_metal.vert.glsl",
       fragment: "public/shaders/card_parallax_metal.frag.glsl",
     },
-    runtime_contract: {
-      schema: "pocket-card-render/webgl-runtime-port@1",
-      shader_key: "Card_Parallax_Metal",
-      attributes: { position: "vec3", normal: "vec3", tangent: "vec4", uv: "vec2", uv1: "vec2" },
-      engine_uniforms: {
-        modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
-      },
-      material_uniforms: {
-        floats: [
-          "_FakeCameraHeight", "_Height", "_HeightPower", "_Scale", "_BaseColorIntensity",
-          "_Shininess", "_SpecularIntensity", "_MetalMaskIntensity",
-        ],
-        ints: ["_UseUv"],
-        vectors: { _Rotation: "vec3" },
-      },
-      require_complete_active_bindings: true,
-      camera_from_view: true,
-      mrt_attachments: 2,
-      stencil_face_mode: "generic",
-      backend_texture_defaults: { _CubeMap: "neutral-gray-cube" },
-    },
+    runtime_contract: runtimeContract,
     sampler_bindings: samplerBindings,
     samplers: samplerBindings.map((row) => row.spirvName),
     sampler_slots: samplerBindings.map((row) => row.slot),

@@ -3,16 +3,26 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  resolveOfficialImgTagFontType,
+} from "../public/render/official-img-tag-font-type.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTRACT = path.join(ROOT, "public", "render", "tmp-sprite-contract.json");
 const PNG = path.join(ROOT, "public", "game", "tmp-sprites", "TextExSprite.png");
 const TEXT = path.join(ROOT, "public", "text");
+const CARD_TEXT_DESIGN = path.join(
+  ROOT,
+  "public",
+  "render",
+  "card-text-design-contract.json",
+);
 
 const sha256 = (value) => crypto.createHash("sha256").update(value).digest("hex");
 
 export function auditOfficialTmpSprite() {
   const contract = JSON.parse(fs.readFileSync(CONTRACT, "utf8"));
+  const textDesign = JSON.parse(fs.readFileSync(CARD_TEXT_DESIGN, "utf8"));
   assert.equal(contract.schemaVersion, 1);
   assert.equal(contract.source.fontBundle.sha256, "88364448d71939764df209474b760b8d30623eba85a165d7b822e2488cc10589");
   assert.equal(contract.spriteAsset.objectSha256, "e6f1c89e38810a0d8f99ae1a382a3e2f0a0ed05b03281f40f0c57644eea2dd55");
@@ -33,6 +43,7 @@ export function auditOfficialTmpSprite() {
   }
 
   let generatedBindingCount = 0;
+  const producerCounts = { normalRule: 0, megaRule: 0, fontGroup: 0 };
   for (const name of fs.readdirSync(TEXT).filter((entry) => entry.endsWith(".json"))) {
     const document = JSON.parse(fs.readFileSync(path.join(TEXT, name), "utf8"));
     for (const element of document.elements || []) {
@@ -43,10 +54,40 @@ export function auditOfficialTmpSprite() {
       assert.equal(binding.materialId, contract.material.pathId, `${name}: material mismatch`);
       assert.equal(binding.textureId, contract.texture.pathId, `${name}: texture mismatch`);
       assert.equal(binding.textureUrl, contract.texture.url, `${name}: texture URL mismatch`);
-      assert.equal(binding.spriteIndex, 3, `${name}: normal ex must use ex_bl_01`);
-      assert.equal(binding.characterName, "ex_bl_01", `${name}: sprite character mismatch`);
-      assert.equal(binding.fontSize, 16, `${name}: localizer ex tag size mismatch`);
+      let producer;
+      let expectedFontType;
+      if (element.layoutPath?.includes("/PokemoMegaExRuleView/")) {
+        producer = "megaRule";
+        expectedFontType = contract.preprocessor.pokemonRuleSelection.megaEx;
+        assert.equal(binding.fontSize, 16, `${name}: Mega localizer ex tag size mismatch`);
+      } else if (element.layoutPath?.includes("/PokemonExRuleView/")) {
+        producer = "normalRule";
+        expectedFontType = contract.preprocessor.pokemonRuleSelection.normalEx;
+        assert.equal(binding.fontSize, 16, `${name}: normal localizer ex tag size mismatch`);
+      } else {
+        producer = "fontGroup";
+        const serializedType = textDesign.fontGroups?.[document.fontGroup]?.imgTagFontType;
+        expectedFontType = resolveOfficialImgTagFontType(
+          serializedType,
+          document.fontGroup,
+        );
+        assert(binding.fontSize > 0, `${name}: FontGroup ex tag size is invalid`);
+      }
+      const expectedIndex = contract.preprocessor.fontTypeToSpriteIndex[expectedFontType];
+      const expectedCharacter = contract.spriteAsset.characters.find(
+        ({ glyphIndex }) => glyphIndex === expectedIndex,
+      );
+      assert(Number.isInteger(expectedIndex), `${name}: FontType has no sprite index`);
+      assert(expectedCharacter, `${name}: sprite character is absent`);
+      assert.equal(binding.fontType, expectedFontType, `${name}: FontType mismatch`);
+      assert.equal(binding.spriteIndex, expectedIndex, `${name}: sprite index mismatch`);
+      assert.equal(
+        binding.characterName,
+        expectedCharacter.name,
+        `${name}: sprite character mismatch`,
+      );
       assert.match(binding.tagSizeObjectSha256 || "", /^[0-9a-f]{64}$/);
+      producerCounts[producer] += 1;
       generatedBindingCount += 1;
     }
   }
@@ -60,6 +101,7 @@ export function auditOfficialTmpSprite() {
   return {
     status: "pass",
     generatedBindingCount,
+    producerCounts,
     spriteAssetId: contract.spriteAsset.pathId,
     materialId: contract.material.pathId,
     textureId: contract.texture.pathId,
@@ -74,6 +116,7 @@ if (isMain) {
   const report = auditOfficialTmpSprite();
   console.log("official TMP ex sprite: pass");
   console.log(`  generated bindings: ${report.generatedBindingCount}`);
+  console.log(`  producers: ${JSON.stringify(report.producerCounts)}`);
   console.log(`  SpriteAsset ${report.spriteAssetId}; texture ${report.textureId}`);
   console.log(`  normal index ${report.normalSpriteIndex}; mega index ${report.megaSpriteIndex}`);
 }

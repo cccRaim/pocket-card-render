@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import * as THREE from "three";
-import { applyOfficialPassState } from "../public/render/context.js";
+import { applyOfficialPassState, applyStencilState } from "../public/render/context.js";
+import {
+  STENCIL_REGION_CONTRACT_SCHEMA,
+} from "../public/render/stencil-region.js";
 
 const parameter = (val) => ({ val, name: null });
 
@@ -77,4 +80,48 @@ assert.equal(fromMaterial.depthFunc, THREE.EqualDepth,
   "serialized Material override must take precedence over the Shader default");
 assert.equal(fromMaterial.depthWrite, false);
 
-console.log("Official pass-state defaults/stencil normalization OK: 7/7");
+const regionContract = contract({ comp: 3 });
+regionContract.stencil.ref = { val: 0, name: "_StencilRef" };
+regionContract.stencil.read_mask = { val: 0, name: "_StencilRef" };
+const windowLayer = new THREE.MeshBasicMaterial();
+assert.equal(applyOfficialPassState(windowLayer, {
+  clip: "window",
+  floats: { _StencilRef: 0 },
+}, regionContract), true);
+assert.equal(windowLayer.stencilFunc, THREE.EqualStencilFunc);
+assert.equal(windowLayer.stencilRef, 2);
+assert.equal(windowLayer.stencilFuncMask, 2);
+assert.equal(windowLayer.userData.stencilRegionBinding.schema, STENCIL_REGION_CONTRACT_SCHEMA);
+assert.equal(windowLayer.userData.stencilRegionBinding.evidenceLevel,
+  "inferred-runtime-material-override");
+
+const cardLayer = new THREE.MeshBasicMaterial();
+assert.equal(applyOfficialPassState(cardLayer, {
+  clip: "card",
+  floats: { _StencilRef: 0 },
+}, regionContract), true);
+assert.equal(cardLayer.stencilRef, 1);
+assert.equal(cardLayer.stencilFuncMask, 1);
+
+const fallbackWindow = new THREE.MeshBasicMaterial();
+assert.equal(applyStencilState(fallbackWindow, {
+  shader: "Card_Parallax",
+  clip: "window",
+  floats: { _StencilRef: 0 },
+}), true);
+assert.equal(fallbackWindow.stencilRef, 2);
+assert.equal(fallbackWindow.stencilFuncMask, 2);
+
+const unrelatedProperty = contract({ comp: 3 });
+unrelatedProperty.stencil.ref = { val: 0, name: "_Stencil" };
+unrelatedProperty.stencil.read_mask = { val: 0, name: "_Stencil" };
+const shadowbox = new THREE.MeshBasicMaterial();
+assert.equal(applyOfficialPassState(shadowbox, {
+  clip: "window",
+  floats: { _StencilRef: 0, _Stencil: 7 },
+}, unrelatedProperty), true);
+assert.equal(shadowbox.stencilRef, 7,
+  "region binding must not replace the shadowbox stencil producer");
+assert.equal(shadowbox.userData.stencilRegionBinding, undefined);
+
+console.log("Official pass-state defaults/stencil region binding OK: 11/11");

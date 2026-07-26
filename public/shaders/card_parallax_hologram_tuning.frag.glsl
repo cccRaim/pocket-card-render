@@ -39,9 +39,10 @@ vec3 _381;
 
 void main()
 {
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD3.xy, -vs_TEXCOORD3.z);
     _9.x = -viewMatrix[0].z;
     _9.y = -viewMatrix[1].z;
-    _9.z = -viewMatrix[2].z;
+    _9.z = viewMatrix[2].z;
     _38 = dot(_9.xyz, _9.xyz);
     _38 = inversesqrt(_38);
     highp vec3 _50 = vec3(_38) * _9.xyz;
@@ -72,9 +73,9 @@ void main()
     _53.w = _53.y;
     _134.z = dot(_53.zw, _9.xw);
     _162 = (_134 * vec3(0.5)) + vec3(0.5);
-    _9.x = dot(vs_TEXCOORD3, vs_TEXCOORD3);
+    _9.x = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _9.x = inversesqrt(_9.x);
-    highp vec3 _181 = _9.xxx * vs_TEXCOORD3;
+    highp vec3 _181 = _9.xxx * pcrUnityWorldNormal;
     _9 = vec4(_181.x, _181.y, _181.z, _9.w);
     _9.w = dot(_64.zx, _9.yz);
     _64.y = dot(_64.xy, _9.yz);

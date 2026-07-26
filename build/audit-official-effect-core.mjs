@@ -67,6 +67,26 @@ for (const name of MANIFESTS) {
       || !manifest.runtime_contract?.require_complete_active_bindings) {
     issues.push(`${name}: incomplete MRT/runtime binding contract`);
   }
+  if (manifest.mrt?.secondary_value !== "zero" || !manifest.mrt?.secondary) {
+    issues.push(`${name}: Effect MRT1 must be declared as the official zero secondary attachment`);
+  }
+  if (manifest.webgl_adaptation?.schema !== "pocket-card-render/webgl-stage-adaptation@2"
+      || !manifest.official_vertex_inputs
+      || !manifest.webgl_adaptation.vertex.operations?.some(
+        (row) => row.kind === "texture-coordinate-basis-conversion",
+      )) {
+    issues.push(`${name}: Effect port is not a typed texture-coordinate adaptation`);
+  }
+  const coordinateContract = manifest.runtime_contract?.texture_coordinates?.vertex;
+  if (coordinateContract?.transforms?.length !== 1
+      || coordinateContract.transforms[0]?.uniform !== "_MainTex_ST"
+      || coordinateContract.transforms[0]?.slot !== "_MainTex") {
+    issues.push(`${name}: missing _MainTex TexEnv coordinate contract`);
+  }
+  const viewSelector = manifest.selected_keywords.includes("_UseViewMask");
+  if (viewSelector !== Boolean(coordinateContract?.tangentViewY)) {
+    issues.push(`${name}: tangent-view V-axis conversion does not match selector keywords`);
+  }
   const joinedSamplers = (manifest.sampler_bindings || []).map(({ slot, spirvName }) => ({ slot, spirvName }));
   if (JSON.stringify(joinedSamplers.map((row) => row.slot)) !== JSON.stringify(manifest.sampler_slots)
       || JSON.stringify(joinedSamplers.map((row) => row.spirvName)) !== JSON.stringify(manifest.samplers)) {
@@ -78,6 +98,20 @@ for (const name of MANIFESTS) {
     const source = file && fs.existsSync(file) ? fs.readFileSync(file) : null;
     if (!source || sha256(source) !== manifest.webgl_adaptation?.[stage]?.outputSha256) {
       issues.push(`${name}: ${stage} WebGL source hash mismatch`);
+    }
+  }
+}
+
+for (const sceneName of fs.readdirSync(path.join(ROOT, "public"))
+  .filter((name) => /^scene\..+\.json$/.test(name))) {
+  const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
+  for (const [materialName, material] of Object.entries(scene.materials || {})) {
+    if (material.shader !== "Effect") continue;
+    for (const [slot, texture] of Object.entries(material.textures || {})) {
+      if (![texture?.scale?.x, texture?.scale?.y, texture?.offset?.x, texture?.offset?.y]
+        .every(Number.isFinite)) {
+        issues.push(`${sceneName}:${materialName}.${slot}: official TexEnv scale/offset is missing`);
+      }
     }
   }
 }

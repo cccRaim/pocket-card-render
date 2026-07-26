@@ -6,8 +6,10 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import {
+  auditRuntimeContractDispatch,
   auditSelectorBoundProgramAssets,
   officialPortKey,
+  partitionExactPortSceneUsers,
 } from "./audit-official-program-assets.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -134,4 +136,39 @@ test("a declared WebGL source cannot silently lose its runtime contract", () => 
   delete entryByShader(fixture, "Card_Parallax_MatCap_Lighting").manifest.runtime_contract;
   const bad = failures(audit(fixture));
   assert.ok(bad.some((reason) => reason.includes("declared WebGL source lacks runtime contract")));
+});
+
+test("runtime loader audit survives division and rejects comment-only call sites", () => {
+  const importLine = 'import { loadExactShaderPortsFromContract } from "./render/exact-port-loader.js";';
+  const auditSource = (appSource) => auditRuntimeContractDispatch({
+    contract: { ports: [], runtimeBound: [] },
+    manifestEntries: [],
+    appSource,
+    shaderTable: {},
+    materialForKind: () => null,
+  }).rows.slice(-2);
+  assert.deepEqual(
+    auditSource(`${importLine}\nconst frame = 1000 / frameCap;\nloadExactShaderPortsFromContract({});`)
+      .map((row) => row.ok),
+    [true, true],
+  );
+  assert.deepEqual(
+    auditSource(`${importLine}\nconst frame = 1000 / frameCap;\n// loadExactShaderPortsFromContract({});`)
+      .map((row) => row.ok),
+    [true, false],
+  );
+});
+
+test("scene users with distinct unported keyword selectors stay outside exact dispatch", () => {
+  const users = [
+    { ref: "square", keywords: ["_UVASPECTRATIO_SQUARE"] },
+    { ref: "best-match", keywords: [] },
+    { ref: "window", keywords: ["_UVASPECTRATIO_CARDWINDOW"] },
+  ];
+  const partition = partitionExactPortSceneUsers(
+    users,
+    [["_UVASPECTRATIO_SQUARE"], []],
+  );
+  assert.deepEqual(partition.exact.map(({ ref }) => ref), ["square", "best-match"]);
+  assert.deepEqual(partition.unported.map(({ ref }) => ref), ["window"]);
 });

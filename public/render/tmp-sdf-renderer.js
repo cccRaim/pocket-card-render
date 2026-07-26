@@ -1,9 +1,32 @@
 import * as THREE from "three";
 import { applyOfficialSampler } from "./official-texture.js";
+import { createOfficialUIRTMaterial } from "./official-ui-rt.js";
+import { createOfficialTmpSpriteMaterial } from "./tmp-sprite-program.js";
 import { loadOfficialTmpAtlasTexture } from "./tmp-font-data.js";
 import { buildOfficialTmpGlyphQuad } from "./tmp-glyph-mesh.js";
+import {
+  IDENTITY_UI_AFFINE,
+  uiAffineToMatrix4,
+} from "./ui-affine-transform.js";
 
 const WHITE_PIXEL = new Uint8Array([255, 255, 255, 255]);
+
+export const OFFICIAL_DYNAMIC_UI_LAYERS = Object.freeze({
+  Text: 17,
+  Holo: 18,
+});
+
+function requireDynamicUILayer(value, label) {
+  const layer = Number(value);
+  if (!Object.values(OFFICIAL_DYNAMIC_UI_LAYERS).includes(layer)) {
+    throw new RangeError(`${label} has unsupported official Unity layer ${value}`);
+  }
+  return layer;
+}
+
+function dynamicUITypeForLayer(layer) {
+  return layer === OFFICIAL_DYNAMIC_UI_LAYERS.Text ? "Text" : "Holo";
+}
 
 export const DYNAMIC_UI_COORDINATE_CONTRACT = Object.freeze({
   logicalOrigin: "top-left",
@@ -107,46 +130,52 @@ export function createDynamicUIQuadGeometry(width, height, sourceKind) {
   geometry.setAttribute("uv", new THREE.Float32BufferAttribute([
     0, topV, 0, bottomV, 1, bottomV, 1, topV,
   ], 2));
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute([
+    1, 1, 1, 1,
+    1, 1, 1, 1,
+    1, 1, 1, 1,
+    1, 1, 1, 1,
+  ], 4));
   geometry.setIndex([0, 1, 2, 0, 2, 3]);
   return geometry;
 }
 
-function fullscreenMaterial(map, mode) {
-  const operations = {
-    premultiply: "outColor = vec4(sampled.rgb * sampled.a, sampled.a);",
-    straight: "outColor = sampled.a > 0.0 ? vec4(sampled.rgb / sampled.a, sampled.a) : vec4(0.0);",
-    holo: "outColor = vec4(sampled.rgb, 1.0 - sampled.a);",
+export function createOfficialUIImageQuadGeometry(draw) {
+  const { left, top, width, height } = draw.rect;
+  const sourceWidth = Number(draw.source?.width || 0);
+  const sourceHeight = Number(draw.source?.height || 0);
+  if (!(width > 0) || !(height > 0) || !(sourceWidth > 0) || !(sourceHeight > 0)) {
+    throw new RangeError("official UI Image draw requires positive source and destination dimensions");
+  }
+  const crop = draw.sourceRect || {
+    x: 0,
+    y: 0,
+    width: sourceWidth,
+    height: sourceHeight,
   };
-  return new THREE.RawShaderMaterial({
-    glslVersion: THREE.GLSL3,
-    uniforms: { map: { value: map } },
-    vertexShader: `
-      in vec3 position;
-      in vec2 uv;
-      out vec2 vUv;
-      uniform mat4 modelViewMatrix;
-      uniform mat4 projectionMatrix;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `,
-    fragmentShader: `
-      precision highp float;
-      uniform sampler2D map;
-      in vec2 vUv;
-      layout(location = 0) out vec4 outColor;
-      void main() {
-        vec4 sampled = texture(map, vUv);
-        ${operations[mode]}
-      }
-    `,
-    depthTest: false,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-    transparent: false,
-    toneMapped: false,
-  });
+  const u0 = crop.x / sourceWidth;
+  const u1 = (crop.x + crop.width) / sourceWidth;
+  const vTop = 1 - crop.y / sourceHeight;
+  const vBottom = 1 - (crop.y + crop.height) / sourceHeight;
+  const color = draw.color || [1, 1, 1, 1];
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute([
+    left, top, 0,
+    left, top + height, 0,
+    left + width, top + height, 0,
+    left + width, top, 0,
+  ], 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute([
+    u0, vTop,
+    u0, vBottom,
+    u1, vBottom,
+    u1, vTop,
+  ], 2));
+  geometry.setAttribute("color", new THREE.Float32BufferAttribute([
+    ...color, ...color, ...color, ...color,
+  ], 4));
+  geometry.setIndex([0, 1, 2, 0, 2, 3]);
+  return geometry;
 }
 
 function glyphGeometry(glyphs, padding) {
@@ -211,7 +240,8 @@ function splitAtlasRuns(draw) {
 
 function sdfMaterial(program, atlasTexture, draw, white) {
   const sdf = draw.sdf || {};
-  const identity = new THREE.Matrix4();
+  const model = uiAffineToMatrix4(draw.uiTransform || IDENTITY_UI_AFFINE, THREE.Matrix4);
+  const worldToObject = model.clone().invert();
   const material = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
     vertexShader: program.vertexShader,
@@ -219,8 +249,8 @@ function sdfMaterial(program, atlasTexture, draw, white) {
     uniforms: {
       _WorldSpaceCameraPos: { value: new THREE.Vector3(0, 0, 1) },
       _ScreenParams: { value: new THREE.Vector4(draw.textureWidth, draw.textureHeight, 0, 0) },
-      uWorldToObject: { value: identity },
-      uEnvMatrix: { value: identity },
+      uWorldToObject: { value: worldToObject },
+      uEnvMatrix: { value: new THREE.Matrix4() },
       _FaceDilate: { value: Number(sdf.faceDilate || 0) },
       _OutlineSoftness: { value: Number(sdf.outlineSoftness || 0) },
       _OutlineWidth: { value: Number(sdf.outlineWidth || 0) },
@@ -315,9 +345,14 @@ function summarizeRenderTarget(renderer, renderTarget) {
 export async function renderOfficialTmpDynamicTexture({
   renderer,
   baseCanvas,
+  includeBaseCanvas = false,
+  imageDraws = [],
+  tmpSpriteDraws = [],
   draws,
   fonts,
   program,
+  uiRTPrograms,
+  tmpSpriteProgram = null,
   samplerState,
   logicalWidth,
   logicalHeight,
@@ -325,30 +360,99 @@ export async function renderOfficialTmpDynamicTexture({
   textureHeight,
   collectReadback = false,
 }) {
-  const premultiplied = target(textureWidth, textureHeight, samplerState, "TMP premultiplied DynamicUI");
-  const ui = target(textureWidth, textureHeight, samplerState, "TMP straight DynamicUI");
-  const holo = target(textureWidth, textureHeight, samplerState, "TMP holo DynamicUI");
+  if (!uiRTPrograms?.toRT || !uiRTPrograms?.fromRT) {
+    throw new Error("official UI ToRT/FromRT programs are required");
+  }
+  const textSource = target(textureWidth, textureHeight, samplerState, "TMP DynamicUI Text source");
+  const holoSource = target(textureWidth, textureHeight, samplerState, "TMP DynamicUI Holo source");
+  const ui = target(textureWidth, textureHeight, samplerState, "TMP DynamicUI Text");
+  const holo = target(textureWidth, textureHeight, samplerState, "TMP DynamicUI Holo");
   const camera = createDynamicUIOrthographicCamera(logicalWidth, logicalHeight);
 
-  const baseTexture = new THREE.CanvasTexture(baseCanvas);
-  baseTexture.colorSpace = THREE.NoColorSpace;
-  baseTexture.flipY = true;
-  baseTexture.premultiplyAlpha = false;
-  baseTexture.generateMipmaps = false;
-  baseTexture.needsUpdate = true;
-  const baseScene = new THREE.Scene();
-  const baseMesh = new THREE.Mesh(
-    createDynamicUIQuadGeometry(logicalWidth, logicalHeight, "canvas"),
-    fullscreenMaterial(baseTexture, "premultiply"),
-  );
-  baseScene.add(baseMesh);
+  const drawScene = new THREE.Scene();
+  const drawRecords = [];
+  const imageTextures = new Map();
+  const textureForSource = (source) => {
+    if (imageTextures.has(source)) return imageTextures.get(source);
+    const texture = new THREE.Texture(source);
+    texture.colorSpace = THREE.NoColorSpace;
+    texture.flipY = true;
+    texture.premultiplyAlpha = false;
+    texture.generateMipmaps = false;
+    texture.needsUpdate = true;
+    imageTextures.set(source, texture);
+    return texture;
+  };
+  if (includeBaseCanvas) {
+    imageDraws = [{
+      source: baseCanvas,
+      rect: { left: 0, top: 0, width: logicalWidth, height: logicalHeight },
+      color: [1, 1, 1, 1],
+      hierarchyOrder: -1,
+      sequence: -1,
+      role: "canvas-fallback",
+      unityLayer: OFFICIAL_DYNAMIC_UI_LAYERS.Text,
+    }, ...imageDraws];
+  }
+  for (const draw of imageDraws) {
+    const unityLayer = requireDynamicUILayer(draw.unityLayer, draw.layoutPath || draw.role || "Image");
+    const geometry = createOfficialUIImageQuadGeometry(draw);
+    const material = createOfficialUIRTMaterial(uiRTPrograms.toRT, {
+      texture: textureForSource(draw.source),
+      textureSampleAdd: draw.textureSampleAdd || [0, 0, 0, 0],
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.matrix.copy(uiAffineToMatrix4(draw.uiTransform || IDENTITY_UI_AFFINE, THREE.Matrix4));
+    mesh.matrixAutoUpdate = false;
+    mesh.frustumCulled = false;
+    mesh.layers.set(unityLayer);
+    drawScene.add(mesh);
+    drawRecords.push({
+      mesh,
+      kind: "Image",
+      role: draw.role || "image",
+      layoutPath: draw.layoutPath || null,
+      unityLayer,
+      hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
+      sequence: Number(draw.sequence ?? 0),
+    });
+  }
+  if (tmpSpriteDraws.length && !tmpSpriteProgram) {
+    throw new Error("official TMP Sprite program is required for inline sprite draws");
+  }
+  for (const draw of tmpSpriteDraws) {
+    const unityLayer = requireDynamicUILayer(
+      draw.unityLayer,
+      draw.layoutPath || draw.role || "TMP-Sprite",
+    );
+    const geometry = createOfficialUIImageQuadGeometry(draw);
+    const material = createOfficialTmpSpriteMaterial(tmpSpriteProgram, {
+      texture: textureForSource(draw.source),
+      color: draw.materialColor || [1, 1, 1, 1],
+      textureSampleAdd: draw.textureSampleAdd || [0, 0, 0, 0],
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.matrix.copy(uiAffineToMatrix4(draw.uiTransform || IDENTITY_UI_AFFINE, THREE.Matrix4));
+    mesh.matrixAutoUpdate = false;
+    mesh.frustumCulled = false;
+    mesh.layers.set(unityLayer);
+    drawScene.add(mesh);
+    drawRecords.push({
+      mesh,
+      kind: "TMP-Sprite",
+      role: draw.role || "inline-sprite",
+      layoutPath: draw.layoutPath || null,
+      unityLayer,
+      hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
+      sequence: Number(draw.sequence ?? 0),
+    });
+  }
 
-  const textScene = new THREE.Scene();
   const white = whiteTexture();
-  let order = 0;
   let glyphCount = 0;
   const bindingCounts = new Map();
   for (const draw of draws) {
+    const unityLayer = requireDynamicUILayer(draw.unityLayer, draw.layoutPath || draw.role || "TMP");
     const padding = officialTmpMaterialPadding(draw.sdf);
     for (const run of splitAtlasRuns(draw)) {
       const atlasTexture = await loadOfficialTmpAtlasTexture(fonts, run.atlas);
@@ -363,13 +467,25 @@ export async function renderOfficialTmpDynamicTexture({
         textureHeight,
       }, white);
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.renderOrder = order++;
+      mesh.matrix.copy(uiAffineToMatrix4(draw.uiTransform || IDENTITY_UI_AFFINE, THREE.Matrix4));
+      mesh.matrixAutoUpdate = false;
       mesh.frustumCulled = false;
-      textScene.add(mesh);
+      mesh.layers.set(unityLayer);
+      drawScene.add(mesh);
+      drawRecords.push({
+        mesh,
+        kind: "TMP",
+        role: draw.role || "text",
+        layoutPath: draw.layoutPath || null,
+        unityLayer,
+        hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
+        sequence: Number(draw.sequence ?? 0),
+      });
       const runGlyphCount = geometry.index.count / 6;
       glyphCount += runGlyphCount;
       const binding = {
         role: draw.role || "text",
+        unityLayer,
         fontId: String(draw.sdf?.fontId || ""),
         materialId: String(draw.sdf?.materialId || ""),
         atlasIndex: Number(run.atlas?.index || 0),
@@ -381,6 +497,24 @@ export async function renderOfficialTmpDynamicTexture({
       bindingCounts.set(bindingKey, previous);
     }
   }
+  const orderedDraws = drawRecords
+    .sort((left, right) => (
+      left.hierarchyOrder - right.hierarchyOrder
+      || left.sequence - right.sequence
+    ))
+    .map((record, drawIndex) => {
+      record.mesh.renderOrder = drawIndex;
+      return {
+        drawIndex,
+        kind: record.kind,
+        role: record.role,
+        layoutPath: record.layoutPath,
+        unityLayer: record.unityLayer,
+        dynamicUIType: dynamicUITypeForLayer(record.unityLayer),
+        hierarchyOrder: record.hierarchyOrder,
+        sequence: record.sequence,
+      };
+    });
 
   const priorTarget = renderer.getRenderTarget();
   const priorAutoClear = renderer.autoClear;
@@ -390,28 +524,44 @@ export async function renderOfficialTmpDynamicTexture({
   renderer.autoClear = false;
   renderer.sortObjects = true;
   renderer.setClearColor(0, 0);
-  renderer.setRenderTarget(premultiplied);
-  renderer.clear(true, false, false);
-  renderer.render(baseScene, camera);
-  renderer.render(textScene, camera);
+  for (const [unityLayer, renderTarget] of [
+    [OFFICIAL_DYNAMIC_UI_LAYERS.Text, textSource],
+    [OFFICIAL_DYNAMIC_UI_LAYERS.Holo, holoSource],
+  ]) {
+    camera.layers.set(unityLayer);
+    renderer.setRenderTarget(renderTarget);
+    renderer.clear(true, false, false);
+    renderer.render(drawScene, camera);
+  }
 
   const postScene = new THREE.Scene();
   // RT-to-RT passes sample v=0 from the logical top written by the producer.
   // Reusing the Canvas quad here would vertically invert both final textures.
   const postGeometry = createDynamicUIQuadGeometry(logicalWidth, logicalHeight, "renderTarget");
-  const straightMaterial = fullscreenMaterial(premultiplied.texture, "straight");
-  const postMesh = new THREE.Mesh(postGeometry, straightMaterial);
+  const postPairs = [[textSource, ui], [holoSource, holo]];
+  const postMesh = new THREE.Mesh(
+    postGeometry,
+    createOfficialUIRTMaterial(uiRTPrograms.fromRT, {
+      texture: postPairs[0][0].texture,
+    }),
+  );
   postScene.add(postMesh);
-  renderer.setRenderTarget(ui);
-  renderer.clear(true, false, false);
-  renderer.render(postScene, camera);
-  postMesh.material = fullscreenMaterial(premultiplied.texture, "holo");
-  renderer.setRenderTarget(holo);
-  renderer.clear(true, false, false);
-  renderer.render(postScene, camera);
+  camera.layers.set(0);
+  for (const [index, [source, destination]] of postPairs.entries()) {
+    if (index) {
+      postMesh.material.dispose();
+      postMesh.material = createOfficialUIRTMaterial(uiRTPrograms.fromRT, {
+        texture: source.texture,
+      });
+    }
+    renderer.setRenderTarget(destination);
+    renderer.clear(true, false, false);
+    renderer.render(postScene, camera);
+  }
 
   const readback = collectReadback ? {
-    premultiplied: summarizeRenderTarget(renderer, premultiplied),
+    textSource: summarizeRenderTarget(renderer, textSource),
+    holoSource: summarizeRenderTarget(renderer, holoSource),
     ui: summarizeRenderTarget(renderer, ui),
     holo: summarizeRenderTarget(renderer, holo),
   } : null;
@@ -421,25 +571,46 @@ export async function renderOfficialTmpDynamicTexture({
   renderer.autoClear = priorAutoClear;
   renderer.sortObjects = priorSort;
 
-  straightMaterial.dispose();
   postMesh.material.dispose();
   postGeometry.dispose();
-  disposeScene(baseScene);
-  disposeScene(textScene);
-  baseTexture.dispose();
+  textSource.dispose();
+  holoSource.dispose();
+  disposeScene(drawScene);
+  for (const texture of imageTextures.values()) texture.dispose();
   white.dispose();
-  premultiplied.dispose();
 
   return {
     ui: ui.texture,
     holo: holo.texture,
     evidence: {
       mode: "official-tmp-sdf-webgl",
-      drawCount: order,
+      drawCount: drawRecords.length,
+      imageDrawCount: imageDraws.length,
+      tmpSpriteDrawCount: tmpSpriteDraws.length,
+      glyphDrawCount: drawRecords.length - imageDraws.length - tmpSpriteDraws.length,
       glyphCount,
+      orderedDraws,
+      dynamicUILayers: {
+        Text: OFFICIAL_DYNAMIC_UI_LAYERS.Text,
+        Holo: OFFICIAL_DYNAMIC_UI_LAYERS.Holo,
+      },
       textureWidth,
       textureHeight,
       programManifest: program.manifest?.official_source?.decompressed_program_sha256 || null,
+      uiToRTProgramManifest:
+        uiRTPrograms.toRT.manifest?.official_source?.decompressed_program_sha256 || null,
+      uiFromRTProgramManifest:
+        uiRTPrograms.fromRT.manifest?.official_source?.decompressed_program_sha256 || null,
+      tmpSpriteProgram: tmpSpriteProgram ? {
+        selectorId: tmpSpriteProgram.contract.officialSelector.selectorId,
+        candidateWitnessId: tmpSpriteProgram.contract.officialSelector.candidateWitnessId,
+        executableId: tmpSpriteProgram.contract.officialSelector.executableId,
+        semanticExecutableId: tmpSpriteProgram.contract.officialSelector.semanticExecutableId,
+        passStateSha256: tmpSpriteProgram.contract.officialPass.passStateSha256,
+        commonBindingsSha256: tmpSpriteProgram.contract.officialPass.commonBindingsSha256,
+        webglAdaptationStatus: tmpSpriteProgram.contract.webglAdaptation.status,
+        runtimeBoundaries: tmpSpriteProgram.contract.runtimeBoundaries,
+      } : null,
       resourceBindings: [...bindingCounts.values()].sort((left, right) =>
         `${left.role}|${left.fontId}|${left.materialId}|${left.atlasIndex}`
           .localeCompare(`${right.role}|${right.fontId}|${right.materialId}|${right.atlasIndex}`)),

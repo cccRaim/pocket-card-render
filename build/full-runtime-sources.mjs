@@ -137,12 +137,40 @@ export function runtimeShaderManifestReferences(source) {
   return [...manifests].sort();
 }
 
+function contractRuntimeReferences(root, manifestFiles) {
+  const files = new Set(manifestFiles);
+  const contractRelative = "public/shaders/official_program_port_contract.json";
+  if (!files.has(contractRelative)) return files;
+  const contract = readJson(root, contractRelative);
+  if (contract?.schema !== "pocket-card-render/official-program-port-contract@2"
+      || !Array.isArray(contract.ports) || !Array.isArray(contract.runtimeBound)) {
+    throw new Error("runtime official program port contract is malformed");
+  }
+  const rows = [...contract.ports, ...contract.runtimeBound];
+  for (const row of rows) {
+    const manifestRelative = posix(row.manifest || "");
+    if (!manifestRelative.startsWith("public/shaders/") || !manifestRelative.endsWith(".json")) {
+      throw new Error("runtime official program port manifest path is invalid");
+    }
+    files.add(manifestRelative);
+    const manifest = readJson(root, manifestRelative);
+    for (const source of Object.values(manifest.webgl_sources || {})) {
+      const sourceRelative = posix(source || "");
+      if (!sourceRelative.startsWith("public/shaders/") || !sourceRelative.endsWith(".glsl")) {
+        throw new Error(`${manifestRelative}: runtime WebGL source path is invalid`);
+      }
+      files.add(sourceRelative);
+    }
+  }
+  return files;
+}
+
 export function fullRuntimeSourceFiles(root) {
   const runtimeRenderSources = walkFiles(root, "public/render", (file) => /\.(?:js|json)$/.test(file));
   const runtimeJavaScript = ["public/app.js", ...runtimeRenderSources.filter((file) => file.endsWith(".js"))];
-  const runtimeShaderManifests = runtimeJavaScript.flatMap((file) => (
+  const runtimeShaderManifests = contractRuntimeReferences(root, runtimeJavaScript.flatMap((file) => (
     runtimeShaderManifestReferences(fs.readFileSync(path.join(root, file), "utf8"))
-  ));
+  )));
   const files = new Set([
     officialSampleSelectionRelative,
     officialSampleManifestRelative,

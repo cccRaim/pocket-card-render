@@ -70,6 +70,63 @@ const missingPreloadSession = createOfficialPortVerifierSession({
 });
 assert.throws(() => verify("parameterEntry", key, missingPreloadSession), /was not preloaded/);
 
+const formerlySpecializedPorts = [
+  "simple_opaque_uniforms.json",
+  "transparent_hologram_tuning_uniforms.json",
+  "card_hologram_tuning_uniforms.json",
+].map((file) => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public", "shaders", file), "utf8"));
+  return {
+    selectorId: manifest.official_selector.selectorId,
+    candidateWitnessId: manifest.official_selector.candidateWitnessId,
+    subshader: manifest.official_selector.subshader,
+    pass: manifest.official_selector.pass,
+  };
+});
+const formerlySpecializedPreload = preloadOfficialProgramExtractions({
+  ports: formerlySpecializedPorts,
+  expectedProofGraphSha256: inventory.digests.proofGraphSha256,
+  expectedPortIndexSha256: inventory.digests.portIndexSha256,
+});
+const formerlySpecializedSession = createOfficialPortVerifierSession({
+  generatorsExternallyVerified: true,
+  officialExtractions: formerlySpecializedPreload.extractions,
+  requirePreloadedExtractions: true,
+});
+for (const port of formerlySpecializedPorts) {
+  const verification = verify("stageProgram", port, formerlySpecializedSession);
+  assert.equal(verification.verdict, "source-hash-bound");
+  assert.equal(verification.verificationLayers, undefined);
+  for (const field of ["passState", "commonBindings", "runtimeDispatch"]) {
+    const runtimeVerification = verify(field, port, formerlySpecializedSession);
+    assert.equal(runtimeVerification.verificationLayers, undefined);
+  }
+}
+
+const typedOnlyManifest = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public", "shaders", "effect_eff1_uniforms.json"),
+  "utf8",
+));
+assert.equal(typedOnlyManifest.webgl_adaptation.vertex.substitutions, undefined);
+assert.equal(typedOnlyManifest.webgl_adaptation.fragment.substitutions, undefined);
+const typedOnlyPort = {
+  selectorId: typedOnlyManifest.official_selector.selectorId,
+  candidateWitnessId: typedOnlyManifest.official_selector.candidateWitnessId,
+  subshader: typedOnlyManifest.official_selector.subshader,
+  pass: typedOnlyManifest.official_selector.pass,
+};
+const typedOnlyPreload = preloadOfficialProgramExtractions({
+  ports: [typedOnlyPort],
+  expectedProofGraphSha256: inventory.digests.proofGraphSha256,
+  expectedPortIndexSha256: inventory.digests.portIndexSha256,
+});
+const typedOnlySession = createOfficialPortVerifierSession({
+  generatorsExternallyVerified: true,
+  officialExtractions: typedOnlyPreload.extractions,
+  requirePreloadedExtractions: true,
+});
+assert.equal(verify("stageProgram", typedOnlyPort, typedOnlySession).verdict, "source-hash-bound");
+
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-verifier-session-test-"));
 try {
   const inventoryPath = path.join(temporary, "inventory.json");

@@ -31,7 +31,6 @@ uniform int _EmissivePattern;
 uniform mediump vec4 _EmissiveColor;
 uniform mediump vec3 _Rotation;
 uniform mediump float _Tilt;
-uniform int uBloomOnly;
 
 uniform mediump sampler2D _13;
 uniform mediump sampler2D _260;
@@ -596,8 +595,4 @@ void main()
     bvec4 _1958 = bvec4(_1936.x);
     _42 = vec4(_1958.x ? _984.x : _103.x, _1958.y ? _984.y : _103.y, _1958.z ? _984.z : _103.z, _1958.w ? _984.w : _103.w);
     _34 = _9;
-    if (uBloomOnly != 0)
-    {
-        _34 = _42;
-    }
 }

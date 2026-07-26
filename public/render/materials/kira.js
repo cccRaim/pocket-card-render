@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { createKiraPuyoState } from "../kira-puyo.js";
 import { createCircularKiraState } from "../circular-kira.js";
+import { bindDynamicUniformProducerContract } from "../dynamic-uniform-producer.js";
 import { defineMaterial } from "../registry.js";
 
 const KIRA_SLOTS = ["_BaseTex", "_ScrollLayerMask", "_RampTex"];
@@ -87,6 +88,7 @@ function circularMaterials(recipe, ctx, shader, dynamicUniforms) {
     material.userData.officialExecutableIdentity = port.manifest?.official_executable_identity || null;
     material.userData.circularKiraState = component.state;
     material.userData.circularKiraRole = component.binding.role;
+    bindDynamicUniformProducerContract(material, port.manifest);
     component.state.materials.add(material);
     return material;
   });

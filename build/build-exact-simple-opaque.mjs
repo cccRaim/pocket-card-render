@@ -7,6 +7,14 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  buildOfficialSpirvPrecisionEvidence,
+  compileCommonBindings,
+  compileOfficialVertexInputContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
+} from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -53,37 +61,6 @@ function canonicalJsonDigest(value) {
 function officialParam(value) {
   if (!value || !Number.isFinite(Number(value.val))) throw new Error("official pass parameter is absent");
   return { val: Number(value.val), name: value.name === "<noninit>" ? null : value.name };
-}
-
-function compiledBindings(commonBindings) {
-  const names = new Map((commonBindings?.nameIndices || []).map(([name, index]) => [index, name]));
-  const textures = [];
-  const constantBuffers = [];
-  for (const [stage, common] of Object.entries(commonBindings?.commonParameters || {})) {
-    for (const item of common.m_TextureParams || []) {
-      textures.push({
-        stage,
-        name: names.get(item.m_NameIndex),
-        binding: item.m_Index & 0xffffff,
-        encodedIndex: item.m_Index,
-        dim: item.m_Dim,
-      });
-    }
-    for (const item of common.m_ConstantBuffers || []) {
-      constantBuffers.push({
-        stage,
-        name: names.get(item.m_NameIndex),
-        size: item.m_Size,
-        matrices: (item.m_MatrixParams || []).map((entry) => ({
-          name: names.get(entry.m_NameIndex),
-          offset: entry.m_Index,
-          rowCount: entry.m_RowCount,
-          type: entry.m_Type,
-        })).sort((a, b) => a.offset - b.offset),
-      });
-    }
-  }
-  return { textures, constant_buffers: constantBuffers };
 }
 
 function runtimePassContract(passContract, sourceSha256) {
@@ -243,6 +220,10 @@ try {
   const metadata = JSON.parse(fs.readFileSync(metadataFile, "utf8"));
   const vertexSpv = path.join(tmp, "simple_opaque_vert.spv");
   const fragmentSpv = path.join(tmp, "simple_opaque_frag.spv");
+  const officialSpirvPrecision = buildOfficialSpirvPrecisionEvidence({
+    vertex: fs.readFileSync(vertexSpv),
+    fragment: fs.readFileSync(fragmentSpv),
+  });
   const vertexReflection = reflect(vertexSpv);
   const fragmentReflection = reflect(fragmentSpv);
   assertOfficialInterface(vertexReflection, fragmentReflection);
@@ -251,31 +232,68 @@ try {
   assert.equal(metadata.parameterReflection.constantBlockCount, 2);
   assert.equal(metadata.parameterReflection.resourceCount, 0);
   assert.equal(metadata.parameterReflection.bindingClosure.constantBuffersMatch, true);
-  const bindings = compiledBindings(metadata.commonBindings);
-  assert.deepEqual(bindings.textures, [{
-    stage: "progVertex", name: "_MainTex", binding: 0, encodedIndex: 134217728, dim: 2,
-  }]);
-  assert.deepEqual(bindings.constant_buffers, [{
-    stage: "progVertex",
-    name: "VGlobals967447316",
-    size: 128,
-    matrices: [
-      { name: "unity_ObjectToWorld", offset: 0, rowCount: 4, type: 0 },
-      { name: "unity_MatrixVP", offset: 64, rowCount: 4, type: 0 },
-    ],
+  const bindings = compileCommonBindings(metadata.commonBindings);
+  const programBindings = compileProgramBindings(
+    bindings,
+    metadata.parameterReflection,
+    metadata.shaderPropertyDefaults,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    vertexReflection,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, {
+    vertex: vertexReflection,
+    fragment: fragmentReflection,
+  }).map(({ set, ...row }) => {
+    assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
+    return row;
+  });
+  assert.deepEqual(samplerBindings.map(({ slot, spirvName, binding }) => ({ slot, spirvName, binding })), [{
+    slot: "_MainTex", spirvName: "_13", binding: 0,
   }]);
 
   const officialVertex = run(SPIRV_CROSS, [vertexSpv, "--version", "300", "--es"]);
   const officialFragment = run(SPIRV_CROSS, [fragmentSpv, "--version", "300", "--es"]);
   const vertex = adaptVertex(officialVertex);
   const fragment = adaptFragment(officialFragment);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Simple-Opaque",
+    attributes: { position: "vec3", uv: "vec2" },
+    engine_uniforms: { modelViewMatrix: "mat4", projectionMatrix: "mat4" },
+    material_uniforms: { floats: [], ints: [], vectors: {} },
+    require_complete_active_bindings: true,
+    camera_from_view: false,
+    mrt_attachments: 2,
+    stencil_normalization: "disable-when-always-keep",
+    stencil_face_mode: "generic",
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: fileDigest(vertexSpv),
       spirvCrossGlslSha256: digest(officialVertex),
       outputSha256: digest(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        {
+          kind: "matrix-expression-fold",
+          contract: "mvp-object-to-projection-model-view",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position vec4 := vec4(three.position, 1.0)",
         "uv location 1 := three.uv",
@@ -289,10 +307,17 @@ try {
       officialSpirvSha256: fileDigest(fragmentSpv),
       spirvCrossGlslSha256: digest(officialFragment),
       outputSha256: digest(fragment),
+      operations: [{
+        kind: "glsl-version-ownership",
+        owner: "three-raw-shader-material",
+      }],
       substitutions: ["remove #version directive supplied by Three.js RawShaderMaterial"],
     },
     interfaceSha256: canonicalJsonDigest({ vertex: vertexReflection, fragment: fragmentReflection }),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const outputs = {
     "simple_opaque.vert.glsl": vertex,
     "simple_opaque.frag.glsl": fragment,
@@ -301,6 +326,7 @@ try {
       generated_by: "build/build-exact-simple-opaque.mjs",
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: fileDigest(vertexSpv), fragment: fileDigest(fragmentSpv) },
+      official_spirv_precision: officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -313,11 +339,22 @@ try {
         source_sha256: metadata.identityFields.commonBindingsSha256,
         ...bindings,
       },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
-      samplers: ["_13"],
-      sampler_slots: ["_MainTex"],
-      compiled_texture_bindings: { _MainTex: 0 },
+      webgl_sources: {
+        vertex: "public/shaders/simple_opaque.vert.glsl",
+        fragment: "public/shaders/simple_opaque.frag.glsl",
+      },
+      runtime_contract: runtimeContract,
+      sampler_bindings: samplerBindings,
+      samplers: samplerBindings.map((row) => row.spirvName),
+      sampler_slots: samplerBindings.map((row) => row.slot),
+      compiled_texture_bindings: Object.fromEntries(
+        samplerBindings.map((row) => [row.slot, row.binding]),
+      ),
+      implicit_defaults: metadata.shaderPropertyDefaults.textures,
       mrt: { primary: "_9", secondary: "_20", secondary_value: "zero" },
     }, null, 2)}\n`,
   };

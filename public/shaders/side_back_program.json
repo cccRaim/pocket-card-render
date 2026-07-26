@@ -1,6 +1,16 @@
 {
   "shader": "Lettuce/Common/CardNew/Face/Side&Back",
   "generated_by": "build/build-exact-side-back.mjs",
+  "runtime_contract": {
+    "schema": "pocket-card-render/stage-source-runtime-contract@1",
+    "shader_key": "Side&Back",
+    "stage_source_only": true,
+    "object_clip_position": "standard-object-to-clip"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/side_back.vert.glsl",
+    "fragment": "public/shaders/side_back.frag.glsl"
+  },
   "official_source": {
     "bundle_relative_path": "Common/CardNew/Card_Side_And_Back.shader_bundles",
     "bundle_sha256": "d166568a7f39256e3153042d1a05acc7aa08b20ef9f868bcac763e6917f0a42f",

@@ -2,6 +2,7 @@
 // flare, the metallic window sheen, and the glitter flow-map sparkle. All byte-traced from the UR shaders.
 // (A self-contained example of "one rarity's materials in one file" — see CONTRIBUTING.md.)
 import * as THREE from "three";
+import { bindDynamicUniformProducerContract } from "../dynamic-uniform-producer.js";
 import { defineMaterial } from "../registry.js";
 import { createGlitterFlowState } from "../glitter-flow.js";
 import { SIMPLE_VS } from "../glsl.js";
@@ -460,7 +461,6 @@ defineMaterial("flare", {
           _RemoveTextureArtifact: { value: f._RemoveTextureArtifact ?? 0 },
           _EmissivePattern: { value: Math.trunc(f._EmissivePattern ?? 1) },
           _EmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
-          uBloomOnly: { value: 0 },
         },
         vertexShader: exact.vert,
         fragmentShader: exact.frag,
@@ -473,6 +473,7 @@ defineMaterial("flare", {
       m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
       m.userData.officialSelector = exact.manifest?.official_selector || null;
       m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
+      bindDynamicUniformProducerContract(m, exact.manifest);
       ctx.animMats.push(m);
       return m;
     }
@@ -683,6 +684,7 @@ function glitterMaterialExact(r, ctx) {
   m.userData.officialSelector = exact.manifest?.official_selector || null;
   m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
   m.userData.glitterFlow = createGlitterFlowState();
+  bindDynamicUniformProducerContract(m, exact.manifest);
   ctx.exactGlitMats.push(m);
   return m;
 }

@@ -5,7 +5,9 @@ import {
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
+  compileOfficialVertexInputContract,
   compileProgramBindings,
+  joinProgramConstantBufferStages,
   joinProgramSamplerBindings,
   runCommand,
   sha256,
@@ -13,6 +15,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -143,12 +146,9 @@ function adaptFragment(source) {
     "uniform mediump vec3 _DarknessColor1;", "uniform mediump float _DarknessOffset1;",
     "uniform mediump vec3 _DarknessColor2;", "uniform mediump float _DarknessOffset2;",
     "uniform int _EmissivePattern;", "uniform mediump vec4 _EmissiveColor;",
-    "uniform mediump vec3 _Rotation;", "uniform mediump float _Tilt;", "uniform int uBloomOnly;",
+    "uniform mediump vec3 _Rotation;", "uniform mediump float _Tilt;",
   ]);
   out = replaceMembers(out, "_69", fragmentMapping);
-  const officialTail = "    _34 = _9;";
-  if (!out.includes(officialTail)) throw new Error("official primary-output tail changed");
-  out = out.replace(officialTail, `${officialTail}\n    if (uBloomOnly != 0)\n    {\n        _34 = _42;\n    }`);
   if (/_69\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   return `${out.trimEnd()}\n`;
 }
@@ -221,7 +221,19 @@ await withExtractedSelectorProgram({
   reflect(reflection.fragment, fragmentExpected);
 
   const bindings = compileCommonBindings(metadata.commonBindings);
-  const programBindings = compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+  const programBindings = joinProgramConstantBufferStages(
+    compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults),
+    reflection,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
   const pglobals = bindings.constant_buffers.find((item) => item.name.startsWith("PGlobals"));
   const vglobals = bindings.constant_buffers.find((item) => item.name.startsWith("VGlobals"));
   equal({ p: pglobals?.size, v: vglobals?.size }, { p: 272, v: 256 }, "compiled UBO sizes changed");
@@ -258,28 +270,6 @@ await withExtractedSelectorProgram({
   }
   const vertex = adaptVertex(officialVert);
   const fragment = adaptFragment(officialFrag);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
-    vertex: {
-      officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVert), outputSha256: sha256(vertex),
-      substitutions: [
-        "replace serialized-common VGlobals UBO members with same-name Three.js uniforms",
-        "map official position/normal/uv locations to Three.js attributes",
-        "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
-        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
-        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
-      ],
-    },
-    fragment: {
-      officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFrag), outputSha256: sha256(fragment),
-      substitutions: [
-        "replace serialized-common PGlobals UBO members with same-name Three.js uniforms",
-        "add uBloomOnly backend route that copies the official emissive MRT output to attachment 0 during bloom extraction",
-      ],
-    },
-    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-  };
   const materialFloats = [
     "_RampMaskRotation", "_RampMaskScale", "_RampMaskRotation2", "_RampMaskScale2",
     "_FakeSpecularMaskScale", "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower",
@@ -290,6 +280,74 @@ await withExtractedSelectorProgram({
     "_DiffractionIntensity2", "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
     "_RampInterval2", "_DarknessOffset1", "_DarknessOffset2", "_Tilt",
   ];
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Frame-2Layer-UR",
+    attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
+    engine_uniforms: {
+      modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+    },
+    material_uniforms: {
+      floats: materialFloats,
+      ints: ["_UseSimpleRampMaskAndRotation", "_UseSimpleRampMaskAndRotation2", "_EmissivePattern"],
+      vectors: {
+        _FakeSpecularColor: "vec3", _FakeSpecularColor2: "vec3", _DarknessColor1: "vec3",
+        _DarknessColor2: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
+      },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: true,
+    mrt_attachments: 2,
+    stencil_normalization: "disable-when-always-keep",
+    stencil_face_mode: "generic",
+  };
+  const adaptation = buildWebglAdaptationV2({
+    vertex: {
+      officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVert), outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace serialized-common VGlobals UBO members with same-name Three.js uniforms",
+        "map official position/normal/uv locations to Three.js attributes",
+        "unity_ObjectToWorld := three.modelMatrix and unity_WorldToObject := inverse(three.modelMatrix)",
+        "unity_MatrixVP := three.projectionMatrix * three.viewMatrix",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+      ],
+    },
+    fragment: {
+      officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFrag), outputSha256: sha256(fragment),
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace serialized-common PGlobals UBO members with same-name Three.js uniforms",
+      ],
+    },
+    interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   const passRuntime = {
     ...compileOfficialPassContract(metadata.passContract, {
       sourceSha256: metadata.identityFields.passStateSha256,
@@ -306,6 +364,7 @@ await withExtractedSelectorProgram({
       selected_keywords: [],
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -315,39 +374,15 @@ await withExtractedSelectorProgram({
       },
       official_pass_runtime: passRuntime,
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
-      official_program_bindings: {
-        common_source_sha256: metadata.identityFields.commonBindingsSha256,
-        parameter_reflection_sha256: metadata.parameterReflectionSha256,
-        ...programBindings,
-      },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
         vertex: "public/shaders/frame_2layer_ur.vert.glsl",
         fragment: "public/shaders/frame_2layer_ur.frag.glsl",
       },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: "Frame-2Layer-UR",
-        attributes: { position: "vec3", normal: "vec3", uv: "vec2" },
-        engine_uniforms: {
-          modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
-        },
-        material_uniforms: {
-          floats: materialFloats,
-          ints: ["_UseSimpleRampMaskAndRotation", "_UseSimpleRampMaskAndRotation2", "_EmissivePattern"],
-          vectors: {
-            _FakeSpecularColor: "vec3", _FakeSpecularColor2: "vec3", _DarknessColor1: "vec3",
-            _DarknessColor2: "vec3", _EmissiveColor: "vec4", _Rotation: "vec3",
-          },
-        },
-        backend_uniforms: { uBloomOnly: { type: "int", value: 0 } },
-        require_complete_active_bindings: true,
-        camera_from_view: true,
-        mrt_attachments: 2,
-        stencil_normalization: "disable-when-always-keep",
-        stencil_face_mode: "generic",
-      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),
@@ -355,7 +390,7 @@ await withExtractedSelectorProgram({
       vertex_fields: Object.fromEntries(compiledFields(vglobals).map(({ name, offset }) => [name, offset])),
       fragment_fields: Object.fromEntries(compiledFields(pglobals).map(({ name, offset }) => [name, offset])),
       implicit_defaults: { ...metadata.shaderPropertyDefaults.textures, _CubeMap: "gray" },
-      mrt: { primary: "_34", emissive: "_42", webgl_bloom_route: "uBloomOnly" },
+      mrt: { primary: "_34", emissive: "_42", secondary_rgb: "active" },
     }, null, 2)}\n`,
   };
   writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });

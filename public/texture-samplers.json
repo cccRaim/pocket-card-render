@@ -4,7 +4,7 @@
   "source": {
     "decryptedRoot": "PCR_OFFICIAL_DECRYPTED_ROOT",
     "extractor": "extract_official_texture_sampler.py",
-    "extractorSha256": "c364836742b9214bbb193cc6536ca184c543d2a34288673665126e3ce16c9962",
+    "extractorSha256": "afe99a4d140464b4a43075d967a32023e2a34fcc7dbcd207fdb73e9016609ffa",
     "unityVersionFallback": "2022.3.62f2"
   },
   "summary": {
@@ -21,10 +21,10 @@
     "unresolvedCount": 0
   },
   "referenceSceneHashes": {
-    "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json": "50c23f3a65db6a6c5aec6c486d50b0085230e522421bb7a6353c5f161e6a29d3",
-    "scene.cPK_20_008900_02_HOUOUex_UR.json": "88cf1f133f36fb2759d72bb0203e8b21ba15bd6ade86f93c2b9ed82ec7b1c0fe",
-    "scene.cTR_20_000230_00_LEAF_SR.json": "1cb62689a86cd8858514e65b23b3c0f817cbc5ce156837c549438db0bdb91389",
-    "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json": "d8f3db20c69b85df69a310fcdd735bad1e780213ff2a2d2db5a6f9b989949243"
+    "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json": "e8795960b1561312d6418c6e2dace6a6617717daf92706eeb2b9b2b6f35d34c0",
+    "scene.cPK_20_008900_02_HOUOUex_UR.json": "1a7129a62089987f305149331cadf20364def9d642b7c2090c90e8acae9d447b",
+    "scene.cTR_20_000230_00_LEAF_SR.json": "b022ccfbebe61bd3b0b6ae06128ca5646ebc71cb5126eda15c6b26f796a7516c",
+    "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json": "dab7f2da6d542ac81f651df380e8187f480c5eba7c3926775e1a1f7ee63c3b4b"
   },
   "runtimeTextures": {
     "_DynamicUITex": {
@@ -4357,6 +4357,11 @@
         "forcedFormatName": "RGBA32",
         "rgba8MipChain": {
           "byteLength": 4092,
+          "decoder": {
+            "name": "UnityPy Texture2DConverter",
+            "profile": "parse_image_data RGBA8 with vertical flip",
+            "version": "1.25.0"
+          },
           "encoding": "rgba8-mip-chain-v1",
           "levels": [
             {
@@ -4441,6 +4446,7 @@
             }
           ],
           "sha256": "dc6ac6e6b2b255d04a7417279f2328bff972f0c7625bf1c7c8d913b4da7a0714",
+          "sourceEncoding": "RGB24",
           "url": "/game/.official-texture-mips/7ca4d5746f3146fc0869ec1239645a36a4288f7338378ca948ef4c59a0eb8c68.rgba8mips"
         }
       }
@@ -10133,6 +10139,11 @@
         "forcedFormatName": "RGBA32",
         "rgba8MipChain": {
           "byteLength": 5592404,
+          "decoder": {
+            "name": "UnityPy Texture2DConverter",
+            "profile": "parse_image_data RGBA8 with vertical flip",
+            "version": "1.25.0"
+          },
           "encoding": "rgba8-mip-chain-v1",
           "levels": [
             {
@@ -10225,6 +10236,7 @@
             }
           ],
           "sha256": "3f2564ee5a7659a6fdb6edbbb4d512601cbe1739df46a789965bc5799a94f4a3",
+          "sourceEncoding": "ETC_RGB4",
           "url": "/game/.official-texture-mips/fa20ec460f5594ed75c6a90163035806a006d17b0034431f6dcfca8c6b82fd11.rgba8mips"
         }
       }
@@ -10834,6 +10846,11 @@
         "forcedFormatName": "RGBA32",
         "rgba8MipChain": {
           "byteLength": 5592404,
+          "decoder": {
+            "name": "UnityPy Texture2DConverter",
+            "profile": "parse_image_data RGBA8 with vertical flip",
+            "version": "1.25.0"
+          },
           "encoding": "rgba8-mip-chain-v1",
           "levels": [
             {
@@ -10926,6 +10943,7 @@
             }
           ],
           "sha256": "37827c9d5f4d3870e766e18d914e2a169745083a49c5fdc9a9c9789d4980ac21",
+          "sourceEncoding": "ETC_RGB4",
           "url": "/game/.official-texture-mips/49dc579bfbed2d9b2b3b470e08d79dc85ff0b916d706e3a83cd042fe9ba08639.rgba8mips"
         }
       }
@@ -11920,6 +11938,12 @@
         "forcedFormatName": "RGBA32",
         "rgba8MipChain": {
           "byteLength": 5460,
+          "decoder": {
+            "executableSha256": "aec13e952ddc8cc78fe906e643abc2a322dae165faa3030153fa81c152952178",
+            "name": "ARM astcenc",
+            "profile": "HDR RGB/LDR alpha (-dh; alpha recovered with -dsw aaa1)",
+            "version": "astcenc v5.6.0, 64-bit avx2+popcnt+f16c"
+          },
           "encoding": "rgba8-mip-chain-v1",
           "levels": [
             {
@@ -11927,7 +11951,7 @@
               "length": 4096,
               "level": 0,
               "offset": 0,
-              "sha256": "f47a8ec3e9aff2318d896942282ad4fe37d6391c82914f54a5da8a37de1300c6",
+              "sha256": "7c14cc8bdac3423b30c9294e25bfb7f0d738944ce04f7d02ad496087633680fa",
               "width": 32
             },
             {
@@ -11935,7 +11959,7 @@
               "length": 1024,
               "level": 1,
               "offset": 4096,
-              "sha256": "5f4ecdb7b71c3e403983fe405cddcdc2f2576b655fdb3e80d94a6f7c32e58bc2",
+              "sha256": "35558d3d144448d08465ef2dd3da024762f528177bf9306595136369890b5557",
               "width": 16
             },
             {
@@ -11943,7 +11967,7 @@
               "length": 256,
               "level": 2,
               "offset": 5120,
-              "sha256": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+              "sha256": "9ef7ab394d9c6e66105702b3242be856788ac6a8b03743f7764db5a8e65c4cae",
               "width": 8
             },
             {
@@ -11951,7 +11975,7 @@
               "length": 64,
               "level": 3,
               "offset": 5376,
-              "sha256": "8667e718294e9e0df1d30600ba3eeb201f764aad2dad72748643e4a285e1d1f7",
+              "sha256": "efa6ce5c3f5f50b3f6a601c6de170a836c478fcd5290378fd14fc8d42a20cc76",
               "width": 4
             },
             {
@@ -11959,7 +11983,7 @@
               "length": 16,
               "level": 4,
               "offset": 5440,
-              "sha256": "5ac6a5945f16500911219129984ba8b387a06f24fe383ce4e81a73294065461b",
+              "sha256": "d85371d0ed74ff2cb851f222b260bf969a210cf4907a530e89aefb327d6bcd68",
               "width": 2
             },
             {
@@ -11967,11 +11991,12 @@
               "length": 4,
               "level": 5,
               "offset": 5456,
-              "sha256": "ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e",
+              "sha256": "f7002e79ff0fa88b2b2fd47b4a582049a54b45a7af4cfb79786ded39c64dfda7",
               "width": 1
             }
           ],
-          "sha256": "c1d00c39c1232667c953271614da8155d56bff2780e5547918386a2bcb1ecfa6",
+          "sha256": "99a9a3a59acde94563faa5d4ce06e36cb75eb91bcb38fda46b679e6579468a72",
+          "sourceEncoding": "ASTC_HDR_6x6",
           "url": "/game/.official-texture-mips/07efb6853e8b6001afc71f6fb950e23daae9e50b08c69cc7ca8dc539523c76bf.rgba8mips"
         }
       }

@@ -444,7 +444,12 @@ assert.deepEqual(parentEuler, [0, 180, 0], "official card parent transform drift
 const parentMatrix = new THREE.Matrix4().makeRotationY(THREE.MathUtils.degToRad(parentEuler[1]));
 const cameraConfig = displayContract.camera;
 assert.ok(cameraConfig, "official camera contract missing");
-const camera = new THREE.PerspectiveCamera(cameraConfig.field_of_view_degrees, cameraConfig.aspect, 0.01, 100);
+const camera = new THREE.PerspectiveCamera(
+  cameraConfig.field_of_view_degrees,
+  cameraConfig.aspect,
+  cameraConfig.near_clip_plane,
+  cameraConfig.far_clip_plane,
+);
 camera.position.set(
   cameraConfig.local_position[0],
   cameraConfig.local_position[1],

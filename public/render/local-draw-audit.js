@@ -102,6 +102,7 @@ function textureIdentity(texture) {
     kind: texture?.isCubeTexture ? "cube-texture" : "texture",
     name: texture?.name || null,
     sourceUrl,
+    backendTextureDefault: texture?.userData?.backendTextureDefault || null,
     width: image?.width || texture?.source?.data?.width || null,
     height: image?.height || texture?.source?.data?.height || null,
     sampler: texture?.userData?.officialSampler || null,
@@ -322,6 +323,15 @@ export function captureLocalWebGlDraw({ gl, renderer, object, geometry, material
       } : null,
       officialExecutableIdentity: material.userData?.officialExecutableIdentity || null,
       officialPassStateSha256: material.userData?.officialPassStateSha256 || null,
+      rendererPropertyBlockAudit: material.userData?.rendererPropertyBlockAudit
+        ? serializeAuditValue(material.userData.rendererPropertyBlockAudit)
+        : null,
+      dynamicUniformProducerContract: material.userData?.dynamicUniformProducerContract
+        ? serializeAuditValue(material.userData.dynamicUniformProducerContract)
+        : null,
+      stencilRegionBinding: material.userData?.stencilRegionBinding
+        ? serializeAuditValue(material.userData.stencilRegionBinding)
+        : null,
       shaderSources: material.isShaderMaterial ? {
         vertexSha256: sha256Hex(material.vertexShader || ""),
         fragmentSha256: sha256Hex(material.fragmentShader || ""),

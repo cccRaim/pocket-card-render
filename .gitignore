@@ -22,5 +22,8 @@ official-vulkan-runtime*.json
 tmp-runtime-evidence.local.json
 .renderdoc-*
 build/.renderdoc-*
+.tools/
+server.stdout.log
+server.stderr.log
 $cache/
 .idea

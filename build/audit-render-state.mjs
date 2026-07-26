@@ -4,7 +4,19 @@ import fs from "node:fs";
 import path from "node:path";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import * as THREE from "three";
 import { SHADER } from "../public/render/rarities.js";
+import {
+  BF,
+  SIDE,
+  ZF,
+  applyOfficialPassState,
+  applyRenderQueueState,
+} from "../public/render/context.js";
+import {
+  loadOfficialPortSceneIndex,
+  matchingOfficialPortManifests,
+} from "./official-port-scene-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -13,6 +25,35 @@ const shaderRoot = process.env.PCR_SHADERS
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
   .filter((n) => /^scene\..*\.json$/.test(n))
   .sort();
+const officialPortSceneIndex = loadOfficialPortSceneIndex(ROOT);
+
+const BLEND_EQUATION = {
+  0: THREE.AddEquation,
+  1: THREE.SubtractEquation,
+  2: THREE.ReverseSubtractEquation,
+  3: THREE.MinEquation,
+  4: THREE.MaxEquation,
+};
+const STENCIL_FUNC = {
+  1: THREE.NeverStencilFunc,
+  2: THREE.LessStencilFunc,
+  3: THREE.EqualStencilFunc,
+  4: THREE.LessEqualStencilFunc,
+  5: THREE.GreaterStencilFunc,
+  6: THREE.NotEqualStencilFunc,
+  7: THREE.GreaterEqualStencilFunc,
+  8: THREE.AlwaysStencilFunc,
+};
+const STENCIL_OP = {
+  0: THREE.KeepStencilOp,
+  1: THREE.ZeroStencilOp,
+  2: THREE.ReplaceStencilOp,
+  3: THREE.IncrementStencilOp,
+  4: THREE.DecrementStencilOp,
+  5: THREE.InvertStencilOp,
+  6: THREE.IncrementWrapStencilOp,
+  7: THREE.DecrementWrapStencilOp,
+};
 
 let official;
 try {
@@ -209,6 +250,125 @@ function rendererExtraPassState() {
   return "1/0/0/0/0";
 }
 
+function exactStateValue(parameter, mat, contract) {
+  if (!parameter) return null;
+  const value = parameter.name
+    ? (mat.floats?.[parameter.name] ?? contract.shader_property_defaults?.[parameter.name] ?? parameter.val)
+    : parameter.val;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function exactRuntimeRow(scene, matName, mat, cfg, manifest) {
+  const contract = manifest.official_pass_runtime;
+  const material = new THREE.RawShaderMaterial();
+  const applied = applyOfficialPassState(material, mat, contract, { stencil: true });
+  const queueApplied = applyRenderQueueState(material, mat.queue);
+  const value = (parameter) => exactStateValue(parameter, mat, contract);
+  const blend = contract.blend;
+  const src = value(blend.src_rgb);
+  const dst = value(blend.dst_rgb);
+  const srcAlpha = value(blend.src_alpha);
+  const dstAlpha = value(blend.dst_alpha);
+  const op = value(blend.op_rgb);
+  const opAlpha = value(blend.op_alpha);
+  const colorMask = value(blend.color_mask);
+  const zTest = value(contract.depth.test);
+  const zWrite = value(contract.depth.write);
+  const cull = value(contract.culling);
+  const stencilRef = value(contract.stencil.ref);
+  const stencilReadMask = value(contract.stencil.read_mask);
+  const stencilWriteMask = value(contract.stencil.write_mask);
+  const stencilComp = value(contract.stencil.generic.comp);
+  const stencilPass = value(contract.stencil.generic.pass);
+  const stencilFail = value(contract.stencil.generic.fail);
+  const stencilZFail = value(contract.stencil.generic.zFail);
+  const zClip = value(contract.fixed.zClip);
+  const offsetFactor = value(contract.fixed.offsetFactor);
+  const offsetUnits = value(contract.fixed.offsetUnits);
+  const alphaToMask = value(contract.fixed.alphaToMask);
+  const conservative = value(contract.fixed.conservative);
+  const affectsStencil = stencilComp !== 8
+    || [stencilPass, stencilFail, stencilZFail].some((entry) => entry !== 0);
+  const stencilOk = affectsStencil
+    ? material.stencilWrite
+      && material.stencilRef === stencilRef
+      && material.stencilFuncMask === stencilReadMask
+      && material.stencilWriteMask === stencilWriteMask
+      && material.stencilFunc === STENCIL_FUNC[stencilComp]
+      && material.stencilZPass === STENCIL_OP[stencilPass]
+      && material.stencilFail === STENCIL_OP[stencilFail]
+      && material.stencilZFail === STENCIL_OP[stencilZFail]
+    : !material.stencilWrite;
+  const ok = applied
+    && queueApplied
+    && contract.shared_mrt_blend === true
+    && material.blendSrc === BF[src]
+    && material.blendDst === BF[dst]
+    && material.blendSrcAlpha === BF[srcAlpha]
+    && material.blendDstAlpha === BF[dstAlpha]
+    && material.blendEquation === BLEND_EQUATION[op]
+    && material.blendEquationAlpha === BLEND_EQUATION[opAlpha]
+    && material.colorWrite === (colorMask === 15)
+    && material.depthTest === (zTest !== 0)
+    && (!material.depthTest || material.depthFunc === ZF[zTest])
+    && material.depthWrite === (zWrite !== 0)
+    && material.side === SIDE[cull]
+    && material.forceSinglePass === (cull === 0)
+    && material.polygonOffset === false
+    && material.alphaToCoverage === false
+    && material.transparent === (mat.queue >= 2501)
+    && stencilOk;
+  material.dispose();
+  const selector = manifest.official_selector;
+  const blendPair = `${src}/${dst}`;
+  const alphaPair = `${srcAlpha}/${dstAlpha}`;
+  const opPair = `${op}/${opAlpha}`;
+  const stencil = [
+    stencilRef,
+    stencilReadMask,
+    stencilWriteMask,
+    stencilComp,
+    stencilPass,
+    stencilFail,
+    stencilZFail,
+  ].join("/");
+  const extra = [zClip, offsetFactor, offsetUnits, alphaToMask, conservative].join("/");
+  return {
+    scene,
+    mat: `${matName}#p${selector.subshader}:${selector.pass}`,
+    shader: mat.shader,
+    kind: cfg.kind || "",
+    official: blendPair,
+    renderer: applied ? blendPair : "(unsupported)",
+    officialA: alphaPair,
+    rendererA: applied ? alphaPair : "(unsupported)",
+    officialOp: opPair,
+    officialMask: `${colorMask}`,
+    officialRT1: blendPair,
+    officialRT1A: alphaPair,
+    officialRT1Op: opPair,
+    officialRT1Mask: `${colorMask}`,
+    officialZ: `${zTest}/${zWrite}`,
+    rendererZ: applied ? `${zTest}/${zWrite}` : "(unsupported)",
+    officialC: `${cull}`,
+    rendererC: applied ? `${cull}` : "(unsupported)",
+    officialS: stencil,
+    rendererS: applied ? stencil : "(unsupported)",
+    officialX: extra,
+    rendererX: applied ? extra : "(unsupported)",
+    dynamic: [
+      blend.src_rgb,
+      blend.dst_rgb,
+      blend.src_alpha,
+      blend.dst_alpha,
+      contract.depth.test,
+      contract.depth.write,
+    ].some((parameter) => parameter?.name),
+    ok,
+  };
+}
+
 const rows = [];
 for (const shader of official.missing || []) {
   rows.push({
@@ -246,6 +406,17 @@ for (const sceneName of sceneNames) {
     if (!shader || shader.endsWith("Stencil")) continue;
     const cfg = SHADER[shader];
     if (!cfg || cfg.defer) continue;
+    const exactPorts = matchingOfficialPortManifests(officialPortSceneIndex, mat);
+    if (exactPorts.length) {
+      rows.push(...exactPorts.map(({ manifest }) => exactRuntimeRow(
+        sceneName.replace(/^scene\.|\.json$/g, ""),
+        matName,
+        mat,
+        cfg,
+        manifest,
+      )));
+      continue;
+    }
     const official = officialBlend(shader, mat, 0);
     const officialRT1 = officialBlend(shader, mat, 1);
     const officialZ = officialDepth(shader, mat);

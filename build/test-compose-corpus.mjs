@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { buildCardData } from "./carddata.mjs";
 import { composeFace } from "./compose.mjs";
 import { compactOfficialUIImageState } from "../public/render/official-ugui-image.js";
+import { isIdentityUiAffine } from "../public/render/ui-affine-transform.js";
 
 const MASTER_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
 const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
@@ -39,6 +40,10 @@ const pokemonById = index(pokemon, "PokemonID");
 const trainerById = index(trainers, "TrainerID");
 const attackById = index(attacks, "PokemonAttackID");
 const allCards = [...pokemonCards, ...trainerCards];
+const textDesign = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "render", "card-text-design-contract.json"),
+  "utf8",
+));
 const uiLayout = JSON.parse(readFileSync(join(import.meta.dirname, "..", "public", "render", "card-ui-layout-contract.json"), "utf8"));
 const layoutNodes = new Map();
 for (const prefab of uiLayout.prefabs) {
@@ -50,7 +55,9 @@ for (const prefab of uiLayout.prefabs) {
       prefabActiveInHierarchy: parentActive && Boolean(node.gameObject.active),
       hierarchyOrder: hierarchyOrder++,
     };
-    layoutNodes.set(layoutPath, { node, provenance });
+    const bindings = layoutNodes.get(layoutPath) || [];
+    bindings.push({ node, provenance });
+    layoutNodes.set(layoutPath, bindings);
     for (const child of node.children || []) walk(child, layoutPath, provenance.prefabActiveInHierarchy);
   }
   for (const root of prefab.roots) walk(root);
@@ -72,9 +79,17 @@ function assertComposition(composition, cardId, locale) {
   for (const element of composition.elements) {
     assert(element.layoutPath?.startsWith("/"), `${cardId}/${locale} has an element without an official layoutPath`);
     assert(element.box && ["l", "r", "t", "b"].every((key) => Number.isFinite(element.box[key])), `${cardId}/${locale} has a non-finite box`);
+    assert(Array.isArray(element.uiTransform) && element.uiTransform.length === 6,
+      `${cardId}/${locale}/${element.layoutPath} lacks a complete RectTransform matrix`);
+    assert(isIdentityUiAffine(element.uiTransform),
+      `${cardId}/${locale}/${element.layoutPath} unexpectedly changed the current identity-transform corpus`);
     if (element.kind === "text") assert(element.layoutObjectSha256, `${cardId}/${locale}/${element.layoutPath} lacks style evidence`);
-    const binding = layoutNodes.get(element.layoutPath);
-    assert(binding, `${cardId}/${locale}/${element.layoutPath} is absent from the official hierarchy`);
+    const bindings = layoutNodes.get(element.layoutPath);
+    assert(bindings?.length, `${cardId}/${locale}/${element.layoutPath} is absent from the official hierarchy`);
+    const binding = bindings.find(({ provenance }) => (
+      provenance.hierarchyOrder === element.hierarchyOrder
+    ));
+    assert(binding, `${cardId}/${locale}/${element.layoutPath} lost official hierarchy order`);
     if (element.kind === "icon" && binding.node.image) {
       assert.deepEqual(
         element.uiImage,
@@ -85,11 +100,162 @@ function assertComposition(composition, cardId, locale) {
   }
 }
 
+let composedCardCount = 0;
+let missingCardCount = 0;
 for (const card of allCards) {
+  const official = textDesign.cards[card.IllustrationID];
+  if (!official) {
+    missingCardCount += 1;
+    assert.throws(
+      () => composeFace(card.CardID, "zh_TW", card.IllustrationID),
+      /official CardSettings is unavailable/,
+      `${card.IllustrationID} must fail closed outside the official Face snapshot`,
+    );
+    continue;
+  }
+  composedCardCount += 1;
   const composition = composeFace(card.CardID, "zh_TW", card.IllustrationID);
   assertComposition(composition, card.CardID, "zh_TW");
+  assert.equal(composition.design, official.design);
+  assert.equal(composition.fontCondition, official.fontCondition);
+  assert.equal(composition.fontGroup, official.fontGroup);
+  assert.equal(composition.branchEvidence, "official-card-design-settings");
+  if (card.CardID.startsWith("PK_")) {
+    const cardData = buildCardData(card.CardID, "zh_TW");
+    if (cardData.flavor) {
+      const flavor = elementAt(composition, "/PokemonCardUI/library_flavor_txt");
+      if (cardData.isMega) {
+        assert.equal(flavor, undefined, `${card.IllustrationID} rendered flavor for a Mega Pokemon`);
+      } else {
+        assert.equal(
+          flavor?.text,
+          cardData.flavor,
+          `${card.IllustrationID} did not render FlavorTextMSID through library_flavor_txt`,
+        );
+      }
+    }
+    const expectedNamePath = cardData.isMega
+      ? "/PokemonCardUI/mega_name_elm/card_name_txt"
+      : `/PokemonCardUI/name_elm/${
+        /\r\n|\r|\n/.test(cardData.name) ? "card_name_two_line_txt" : "card_name_txt"
+      }`;
+    assert(
+      elementAt(composition, expectedNamePath),
+      `${card.IllustrationID} selected the wrong Pokemon name line variant`,
+    );
+    if (cardData.isEX) {
+      const ruleRoot = cardData.isMega ? "PokemoMegaExRuleView" : "PokemonExRuleView";
+      const ruleNode = cardData.isMega
+        ? "ex_rule_description_txt_02"
+        : "ex_rule_description_txt_01";
+      const ruleBody = elementAt(composition, `/PokemonCardUI/${ruleRoot}/${ruleNode}`);
+      assert(
+        ruleBody,
+        `${card.IllustrationID} selected the wrong EX rule text variant`,
+      );
+      const nameExBase = composition.elements.find(
+        (element) => element.nameExLayer === "base",
+      );
+      const nameExOutline = composition.elements.find(
+        (element) => element.nameExLayer === "outline",
+      );
+      assert.equal(
+        nameExBase?.unityLayer,
+        cardData.isMega ? 17 : 18,
+        `${card.IllustrationID} EX base serialized layer`,
+      );
+      assert.equal(
+        nameExOutline?.unityLayer,
+        cardData.isMega ? 18 : 17,
+        `${card.IllustrationID} EX outline serialized layer`,
+      );
+      assert.equal(ruleBody.unityLayer, 17, `${card.IllustrationID} EX rule text must use CardUIText`);
+      for (const imageNode of ["frm_bg_shadow", "frm_bg"]) {
+        const matches = composition.elements.filter(
+          (element) => element.layoutPath === `/PokemonCardUI/${ruleRoot}/${imageNode}`,
+        );
+        assert.equal(
+          matches.length,
+          1,
+          `${card.IllustrationID} must compose ${imageNode} exactly once`,
+        );
+        assert.equal(
+          matches[0].unityLayer,
+          imageNode === "frm_bg" ? 18 : 17,
+          `${card.IllustrationID} ${imageNode} DynamicUI layer`,
+        );
+      }
+      if (!cardData.isMega) {
+        assert.equal(
+          composition.elements.filter(
+            (element) => element.layoutPath === `/PokemonCardUI/${ruleRoot}/frm`,
+          ).length,
+          1,
+          `${card.IllustrationID} must compose the normal EX title background exactly once`,
+        );
+        assert.equal(ruleBody.fs, ruleBody.fsbase, `${card.IllustrationID} normal EX body base size`);
+        assert.equal(ruleBody.fsmax, ruleBody.fsbase, `${card.IllustrationID} normal EX body max size`);
+        assert.equal(ruleBody.fsmin, ruleBody.fsbase / 2, `${card.IllustrationID} normal EX body min size`);
+        assert.equal(ruleBody.wrap, true, `${card.IllustrationID} normal EX body wrapping`);
+        assert.equal(ruleBody.autosize, true, `${card.IllustrationID} normal EX body autosizing`);
+      }
+    }
+  }
+  for (const [elementIndex, element] of composition.elements.entries()) {
+    assert(
+      element.unityLayer === 17 || element.unityLayer === 18,
+      `${card.IllustrationID} element ${elementIndex} lacks an official DynamicUI layer`,
+    );
+  }
+  assert.equal(
+    composition.dynamicUIState.length,
+    textDesign.designs[official.design].dynamicUIs.length,
+  );
+  assert.equal(composition.dynamicUIReplay.schema, "pocket-card-render/ugui-state-replay@2");
+  assert.equal(
+    composition.dynamicUIReplay.operationCount,
+    composition.dynamicUIState.reduce(
+      (count, state) => count + state.candidates.length,
+      0,
+    ),
+  );
+  assert.deepEqual(
+    composition.dynamicUIReplay.appliedOperations.map(
+      ({ operationIndex }) => operationIndex,
+    ),
+    Array.from(
+      { length: composition.dynamicUIReplay.operationCount },
+      (_, index) => index,
+    ),
+    `${card.IllustrationID} lost sequential DynamicUI operation indices`,
+  );
+  for (const state of composition.dynamicUIState) {
+    assert(state.candidates.length > 0, `${card.IllustrationID}/${state.label} has no candidates`);
+    assert.equal(state.operationIndices.length, state.candidates.length);
+    assert.deepEqual(
+      state.candidates.filter(({ active }) => active).map(({ path }) => path),
+      state.targetPath ? [state.targetPath] : [],
+      `${card.IllustrationID}/${state.label} did not replay CardDynamicUIView.Apply`,
+    );
+    for (const candidate of state.candidates) {
+      assert.equal(
+        candidate.effectiveActive,
+        candidate.active,
+        `${card.IllustrationID}/${state.label}/${candidate.path} lost parent-active propagation`,
+      );
+    }
+  }
 }
 assert.equal(allCards.length, 3305, "authoritative card corpus drifted");
+assert.equal(composedCardCount, 3191, "source-current compose success count drifted");
+assert.equal(missingCardCount, 114, "source-current asset-gap count drifted");
+assert.equal(Object.keys(textDesign.cards).length, 3191);
+assert.equal(textDesign.missingIllustrations.length, 114);
+assert.deepEqual(
+  Object.keys(textDesign.counts.cardsByMasterdataRarity).map(Number),
+  [100, 200, 300, 400, 500, 600, 700, 800, 830, 860, 900],
+  "official text-design corpus does not span every rarity class",
+);
 
 const trainerCardByType = new Map();
 for (const card of trainerCards) {
@@ -142,6 +308,59 @@ for (const suffix of [
   "/PokemonAbilityContainerView/PokemonAttackView/SkillName/skill_name_txt",
 ]) assert(hasPath(abilityComposition, suffix), `A1T1 is missing ${suffix}`);
 
+const nonExWithOutlineTarget = pokemonCards.find((card) => {
+  const official = textDesign.cards[card.IllustrationID];
+  const design = official && textDesign.designs[official.design];
+  const target = design?.dynamicUIs?.find(({ label }) => label === "ExOutlineWhite")?.target;
+  return target && !pokemonById.get(card.PokemonID)?.IsEX;
+});
+assert(nonExWithOutlineTarget, "official corpus has no non-EX card with an ExOutlineWhite child target");
+const nonExOutlineComposition = composeFace(
+  nonExWithOutlineTarget.CardID,
+  "zh_TW",
+  nonExWithOutlineTarget.IllustrationID,
+);
+assert.equal(
+  nonExOutlineComposition.elements.some((element) => (
+    element.layoutPath?.endsWith("/ImgExOutlineWhite/ImgExOutlineWhite")
+  )),
+  false,
+  "a non-EX card rendered a child of the inactive official EX parent hierarchy",
+);
+
+const venusaurComposition = composeFace(
+  "PK_10_000040_00",
+  "zh_TW",
+  "cPK_10_000040_00_FUSHIGIBANAex_RR",
+);
+const topEnergyElements = venusaurComposition.elements.filter((element) => (
+  element.layoutPath?.startsWith("/PokemonCardUI/energy_view/CardEnergyIconView/")
+));
+assert.deepEqual(
+  topEnergyElements.map((element) => ({
+    path: element.layoutPath,
+    hierarchyOrder: element.hierarchyOrder,
+  })),
+  [
+    {
+      path: "/PokemonCardUI/energy_view/CardEnergyIconView/Outline",
+      hierarchyOrder: 23,
+    },
+    {
+      path: "/PokemonCardUI/energy_view/CardEnergyIconView/icn_gra_img",
+      hierarchyOrder: 24,
+    },
+  ],
+  "top Pokemon attribute must preserve the official Outline -> icon child draw order",
+);
+assert(
+  topEnergyElements[1].box.l > topEnergyElements[0].box.l
+    && topEnergyElements[1].box.r < topEnergyElements[0].box.r
+    && topEnergyElements[1].box.t > topEnergyElements[0].box.t
+    && topEnergyElements[1].box.b < topEnergyElements[0].box.b,
+  "top Pokemon attribute icon must use its inset official child RectTransform",
+);
+
 for (const category of [1, 2, 3]) {
   const row = pokemon.find((candidate) => (candidate.AdditionalCategories || []).includes(category));
   const card = pokemonCards.find((candidate) => candidate.PokemonID === row.PokemonID);
@@ -188,4 +407,8 @@ for (const locale of LOCALES) {
   assert(composition.elements.some((element) => element.layoutPath?.endsWith(`/ability_icn_txt_img_${ABILITY_NODE_SUF[locale]}`)), `${locale} Ability selected the wrong locale node`);
 }
 
-console.log(`compose corpus: ${allCards.length} zh_TW cards + ${LOCALES.length} locale archetype matrices passed`);
+console.log(
+  `compose corpus: ${Object.keys(textDesign.cards).length} source-current zh_TW cards, `
+  + `${textDesign.missingIllustrations.length} version-gap cards fail closed, `
+  + `${LOCALES.length} locale archetype matrices passed`,
+);

@@ -5,14 +5,18 @@ import { fileURLToPath } from "node:url";
 import {
   canonicalJsonSha256,
   compileCommonBindings,
+  compileOfficialVertexInputContract,
   compileOfficialPassContract,
-  joinSamplerBindings,
+  compileProgramBindings,
+  joinProgramConstantBufferStages,
+  joinProgramSamplerBindings,
   runCommand,
   sha256,
   sha256File,
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -187,16 +191,57 @@ await withExtractedSelectorProgram({
   const vertex = adaptVertex(officialVertex);
   const fragment = adaptFragment(officialFragment);
   const bindings = compileCommonBindings(metadata.commonBindings);
-  const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+  const programBindings = joinProgramConstantBufferStages(
+    compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults),
+    reflection,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
     return row;
   });
   assert.deepEqual(samplerBindings.map(({ slot }) => slot), samplerSlots);
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: "Simple-Opaque-Hologram_Tuning",
+    attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2" },
+    engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
+    material_uniforms: {
+      floats: floats.filter((name) => !ints.includes(name)), ints, vectors: { _Rotation: "vec3" },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: false,
+    mrt_attachments: 2,
+    stencil_normalization: "disable-when-always-keep",
+    stencil_face_mode: "generic",
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVertex), outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "variant-local",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position location 0 := vec4(three.position, 1.0)", "normal location 1 := three.normal",
         "UV0 location 2 := three.uv", "UV1 location 3 := three.uv1",
@@ -207,10 +252,25 @@ await withExtractedSelectorProgram({
     },
     fragment: {
       officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFragment), outputSha256: sha256(fragment),
-      substitutions: ["replace variant-local PGlobals UBO members with same-name Three.js uniforms"],
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "variant-local",
+          preservation: "names-types-precision",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace variant-local PGlobals UBO members with same-name Three.js uniforms",
+        "remove the embedded GLSL version directive for Three.js RawShaderMaterial injection",
+      ],
     },
     interfaceSha256: canonicalJsonSha256(reflection),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
   outputs["simple_opaque_hologram_tuning.vert.glsl"] = vertex;
   outputs["simple_opaque_hologram_tuning.frag.glsl"] = fragment;
   outputs["simple_opaque_hologram_tuning_uniforms.json"] = `${JSON.stringify({
@@ -218,6 +278,7 @@ await withExtractedSelectorProgram({
     generated_by: "build/build-exact-simple-opaque-hologram.mjs",
     official_selector: metadata.selector,
     official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+    official_spirv_precision: metadata.officialSpirvPrecision,
     official_executable_identity: metadata.identityFields,
     official_parameter_entry: {
       source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -237,25 +298,15 @@ await withExtractedSelectorProgram({
       },
     }),
     official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+    official_program_bindings: manifestProgramBindings,
+    official_vertex_inputs: vertexInputContract,
     official_shader_property_defaults: metadata.shaderPropertyDefaults,
     webgl_adaptation: adaptation,
     webgl_sources: {
       vertex: "public/shaders/simple_opaque_hologram_tuning.vert.glsl",
       fragment: "public/shaders/simple_opaque_hologram_tuning.frag.glsl",
     },
-    runtime_contract: {
-      schema: "pocket-card-render/webgl-runtime-port@1",
-      shader_key: "Simple-Opaque-Hologram_Tuning",
-      attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2" },
-      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4" },
-      material_uniforms: {
-        floats: floats.filter((name) => !ints.includes(name)), ints, vectors: { _Rotation: "vec3" },
-      },
-      camera_from_view: false,
-      mrt_attachments: 2,
-      stencil_normalization: "disable-when-always-keep",
-      stencil_face_mode: "generic",
-    },
+    runtime_contract: runtimeContract,
     sampler_bindings: samplerBindings,
     samplers: samplerBindings.map((row) => row.spirvName),
     sampler_slots: samplerBindings.map((row) => row.slot),

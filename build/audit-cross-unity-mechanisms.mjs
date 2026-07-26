@@ -322,11 +322,11 @@ const MECHANISM_DEFINITIONS = Object.freeze([
   {
     id: "ugui-state-replay",
     label: "UGUI state replay",
-    description: "Replays SetActive, enabled and Sprite operations into active hierarchy and deterministic draw order, including renderer integration.",
+    description: "Replays SetActive, enabled and Sprite operations sequentially with last-write-wins state into active hierarchy and deterministic draw order, including renderer integration.",
     gates: [
       nodeGate(
         "ugui-state-reducer-mutations",
-        "Synthetic UGUI reducer ordering, idempotency and fail-closed mutation tests",
+        "Synthetic UGUI reducer sequential ordering, last-write-wins, idempotency and fail-closed mutation tests",
         ["build/test-ugui-state-reducer.mjs"],
       ),
       nodeGate(
@@ -384,7 +384,7 @@ const MECHANISM_DEFINITIONS = Object.freeze([
       nodeGate(
         "display-density-integration",
         "Pure no-browser integration test for CSS/DPR/source/display/DynamicUI sizing",
-        ["build/test-display-density-framework.mjs"],
+        ["build/test-display-density-integration.mjs"],
       ),
     ],
     blockingDebtIds: [],

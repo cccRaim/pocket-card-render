@@ -6,11 +6,17 @@
 // strategy's requires()/build().
 
 import * as THREE from "three";
+import {
+  resolveStencilRegionFloats,
+  STENCIL_BUFFER_VALUES,
+  STENCIL_REGION_BITS,
+} from "./stencil-region.js";
 import { SHADER_TEXTURE_DEFAULTS } from "./shader-defaults.js";
 import {
   officialPortIdentityKey,
   orderOfficialPasses,
 } from "./official-port-identity.js";
+import { unityTexEnvToThreeGltfSt } from "./texture-transform.js";
 
 // Unity blend-factor enum → three.js factor (card_shader_state.json uses these indices).
 export const BF = {
@@ -46,7 +52,7 @@ export const SIDE = { 0: THREE.DoubleSide, 1: THREE.BackSide, 2: THREE.FrontSide
 
 // Stencil bits: outer card = bit 1, inner window = card|window bits (3). Official shaders use
 // read masks 1 or 2, so window pixels must keep the card bit while also carrying the window bit.
-export const REGION = { card: 1, window: 3 };
+export const REGION = STENCIL_BUFFER_VALUES;
 
 function normalizedShaderFloatDefaults(manifest) {
   const raw = manifest?.official_shader_property_defaults?.floats;
@@ -118,7 +124,11 @@ export function selectExactShaderPorts(exactShaders, recipe, key) {
         : null;
       const sources = selectorSources || singleManifestFallback;
       if (!sources?.vert || !sources?.frag) return [];
-      matches.push({ ...port, ...sources, manifest: bindOfficialPassDefaults(manifest) });
+      try {
+        matches.push({ ...port, ...sources, manifest: bindOfficialPassDefaults(manifest) });
+      } catch {
+        return [];
+      }
     }
   }
   if (matches.length === 0) return [];
@@ -152,28 +162,31 @@ export function selectCompatibleStageSource(exactShaders, key) {
  * @param {THREE.Material[]} exactGlitMats   selector-bound glitter materials driven by FlowParams state
  * @param {THREE.Material[]} kiraPuyoMats    Card_Scaling_Kira materials driven by renderer MPBs
  * @param {Map<string, object>} circularKiraComponents Card_Circular_* component states
- * @param {THREE.Texture|null} dynUITex       composited DynamicUI canvas for _UseDynamicUI materials
- * @param {THREE.Texture|null} dynHoloTex     DynamicUI encoded like the game's holo RT (alpha = 1 - coverage)
+ * @param {THREE.Texture|null} dynUITex       DynamicUIType.Text texture (Unity layer 17 / CardUIText)
+ * @param {THREE.Texture|null} dynHoloTex     DynamicUIType.Holo texture (Unity layer 18 / CardUIMetallic)
  * @param {THREE.Texture|null} foilTex        alpha mask for UI foil-only regions
  * @param {THREE.Material[]} exHoloMats       EX/UI holo materials whose DynamicUI textures can be swapped
  */
 export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, runtimeSettings = {}, dynUITex, dynHoloTex, foilTex, exHoloMats }) {
-  const makeDefaultTex = (rgba) => {
+  const makeDefaultTex = (rgba, backendTextureDefault) => {
     const t = new THREE.DataTexture(new Uint8Array(rgba), 1, 1, THREE.RGBAFormat);
     t.colorSpace = THREE.NoColorSpace;
+    t.userData.backendTextureDefault = backendTextureDefault;
     t.needsUpdate = true;
     return t;
   };
   const defaultTex = {
-    white: makeDefaultTex([255, 255, 255, 255]),
+    white: makeDefaultTex([255, 255, 255, 255], "shaderlab-white"),
     // ShaderLab's "black" default is the no-op texture for premultiplied card layers.
-    black: makeDefaultTex([0, 0, 0, 0]),
-    clear: makeDefaultTex([0, 0, 0, 0]),
-    bump: makeDefaultTex([128, 128, 255, 255]),
+    black: makeDefaultTex([0, 0, 0, 0], "shaderlab-black"),
+    clear: makeDefaultTex([0, 0, 0, 0], "shaderlab-clear"),
+    bump: makeDefaultTex([128, 128, 255, 255], "shaderlab-bump"),
   };
   const grayCubeTex = new THREE.CubeTexture(
     Array.from({ length: 6 }, () => makeDefaultTex([128, 128, 128, 255]))
   );
+  grayCubeTex.name = "PCR neutral gray cube";
+  grayCubeTex.userData.backendTextureDefault = "neutral-gray-cube";
   grayCubeTex.colorSpace = THREE.NoColorSpace;
   grayCubeTex.needsUpdate = true;
   const layerTex = (L, slot) => {
@@ -250,6 +263,16 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
             : null;
       if (!vector) throw new Error(`${manifest.shader}: unsupported vector type ${type}`);
       uniforms[name] = { value: vector };
+    }
+    for (const transform of contract.texture_coordinates?.vertex?.transforms || []) {
+      if (transform.conversion !== "unity-texenv-to-three-gltf-v") {
+        throw new Error(`${manifest.shader}: unsupported texture-coordinate conversion ${transform.conversion}`);
+      }
+      const value = unityTexEnvToThreeGltfSt(
+        recipe?.textures?.[transform.slot],
+        defaults.textureDescriptors?.[transform.slot],
+      );
+      uniforms[transform.uniform] = { value: new THREE.Vector4(...value) };
     }
     for (const [name, spec] of Object.entries(contract.backend_uniforms || {})) {
       uniforms[name] = { value: spec.value };
@@ -339,7 +362,8 @@ function officialStateValue(parameter, floats, defaults = {}) {
 // Apply a selector-bound ShaderLab pass contract. This is used only when the
 // exact program manifest came from the same official Shader identity/keywords.
 export function applyOfficialPassState(mat, recipe, contract, { stencil = true } = {}) {
-  const floats = recipe?.floats || {};
+  const resolvedStencilRegion = resolveStencilRegionFloats(recipe, contract);
+  const floats = resolvedStencilRegion.floats;
   const defaults = contract?.shader_property_defaults || {};
   const blend = contract?.blend;
   if (!contract?.shared_mrt_blend || !blend) return false;
@@ -412,6 +436,9 @@ export function applyOfficialPassState(mat, recipe, contract, { stencil = true }
     mat.stencilWrite = false;
   }
   mat.userData.officialPassStateSha256 = contract.source_sha256;
+  if (resolvedStencilRegion.binding) {
+    mat.userData.stencilRegionBinding = resolvedStencilRegion.binding;
+  }
   return true;
 }
 
@@ -433,7 +460,8 @@ const STENCIL_REF_SHADERS = new Set([
 ]);
 
 export function applyStencilState(mat, recipe) {
-  const f = recipe?.floats || {};
+  const resolvedStencilRegion = resolveStencilRegionFloats(recipe);
+  const f = resolvedStencilRegion.floats;
   const shader = recipe?.shader || "";
   const read = SB_STENCIL_SHADERS.has(shader) || shader === "Effect"
     ? f._Stencil
@@ -456,6 +484,9 @@ export function applyStencilState(mat, recipe) {
     mat.stencilWriteMask = 0xff;
     mat.stencilZPass = THREE.KeepStencilOp;
   }
+  if (resolvedStencilRegion.binding) {
+    mat.userData.stencilRegionBinding = resolvedStencilRegion.binding;
+  }
   return true;
 }
 
@@ -468,9 +499,11 @@ export function stencilWriter(regionId) {
 }
 export function applyClip(mat, clip) {
   if (!clip) return;
+  const bit = STENCIL_REGION_BITS[clip];
+  if (!bit) throw new Error(`Unsupported stencil clip region: ${clip}`);
   mat.stencilWrite = true;
   mat.stencilFail = mat.stencilZFail = mat.stencilZPass = THREE.KeepStencilOp;
-  mat.stencilFuncMask = 0xff;
-  if (clip === "window") { mat.stencilFunc = THREE.EqualStencilFunc; mat.stencilRef = REGION.window; }
-  else { mat.stencilFunc = THREE.NotEqualStencilFunc; mat.stencilRef = 0; }   // card region
+  mat.stencilFunc = THREE.EqualStencilFunc;
+  mat.stencilFuncMask = bit;
+  mat.stencilRef = bit;
 }

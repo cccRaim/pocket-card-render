@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "generated_by": "build/build-official-card-display-contract.mjs",
   "official_source": {
     "version": "1.6.0",
@@ -407,6 +407,8 @@
   "camera": {
     "field_of_view_degrees": 35,
     "aspect": 1,
+    "near_clip_plane": 0.30000001192092896,
+    "far_clip_plane": 1000,
     "local_position": [
       0,
       0,

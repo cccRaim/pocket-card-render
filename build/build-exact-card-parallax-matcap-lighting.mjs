@@ -191,6 +191,33 @@ const result = await generateExactSelectorPort({
       "expand serialized PGlobals fields into same-name material uniforms",
     ],
   },
+  adaptationOperations: {
+    vertex: [
+      { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+      { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+      {
+        kind: "uniform-buffer-flattening",
+        source: "serialized-common",
+        preservation: "names-types-precision",
+      },
+      {
+        kind: "clip-space-y-conversion",
+        from: "unity-vulkan",
+        to: "webgl",
+        operation: "remove-y-inversion",
+      },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+    ],
+    fragment: [
+      { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+      {
+        kind: "uniform-buffer-flattening",
+        source: "serialized-common",
+        preservation: "names-types-precision",
+      },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+    ],
+  },
   webglSources: {
     vertex: "public/shaders/card_parallax_matcap_lighting.vert.glsl",
     fragment: "public/shaders/card_parallax_matcap_lighting.frag.glsl",
@@ -217,7 +244,7 @@ const result = await generateExactSelectorPort({
     stencil_face_mode: "generic",
   },
   manifestExtras: {
-    mrt: { primary: "_228", emissive: "_230" },
+    mrt: { primary: "_228", emissive: "_230", secondary_rgb: "active" },
   },
   output: {
     outDir: path.join(ROOT, "public", "shaders"),

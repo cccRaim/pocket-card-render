@@ -392,6 +392,8 @@ const runtime = stripComments(fs.readFileSync(APP_PATH, "utf8"));
 check("runtime", "public/app.js retains official camera transform",
   /cardDisplayContract\.camera\.field_of_view_degrees/.test(runtime)
   && /cardDisplayContract\.camera\.aspect/.test(runtime)
+  && /cardDisplayContract\.camera\.near_clip_plane/.test(runtime)
+  && /cardDisplayContract\.camera\.far_clip_plane/.test(runtime)
   && /const\s+cameraPosition\s*=\s*cardDisplayContract\.camera\.local_position/.test(runtime)
   && /camera\.position\.set\(cameraPosition\[0\],\s*cameraPosition\[1\],\s*-cameraPosition\[2\]\)/.test(runtime)
   && /parentRoot\.rotation\.y\s*=\s*Math\.PI\s*;/.test(runtime)

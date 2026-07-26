@@ -105,7 +105,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF1",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF1.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF1.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -207,7 +215,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF2",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF2.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF2.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -304,23 +320,63 @@
    "textures": {
     "_HologramMaskTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_MASK",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_MASK.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_MASK.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_PhaseTex": {
      "name": "Phase_RR_BG",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampMaskTex": {
      "name": "RR_RMPmask_SB",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampTex": {
      "name": "RR_RMP_SB",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -395,7 +451,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_AM.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -497,7 +561,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF3",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF3.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_EFF3.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -664,7 +736,15 @@
    "textures": {
     "_BaseTex": {
      "name": "card_inner_stencil_mask_pokemon_window",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -792,7 +872,15 @@
    "textures": {
     "_BaseTex": {
      "name": "Card_Back",
-     "url": "/game/Assets/Texture2D/Card_Back.png"
+     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -944,7 +1032,15 @@
    "textures": {
     "_BaseTex": {
      "name": "SimpleCard_Side02",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1041,23 +1137,63 @@
    "textures": {
     "_CubeMap": {
      "name": "L_001_ENV",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_HologramMaskTex": {
      "name": "mask_white",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_PhaseTex": {
      "name": "Phase_EX_UI",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampTex": {
      "name": "ALL_RMP_EX",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_EX.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_EX.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1204,7 +1340,15 @@
    "textures": {
     "_MainTex": {
      "name": "card_rarity_outline",
-     "url": "/game/Assets/Texture2D/card_rarity_outline.png"
+     "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1305,27 +1449,75 @@
    "textures": {
     "_CubeMap": {
      "name": "L_001_ENV",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_HologramMaskTex": {
      "name": "mask_white",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_MainTex": {
      "name": "card_rarity_diamond_a",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_PhaseTex": {
      "name": "Phase_Rarity_Diamond",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampMaskTex": {
      "name": "RMP_MASK_RareMark",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampTex": {
      "name": "ALL_RMP_RareMark_Diamond",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1471,7 +1663,15 @@
    "textures": {
     "_BaseTex": {
      "name": "card_pokemon_normal_stage2",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1579,7 +1779,15 @@
    "textures": {
     "_MainTex": {
      "name": "card_bg_gra",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_gra.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_gra.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1726,27 +1934,75 @@
    "textures": {
     "_BaseTex": {
      "name": "card_pokemon_base_rr",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_CubeMap": {
      "name": "L_001_ENV",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_HologramMaskTex": {
      "name": "card_frame_mask_rr",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_PhaseTex": {
      "name": "Phase_RR_Border",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampMaskTex": {
      "name": "SA_SSA_RR_RMPmask",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampTex": {
      "name": "RR_RMP_Border",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1838,15 +2094,39 @@
    "textures": {
     "_PhaseTex": {
      "name": "Phase_RR_BG",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampMaskTex": {
      "name": "SA_SSA_RR_RMPmask",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     },
     "_RampTex": {
      "name": "RR_RMP_BG",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -1939,7 +2219,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_ILL",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_ILL.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_ILL.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -2028,7 +2316,15 @@
    "textures": {
     "_CubeMap": {
      "name": "L_001_ENV",
-     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png"
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },
@@ -2121,7 +2417,15 @@
    "textures": {
     "_MainTex": {
      "name": "cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1",
-     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1.png"
+     "url": "/game/Assets/Texture2D/cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1.png",
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
     }
    }
   },

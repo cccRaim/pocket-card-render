@@ -49,6 +49,9 @@ float _589;
 
 void main()
 {
+    highp vec3 pcrUnityCameraPosition = vec3(cameraPosition.xy, -cameraPosition.z);
+    highp vec3 pcrUnityWorldPosition = vec3(vs_TEXCOORD1.xy, -vs_TEXCOORD1.z);
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD2.xy, -vs_TEXCOORD2.z);
     _9 = texture(_13, vs_TEXCOORD0);
     _22.x = (-_9.y) + 2.0;
     _22.y = _22.x * 0.25;
@@ -57,7 +60,7 @@ void main()
     _22 = vec3(_45.x, _45.y, _22.z);
     _48.x = -viewMatrix[0].z;
     _48.y = -viewMatrix[1].z;
-    _48.z = -viewMatrix[2].z;
+    _48.z = viewMatrix[2].z;
     _72.x = dot(_48.xyz, _48.xyz);
     _72.x = inversesqrt(_72.x);
     highp vec3 _87 = _72.xxx * _48.xyz;
@@ -96,9 +99,9 @@ void main()
     _138.y = -_133.x;
     _154.y = dot(_138.zx, _72.xy);
     _225 = (_154 * vec3(0.5)) + vec3(0.5);
-    _72.x = dot(vs_TEXCOORD2, vs_TEXCOORD2);
+    _72.x = dot(pcrUnityWorldNormal, pcrUnityWorldNormal);
     _72.x = inversesqrt(_72.x);
-    highp vec3 _244 = _72.xxx * vs_TEXCOORD2;
+    highp vec3 _244 = _72.xxx * pcrUnityWorldNormal;
     _90 = vec4(_244.x, _244.y, _244.z, _90.w);
     _90.w = dot(_108.zx, _90.yz);
     _72.x = dot(_124, _90.xw);
@@ -135,7 +138,7 @@ void main()
     _9 = vec4(_414.x, _414.y, _414.z, _9.w);
     _384 = _9.xyz * vec3(vec3(_DiffractionIntensity, _DiffractionIntensity, _DiffractionIntensity));
     _22 = _22.xxx * _384;
-    highp vec3 _442 = (-vs_TEXCOORD1) + cameraPosition;
+    highp vec3 _442 = (-pcrUnityWorldPosition) + pcrUnityCameraPosition;
     _72 = vec4(_442.x, _442.y, _442.z, _72.w);
     _445 = dot(_72.xyz, _72.xyz);
     _445 = inversesqrt(_445);

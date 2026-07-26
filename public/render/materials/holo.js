@@ -464,7 +464,6 @@ function frameHoloUrMaterial(r, ctx) {
         _EmissivePattern: { value: Math.trunc(f._EmissivePattern ?? 1) },
         _EmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
         _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
-        uBloomOnly: { value: 0 },
       },
       vertexShader: exact.vert,
       fragmentShader: exact.frag,
@@ -516,9 +515,9 @@ function frameHoloUrMaterial(r, ctx) {
       uDarkEnabled: { value: f._DarknessEnabled ?? 0 },
       uEmissivePattern: { value: f._EmissivePattern ?? 1 },
       uEmissiveColor: { value: V4(c._EmissiveColor, new THREE.Vector4(1, 1, 1, 1)) },
-      uBloomOnly: { value: 0 },
       uRotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
       uStraight: { value: ctx.texStraight(baseName) ? 1 : 0 },
+      uBloomOnly: { value: 0 },
     },
     vertexShader: `
       uniform float uRampMaskRot, uRampMaskScale, uUseSimple;

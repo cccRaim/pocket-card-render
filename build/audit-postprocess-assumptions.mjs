@@ -35,7 +35,8 @@ if (!/texture\.premultiplyAlpha\s*=\s*false/.test(textureRuntime)
 if (/\bbgRT\b|\bbgQuad\b|window\.__bg/.test(app)) {
   issues.push("public/app.js: legacy single-target UR background precompose must not bypass the official MRT");
 }
-if (!/window\.__post\s*=\s*makeBloomPass\(hasOfficialEmissive\)/.test(app)) {
+if (!/window\.__post\s*=\s*makeBloomPass\(hasBloomProducer\)/.test(app)
+    || !/sceneUsesBloomProducer\(scene_data\.materials,\s*exactShaders\)/.test(app)) {
   issues.push("public/app.js: all cards must render through the final postprocess encode pass");
 }
 if (!/loadOfficialBloomPrograms/.test(app) || !/createOfficialBloomPipeline/.test(app)) {

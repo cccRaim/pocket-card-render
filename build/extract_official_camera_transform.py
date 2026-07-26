@@ -873,6 +873,8 @@ def extract_serialized_studio(apk: zipfile.ZipFile, globalgamemanagers: bytes) -
             "localRotation": vec(
                 transform_tree, "m_LocalRotation", ("x", "y", "z", "w")
             ),
+            "nearClipPlane": float(camera_tree["near clip plane"]),
+            "farClipPlane": float(camera_tree["far clip plane"]),
             "fieldOfView": float(camera_tree["field of view"]),
             "orthographic": bool(camera_tree["orthographic"]),
             "cullingMask": int((camera_tree.get("m_CullingMask") or {})["m_Bits"]),
@@ -947,6 +949,16 @@ def extract(apkm_path: Path, card_view_bundle_path: Path) -> dict:
     close(parent_angle["values"][0], 0.0, "ParentNodeAngle.x")
     close(parent_angle["values"][1], 180.0, "ParentNodeAngle.y")
     close(distance["values"][0], 1.911506, "CameraDistance")
+    close(
+        serialized["camera"]["nearClipPlane"],
+        0.3,
+        "serialized Camera near clip plane",
+    )
+    close(
+        serialized["camera"]["farClipPlane"],
+        1000.0,
+        "serialized Camera far clip plane",
+    )
     close(serialized["camera"]["fieldOfView"], 35.0, "serialized Camera FOV")
     expected_position = [0.0, 0.0, -distance["values"][0]]
     for index, axis in enumerate("xyz"):
@@ -997,6 +1009,8 @@ def extract(apkm_path: Path, card_view_bundle_path: Path) -> dict:
                 "updateCameraSettings": methods["updateCamera"],
                 "distance": distance,
                 "axis": "Vector3.back / camera local -Z",
+                "nearClipPlane": serialized["camera"]["nearClipPlane"],
+                "farClipPlane": serialized["camera"]["farClipPlane"],
                 "fieldOfViewDegrees": 35.0,
                 "localPosition": expected_position,
                 "serializedPrefab": serialized,

@@ -26,6 +26,7 @@ Two paths:
 | **freetype-py** | FreeType 2.13.x (`pip install freetype-py`) | independently audits all official TMP glyph metrics |
 | **Pillow** | latest (`pip install Pillow`) | reads and verifies official TMP atlas pixels |
 | **unicorn** | latest (`pip install unicorn`) | executes the pinned ARM64 Unity SDFAA glyph path for byte-exact atlas checks |
+| **SciPy** | latest (`pip install scipy`) | independently proves the built-in card-example set has minimum cardinality |
 | **AssetRipper** | latest stable GUI build | exports the composed geometry + textures (Path B) |
 | .NET | only if your AssetRipper build is framework-dependent → **.NET 8 runtime** | most AssetRipper releases are self-contained |
 | three.js | 0.165.0 — **pinned via CDN import map**, nothing to install | see `public/index.html` |
@@ -63,7 +64,8 @@ cd pocket-card-render
 npm install
 ```
 
-The three sample scenes are prebuilt, but their **art is not committed** (it's the game's). Provide it
+The 112-card globally minimum coverage set plus three supplemental regression scenes are prebuilt,
+but their **art is not committed** (it's the game's). Provide it
 from an AssetRipper export of **your own** copy of the game (see *Path B → step 2* for the export
 config), then gather just what the samples reference:
 
@@ -78,7 +80,22 @@ normal, tangent, and UV payload while retaining the exporter's hierarchy and mat
 Run `npm run audit:official-mesh-payload` to compare the four canonical prefabs as ordered expanded
 triangle streams; the audit uses no screenshots or image thresholds.
 
-Open <http://127.0.0.1:8011>, then `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`.
+Open <http://127.0.0.1:8011> and use the card dropdown. It exposes all 112 globally minimum
+coverage scenes plus three supplemental regression scenes. Entries remain disabled until their
+referenced `/game/` assets have been gathered; the server never treats a generic fallback recipe as
+a ready built-in example.
+
+To regenerate that minimum catalog from your own official inputs, inspect the plan first and then
+opt into gathering the referenced art:
+
+```bash
+npm run materialize:official-card-examples -- --dry-run
+npm run materialize:official-card-examples -- --gather
+```
+
+The command generates only missing per-card recipes from `Face/<illId>/L` plus the shared official
+card/shader roots. The fixed Git-tracked minimum proof remains independent of screenshots and
+compose output.
 
 ---
 

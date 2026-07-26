@@ -6,6 +6,8 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
   generateExactSelectorPort,
   runCommand,
 } from "./exact-selector-port-core.mjs";
@@ -24,6 +26,12 @@ const PASS_POLICY = {
     offsetFactor: { val: 0, name: null }, offsetUnits: { val: 0, name: null },
     alphaToMask: { val: 0, name: null }, fogMode: -1, lighting: false,
   },
+};
+const FRAGMENT_BASIS_CONVERSIONS = {
+  worldVectors: [
+    { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 4 },
+  ],
+  viewForwards: [{ matrixName: "viewMatrix", targetName: "_78" }],
 };
 
 function interfaceRows(items = []) {
@@ -147,6 +155,10 @@ function adaptFragment(source) {
   for (const [from, to] of fields.sort(([left], [right]) => right.length - left.length)) {
     output = output.replaceAll(from, to);
   }
+  output = adaptThreeWorldVectorsToUnityDataAxes(output, {
+    bindings: FRAGMENT_BASIS_CONVERSIONS.worldVectors,
+  });
+  output = adaptThreeViewForwardToUnityDataAxes(output, FRAGMENT_BASIS_CONVERSIONS.viewForwards[0]);
   if (/_37\._m|uniform _35_37/.test(output)) {
     throw new Error("Simple-PreMultiply-Hologram fragment adaptation is incomplete");
   }
@@ -195,6 +207,30 @@ const result = await generateExactSelectorPort({
     fragment: [
       "map unity_MatrixV to viewMatrix",
       "expand serialized PGlobals fields into same-name material uniforms",
+      "convert Three world normal and reconstructed view-forward vectors to Unity data axes",
+    ],
+  },
+  adaptationOperations: {
+    vertex: [
+      { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+      { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+      {
+        kind: "clip-space-y-conversion",
+        from: "unity-vulkan",
+        to: "webgl",
+        operation: "remove-y-inversion",
+      },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+    ],
+    fragment: [
+      { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+      {
+        kind: "uniform-buffer-flattening",
+        source: "serialized-common",
+        preservation: "names-types-precision",
+      },
+      { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+      { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
     ],
   },
   webglSources: {
@@ -219,6 +255,7 @@ const result = await generateExactSelectorPort({
     mrt_attachments: 2,
     stencil_normalization: "none",
     stencil_face_mode: "generic",
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
   },
   manifestExtras: {
     mrt: { primary: "_504", secondary: "_516", secondary_value: "zero" },

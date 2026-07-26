@@ -8,6 +8,11 @@ import {
   evaluateKiraPuyoCurve,
   updateKiraPuyo,
 } from "../public/render/kira-puyo.js";
+import {
+  compileRendererPropertyBlockContract,
+  KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT,
+  verifyKiraPuyoRendererPropertyBlock,
+} from "./renderer-property-block-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SCENE = path.join(ROOT, "public", "scene.cPK_20_000010_01_FUSHIGIDANE_S.json");
@@ -75,10 +80,91 @@ const shiftedValues = updateKiraPuyo(createKiraPuyoState(shiftedComponent, shift
 assert.equal(shiftedValues.anim, Math.fround(0.5));
 assert.ok(Math.abs(shiftedValues.kiraScale - Math.fround(0.8)) < 1e-6);
 
+const negativePhaseComponent = {
+  ...firstComponent,
+  scaleAnimationOffset: Math.fround(-0.25),
+  vertScaleSpeed: Math.fround(0),
+};
+const negativePhaseState = createKiraPuyoState(negativePhaseComponent, firstSettings);
+const repeatedNegative = evaluateKiraPuyoCurve(firstSettings.curve, Math.fround(0.75));
+assert.equal(negativePhaseState.kiraScale, repeatedNegative, "initial negative phase must repeat into [0,1)");
+assert.equal(
+  updateKiraPuyo(negativePhaseState, [0, 0, -1]).kiraScale,
+  repeatedNegative,
+  "updated negative phase must use ARM64 rawTime-floor(rawTime) semantics",
+);
+
 assert.throws(() => evaluateKiraPuyoCurve({ keys: [] }, 0.5), /at least two keys/);
 const mutated = structuredClone(firstSettings.curve);
 mutated.keys[0].outWeight = Number.NaN;
 assert.throws(() => evaluateKiraPuyoCurve(mutated, 0.5), /outWeight is invalid/);
 assert.throws(() => updateKiraPuyo(neutral, [0, Number.NaN, -1]), /transformed LocalFront/);
 
-console.log("KiraPuyo renderer/curve contract tests OK: 16 components, 3 official settings, Cardano regression");
+const producerValues = {
+  _RampRepeat: neutralValues.rampRepeat,
+  _ScrollScale: neutralValues.scrollScale,
+  _ScrollOffset: neutralValues.scrollOffset,
+  _KiraScale: neutralValues.kiraScale,
+  _Anim: neutralValues.anim,
+};
+const producerAudit = {
+  schema: KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT.schema,
+  producer: KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT.producer,
+  unityLocalFront: [0, 0, -1],
+  values: producerValues,
+};
+const programUniforms = new Map(Object.entries(producerValues).map(([name, value]) => [
+  name,
+  { type: "FLOAT", value },
+]));
+assert.deepEqual(verifyKiraPuyoRendererPropertyBlock({
+  contract: KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT,
+  recipe: first,
+  runtimeSettings: scene.runtimeSettings,
+  producerAudit,
+  materialUniforms: producerValues,
+  programUniforms,
+}), []);
+
+const wrongProducer = structuredClone(producerAudit);
+wrongProducer.values._Anim = Math.fround(wrongProducer.values._Anim + 0.125);
+assert.match(verifyKiraPuyoRendererPropertyBlock({
+  contract: KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT,
+  recipe: first,
+  runtimeSettings: scene.runtimeSettings,
+  producerAudit: wrongProducer,
+  materialUniforms: producerValues,
+  programUniforms,
+}).join("\n"), /_Anim producer value mismatch/);
+
+const missingProgram = new Map(programUniforms);
+missingProgram.delete("_KiraScale");
+assert.match(verifyKiraPuyoRendererPropertyBlock({
+  contract: KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT,
+  recipe: first,
+  runtimeSettings: scene.runtimeSettings,
+  producerAudit,
+  materialUniforms: producerValues,
+  programUniforms: missingProgram,
+}).join("\n"), /_KiraScale active WebGL float binding mismatch/);
+
+const incompleteContract = structuredClone(KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT);
+delete incompleteContract.values._ScrollOffset;
+assert.throws(
+  () => compileRendererPropertyBlockContract(incompleteContract),
+  /value set is incomplete/,
+);
+const changedSemantic = structuredClone(KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT);
+changedSemantic.values._Anim.semantic = "screen-space-guess";
+assert.throws(
+  () => compileRendererPropertyBlockContract(changedSemantic),
+  /semantic changed/,
+);
+const unknownField = structuredClone(KIRA_PUYO_RENDERER_PROPERTY_BLOCK_CONTRACT);
+unknownField.values._Anim.note = "looks close";
+assert.throws(
+  () => compileRendererPropertyBlockContract(unknownField),
+  /unknown field note/,
+);
+
+console.log("KiraPuyo renderer/curve/MPB contract tests OK: 16 components, 3 official settings, Cardano/repeat/binding regressions");

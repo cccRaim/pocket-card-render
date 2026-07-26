@@ -235,6 +235,7 @@ try {
 
   outputs["ui_default_from_rt_program.json"] = `${JSON.stringify({
     shader: PINNED.shader.name,
+    role: "display-from-render-texture",
     generated_by: "build/build-exact-ui-default-from-rt.mjs",
     official_source: {
       apkm_sha256: PINNED.source.apkm[1], material_bundle_sha256: PINNED.material.bundle[1], material_object_sha256: PINNED.material.object[2],

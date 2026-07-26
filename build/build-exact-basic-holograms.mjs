@@ -3,16 +3,21 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  adaptThreeViewForwardToUnityDataAxes,
+  adaptThreeWorldVectorsToUnityDataAxes,
   canonicalJsonSha256,
   compileCommonBindings,
   compileOfficialPassContract,
-  joinSamplerBindings,
+  compileOfficialVertexInputContract,
+  compileProgramBindings,
+  joinProgramSamplerBindings,
   runCommand,
   sha256,
   sha256File,
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -41,6 +46,12 @@ const PROGRAM = {
   ],
   ints: ["_UseUv", "_UseMaskUv"],
   vectors: ["_Rotation"],
+};
+const FRAGMENT_BASIS_CONVERSIONS = {
+  worldVectors: [
+    { source: "vs_TEXCOORD3", alias: "pcrUnityWorldNormal", expectedOccurrences: 3 },
+  ],
+  viewForwards: [{ matrixName: "viewMatrix", targetName: "_9" }],
 };
 
 function members(types, offsets) {
@@ -129,6 +140,10 @@ function adaptFragment(source) {
     "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
     "_RampOffset", "_RampInterval", "_Rotation",
   ]);
+  out = adaptThreeWorldVectorsToUnityDataAxes(out, {
+    bindings: FRAGMENT_BASIS_CONVERSIONS.worldVectors,
+  });
+  out = adaptThreeViewForwardToUnityDataAxes(out, FRAGMENT_BASIS_CONVERSIONS.viewForwards[0]);
   assert.doesNotMatch(out, /_16\._m/, "fragment adaptation incomplete");
   assert.match(out, /_409\.w\s*=\s*1\.0;/);
   assert.match(out, /_415\s*=\s*vec4\(0\.0\);/);
@@ -194,18 +209,65 @@ await withExtractedSelectorProgram({
 
   const vertex = adaptVertex(officialVertex);
   const fragment = adaptFragment(officialFragment);
-  const bindings = compileCommonBindings(metadata.commonBindings);
-  const samplerBindings = joinSamplerBindings(bindings, reflection.fragment).map(({ set, ...row }) => {
+  const commonBindings = compileCommonBindings(metadata.commonBindings);
+  const programBindings = compileProgramBindings(
+    commonBindings,
+    metadata.parameterReflection,
+    metadata.shaderPropertyDefaults,
+  );
+  const manifestProgramBindings = {
+    common_source_sha256: metadata.identityFields.commonBindingsSha256,
+    parameter_reflection_sha256: metadata.parameterReflectionSha256,
+    ...programBindings,
+  };
+  const vertexInputContract = compileOfficialVertexInputContract(
+    metadata.programBindChannels,
+    reflection.vertex,
+  );
+  const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
     assert.equal(set, 0, "WebGL sampler port requires descriptor set 0");
     return row;
   });
   assert.deepEqual(samplerBindings.map(({ slot }) => slot), PROGRAM.samplerSlots);
 
-  const adaptation = {
-    schema: "pocket-card-render/webgl-stage-adaptation@1",
-    backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+  const runtimeContract = {
+    schema: "pocket-card-render/webgl-runtime-port@1",
+    shader_key: PROGRAM.shader,
+    attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2", tangent: "vec4" },
+    engine_uniforms: {
+      modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
+    },
+    material_uniforms: {
+      floats: PROGRAM.floats.filter((name) => !PROGRAM.ints.includes(name)),
+      ints: PROGRAM.ints,
+      vectors: { _Rotation: "vec3" },
+    },
+    require_complete_active_bindings: true,
+    camera_from_view: true,
+    mrt_attachments: 2,
+    stencil_normalization: "none",
+    stencil_face_mode: "generic",
+    backend_basis_conversions: { fragment: FRAGMENT_BASIS_CONVERSIONS },
+  };
+  const adaptation = buildWebglAdaptationV2({
     vertex: {
       officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVertex), outputSha256: sha256(vertex),
+      operations: [
+        { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        {
+          kind: "clip-space-y-conversion",
+          from: "unity-vulkan",
+          to: "webgl",
+          operation: "remove-y-inversion",
+        },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
       substitutions: [
         "position location 0 := vec4(three.position, 1.0)", "normal location 1 := three.normal",
         "UV0 location 2 := three.uv", "UV1 location 3 := three.uv1", "tangent location 4 := three.tangent",
@@ -216,10 +278,26 @@ await withExtractedSelectorProgram({
     },
     fragment: {
       officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFragment), outputSha256: sha256(fragment),
-      substitutions: ["replace serialized PGlobals UBO members with same-name Three.js uniforms"],
+      operations: [
+        { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+        {
+          kind: "uniform-buffer-flattening",
+          source: "serialized-common",
+          preservation: "names-types-precision",
+        },
+        { kind: "object-basis-conversion", contract: "unity-to-three-basis" },
+        { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+      ],
+      substitutions: [
+        "replace serialized PGlobals UBO members with same-name Three.js uniforms",
+        "convert Three world normal and reconstructed view-forward vectors to Unity data axes",
+      ],
     },
     interfaceSha256: canonicalJsonSha256(reflection),
-  };
+    officialVertexInputs: vertexInputContract,
+    runtimeContract,
+    officialProgramBindings: manifestProgramBindings,
+  });
 
   outputs[`${PROGRAM.stem}.vert.glsl`] = vertex;
   outputs[`${PROGRAM.stem}.frag.glsl`] = fragment;
@@ -228,6 +306,7 @@ await withExtractedSelectorProgram({
     generated_by: "build/build-exact-basic-holograms.mjs",
     official_selector: metadata.selector,
     official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+    official_spirv_precision: metadata.officialSpirvPrecision,
     official_executable_identity: metadata.identityFields,
     official_parameter_entry: {
       source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -246,27 +325,15 @@ await withExtractedSelectorProgram({
         },
       },
     }),
-    official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...bindings },
+    official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
+    official_program_bindings: manifestProgramBindings,
+    official_vertex_inputs: vertexInputContract,
     official_shader_property_defaults: metadata.shaderPropertyDefaults,
     webgl_adaptation: adaptation,
     webgl_sources: {
       vertex: `public/shaders/${PROGRAM.stem}.vert.glsl`, fragment: `public/shaders/${PROGRAM.stem}.frag.glsl`,
     },
-    runtime_contract: {
-      schema: "pocket-card-render/webgl-runtime-port@1",
-      shader_key: PROGRAM.shader,
-      attributes: { position: "vec3", normal: "vec3", uv: "vec2", uv1: "vec2", tangent: "vec4" },
-      engine_uniforms: { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3" },
-      material_uniforms: {
-        floats: PROGRAM.floats.filter((name) => !PROGRAM.ints.includes(name)),
-        ints: PROGRAM.ints,
-        vectors: { _Rotation: "vec3" },
-      },
-      camera_from_view: true,
-      mrt_attachments: 2,
-      stencil_normalization: "disable-when-always-keep",
-      stencil_face_mode: "generic",
-    },
+    runtime_contract: runtimeContract,
     sampler_bindings: samplerBindings,
     samplers: samplerBindings.map((row) => row.spirvName),
     sampler_slots: samplerBindings.map((row) => row.slot),

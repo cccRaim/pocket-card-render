@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { defineMaterial } from "../registry.js";
+import { bindDynamicUniformProducerContract } from "../dynamic-uniform-producer.js";
 
 defineMaterial("prism", {
   requires: (recipe, ctx) => !!ctx.layerTexDefault(recipe, "_BaseTex"),
@@ -25,6 +26,7 @@ defineMaterial("prism", {
     material.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
     material.userData.officialSelector = exact.manifest?.official_selector || null;
     material.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
+    bindDynamicUniformProducerContract(material, exact.manifest);
     ctx.animMats.push(material);
     return material;
   },

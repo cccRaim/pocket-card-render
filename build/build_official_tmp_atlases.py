@@ -38,11 +38,15 @@ DECRYPTED = Path(
 )
 FONT_BUNDLE = DECRYPTED / "Common" / "Font_bundles"
 CONTRACT = ROOT / "public" / "render" / "card-font-contract.json"
-CANONICAL_CORPUS = ROOT / "build" / "canonical-corpus.json"
+TEXT_DIR = ROOT / "public" / "text"
 OUTPUT = ROOT / "public" / "game" / "tmp-fonts"
 
 UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
 warnings.filterwarnings("ignore")
+
+# Game masterdata emits this through [Text:Char v="FOUR-PER-EM-SPACE"].
+# It is layout spacing, not an atlas bitmap; its Unicode-defined advance is 1/4 em.
+SYNTHETIC_SPACE_ADVANCES = {0x2005: 0.25}
 
 
 def sha256(data: bytes) -> str:
@@ -73,21 +77,16 @@ def required_codepoints() -> dict[str, set[int]]:
         bucket.update(ord(character) for character in text
                       if character not in "\r\n" and not is_layout_control(character))
 
-    corpus = json.loads(CANONICAL_CORPUS.read_text(encoding="utf-8"))
-    if corpus.get("schemaVersion") != 1:
-        raise RuntimeError("unsupported canonical corpus schema")
-    filenames = [
-        ROOT / "public" / "text" / f"{scene['textStem']}.{locale}.json"
-        for scene in corpus["scenes"]
-        for locale in corpus["locales"]
-    ]
+    # The browser cannot grow a Unity Texture2D atlas at runtime, so materialize
+    # every glyph required by the complete bundled example corpus. The canonical
+    # four-card corpus remains the runtime-evidence denominator, not the asset
+    # availability boundary for selectable built-in cards.
+    filenames = sorted(TEXT_DIR.glob("*.json"))
+    if not filenames:
+        raise RuntimeError("bundled localized text corpus is empty")
     for filename in filenames:
         data = json.loads(filename.read_text(encoding="utf-8"))
         for element in data.get("elements", []):
-            if element.get("kind") == "hp":
-                add(element.get("numSdf", {}).get("fontId"), element.get("num", ""))
-                add(element.get("labelSdf", {}).get("fontId"), element.get("label", ""))
-                continue
             if element.get("kind") != "text":
                 continue
             normal_id = element.get("sdf", {}).get("fontId")
@@ -309,7 +308,12 @@ def build() -> tuple[dict, dict[str, bytes]]:
         known_codepoints = {character["unicode"] for character in characters}
         required_for_font = required.get(font_id, set())
         candidate_codepoints = required_for_font | optional_fallback_codepoints()
-        missing_codepoints = sorted(candidate_codepoints - known_codepoints)
+        synthetic_codepoints = sorted(
+            (required_for_font & SYNTHETIC_SPACE_ADVANCES.keys()) - known_codepoints
+        )
+        missing_codepoints = sorted(
+            candidate_codepoints - known_codepoints - set(synthetic_codepoints)
+        )
         runtime_characters = []
         runtime_glyph_inputs = {}
         if missing_codepoints:
@@ -375,6 +379,38 @@ def build() -> tuple[dict, dict[str, bytes]]:
             for glyph in runtime_glyph_inputs.values()
             if not glyph["alpha"]
         ]
+        synthetic_characters = []
+        synthetic_glyphs = []
+        point_size = float(data["m_FaceInfo"]["m_PointSize"])
+        for codepoint in synthetic_codepoints:
+            glyph_index = -(codepoint + 1)
+            advance_em = SYNTHETIC_SPACE_ADVANCES[codepoint]
+            synthetic_characters.append(
+                {
+                    "unicode": codepoint,
+                    "glyphIndex": glyph_index,
+                    "scale": 1.0,
+                    "provenance": "masterdata:Text:Char/FOUR-PER-EM-SPACE",
+                }
+            )
+            synthetic_glyphs.append(
+                {
+                    "glyphIndex": glyph_index,
+                    "page": None,
+                    "paddedRect": None,
+                    "rect": {"x": 0, "y": 0, "width": 0, "height": 0},
+                    "metrics": {
+                        "width": 0,
+                        "height": 0,
+                        "horizontalBearingX": 0,
+                        "horizontalBearingY": 0,
+                        "horizontalAdvance": point_size * advance_em,
+                    },
+                    "scale": 1.0,
+                    "advanceEm": advance_em,
+                    "provenance": "unicode:U+2005 FOUR-PER-EM SPACE",
+                }
+            )
         fonts[font_id] = {
             "pathId": font_id,
             "name": data.get("m_Name"),
@@ -408,6 +444,8 @@ def build() -> tuple[dict, dict[str, bytes]]:
             "runtimeAtlases": packed[0]["atlases"],
             "runtimeGlyphs": runtime_glyph_rows + empty_glyphs,
             "runtimeCharacters": runtime_characters,
+            "syntheticGlyphs": synthetic_glyphs,
+            "syntheticCharacters": synthetic_characters,
         }
 
     manifest = {
@@ -419,6 +457,7 @@ def build() -> tuple[dict, dict[str, bytes]]:
             "bundleByteSize": FONT_BUNDLE.stat().st_size,
             "bundleSha256": sha256(FONT_BUNDLE.read_bytes()),
             "fontContract": "/render/card-font-contract.json",
+            "localizedTextFileCount": len(list(TEXT_DIR.glob("*.json"))),
         },
         "fonts": fonts,
     }

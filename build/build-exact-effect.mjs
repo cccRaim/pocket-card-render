@@ -6,8 +6,10 @@ import { fileURLToPath } from "node:url";
 import {
   canonicalJsonSha256,
   compileCommonBindings,
+  compileOfficialVertexInputContract,
   compileOfficialPassContract,
   compileProgramBindings,
+  joinProgramConstantBufferStages,
   joinProgramSamplerBindings,
   runCommand,
   sha256,
@@ -15,6 +17,7 @@ import {
   withExtractedSelectorProgram,
   writeOrCheckOutputs,
 } from "./exact-selector-port-core.mjs";
+import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = process.env.PCR_SHADERS
@@ -137,6 +140,7 @@ in vec2 uv;
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
 uniform float _DepthOffset;
+uniform highp vec4 _MainTex_ST;
 out mediump vec2 vs_TEXCOORD0;
 
 void main()
@@ -144,7 +148,7 @@ void main()
     vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
     viewPosition.z -= _DepthOffset;
     gl_Position = projectionMatrix * viewPosition;
-    vs_TEXCOORD0 = uv;
+    vs_TEXCOORD0 = (uv * _MainTex_ST.xy) + _MainTex_ST.zw;
 }
 `;
 }
@@ -162,6 +166,7 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
 uniform float _DepthOffset;
+uniform highp vec4 _MainTex_ST;
 out mediump vec2 vs_TEXCOORD0;
 out mediump vec3 vs_TEXCOORD1;
 
@@ -170,14 +175,14 @@ void main()
     vec4 viewPosition = viewMatrix * modelMatrix * vec4(position, 1.0);
     viewPosition.z -= _DepthOffset;
     gl_Position = projectionMatrix * viewPosition;
-    vs_TEXCOORD0 = uv;
+    vs_TEXCOORD0 = (uv * _MainTex_ST.xy) + _MainTex_ST.zw;
     vec3 normalizedNormal = normalize(normal);
     vec3 normalizedTangent = normalize(tangent.xyz);
     vec3 bitangent = cross(normalizedNormal, normalizedTangent) * tangent.w;
     vec3 cameraObject = normalize((inverse(modelMatrix) * vec4(cameraPosition, 1.0)).xyz);
     vs_TEXCOORD1 = vec3(
         dot(tangent.xyz, cameraObject),
-        dot(bitangent, cameraObject),
+        -dot(bitangent, cameraObject),
         dot(normal, cameraObject)
     );
 }
@@ -250,7 +255,19 @@ for (const port of PORTS) {
     assertInterface(reflection, port);
 
     const commonBindings = compileCommonBindings(metadata.commonBindings);
-    const programBindings = compileProgramBindings(commonBindings, metadata.parameterReflection, metadata.shaderPropertyDefaults);
+    const programBindings = joinProgramConstantBufferStages(
+      compileProgramBindings(commonBindings, metadata.parameterReflection, metadata.shaderPropertyDefaults),
+      reflection,
+    );
+    const manifestProgramBindings = {
+      common_source_sha256: metadata.identityFields.commonBindingsSha256,
+      parameter_reflection_sha256: metadata.parameterReflectionSha256,
+      ...programBindings,
+    };
+    const vertexInputContract = compileOfficialVertexInputContract(
+      metadata.programBindChannels,
+      reflection.vertex,
+    );
     const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...row }) => {
       if (set !== 0) throw new Error(`${port.id}: WebGL sampler requires descriptor set 0`);
       return row;
@@ -267,30 +284,92 @@ for (const port of PORTS) {
     validateWebGlStage(fragment, "frag", `${port.id}-fragment`);
     const vertexPath = `public/shaders/${port.vertex.file}`;
     const fragmentPath = `public/shaders/${port.fragmentFile}`;
-    const adaptation = {
-      schema: "pocket-card-render/webgl-stage-adaptation@1",
-      backend: "Unity Vulkan SPIR-V to Three.js WebGL2",
+    const textureCoordinateContract = {
+      transforms: [{
+        uniform: "_MainTex_ST",
+        slot: "_MainTex",
+        input: "uv",
+        output: "vs_TEXCOORD0",
+        conversion: "unity-texenv-to-three-gltf-v",
+      }],
+      ...(port.vertex === VIEW_VERTEX
+        ? {
+          tangentViewY: {
+            output: "vs_TEXCOORD1",
+            bitangent: "bitangent",
+            viewVector: "cameraObject",
+            conversion: "negate-unity-to-three-gltf-v",
+          },
+        }
+        : {}),
+    };
+    const runtimeContract = {
+      schema: "pocket-card-render/webgl-runtime-port@1",
+      shader_key: "Effect",
+      attributes: port.vertex === VIEW_VERTEX
+        ? { position: "vec3", normal: "vec3", tangent: "vec4", uv: "vec2" }
+        : { position: "vec3", uv: "vec2" },
+      engine_uniforms: port.vertex === VIEW_VERTEX
+        ? { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3" }
+        : { modelViewMatrix: "mat4", projectionMatrix: "mat4" },
+      material_uniforms: { floats: [...port.fields, "_DepthOffset"], ints: [], vectors: {} },
+      texture_coordinates: { vertex: textureCoordinateContract },
+      require_complete_active_bindings: true,
+      camera_from_view: port.vertex === VIEW_VERTEX,
+      mrt_attachments: 2,
+      stencil_normalization: "none",
+      stencil_face_mode: "generic",
+    };
+    const adaptation = buildWebglAdaptationV2({
       vertex: {
-        officialSpirvSha256: sha256File(files.vertexSpirv), spirvCrossGlslSha256: sha256(officialVertex), outputSha256: sha256(vertex),
-        substitutions: [
-          "map official position/normal/tangent/UV attributes to Three.js attributes",
-          "replace Unity ObjectToWorld/WorldToObject/MatrixVP with Three model/view/projection transforms",
-          "apply _DepthOffset in view space, equivalent to the official linear-eye-depth round trip",
-          "use the canonical default _MainTex_ST=(1,1,0,0)",
-          "remove Unity Vulkan clip-space Y inversion for WebGL clip space",
+        officialSpirvSha256: sha256File(files.vertexSpirv),
+        spirvCrossGlslSha256: sha256(officialVertex),
+        outputSha256: sha256(vertex),
+        operations: [
+          { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
+          { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
+          {
+            kind: "uniform-buffer-flattening",
+            source: "variant-local",
+            preservation: "names-types-precision",
+          },
+          {
+            kind: "texture-coordinate-basis-conversion",
+            contract: "unity-texenv-to-three-gltf-uv",
+          },
+          { kind: "view-depth-offset", contract: "linear-eye-depth-equivalent" },
+          { kind: "matrix-expression-fold", contract: "mvp-object-to-projection-model-view" },
+          {
+            kind: "clip-space-y-conversion",
+            from: "unity-vulkan",
+            to: "webgl",
+            operation: "remove-y-inversion",
+          },
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
         ],
       },
       fragment: {
-        officialSpirvSha256: sha256File(files.fragmentSpirv), spirvCrossGlslSha256: sha256(officialFragment), outputSha256: sha256(fragment),
-        substitutions: ["replace the serialized PGlobals UBO fields with same-name Three.js material uniforms"],
+        officialSpirvSha256: sha256File(files.fragmentSpirv),
+        spirvCrossGlslSha256: sha256(officialFragment),
+        outputSha256: sha256(fragment),
+        operations: [
+          {
+            kind: "uniform-buffer-flattening",
+            source: "variant-local",
+            preservation: "names-types-precision",
+          },
+          { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
+        ],
       },
       interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
-    };
+      officialVertexInputs: vertexInputContract,
+      runtimeContract,
+      officialProgramBindings: manifestProgramBindings,
+    });
     const passRuntime = compileOfficialPassContract(metadata.passContract, {
       sourceSha256: metadata.identityFields.passStateSha256,
       policy: PASS_POLICY,
     });
-    const activeFloats = [...port.fields, "_DepthOffset"];
     outputs[port.vertex.file] = vertex;
     outputs[port.fragmentFile] = fragment;
     outputs[`effect_${port.id}_uniforms.json`] = `${JSON.stringify({
@@ -299,6 +378,7 @@ for (const port of PORTS) {
       selected_keywords: port.keywords,
       official_selector: metadata.selector,
       official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
+      official_spirv_precision: metadata.officialSpirvPrecision,
       official_executable_identity: metadata.identityFields,
       official_parameter_entry: {
         source_sha256: metadata.identityFields.parameterEntrySha256,
@@ -308,36 +388,18 @@ for (const port of PORTS) {
       },
       official_pass_runtime: passRuntime,
       official_common_bindings: { source_sha256: metadata.identityFields.commonBindingsSha256, ...commonBindings },
-      official_program_bindings: {
-        common_source_sha256: metadata.identityFields.commonBindingsSha256,
-        parameter_reflection_sha256: metadata.parameterReflectionSha256,
-        ...programBindings,
-      },
+      official_program_bindings: manifestProgramBindings,
+      official_vertex_inputs: vertexInputContract,
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: { vertex: vertexPath, fragment: fragmentPath },
-      runtime_contract: {
-        schema: "pocket-card-render/webgl-runtime-port@1",
-        shader_key: "Effect",
-        attributes: port.vertex === VIEW_VERTEX
-          ? { position: "vec3", normal: "vec3", tangent: "vec4", uv: "vec2" }
-          : { position: "vec3", uv: "vec2" },
-        engine_uniforms: port.vertex === VIEW_VERTEX
-          ? { modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3" }
-          : { modelViewMatrix: "mat4", projectionMatrix: "mat4" },
-        material_uniforms: { floats: activeFloats, ints: [], vectors: {} },
-        require_complete_active_bindings: true,
-        camera_from_view: port.vertex === VIEW_VERTEX,
-        mrt_attachments: 2,
-        stencil_normalization: "none",
-        stencil_face_mode: "generic",
-      },
+      runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
       samplers: samplerBindings.map((row) => row.spirvName),
       sampler_slots: samplerBindings.map((row) => row.slot),
       compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       implicit_defaults: metadata.shaderPropertyDefaults.textures,
-      mrt: { primary: port.outputs[0], emissive: port.outputs[1] },
+      mrt: { primary: port.outputs[0], secondary: port.outputs[1], secondary_value: "zero" },
     }, null, 2)}\n`;
   });
 }

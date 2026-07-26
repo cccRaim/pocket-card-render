@@ -49,13 +49,33 @@ you stage just what the samples need. (Game art is git-ignored and never committ
 
 ## Sample cards
 
-Three scenes ship prebuilt (the render recipe + text only — art is gathered locally):
+The globally minimum 112-card coverage set ships as prebuilt scenes, plus three
+non-minimum regression scenes. Scenes contain render data and text only; art is
+still gathered locally. Five frequently used regression anchors are:
 
 | URL | Card | Rarity |
 |-----|------|--------|
 | `/` or `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` | Venusaur ex | RR |
+| `?scene=scene.cPK_20_000010_01_FUSHIGIDANE_S.json` | Bulbasaur | S |
+| `?scene=scene.cPK_20_008900_02_HOUOUex_UR.json` | Ho-Oh ex | UR |
 | `?scene=scene.cTR_20_000230_00_LEAF_SR.json` | Leaf | SR |
 | `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | Eevee's Bag | UR |
+
+The card dropdown is backed by `public/card-examples.json`: an official-data-derived, globally
+minimum set of 112 witnesses covering 444 known design, shader/state, and card-face semantic
+features. All 112 exact scenes are bundled; after `gather`, they are directly selectable alongside
+the three supplemental regression scenes. Missing assets disable an entry rather than activating a
+generic fallback recipe.
+
+To regenerate the built-in set against your own official inputs, inspect and then materialize it:
+
+```bash
+npm run materialize:official-card-examples -- --dry-run
+npm run materialize:official-card-examples -- --gather
+```
+
+Missing recipes are regenerated from each card's own `Face/<illId>/L` plus the shared
+`Common/Shader` bytes. Copyrighted art stays under ignored `public/game/`.
 
 Useful query params: `?scene=<file>` picks a card · `?only=<materialName>` solos one layer ·
 `?quality=auto|middle|high|low` selects the card RT quality (`auto`, the default, derives a native-sized source
