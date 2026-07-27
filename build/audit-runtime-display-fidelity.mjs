@@ -122,9 +122,9 @@ export function auditRuntimeDisplayFidelity({
     requirement("dynamic-ui-density", "DynamicUI/TMP texture follows source quality with zero fallback", dynamicUiExact, 4,
       dynamicUiExact ? [`${dynamicUiExact}/4 DynamicUI texture sizes match TMP runtime evidence`] : [],
       dynamicUiExact === 4 ? [] : ["bind DynamicUI raster density to the source RT quality"]),
-    requirement("official-default-quality-active", "Default runtime selects official ordinary-Android Middle profile", officialProfileExact, 4,
+    requirement("official-default-quality-active", "Canonical audit runtime selects official ordinary-Android Middle profile", officialProfileExact, 4,
       officialProfileExact ? [`${officialProfileExact}/4 captures select Middle at 1122x1122`] : [],
-      officialProfileExact === 4 ? [] : ["default URLs must select the contract-derived official Middle profile"]),
+      officialProfileExact === 4 ? [] : ["canonical audit URLs must select the contract-derived official Middle profile"]),
     requirement("emulator-host-presentation", "BlueStacks host sampling, upscale and sRGB backbuffer chain", hostExact, 1,
       hostExact ? [
         `RenderDoc capture ${host.value.captureSha256} exposes 2 host draws and one SwapBuffers`,

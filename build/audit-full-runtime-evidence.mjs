@@ -780,7 +780,7 @@ function selfTest() {
       diagnostics: {
         scene: { file: canonical.file, id: canonical.cardId, sha256: sourceHashes[`public/${canonical.file}`] },
         locale: "zh_TW",
-        quality: { requested: "auto", selected: "Middle", factor: 1, requestedDisplaySide: 2 },
+        quality: { requested: "middle", selected: "Middle", factor: 1, requestedDisplaySide: 2 },
         surface: {
           cssViewport: [2, 2], devicePixelRatio: 1, rendererPixelRatio: 1,
           drawingBufferSize: [2, 2], canvasBackingSize: [2, 2], canvasCssSize: [2, 2],

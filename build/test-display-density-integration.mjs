@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  resolveRequestedCardQuality,
   selectCardQualityProfile,
   selectDynamicUIRenderScale,
 } from "../public/render/quality-profile.js";
@@ -511,6 +512,22 @@ assert.match(
 );
 assert.match(
   appSource,
+  /resolveRequestedCardQuality\(qp\.get\("quality"\),\s*\{\s*runtimeEvidence:\s*fullRuntimeAudit,\s*runtimeDefaultQuality:\s*officialDefaultQuality/u,
+);
+assert.equal(resolveRequestedCardQuality(), "auto");
+assert.equal(resolveRequestedCardQuality(null, {
+  runtimeEvidence: true,
+  runtimeDefaultQuality: defaultProfile.applicability.quality_name,
+}), "middle");
+assert.throws(
+  () => resolveRequestedCardQuality("auto", {
+    runtimeEvidence: true,
+    runtimeDefaultQuality: defaultProfile.applicability.quality_name,
+  }),
+  /runtime evidence quality must be middle/u,
+);
+assert.match(
+  appSource,
   /requestedDisplaySide\s*=\s*Math\.round\(Math\.min\(drawingBuffer\.x,\s*drawingBuffer\.y\)\)/u,
 );
 assert.match(
@@ -520,6 +537,18 @@ assert.match(
 assert.match(
   appSource,
   /selectDynamicUIRenderScale\(\s*qualityParam,\s*selectedQualityProfile,\s*qualityProfiles/u,
+);
+assert.match(
+  appSource,
+  /resizeOfficialMrtTarget\(window\.__post\.sceneRT,\s*nextSource\.width,\s*nextSource\.height\)/u,
+);
+assert.match(
+  appSource,
+  /dynamicUIRenderScale\s*=\s*selectDynamicUIRenderScale\("auto",\s*nextProfile,\s*qualityProfiles\)/u,
+);
+assert.match(
+  appSource,
+  /const t\s*=\s*await buildFace\(curLoc\);[\s\S]*?replaceDynamicUITextures\(t\);/u,
 );
 assert.match(
   appSource,

@@ -1355,7 +1355,7 @@ const dimensions = [
       }),
       requirement({
         id: "official-default-quality-active",
-        label: "Default URL selects the official ordinary-Android Middle quality profile",
+        label: "Canonical audit URL selects the official ordinary-Android Middle quality profile",
         status: runtimeOfficialProfile?.exactUnits === runtimeOfficialProfile?.totalUnits ? "exact" : "missing",
         exactUnits: runtimeOfficialProfile?.exactUnits || 0,
         knownUnits: runtimeOfficialProfile?.exactUnits || 0,

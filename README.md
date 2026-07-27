@@ -79,9 +79,10 @@ Missing recipes are regenerated from each card's own `Face/<illId>/L` plus the s
 
 Useful query params: `?scene=<file>` picks a card · `?only=<materialName>` solos one layer ·
 `?quality=auto|middle|high|low` selects the card RT quality (`auto`, the default, derives a native-sized source
-RT from the physical drawing buffer so the desktop display pass never enlarges the mobile RT; `middle`
+RT from the physical drawing buffer and rebuilds the source/Dynamic UI targets after a viewport resize, so the
+desktop display pass never enlarges the mobile RT; `middle`
 reproduces the captured BlueStacks `1122×1122` source RT and remains the runtime-evidence profile) · `?nohud`
-hides the debug overlay · the language dropdown (top-right) switches locale.
+hides the debug overlay · the top-right dropdowns switch locale and render quality.
 
 ## How it works
 

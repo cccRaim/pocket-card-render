@@ -72,9 +72,10 @@ npm run materialize:official-card-examples -- --gather
 
 常用查询参数:`?scene=<文件>` 选卡 · `?only=<材质名>` 单独显示某一层 ·
 `?quality=auto|middle|high|low` 选择卡片 RT 质量（默认 `auto` 按物理 drawing buffer 派生同尺寸 source RT，
-避免桌面 display pass 放大移动端 RT；`middle` 复现 BlueStacks capture 的 `1122×1122` source RT，
+并在窗口尺寸变化后同步重建 source/Dynamic UI RT，避免桌面 display pass 放大移动端 RT；
+`middle` 复现 BlueStacks capture 的 `1122×1122` source RT，
 并继续作为运行时证据档）· `?nohud` 隐藏调试浮层 ·
-右上角下拉菜单切换语言。
+右上角下拉菜单切换语言与渲染清晰度。
 
 ## 工作原理
 

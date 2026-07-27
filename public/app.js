@@ -49,7 +49,11 @@ import {
 import { applyOfficialSampler, loadOfficialTexture } from "./render/official-texture.js";
 import { attachLocalDrawAudit } from "./render/local-draw-audit.js";
 import { createOfficialHoloDynamicTexture } from "./render/dynamic-ui-texture.js";
-import { selectCardQualityProfile, selectDynamicUIRenderScale } from "./render/quality-profile.js";
+import {
+  resolveRequestedCardQuality,
+  selectCardQualityProfile,
+  selectDynamicUIRenderScale,
+} from "./render/quality-profile.js";
 import {
   applyUiAffineToCanvas,
   IDENTITY_UI_AFFINE,
@@ -1293,7 +1297,10 @@ async function main() {
     throw new Error("official detail display profile must name its default quality");
   }
   const officialDefaultQuality = detailDisplayProfile.applicability.quality_name.toLowerCase();
-  const qualityParam = (qp.get("quality") || officialDefaultQuality).toLowerCase();
+  const qualityParam = resolveRequestedCardQuality(qp.get("quality"), {
+    runtimeEvidence: fullRuntimeAudit,
+    runtimeDefaultQuality: officialDefaultQuality,
+  });
   const qualityProfiles = cardDisplayContract.quality_profiles;
   const canvas = document.getElementById("c");
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, stencil: true });
@@ -1311,7 +1318,15 @@ async function main() {
     requestedDisplaySide,
     renderer.capabilities.maxTextureSize,
   );
-  const selectedQualityProfile = logicBisectCase.sourceRenderScale
+  let autoQualityProfile = qualityParam === "auto"
+    ? baseQualityProfile
+    : selectCardQualityProfile(
+      "auto",
+      qualityProfiles,
+      requestedDisplaySide,
+      renderer.capabilities.maxTextureSize,
+    );
+  let selectedQualityProfile = logicBisectCase.sourceRenderScale
     ? {
       ...baseQualityProfile,
       quality_name: `${baseQualityProfile.quality_name}Diagnostic${logicBisectCase.sourceRenderScale}x`,
@@ -1341,9 +1356,9 @@ async function main() {
   console.log(`dynamic UI texture scale: ${dynamicUIRenderScale.toFixed(4)}`);
   let dynTex = await buildFace(curLoc);
   publishTmpSdfStatus(dynTex?.evidence);
-  const dynUITex = dynTex && dynTex.ui;       // DynamicUIType.Text (Unity layer 17 / CardUIText)
-  const dynHoloTex = dynTex && dynTex.holo;   // DynamicUIType.Holo (Unity layer 18 / CardUIMetallic)
-  const foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
+  let dynUITex = dynTex && dynTex.ui;       // DynamicUIType.Text (Unity layer 17 / CardUIText)
+  let dynHoloTex = dynTex && dynTex.holo;   // DynamicUIType.Holo (Unity layer 18 / CardUIMetallic)
+  let foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
   // real environment cubemap for the holo/foil reflections (samplerCube, not a 2D matcap)
   const envCubeUrl = (Object.values(scene_data.materials).find((m) => m.textures && m.textures._CubeMap) || {}).textures?._CubeMap?.url;
   const envCubeTex = envCubeUrl ? await loadEnvCube(envCubeUrl, officialSamplerMap[envCubeUrl]) : null;
@@ -1932,6 +1947,9 @@ async function main() {
     };
     // its own font download + canvas rebuild takes a beat, so show the small busy spinner and lock the dropdown.
     let switching = false;
+    let qualitySel = null;
+    let autoQualityResizeTimer = 0;
+    let autoQualityResizeGeneration = 0;
     let cardSel = null, repeatedSceneIds = new Set();
     const sceneByFile = new Map(sceneList.map((sceneInfo) => [sceneInfo.file, sceneInfo]));
     const localSceneByIllustration = new Map(
@@ -1963,32 +1981,101 @@ async function main() {
         group.label = labels[Number(group.dataset.exampleGroup)];
       }
     }
+    function replaceDynamicUITextures(t) {
+      if (!t) return;
+      if (dynUIMat) {
+        const uniformName = dynUIMat.userData.dynamicUIUniform;
+        if (!uniformName || !dynUIMat.uniforms[uniformName]) {
+          throw new Error("L_FullFace_Text: missing exact DynamicUI sampler binding");
+        }
+        dynUIMat.uniforms[uniformName].value = t.ui;
+      }
+      for (const m of exHoloMats) {
+        if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
+        if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
+        if (m.uniforms._563) m.uniforms._563.value = t.holo;
+        if (m.uniforms._581) m.uniforms._581.value = t.holo;
+        if (m.uniforms.foilMask) m.uniforms.foilMask.value = t.foil;
+      }
+      const previous = dynTex;
+      dynTex = t;
+      dynUITex = t.ui;
+      dynHoloTex = t.holo;
+      foilTex = t.foil;
+      publishTmpSdfStatus(t.evidence);
+      previous?.dispose?.();
+    }
+    function refreshAutoQualityOption() {
+      const option = qualitySel?.querySelector('option[value="auto"]');
+      if (!option) return;
+      const source = autoQualityProfile.source_render_target_request;
+      option.textContent = `Auto (${source.width}x${source.height})`;
+    }
+    function scheduleAutoQualityResize() {
+      if (qualityParam !== "auto" || logicBisectCase.sourceRenderScale) return;
+      clearTimeout(autoQualityResizeTimer);
+      autoQualityResizeTimer = setTimeout(async () => {
+        if (switching) {
+          scheduleAutoQualityResize();
+          return;
+        }
+        const drawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
+        const nextProfile = selectCardQualityProfile(
+          "auto",
+          qualityProfiles,
+          Math.round(Math.min(drawingBuffer.x, drawingBuffer.y)),
+          renderer.capabilities.maxTextureSize,
+        );
+        autoQualityProfile = nextProfile;
+        refreshAutoQualityOption();
+        const currentSource = selectedQualityProfile.source_render_target_request;
+        const nextSource = nextProfile.source_render_target_request;
+        if (currentSource.width === nextSource.width && currentSource.height === nextSource.height) return;
+
+        const generation = ++autoQualityResizeGeneration;
+        const previousProfile = selectedQualityProfile;
+        const previousScale = dynamicUIRenderScale;
+        selectedQualityProfile = nextProfile;
+        dynamicUIRenderScale = selectDynamicUIRenderScale("auto", nextProfile, qualityProfiles);
+        if (window.__post?.sceneRT) {
+          resizeOfficialMrtTarget(window.__post.sceneRT, nextSource.width, nextSource.height);
+          window.__post.resize();
+        }
+        try {
+          const t = await buildFace(curLoc);
+          if (generation !== autoQualityResizeGeneration) {
+            t?.dispose?.();
+            return;
+          }
+          replaceDynamicUITextures(t);
+          console.log(
+            `auto card quality resized: ${nextSource.width}x${nextSource.height}; `
+            + `dynamic UI scale ${dynamicUIRenderScale.toFixed(4)}`,
+          );
+        } catch (error) {
+          if (generation === autoQualityResizeGeneration) {
+            selectedQualityProfile = previousProfile;
+            dynamicUIRenderScale = previousScale;
+            if (window.__post?.sceneRT) {
+              resizeOfficialMrtTarget(
+                window.__post.sceneRT,
+                currentSource.width,
+                currentSource.height,
+              );
+              window.__post.resize();
+            }
+          }
+          console.warn("auto quality resize failed", error);
+        }
+      }, 150);
+    }
     async function switchLocale(lc, selEl) {
       if (switching) return;
       switching = true; busy(true, "Switching…"); if (selEl) selEl.disabled = true;
       try {
         await loadLocaleData(lc);                          // sets curFonts + loads that locale's fonts
         const t = await buildFace(lc);                     // rebuild the DynamicUI for the new locale (any card)
-        if (t && dynUIMat) {
-          const uniformName = dynUIMat.userData.dynamicUIUniform;
-          if (!uniformName || !dynUIMat.uniforms[uniformName]) {
-            throw new Error("L_FullFace_Text: missing exact DynamicUI sampler binding");
-          }
-          dynUIMat.uniforms[uniformName].value = t.ui;
-        }
-        if (t) for (const m of exHoloMats) {
-          if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
-          if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
-          if (m.uniforms._563) m.uniforms._563.value = t.holo;
-          if (m.uniforms._581) m.uniforms._581.value = t.holo;
-          if (m.uniforms.foilMask) m.uniforms.foilMask.value = t.foil;
-        }
-        if (t) {
-          const previous = dynTex;
-          dynTex = t;
-          publishTmpSdfStatus(t.evidence);
-          previous?.dispose?.();
-        }
+        replaceDynamicUITextures(t);
         curLoc = lc;
         refreshCardSelectLabels();
       } catch (e) { console.warn("switchLocale", e); }
@@ -2085,6 +2172,32 @@ async function main() {
       }
       sel.onchange = () => switchLocale(sel.value, sel);
       (controlsEl || document.body).appendChild(sel);
+    }
+    if (controlsEl && !fullRuntimeAudit) {
+      const sel = document.createElement("select");
+      qualitySel = sel;
+      sel.setAttribute("aria-label", "Render quality");
+      const qualityOptions = [
+        ["auto", `Auto (${autoQualityProfile.source_render_target_request.width}x${autoQualityProfile.source_render_target_request.height})`],
+        ["high", `High (${qualityProfiles.high.source_render_target_request.width}x${qualityProfiles.high.source_render_target_request.height})`],
+        ["middle", `Middle (${qualityProfiles.middle.source_render_target_request.width}x${qualityProfiles.middle.source_render_target_request.height})`],
+        ["low", `Low (${qualityProfiles.low.source_render_target_request.width}x${qualityProfiles.low.source_render_target_request.height})`],
+      ];
+      for (const [value, label] of qualityOptions) {
+        const op = document.createElement("option");
+        op.value = value;
+        op.textContent = label;
+        op.selected = value === qualityParam;
+        sel.appendChild(op);
+      }
+      sel.onchange = () => {
+        if (sel.value === qualityParam) return;
+        const next = new URL(location.href);
+        if (sel.value === "auto") next.searchParams.delete("quality");
+        else next.searchParams.set("quality", sel.value);
+        location.href = next;
+      };
+      controlsEl.appendChild(sel);
     }
 
     if (logicBisectRequested && !window.__nohud) {
@@ -2812,7 +2925,8 @@ async function main() {
   addEventListener("resize", () => {
     renderer.setSize(innerWidth, innerHeight);
     window.__cardDisplay?.updateViewport();
-    if (window.__post) window.__post.resize();
+    if (qualityParam === "auto") scheduleAutoQualityResize();
+    else if (window.__post) window.__post.resize();
     if (window.__displayPost) window.__displayPost.resize();
   });
 }
