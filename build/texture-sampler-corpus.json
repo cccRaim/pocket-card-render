@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "scenes": [
+    "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
+    "scene.cPK_20_008900_02_HOUOUex_UR.json",
+    "scene.cTR_20_000230_00_LEAF_SR.json",
+    "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json",
+    "scene.cPK_20_000470_01_FIREex_SAR.json",
+    "scene.cPK_20_007800_01_AKUZIKINGex_SAR.json",
+    "scene.cPK_20_010840_01_MEGAKAILIOSex_SAR.json",
+    "scene.cPK_20_018280_01_TETSUNOTSUTSUMIex_SAR.json",
+    "scene.cPK_20_018410_01_HABATAKUKAMIex_SAR.json"
+  ]
+}

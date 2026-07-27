@@ -12,3 +12,4 @@ import "./matcap.js";
 import "./holo.js";
 import "./frame2layer-ur.js";
 import "./ur.js";
+import "./sar.js";

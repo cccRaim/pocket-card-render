@@ -1991,6 +1991,8 @@ async function main() {
         dynUIMat.uniforms[uniformName].value = t.ui;
       }
       for (const m of exHoloMats) {
+        const exactUniform = m.userData.dynamicHoloUniform;
+        if (exactUniform && m.uniforms[exactUniform]) m.uniforms[exactUniform].value = t.holo;
         if (m.uniforms.dynUI) m.uniforms.dynUI.value = t.ui;
         if (m.uniforms.dynHolo) m.uniforms.dynHolo.value = t.holo;
         if (m.uniforms._563) m.uniforms._563.value = t.holo;

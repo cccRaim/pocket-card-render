@@ -182,7 +182,14 @@ def main():
                 "colors": {k: v for k, v in kvlist(sp.get("m_Colors", [])).items()},
                 "texenvs": texenvs}
         elif t in ("Texture2D", "Cubemap"):
-            texs[oid] = {"name": d.get("m_Name",""), "w": d.get("m_Width"), "h": d.get("m_Height"), "type": t}
+            texs[oid] = {
+                "name": d.get("m_Name",""),
+                "w": d.get("m_Width"),
+                "h": d.get("m_Height"),
+                "type": t,
+                "assetPath": (getattr(o, "container", None) or "").replace("\\", "/"),
+                "identity": object_identity(o),
+            }
         elif t == "Shader":
             parsed = d.get("m_ParsedForm") or {}
             if "m_KeywordNames" not in parsed or "m_KeywordFlags" not in parsed:
@@ -345,11 +352,19 @@ def main():
             ],
         }
 
-    def tex_name(ref):
+    def tex_binding(ref):
         if not ref or ref.get("pathId") == "0": return None
         key = ref["identity"]
-        if key in texs: return texs[key]["name"]
-        return f"pptr:{key}"
+        if key not in texs:
+            return {"tex": f"pptr:{key}", "textureIdentity": ref}
+        texture = texs[key]
+        binding = {
+            "tex": texture["name"],
+            "textureIdentity": texture["identity"],
+        }
+        if texture["assetPath"]:
+            binding["assetPath"] = texture["assetPath"]
+        return binding
     def go_name(key): return gos.get(key, {}).get("name", f"?{key}")
 
     tr_by_go = {v["go"]: (k, v) for k, v in trans.items() if v.get("go")}
@@ -399,8 +414,16 @@ def main():
             shader_key = shader_ref.get("identity")
             shader_info = shaders.get(shader_key) or {}
             sname = shader_info.get("name", f"pptr:{shader_key}")
-            texenvs = {k: {"tex": tex_name(v["tex_ref"]), "scale": v["scale"], "offset": v["offset"]}
-                       for k, v in (m.get("texenvs") or {}).items() if v["tex_ref"].get("pathId") != "0"}
+            texenvs = {}
+            for k, v in (m.get("texenvs") or {}).items():
+                if v["tex_ref"].get("pathId") == "0":
+                    continue
+                binding = tex_binding(v["tex_ref"])
+                texenvs[k] = {
+                    **binding,
+                    "scale": v["scale"],
+                    "offset": v["offset"],
+                }
             mesh_ref = mf_by_go.get(r["go"])
             mesh_key = mesh_ref.get("identity") if mesh_ref else None
             mesh_name = meshes.get(mesh_key) or (f"pptr:{mesh_key}" if mesh_key else None)

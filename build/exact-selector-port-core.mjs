@@ -1615,11 +1615,14 @@ export async function generateExactSelectorPort(options) {
     await validateWebGlStage(fragment, "frag", callbackContext);
 
     const commonBindings = compileCommonBindings(metadata.commonBindings);
-    const programBindings = compileProgramBindings(
+    const compiledProgramBindings = compileProgramBindings(
       commonBindings,
       metadata.parameterReflection,
       metadata.shaderPropertyDefaults,
     );
+    const programBindings = config.joinConstantBufferStages === true
+      ? joinProgramConstantBufferStages(compiledProgramBindings, reflection)
+      : compiledProgramBindings;
     const samplerBindings = joinProgramSamplerBindings(programBindings, reflection).map(({ set, ...binding }) => {
       if (set !== 0) fail(`${shader}: WebGL sampler ${binding.slot} uses unsupported descriptor set ${set}`);
       return binding;

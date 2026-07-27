@@ -8,7 +8,12 @@ import { readOfficialTextureSampler } from "./official-texture-sampler.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifestPath = path.join(ROOT, "public", "texture-samplers.json");
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-const official = readOfficialTextureSampler();
+const samplerCorpus = JSON.parse(
+  fs.readFileSync(path.join(ROOT, "build", "texture-sampler-corpus.json"), "utf8"),
+);
+const official = readOfficialTextureSampler({
+  scenes: samplerCorpus.scenes.map((file) => path.join(ROOT, "public", file)),
+});
 const runtimeSource = fs.readFileSync(path.join(ROOT, "public", "render", "official-texture.js"), "utf8");
 const issues = [];
 const SHA256 = /^[0-9a-f]{64}$/;
@@ -41,7 +46,9 @@ same(dynamicUI?.sampler, {
 if (!SHA256.test(dynamicUI?.evidence?.captureEventsSha256 || "")) {
   issues.push("_DynamicUITex capture event identity is missing");
 }
-if (Object.keys(manifest.textures || {}).length !== 131) issues.push("manifest must contain 131 official texture URLs");
+if (Object.keys(manifest.textures || {}).length !== Object.keys(official.textures).length) {
+  issues.push("manifest texture count differs from the official sampler corpus");
+}
 if (official.summary.unresolvedCount !== 0) issues.push(`official identities unresolved: ${official.summary.unresolved.join(", ")}`);
 
 let fallbackFiles = 0;

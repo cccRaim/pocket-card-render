@@ -1,0 +1,1273 @@
+{
+  "shader": "Lettuce/Common/CardNew/ShadowBox/UI/Card_ShadowBoxUI_Transparent_Rainbow",
+  "generated_by": "build/build-exact-sar.mjs",
+  "selected_keywords": [],
+  "official_selector": {
+    "selectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+    "candidateWitnessId": "d8f87a6565c65cca98b4fbbb418a2c37282ba4923b420a912412af19a1b1da91",
+    "shaderIdentity": "CAB-2d26115c8d7b0e19ac650f71bbdc7525:-7286864420773527812",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Card_ShadowBoxUI_Transparent_Rainbow",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 1,
+    "parameterBlobIndex": 0,
+    "executableId": "f8cc350461642e65120743b485bcf6932ebafc88b6ae7bfbb67d18913510b77d",
+    "semanticExecutableId": "caa7c09e0638d1adb4561d86dc78c6b7c236d3d6bf67ca3c0923c77d7397b94d"
+  },
+  "official_spirv_sha256": {
+    "vertex": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",
+    "fragment": "b15af2b33a0b105717ed004f567cb518c8e997fd5b12acf114798631a5ec9367"
+  },
+  "official_spirv_precision": {
+    "schema": "pocket-card-render/official-spirv-precision@1",
+    "evidence_scope": "official-vulkan-spirv-structure",
+    "vulkan_to_webgl_equivalence": "not-claimed",
+    "stages": {
+      "vertex": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",
+        "byte_size": 5072,
+        "word_count": 1268,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 211,
+          "schema_word": 0
+        },
+        "instruction_count": 267,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "6929403a72a6d21e95a8877eafb417a6db325255dde33aab73570742fd60aff6",
+        "facts_sha256": "bc4c822769fc1c4526a210cc6b5554e32626370f61d410d1eee9de1191cd6219"
+      },
+      "fragment": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "b15af2b33a0b105717ed004f567cb518c8e997fd5b12acf114798631a5ec9367",
+        "byte_size": 8432,
+        "word_count": 2108,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 324,
+          "schema_word": 0
+        },
+        "instruction_count": 487,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 73,
+              "member_decorate": 3,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 76,
+            "direct_application_count": 76,
+            "group_application_count": 0,
+            "effective_application_count": 76,
+            "operand_sets": [
+              {
+                "operands": [],
+                "declaration_count": 76
+              }
+            ]
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "605049c9199fab183cd0b770a3a544f946354d6b450a8e73599afabba293f0d6",
+        "facts_sha256": "f46bc9243e8e6350b66489585557f5f6772891f558ab6dee8d1e931b7869fb87"
+      }
+    }
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",
+    "fragmentSpirvSha256": "b15af2b33a0b105717ed004f567cb518c8e997fd5b12acf114798631a5ec9367",
+    "parameterEntrySha256": "1ce418f3cfed770ff6302d3d5f269049be7d9678e4d39a0355efcc5dce84f27c",
+    "passStateSha256": "a7b37a02654b8169c3ed237e2094dab1c40eb7976c649031f7f4eb896bc514ab",
+    "commonBindingsSha256": "6944485185d84120b2137a77d2d43f985f25b4b9fda6e11249b68b582a352e69"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "1ce418f3cfed770ff6302d3d5f269049be7d9678e4d39a0355efcc5dce84f27c",
+    "byte_size": 100,
+    "reflection_sha256": "7d4cc8508484d93a475613e7cb6da9c314c76b184a516997a5665752fb72bc5a",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals2185280048",
+        "size": 60,
+        "fields": []
+      },
+      {
+        "name": "VGlobals2185280048",
+        "size": 256,
+        "fields": []
+      }
+    ],
+    "resourceCount": 0,
+    "resourceDecoding": "empty-exact",
+    "textures": [],
+    "constantBufferBindings": [],
+    "serializedCommonBuffers": [
+      {
+        "name": "PGlobals2185280048",
+        "size": 60
+      },
+      {
+        "name": "VGlobals2185280048",
+        "size": 256
+      }
+    ],
+    "serializedCommonTextures": [
+      {
+        "name": "_DynamicUITex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      },
+      {
+        "name": "_RainbowTex",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      },
+      {
+        "name": "_RainbowOutlineTex",
+        "binding": 2,
+        "encodedIndex": 134217730,
+        "dim": 2
+      },
+      {
+        "name": "_RainbowTintMask",
+        "binding": 3,
+        "encodedIndex": 134217731,
+        "dim": 2
+      },
+      {
+        "name": "_RainbowBGTintMask",
+        "binding": 4,
+        "encodedIndex": 134217732,
+        "dim": 2
+      },
+      {
+        "name": "_RainbowBGTex",
+        "binding": 5,
+        "encodedIndex": 134217733,
+        "dim": 2
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "serialized-common",
+      "commonConstantBufferCount": 2,
+      "variantConstantBufferCount": 0,
+      "variantTextureCount": 0,
+      "commonTextureCount": 6,
+      "constantBufferBindingCount": 0
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "a7b37a02654b8169c3ed237e2094dab1c40eb7976c649031f7f4eb896bc514ab",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 0,
+        "name": "_ZTest"
+      },
+      "write": {
+        "val": 0,
+        "name": "_ZWrite"
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": null
+      },
+      "read_mask": {
+        "val": 255,
+        "name": null
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 5,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 10,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 10,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "6944485185d84120b2137a77d2d43f985f25b4b9fda6e11249b68b582a352e69",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_DynamicUITex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RainbowTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RainbowOutlineTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RainbowTintMask",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RainbowBGTintMask",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_RainbowBGTex",
+        "encodedIndex": 134217733,
+        "set": 0,
+        "binding": 5,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [
+      {
+        "name": "PGlobals2185280048",
+        "size": 60,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_RainbowTintColor",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowAnimationScale",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_RainbowOutlineAnimationScale",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_RainbowBGAnimationScale",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_EmitMasking",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 48,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185280048",
+        "size": 256,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_RainbowTex_ST",
+            "offset": 192,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowOutlineTex_ST",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowBGTex_ST",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowTintMask_ST",
+            "offset": 240,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffer_bindings": [
+      {
+        "name": "PGlobals2185280048",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185280048",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "6944485185d84120b2137a77d2d43f985f25b4b9fda6e11249b68b582a352e69",
+    "parameter_reflection_sha256": "7d4cc8508484d93a475613e7cb6da9c314c76b184a516997a5665752fb72bc5a",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_DynamicUITex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RainbowTex",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RainbowOutlineTex",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RainbowTintMask",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RainbowBGTintMask",
+        "encodedIndex": 134217732,
+        "set": 0,
+        "binding": 4,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_RainbowBGTex",
+        "encodedIndex": 134217733,
+        "set": 0,
+        "binding": 5,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [
+      {
+        "name": "PGlobals2185280048",
+        "size": 60,
+        "partial": true,
+        "matrices": [],
+        "vectors": [
+          {
+            "name": "_RainbowTintColor",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowAnimationScale",
+            "offset": 16,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_RainbowOutlineAnimationScale",
+            "offset": 24,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_RainbowBGAnimationScale",
+            "offset": 32,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 2
+          },
+          {
+            "name": "_EmitMasking",
+            "offset": 40,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 1
+          },
+          {
+            "name": "_Rotation",
+            "offset": 48,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 3
+          }
+        ],
+        "stages": [
+          "progFragment"
+        ]
+      },
+      {
+        "name": "VGlobals2185280048",
+        "size": 256,
+        "partial": true,
+        "matrices": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "arraySize": 0,
+            "type": 0,
+            "rowCount": 4
+          }
+        ],
+        "vectors": [
+          {
+            "name": "_RainbowTex_ST",
+            "offset": 192,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowOutlineTex_ST",
+            "offset": 208,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowBGTex_ST",
+            "offset": 224,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          },
+          {
+            "name": "_RainbowTintMask_ST",
+            "offset": 240,
+            "arraySize": 0,
+            "type": 0,
+            "dim": 4
+          }
+        ],
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "common_constant_buffer_bindings": [
+      {
+        "name": "PGlobals2185280048",
+        "encodedIndex": 134283264,
+        "set": 1,
+        "binding": 0,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "VGlobals2185280048",
+        "encodedIndex": 67174401,
+        "set": 1,
+        "binding": 1,
+        "arraySize": 1,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "variant_constant_buffers": []
+  },
+  "official_vertex_inputs": {
+    "schema": "pocket-card-render/official-vertex-input-contract@1",
+    "unityVersion": "2022.3.62f2",
+    "sourceSha256": "389f0fbcff0aa8768fcf403f9691c69f79faa08264c26c326bccfdac9e7d4af7",
+    "serializedSourceMap": 19,
+    "inputs": [
+      {
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1",
+        "location": 0,
+        "threeAttribute": "position",
+        "spirvName": "_11",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 14,
+        "targetName": "Attrib2",
+        "location": 1,
+        "threeAttribute": "uv",
+        "spirvName": "_99",
+        "spirvType": "vec2"
+      },
+      {
+        "source": 1,
+        "sourceName": "Normal",
+        "target": 15,
+        "targetName": "Attrib3",
+        "location": 2,
+        "threeAttribute": "normal",
+        "spirvName": "_116",
+        "spirvType": "vec3"
+      }
+    ]
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_DynamicUITex": "white",
+      "_AdditionalDynamicUITex": "white",
+      "_RainbowTex": "white",
+      "_RainbowOutlineTex": "white",
+      "_RainbowBGTex": "white",
+      "_RainbowTintMask": "white",
+      "_RainbowBGTintMask": "white"
+    },
+    "textureDescriptors": {
+      "_DynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_AdditionalDynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowOutlineTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowBGTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowTintMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowBGTintMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    },
+    "floats": {
+      "_AlphaBlend": 0,
+      "_EmitMasking": 0,
+      "_ZTest": 4,
+      "_ZWrite": 1
+    },
+    "colors": {
+      "_RainbowTintColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_RainbowAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_RainbowOutlineAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_RainbowBGAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@2",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",
+      "spirvCrossGlslSha256": "bdb7a88a3058348f21a587cdf1cf95181544e6d27e18d8ff8491c098fa08e320",
+      "outputSha256": "71c592bf6a26b33e370d058d46bfddf864848dbeac1bbfb6f1615655da29a472",
+      "operations": [
+        {
+          "kind": "vertex-input-binding",
+          "contract": "official-bind-channels-to-three-r165",
+          "mappingSha256": "123d539e165dd09c183057daa2f0ed6cf1688948c879cb10b5800ba2ba4a53a1"
+        },
+        {
+          "kind": "engine-uniform-binding",
+          "contract": "unity-builtins-to-three-r165",
+          "runtimeContractSha256": "b4a09a3d20451dfd4dcd8dd74b603297d33d1b47732e4d404be0a9c601eeea06"
+        },
+        {
+          "kind": "uniform-buffer-flattening",
+          "source": "serialized-common",
+          "preservation": "names-types-precision",
+          "bindingContractSha256": "5e7682e974ccf1f047257ccc5582556b9f2ed190a8374d08829372c372a62edd"
+        },
+        {
+          "kind": "texture-coordinate-basis-conversion",
+          "contract": "unity-texenv-to-three-gltf-uv",
+          "textureCoordinateContractSha256": "a76afbbd288cf732cb25ca725f45390a093d7297a848f07432da62f9f7cf0df7"
+        },
+        {
+          "kind": "clip-space-y-conversion",
+          "from": "unity-vulkan",
+          "to": "webgl",
+          "operation": "remove-y-inversion"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
+      "substitutions": [
+        "map official position/normal/UV0 locations to Three.js r165 attributes",
+        "map Unity object/world/view-projection matrices to Three.js engine uniforms",
+        "map serialized Unity TexEnv transforms to Three.js GLTF V-axis convention",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "b15af2b33a0b105717ed004f567cb518c8e997fd5b12acf114798631a5ec9367",
+      "spirvCrossGlslSha256": "fe24409d5e2b054c95aace261c25917aceb52757cbcee6c96c15440314c3f148",
+      "outputSha256": "32aaba5ad640fdd3686b2aa6da58217bc3d76eac238de5ce59b6488804ed764d",
+      "operations": [
+        {
+          "kind": "engine-uniform-binding",
+          "contract": "unity-builtins-to-three-r165",
+          "runtimeContractSha256": "b4a09a3d20451dfd4dcd8dd74b603297d33d1b47732e4d404be0a9c601eeea06"
+        },
+        {
+          "kind": "uniform-buffer-flattening",
+          "source": "serialized-common",
+          "preservation": "names-types-precision",
+          "bindingContractSha256": "5e7682e974ccf1f047257ccc5582556b9f2ed190a8374d08829372c372a62edd"
+        },
+        {
+          "kind": "object-basis-conversion",
+          "contract": "unity-to-three-basis",
+          "basisContractSha256": "1804e2d390fabc84a88cd971dc0579bd36afad14ba03bd98552d7e1156743a1a"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
+      "substitutions": [
+        "expand official constant-buffer members into same-name engine/material uniforms",
+        "convert Three world-space vectors to Unity data axes before official arithmetic"
+      ]
+    },
+    "interfaceSha256": "f05766a93c90893c5fca47b790891d25727b49b820f225d14981eb77bdf99c07",
+    "operationGraphSha256": "e78cb3fa58214d1f3439090b70d0490ed98257268be263836ef0557f1b4d65a0"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/card_shadowbox_ui_transparent_rainbow.vert.glsl",
+    "fragment": "public/shaders/card_shadowbox_ui_transparent_rainbow.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_ShadowBoxUI_Transparent_Rainbow",
+    "attributes": {
+      "position": "vec3",
+      "normal": "vec3",
+      "uv": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_EmitMasking"
+      ],
+      "ints": [],
+      "vectors": {
+        "_RainbowTintColor": "vec4",
+        "_RainbowAnimationScale": "vec2",
+        "_RainbowOutlineAnimationScale": "vec2",
+        "_RainbowBGAnimationScale": "vec2",
+        "_Rotation": "vec3"
+      }
+    },
+    "texture_coordinates": {
+      "vertex": {
+        "transforms": [
+          {
+            "uniform": "_RainbowTintMask_ST",
+            "slot": "_RainbowTintMask",
+            "input": "uv",
+            "output": "pcrRainbowTintUv",
+            "conversion": "unity-texenv-to-three-gltf-v"
+          },
+          {
+            "uniform": "_RainbowTex_ST",
+            "slot": "_RainbowTex",
+            "input": "uv",
+            "output": "pcrRainbowUv",
+            "conversion": "unity-texenv-to-three-gltf-v"
+          },
+          {
+            "uniform": "_RainbowOutlineTex_ST",
+            "slot": "_RainbowOutlineTex",
+            "input": "uv",
+            "output": "pcrRainbowOutlineUv",
+            "conversion": "unity-texenv-to-three-gltf-v"
+          },
+          {
+            "uniform": "_RainbowBGTex_ST",
+            "slot": "_RainbowBGTex",
+            "input": "uv",
+            "output": "pcrRainbowBgUv",
+            "conversion": "unity-texenv-to-three-gltf-v"
+          }
+        ]
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": false,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic",
+    "backend_basis_conversions": {
+      "fragment": {
+        "worldVectors": [
+          {
+            "source": "vs_TEXCOORD2",
+            "alias": "pcrUnityWorldNormal",
+            "expectedOccurrences": 3
+          }
+        ]
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_DynamicUITex",
+      "spirvName": "_226",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RainbowTex",
+      "spirvName": "_188",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RainbowOutlineTex",
+      "spirvName": "_143",
+      "binding": 2,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RainbowTintMask",
+      "spirvName": "_208",
+      "binding": 3,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RainbowBGTintMask",
+      "spirvName": "_280",
+      "binding": 4,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_RainbowBGTex",
+      "spirvName": "_172",
+      "binding": 5,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_226",
+    "_188",
+    "_143",
+    "_208",
+    "_280",
+    "_172"
+  ],
+  "sampler_slots": [
+    "_DynamicUITex",
+    "_RainbowTex",
+    "_RainbowOutlineTex",
+    "_RainbowTintMask",
+    "_RainbowBGTintMask",
+    "_RainbowBGTex"
+  ],
+  "compiled_texture_bindings": {
+    "_DynamicUITex": 0,
+    "_RainbowTex": 1,
+    "_RainbowOutlineTex": 2,
+    "_RainbowTintMask": 3,
+    "_RainbowBGTintMask": 4,
+    "_RainbowBGTex": 5
+  },
+  "implicit_defaults": {
+    "_DynamicUITex": "white",
+    "_AdditionalDynamicUITex": "white",
+    "_RainbowTex": "white",
+    "_RainbowOutlineTex": "white",
+    "_RainbowBGTex": "white",
+    "_RainbowTintMask": "white",
+    "_RainbowBGTintMask": "white"
+  },
+  "mrt": {
+    "primary": "_287",
+    "secondary": "_309"
+  }
+}

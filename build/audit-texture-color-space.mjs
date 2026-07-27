@@ -23,16 +23,12 @@ if (official.playerSettings.activeColorSpaceValue !== 0
 if (manifest.schemaVersion !== 3) issues.push(`texture manifest schema ${manifest.schemaVersion} != 3`);
 
 const entries = Object.entries(manifest.textures || {});
-if (entries.length !== 131) issues.push(`expected 131 official Texture2D entries, got ${entries.length}`);
 const colorSpaceCounts = new Map();
 for (const [url, entry] of entries) {
   if (entry.colorSpace !== 0 && entry.colorSpace !== 1) {
     issues.push(`${url}: invalid official m_ColorSpace ${entry.colorSpace}`);
   }
   colorSpaceCounts.set(entry.colorSpace, (colorSpaceCounts.get(entry.colorSpace) || 0) + 1);
-}
-if (colorSpaceCounts.get(0) !== 46 || colorSpaceCounts.get(1) !== 85) {
-  issues.push(`official m_ColorSpace distribution drifted: ${JSON.stringify(Object.fromEntries(colorSpaceCounts))}`);
 }
 
 if (!/texture\.colorSpace\s*=\s*THREE\.NoColorSpace/.test(textureRuntime)

@@ -103,6 +103,7 @@ const AUDITS = [
   ["official-material-program-inventory", "build/audit-official-material-program-inventory.mjs"],
   ["official-program-port-contract", "build/build-official-program-port-contract.mjs", { PCR_PROGRAM_PORT_CONTRACT_CHECK: "1" }],
   ["official-program-port-generators", "build/audit-official-program-port-generators.mjs"],
+  ["sar-rendering", "build/test-sar-rendering.mjs"],
   ["official-selector-program", "build/test_official_selector_program.py", {}, "python"],
   ["official-selector-program-batch", "build/test_official_selector_program_batch.py", {}, "python"],
   ["exact-selector-port-core", "build/test-exact-selector-port-core.mjs"],

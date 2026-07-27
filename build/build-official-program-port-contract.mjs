@@ -144,8 +144,8 @@ for (const file of walkJson(path.join(ROOT, "public", "shaders"))) {
 const portKey = (row) => `${row.selectorId}:${row.candidateWitnessId}:${row.subshader}:${row.pass}`;
 ports.sort((a, b) => portKey(a).localeCompare(portKey(b)));
 runtimeBound.sort((a, b) => a.manifest.localeCompare(b.manifest));
-if (ports.length !== 41 || new Set(ports.map(portKey)).size !== ports.length) {
-  throw new Error(`expected 41 unique selector/pass ports, got ${ports.length}`);
+if (ports.length !== 45 || new Set(ports.map(portKey)).size !== ports.length) {
+  throw new Error(`expected 45 unique selector/pass ports, got ${ports.length}`);
 }
 
 const output = {

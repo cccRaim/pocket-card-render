@@ -68,7 +68,7 @@ test("all formal selector ports compile through the version-independent runtime 
     path.join(ROOT, "public", "shaders", "official_program_port_contract.json"),
     "utf8",
   ));
-  assert.equal(contract.ports.length, 41);
+  assert.equal(contract.ports.length, 45);
   for (const port of contract.ports) {
     const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, port.manifest), "utf8"));
     const compiled = compileWebglRuntimePortContract(manifest.runtime_contract, {

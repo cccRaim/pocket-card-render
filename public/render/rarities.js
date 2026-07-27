@@ -57,5 +57,12 @@ const UR = {
   "Card_UR_LensFlare": { blend: "add_a", kind: "flare" },                          // additive gold star-ray flare
 };
 
+// ── SAR (Special Art Rare) ──
+const SAR = {
+  "Card_Illust_DoubleTexture": { blend: "premult", kind: "sarDoubleTexture" },
+  "Transparent_HologramLayer": { blend: "premult", kind: "sarHologramLayer" },
+  "Card_ShadowBoxUI_Transparent_Rainbow": { blend: "over", kind: "sarMegaRainbow" },
+};
+
 // merge all rarity groups into the lookup the renderer uses
-export const SHADER = { ...BASE, ...SR, ...UR };
+export const SHADER = { ...BASE, ...SR, ...UR, ...SAR };

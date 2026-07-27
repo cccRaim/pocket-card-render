@@ -23,6 +23,17 @@ export const SHADER_TEXTURE_DEFAULTS = {
   "Card_Illust": {
     "_MainTex": "black"
   },
+  "Card_Illust_DoubleTexture": {
+    "_CubeMap": "black",
+    "_HologramFrontMaskTex": "white",
+    "_HologramMaskTex": "black",
+    "_MainTex": "black",
+    "_MaskTex": "black",
+    "_OverlapTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
   "Card_Parallax": {
     "_MainTex": "black"
   },
@@ -57,6 +68,15 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_BaseTex": "white",
     "_RampTex": "white",
     "_ScrollLayerMask": "white"
+  },
+  "Card_ShadowBoxUI_Transparent_Rainbow": {
+    "_AdditionalDynamicUITex": "white",
+    "_DynamicUITex": "white",
+    "_RainbowBGTex": "white",
+    "_RainbowBGTintMask": "white",
+    "_RainbowOutlineTex": "white",
+    "_RainbowTex": "white",
+    "_RainbowTintMask": "white"
   },
   "Card_UR_Glitter_FlowMaps": {
     "_ABaseTex": "black",
@@ -175,6 +195,15 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_FakeSpecularMask": "white",
     "_HologramMaskTex": "black",
     "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Transparent_HologramLayer": {
+    "_CubeMap": "white",
+    "_DynamicUITex": "white",
+    "_HologramMaskTex": "black",
+    "_MetalMaskTex": "white",
     "_PhaseTex": "white",
     "_RampMaskTex": "black",
     "_RampTex": "black"

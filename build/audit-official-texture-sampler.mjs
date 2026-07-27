@@ -4,7 +4,12 @@ import { fileURLToPath } from "node:url";
 import { readOfficialTextureSampler } from "./official-texture-sampler.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const official = readOfficialTextureSampler();
+const samplerCorpus = JSON.parse(
+  fs.readFileSync(path.join(ROOT, "build", "texture-sampler-corpus.json"), "utf8"),
+);
+const official = readOfficialTextureSampler({
+  scenes: samplerCorpus.scenes.map((file) => path.join(ROOT, "public", file)),
+});
 const issues = [];
 const entries = Object.values(official.textures);
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
@@ -21,8 +26,9 @@ function countBy(values, selector) {
 }
 
 if (official.schemaVersion !== 1) issues.push(`unsupported schema version ${official.schemaVersion}`);
-if (official.scenes.length !== 4) issues.push(`expected 4 reference scenes, got ${official.scenes.length}`);
-if (entries.length !== 131) issues.push(`expected 131 unique referenced textures, got ${entries.length}`);
+if (official.scenes.length !== samplerCorpus.scenes.length) {
+  issues.push(`expected ${samplerCorpus.scenes.length} reference scenes, got ${official.scenes.length}`);
+}
 if (official.summary.unresolvedCount !== 0) {
   issues.push(`unresolved official texture identities: ${official.summary.unresolved.join(", ")}`);
 }

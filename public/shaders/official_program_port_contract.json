@@ -696,6 +696,44 @@
       }
     },
     {
+      "selectorId": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0",
+      "candidateWitnessId": "7281055a2695341a7d8b9c743344955b9aef75b0858ba6f462f6577b615f7191",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a744b0e61272b96b7b95d93e570ad109f3e94bc3ec3d002154ee0f91b69c59b9",
+      "manifest": "public/shaders/card_illust_double_texture_uniforms.json",
+      "generator": "build/build-exact-sar.mjs",
+      "officialIdentityFields": {
+        "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
+        "fragmentSpirvSha256": "a4ca087dc4dfd4406ea467f5ad5b25396575ffff3cd30e6adf6ee5d5e3f05d9f",
+        "parameterEntrySha256": "0e6afe7efa48523916a3893345ce3444540ad6c3f8fbfdde80e7c7c8c45eb43e",
+        "passStateSha256": "61eaebc027dc803e7a007305d531855b6131f5e1e946021c797b76840bde73c6",
+        "commonBindingsSha256": "e5193711f4fb7554a844213b2ce843edf6a7323414414692989429d3f38b076b"
+      },
+      "obligations": {
+        "stageProgram": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-stage-program.mjs"
+        },
+        "parameterEntry": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-parameter-entry.mjs"
+        },
+        "passState": {
+          "scope": "selector-local-port",
+          "verifier": "build/verify-official-port-pass-state.mjs"
+        },
+        "commonBindings": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-common-bindings.mjs"
+        },
+        "runtimeDispatch": {
+          "scope": "local-port-dispatch",
+          "verifier": "build/verify-official-port-runtime-dispatch.mjs"
+        }
+      }
+    },
+    {
       "selectorId": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a",
       "candidateWitnessId": "fa18a0f97c8bc9e4a3dd08cd7de9e493d66e896c27ec1901544ab2aa318e1d82",
       "subshader": 0,
@@ -1380,6 +1418,82 @@
       }
     },
     {
+      "selectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+      "candidateWitnessId": "99e646ebcd42d4c407758b90977df456a708594ea1fbaf09929744be5b39cd5b",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "d827d70f0685165747116301ffb5e72d9c700edd850f019cb0d9eb3dbce37fb4",
+      "manifest": "public/shaders/transparent_hologram_layer_uniforms.json",
+      "generator": "build/build-exact-sar.mjs",
+      "officialIdentityFields": {
+        "vertexSpirvSha256": "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
+        "fragmentSpirvSha256": "8bd376f6b98c104b1ca7d7f61da7196c059140abfa17ce3f035fcb2bdee4b288",
+        "parameterEntrySha256": "cbf589b25df51657bbe06ec65961965e7648abbff297243ae288ba03c6a3a57a",
+        "passStateSha256": "e5848034dac7e9f2c5e362ef5454fdf966ce36a0436097566e33b395fbec5a40",
+        "commonBindingsSha256": "8ef5c309fdb09691e8adc212eeba46396ad279184bd70e6bf8802b333c683820"
+      },
+      "obligations": {
+        "stageProgram": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-stage-program.mjs"
+        },
+        "parameterEntry": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-parameter-entry.mjs"
+        },
+        "passState": {
+          "scope": "selector-local-port",
+          "verifier": "build/verify-official-port-pass-state.mjs"
+        },
+        "commonBindings": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-common-bindings.mjs"
+        },
+        "runtimeDispatch": {
+          "scope": "local-port-dispatch",
+          "verifier": "build/verify-official-port-runtime-dispatch.mjs"
+        }
+      }
+    },
+    {
+      "selectorId": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77",
+      "candidateWitnessId": "4f9e990e7bb17f97ce3fa0b361317bf1d8ae390922b134e568bd7d0d7035de55",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "668d04b08ac8e6eaa395d2ded60fa1365528382c5c11d7beae73229966fcc634",
+      "manifest": "public/shaders/card_illust_double_texture_gradation_uniforms.json",
+      "generator": "build/build-exact-sar.mjs",
+      "officialIdentityFields": {
+        "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
+        "fragmentSpirvSha256": "a1e5fe28bc916eba02fffb0183f95ba73671fb10b1e7f385ad420b5109a65f14",
+        "parameterEntrySha256": "ac5c758cc0da913ce7246087a15c39992a2406014e792d4e6a4ba5e0e70776db",
+        "passStateSha256": "61eaebc027dc803e7a007305d531855b6131f5e1e946021c797b76840bde73c6",
+        "commonBindingsSha256": "e5193711f4fb7554a844213b2ce843edf6a7323414414692989429d3f38b076b"
+      },
+      "obligations": {
+        "stageProgram": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-stage-program.mjs"
+        },
+        "parameterEntry": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-parameter-entry.mjs"
+        },
+        "passState": {
+          "scope": "selector-local-port",
+          "verifier": "build/verify-official-port-pass-state.mjs"
+        },
+        "commonBindings": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-common-bindings.mjs"
+        },
+        "runtimeDispatch": {
+          "scope": "local-port-dispatch",
+          "verifier": "build/verify-official-port-runtime-dispatch.mjs"
+        }
+      }
+    },
+    {
       "selectorId": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2",
       "candidateWitnessId": "4089f1cd646da48bbe8b218644eb189f7c51c342f6af6d56e5b8aed0a3426760",
       "subshader": 0,
@@ -1545,6 +1659,44 @@
         "parameterEntrySha256": "509ee4944adfdc43b45e9834639f71b2ae758c8f779f3324751b93e33438a8bb",
         "passStateSha256": "27e95ab261045a20d26653932e13dc899ae6684a9c069bd2522bd0d30326935f",
         "commonBindingsSha256": "e1e68e07d225dfebd0e01e76004ae69cf5eb2c33197b01c1c70338b5eeb5c284"
+      },
+      "obligations": {
+        "stageProgram": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-stage-program.mjs"
+        },
+        "parameterEntry": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-parameter-entry.mjs"
+        },
+        "passState": {
+          "scope": "selector-local-port",
+          "verifier": "build/verify-official-port-pass-state.mjs"
+        },
+        "commonBindings": {
+          "scope": "semantic-executable",
+          "verifier": "build/verify-official-port-common-bindings.mjs"
+        },
+        "runtimeDispatch": {
+          "scope": "local-port-dispatch",
+          "verifier": "build/verify-official-port-runtime-dispatch.mjs"
+        }
+      }
+    },
+    {
+      "selectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+      "candidateWitnessId": "d8f87a6565c65cca98b4fbbb418a2c37282ba4923b420a912412af19a1b1da91",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "caa7c09e0638d1adb4561d86dc78c6b7c236d3d6bf67ca3c0923c77d7397b94d",
+      "manifest": "public/shaders/card_shadowbox_ui_transparent_rainbow_uniforms.json",
+      "generator": "build/build-exact-sar.mjs",
+      "officialIdentityFields": {
+        "vertexSpirvSha256": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",
+        "fragmentSpirvSha256": "b15af2b33a0b105717ed004f567cb518c8e997fd5b12acf114798631a5ec9367",
+        "parameterEntrySha256": "1ce418f3cfed770ff6302d3d5f269049be7d9678e4d39a0355efcc5dce84f27c",
+        "passStateSha256": "a7b37a02654b8169c3ed237e2094dab1c40eb7976c649031f7f4eb896bc514ab",
+        "commonBindingsSha256": "6944485185d84120b2137a77d2d43f985f25b4b9fda6e11249b68b582a352e69"
       },
       "obligations": {
         "stageProgram": {

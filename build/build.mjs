@@ -12,7 +12,7 @@
 // Output: public/scene.<cardId>.json  { card, prefabGlb, materials{}, textures{name:/game/url}, alphaMode }
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
-import { join, dirname, relative } from "node:path";
+import { join, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { makeAlphaCache } from "./alpha.mjs";
 import { OFFICIAL_RENDERER_TYPE } from "../public/render/official-draw-order.js";
@@ -105,7 +105,8 @@ function recipeFor(cardId) {
   return fallback;
 }
 
-// ---- index every PNG under apks/assets by basename (lower, no ext) -> absolute path
+// ---- index every PNG under apks/assets by basename (lower, no ext) -> absolute paths.
+// Texture2D names are not globally unique: official Ramp and RampMask assets can share a basename.
 const pngByName = new Map();
 function indexPng(root) {
   const stack = [root];
@@ -117,10 +118,46 @@ function indexPng(root) {
       if (e.isDirectory()) stack.push(p);
       else if (e.name.toLowerCase().endsWith(".png")) {
         const k = e.name.slice(0, -4).toLowerCase();
-        if (!pngByName.has(k)) pngByName.set(k, p);
+        if (!pngByName.has(k)) pngByName.set(k, []);
+        pngByName.get(k).push(p);
       }
     }
   }
+  for (const paths of pngByName.values()) paths.sort();
+}
+
+export function resolveTextureAssetPath({
+  name,
+  assetPath,
+  assetsRoot = ASSETS,
+  pngIndex = pngByName,
+  cardId = "scene",
+}) {
+  const candidates = pngIndex.get(name.toLowerCase()) || [];
+  if (assetPath) {
+    const normalized = assetPath.replaceAll("\\", "/").replace(/^\/+/, "");
+    const exportedPath = normalized.replace(/\.(tif|tiff|tga|psd|exr|jpe?g)$/i, ".png");
+    const abs = resolve(assetsRoot, ...exportedPath.split("/"));
+    const rel = relative(resolve(assetsRoot), abs);
+    if (rel.startsWith("..") || rel === "") {
+      throw new Error(`${cardId}: invalid official texture assetPath ${assetPath}`);
+    }
+    if (!existsSync(abs)) {
+      if (candidates.length === 1) return { abs: candidates[0], resourceKey: name };
+      throw new Error(`${cardId}: official texture assetPath is missing from PCR_GAME_SRC: ${assetPath}`);
+    }
+    if (!candidates.includes(abs)) {
+      throw new Error(`${cardId}: ${assetPath} does not resolve to official Texture2D ${name}`);
+    }
+    return { abs, resourceKey: candidates.length > 1 ? normalized : name };
+  }
+  if (candidates.length > 1) {
+    throw new Error(
+      `${cardId}: texture ${name} is ambiguous across ${candidates.length} official asset paths; `
+      + "regenerate the recipe with build/dump_recipe.py so TexEnv.assetPath is preserved",
+    );
+  }
+  return { abs: candidates[0] || null, resourceKey: name };
 }
 
 // Build a card's scene object (materials + textures + glb), DYNAMICALLY for any card. cardId = the full
@@ -166,14 +203,25 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
 
   const texUrls = {};
   const texSlots = new Map();
+  const texPaths = new Map();
   const missing = new Set();
-  function useTexture(name) {
+  function useTexture(name, assetPath) {
     if (!name || name.startsWith("pptr:")) { if (name) missing.add(name); return null; }
-    if (texUrls[name]) return texUrls[name];
-    const abs = pngByName.get(name.toLowerCase());
+    const { abs, resourceKey } = resolveTextureAssetPath({
+      name,
+      assetPath,
+      assetsRoot: ASSETS,
+      pngIndex: pngByName,
+      cardId: CARD_ID,
+    });
     if (!abs) { missing.add(name); return null; }
-    texUrls[name] = toUrl(abs);
-    return texUrls[name];
+    const url = toUrl(abs);
+    if (texUrls[resourceKey] && texUrls[resourceKey] !== url) {
+      throw new Error(`${CARD_ID}: texture resource key ${resourceKey} resolves to multiple official paths`);
+    }
+    texUrls[resourceKey] = url;
+    texPaths.set(resourceKey, abs);
+    return { resourceKey, url };
   }
 
   // MATERIAL → RECIPE map. The renderer iterates the glb's own meshes and looks each up by its
@@ -371,15 +419,19 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
       if (![scale?.x, scale?.y, offset?.x, offset?.y].every(Number.isFinite)) {
         throw new Error(`${CARD_ID}: texture ${mat}.${slot} is missing official TexEnv scale/offset`);
       }
-      const url = useTexture(nm);
+      const resolvedTexture = useTexture(nm, typeof t === "object" ? t.assetPath : null);
       textures[slot] = {
-        name: nm,
-        url,
+        name: resolvedTexture?.resourceKey || nm,
+        url: resolvedTexture?.url || null,
+        officialName: nm,
+        assetPath: typeof t === "object" ? t.assetPath || null : null,
+        textureIdentity: typeof t === "object" ? t.textureIdentity || null : null,
         scale: { x: scale.x, y: scale.y },
         offset: { x: offset.x, y: offset.y },
       }; // url=null if missing (renderer/validator can flag)
-      if (!texSlots.has(nm)) texSlots.set(nm, new Set());
-      texSlots.get(nm).add(slot);
+      const resourceKey = resolvedTexture?.resourceKey || nm;
+      if (!texSlots.has(resourceKey)) texSlots.set(resourceKey, new Set());
+      texSlots.get(resourceKey).add(slot);
     }
     // Renderer-level stencil region. _Stencil=2 is serialized evidence for the inner/window bit; otherwise
     // the official prefab GameObject name carries the region assignment used by Pokémon window renderers.
@@ -407,10 +459,10 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   // straight-alpha textures (the illustration / card_bg_gra) blow out. Memoised by texture name in apks/output.
   const alphaCache = makeAlphaCache(join(OUTPUT, "tex_alpha_modes.json"));
   const alphaMode = {};
-  for (const name of Object.keys(texUrls)) alphaMode[name] = alphaCache.modeFor(name, pngByName.get(name.toLowerCase()));
+  for (const name of Object.keys(texUrls)) alphaMode[name] = alphaCache.modeFor(name, texPaths.get(name));
   alphaCache.flush();
   const textureColorSpace = {};
-  for (const name of Object.keys(texUrls)) textureColorSpace[name] = textureColorSpaceFor(pngByName.get(name.toLowerCase()), texSlots.get(name));
+  for (const name of Object.keys(texUrls)) textureColorSpace[name] = textureColorSpaceFor(texPaths.get(name), texSlots.get(name));
 
   return { officialDrawSchemaVersion: 2, card, prefabGlb: toUrl(glbAbs), materials, officialDraws, runtimeSettings,
            textures: texUrls, alphaMode, textureColorSpace, _missing: [...missing] };

@@ -6,8 +6,11 @@ import { readOfficialTextureSampler } from "./official-texture-sampler.mjs";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outputPath = path.join(ROOT, "public", "texture-samplers.json");
 const publicPath = path.join(ROOT, "public");
-const canonicalCorpus = JSON.parse(fs.readFileSync(path.join(ROOT, "build", "canonical-corpus.json"), "utf8"));
-const scenePaths = canonicalCorpus.scenes.map(({ file }) => path.join(publicPath, file));
+const samplerCorpus = JSON.parse(fs.readFileSync(path.join(ROOT, "build", "texture-sampler-corpus.json"), "utf8"));
+if (samplerCorpus.schemaVersion !== 1 || !Array.isArray(samplerCorpus.scenes)) {
+  throw new Error("unsupported texture sampler corpus");
+}
+const scenePaths = samplerCorpus.scenes.map((file) => path.join(publicPath, file));
 const official = readOfficialTextureSampler({ scenes: scenePaths });
 const textures = {};
 const runtimeTextures = {

@@ -279,12 +279,14 @@ def resolve_astcenc() -> tuple[Path, dict]:
     if configured:
         candidates.append(Path(configured))
     candidates.extend(ROOT / ".tools" / name for name in ASTCENC_NAMES)
+    candidates.extend(ROOT / ".tools" / "bin" / name for name in ASTCENC_NAMES)
     candidates.extend(Path(found) for name in ASTCENC_NAMES if (found := shutil.which(name)))
     executable = next((path.resolve() for path in candidates if path.is_file()), None)
     if executable is None:
         raise RuntimeError(
             "official ASTC_HDR texture requires ARM astcenc; set PCR_ASTCENC or place "
-            "astcenc in .tools/ (https://github.com/ARM-software/astc-encoder/releases)"
+            "astcenc in .tools/ or .tools/bin/ "
+            "(https://github.com/ARM-software/astc-encoder/releases)"
         )
     version_result = subprocess.run(
         [str(executable), "-version"],
@@ -738,7 +740,7 @@ def main() -> int:
     for item in textures.values():
         for candidate in item["candidates"]:
             fallback_bytes = candidate.pop("_rgba8FallbackBytes", None)
-            chain = candidate.get("fallback", {}).get("rgba8MipChain")
+            chain = (candidate.get("fallback") or {}).get("rgba8MipChain")
             if fallback_bytes is not None and chain:
                 emitted_files.setdefault(chain["url"], fallback_bytes)
     if args.emit_rgba_fallback_root:
@@ -752,7 +754,7 @@ def main() -> int:
     if args.emit_base_png_root:
         output_root = args.emit_base_png_root.resolve()
         for item in textures.values():
-            chain = item.get("fallback", {}).get("rgba8MipChain")
+            chain = (item.get("fallback") or {}).get("rgba8MipChain")
             if not chain:
                 continue
             fallback_bytes = emitted_files.get(chain["url"])

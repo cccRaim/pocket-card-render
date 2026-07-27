@@ -13,6 +13,20 @@ const shaderRoot = process.env.PCR_SHADERS
 const sceneNames = fs.readdirSync(path.join(ROOT, "public"))
   .filter((n) => /^scene\..*\.json$/.test(n))
   .sort();
+const portContract = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public", "shaders", "official_program_port_contract.json"),
+  "utf8",
+));
+const exactSelectorManifests = portContract.ports.map((port) => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, port.manifest), "utf8"));
+  const selector = manifest.official_selector;
+  if (!selector || selector.selectorId !== port.selectorId
+      || selector.candidateWitnessId !== port.candidateWitnessId
+      || selector.subshader !== port.subshader || selector.pass !== port.pass) {
+    throw new Error(`${port.manifest}: selector identity disagrees with the formal port contract`);
+  }
+  return manifest;
+});
 
 const KEYWORDS = {
   Effect: {
@@ -41,6 +55,21 @@ function sceneId(sceneName) {
 
 function nearly(a, b) {
   return typeof a === "number" && Math.abs(a - b) <= 1e-6;
+}
+
+function exactSelectorKeywordRoute(mat, shader) {
+  const official = mat.official;
+  if (typeof official?.shader !== "string" || !Array.isArray(official.validKeywords)) return null;
+  const actualKeywords = [...official.validKeywords].sort();
+  const matches = exactSelectorManifests.filter((manifest) => {
+    const selector = manifest.official_selector;
+    const shaderKey = manifest.runtime_contract?.shader_key
+      || selector?.shaderName?.split("/").at(-1);
+    return shaderKey === shader
+      && selector?.shaderIdentity === official.shader
+      && JSON.stringify([...(selector.keywords || [])].sort()) === JSON.stringify(actualKeywords);
+  });
+  return matches.length === 1 ? matches[0] : null;
 }
 
 let official;
@@ -77,6 +106,19 @@ for (const sceneName of sceneNames) {
       }
       const rule = KEYWORDS[shader]?.[kw];
       if (!rule) {
+        const exactManifest = exactSelectorKeywordRoute(mat, shader);
+        if (exactManifest) {
+          rows.push({
+            ok: true,
+            scene: sceneId(sceneName),
+            shader,
+            mat: matName,
+            kw,
+            value: exactManifest.official_selector.selectorId,
+            reason: "selected by exact official selector manifest",
+          });
+          continue;
+        }
         rows.push({ ok: false, scene: sceneId(sceneName), shader, mat: matName, kw, reason: "official keyword missing strategy rule" });
         continue;
       }

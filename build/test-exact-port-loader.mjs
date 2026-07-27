@@ -36,9 +36,18 @@ const loaded = await loadExactShaderPortsFromContract({
   fetchAsset: filesystemFetch(),
   contractUrl,
 });
-assert.equal(Object.keys(loaded).length, 34);
+assert.equal(Object.keys(loaded).length, 37);
 assert.equal(Object.values(loaded).filter((port) => !port.stageSourceOnly)
-  .flatMap((port) => port.manifests).length, 41);
+  .flatMap((port) => port.manifests).length, 45);
+assert.equal(loaded.Card_Illust_DoubleTexture.manifests.length, 2);
+assert.deepEqual(
+  loaded.Card_Illust_DoubleTexture.manifests
+    .map((manifest) => manifest.official_selector.keywords)
+    .sort((left, right) => left.length - right.length),
+  [[], ["_USEGRADATIONTEXTURE_ON"]],
+);
+assert.equal(loaded.Transparent_HologramLayer.manifests.length, 1);
+assert.equal(loaded.Card_ShadowBoxUI_Transparent_Rainbow.manifests.length, 1);
 assert.equal(loaded.Card_Circular_Moving_Kira.manifests.length, 2);
 assert.equal(loaded.Card_Circular_Trail_Kira.manifests.length, 2);
 assert.equal(loaded.Effect.manifests.length, 6);
@@ -125,4 +134,4 @@ await assert.rejects(
   /runtime-bound stage source contract is malformed/,
 );
 
-console.log("Exact port contract loader tests OK: 41 formal ports + 1 runtime boundary");
+console.log("Exact port contract loader tests OK: 45 formal ports + 1 runtime boundary");

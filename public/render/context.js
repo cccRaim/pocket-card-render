@@ -182,13 +182,25 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
     clear: makeDefaultTex([0, 0, 0, 0], "shaderlab-clear"),
     bump: makeDefaultTex([128, 128, 255, 255], "shaderlab-bump"),
   };
-  const grayCubeTex = new THREE.CubeTexture(
-    Array.from({ length: 6 }, () => makeDefaultTex([128, 128, 128, 255]))
-  );
-  grayCubeTex.name = "PCR neutral gray cube";
-  grayCubeTex.userData.backendTextureDefault = "neutral-gray-cube";
-  grayCubeTex.colorSpace = THREE.NoColorSpace;
-  grayCubeTex.needsUpdate = true;
+  const makeDefaultCube = (rgba, backendTextureDefault, name) => {
+    const texture = new THREE.CubeTexture(
+      Array.from({ length: 6 }, () => makeDefaultTex(rgba, backendTextureDefault))
+    );
+    texture.name = name;
+    texture.userData.backendTextureDefault = backendTextureDefault;
+    texture.colorSpace = THREE.NoColorSpace;
+    texture.needsUpdate = true;
+    return texture;
+  };
+  const defaultCube = {
+    "neutral-gray-cube": makeDefaultCube(
+      [128, 128, 128, 255],
+      "neutral-gray-cube",
+      "PCR neutral gray cube",
+    ),
+    "shaderlab-black": makeDefaultCube([0, 0, 0, 0], "shaderlab-black", "PCR ShaderLab black cube"),
+    "shaderlab-white": makeDefaultCube([255, 255, 255, 255], "shaderlab-white", "PCR ShaderLab white cube"),
+  };
   const layerTex = (L, slot) => {
     const n = L.textures?.[slot]?.name;
     return n && texInfo.has(n) ? texInfo.get(n).tex : null;
@@ -222,7 +234,12 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
   const layerTexDefaultRepeat = (L, slot) => layerTexRepeat(L, slot) || layerTexDefault(L, slot);
   // Unity's empty Cubemap property default is a built-in gray cube. A material without an explicit
   // _CubeMap must not inherit another material's environment map merely because the scene loaded one.
-  const layerCubeDefault = (L, slot = "_CubeMap") => (L.textures?.[slot] && envCubeTex) || grayCubeTex;
+  const layerCubeDefault = (L, slot = "_CubeMap", backendTextureDefault = "neutral-gray-cube") => {
+    if (L.textures?.[slot] && envCubeTex) return envCubeTex;
+    const texture = defaultCube[backendTextureDefault];
+    if (!texture) throw new Error(`${L.shader}: unsupported cube default ${backendTextureDefault}`);
+    return texture;
+  };
   const texStraight = (name) => !!(name && texInfo.has(name) && texInfo.get(name).straight);
   const exactShaderPort = (recipe, key) => selectExactShaderPort(exactShaders, recipe, key);
   const exactShaderPorts = (recipe, key) => selectExactShaderPorts(exactShaders, recipe, key);
