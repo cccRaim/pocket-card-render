@@ -22,16 +22,47 @@ export function loadExactPortUsageContracts(root) {
     if (!shader || runtime.require_complete_active_bindings !== true) continue;
     let usage = byShader.get(shader);
     if (!usage) {
-      usage = { textures: new Set(), floats: new Set(), colors: new Set(), manifests: [] };
+      usage = {
+        textures: new Set(),
+        producerTextures: new Set(),
+        producerTextureModes: new Map(),
+        floats: new Set(),
+        colors: new Set(),
+        manifests: [],
+      };
       byShader.set(shader, usage);
     }
     usage.manifests.push(file);
     addAll(usage.textures, Array.isArray(manifest.sampler_slots)
       ? manifest.sampler_slots
       : [manifest.sampler_slots]);
+    for (const binding of manifest.sampler_bindings || []) {
+      const dynamic = runtime.dynamic_uniforms?.[binding.spirvName];
+      const producerOwned = (
+        typeof binding.slot === "string"
+        && binding.slot
+        && dynamic?.type === binding.glslType
+        && /^sampler/u.test(dynamic.type)
+        && typeof dynamic.source === "string"
+        && dynamic.source
+      );
+      if (typeof binding.slot === "string" && binding.slot) {
+        usage.producerTextureModes.set(
+          binding.slot,
+          (usage.producerTextureModes.get(binding.slot) ?? true)
+            && Boolean(producerOwned),
+        );
+      }
+    }
     addAll(usage.floats, runtime.material_uniforms?.floats);
     addAll(usage.floats, runtime.material_uniforms?.ints);
     addAll(usage.colors, Object.keys(runtime.material_uniforms?.vectors || {}));
+  }
+  for (const usage of byShader.values()) {
+    for (const [slot, producerOwned] of usage.producerTextureModes) {
+      if (producerOwned) usage.producerTextures.add(slot);
+    }
+    delete usage.producerTextureModes;
   }
   return byShader;
 }

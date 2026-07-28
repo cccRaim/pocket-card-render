@@ -1,0 +1,83 @@
+precision mediump float;
+precision highp int;
+
+uniform highp mat4 viewMatrix;
+uniform highp float _Transparency;
+uniform float _DiffractionIntensity;
+uniform float _DiffractionPower;
+uniform float _RampRepeat;
+uniform float _RampSpeed;
+uniform float _RampOffset;
+uniform float _RampInterval;
+
+uniform mediump sampler2D _90;
+uniform mediump sampler2D _160;
+uniform mediump sampler2D _219;
+uniform mediump sampler2D _233;
+
+in highp vec3 vs_TEXCOORD1;
+in highp vec2 vs_TEXCOORD0;
+layout(location = 0) out highp vec4 _258;
+layout(location = 1) out highp vec4 _273;
+highp vec3 _9;
+highp float _38;
+vec4 _49;
+vec3 _96;
+highp vec2 _119;
+float _159;
+vec3 _193;
+float _199;
+vec4 _218;
+
+void main()
+{
+    highp vec3 pcrUnityWorldNormal = vec3(vs_TEXCOORD1.xy, -vs_TEXCOORD1.z);
+    _9.x = -viewMatrix[0].z;
+    _9.y = -viewMatrix[1].z;
+    _9.z = viewMatrix[2].z;
+    _38 = dot(_9, _9);
+    _38 = inversesqrt(_38);
+    _9 = vec3(_38) * _9;
+    highp vec3 _54 = (_9 * vec3(0.5)) + vec3(0.5);
+    _49 = vec4(_54.x, _54.y, _54.z, _49.w);
+    _9 = (pcrUnityWorldNormal * vec3(0.5)) + vec3(0.5);
+    _38 = dot(_9.xy, _49.xy);
+    _9 *= vec3(vec3(_RampSpeed, _RampSpeed, _RampSpeed));
+    _9.x = dot(_9, _49.xyz);
+    _49 = texture(_90, vs_TEXCOORD0);
+    _96.x = (-_49.y) + 2.0;
+    _96.y = _96.x * 0.25;
+    _96.x = _49.x * 0.25;
+    vec2 _115 = _96.xy + vec2(0.25);
+    _96 = vec3(_115.x, _115.y, _96.z);
+    _119 = vec2(_38) + (-_96.xy);
+    _119 = min(abs(_119), vec2(1.0));
+    _119 = (-_119) + vec2(1.0);
+    _119 = log2(_119);
+    _119 *= vec2(vec2(_DiffractionPower, _DiffractionPower));
+    _119 = exp2(_119);
+    _119 = _49.zw * _119;
+    _96.x = _119.y + _119.x;
+    _159 = texture(_160, vs_TEXCOORD0).x;
+    _9.x = (-_159) + _9.x;
+    _9.x = (_9.x * _RampRepeat) + _RampOffset;
+    _119.x = floor(_9.x);
+    _9.x = (-_119.x) + _9.x;
+    _193.x = _RampInterval + 1.0;
+    _199 = _RampInterval * 0.5;
+    _9.x = (_9.x * _193.x) + (-_199);
+    _9.x = clamp(_9.x, 0.0, 1.0);
+    _9.y = 0.5;
+    vec3 _224 = texture(_219, _9.xy).xyz;
+    _218 = vec4(_224.x, _224.y, _224.z, _218.w);
+    _193 = _218.xyz * vec3(_DiffractionIntensity);
+    _218 = texture(_233, vs_TEXCOORD0);
+    _96 = (_193 * _96.xxx) + _218.xyz;
+    _96 = _218.www * _96;
+    _9.x = (-_Transparency) + 1.0;
+    _9.x = clamp(_9.x, 0.0, 1.0);
+    highp vec3 _262 = _9.xxx * _96;
+    _258 = vec4(_262.x, _262.y, _262.z, _258.w);
+    _258.w = _9.x * _218.w;
+    _273 = vec4(0.0);
+}

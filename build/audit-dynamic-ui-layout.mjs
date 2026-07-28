@@ -219,7 +219,8 @@ if (!/officialFontVerticalBounds/.test(app) || /bounds\.push\(inkBounds\(e,\s*" 
 }
 if (!/unityLayer:\s*Number\(element\?\.unityLayer\)/.test(app)
     || !/unityLayer:\s*Number\(e\.unityLayer\)/.test(app)
-    || !/dynUIMat\.uniforms\[uniformName\]\.value\s*=\s*t\.ui/.test(app)) {
+    || !/dynamicUITextMaterials/.test(app)
+    || !/material\.uniforms\[uniformName\]\.value\s*=\s*t\.ui/.test(app)) {
   issues.push("public/app.js: DynamicUI Text/Holo draw and locale-swap partition is not wired");
 }
 

@@ -96,6 +96,27 @@ export function bindOfficialPassDefaults(manifest) {
 }
 
 export function selectExactShaderPorts(exactShaders, recipe, key) {
+  const dispatchedPorts = recipe?.runtimeDispatch?.officialPorts;
+  if (Array.isArray(dispatchedPorts) && dispatchedPorts.length > 0) {
+    if (key !== undefined && key !== recipe.runtimeDispatch.shaderKey) return [];
+    const matches = dispatchedPorts.map((identity) => {
+      const identityKey = officialPortIdentityKey(identity);
+      const source = identityKey ? exactShaders?.sourcesByPortIdentity?.[identityKey] : null;
+      if (!source?.vert || !source?.frag || !source?.manifest) return null;
+      try {
+        return { ...source, manifest: bindOfficialPassDefaults(source.manifest) };
+      } catch {
+        return null;
+      }
+    });
+    if (matches.some((match) => !match)) return [];
+    if (matches.length === 1) return matches;
+    try {
+      return orderOfficialPasses(matches, (match) => match.manifest?.official_selector);
+    } catch {
+      return [];
+    }
+  }
   const port = exactShaders?.[key];
   const official = recipe?.official;
   if (!port || typeof official?.shader !== "string" || !Array.isArray(official.validKeywords)
@@ -150,7 +171,8 @@ export function selectExactShaderPort(exactShaders, recipe, key) {
 }
 
 export function selectCompatibleStageSource(exactShaders, key) {
-  const source = exactShaders?.[key];
+  const resolvedKey = typeof key === "string" ? key : key?.runtimeDispatch?.shaderKey;
+  const source = exactShaders?.[resolvedKey];
   return source?.stageSourceOnly === true && source.vert && source.frag ? source : null;
 }
 
@@ -162,12 +184,19 @@ export function selectCompatibleStageSource(exactShaders, key) {
  * @param {THREE.Material[]} exactGlitMats   selector-bound glitter materials driven by FlowParams state
  * @param {THREE.Material[]} kiraPuyoMats    Card_Scaling_Kira materials driven by renderer MPBs
  * @param {Map<string, object>} circularKiraComponents Card_Circular_* component states
+ * @param {THREE.Material[]} megaDynamicMats Mega RR materials with inferred runtime intensity inputs
  * @param {THREE.Texture|null} dynUITex       DynamicUIType.Text texture (Unity layer 17 / CardUIText)
  * @param {THREE.Texture|null} dynHoloTex     DynamicUIType.Holo texture (Unity layer 18 / CardUIMetallic)
  * @param {THREE.Texture|null} foilTex        alpha mask for UI foil-only regions
  * @param {THREE.Material[]} exHoloMats       EX/UI holo materials whose DynamicUI textures can be swapped
  */
-export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, runtimeSettings = {}, dynUITex, dynHoloTex, foilTex, exHoloMats }) {
+export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, megaDynamicMats = [], runtimeSettings = {}, dynUITex, dynHoloTex, foilTex, exHoloMats }) {
+  // Native producer components own their state independently of Material
+  // instances. Keying these stores by producer schema + official component
+  // identity preserves that ownership when one renderer has multiple slots or
+  // several materials consume the same MaterialPropertyBlock payload.
+  const runtimeComponentStates = new Map();
+  const runtimeComponentTextures = new Map();
   const makeDefaultTex = (rgba, backendTextureDefault) => {
     const t = new THREE.DataTexture(new Uint8Array(rgba), 1, 1, THREE.RGBAFormat);
     t.colorSpace = THREE.NoColorSpace;
@@ -179,6 +208,7 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
     white: makeDefaultTex([255, 255, 255, 255], "shaderlab-white"),
     // ShaderLab's "black" default is the no-op texture for premultiplied card layers.
     black: makeDefaultTex([0, 0, 0, 0], "shaderlab-black"),
+    gray: makeDefaultTex([128, 128, 128, 255], "shaderlab-gray"),
     clear: makeDefaultTex([0, 0, 0, 0], "shaderlab-clear"),
     bump: makeDefaultTex([128, 128, 255, 255], "shaderlab-bump"),
   };
@@ -223,7 +253,7 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
   const layerTexDefault = (L, slot) => {
     const t = layerTex(L, slot);
     if (t) return t;
-    const def = SHADER_TEXTURE_DEFAULTS[L.shader]?.[slot];
+    const def = SHADER_TEXTURE_DEFAULTS[L.runtimeDispatch?.shaderKey]?.[slot];
     return def ? defaultTex[def] : null;
   };
   // Legacy helper name retained for material strategies. Sampler wrap is texture-object data, so a slot
@@ -243,7 +273,7 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
   const texStraight = (name) => !!(name && texInfo.has(name) && texInfo.get(name).straight);
   const exactShaderPort = (recipe, key) => selectExactShaderPort(exactShaders, recipe, key);
   const exactShaderPorts = (recipe, key) => selectExactShaderPorts(exactShaders, recipe, key);
-  const compatibleStageSource = (key) => selectCompatibleStageSource(exactShaders, key);
+  const compatibleStageSource = (recipe) => selectCompatibleStageSource(exactShaders, recipe);
   const exactPortUniforms = (recipe, port, resolveSampler) => {
     const manifest = port?.manifest;
     const contract = manifest?.runtime_contract;
@@ -252,9 +282,42 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
       throw new Error(`${manifest?.shader || "exact shader"}: incomplete selector port manifest`);
     }
     const uniforms = {};
+    const defaultSampler = (binding) => {
+      const descriptor = defaults.textureDescriptors?.[binding.slot];
+      const dimension = Number(binding.dimension ?? descriptor?.dimension);
+      if (descriptor && Number(descriptor.dimension) !== dimension) {
+        throw new Error(`${manifest.shader}: sampler ${binding.slot} dimension disagrees with Shader property`);
+      }
+      const backendDefault = contract.backend_texture_defaults?.[binding.slot];
+      if (backendDefault) {
+        const texture = dimension === 4
+          ? defaultCube[backendDefault]
+          : defaultTex[backendDefault];
+        if (!texture) {
+          throw new Error(`${manifest.shader}: unsupported backend texture default ${backendDefault}`);
+        }
+        return texture;
+      }
+      const shaderDefault = descriptor?.defaultName;
+      // Unity resolves an empty/invalid 2D ShaderLab texture default to its built-in gray texture.
+      // Non-2D defaults remain explicit backend policy because their submitted descriptor is not
+      // proven by serialized Shader property bytes alone.
+      if (shaderDefault === "" && dimension === 2) return defaultTex.gray;
+      if (!shaderDefault) return null;
+      const texture = dimension === 4
+        ? defaultCube[`shaderlab-${shaderDefault}`]
+        : defaultTex[shaderDefault];
+      if (!texture) {
+        throw new Error(`${manifest.shader}: unsupported Shader texture default ${shaderDefault}`);
+      }
+      return texture;
+    };
     for (const binding of manifest.sampler_bindings) {
-      const value = resolveSampler(binding);
-      if (!value) throw new Error(`${manifest.shader}: sampler ${binding.slot} is unresolved`);
+      const value = resolveSampler(binding) || defaultSampler(binding);
+      const dynamicSampler = contract.dynamic_uniforms?.[binding.spirvName];
+      if (!value && !["sampler2D", "samplerCube"].includes(dynamicSampler?.type)) {
+        throw new Error(`${manifest.shader}: sampler ${binding.slot} is unresolved`);
+      }
       uniforms[binding.spirvName] = { value };
     }
     const floats = recipe?.floats || {};
@@ -292,11 +355,18 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
       uniforms[transform.uniform] = { value: new THREE.Vector4(...value) };
     }
     for (const [name, spec] of Object.entries(contract.backend_uniforms || {})) {
-      uniforms[name] = { value: spec.value };
+      const value = spec.type === "vec2"
+        ? new THREE.Vector2(...spec.value)
+        : spec.type === "vec3"
+          ? new THREE.Vector3(...spec.value)
+          : spec.type === "vec4"
+            ? new THREE.Vector4(...spec.value)
+            : spec.value;
+      uniforms[name] = { value };
     }
     return uniforms;
   };
-  return { THREE, layerTex, layerTexNoColorSpace, layerTexDefault, layerTexRepeat, layerTexDefaultRepeat, layerCubeDefault, texStraight, envCubeTex, exactShaders, exactShaderPort, exactShaderPorts, compatibleStageSource, exactPortUniforms, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, runtimeSettings, dynUITex, dynHoloTex, foilTex, exHoloMats };
+  return { THREE, layerTex, layerTexNoColorSpace, layerTexDefault, layerTexRepeat, layerTexDefaultRepeat, layerCubeDefault, texStraight, envCubeTex, exactShaders, exactShaderPort, exactShaderPorts, compatibleStageSource, exactPortUniforms, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, dynamicPortMats: megaDynamicMats, megaDynamicMats, runtimeSettings, runtimeComponentStates, runtimeComponentTextures, dynUITex, dynHoloTex, foilTex, exHoloMats };
 }
 
 // ── render state applied to a built material by the dispatcher ──
@@ -459,32 +529,13 @@ export function applyOfficialPassState(mat, recipe, contract, { stencil = true }
   return true;
 }
 
-const SB_STENCIL_SHADERS = new Set([
-  "Simple-Opaque-Hologram_Tuning",
-  "Simple-Transparent",
-  "Opaque-Hologram_Tuning",
-  "Opaque-UR-Oklab",
-]);
-const STENCIL_REF_SHADERS = new Set([
-  "Card_Hologram_Tuning",
-  "Card_Illust",
-  "Card_Parallax",
-  "Card_Parallax_Hologram_Tuning",
-  "Card_Parallax_Hologram_UR_New",
-  "Card_Parallax_Metal",
-  "Card_Parallax_UR",
-  "Card_UR_Plate",
-]);
-
 export function applyStencilState(mat, recipe) {
   const resolvedStencilRegion = resolveStencilRegionFloats(recipe);
   const f = resolvedStencilRegion.floats;
-  const shader = recipe?.shader || "";
-  const read = SB_STENCIL_SHADERS.has(shader) || shader === "Effect"
+  const mode = recipe?.runtimeDispatch?.capabilities?.stencil || "none";
+  const read = mode === "shadowbox" || mode === "read-stencil"
     ? f._Stencil
-    : STENCIL_REF_SHADERS.has(shader)
-      ? f._StencilRef
-      : null;
+    : mode === "read-stencil-ref" ? f._StencilRef : null;
   if (read == null) return false;
 
   mat.stencilWrite = true;
@@ -492,7 +543,7 @@ export function applyStencilState(mat, recipe) {
   mat.stencilFuncMask = read;
   mat.stencilFail = mat.stencilZFail = THREE.KeepStencilOp;
 
-  if (SB_STENCIL_SHADERS.has(shader)) {
+  if (mode === "shadowbox") {
     mat.stencilRef = 7;
     mat.stencilWriteMask = 4;
     mat.stencilZPass = THREE.ReplaceStencilOp;

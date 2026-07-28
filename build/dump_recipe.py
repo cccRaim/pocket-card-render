@@ -23,6 +23,7 @@ from extract_official_srp_batcher import (
     witness_rows,
 )
 UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+CAB_RE = re.compile(rb"CAB-[0-9a-fA-F]{32}")
 
 def tt(o):
     try: return o.read_typetree()
@@ -75,10 +76,118 @@ def pptr_identity(owner, pointer):
         "identity": f"{source}:{path_id}",
     }
 
+def nearest_decrypted_root(path):
+    current = os.path.abspath(path)
+    while True:
+        if os.path.basename(current).lower() == "decrypted":
+            return current
+        parent = os.path.dirname(current)
+        if parent == current:
+            return None
+        current = parent
+
+def bundle_owner_cab(path):
+    """Read the uncompressed UnityFS owner CAB name from the bundle header."""
+    try:
+        with open(path, "rb") as fh:
+            header = fh.read(512)
+    except OSError:
+        return None
+    match = CAB_RE.search(header)
+    return match.group(0).decode("ascii") if match else None
+
+def locate_cab_bundles(roots, targets):
+    remaining = set(targets)
+    located = {}
+    for root in roots:
+        if not remaining:
+            break
+        candidates = [root] if os.path.isfile(root) else glob.iglob(
+            os.path.join(root, "**", "*_bundles"), recursive=True
+        )
+        for path in candidates:
+            cab = bundle_owner_cab(path)
+            if cab not in remaining:
+                continue
+            normalized = os.path.abspath(path)
+            previous = located.get(cab)
+            if previous and os.path.normcase(previous) != os.path.normcase(normalized):
+                raise RuntimeError(
+                    f"official CAB {cab} has multiple owning bundles: "
+                    f"{previous} and {normalized}"
+                )
+            located[cab] = normalized
+            remaining.remove(cab)
+            if not remaining:
+                break
+    if remaining:
+        raise RuntimeError(
+            "could not locate official dependency bundle(s): "
+            + ", ".join(sorted(remaining))
+        )
+    return located
+
+def required_dependency_cabs(env, card_bundle_names):
+    """Return unresolved direct dependencies required by current-card draws."""
+    objects = list(env.objects)
+    loaded_cabs = {str(obj.assets_file.name) for obj in objects}
+    object_by_identity = {
+        f"{obj.assets_file.name}:{int(obj.path_id)}": obj
+        for obj in objects
+    }
+    selected_materials = set()
+    pointers = []
+
+    def source_bundle(obj):
+        parent = getattr(getattr(obj, "assets_file", None), "parent", None)
+        return getattr(parent, "name", None)
+
+    for obj in objects:
+        if source_bundle(obj) not in card_bundle_names:
+            continue
+        tree = tt(obj)
+        if obj.type.name == "MeshRenderer":
+            for pointer in tree.get("m_Materials", []) or []:
+                if not isinstance(pointer, dict):
+                    continue
+                identity = pptr_identity(obj, pointer)
+                if identity["pathId"] != "0":
+                    selected_materials.add(identity["identity"])
+                    pointers.append(identity)
+        elif obj.type.name == "MeshFilter":
+            pointer = tree.get("m_Mesh") or {}
+            if isinstance(pointer, dict):
+                identity = pptr_identity(obj, pointer)
+                if identity["pathId"] != "0":
+                    pointers.append(identity)
+
+    for identity in selected_materials:
+        material_obj = object_by_identity.get(identity)
+        if material_obj is None:
+            continue
+        tree = tt(material_obj)
+        shader = pptr_identity(material_obj, tree.get("m_Shader") or {})
+        if shader["pathId"] != "0":
+            pointers.append(shader)
+        saved = tree.get("m_SavedProperties") or {}
+        for value in kvlist(saved.get("m_TexEnvs", [])).values():
+            texture = pptr_identity(material_obj, (value or {}).get("m_Texture") or {})
+            if texture["pathId"] != "0":
+                pointers.append(texture)
+
+    return {
+        pointer["source"]
+        for pointer in pointers
+        if pointer["source"].startswith("CAB-")
+        and pointer["source"] not in loaded_cabs
+    }
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("path", help="the card's decrypted Face/<illId>/L dir (its prefab bundle root)")
     ap.add_argument("--shared", action="append", default=[], help="extra shared bundle dir(s) so PPtrs resolve (Common/CardNew/Common, Common/Shader)")
+    ap.add_argument("--dependency-root", action="append", default=[],
+                    help="bundle root(s) used to locate unresolved direct PPtrs by owner CAB")
     ap.add_argument("--out", default="card_render_full.json", help="output recipe path")
     ap.add_argument("--shader-state", default=None, help="optional card_shader_state.json to merge per-shader render state")
     args = ap.parse_args()
@@ -95,10 +204,32 @@ def main():
     def src_bundle(o):
         p = getattr(getattr(o, "assets_file", None), "parent", None)
         return getattr(p, "name", None)
+    dependency_roots = [os.path.abspath(root) for root in args.dependency_root]
+    inferred_root = nearest_decrypted_root(args.path)
+    if inferred_root and inferred_root not in dependency_roots:
+        dependency_roots.append(inferred_root)
     env = None
-    for _ in range(5):
+    located_dependencies = {}
+    for _ in range(8):
         env = UnityPy.load(*files)
-        if any(o.type.name == "Material" for o in env.objects): break
+        missing_cabs = required_dependency_cabs(env, card_bundle_names)
+        if not missing_cabs:
+            break
+        if not dependency_roots:
+            raise RuntimeError(
+                "unresolved official dependencies require --dependency-root: "
+                + ", ".join(sorted(missing_cabs))
+            )
+        new_locations = locate_cab_bundles(dependency_roots, missing_cabs)
+        for cab, dependency_path in new_locations.items():
+            previous = located_dependencies.get(cab)
+            if previous and previous != dependency_path:
+                raise RuntimeError(f"official CAB {cab} dependency location changed")
+            located_dependencies[cab] = dependency_path
+            if dependency_path not in files:
+                files.append(dependency_path)
+    else:
+        raise RuntimeError("official dependency closure exceeded 8 passes")
     objs = list(env.objects)
 
     lod_group_renderers = set()
@@ -198,10 +329,17 @@ def main():
                 raise RuntimeError(f"Shader {oid} keyword names/flags length mismatch")
             nm = parsed.get("m_Name") or d.get("m_Name","")
             srp_witnesses = shader_srp_incompatibility_witnesses(d, parsed)
+            search_tags = sorted({
+                value
+                for subshader in (parsed.get("m_SubShaders") or [])
+                for key, value in ((subshader.get("m_Tags") or {}).get("tags") or [])
+                if key == "SearchTag"
+            })
             shaders[oid] = {
                 "name": nm,
                 "keywordNames": parsed["m_KeywordNames"],
                 "keywordFlags": parsed["m_KeywordFlags"],
+                "searchTags": search_tags,
                 "srpBatcherCompatible": 0 if srp_witnesses else None,
                 "srpBatcherEvidence": "non-UnityPerDraw-unity_ObjectToWorld" if srp_witnesses else None,
                 "srpBatcherWitnessCount": len(srp_witnesses),
@@ -257,6 +395,440 @@ def main():
             },
             "min": d["Min"],
             "max": d["Max"],
+        }
+
+    future_fields = {
+        "_animationTexFrameCount", "_animationFrameCount", "_animSwitchSpeed",
+        "_animFrameOffset", "_skipAnimThreshold", "_accellRatio",
+        "<IsAnimationStopped>k__BackingField",
+    }
+    future_settings = {}
+    for component_identity, (o, d) in mono_behaviours.items():
+        if src_bundle(o) not in card_bundle_names or not future_fields.issubset(d):
+            continue
+        component_go = pptr_identity(o, d.get("m_GameObject") or {})
+        if component_go["pathId"] == "0":
+            raise RuntimeError(f"CardFutureObject {component_identity} has a null GameObject PPtr")
+        future_settings[component_identity] = {
+            "componentIdentity": component_identity,
+            "componentGoIdentity": component_go["identity"],
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "rendererBindings": [],
+            "animationTexFrameCount": d["_animationTexFrameCount"],
+            "animationFrameCount": d["_animationFrameCount"],
+            "animSwitchSpeed": d["_animSwitchSpeed"],
+            "animFrameOffset": d["_animFrameOffset"],
+            "skipAnimThreshold": d["_skipAnimThreshold"],
+            "accellRatio": d["_accellRatio"],
+            "isAnimationStopped": d["<IsAnimationStopped>k__BackingField"],
+        }
+
+    ancient_fields = {
+        "_animCurveSettings", "_animCurveScale", "_animStartDelayRangeA",
+        "_animStartDelayRangeB", "_changeRangeStart", "_changeRangeEnd",
+        "_zuzuGoalAnimThreshold", "_goalThreshold", "_scrolls", "_scrollLength",
+        "_shapeChangeSpeed", "_dot2Multiply", "_accellRatio", "_diffOffset",
+        "_shakeAIntensity", "_shakeAFrequency", "_shakeBIntensity",
+        "_shakeBFrequency", "_shakeSpeed", "_noiseScale", "_sandParticleSystems",
+        "_sand2ParticleSystems", "_frictionScale", "_maxFriction",
+        "_startSandBaseEmissionRate", "_middleSandBaseEmissionRate",
+        "_endSandBaseEmissionRate",
+    }
+    ancient_scalar_map = {
+        "animCurveScale": "_animCurveScale",
+        "animStartDelayRangeA": "_animStartDelayRangeA",
+        "animStartDelayRangeB": "_animStartDelayRangeB",
+        "changeRangeStart": "_changeRangeStart",
+        "changeRangeEnd": "_changeRangeEnd",
+        "zuzuGoalAnimThreshold": "_zuzuGoalAnimThreshold",
+        "goalThreshold": "_goalThreshold",
+        "scrollLength": "_scrollLength",
+        "shapeChangeSpeed": "_shapeChangeSpeed",
+        "dot2Multiply": "_dot2Multiply",
+        "accellRatio": "_accellRatio",
+        "diffOffset": "_diffOffset",
+        "shakeSpeed": "_shakeSpeed",
+        "noiseScale": "_noiseScale",
+        "frictionScale": "_frictionScale",
+        "maxFriction": "_maxFriction",
+        "startSandBaseEmissionRate": "_startSandBaseEmissionRate",
+        "middleSandBaseEmissionRate": "_middleSandBaseEmissionRate",
+        "endSandBaseEmissionRate": "_endSandBaseEmissionRate",
+    }
+    ancient_vector_map = {
+        "shakeAIntensity": "_shakeAIntensity",
+        "shakeAFrequency": "_shakeAFrequency",
+        "shakeBIntensity": "_shakeBIntensity",
+        "shakeBFrequency": "_shakeBFrequency",
+    }
+    ancient_settings = {}
+    for component_identity, (o, d) in mono_behaviours.items():
+        if src_bundle(o) not in card_bundle_names or not ancient_fields.issubset(d):
+            continue
+        component_go = pptr_identity(o, d.get("m_GameObject") or {})
+        curve_settings = pptr_identity(o, d["_animCurveSettings"] or {})
+        if component_go["pathId"] == "0" or curve_settings["pathId"] == "0":
+            raise RuntimeError(f"CardAncientObject {component_identity} has a null GameObject/settings PPtr")
+        scrolls = d["_scrolls"] or []
+        if len(scrolls) < 6 or any(not isinstance(value, (int, float)) for value in scrolls):
+            raise RuntimeError(f"CardAncientObject {component_identity} has an incomplete scroll table")
+        ancient_settings[component_identity] = {
+            "componentIdentity": component_identity,
+            "componentGoIdentity": component_go["identity"],
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "curveSettingsIdentity": curve_settings["identity"],
+            "rendererBindings": [],
+            "scrolls": scrolls,
+            "sandParticleSystemBindings": [
+                pptr_identity(o, pointer or {})["identity"]
+                for pointer in (d["_sandParticleSystems"] or [])
+            ],
+            "sand2ParticleSystemBindings": [
+                pptr_identity(o, pointer or {})["identity"]
+                for pointer in (d["_sand2ParticleSystems"] or [])
+            ],
+            "isAnimationStopped": 0,
+            **{name: d[field] for name, field in ancient_scalar_map.items()},
+            **{
+                name: {"x": d[field]["x"], "y": d[field]["y"]}
+                for name, field in ancient_vector_map.items()
+            },
+        }
+
+    curve_fields = ("time", "value", "inSlope", "outSlope", "weightedMode", "inWeight", "outWeight")
+    ancient_curve_names = ("ZuzuA", "ZuzuB", "ZuzuC", "Zzzzz", "ZuzuGoal", "ShakeIntensity")
+    ancient_curve_settings = {}
+    for settings_identity in sorted({v["curveSettingsIdentity"] for v in ancient_settings.values()}):
+        row = mono_behaviours.get(settings_identity)
+        if not row:
+            raise RuntimeError(
+                f"AncientBGAnimationSettings {settings_identity} was not resolved; "
+                "include Common/CardNew/Common via --shared"
+            )
+        o, d = row
+        if not set(ancient_curve_names).issubset(d):
+            raise RuntimeError(f"AncientBGAnimationSettings {settings_identity} has an unexpected type tree")
+        curves = {}
+        for curve_name in ancient_curve_names:
+            curve = d[curve_name] or {}
+            keys = curve.get("m_Curve") or []
+            if any(not set(curve_fields).issubset(key or {}) for key in keys):
+                raise RuntimeError(
+                    f"AncientBGAnimationSettings {settings_identity}.{curve_name} is incomplete"
+                )
+            curves[curve_name] = {
+                "keys": [{field: key[field] for field in curve_fields} for key in keys],
+                "preInfinity": curve.get("m_PreInfinity"),
+                "postInfinity": curve.get("m_PostInfinity"),
+                "rotationOrder": curve.get("m_RotationOrder"),
+            }
+        ancient_curve_settings[settings_identity] = {
+            "identity": settings_identity,
+            "name": d.get("m_Name", ""),
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "curves": curves,
+        }
+
+    marble_fields = {
+        "_renderer", "_tiltPower", "_useMarbleDelay", "_delayTime2",
+        "_pointAccel", "_shearAccel", "_dorodoroDistance", "_resistancePower",
+        "_minDorodoroCoef", "_maxPointSpeed", "_minPointSpeed",
+        "_goalThreshold", "_pointMoveByTilt", "_pointForceChangeByTilt",
+        "_points", "_defaultNoiseRemapSettings",
+    }
+    marble_scalar_map = {
+        "tiltPower": "_tiltPower",
+        "delayTime2": "_delayTime2",
+        "pointAccel": "_pointAccel",
+        "shearAccel": "_shearAccel",
+        "dorodoroDistance": "_dorodoroDistance",
+        "resistancePower": "_resistancePower",
+        "minDorodoroCoef": "_minDorodoroCoef",
+        "maxPointSpeed": "_maxPointSpeed",
+        "minPointSpeed": "_minPointSpeed",
+        "goalThreshold": "_goalThreshold",
+        "pointMoveByTilt": "_pointMoveByTilt",
+        "pointForceChangeByTilt": "_pointForceChangeByTilt",
+    }
+    marble_settings = {}
+    marble_by_renderer = {}
+    for component_identity, (o, d) in mono_behaviours.items():
+        if src_bundle(o) not in card_bundle_names or not marble_fields.issubset(d):
+            continue
+        component_go = pptr_identity(o, d.get("m_GameObject") or {})
+        renderer = pptr_identity(o, d["_renderer"] or {})
+        if component_go["pathId"] == "0" or renderer["pathId"] == "0":
+            raise RuntimeError(
+                f"CardMarbleLayer {component_identity} has a null GameObject/renderer PPtr"
+            )
+        raw_points = d["_points"] or []
+        required_point_fields = {
+            "DefaultPosition", "TiltMovePosition", "RotationWithTilt",
+            "DefaultForce", "TiltForce",
+        }
+        if not raw_points or len(raw_points) > 4 or any(
+            not required_point_fields.issubset(point or {}) for point in raw_points
+        ):
+            raise RuntimeError(f"CardMarbleLayer {component_identity} has invalid points")
+        remap = d["_defaultNoiseRemapSettings"] or {}
+        required_remap_fields = {
+            "CurveLabel", "Resolution", "DefaultRemapCurve",
+            "TiltRemapCurve", "RemapRemapCurve",
+        }
+        if not required_remap_fields.issubset(remap):
+            raise RuntimeError(
+                f"CardMarbleLayer {component_identity} has incomplete remap settings"
+            )
+        remap_curves = {}
+        for output_name, field_name in (
+            ("defaultRemapCurve", "DefaultRemapCurve"),
+            ("tiltRemapCurve", "TiltRemapCurve"),
+            ("remapRemapCurve", "RemapRemapCurve"),
+        ):
+            curve = remap[field_name] or {}
+            keys = curve.get("m_Curve") or []
+            if len(keys) < 2 or any(
+                not set(curve_fields).issubset(key or {}) for key in keys
+            ):
+                raise RuntimeError(
+                    f"CardMarbleLayer {component_identity}.{field_name} is incomplete"
+                )
+            remap_curves[output_name] = {
+                "keys": [{field: key[field] for field in curve_fields} for key in keys],
+                "preInfinity": curve.get("m_PreInfinity"),
+                "postInfinity": curve.get("m_PostInfinity"),
+                "rotationOrder": curve.get("m_RotationOrder"),
+            }
+        if renderer["identity"] in marble_by_renderer:
+            raise RuntimeError(
+                f"CardMarbleLayer renderer {renderer['identity']} has multiple components"
+            )
+        marble_by_renderer[renderer["identity"]] = component_identity
+        marble_settings[component_identity] = {
+            "componentIdentity": component_identity,
+            "componentGoIdentity": component_go["identity"],
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "rendererBindings": [],
+            "useMarbleDelay": d["_useMarbleDelay"],
+            "points": [
+                {
+                    "defaultPosition": point["DefaultPosition"],
+                    "tiltMovePosition": point["TiltMovePosition"],
+                    "rotationWithTilt": point["RotationWithTilt"],
+                    "defaultForce": point["DefaultForce"],
+                    "tiltForce": point["TiltForce"],
+                }
+                for point in raw_points
+            ],
+            "defaultNoiseRemapSettings": {
+                "curveLabel": remap["CurveLabel"],
+                "resolution": remap["Resolution"],
+                **remap_curves,
+            },
+            **{name: d[field] for name, field in marble_scalar_map.items()},
+        }
+
+    msr_fields = {
+        "_settings", "_animStartDegree", "_animTimeScale", "_animDuration",
+        "_endAnimDuration", "_stopAnimTiming", "_timeOffset",
+        "_intensityNoiseSpeed", "_reflectFlipBookMaxSpeed",
+        "_reflectStartBane", "_reflectStartNensei", "_reflectEndBane",
+        "_reflectEndNensei", "_checkRotatingTime", "_rotatingEndThreshold",
+        "_rotatingStartThreshold", "_disappearBane", "_disappearNensei",
+        "_appearBane", "_appearNensei", "_isAnimationStopped",
+    }
+    msr_scalar_map = {
+        "animStartDegree": "_animStartDegree",
+        "animTimeScale": "_animTimeScale",
+        "animDuration": "_animDuration",
+        "endAnimDuration": "_endAnimDuration",
+        "stopAnimTiming": "_stopAnimTiming",
+        "timeOffset": "_timeOffset",
+        "intensityNoiseSpeed": "_intensityNoiseSpeed",
+        "reflectFlipBookMaxSpeed": "_reflectFlipBookMaxSpeed",
+        "reflectStartBane": "_reflectStartBane",
+        "reflectStartNensei": "_reflectStartNensei",
+        "reflectEndBane": "_reflectEndBane",
+        "reflectEndNensei": "_reflectEndNensei",
+        "checkRotatingTime": "_checkRotatingTime",
+        "rotatingEndThreshold": "_rotatingEndThreshold",
+        "rotatingStartThreshold": "_rotatingStartThreshold",
+        "disappearBane": "_disappearBane",
+        "disappearNensei": "_disappearNensei",
+        "appearBane": "_appearBane",
+        "appearNensei": "_appearNensei",
+    }
+    msr_settings = {}
+    for component_identity, (o, d) in mono_behaviours.items():
+        if src_bundle(o) not in card_bundle_names or not msr_fields.issubset(d):
+            continue
+        component_go = pptr_identity(o, d.get("m_GameObject") or {})
+        animation_settings = pptr_identity(o, d["_settings"] or {})
+        if component_go["pathId"] == "0" or animation_settings["pathId"] == "0":
+            raise RuntimeError(
+                f"CardMSRObject {component_identity} has a null GameObject/settings PPtr"
+            )
+        msr_settings[component_identity] = {
+            "componentIdentity": component_identity,
+            "componentGoIdentity": component_go["identity"],
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "animationSettingsIdentity": animation_settings["identity"],
+            "rendererBindings": {
+                "aura": [],
+                "parallax": [],
+                "shadowbox": [],
+            },
+            "isAnimationStopped": d["_isAnimationStopped"],
+            **{name: d[field] for name, field in msr_scalar_map.items()},
+        }
+
+    msr_curve_names = (
+        "OutlineReflectCenterX",
+        "OutlineReflectColorIntensity",
+        "ColorIntensityNoiseStrength",
+        "OutlineReflectFlipBookAnim",
+        "OutlineReflectStartSpeed",
+        "OutlineReflectEndSpeed",
+        "AuraTransparency",
+        "ParallaxTransparency",
+        "ParallaxTranslate",
+        "ParallaxAppearTransparency",
+        "ParallaxAppearTranslate",
+        "ParallaxDisappearTransparency",
+        "ParallaxDisappearTranslate",
+    )
+    msr_required_curves = set(msr_curve_names[:9])
+    msr_animation_settings = {}
+    for settings_identity in sorted({
+        config["animationSettingsIdentity"] for config in msr_settings.values()
+    }):
+        row = mono_behaviours.get(settings_identity)
+        if not row:
+            raise RuntimeError(
+                f"MSRAnimationSettings {settings_identity} was not resolved; "
+                "include Common/CardNew/Common via --shared"
+            )
+        o, d = row
+        if not set(msr_curve_names).issubset(d):
+            raise RuntimeError(
+                f"MSRAnimationSettings {settings_identity} has an unexpected type tree"
+            )
+        curves = {}
+        for curve_name in msr_curve_names:
+            curve = d[curve_name] or {}
+            keys = curve.get("m_Curve") or []
+            if (curve_name in msr_required_curves and len(keys) < 2) or any(
+                not set(curve_fields).issubset(key or {}) for key in keys
+            ):
+                raise RuntimeError(
+                    f"MSRAnimationSettings {settings_identity}.{curve_name} is incomplete"
+                )
+            curves[curve_name] = {
+                "keys": [{field: key[field] for field in curve_fields} for key in keys],
+                "preInfinity": curve.get("m_PreInfinity"),
+                "postInfinity": curve.get("m_PostInfinity"),
+                "rotationOrder": curve.get("m_RotationOrder"),
+            }
+        msr_animation_settings[settings_identity] = {
+            "identity": settings_identity,
+            "name": d.get("m_Name", ""),
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "curves": curves,
+        }
+
+    mrr_fields = {
+        "_settings", "_animStartDegree", "_animTimeScale", "_animDuration",
+        "_flashRadialStartOffset", "_useSpeedAdjust", "_recordingTime",
+        "_minTiltSpeed", "_maxTiltSpeed", "_minAnimSpeed", "_maxAnimSpeed",
+    }
+    mrr_scalar_map = {
+        "animStartDegree": "_animStartDegree",
+        "animTimeScale": "_animTimeScale",
+        "animDuration": "_animDuration",
+        "flashRadialStartOffset": "_flashRadialStartOffset",
+        "recordingTime": "_recordingTime",
+        "minTiltSpeed": "_minTiltSpeed",
+        "maxTiltSpeed": "_maxTiltSpeed",
+        "minAnimSpeed": "_minAnimSpeed",
+        "maxAnimSpeed": "_maxAnimSpeed",
+    }
+    mrr_settings = {}
+    for component_identity, (o, d) in mono_behaviours.items():
+        if src_bundle(o) not in card_bundle_names or not mrr_fields.issubset(d):
+            continue
+        component_go = pptr_identity(o, d.get("m_GameObject") or {})
+        animation_settings = pptr_identity(o, d["_settings"] or {})
+        if component_go["pathId"] == "0" or animation_settings["pathId"] == "0":
+            raise RuntimeError(
+                f"CardMRRObject {component_identity} has a null GameObject/settings PPtr"
+            )
+        mrr_settings[component_identity] = {
+            "componentIdentity": component_identity,
+            "componentGoIdentity": component_go["identity"],
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "animationSettingsIdentity": animation_settings["identity"],
+            "rendererBindings": {
+                "main": [],
+                "effect": [],
+                "flash": [],
+            },
+            "useSpeedAdjust": d["_useSpeedAdjust"],
+            **{name: d[field] for name, field in mrr_scalar_map.items()},
+        }
+
+    mrr_curve_names = (
+        "ChangeColorCurve",
+        "LightColorIntensityCurve",
+        "LightEmitIntensityCurve",
+        "LightPower",
+        "Layer2UVXTranslateByTiltingLeft",
+        "Layer2UVXTranslateByTiltingRight",
+        "Layer2ColorPower",
+        "Layer2EmissiveIntensity",
+        "EffSwitchColor",
+        "EffAdditiveIntensity",
+        "EffColor3Blend",
+        "EffEmissiveIntensity",
+        "FlashIntensity",
+        "FlashRadialScaling",
+        "FlashRadialAnim",
+    )
+    mrr_animation_settings = {}
+    for settings_identity in sorted({
+        config["animationSettingsIdentity"] for config in mrr_settings.values()
+    }):
+        row = mono_behaviours.get(settings_identity)
+        if not row:
+            raise RuntimeError(
+                f"MRRAnimationSettings {settings_identity} was not resolved; "
+                "include Common/CardNew/Common via --shared"
+            )
+        o, d = row
+        if not set(mrr_curve_names).issubset(d):
+            raise RuntimeError(
+                f"MRRAnimationSettings {settings_identity} has an unexpected type tree"
+            )
+        curves = {}
+        for curve_name in mrr_curve_names:
+            curve = d[curve_name] or {}
+            keys = curve.get("m_Curve") or []
+            if len(keys) < 2 or any(
+                not set(curve_fields).issubset(key or {}) for key in keys
+            ):
+                raise RuntimeError(
+                    f"MRRAnimationSettings {settings_identity}.{curve_name} is incomplete"
+                )
+            curves[curve_name] = {
+                "keys": [{field: key[field] for field in curve_fields} for key in keys],
+                "preInfinity": curve.get("m_PreInfinity"),
+                "postInfinity": curve.get("m_PostInfinity"),
+                "rotationOrder": curve.get("m_RotationOrder"),
+            }
+        mrr_animation_settings[settings_identity] = {
+            "identity": settings_identity,
+            "name": d.get("m_Name", ""),
+            "scriptIdentity": pptr_identity(o, d.get("m_Script") or {})["identity"],
+            "curves": curves,
         }
 
     circular_fields = {
@@ -398,6 +970,31 @@ def main():
         if component_go_identity not in gos:
             raise RuntimeError(f"CircularKiraObject GameObject {component_go_identity} was not resolved")
         config["componentGoPath"] = go_path(component_go_identity)
+    for config in future_settings.values():
+        component_go_identity = config["componentGoIdentity"]
+        if component_go_identity not in gos:
+            raise RuntimeError(f"CardFutureObject GameObject {component_go_identity} was not resolved")
+        config["componentGoPath"] = go_path(component_go_identity)
+    for config in ancient_settings.values():
+        component_go_identity = config["componentGoIdentity"]
+        if component_go_identity not in gos:
+            raise RuntimeError(f"CardAncientObject GameObject {component_go_identity} was not resolved")
+        config["componentGoPath"] = go_path(component_go_identity)
+    for config in marble_settings.values():
+        component_go_identity = config["componentGoIdentity"]
+        if component_go_identity not in gos:
+            raise RuntimeError(f"CardMarbleLayer GameObject {component_go_identity} was not resolved")
+        config["componentGoPath"] = go_path(component_go_identity)
+    for config in msr_settings.values():
+        component_go_identity = config["componentGoIdentity"]
+        if component_go_identity not in gos:
+            raise RuntimeError(f"CardMSRObject GameObject {component_go_identity} was not resolved")
+        config["componentGoPath"] = go_path(component_go_identity)
+    for config in mrr_settings.values():
+        component_go_identity = config["componentGoIdentity"]
+        if component_go_identity not in gos:
+            raise RuntimeError(f"CardMRRObject GameObject {component_go_identity} was not resolved")
+        config["componentGoPath"] = go_path(component_go_identity)
 
     # optional: shader render state by name (blend/stencil/ztest/zwrite/queue), if a card_shader_state.json is given
     sstate = {}
@@ -414,6 +1011,7 @@ def main():
             shader_key = shader_ref.get("identity")
             shader_info = shaders.get(shader_key) or {}
             sname = shader_info.get("name", f"pptr:{shader_key}")
+            search_tags = shader_info.get("searchTags") or []
             texenvs = {}
             for k, v in (m.get("texenvs") or {}).items():
                 if v["tex_ref"].get("pathId") == "0":
@@ -432,6 +1030,133 @@ def main():
                 renderer_properties["kiraPuyo"] = kira_by_renderer[renderer_key]
             if renderer_key in circular_by_renderer:
                 renderer_properties["circularKira"] = circular_by_renderer[renderer_key]
+            if sname.rsplit("/", 1)[-1] == "Card_Parallax_Future":
+                renderer_path = go_path(r["go"])
+                candidates = [
+                    config for config in future_settings.values()
+                    if renderer_path == config["componentGoPath"]
+                    or renderer_path.startswith(config["componentGoPath"] + "/")
+                ]
+                if len(candidates) != 1:
+                    raise RuntimeError(
+                        f"Card_Parallax_Future renderer {renderer_key} resolved to "
+                        f"{len(candidates)} CardFutureObject components"
+                    )
+                config = candidates[0]
+                if renderer_key not in config["rendererBindings"]:
+                    config["rendererBindings"].append(renderer_key)
+                renderer_properties["cardFuture"] = {
+                    "componentIdentity": config["componentIdentity"],
+                    "rendererIdentity": renderer_key,
+                }
+            if sname.rsplit("/", 1)[-1] == "Card_Parallax_Strata":
+                renderer_path = go_path(r["go"])
+                candidates = [
+                    config for config in ancient_settings.values()
+                    if renderer_path == config["componentGoPath"]
+                    or renderer_path.startswith(config["componentGoPath"] + "/")
+                ]
+                if len(candidates) != 1:
+                    raise RuntimeError(
+                        f"Card_Parallax_Strata renderer {renderer_key} resolved to "
+                        f"{len(candidates)} CardAncientObject components"
+                    )
+                config = candidates[0]
+                if renderer_key not in config["rendererBindings"]:
+                    config["rendererBindings"].append(renderer_key)
+                renderer_properties["cardAncient"] = {
+                    "componentIdentity": config["componentIdentity"],
+                    "rendererIdentity": renderer_key,
+                }
+            if sname.rsplit("/", 1)[-1] == "Card_Parallax_Marble":
+                component_identity = marble_by_renderer.get(renderer_key)
+                config = marble_settings.get(component_identity)
+                if not config:
+                    raise RuntimeError(
+                        f"Card_Parallax_Marble renderer {renderer_key} has no "
+                        "CardMarbleLayer component"
+                    )
+                if renderer_key not in config["rendererBindings"]:
+                    config["rendererBindings"].append(renderer_key)
+                renderer_properties["cardMarble"] = {
+                    "componentIdentity": config["componentIdentity"],
+                    "rendererIdentity": renderer_key,
+                }
+            msr_roles = {
+                "Card-Aura": "aura",
+                "Card_Parallax_Transparent_Translate": "parallax",
+                "ShadowBox_MSR": "shadowbox",
+            }
+            matching_msr_roles = sorted({
+                msr_roles[tag] for tag in search_tags if tag in msr_roles
+            })
+            if len(matching_msr_roles) > 1:
+                raise RuntimeError(
+                    f"renderer {renderer_key} material {m.get('name')} matches multiple "
+                    f"CardMSRObject SearchTags: {matching_msr_roles}"
+                )
+            if matching_msr_roles:
+                renderer_path = go_path(r["go"])
+                candidates = [
+                    config for config in msr_settings.values()
+                    if renderer_path == config["componentGoPath"]
+                    or renderer_path.startswith(config["componentGoPath"] + "/")
+                ]
+                if len(candidates) != 1:
+                    raise RuntimeError(
+                        f"CardMSRObject renderer {renderer_key} resolved to "
+                        f"{len(candidates)} components"
+                    )
+                role = matching_msr_roles[0]
+                config = candidates[0]
+                if renderer_key not in config["rendererBindings"][role]:
+                    config["rendererBindings"][role].append(renderer_key)
+                renderer_properties["cardMSR"] = {
+                    "componentIdentity": config["componentIdentity"],
+                    "rendererIdentity": renderer_key,
+                    "role": role,
+                    "searchTag": next(
+                        tag for tag in search_tags if msr_roles.get(tag) == role
+                    ),
+                }
+            mrr_roles = {
+                "MRR-ChangeColor-Lighting": "main",
+                "Frame-Holo-2Layer": "main",
+                "Card-Effect-Emit": "effect",
+                "MRR-Parallax-Flash": "flash",
+            }
+            matching_mrr_roles = sorted({
+                mrr_roles[tag] for tag in search_tags if tag in mrr_roles
+            })
+            if len(matching_mrr_roles) > 1:
+                raise RuntimeError(
+                    f"renderer {renderer_key} material {m.get('name')} matches multiple "
+                    f"CardMRRObject SearchTags: {matching_mrr_roles}"
+                )
+            if matching_mrr_roles:
+                renderer_path = go_path(r["go"])
+                candidates = [
+                    config for config in mrr_settings.values()
+                    if renderer_path == config["componentGoPath"]
+                    or renderer_path.startswith(config["componentGoPath"] + "/")
+                ]
+                if len(candidates) != 1:
+                    raise RuntimeError(
+                        f"CardMRRObject renderer {renderer_key} resolved to "
+                        f"{len(candidates)} components"
+                    )
+                role = matching_mrr_roles[0]
+                config = candidates[0]
+                if renderer_key not in config["rendererBindings"][role]:
+                    config["rendererBindings"][role].append(renderer_key)
+                renderer_properties["cardMRR"] = {
+                    "componentIdentity": config["componentIdentity"],
+                    "rendererIdentity": renderer_key,
+                    "role": role,
+                    "searchTag": next(
+                        tag for tag in search_tags if mrr_roles.get(tag) == role
+                    ),
+                }
             layers.append({
                 "go": go_name(r["go"]), "goPath": go_path(r["go"]), "renderer_enabled": r["enabled"],
                 "rendererIdentity": r["identity"],
@@ -451,6 +1176,7 @@ def main():
                 "shader": sname, "shaderIdentity": shader_ref,
                 "shaderKeywordNames": shader_info.get("keywordNames"),
                 "shaderKeywordFlags": shader_info.get("keywordFlags"),
+                "shaderSearchTags": search_tags,
                 "srpBatcherCompatible": shader_info.get("srpBatcherCompatible"),
                 "srpBatcherEvidence": shader_info.get("srpBatcherEvidence"),
                 "srpBatcherWitnessCount": shader_info.get("srpBatcherWitnessCount"),
@@ -467,10 +1193,61 @@ def main():
     layers.sort(key=lambda L: (round((L["world"]["z"] or 0), 4), L["material"] or ""))
 
     out = os.path.abspath(args.out)
+    for config in future_settings.values():
+        if not config["rendererBindings"]:
+            raise RuntimeError(
+                f"CardFutureObject {config['componentIdentity']} has no Card_Parallax_Future renderer"
+            )
+        config["rendererBindings"].sort()
+    for config in ancient_settings.values():
+        if not config["rendererBindings"]:
+            raise RuntimeError(
+                f"CardAncientObject {config['componentIdentity']} has no Card_Parallax_Strata renderer"
+            )
+        config["rendererBindings"].sort()
+    for config in marble_settings.values():
+        if not config["rendererBindings"]:
+            raise RuntimeError(
+                f"CardMarbleLayer {config['componentIdentity']} has no "
+                "Card_Parallax_Marble renderer"
+            )
+        config["rendererBindings"].sort()
+    for config in msr_settings.values():
+        for role, renderer_bindings in config["rendererBindings"].items():
+            if not renderer_bindings:
+                raise RuntimeError(
+                    f"CardMSRObject {config['componentIdentity']} has no {role} "
+                    "SearchTag renderer"
+                )
+            renderer_bindings.sort()
+    for config in mrr_settings.values():
+        for role, renderer_bindings in config["rendererBindings"].items():
+            if not renderer_bindings:
+                raise RuntimeError(
+                    f"CardMRRObject {config['componentIdentity']} has no {role} "
+                    "SearchTag renderer"
+                )
+            renderer_bindings.sort()
+
     json.dump({"card": os.path.basename(args.path.rstrip("/\\")), "layers": layers,
-               "runtimeSettings": {"kiraPuyo": kira_settings, "circularKira": circular_settings}},
+               "runtimeSettings": {
+                   "kiraPuyo": kira_settings,
+                   "circularKira": circular_settings,
+                   "cardFuture": future_settings,
+                   "cardAncient": ancient_settings,
+                   "ancientBGAnimation": ancient_curve_settings,
+                   "cardMarble": marble_settings,
+                   "cardMSR": msr_settings,
+                   "msrAnimation": msr_animation_settings,
+                   "cardMRR": mrr_settings,
+                   "mrrAnimation": mrr_animation_settings,
+               }},
               open(out, "w", encoding="utf-8"), indent=2, ensure_ascii=False, default=str)
     print(f"materials:{len(mats)} renderers:{len(rends)} shaders_resolved:{len(shaders)} -> {len(layers)} layers")
+    if located_dependencies:
+        print("resolved direct dependencies:")
+        for cab, dependency_path in sorted(located_dependencies.items()):
+            print(f"  {cab} -> {dependency_path}")
     print(f"wrote {out}")
     # quick console summary: per layer, the FULL float/color set
     for L in layers:

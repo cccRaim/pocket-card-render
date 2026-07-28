@@ -53,7 +53,7 @@ const EXPECTED = {
   generated: {
     "side_back.vert.glsl": "7c41c8505cb352dc90eaab8ea7cdea8d24261115982710d8bc96bc8f9e00993c",
     "side_back.frag.glsl": "83a26a4b597b4576ed149f9072a58154b341336fa3b8d9d2257743456e795693",
-    "side_back_program.json": "09ba4cf8bd051a68616a2535c91457af8091047ea102ed3cd199fe11f5142ff4",
+    "side_back_program.json": "110f0ed2827f010c6936f2a390efb153dd2270d6235d3790b4dcd6b4d2f7e2c3",
   },
 };
 

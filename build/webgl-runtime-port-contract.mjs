@@ -34,6 +34,7 @@ const BACKEND_TEXTURE_DEFAULTS = new Set([
   "neutral-gray-cube",
   "shaderlab-white",
   "shaderlab-black",
+  "shaderlab-gray",
   "shaderlab-clear",
   "shaderlab-bump",
 ]);

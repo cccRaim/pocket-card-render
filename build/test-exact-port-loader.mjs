@@ -36,9 +36,10 @@ const loaded = await loadExactShaderPortsFromContract({
   fetchAsset: filesystemFetch(),
   contractUrl,
 });
-assert.equal(Object.keys(loaded).length, 37);
+assert.equal(Object.keys(loaded).length, 61);
 assert.equal(Object.values(loaded).filter((port) => !port.stageSourceOnly)
-  .flatMap((port) => port.manifests).length, 45);
+  .flatMap((port) => port.manifests).length, 79);
+assert.equal(Object.keys(loaded.sourcesByPortIdentity).length, 79);
 assert.equal(loaded.Card_Illust_DoubleTexture.manifests.length, 2);
 assert.deepEqual(
   loaded.Card_Illust_DoubleTexture.manifests
@@ -134,4 +135,4 @@ await assert.rejects(
   /runtime-bound stage source contract is malformed/,
 );
 
-console.log("Exact port contract loader tests OK: 45 formal ports + 1 runtime boundary");
+console.log("Exact port contract loader tests OK: 79 formal ports + 1 runtime boundary");

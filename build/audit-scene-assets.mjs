@@ -16,7 +16,7 @@ function sceneId(sceneName) {
 
 function publicPath(url) {
   if (!url || !url.startsWith("/")) return null;
-  return path.join(PUBLIC, url.slice(1));
+  return path.join(PUBLIC, decodeURI(url.slice(1)));
 }
 
 function relPublic(abs) {

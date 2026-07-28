@@ -22,8 +22,8 @@ const SELECTOR_ID = "efa03dcbfe79cd09734a60516654ad6dcd6a92d717eb54b9b01baccf92f
 const CANDIDATE_WITNESS_ID =
   "d3e59c58da95b14e62179d5f3b0fc1f546289eb4f1f469f80be2ebc3c52de8d4";
 const EXPECTED = {
-  sampleId: "ptcgp-1.6.0-unity-2022.3.62f2",
-  sampleManifestSha256: "2515cae195ee58f06c32f5d0c7d063c6b7a1f03b5743696e2181786d074d4b4d",
+  sampleId: "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+  sampleManifestSha256: "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
   materialIdentity: "CAB-31d82d0d65bdfa6728d746c34920e08d:-1050951510632854060",
   shaderIdentity: "CAB-5defc05c0250f5fe935b9cd9b28fdca5:2168984029091550199",
   shaderName: "Lettuce/Common/Card/TextMeshPro/Sprite(to RT)",

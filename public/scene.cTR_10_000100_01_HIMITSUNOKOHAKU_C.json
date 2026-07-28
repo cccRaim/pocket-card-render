@@ -74,6 +74,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_trainers_window",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers_window.png",
+     "officialName": "card_inner_stencil_mask_trainers_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7793283681360397303",
+      "source": "CAB-34be71230a4be46ac4a1b81609943df2",
+      "identity": "CAB-34be71230a4be46ac4a1b81609943df2:-7793283681360397303"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -152,6 +160,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_trainers_window",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers_window.png",
+     "officialName": "card_inner_stencil_mask_trainers_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7793283681360397303",
+      "source": "CAB-34be71230a4be46ac4a1b81609943df2",
+      "identity": "CAB-34be71230a4be46ac4a1b81609943df2:-7793283681360397303"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -286,8 +302,16 @@
    "keywords": [],
    "textures": {
     "_BaseTex": {
-     "name": "Card_Back",
-     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "name": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "officialName": "Card_Back",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3680672549930378084",
+      "source": "CAB-b3a060b8e06893eadc58cd3cc0017a42",
+      "identity": "CAB-b3a060b8e06893eadc58cd3cc0017a42:3680672549930378084"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -448,6 +472,14 @@
     "_BaseTex": {
      "name": "SimpleCard_Side02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "officialName": "SimpleCard_Side02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7427414079537827346",
+      "source": "CAB-5be2d51c53e98a3478ebace9de25b309",
+      "identity": "CAB-5be2d51c53e98a3478ebace9de25b309:7427414079537827346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -553,6 +585,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -565,6 +605,14 @@
     "_PhaseTex": {
      "name": "Phase_TR_Mirror_UI",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_TR_Mirror_UI.png",
+     "officialName": "Phase_TR_Mirror_UI",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_TR_Mirror_UI.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1835629651597789360",
+      "source": "CAB-706b5f5b693fea3e4fb36b750230d5a2",
+      "identity": "CAB-706b5f5b693fea3e4fb36b750230d5a2:1835629651597789360"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -577,6 +625,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_Mirror",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "officialName": "RMP_MASK_Mirror",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5049902741030919565",
+      "source": "CAB-51e324d54d1f50f565ff9c97772b1e61",
+      "identity": "CAB-51e324d54d1f50f565ff9c97772b1e61:5049902741030919565"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -589,6 +645,14 @@
     "_RampTex": {
      "name": "Mirror_TR_UI_RMP32",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_UI_RMP32.png",
+     "officialName": "Mirror_TR_UI_RMP32",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_UI_RMP32.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-753359145717038256",
+      "source": "CAB-e76217b2b2dbebac3b718f2ae5c46ff3",
+      "identity": "CAB-e76217b2b2dbebac3b718f2ae5c46ff3:-753359145717038256"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -674,7 +738,28 @@
    },
    "colors": {},
    "keywords": [],
-   "textures": {}
+   "textures": {
+    "_DynamicUITex": {
+     "name": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "officialName": "black",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1459000106877476882",
+      "source": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf",
+      "identity": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf:1459000106877476882"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
   },
   "L_RaremarkFlame_a": {
    "shader": "Simple-Opaque",
@@ -744,6 +829,14 @@
     "_MainTex": {
      "name": "card_rarity_outline",
      "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "officialName": "card_rarity_outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3009383940076098196",
+      "source": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59",
+      "identity": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59:-3009383940076098196"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -853,6 +946,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -865,6 +966,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -877,6 +986,14 @@
     "_MainTex": {
      "name": "card_rarity_diamond_a",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "officialName": "card_rarity_diamond_a",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2330146156838843569",
+      "source": "CAB-747e6bcce71cc807bd8b67ad96fd7f94",
+      "identity": "CAB-747e6bcce71cc807bd8b67ad96fd7f94:2330146156838843569"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -889,6 +1006,14 @@
     "_PhaseTex": {
      "name": "Phase_Rarity_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "officialName": "Phase_Rarity_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-280613335593702549",
+      "source": "CAB-3ff9bb7bce2ea2583b834c91aa653065",
+      "identity": "CAB-3ff9bb7bce2ea2583b834c91aa653065:-280613335593702549"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -901,6 +1026,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_RareMark",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "officialName": "RMP_MASK_RareMark",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3850834502605539399",
+      "source": "CAB-ae66c11063b1b943772c3289afdece42",
+      "identity": "CAB-ae66c11063b1b943772c3289afdece42:3850834502605539399"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -913,6 +1046,14 @@
     "_RampTex": {
      "name": "ALL_RMP_RareMark_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "officialName": "ALL_RMP_RareMark_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5619055394819206857",
+      "source": "CAB-0fca1d01605b5c89e9d644a1d42c959b",
+      "identity": "CAB-0fca1d01605b5c89e9d644a1d42c959b:5619055394819206857"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1046,6 +1187,14 @@
     "_HologramMaskTex": {
      "name": "card_frame_mask_Mirror_TR",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_Mirror_TR.png",
+     "officialName": "card_frame_mask_Mirror_TR",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_Mirror_TR.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "282613054016648559",
+      "source": "CAB-5fc7a78359a7ca63ffbf7d88616b8665",
+      "identity": "CAB-5fc7a78359a7ca63ffbf7d88616b8665:282613054016648559"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1058,6 +1207,14 @@
     "_PhaseTex": {
      "name": "Phase_Mirror",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Mirror.png",
+     "officialName": "Phase_Mirror",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Mirror.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1359816821496915856",
+      "source": "CAB-8023ea9b0719f253eb19d8bd511535a8",
+      "identity": "CAB-8023ea9b0719f253eb19d8bd511535a8:1359816821496915856"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1070,6 +1227,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_Mirror",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "officialName": "RMP_MASK_Mirror",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5049902741030919565",
+      "source": "CAB-51e324d54d1f50f565ff9c97772b1e61",
+      "identity": "CAB-51e324d54d1f50f565ff9c97772b1e61:5049902741030919565"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1082,6 +1247,14 @@
     "_RampTex": {
      "name": "Mirror_TR_RMP32",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_RMP32.png",
+     "officialName": "Mirror_TR_RMP32",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_RMP32.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7709290393007553321",
+      "source": "CAB-c3ef69bd0682a2deb7be54a1769ac9d7",
+      "identity": "CAB-c3ef69bd0682a2deb7be54a1769ac9d7:7709290393007553321"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1216,6 +1389,14 @@
     "_MetalMaskTex": {
      "name": "card_frame_mask_Mirror_TR",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_Mirror_TR.png",
+     "officialName": "card_frame_mask_Mirror_TR",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_Mirror_TR.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "282613054016648559",
+      "source": "CAB-5fc7a78359a7ca63ffbf7d88616b8665",
+      "identity": "CAB-5fc7a78359a7ca63ffbf7d88616b8665:282613054016648559"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1370,6 +1551,14 @@
     "_BaseTex": {
      "name": "card_trainers_panel_goods",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_goods.png",
+     "officialName": "card_trainers_panel_goods",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_panel_goods.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "8966411686655066299",
+      "source": "CAB-d5c881166607925914e22ec3ebea3854",
+      "identity": "CAB-d5c881166607925914e22ec3ebea3854:8966411686655066299"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1507,6 +1696,14 @@
     "_BaseTex": {
      "name": "card_trainers_rule_frame_goods_Full_Holo",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_goods_Full_Holo.png",
+     "officialName": "card_trainers_rule_frame_goods_Full_Holo",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_rule_frame_goods_Full_Holo.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1483775793831651656",
+      "source": "CAB-462747ec197c5fd7a138c2e2cc730823",
+      "identity": "CAB-462747ec197c5fd7a138c2e2cc730823:-1483775793831651656"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1519,6 +1716,14 @@
     "_MaskTex": {
      "name": "card_trainers_rule_frame_mask_Full",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_trainers_rule_frame_mask_Full.png",
+     "officialName": "card_trainers_rule_frame_mask_Full",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_trainers_rule_frame_mask_Full.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1619038872084986729",
+      "source": "CAB-1c81d8f2a8002d1d8b7effad76dd28f3",
+      "identity": "CAB-1c81d8f2a8002d1d8b7effad76dd28f3:1619038872084986729"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1531,6 +1736,14 @@
     "_PhaseTex": {
      "name": "Phase_Mirror_Rule",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Mirror_Rule.png",
+     "officialName": "Phase_Mirror_Rule",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Mirror_Rule.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1417585622159944988",
+      "source": "CAB-f4667e496868efc7edf06606b852692d",
+      "identity": "CAB-f4667e496868efc7edf06606b852692d:-1417585622159944988"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1543,6 +1756,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_Mirror",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "officialName": "RMP_MASK_Mirror",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5049902741030919565",
+      "source": "CAB-51e324d54d1f50f565ff9c97772b1e61",
+      "identity": "CAB-51e324d54d1f50f565ff9c97772b1e61:5049902741030919565"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1555,6 +1776,14 @@
     "_RampTex": {
      "name": "Mirror_TR_Goods_RMP32",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_Goods_RMP32.png",
+     "officialName": "Mirror_TR_Goods_RMP32",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_Goods_RMP32.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4494621249803383948",
+      "source": "CAB-a4de2055b967819a66fd73cf340f49af",
+      "identity": "CAB-a4de2055b967819a66fd73cf340f49af:-4494621249803383948"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1671,6 +1900,14 @@
     "_MainTex": {
      "name": "card_trainers_bg_goods",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_trainers_bg_goods.png",
+     "officialName": "card_trainers_bg_goods",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_trainers_bg_goods.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7722034023113114564",
+      "source": "CAB-96e7de3b5d9f1418ff3e7eef0c053705",
+      "identity": "CAB-96e7de3b5d9f1418ff3e7eef0c053705:-7722034023113114564"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1783,6 +2020,103 @@
     "_BaseTex": {
      "name": "card_trainers_base_c",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_base_c.png",
+     "officialName": "card_trainers_base_c",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_base_c.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6470359592144094321",
+      "source": "CAB-e3ece0c7fc3a51cef98572caad786d9c",
+      "identity": "CAB-e3ece0c7fc3a51cef98572caad786d9c:-6470359592144094321"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL": {
+   "shader": "Card_Illust",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-52a6a32d7e3eb38432e125db621d8e38:-4040053327020930736",
+    "shader": "CAB-dacac64c95b70409ad52b4bce1b63ad3:6715688836837633753",
+    "customRenderQueue": 2000,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "L_Trainers_Window_Image",
+   "floats": {
+    "_StencilRef": 0,
+    "_UseUv": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL",
+     "url": "/game/Assets/Texture2D/cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL.png",
+     "officialName": "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5704992081721544457",
+      "source": "CAB-52a6a32d7e3eb38432e125db621d8e38",
+      "identity": "CAB-52a6a32d7e3eb38432e125db621d8e38:-5704992081721544457"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1990,20 +2324,42 @@
    "shaderIdentity": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
    "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
    "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-40c2723fe81d02036b670392a1eb8a70:7082633305313683945#0",
+   "go": "L_Trainers_Window_Image",
+   "goPath": "cTR_10_000100_01_HIMITSUNOKOHAKU_C_L/L_Trainers_Window_Image",
+   "meshName": "Card_F",
+   "materialName": "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-40c2723fe81d02036b670392a1eb8a70:7082633305313683945",
+   "materialIdentity": "CAB-52a6a32d7e3eb38432e125db621d8e38:-4040053327020930736",
+   "shaderIdentity": "CAB-dacac64c95b70409ad52b4bce1b63ad3:6715688836837633753",
+   "meshIdentity": "CAB-3231294bd989ca351c715ce63d53d1cd:-1399526361046753220",
+   "rendererProperties": {}
   }
  ],
  "runtimeSettings": {
   "kiraPuyo": {},
-  "circularKira": {}
+  "circularKira": {},
+  "cardFuture": {},
+  "cardAncient": {},
+  "ancientBGAnimation": {},
+  "cardMarble": {},
+  "cardMSR": {},
+  "msrAnimation": {},
+  "cardMRR": {},
+  "mrrAnimation": {}
  },
  "textures": {
   "card_inner_stencil_mask_trainers_window": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_trainers_window.png",
-  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
   "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
   "mask_white": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
   "Phase_TR_Mirror_UI": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_TR_Mirror_UI.png",
   "RMP_MASK_Mirror": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_Mirror.png",
   "Mirror_TR_UI_RMP32": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_UI_RMP32.png",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
   "card_rarity_outline": "/game/Assets/Texture2D/card_rarity_outline.png",
   "L_001_ENV": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
   "card_rarity_diamond_a": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
@@ -2019,16 +2375,18 @@
   "Phase_Mirror_Rule": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Mirror_Rule.png",
   "Mirror_TR_Goods_RMP32": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/Mirror_TR/Mirror_TR_Goods_RMP32.png",
   "card_trainers_bg_goods": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_trainers_bg_goods.png",
-  "card_trainers_base_c": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_base_c.png"
+  "card_trainers_base_c": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_trainers_base_c.png",
+  "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL": "/game/Assets/Texture2D/cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL.png"
  },
  "alphaMode": {
   "card_inner_stencil_mask_trainers_window": "opaque",
-  "Card_Back": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "opaque",
   "SimpleCard_Side02": "opaque",
   "mask_white": "opaque",
   "Phase_TR_Mirror_UI": "opaque",
   "RMP_MASK_Mirror": "opaque",
   "Mirror_TR_UI_RMP32": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "opaque",
   "card_rarity_outline": "opaque",
   "L_001_ENV": "opaque",
   "card_rarity_diamond_a": "straight",
@@ -2044,16 +2402,18 @@
   "Phase_Mirror_Rule": "opaque",
   "Mirror_TR_Goods_RMP32": "opaque",
   "card_trainers_bg_goods": "straight",
-  "card_trainers_base_c": "premult"
+  "card_trainers_base_c": "premult",
+  "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL": "opaque"
  },
  "textureColorSpace": {
   "card_inner_stencil_mask_trainers_window": 1,
-  "Card_Back": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": 1,
   "SimpleCard_Side02": 1,
   "mask_white": 0,
   "Phase_TR_Mirror_UI": 0,
   "RMP_MASK_Mirror": 0,
   "Mirror_TR_UI_RMP32": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": 1,
   "card_rarity_outline": 1,
   "L_001_ENV": 1,
   "card_rarity_diamond_a": 1,
@@ -2069,7 +2429,8 @@
   "Phase_Mirror_Rule": 0,
   "Mirror_TR_Goods_RMP32": 1,
   "card_trainers_bg_goods": 1,
-  "card_trainers_base_c": 1
+  "card_trainers_base_c": 1,
+  "cTR_10_000100_00_HIMITSUNOKOHAKU_C_L_ILL": 1
  },
  "_missing": []
 }

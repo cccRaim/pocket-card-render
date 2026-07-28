@@ -76,15 +76,31 @@ export function buildMaterializationPlan({
     "pocket-card-render/official-card-examples@1",
     "official card-example manifest schema mismatch",
   );
-  const witnesses = manifest.coverageSet?.selectedWitnesses;
-  assert(Array.isArray(witnesses) && witnesses.length > 0);
+  const primaryWitnesses = manifest.coverageSet?.selectedWitnesses;
+  const rarityRenderingWitnesses =
+    manifest.rarityRenderingCoverageSet?.additionalWitnesses;
+  assert(Array.isArray(primaryWitnesses) && primaryWitnesses.length > 0);
+  assert(Array.isArray(rarityRenderingWitnesses));
+  const witnesses = [
+    ...primaryWitnesses,
+    ...rarityRenderingWitnesses,
+  ];
+  assert.equal(
+    new Set(witnesses.map((card) => card.illustrationId)).size,
+    witnesses.length,
+    "primary and rarity-rendering witnesses overlap",
+  );
   const selected = ids
     ? witnesses.filter((card) => ids.has(card.illustrationId))
     : witnesses;
   if (ids) {
     const selectedIds = new Set(selected.map((card) => card.illustrationId));
     const unknown = [...ids].filter((id) => !selectedIds.has(id));
-    assert.deepEqual(unknown, [], `--ids contains non-witness cards: ${unknown}`);
+    assert.deepEqual(
+      unknown,
+      [],
+      `--ids contains non-witness cards: ${unknown}`,
+    );
   }
   return selected.map((card) => {
     const illustrationId = card.illustrationId;
@@ -241,7 +257,7 @@ async function main() {
   await materializeRecipes(rows, args);
   materializeScenes(rows, args);
 
-  const refreshed = buildOfficialCardExamples({ verifyOptimal: false });
+  const refreshed = buildOfficialCardExamples();
   fs.writeFileSync(EXAMPLE_MANIFEST, serializeOfficialCardExamples(refreshed));
   if (args.gather) {
     const gathered = await runProcess(process.execPath, [

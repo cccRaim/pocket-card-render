@@ -2,6 +2,11 @@
 // build/build-shader-texture-defaults.mjs. Do not edit this table by hand.
 
 export const SHADER_TEXTURE_DEFAULTS = {
+  "Card_Aura": {
+    "_AuraMask": "white",
+    "_FBMTex": "white",
+    "_FlowTex": "black"
+  },
   "Card_Circular_Moving_Kira": {
     "_PrimAMorphTex": "white",
     "_PrimATex": "white",
@@ -37,6 +42,26 @@ export const SHADER_TEXTURE_DEFAULTS = {
   "Card_Parallax": {
     "_MainTex": "black"
   },
+  "Card_Parallax_EmitMask": {
+    "_MainTex": "black"
+  },
+  "Card_Parallax_Flash": {
+    "_RadialTex": "black"
+  },
+  "Card_Parallax_Future": {
+    "_CellAnimTex": "black",
+    "_CrossFilterTex": "black",
+    "_MainTex": "black"
+  },
+  "Card_Parallax_Hologram_Shadow": {
+    "_MainTex": "black",
+    "_MaskTex": "black",
+    "_PhaseTex": "black",
+    "_PhaseTex2": "white",
+    "_RampMaskTex2": "black",
+    "_RampTex": "white",
+    "_RampTex2": "black"
+  },
   "Card_Parallax_Hologram_Tuning": {
     "_HologramMaskTex": "white",
     "_PhaseTex": "white",
@@ -51,12 +76,35 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_RampMaskTex": "black",
     "_RampTex": "black"
   },
+  "Card_Parallax_Immersive": {
+    "_MainTex": "black"
+  },
+  "Card_Parallax_MRR": {
+    "_FlashMaskTex": "black",
+    "_MainTex": "black"
+  },
+  "Card_Parallax_Marble": {
+    "_BaseRampTex": "white",
+    "_NoisyMask": "white"
+  },
   "Card_Parallax_MatCap_Lighting": {
     "_LightingMask": "white",
     "_MatCapLightTex": "white"
   },
   "Card_Parallax_Metal": {
     "_MetalMaskTex": "white"
+  },
+  "Card_Parallax_MetalByTilt": {
+    "_MetalMaskTex": "white"
+  },
+  "Card_Parallax_Strata": {
+    "_MainTex": "black"
+  },
+  "Card_Parallax_Transparent_Translate": {
+    "_MainTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
   "Card_Parallax_UR": {
     "_MainTex": "black"
@@ -77,6 +125,14 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_RainbowOutlineTex": "white",
     "_RainbowTex": "white",
     "_RainbowTintMask": "white"
+  },
+  "Card_ShadowBox_Effect_Flow": {
+    "_DistanceMask": "white",
+    "_FBMTex": "white",
+    "_FlowMap": "black",
+    "_FlowTex": "black",
+    "_ParticleShapeMask": "white",
+    "_ParticleTex": "black"
   },
   "Card_UR_Glitter_FlowMaps": {
     "_ABaseTex": "black",
@@ -104,6 +160,19 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_MainTex": "black",
     "_ViewMask": "white"
   },
+  "Effect_Emit": {
+    "_Color1Tex": "black",
+    "_Color2Tex": "black",
+    "_Color3Mask": "black",
+    "_EmissiveMask": "black"
+  },
+  "Flash": {
+    "_FlashMaskTex": "black",
+    "_HologramMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
   "Frame": {
     "_BaseTex": "black"
   },
@@ -117,6 +186,40 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_RampMaskTex2": "black",
     "_RampTex": "black",
     "_RampTex2": "black"
+  },
+  "Frame-Holo": {
+    "_BaseTex": "white",
+    "_HologramFrontMaskTex": "white",
+    "_MaskTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Frame-Holo-2Layer": {
+    "_HologramFrontMaskTex": "white",
+    "_HologramMaskTex": "black",
+    "_Layer1Tex": "white",
+    "_Layer2Mask": "black",
+    "_Layer2Tex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Frame-Holo-Immersive": {
+    "_BaseTex": "white",
+    "_HologramMaskTex": "black",
+    "_ImmersiveEffectMaskTex": "black",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
+  },
+  "Frame-Holo-ImmersiveUI": {
+    "_BaseTex": "white",
+    "_HologramMaskTex": "black",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_RampMaskTex": "black",
+    "_RampTex": "black"
   },
   "Frame-Holo-Tuning": {
     "_BaseTex": "white",
@@ -134,6 +237,25 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_PhaseTex": "white",
     "_RampMaskTex": "black",
     "_RampTex": "black"
+  },
+  "Hologram-FlipOutline": {
+    "_FlipBook": "black",
+    "_MaskTex": "black",
+    "_NormalMap": "bump",
+    "_OutlineRampTex": "white",
+    "_PhaseTex": "black",
+    "_PhaseTex2": "white",
+    "_RampMaskTex2": "black",
+    "_RampTex": "white",
+    "_RampTex2": "black"
+  },
+  "Opaque-Hologram_Shadow": {
+    "_MaskTex": "black",
+    "_PhaseTex": "black",
+    "_PhaseTex2": "white",
+    "_RampMaskTex2": "black",
+    "_RampTex": "white",
+    "_RampTex2": "black"
   },
   "Opaque-Hologram_Tuning": {
     "_MaskTex": "black",
@@ -190,6 +312,18 @@ export const SHADER_TEXTURE_DEFAULTS = {
   "Text": {
     "_DynamicUITex": "black"
   },
+  "Text_Alpha": {
+    "_DynamicUITex": "black"
+  },
+  "Transparent-Hologram": {
+    "_MaskTex": "black",
+    "_NormalMap": "bump",
+    "_PhaseTex": "black",
+    "_PhaseTex2": "white",
+    "_RampMaskTex2": "black",
+    "_RampTex": "white",
+    "_RampTex2": "black"
+  },
   "Transparent-UR-New": {
     "_DynamicUITex": "white",
     "_FakeSpecularMask": "white",
@@ -198,6 +332,19 @@ export const SHADER_TEXTURE_DEFAULTS = {
     "_PhaseTex": "white",
     "_RampMaskTex": "black",
     "_RampTex": "black"
+  },
+  "Transparent-UR-Oklab": {
+    "_FakeSpecularMask": "white",
+    "_HologramMaskTex": "black",
+    "_NormalMap2": "bump",
+    "_PhaseMaskTex": "white",
+    "_PhaseTex": "white",
+    "_PhaseTex2": "white",
+    "_RampMaskTex": "black",
+    "_RampMaskTex2": "black",
+    "_RampTex": "black",
+    "_RampTex2": "black",
+    "_ReflectionMask": "white"
   },
   "Transparent_HologramLayer": {
     "_CubeMap": "white",

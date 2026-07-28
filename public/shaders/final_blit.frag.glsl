@@ -3,7 +3,7 @@ precision highp int;
 
 uniform highp float _BlitMipLevel;
 
-uniform mediump sampler2D _BlitTexture;
+uniform highp sampler2D _BlitTexture;
 
 layout(location = 0) out highp vec4 outColor;
 in highp vec2 vUv;

@@ -49,6 +49,22 @@ npm run audit:restoration
 npm run audit:restoration:json
 ```
 
+Current source snapshot (2026-07-28, definition v34): the fresh no-browser gate
+passes all 118 checks, `auditObligationExactPercent=57.8664%`,
+`knownImplementationPercent=76.2490%`, with `missing=0` and `unknown=1`.
+These are evidence-graph completion rates. `officialShaderRestorationPercent`
+and `gameFidelity` remain unavailable.
+
+The independent rarity render-path audit closes 543/543
+rarity × semantic-executable/material-state obligations and joins 2,725/2,725
+official renderer/material-slot/material identities to generated scene draws.
+The corpus is the globally minimum 112-card mechanism set plus five independently
+proven minimum rarity witnesses; all 117 witness scenes and six supplemental
+regression scenes are prebuilt. This is 100% input closure for the current
+3,191-card source-current Face snapshot, not official Shader, backend-semantic,
+guest-runtime, or pixel equivalence. The 114 cards absent from the asset snapshot
+remain outside that closure.
+
 Geometry is independently checked with `npm run audit:official-mesh-payload`. For the canonical
 scope it resolves 78 official MeshFilters, separates four Unity built-in Quad filters, and compares
 74 asset Mesh nodes / 130 GLB primitives / 81,606 expanded vertices byte-for-byte after the explicit
@@ -98,17 +114,18 @@ The current official program proof graph has the following reviewable coverage:
 
 | Dimension | Current state | Advancement cost | Remaining scope |
 |---|---:|---|---:|
-| Official selectors resolved | 77/77 | `maintenance` | 0 selectors |
-| Stage-source-bound semantic executables | 26/76 | `shader-reverse-engineering` | 50 executables |
-| Backend-semantic complete closure | 0/76 | `backend-semantic-equivalence` | 76 executables |
-| Exact five-field obligations | 27/135 | `runtime-regression` / `target-runtime-capture` | 108 obligations |
-| Official material slots stage-source-bound | 46,810/58,057 | `shader-reverse-engineering` | 11,247 slots |
+| Official selectors resolved | 78/78 | `maintenance` | 0 selectors |
+| Stage-source-bound semantic executables | 76/77 | `shader-reverse-engineering` | 1 engine-owned executable |
+| Backend-semantic complete closure | 0/77 | `backend-semantic-equivalence` | 77 executables |
+| Exact five-field obligations | 164/395 | `runtime-regression` / `target-runtime-capture` | 231 obligations |
+| Official material slots stage-source-bound | 51,675/58,057 | `shader-reverse-engineering` | 6,382 slots |
 | Renderer-pipeline parity | `not-proven` | `runtime-pipeline-research` | guest runtime and backend equivalence remain open |
 | Visual parity | `unmeasured` | `excluded-by-policy` | 0 automated work units |
 
 These counts come from the hash-pinned official AssetBundle/Shader proof graph and selector port contract.
-The four-card runtime evidence is intentionally fail-closed after the current source changes and must be
-recaptured before runtime fields can regain exact credit. `stage-source-bound` means official SPIR-V identity is
+The current source-bound four-card runtime batch passes 4/4 and contributes
+`parameterEntry=79`, `passState=28`, `commonBindings=28`, and `runtimeDispatch=29` exact fields.
+`stage-source-bound` means official SPIR-V identity is
 bound to generated source; it does not mean exact Vulkan-to-WebGL instruction semantics.
 
 The renderer-pipeline row is further split into 12 machine-readable stages. Each stage reports
@@ -249,6 +266,12 @@ The Bloom audits pin all six official SPIR-V programs, the five-level render-tar
 atlas layout and weights, blur order, and fixed-function blend state. The FinalBlit audit follows the
 official ResourceManager → Material → Shader chain, pins the mip-0 `textureLod` presentation pass, and
 uses an asymmetric 2×2 GPU draw/readback fixture to verify the paired Vulkan-to-WebGL Y adaptation.
+The official `libunity` inline-sampler producer independently decodes FinalBlit's packed sampler value
+`85` as linear min/mag filtering, nearest mip selection, and clamp-to-edge on all axes. The browser
+binds a dedicated WebGL2 sampler object only around the display FinalBlit draw and then unbinds it;
+the source pipeline is consumed by Homography and therefore does not execute its own presentation draw.
+This separate sampler must not change the Point-filtered scene MRT contract. The generated fragment
+port also preserves the official highp sampled result instead of inheriting a mediump default.
 Pinned ARM64 constructors and `CommandBuffer.GetTemporaryRT` overloads prove that the scene path requests
 two ARGB32 color targets plus Depth24 and uses Point filtering. Bloom intermediates request ARGB32,
 Linear read/write, Bilinear filtering, Depth0, MSAA1, volume depth 1, and no memoryless mode. The browser
@@ -261,8 +284,11 @@ capability table. Unity top-origin, Homography sampling, and FinalBlit `1-v` are
 target device's actual VkFormat, stencil aspects, image layout, and per-pass VkViewport.
 Pass 5 binds the scene MRT directly and additively writes ColorRT; its WebGL2 adaptation emits zero to
 the still-active EmissiveRT attachment, which is a no-op under the official shared blend state. The
-Bloom program/graph stage is therefore `proven (8/8)` in the report, while render-target formats and the
-whole renderer pipeline remain `partial` and `not-proven`, respectively.
+source-current implementation inventory covers all 8 Bloom subscopes, but that is known coverage rather
+than official-runtime equivalence. The restoration proof graph separately counts only explicit,
+scope-unique claims; Vulkan-to-WebGL backend semantics and the official guest pass-5 attachment submission
+remain open. The current Bloom result is therefore `6/8 exact, 8/8 known`; Bloom, render-target formats,
+and the whole renderer pipeline remain `partial`.
 
 The MRT-output audit follows official prefab Material PPtrs and complete keyword sets to the selected
 Vulkan programs. It proves which shaders write location 1 and their RT1 replace state. The pass-partition

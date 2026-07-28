@@ -45,6 +45,7 @@ DEFAULT_DECRYPTED_ROOT = (
 UNITY_VERSION = "2022.3.62f2"
 SCHEMA = "pocket-card-render/official-material-program-inventory@4"
 IDENTITY_RE = re.compile(r"^(CAB-[0-9a-f]{32}):(-?[0-9]+)$")
+CAB_HEADER_RE = re.compile(rb"CAB-[0-9a-fA-F]{32}")
 VULKAN_PROGRAM_TYPE = 25
 SHADER_PROGRAM_VERSION = 202012090
 SHADER_CHANNEL_NAMES = {
@@ -218,6 +219,68 @@ def register_bundle(locator: dict[str, Path], path: Path) -> None:
             raise RuntimeError(f"duplicate official CAB {cab}: {previous} and {path}")
         locator[cab] = path.resolve()
     del environment
+
+
+def bundle_owner_cab(path: Path) -> str | None:
+    """Read a candidate owner CAB identity from a UnityFS header."""
+    try:
+        with path.open("rb") as handle:
+            header = handle.read(512)
+    except OSError:
+        return None
+    match = CAB_HEADER_RE.search(header)
+    if not match:
+        return None
+    value = match.group(0).decode("ascii")
+    return f"CAB-{value[4:].lower()}"
+
+
+def locate_owner_cab_bundles(
+    decrypted_root: Path,
+    locator: dict[str, Path],
+    target_cabs: set[str],
+) -> None:
+    """Locate unresolved direct dependencies by official UnityFS owner CAB.
+
+    The fast-path roots cover normal Face/Common material ownership.  This
+    snapshot-wide fallback is only used for remaining CABs, such as shared
+    CardNew logo materials stored outside Common/CardNew.
+    """
+    remaining = set(target_cabs) - set(locator)
+    if not remaining:
+        return
+    seen: set[Path] = set()
+    headerless: list[Path] = []
+    candidates = (
+        decrypted_root.glob("*_bundles"),
+        decrypted_root.glob("*/*_bundles"),
+        decrypted_root.rglob("*_bundles"),
+    )
+    for paths in candidates:
+        for path in paths:
+            resolved = path.resolve()
+            if resolved in seen:
+                continue
+            seen.add(resolved)
+            cab = bundle_owner_cab(path)
+            if cab is None:
+                headerless.append(path)
+                continue
+            if cab not in remaining:
+                continue
+            register_bundle(locator, path)
+            remaining = set(target_cabs) - set(locator)
+            if not remaining:
+                return
+
+    # A CAB header is only a fast candidate hint. If the hint index does not
+    # close the direct dependency set, authoritatively inspect headerless
+    # bundles before reporting a locator boundary.
+    for path in headerless:
+        register_bundle(locator, path)
+        remaining = set(target_cabs) - set(locator)
+        if not remaining:
+            return
 
 
 def material_record(obj: object, bundle: Path, decrypted_root: Path) -> dict:
@@ -897,6 +960,7 @@ def locate_material_bundles(
                     break
             if cab in locator:
                 break
+    locate_owner_cab_bundles(decrypted_root, locator, unresolved)
     return set(material_cabs) - set(locator)
 
 

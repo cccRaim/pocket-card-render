@@ -49,8 +49,9 @@ you stage just what the samples need. (Game art is git-ignored and never committ
 
 ## Sample cards
 
-The globally minimum 112-card coverage set ships as prebuilt scenes, plus three
-non-minimum regression scenes. Scenes contain render data and text only; art is
+The globally minimum 112-card coverage set ships as prebuilt scenes, plus five
+minimum additional rarity-rendering witnesses and six non-minimum regression
+scenes. Scenes contain render data and text only; art is
 still gathered locally. Five frequently used regression anchors are:
 
 | URL | Card | Rarity |
@@ -63,9 +64,11 @@ still gathered locally. Five frequently used regression anchors are:
 
 The card dropdown is backed by `public/card-examples.json`: an official-data-derived, globally
 minimum set of 112 witnesses covering 444 known design, shader/state, and card-face semantic
-features. All 112 exact scenes are bundled; after `gather`, they are directly selectable alongside
-the three supplemental regression scenes. Missing assets disable an entry rather than activating a
-generic fallback recipe.
+features. A second official-inventory join covers all 543 rarity x semantic-executable/material-state
+combinations and independently proves that five additional cards are the minimum needed after the
+primary set. All 117 exact witness scenes are bundled; after `gather`, they are directly selectable
+alongside the six supplemental regression scenes. Missing assets disable an entry rather than
+activating a generic fallback recipe.
 
 To regenerate the built-in set against your own official inputs, inspect and then materialize it:
 

@@ -2,6 +2,8 @@
   "shader": "Rendering/CustomRenderer/Blit",
   "generated_by": "build/build-exact-final-blit.mjs",
   "official": {
+    "sample_id": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+    "sample_manifest_sha256": "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
     "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
     "resource_manager_path_id": 13,
     "resource_manager_sha256": "878c096d7143ee90722194d5df2e12b22705c854e5cd608152062c8b97f5ec20",
@@ -48,6 +50,24 @@
       "explicit_texture_lod": true
     }
   },
+  "sampler_state": {
+    "bind_point": 134217729,
+    "packed_value": 85,
+    "packed_hex": "0x0055",
+    "decoded_by": "game-byte-mapped Unity Vulkan inline sampler decode",
+    "webgl2": {
+      "magFilter": "LINEAR",
+      "minFilter": "LINEAR",
+      "wrapS": "CLAMP_TO_EDGE",
+      "wrapT": "CLAMP_TO_EDGE"
+    },
+    "producer_hashes": {
+      "createInlineSampler": "390619ada27054cee058b41c1f66f1ab3d8bec89ec0dc6a932a106fa088b73b5",
+      "makeSamplerConfiguration": "2b8fde12592e0e5158f8ea6a2605eb317550b0da383807a77354cb56e8dc1f93",
+      "makeSamplerCreateInfo": "93a7c90545925bd4d8c79601b2abba837468a0f15d915745f8baeaab98bf4365",
+      "sanitize": "231cbb729b8627979dd9c683081bf28e56dedd3d41cf41c2c434348d9dbaf467"
+    }
+  },
   "render_state": {
     "blendOp": 0,
     "blendOpAlpha": 0,
@@ -64,6 +84,7 @@
   "webgl2_adaptation": [
     "flatten serialized partial UBOs into named uniforms",
     "combine the SPIR-V image and sampler as _BlitTexture",
+    "promote the combined sampler declaration so the live explicit-LOD sample remains non-RelaxedPrecision",
     "express the official vertex-ID bit extraction with WebGL2-safe uint operators",
     "remove the paired Vulkan clip-space and render-target UV Y flips",
     "rename stage interface symbols without changing shader math"

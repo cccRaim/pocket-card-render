@@ -5,6 +5,10 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  officialSample,
+  officialSampleSha256,
+} from "./official-sample.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "shaders");
@@ -131,7 +135,12 @@ function adaptFragment(source) {
     highp float _m0;
 } _26;
 `, "uniform highp float _BlitMipLevel;\n", "fragment LOD UBO");
-  out = replaceOnce(out, "uniform mediump sampler2D SPIRV_Cross_Combined;", "uniform mediump sampler2D _BlitTexture;", "combined blit sampler");
+  out = replaceOnce(
+    out,
+    "uniform mediump sampler2D SPIRV_Cross_Combined;",
+    "uniform highp sampler2D _BlitTexture;",
+    "combined blit sampler with official sample-result precision",
+  );
   out = replaceOnce(out, "layout(location = 0) out highp vec4 _9;", "layout(location = 0) out highp vec4 outColor;", "fragment output");
   out = replaceOnce(out, "in highp vec2 vs_TEXCOORD0;", "in highp vec2 vUv;", "fragment varying");
   out = out.replace(/\b_9\b/g, "outColor")
@@ -155,7 +164,16 @@ function readEvidence() {
   }));
 }
 
+function readInlineSamplerEvidence() {
+  return JSON.parse(run(PYTHON, ["-B", "build/extract_official_inline_sampler.py"], {
+    maxBuffer: 4 * 1024 * 1024,
+    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+    shell: process.platform === "win32",
+  }));
+}
+
 function assertEvidence(evidence) {
+  equal(officialSample.artifacts.apkm.sha256, PINNED.source.apkmSha256, "current official sample APKM hash");
   for (const [key, expected] of Object.entries(PINNED.source)) equal(evidence.source?.[key], expected, `source.${key}`);
   const chain = evidence.resourceChain;
   equal(chain.resourceManager.pathId, PINNED.resourceManager.pathId, "ResourceManager PathID");
@@ -177,11 +195,29 @@ function assertEvidence(evidence) {
   equal(program.decompressedSha256, PINNED.program.decompressedSha256, "decompressed program hash");
   equal(program.pass.parameterEntry.sha256, PINNED.program.parameterSha256, "parameter entry hash");
   equal(program.pass.programEntry.sha256, PINNED.program.programSha256, "program entry hash");
+  equal(program.pass.bindings.serializedSamplerStates, [
+    { bindPoint: 0x08000001, sampler: 85 },
+  ], "serialized inline sampler");
+}
+
+function assertInlineSamplerEvidence(evidence) {
+  equal(evidence.schema, "pocket-card-render/official-inline-sampler@1", "inline sampler schema");
+  equal(evidence.sampleId, officialSample.sampleId, "inline sampler sample ID");
+  equal(evidence.sampleManifestSha256, officialSampleSha256, "inline sampler sample manifest");
+  equal(evidence.decoded?.packedValue, 85, "inline sampler packed value");
+  equal(evidence.decoded?.webgl2, {
+    magFilter: "LINEAR",
+    minFilter: "LINEAR",
+    wrapS: "CLAMP_TO_EDGE",
+    wrapT: "CLAMP_TO_EDGE",
+  }, "inline sampler WebGL2 mapping");
 }
 
 try {
   const evidence = readEvidence();
+  const inlineSampler = readInlineSamplerEvidence();
   assertEvidence(evidence);
+  assertInlineSamplerEvidence(inlineSampler);
   const outputs = {};
   const manifestModules = {};
 
@@ -212,6 +248,8 @@ try {
     shader: PINNED.shader.name,
     generated_by: "build/build-exact-final-blit.mjs",
     official: {
+      sample_id: officialSample.sampleId,
+      sample_manifest_sha256: officialSampleSha256,
       apkm_sha256: PINNED.source.apkmSha256,
       resource_manager_path_id: PINNED.resourceManager.pathId,
       resource_manager_sha256: PINNED.resourceManager.rawSha256,
@@ -232,10 +270,22 @@ try {
       scale_bias: { name: "_BlitScaleBias", stage: "vertex", offset: 0, type: "vec4" },
       lod: { name: "_BlitMipLevel", stage: "fragment", offset: 0, type: "float", explicit_texture_lod: true },
     },
+    sampler_state: {
+      bind_point: 0x08000001,
+      packed_value: inlineSampler.decoded.packedValue,
+      packed_hex: inlineSampler.decoded.packedHex,
+      decoded_by: inlineSampler.claim,
+      webgl2: inlineSampler.decoded.webgl2,
+      producer_hashes: Object.fromEntries(
+        Object.entries(inlineSampler.nativeFunctions)
+          .map(([name, entry]) => [name, entry.game.sha256]),
+      ),
+    },
     render_state: evidence.shaderProgram.pass.renderState,
     webgl2_adaptation: [
       "flatten serialized partial UBOs into named uniforms",
       "combine the SPIR-V image and sampler as _BlitTexture",
+      "promote the combined sampler declaration so the live explicit-LOD sample remains non-RelaxedPrecision",
       "express the official vertex-ID bit extraction with WebGL2-safe uint operators",
       "remove the paired Vulkan clip-space and render-target UV Y flips",
       "rename stage interface symbols without changing shader math",

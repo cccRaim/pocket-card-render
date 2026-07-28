@@ -326,9 +326,17 @@ const flareRestoreBlock = sourceBlock(
   "root.updateMatrixWorld(true);",
   "LensFlare built-in Quad restoration",
 );
+const flareDispatchRoutes = PORT_CONTRACT.runtimeDispatch.routes.filter(
+  (row) => row.dispatch.shaderKey === "Card_UR_LensFlare",
+);
 requireCondition(
-  flareRestoreBlock.includes('recipe.shader !== "Card_UR_LensFlare"'),
-  "LensFlare restoration is not gated by the official shader recipe",
+  flareDispatchRoutes.length === 1
+    && flareDispatchRoutes[0].dispatch.capabilities.builtinGeometry === "unity-quad",
+  "LensFlare route is not bound to the official built-in Quad capability",
+);
+requireCondition(
+  flareRestoreBlock.includes('dispatch?.capabilities?.builtinGeometry !== "unity-quad"'),
+  "LensFlare restoration is not gated by the runtime dispatch capability",
 );
 requireCondition(
   flareRestoreBlock.includes("root.getObjectByName(recipe.go)"),

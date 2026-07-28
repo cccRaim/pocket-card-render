@@ -45,7 +45,8 @@ npm run serve                        # → http://127.0.0.1:8011
 
 ## 样例卡
 
-全局最小的 112 张覆盖集已经全部预置为 scene，另保留 3 张不属于最小集的回归 scene。
+全局最小的 112 张机制覆盖集、5 张最小按稀有度补充 witness，以及 6 张补充回归卡
+均已预置为 scene。
 scene 只含渲染数据与文本，美术仍在本地收集。以下是常用的 5 张回归锚点：
 
 | 网址 | 卡片 | 稀有度 |
@@ -57,8 +58,10 @@ scene 只含渲染数据与文本，美术仍在本地收集。以下是常用�
 | `?scene=scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json` | 伊布的背包（Eevee's Bag） | UR |
 
 右上角选卡菜单由 `public/card-examples.json` 驱动：它从官方数据计算出全局最小的 112 张 witness，
-覆盖 444 个已知 Design、Shader/state 与卡面语义特征。112 张 exact scene 已全部内置；执行 `gather`
-后可和 3 张补充回归卡一起直接切换。缺少资产的条目会禁用，不会偷偷使用通用 fallback recipe。
+覆盖 444 个已知 Design、Shader/state 与卡面语义特征。第二套官方 inventory join 覆盖全部
+543 个 rarity × semantic-executable/material-state 组合，并独立证明主集合之外至少还需要 5 张卡。
+117 张 exact witness scene 已全部内置；执行 `gather` 后可和 6 张补充回归卡一起直接切换。
+缺少资产的条目会禁用，不会偷偷使用通用 fallback recipe。
 
 需要从自己的官方输入重新生成内置集合时，可先检查、再批量物化：
 

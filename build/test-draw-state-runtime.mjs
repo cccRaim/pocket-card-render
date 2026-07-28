@@ -17,8 +17,9 @@ export async function runDrawStateRuntime(input, options = {}) {
   const baseUrl = options.baseUrl
     || process.env.PCR_DRAW_STATE_RUNTIME_URL
     || "http://127.0.0.1:8011/";
-  const testUrl = new URL("/test-draw-state-runtime.html", baseUrl).href;
-  const appOrigin = new URL(testUrl).origin;
+  const testUrl = new URL("/test-draw-state-runtime.html", baseUrl);
+  testUrl.searchParams.set("requireSwiftShader", "1");
+  const appOrigin = testUrl.origin;
   const diagnostics = [];
   let browser;
 
@@ -56,7 +57,7 @@ export async function runDrawStateRuntime(input, options = {}) {
       }
     });
 
-    await page.goto(testUrl, { waitUntil: "load", timeout: 15000 });
+    await page.goto(testUrl.href, { waitUntil: "load", timeout: 15000 });
     await page.waitForFunction(
       () => window.__drawStateRuntimeState?.done === true,
       null,

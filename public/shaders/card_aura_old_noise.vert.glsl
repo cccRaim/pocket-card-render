@@ -1,0 +1,66 @@
+precision highp float;
+precision highp int;
+uniform highp mat4 modelMatrix;
+
+uniform highp mat4 viewMatrix;
+uniform highp mat4 projectionMatrix;
+uniform mediump vec4 _Col4;
+in vec3 position;
+out vec2 vs_TEXCOORD0;
+out vec3 vs_TEXCOORD1;
+out vec3 vAuraCol4;
+vec4 _9;
+vec4 _52;
+bvec3 _159;
+vec3 _186;
+float _200;
+
+void main()
+{
+    vec4 _11 = vec4(position, 1.0);
+    mat4 pcrViewProjection = projectionMatrix * viewMatrix;
+    _9 = _11.yyyy * modelMatrix[1];
+    _9 = (modelMatrix[0] * _11.xxxx) + _9;
+    _9 = (modelMatrix[2] * _11.zzzz) + _9;
+    _9 += modelMatrix[3];
+    _52 = _9.yyyy * pcrViewProjection[1];
+    _52 = (pcrViewProjection[0] * _9.xxxx) + _52;
+    _52 = (pcrViewProjection[2] * _9.zzzz) + _52;
+    gl_Position = (pcrViewProjection[3] * _9.wwww) + _52;
+    vec2 _96 = _11.xy + vec2(0.314999997615814208984375, 0.439999997615814208984375);
+    _9 = vec4(_96.x, _96.y, _9.z, _9.w);
+    vs_TEXCOORD0 = _9.xy * vec2(1.58730161190032958984375, 1.13636362552642822265625);
+    vs_TEXCOORD1 = _11.xyz;
+    mediump vec3 _117 = _Col4.xyz + vec3(0.054999999701976776123046875);
+    _9 = vec4(_117.x, _117.y, _117.z, _9.w);
+    vec3 _124 = _9.xyz * vec3(0.947867333889007568359375);
+    _9 = vec4(_124.x, _124.y, _124.z, _9.w);
+    vec3 _129 = log2(_9.xyz);
+    _9 = vec4(_129.x, _129.y, _129.z, _9.w);
+    vec3 _136 = _9.xyz * vec3(2.400000095367431640625);
+    _9 = vec4(_136.x, _136.y, _136.z, _9.w);
+    vec3 _141 = exp2(_9.xyz);
+    _9 = vec4(_141.x, _141.y, _141.z, _9.w);
+    vec3 _153 = ((-_Col4.xyz) * vec3(0.077399380505084991455078125)) + _9.xyz;
+    _9 = vec4(_153.x, _153.y, _153.z, _9.w);
+    _159 = greaterThanEqual(_Col4.xyzx, vec4(0.040449999272823333740234375, 0.040449999272823333740234375, 0.040449999272823333740234375, 0.0)).xyz;
+    _52.x = float(_159.x);
+    _52.y = float(_159.y);
+    _52.z = float(_159.z);
+    _186 = _Col4.xyz * vec3(0.077399380505084991455078125);
+    vec3 _197 = (_52.xyz * _9.xyz) + _186;
+    _9 = vec4(_197.x, _197.y, _197.z, _9.w);
+    _200 = dot(_9.xyz, vec3(0.4121656119823455810546875, 0.536275207996368408203125, 0.0514575652778148651123046875));
+    _52.x = log2(_200);
+    _200 = dot(_9.xyz, vec3(0.21185910701751708984375, 0.680718958377838134765625, 0.107406578958034515380859375));
+    _9.x = dot(_9.xyz, vec3(0.0883097946643829345703125, 0.281847417354583740234375, 0.630261361598968505859375));
+    _52.z = log2(_9.x);
+    _52.y = log2(_200);
+    vec3 _237 = _52.xyz * vec3(0.3333333432674407958984375);
+    _9 = vec4(_237.x, _237.y, _237.z, _9.w);
+    vec3 _242 = exp2(_9.xyz);
+    _9 = vec4(_242.x, _242.y, _242.z, _9.w);
+    vAuraCol4.x = dot(_9.xyz, vec3(0.2104542553424835205078125, 0.793617784976959228515625, 0.004072046838700771331787109375));
+    vAuraCol4.y = dot(_9.xyz, vec3(1.9779984951019287109375, -2.428592205047607421875, 0.4505937099456787109375));
+    vAuraCol4.z = dot(_9.xyz, vec3(0.025904037058353424072265625, 0.782771766185760498046875, -0.8086757659912109375));
+}

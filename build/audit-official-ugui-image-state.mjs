@@ -7,11 +7,20 @@ import {
   compactOfficialUIImageState,
   resolveOfficialUIImageDrawState,
 } from "../public/render/official-ugui-image.js";
-import { CANONICAL_LOCALIZED_TEXT_FILES } from "./full-runtime-sources.mjs";
+import {
+  assertEvolutionSourceImage,
+  canonicalUGUICorpus,
+} from "./official-ugui-corpus.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const layout = JSON.parse(fs.readFileSync(path.join(ROOT, "public/render/card-ui-layout-contract.json"), "utf8"));
 const textDir = path.join(ROOT, "public/text");
+const ENERGY_SPRITE_PRODUCER_SCHEMA = "pocket-card-render/runtime-sprite-producer@1";
+const ENERGY_SPRITE_PRODUCER = "CardEnergyIconView.SetEnergy";
+const ENERGY_ICON = {
+  Grass: "01", Fire: "02", Water: "03", Lightning: "04", Psychic: "05",
+  Fighting: "06", Darkness: "07", Metal: "08", Dragon: "09", Colorless: "10",
+};
 
 function sha256(value) {
   return crypto.createHash("sha256").update(value).digest("hex");
@@ -19,6 +28,19 @@ function sha256(value) {
 
 function pptr(value) {
   return { fileId: Number(value?.fileId || 0), pathId: String(value?.pathId || "0") };
+}
+
+function assertEnergySpriteProducer(element, context) {
+  const binding = element.runtimeSpriteProducer;
+  assert.equal(binding?.schema, ENERGY_SPRITE_PRODUCER_SCHEMA, `${context}: runtime Sprite schema drifted`);
+  assert.equal(binding?.producer, ENERGY_SPRITE_PRODUCER, `${context}: runtime Sprite producer drifted`);
+  assert.equal(binding?.target, "Image.sprite", `${context}: runtime Sprite target drifted`);
+  const code = ENERGY_ICON[binding?.input?.energyType];
+  assert.ok(code, `${context}: runtime Sprite energy input is invalid`);
+  const spriteName = `card_icn_attribute_${code}`;
+  const textureUrl = `/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat8x8/${spriteName}.png`;
+  assert.deepEqual(binding.output, { spriteName, textureUrl }, `${context}: runtime Sprite output drifted`);
+  assert.equal(element.url, textureUrl, `${context}: rendered energy URL differs from SetEnergy output`);
 }
 
 function expectedState(node, provenance) {
@@ -103,11 +125,27 @@ assert.equal(stateSha256, "6f9b6c16d0ce539c3adc31e0d55a69bae1b32b81c2fba7db9f0e6
 
 let iconCount = 0;
 let directImageCount = 0;
-for (const file of CANONICAL_LOCALIZED_TEXT_FILES) {
+let energyRuntimeSpriteCount = 0;
+let evolutionSourceIconCount = 0;
+const corpus = canonicalUGUICorpus(ROOT);
+const canonicalTextFiles = corpus.entries.map(({ file }) => file);
+for (const entry of corpus.entries) {
+  const { file, evolutionSourceCharacterId } = entry;
   const composition = JSON.parse(fs.readFileSync(path.join(textDir, file), "utf8"));
+  if (assertEvolutionSourceImage(
+    composition,
+    evolutionSourceCharacterId,
+    file,
+  )) {
+    evolutionSourceIconCount += 1;
+  }
   for (const element of composition.elements || []) {
     if (element.kind !== "icon") continue;
     iconCount += 1;
+    if (element.runtimeSpriteProducer) {
+      assertEnergySpriteProducer(element, `${file}: ${element.layoutPath}`);
+      energyRuntimeSpriteCount += 1;
+    }
     const binding = nodes.get(element.layoutPath);
     assert(binding, `${file}: ${element.layoutPath} is absent from official prefab hierarchy`);
     if (!binding.node.image) {
@@ -122,16 +160,20 @@ for (const file of CANONICAL_LOCALIZED_TEXT_FILES) {
     );
   }
 }
-assert.equal(iconCount, 441);
-assert.equal(directImageCount, 198);
-const topAttributeElements = CANONICAL_LOCALIZED_TEXT_FILES.flatMap((file) => {
+assert.equal(canonicalTextFiles.length, 1107);
+assert.equal(corpus.evolutionSourceCardCount, 39);
+assert.equal(evolutionSourceIconCount, corpus.evolutionSourceEntryCount);
+assert.equal(iconCount - evolutionSourceIconCount, 15849);
+assert.equal(directImageCount - evolutionSourceIconCount, 7281);
+assert.equal(energyRuntimeSpriteCount, 6579);
+const topAttributeElements = canonicalTextFiles.flatMap((file) => {
   const composition = JSON.parse(fs.readFileSync(path.join(textDir, file), "utf8"));
   const elements = (composition.elements || []).filter((element) => (
     element.layoutPath?.startsWith("/PokemonCardUI/energy_view/CardEnergyIconView/")
   ));
   return elements.length ? [{ file, elements }] : [];
 });
-assert.equal(topAttributeElements.length, 18);
+assert.equal(topAttributeElements.length, 963);
 for (const { file, elements } of topAttributeElements) {
   assert.deepEqual(
     elements.map((element) => ({
@@ -154,6 +196,12 @@ for (const { file, elements } of topAttributeElements) {
     `${file}: top attribute lost official Outline -> icon child order`,
   );
   const [outline, icon] = elements;
+  assertEnergySpriteProducer(icon, `${file}: top attribute`);
+  assert.equal(
+    icon.uiImage.sprite.pathId,
+    "1014312146848883521",
+    `${file}: top attribute lost the prefab's initial Grass Sprite state`,
+  );
   assert(
     icon.box.l > outline.box.l
       && icon.box.r < outline.box.r
@@ -162,15 +210,15 @@ for (const { file, elements } of topAttributeElements) {
     `${file}: top attribute icon lost its inset official child RectTransform`,
   );
 }
-const exOutlineElements = CANONICAL_LOCALIZED_TEXT_FILES.flatMap((file) => {
+const exOutlineElements = canonicalTextFiles.flatMap((file) => {
   const composition = JSON.parse(fs.readFileSync(path.join(textDir, file), "utf8"));
   return (composition.elements || [])
     .filter((element) => element.layoutPath?.endsWith("/ImgExOutlineWhite/ImgExOutlineWhite"))
     .map((element) => ({ file, element }));
 });
-assert.equal(exOutlineElements.length, 9);
+assert.equal(exOutlineElements.length, 252);
 assert.ok(exOutlineElements.every(({ file, element }) => (
-  file.startsWith("PK_20_008900_02.")
+  file.startsWith("PK_")
   && element.hierarchyOrder === 7
   && element.uiImage?.imageObjectSha256
     === "a26a81faf3d5a4d61f6d37a0c6a5b6f6384b124f4f794702f6c86629d395c3c1"
@@ -196,5 +244,7 @@ assert.match(app, /resolveOfficialUIImageDrawState\(e\)/, "runtime drawSprite by
 
 console.log("Official UGUI Image/static Canvas state audit OK");
 console.log(`  ${imageRows.length} Images + ${canvasRows.length} Canvases hash-pinned`);
+console.log(`  ${canonicalTextFiles.length} localized files from the 123-scene canonical corpus audited`);
 console.log(`  ${directImageCount}/${iconCount} prebuilt icon ops carry direct official Image state`);
+console.log(`  ${energyRuntimeSpriteCount} energy icons preserve SetEnergy runtime Sprite provenance`);
 console.log("  mutation tests reject disabled/filled/mesh/non-unit-PUP state drift");

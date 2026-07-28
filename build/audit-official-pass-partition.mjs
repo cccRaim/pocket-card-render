@@ -574,11 +574,11 @@ requireCondition(
   "runtime selector-bound stencil route could not be located",
 );
 requireCondition(
-  appSource.includes('if (matName === "L_FullFace_Text") dynUIMat = passMaterials[0];'),
+  appSource.includes('if (material.userData.dynamicUIRole === "text")'),
   "runtime selector-bound DynamicUI material tracking could not be located",
 );
 requireCondition(
-  appSource.includes('recipe.shader !== "Card_UR_LensFlare"'),
+  appSource.includes('dispatch?.capabilities?.builtinGeometry !== "unity-quad"'),
   "runtime LensFlare built-in Quad restoration could not be located",
 );
 requireCondition(

@@ -57,11 +57,13 @@ const EXPECTED = Object.freeze({
   sourceCurrentCards: 3191,
   assetGapCards: 114,
   visualPairs: 106,
-  semanticExecutables: 76,
-  materialStates: 165,
-  unresolvedMaterials: 2,
+  semanticExecutables: 77,
+  materialStates: 166,
+  unresolvedMaterials: 0,
   featureUniverse: 444,
   minimumWitnesses: 112,
+  rarityRenderingFeatures: 543,
+  rarityRenderingAdditionalWitnesses: 5,
 });
 
 function compareText(a, b) {
@@ -305,6 +307,11 @@ function bundledSceneIndex() {
 }
 
 export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
+  assert.equal(
+    verifyOptimal,
+    true,
+    "canonical card examples cannot claim global optimality without running the independent MILP proof",
+  );
   ensureInventory();
   const designInput = readJsonBytes(DESIGN_CONTRACT);
   const fontInput = readJsonBytes(FONT_CONTRACT);
@@ -437,6 +444,7 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
     if (!contractCard) continue;
     const design = designContract.designs[contractCard.design];
     const features = new Set();
+    const rarityRenderingFeatures = new Set();
     const visualPairId = `${contractCard.design}::${contractCard.fontGroup}`;
     addFeature(features, `visual-pair:${visualPairId}`, {
       design: contractCard.design,
@@ -475,6 +483,9 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
       const selector = selectorsById.get(selectorId);
       assert(selector, `${material.identity} selector is absent`);
       for (const executable of selector.staticExecutables || []) {
+        rarityRenderingFeatures.add(
+          `rarity-semantic-executable:${card.Rarity}:${executable.executable.semanticExecutableId}`,
+        );
         addFeature(
           features,
           `semantic-executable:${executable.executable.semanticExecutableId}`,
@@ -487,7 +498,11 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
           { selectorId: selector.selectorId },
         );
       }
-      addFeature(features, `material-state:${materialStateId(material)}`);
+      const stateId = materialStateId(material);
+      rarityRenderingFeatures.add(
+        `rarity-material-state:${card.Rarity}:${stateId}`,
+      );
+      addFeature(features, `material-state:${stateId}`);
     }
 
     let definition;
@@ -581,6 +596,8 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
         localeResolvers,
       }),
       obligations: [...features].sort(compareText),
+      rarityRenderingObligations:
+        [...rarityRenderingFeatures].sort(compareText),
     });
   }
   cards.sort((a, b) => compareText(a.cardId, b.cardId)
@@ -639,20 +656,58 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
     "set-cover selection depends on candidate enumeration order",
   );
   assert.equal(selection.length, EXPECTED.minimumWitnesses);
-  const optimality = verifyOptimal
-    ? proveMinimum(cards, universe)
-    : {
-      solver: "not-run",
-      status: null,
-      message: "optimality verification skipped",
-      optimalCardinality: EXPECTED.minimumWitnesses,
-      mipGap: null,
-      mipDualBound: EXPECTED.minimumWitnesses,
-    };
+  const optimality = proveMinimum(cards, universe);
   assert.equal(optimality.optimalCardinality, selection.length);
+
+  const rarityRenderingUniverse = sortedUnique(
+    cards.flatMap((card) => card.rarityRenderingObligations),
+  );
+  assert.equal(
+    rarityRenderingUniverse.length,
+    EXPECTED.rarityRenderingFeatures,
+  );
+  const primaryRarityRenderingCoverage = new Set(
+    selection.flatMap((card) => card.rarityRenderingObligations),
+  );
+  const missingRarityRenderingUniverse = rarityRenderingUniverse
+    .filter((id) => !primaryRarityRenderingCoverage.has(id));
+  const rarityRenderingCandidates = cards.map((card) => ({
+    ...card,
+    obligations: card.rarityRenderingObligations
+      .filter((id) => missingRarityRenderingUniverse.includes(id)),
+  }));
+  const rarityRenderingSelection = deterministicGreedySetCover(
+    rarityRenderingCandidates,
+    missingRarityRenderingUniverse,
+  );
+  assert.equal(
+    rarityRenderingSelection.length,
+    EXPECTED.rarityRenderingAdditionalWitnesses,
+  );
+  const rarityRenderingOptimality = proveMinimum(
+    rarityRenderingCandidates,
+    missingRarityRenderingUniverse,
+  );
+  assert.equal(
+    rarityRenderingOptimality.optimalCardinality,
+    rarityRenderingSelection.length,
+  );
+  const completeRarityRenderingCoverage = new Set([
+    ...primaryRarityRenderingCoverage,
+    ...rarityRenderingSelection.flatMap((card) => card.newlyCovered),
+  ]);
+  assert.deepEqual(
+    rarityRenderingUniverse.filter(
+      (id) => !completeRarityRenderingCoverage.has(id),
+    ),
+    [],
+  );
 
   const bundledScenes = bundledSceneIndex();
   const selectedIds = new Set(selection.map((card) => card.illustrationId));
+  const rarityRenderingIds = new Set(
+    rarityRenderingSelection.map((card) => card.illustrationId),
+  );
   const cardByIllustration = new Map(
     cards.map((card) => [card.illustrationId, card]),
   );
@@ -660,8 +715,20 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
     ...card,
     bundledSceneFile: bundledScenes.get(card.illustrationId) || null,
   }));
+  const rarityRenderingExamples = rarityRenderingSelection.map(({
+    obligations: _missingObligations,
+    newlyCovered,
+    ...card
+  }) => ({
+    ...card,
+    rarityRenderingNewlyCovered: newlyCovered,
+    bundledSceneFile: bundledScenes.get(card.illustrationId) || null,
+  }));
   const supplementalExamples = [...bundledScenes]
-    .filter(([illustrationId]) => !selectedIds.has(illustrationId))
+    .filter(([illustrationId]) => (
+      !selectedIds.has(illustrationId)
+      && !rarityRenderingIds.has(illustrationId)
+    ))
     .map(([illustrationId, sceneFile]) => {
       const card = cardByIllustration.get(illustrationId);
       assert(card, `${sceneFile} is outside the source-current card corpus`);
@@ -750,6 +817,13 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
       minimumWitnessCount: selection.length,
       bundledSelectedCount:
         selectedExamples.filter((card) => card.bundledSceneFile).length,
+      rarityRenderingFeatureCount: rarityRenderingUniverse.length,
+      primaryRarityRenderingFeatureCount:
+        primaryRarityRenderingCoverage.size,
+      minimumAdditionalRarityRenderingWitnessCount:
+        rarityRenderingSelection.length,
+      bundledAdditionalRarityRenderingWitnessCount:
+        rarityRenderingExamples.filter((card) => card.bundledSceneFile).length,
       bundledSupplementalCount: supplementalExamples.length,
     },
     optimality: {
@@ -767,6 +841,22 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
       selectedWitnesses: selectedExamples,
       uncovered: [],
     },
+    rarityRenderingCoverageSet: {
+      featureUniverse: rarityRenderingUniverse,
+      primaryWitnessIllustrationIds:
+        selection.map((card) => card.illustrationId),
+      primaryCoveredFeatureCount: primaryRarityRenderingCoverage.size,
+      additionalWitnesses: rarityRenderingExamples,
+      uncovered: [],
+      optimality: {
+        claim: "minimum-additional-cardinality-after-primary-witnesses",
+        lowerBound: rarityRenderingOptimality.optimalCardinality,
+        upperBound: rarityRenderingSelection.length,
+        solver: rarityRenderingOptimality.solver,
+        solverStatus: rarityRenderingOptimality.status,
+        mipGap: rarityRenderingOptimality.mipGap,
+      },
+    },
     supplementalBundledExamples: supplementalExamples,
     boundaries: [
       {
@@ -780,16 +870,18 @@ export function buildOfficialCardExamples({ verifyOptimal = true } = {}) {
         scope: "local-playability",
         status: "availability-only",
         count:
-          selectedExamples.filter((card) => !card.bundledSceneFile).length,
+          selectedExamples.filter((card) => !card.bundledSceneFile).length
+          + rarityRenderingExamples
+            .filter((card) => !card.bundledSceneFile).length,
         detail:
           "Catalog examples without a tracked prebuilt scene remain disabled until their exact per-card recipe and gathered assets are produced.",
       },
       {
         scope: "material-locator",
-        status: "runtime-required",
+        status: "exact",
         count: EXPECTED.unresolvedMaterials,
         detail:
-          "Two official cPK_90 Material identities remain outside bounded locator roots and are represented as explicit boundary features.",
+          "All 8,460 official Material identities resolve by immutable-snapshot CAB ownership, including the shared cPK_90 Logo bundle.",
       },
       {
         scope: "engine-variant-dispatch",
@@ -809,8 +901,12 @@ export function serializeOfficialCardExamples(value) {
 }
 
 function main() {
-  const skipOptimal = process.argv.includes("--skip-optimal");
-  const examples = buildOfficialCardExamples({ verifyOptimal: !skipOptimal });
+  assert.equal(
+    process.argv.includes("--skip-optimal"),
+    false,
+    "--skip-optimal is not valid for the canonical card-examples artifact",
+  );
+  const examples = buildOfficialCardExamples();
   const serialized = serializeOfficialCardExamples(examples);
   const check = process.argv.includes("--check")
     || process.env.PCR_OFFICIAL_CARD_EXAMPLES_CHECK === "1";
@@ -829,6 +925,8 @@ function main() {
     `${examples.summary.featureUniverseCount} official features`,
     `${examples.summary.minimumWitnessCount} globally minimal witnesses`,
     `${examples.summary.bundledSelectedCount} selected scenes ready`,
+    `${examples.summary.rarityRenderingFeatureCount} rarity rendering features`,
+    `${examples.summary.bundledAdditionalRarityRenderingWitnessCount} additional rarity scenes ready`,
     `${examples.summary.bundledSupplementalCount} supplemental scenes ready`,
   ].join(", "));
 }

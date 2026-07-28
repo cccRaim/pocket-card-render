@@ -170,7 +170,7 @@ const localChecks = [
     msg: "local rarity strategy must keep holo ramp core and data-shaped alpha cutout",
   },
   {
-    ok: /exactShaderPort\(r,\s*"Opaque_Hologram_Tuning"\)/.test(local.rarity)
+    ok: /exactShaderPort\(r\)/.test(local.rarity)
       && /exactPortUniforms\(r,\s*exact/.test(local.rarity)
       && /ctx\.layerCubeDefault\(r,\s*binding\.slot\)/.test(local.rarity),
     msg: "local rarity strategy must wire the exact program and data-driven implicit cubemap default",

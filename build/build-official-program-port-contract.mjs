@@ -8,6 +8,11 @@ import {
   officialSample,
   officialSampleSha256,
 } from "./official-sample.mjs";
+import { SHADER } from "../public/render/rarities.js";
+import {
+  compileRuntimeMaterialDispatch,
+  RUNTIME_MATERIAL_DISPATCH_SCHEMA,
+} from "../public/render/runtime-dispatch-contract.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const INVENTORY = path.resolve(process.env.PCR_MATERIAL_PROGRAM_INVENTORY
@@ -85,12 +90,34 @@ const OBLIGATIONS = {
   runtimeDispatch: { scope: "local-port-dispatch", verifier: "build/verify-official-port-runtime-dispatch.mjs" },
 };
 
+function shaderKey(shaderName) {
+  return String(shaderName || "").split("/").at(-1);
+}
+
+function runtimeDispatchFor(row) {
+  const key = shaderKey(row.shaderName);
+  const route = SHADER[key];
+  const implemented = route && route.defer !== true;
+  return compileRuntimeMaterialDispatch({
+    support: implemented ? "implemented" : route ? "deferred" : "unsupported",
+    shaderKey: key,
+    strategy: implemented ? route.kind : null,
+    blend: implemented ? route.blend : null,
+    defer: !implemented,
+    materialBlend: route?.materialBlend === true,
+    materialCull: route?.materialCull === true,
+    ...(route?.alphaTest === undefined ? {} : { alphaTest: route.alphaTest }),
+    ...(route?.cull === undefined ? {} : { cull: route.cull }),
+    capabilities: route?.capabilities || {},
+  }, `inventory selector ${row.selectorId}`);
+}
+
 if (!fs.existsSync(INVENTORY)) {
   throw new Error(`official material/program inventory is absent: ${INVENTORY}`);
 }
 const inventory = JSON.parse(fs.readFileSync(INVENTORY, "utf8"));
 if (inventory.schema !== "pocket-card-render/official-material-program-inventory@4"
-  || !Array.isArray(inventory.portIndex) || inventory.portIndex.length !== 79) {
+  || !Array.isArray(inventory.portIndex) || inventory.portIndex.length !== 80) {
   throw new Error("official material/program inventory v4 compact portIndex is invalid");
 }
 
@@ -144,8 +171,8 @@ for (const file of walkJson(path.join(ROOT, "public", "shaders"))) {
 const portKey = (row) => `${row.selectorId}:${row.candidateWitnessId}:${row.subshader}:${row.pass}`;
 ports.sort((a, b) => portKey(a).localeCompare(portKey(b)));
 runtimeBound.sort((a, b) => a.manifest.localeCompare(b.manifest));
-if (ports.length !== 45 || new Set(ports.map(portKey)).size !== ports.length) {
-  throw new Error(`expected 45 unique selector/pass ports, got ${ports.length}`);
+if (ports.length !== 79 || new Set(ports.map(portKey)).size !== ports.length) {
+  throw new Error(`expected 79 unique selector/pass ports, got ${ports.length}`);
 }
 
 const output = {
@@ -162,6 +189,21 @@ const output = {
   },
   ports,
   runtimeBound,
+  runtimeDispatch: {
+    schema: RUNTIME_MATERIAL_DISPATCH_SCHEMA,
+    routes: inventory.portIndex.map((row) => ({
+      selectorId: row.selectorId,
+      candidateWitnessId: row.candidateWitnessId,
+      semanticExecutableId: row.semanticExecutableId,
+      shaderIdentity: row.shaderIdentity,
+      keywords: row.keywords,
+      selectionMode: row.selectionMode,
+      runtimeEngineVariantBoundary: row.runtimeEngineVariantBoundary,
+      subshader: row.subshader,
+      pass: row.pass,
+      dispatch: runtimeDispatchFor(row),
+    })),
+  },
 };
 const encoded = `${JSON.stringify(output, null, 2)}\n`;
 if (CHECK) {

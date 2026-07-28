@@ -19,6 +19,7 @@ const examples = JSON.parse(
 );
 const expectedSceneCount =
   examples.summary.bundledSelectedCount
+  + examples.summary.bundledAdditionalRarityRenderingWitnessCount
   + examples.summary.bundledSupplementalCount;
 assert.equal(scenes.length, expectedSceneCount);
 

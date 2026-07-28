@@ -198,6 +198,8 @@ const ENERGY_ICON = {
   Grass: "01", Fire: "02", Water: "03", Lightning: "04", Psychic: "05",
   Fighting: "06", Darkness: "07", Metal: "08", Dragon: "09", Colorless: "10",
 };
+const ENERGY_SPRITE_PRODUCER_SCHEMA = "pocket-card-render/runtime-sprite-producer@1";
+const ENERGY_SPRITE_PRODUCER = "CardEnergyIconView.SetEnergy";
 const STAGE_SPRITE = { 1: "card_pla_evo_basic", 2: "card_pla_evo_stage1", 3: "card_pla_evo_stage2" };
 
 // font role by element name (build_face.py F_NAME/F_BODY/F_NUM): card names → name font, illustrator credit →
@@ -593,7 +595,7 @@ function officialPrefabIcon(nodeObj, fit = "stretch", extra = {}) {
 }
 
 function publicIcon(nodeObj, rel, fit = "contain", extra = {}) {
-  if (!nodeObj || !existsSync(join(PUBLIC_GAME, rel))) return null;
+  if (!nodeObj || !existsSync(join(ASSETS, rel))) return null;
   return officialIcon(nodeObj, "/game/" + rel, fit, extra);
 }
 
@@ -616,7 +618,19 @@ function pokemonUiSprite(nodeObj, prefix, lc, fit = "stretch", extra = {}) {
 
 function energyIcon(nodeObj, type, fit = "contain", extra = {}) {
   const code = ENERGY_ICON[type];
-  return code ? publicIcon(nodeObj, `${POKEMON_UI8}/card_icn_attribute_${code}.png`, fit, extra) : null;
+  if (!code) return null;
+  const spriteName = `card_icn_attribute_${code}`;
+  const textureUrl = `/game/${POKEMON_UI8}/${spriteName}.png`;
+  return publicIcon(nodeObj, `${POKEMON_UI8}/${spriteName}.png`, fit, {
+    ...extra,
+    runtimeSpriteProducer: {
+      schema: ENERGY_SPRITE_PRODUCER_SCHEMA,
+      producer: ENERGY_SPRITE_PRODUCER,
+      target: "Image.sprite",
+      input: { energyType: type },
+      output: { spriteName, textureUrl },
+    },
+  });
 }
 
 function inlineElementSprites(text, fontStyle, color) {
@@ -1057,9 +1071,9 @@ function composePokemonFace(cd, lc, officialDesign) {
 
   if (cd.isEX) {
     const root = cd.isMega ? "/PokemonCardUI/PokemoMegaExRuleView" : "/PokemonCardUI/PokemonExRuleView";
-    const shadow = publicIcon(nodeByPath(`${root}/frm_bg_shadow`), `${POKEMON_UI5}/card_pla_rule_bg_shadow.png`, "stretch", { sprite: "card_pla_rule_bg_shadow" });
-    const bg = publicIcon(nodeByPath(`${root}/frm_bg`), `${POKEMON_UI5}/card_pla_rule_bg.png`, "stretch", { sprite: "card_pla_rule_bg" });
-    const titleBg = publicIcon(nodeByPath(`${root}/frm`), `${POKEMON_UI5}/card_pla_rule_txt_bg.png`, "stretch", { sprite: "card_pla_rule_txt_bg" });
+    const shadow = officialPrefabIcon(nodeByPath(`${root}/frm_bg_shadow`), "stretch");
+    const bg = officialPrefabIcon(nodeByPath(`${root}/frm_bg`), "stretch");
+    const titleBg = officialPrefabIcon(nodeByPath(`${root}/frm`), "stretch");
     if (shadow) els.push(shadow);
     if (bg) els.push(bg);
     if (titleBg) els.push(titleBg);

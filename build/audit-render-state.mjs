@@ -17,6 +17,7 @@ import {
   loadOfficialPortSceneIndex,
   matchingOfficialPortManifests,
 } from "./official-port-scene-contract.mjs";
+import { resolveStencilRegionFloats } from "../public/render/stencil-region.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const shaderRoot = process.env.PCR_SHADERS
@@ -250,10 +251,10 @@ function rendererExtraPassState() {
   return "1/0/0/0/0";
 }
 
-function exactStateValue(parameter, mat, contract) {
+function exactStateValue(parameter, mat, contract, floats = mat.floats) {
   if (!parameter) return null;
   const value = parameter.name
-    ? (mat.floats?.[parameter.name] ?? contract.shader_property_defaults?.[parameter.name] ?? parameter.val)
+    ? (floats?.[parameter.name] ?? contract.shader_property_defaults?.[parameter.name] ?? parameter.val)
     : parameter.val;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
@@ -264,7 +265,8 @@ function exactRuntimeRow(scene, matName, mat, cfg, manifest) {
   const material = new THREE.RawShaderMaterial();
   const applied = applyOfficialPassState(material, mat, contract, { stencil: true });
   const queueApplied = applyRenderQueueState(material, mat.queue);
-  const value = (parameter) => exactStateValue(parameter, mat, contract);
+  const resolvedFloats = resolveStencilRegionFloats(mat, contract).floats;
+  const value = (parameter) => exactStateValue(parameter, mat, contract, resolvedFloats);
   const blend = contract.blend;
   const src = value(blend.src_rgb);
   const dst = value(blend.dst_rgb);

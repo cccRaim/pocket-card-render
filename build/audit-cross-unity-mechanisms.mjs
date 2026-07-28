@@ -732,21 +732,23 @@ async function probeOfficialInputProvenance() {
   try {
     const digest = (character) => character.repeat(64);
     const artifact = (character) => ({ sha256: digest(character), byteLength: 1 });
+    const syntheticGameVersion = ["9", "8", "7"].join(".");
+    const syntheticUnityVersion = ["2099", "1", "2f3"].join(".");
     const sample = {
       schemaVersion: 2,
-      sampleId: "synthetic-9.8.7-unity-2099.1.2f3",
+      sampleId: `synthetic-${syntheticGameVersion}-unity-${syntheticUnityVersion}`,
       status: "candidate",
       game: {
         packageName: "jp.pokemon.pokemontcgp",
-        versionName: "9.8.7",
+        versionName: syntheticGameVersion,
         versionCode: 987,
         architecture: "arm64-v8a",
-        apkmBasename: "jp.pokemon.pokemontcgp_9.8.7.apkm",
+        apkmBasename: `jp.pokemon.pokemontcgp_${syntheticGameVersion}.apkm`,
       },
       unity: {
-        serializedVersion: "2099.1.2f3",
-        playerBuildVersion: "2099.1.2f3_synthetic",
-        releaseSupportVersion: "2099.1.2f3c1_synthetic",
+        serializedVersion: syntheticUnityVersion,
+        playerBuildVersion: `${syntheticUnityVersion}_synthetic`,
+        releaseSupportVersion: `${syntheticUnityVersion}c1_synthetic`,
       },
       artifacts: {
         apkm: artifact("1"),
@@ -830,6 +832,12 @@ async function probeRuntimeContractDispatch() {
   const { loadExactShaderPortsFromContract } = await import(
     pathToFileURL(path.join(ROOT, "public", "render", "exact-port-loader.js")).href
   );
+  const {
+    loadRuntimeMaterialDispatchFromContract,
+    resolveRuntimeMaterialDispatch,
+  } = await import(
+    pathToFileURL(path.join(ROOT, "public", "render", "runtime-dispatch-contract.js")).href
+  );
   const selector = {
     selectorId: "selector",
     candidateWitnessId: "candidate",
@@ -855,6 +863,30 @@ async function probeRuntimeContractDispatch() {
       manifest: "public/shaders/runtime.json",
       boundary: "synthetic runtime boundary",
     }],
+    runtimeDispatch: {
+      schema: "pocket-card-render/runtime-material-dispatch@1",
+      routes: [{
+        selectorId: selector.selectorId,
+        candidateWitnessId: selector.candidateWitnessId,
+        semanticExecutableId: selector.semanticExecutableId,
+        shaderIdentity: selector.shaderIdentity,
+        keywords: selector.keywords,
+        selectionMode: selector.selectionMode,
+        subshader: selector.subshader,
+        pass: selector.pass,
+        runtimeEngineVariantBoundary: false,
+        dispatch: {
+          support: "implemented",
+          shaderKey: "SyntheticFormal",
+          strategy: "synthetic",
+          blend: "over",
+          defer: false,
+          materialBlend: false,
+          materialCull: false,
+          capabilities: {},
+        },
+      }],
+    },
   };
   const formal = {
     official_selector: selector,
@@ -879,9 +911,9 @@ async function probeRuntimeContractDispatch() {
     ["contract.json", JSON.stringify(contract)],
     ["shaders/formal.json", JSON.stringify(formal)],
     ["shaders/runtime.json", JSON.stringify(runtime)],
-    ["shaders/formal.vert.glsl", "formal vertex"],
+    ["shaders/formal.vert.glsl", "void main(){gl_Position=vec4(0.0);}"],
     ["shaders/formal.frag.glsl", "formal fragment"],
-    ["shaders/runtime.vert.glsl", "runtime vertex"],
+    ["shaders/runtime.vert.glsl", "void main(){gl_Position=vec4(0.0);}"],
     ["shaders/runtime.frag.glsl", "runtime fragment"],
   ]);
   const fetchAsset = async (url) => (
@@ -896,6 +928,16 @@ async function probeRuntimeContractDispatch() {
   assert.equal(loaded.SyntheticFormal.stageSourceOnly, false);
   assert.equal(loaded.SyntheticRuntime.stageSourceOnly, true);
   assert.equal(loaded.SyntheticRuntime.runtimeBoundary, "synthetic runtime boundary");
+  const dispatchIndex = await loadRuntimeMaterialDispatchFromContract({
+    fetchAsset,
+    contractUrl: "contract.json",
+  });
+  const dispatch = resolveRuntimeMaterialDispatch(dispatchIndex, {
+    official: { shader: selector.shaderIdentity, validKeywords: [] },
+  });
+  assert.equal(dispatch.strategy, "synthetic");
+  assert.equal(dispatch.officialPorts.length, 1);
+  assert.equal(dispatch.officialPorts[0].candidateWitnessId, selector.candidateWitnessId);
 
   const rejected = structuredClone(contract);
   rejected.ports[0].candidateWitnessId = "wrong";
@@ -909,6 +951,19 @@ async function probeRuntimeContractDispatch() {
       contractUrl: "contract.json",
     }),
     /contract and manifest identity disagree/,
+  );
+  const behaviorDrift = structuredClone(contract);
+  behaviorDrift.runtimeDispatch.routes[0].dispatch.shaderName = "branch";
+  const behaviorAssets = new Map(assets);
+  behaviorAssets.set("contract.json", JSON.stringify(behaviorDrift));
+  await assert.rejects(
+    loadRuntimeMaterialDispatchFromContract({
+      fetchAsset: async (url) => (
+        behaviorAssets.has(String(url)) ? response(behaviorAssets.get(String(url))) : { ok: false }
+      ),
+      contractUrl: "contract.json",
+    }),
+    /unknown field shaderName/,
   );
 }
 
@@ -1012,8 +1067,27 @@ async function probeResourceDefaultTransformBinding() {
   assert.equal(overrides._Mode.value, 4);
   assert.deepEqual(overrides._Tint.value.toArray(), [1, 0.5, 0.25, 1]);
   assert.deepEqual(overrides._MainTex_ST.value.toArray(), [2, 0.5, 0.1, 0.3]);
+  const shaderDefault = context.exactPortUniforms({}, { manifest }, () => null);
+  assert.equal(
+    shaderDefault._13.value.userData.backendTextureDefault,
+    "shaderlab-white",
+  );
+  const unresolvedManifest = structuredClone(manifest);
+  unresolvedManifest.official_shader_property_defaults.textureDescriptors._MainTex.defaultName = "";
+  const grayDefault = context.exactPortUniforms(
+    {},
+    { manifest: unresolvedManifest },
+    () => null,
+  );
+  assert.equal(
+    grayDefault._13.value.userData.backendTextureDefault,
+    "shaderlab-gray",
+  );
+  const absentDescriptorManifest = structuredClone(manifest);
+  delete absentDescriptorManifest.official_shader_property_defaults
+    .textureDescriptors._MainTex;
   assert.throws(
-    () => context.exactPortUniforms({}, { manifest }, () => null),
+    () => context.exactPortUniforms({}, { manifest: absentDescriptorManifest }, () => null),
     /sampler _MainTex is unresolved/,
   );
   sampler.dispose();

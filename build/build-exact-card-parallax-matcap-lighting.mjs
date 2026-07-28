@@ -161,8 +161,8 @@ const result = await generateExactSelectorPort({
   extraction: {
     selectorId: "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
     candidateWitnessId: "60d74858874bf4a236896b464909975dff080498545e876ee63d7f9251f262a6",
-    expectedProofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-    expectedPortIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+    expectedProofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+    expectedPortIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
     decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
     prefix: "card_parallax_matcap_lighting",
     rootDir: ROOT,

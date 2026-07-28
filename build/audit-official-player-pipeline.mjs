@@ -9,6 +9,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
 const textureRuntime = fs.readFileSync(path.join(ROOT, "public", "render", "official-texture.js"), "utf8");
 const bloom = fs.readFileSync(path.join(ROOT, "public", "render", "pipeline", "official-bloom.js"), "utf8");
+const bloomPrograms = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public", "shaders", "bloom_programs.json"),
+  "utf8",
+));
 const official = readOfficialPlayerPipeline();
 const player = official.playerSettings;
 const graphics = official.graphicsSettings;
@@ -31,7 +35,18 @@ if (!/const cardTargetColorSpace\s*=\s*THREE\.NoColorSpace/.test(app)) {
 if (!/renderer\.outputColorSpace\s*=\s*THREE\.LinearSRGBColorSpace/.test(app)) {
   issues.push("browser framebuffer must not add an implicit sRGB encode");
 }
-if (!/applyBlendState\(pass5,\s*THREE\.OneFactor,\s*THREE\.OneFactor,\s*THREE\.ZeroFactor,\s*THREE\.OneFactor\)/.test(bloom)
+const bloomPass5State = bloomPrograms?.passes?.find((entry) => entry?.pass === 5)?.render_state;
+const bloomPass5AddsRgb = bloomPass5State?.blendOp === 0
+  && bloomPass5State?.blendOpAlpha === 0
+  && bloomPass5State?.srcBlend === 1
+  && bloomPass5State?.destBlend === 1
+  && bloomPass5State?.srcBlendAlpha === 0
+  && bloomPass5State?.destBlendAlpha === 1
+  && bloomPass5State?.zTest === 0
+  && bloomPass5State?.zWrite === 0;
+if (!bloomPass5AddsRgb
+    || !/const pass5\s*=\s*material\(programs\[5\]/.test(bloom)
+    || !/draw\(fullMesh,\s*sceneTarget,\s*pass5,\s*"pass5-add-to-scene-color",\s*false\)/.test(bloom)
     || !/post\.apply\(\)/.test(app)
     || !/setHomographyDisplayPoints/.test(app)
     || !/displayPost\.present\(\)/.test(app)) {

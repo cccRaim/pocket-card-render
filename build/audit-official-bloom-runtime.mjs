@@ -8,6 +8,9 @@ import { getOfficialBloomLayout } from "../public/render/pipeline/official-bloom
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const source = fs.readFileSync(path.join(ROOT, "public/render/pipeline/official-bloom.js"), "utf8");
 const app = fs.readFileSync(path.join(ROOT, "public/app.js"), "utf8");
+const bloomPrograms = JSON.parse(
+  fs.readFileSync(path.join(ROOT, "public/shaders/bloom_programs.json"), "utf8"),
+);
 const issues = [];
 
 function same(label, actual, expected) {
@@ -54,8 +57,17 @@ same("image-to-sheet NDC float bits", layout.levels.map(({ ndc }) => ndc.map(flo
 
 requireSource("official pass sequence", /passSequence:\s*enabled\s*\?\s*\[0,\s*1,\s*1,\s*1,\s*1,\s*1,\s*2,\s*3,\s*3,\s*4,\s*5\]/);
 requireSource("vertical blur first", /_Vector\.value\.set\(0,\s*1\)[\s\S]*?_Vector\.value\.set\(1,\s*0\)/);
-requireSource("pass 4 One SrcAlpha", /applyBlendState\(pass4,\s*THREE\.OneFactor,\s*THREE\.SrcAlphaFactor\)/);
-requireSource("pass 5 separate RGB and alpha blend", /applyBlendState\(pass5,\s*THREE\.OneFactor,\s*THREE\.OneFactor,\s*THREE\.ZeroFactor,\s*THREE\.OneFactor\)/);
+requireSource("official pass-state compiler", /compileOfficialPostprocessState\(\s*program\.renderState/);
+same("pass 4 One/SrcAlpha blend", bloomPrograms.passes[4].render_state, {
+  blendOp: 0, blendOpAlpha: 0, colorMask: 15, cull: 2,
+  destBlend: 5, destBlendAlpha: 5, separateBlend: false,
+  srcBlend: 1, srcBlendAlpha: 1, zTest: 4, zWrite: 1,
+});
+same("pass 5 separate RGB/alpha blend", bloomPrograms.passes[5].render_state, {
+  blendOp: 0, blendOpAlpha: 0, colorMask: 15, cull: 2,
+  destBlend: 1, destBlendAlpha: 1, separateBlend: false,
+  srcBlend: 1, srcBlendAlpha: 0, zTest: 0, zWrite: 0,
+});
 requireSource("Bloom RGBA8 unsigned-byte linear descriptor", /format:\s*THREE\.RGBAFormat,[\s\S]*?internalFormat:\s*"RGBA8",[\s\S]*?type:\s*THREE\.UnsignedByteType,[\s\S]*?colorSpace:\s*THREE\.NoColorSpace,[\s\S]*?minFilter:\s*THREE\.LinearFilter,[\s\S]*?magFilter:\s*THREE\.LinearFilter/);
 requireSource("Bloom descriptor disables depth stencil mip and MSAA", /depthBuffer:\s*false,[\s\S]*?stencilBuffer:\s*false,[\s\S]*?generateMipmaps:\s*false,[\s\S]*?samples:\s*0/);
 requireSource("pass 5 direct additive scene ColorRT write", /draw\(fullMesh,\s*sceneTarget,\s*pass5,\s*"pass5-add-to-scene-color",\s*false\)/);

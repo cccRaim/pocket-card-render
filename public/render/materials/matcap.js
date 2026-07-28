@@ -3,12 +3,12 @@ import { defineMaterial } from "../registry.js";
 
 defineMaterial("matCapLighting", {
   requires: (recipe, ctx) => !!(
-    ctx.exactShaderPort(recipe, "Card_Parallax_MatCap_Lighting")
+    ctx.exactShaderPort(recipe)
     && ctx.layerTexDefault(recipe, "_MatCapLightTex")
     && ctx.layerTexDefault(recipe, "_LightingMask")
   ),
   build(recipe, ctx) {
-    const exact = ctx.exactShaderPort(recipe, "Card_Parallax_MatCap_Lighting");
+    const exact = ctx.exactShaderPort(recipe);
     if (!exact) return null;
     const material = new THREE.RawShaderMaterial({
       glslVersion: THREE.GLSL3,

@@ -143,6 +143,14 @@ function officialOrAlias(slot, officialSlots) {
     : { ok: false, reason: "not a shader property" };
 }
 
+function exactPortTextureStatus(shader, slot, officialSlots) {
+  const usage = exactPortUsage.get(shader);
+  if (usage?.producerTextures.has(slot)) {
+    return { ok: true, reason: "runtime producer sampler" };
+  }
+  return officialOrAlias(slot, officialSlots);
+}
+
 function sceneId(sceneName) {
   return sceneName.replace(/^scene\.|\.json$/g, "");
 }
@@ -193,7 +201,7 @@ for (const sceneName of sceneNames) {
       continue;
     }
     for (const slot of usedSlots) {
-      const official = officialOrAlias(slot, officialSlots);
+      const official = exactPortTextureStatus(shader, slot, officialSlots);
       rows.push({
         ok: official.ok,
         scene: sceneId(sceneName),
@@ -205,7 +213,7 @@ for (const sceneName of sceneNames) {
       });
     }
     for (const slot of Object.keys(mat.textures || {})) {
-      const official = officialOrAlias(slot, officialSlots);
+      const official = exactPortTextureStatus(shader, slot, officialSlots);
       const inactiveExactBinding = exactPortUsage.has(shader)
         && !exactPortUsage.get(shader).textures.has(slot);
       rows.push({

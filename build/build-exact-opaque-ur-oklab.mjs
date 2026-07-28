@@ -1,4 +1,4 @@
-// Generate the selector-owned Opaque-UR-Oklab WebGL2 port from official Unity shader bytes.
+// Generate the selector-owned Opaque/Transparent UR Oklab WebGL2 ports from official Unity shader bytes.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -24,20 +24,53 @@ const SHADER_ROOT = process.env.PCR_SHADERS
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const SELECTOR_ID = "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a";
-const CANDIDATE_WITNESS_ID = "25b29591d0c4004e6451aff10e7b8e86c669038a7069955227c43c87f5e32866";
-const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
-const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
-const PARAMETER_REFLECTION_SHA256 = "b0e55a26b2dbb6dd4ee1a2765dc083963f09cfbed2e106a80c4df7a5968aa602";
-const OFFICIAL_CROSS_SHA256 = {
-  vertex: "f5624d0749a7469b51debaa972bdad7cf83947ca884dcb0258d6b4112a9e9daa",
-  fragment: "475d836c752c207646124214de89e764eeadcfaaa75621143c4a88747ab706ea",
-};
+const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
 const SELECTED_KEYWORDS = [
   "_DARKNESSENABLED_ON",
   "_FAKESPECULARENABLED_ON",
   "_HOLOGRAM2ENABLED_ON",
   "_REFLECTIONENABLED_ON",
+];
+const PORTS = [
+  {
+    shaderKey: "Opaque-UR-Oklab",
+    stem: "opaque_ur_oklab",
+    selectorId: "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+    candidateWitnessId: "25b29591d0c4004e6451aff10e7b8e86c669038a7069955227c43c87f5e32866",
+    parameterReflectionSha256: "b0e55a26b2dbb6dd4ee1a2765dc083963f09cfbed2e106a80c4df7a5968aa602",
+    officialCrossSha256: {
+      vertex: "f5624d0749a7469b51debaa972bdad7cf83947ca884dcb0258d6b4112a9e9daa",
+      fragment: "475d836c752c207646124214de89e764eeadcfaaa75621143c4a88747ab706ea",
+    },
+    fragmentUbo: "_31_33",
+    fragmentOwner: "_33",
+    primaryOutput: "_1985",
+    emissiveOutput: "_2004",
+    samplerSpirvNames: [
+      "_13", "_291", "_354", "_419", "_428", "_435", "_607",
+      "_705", "_719", "_862", "_926", "_1609", "_1775",
+    ],
+  },
+  {
+    shaderKey: "Transparent-UR-Oklab",
+    stem: "transparent_ur_oklab",
+    selectorId: "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2",
+    candidateWitnessId: "586d63d1f47a6df09c3de249fb98331c1c07f629207acc1fb900dff192612915",
+    parameterReflectionSha256: "1b958629f496e702f30f1c3d6b980dfeb49ae26c46a2e4de1ae706ece1f82928",
+    officialCrossSha256: {
+      vertex: "f5624d0749a7469b51debaa972bdad7cf83947ca884dcb0258d6b4112a9e9daa",
+      fragment: "d6e62e93182b5504e8d0fc079104e689e8ff82e8eab5dd28698812fbf1b209dc",
+    },
+    fragmentUbo: "_57_59",
+    fragmentOwner: "_59",
+    primaryOutput: "_39",
+    emissiveOutput: "_2072",
+    samplerSpirvNames: [
+      "_13", "_31", "_378", "_441", "_450", "_457", "_624",
+      "_706", "_719", "_872", "_936", "_1666", "_1847",
+    ],
+  },
 ];
 const PASS_POLICY = {
   rtSeparateBlend: false,
@@ -174,9 +207,9 @@ function adaptVertex(source, mapping) {
   return `${out.trimEnd()}\n`;
 }
 
-function adaptFragment(source, mapping) {
+function adaptFragment(source, mapping, port) {
   let out = source.replace(/^#version 300 es\s*/m, "");
-  out = replaceUbo(out, "_31_33", "_33", [
+  out = replaceUbo(out, port.fragmentUbo, port.fragmentOwner, [
     "uniform highp vec3 cameraPosition;",
     "uniform highp mat4 modelMatrix;",
     "uniform highp mat4 viewMatrix;",
@@ -217,12 +250,14 @@ function adaptFragment(source, mapping) {
     "uniform vec3 _Rotation;",
     "uniform highp float _Tilt;",
   ]);
-  out = replaceMembers(out, "_33", mapping);
+  out = replaceMembers(out, port.fragmentOwner, mapping);
   out = adaptUnityObjectToWorldDataAxes(out, {
     matrixName: "modelMatrix", expectedCounts: { 1: 1, 2: 1 },
   });
-  if (/_33\._m/.test(out)) throw new Error("fragment adaptation incomplete");
-  if (!/layout\(location = 1\) out highp vec4 _2004/.test(out)) throw new Error("official emissive output missing");
+  if (new RegExp(`${port.fragmentOwner}\\._m`).test(out)) throw new Error("fragment adaptation incomplete");
+  if (!new RegExp(`layout\\(location = 1\\) out highp vec4 ${port.emissiveOutput}`).test(out)) {
+    throw new Error("official emissive output missing");
+  }
   return `${out.trimEnd()}\n`;
 }
 
@@ -243,8 +278,9 @@ const vertexExpected = {
   textures: [],
 };
 
-const fragmentExpected = {
-  ubo: { name: "_31_33", size: 368, members: [
+function fragmentExpected(port) {
+  return {
+  ubo: { name: port.fragmentUbo, size: 368, members: [
     member("_m0", "vec3", 0), member("_m1", "vec4", 16, [4]), member("_m2", "vec4", 80, [4]),
     ...Array.from({ length: 10 }, (_, index) => member(`_m${index + 3}`, index === 9 ? "int" : "float", 144 + index * 4)),
     ...Array.from({ length: 10 }, (_, index) => member(`_m${index + 13}`, "float", 184 + index * 4)),
@@ -260,36 +296,37 @@ const fragmentExpected = {
     { name: "vs_TEXCOORD1", type: "vec3", location: 2 }, { name: "vs_TEXCOORD2", type: "vec3", location: 3 },
     { name: "vs_TEXCOORD6", type: "vec4", location: 4 }, { name: "vs_TEXCOORD7", type: "vec4", location: 5 },
   ],
-  outputs: [{ name: "_1985", type: "vec4", location: 0 }, { name: "_2004", type: "vec4", location: 1 }],
-  textures: [
-    { name: "_13", type: "sampler2D", binding: 0 }, { name: "_291", type: "sampler2D", binding: 1 },
-    { name: "_354", type: "samplerCube", binding: 2 }, { name: "_419", type: "sampler2D", binding: 3 },
-    { name: "_428", type: "sampler2D", binding: 4 }, { name: "_435", type: "sampler2D", binding: 5 },
-    { name: "_607", type: "sampler2D", binding: 6 }, { name: "_705", type: "sampler2D", binding: 7 },
-    { name: "_719", type: "sampler2D", binding: 8 }, { name: "_862", type: "sampler2D", binding: 9 },
-    { name: "_926", type: "sampler2D", binding: 10 }, { name: "_1609", type: "sampler2D", binding: 11 },
-    { name: "_1775", type: "sampler2D", binding: 12 },
+  outputs: [
+    { name: port.primaryOutput, type: "vec4", location: 0 },
+    { name: port.emissiveOutput, type: "vec4", location: 1 },
   ],
+  textures: port.samplerSpirvNames.map((name, binding) => ({
+    name,
+    type: binding === 2 ? "samplerCube" : "sampler2D",
+    binding,
+  })),
+  };
 };
 
+for (const port of PORTS) {
 await withExtractedSelectorProgram({
-  selectorId: SELECTOR_ID,
-  candidateWitnessId: CANDIDATE_WITNESS_ID,
+  selectorId: port.selectorId,
+  candidateWitnessId: port.candidateWitnessId,
   expectedProofGraphSha256: PROOF_GRAPH_SHA256,
   expectedPortIndexSha256: PORT_INDEX_SHA256,
   decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
-  prefix: "opaque_ur_oklab",
+  prefix: port.stem,
   rootDir: ROOT,
   spirvCross: SPIRV_CROSS,
 }, ({ metadata, files, reflection }) => {
   assertEqual(metadata.selector.keywords, SELECTED_KEYWORDS, "selector keyword set changed");
-  if (metadata.parameterReflectionSha256 !== PARAMETER_REFLECTION_SHA256) {
+  if (metadata.parameterReflectionSha256 !== port.parameterReflectionSha256) {
     throw new Error("official parameter reflection changed");
   }
   if (metadata.artifacts.parameterEntry.byteSize !== 2692) throw new Error("official parameter entry byte size changed");
 
   const vertInfo = assertReflection(reflection.vertex, vertexExpected);
-  const fragInfo = assertReflection(reflection.fragment, fragmentExpected);
+  const fragInfo = assertReflection(reflection.fragment, fragmentExpected(port));
   const parameterBindings = { constantBuffers: metadata.parameterReflection.constantBuffers };
   const vglobals = bufferByPrefix(parameterBindings, "VGlobals");
   const pglobals = bufferByPrefix(parameterBindings, "PGlobals");
@@ -337,15 +374,16 @@ await withExtractedSelectorProgram({
     { slot: "_FakeSpecularMask", spirvName: "_926", binding: 10 },
     { slot: "_NormalMap2", spirvName: "_1609", binding: 11 },
     { slot: "_ReflectionMask", spirvName: "_1775", binding: 12 },
-  ], "compiled sampler binding map changed");
+  ].map((row, index) => ({ ...row, spirvName: port.samplerSpirvNames[index] })), "compiled sampler binding map changed");
 
   const officialVert = runCommand(SPIRV_CROSS, [files.vertexSpirv, "--version", "300", "--es"], { cwd: ROOT });
   const officialFrag = runCommand(SPIRV_CROSS, [files.fragmentSpirv, "--version", "300", "--es"], { cwd: ROOT });
-  if (sha256(officialVert) !== OFFICIAL_CROSS_SHA256.vertex || sha256(officialFrag) !== OFFICIAL_CROSS_SHA256.fragment) {
+  if (sha256(officialVert) !== port.officialCrossSha256.vertex
+      || sha256(officialFrag) !== port.officialCrossSha256.fragment) {
     throw new Error("complete official SPIRV-Cross output changed");
   }
   const vertex = adaptVertex(officialVert, vertexMapping);
-  const fragment = adaptFragment(officialFrag, fragmentMapping);
+  const fragment = adaptFragment(officialFrag, fragmentMapping, port);
   const materialFloats = [
     "_FakeSpecularMaskScale", "_FakeSpecularIntensity", "_FakeSpecularPower", "_FakeSpecularCornerPower",
     "_FakeSpecularNotCornerOffset", "_FakeSpecularMaskScale_Outline", "_FakeSpecularIntensity_Outline",
@@ -358,7 +396,7 @@ await withExtractedSelectorProgram({
   ];
   const runtimeContract = {
     schema: "pocket-card-render/webgl-runtime-port@1",
-    shader_key: "Opaque-UR-Oklab",
+    shader_key: port.shaderKey,
     attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
     engine_uniforms: {
       modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
@@ -439,10 +477,10 @@ await withExtractedSelectorProgram({
     shader_property_defaults: metadata.shaderPropertyDefaults.floats,
   };
   const outputs = {
-    "opaque_ur_oklab.vert.glsl": vertex,
-    "opaque_ur_oklab.frag.glsl": fragment,
-    "opaque_ur_oklab_uniforms.json": `${JSON.stringify({
-      shader: "Opaque-UR-Oklab",
+    [`${port.stem}.vert.glsl`]: vertex,
+    [`${port.stem}.frag.glsl`]: fragment,
+    [`${port.stem}_uniforms.json`]: `${JSON.stringify({
+      shader: port.shaderKey,
       generated_by: "build/build-exact-opaque-ur-oklab.mjs",
       selected_keywords: SELECTED_KEYWORDS,
       official_selector: metadata.selector,
@@ -467,8 +505,8 @@ await withExtractedSelectorProgram({
       official_shader_property_defaults: metadata.shaderPropertyDefaults,
       webgl_adaptation: adaptation,
       webgl_sources: {
-        vertex: "public/shaders/opaque_ur_oklab.vert.glsl",
-        fragment: "public/shaders/opaque_ur_oklab.frag.glsl",
+        vertex: `public/shaders/${port.stem}.vert.glsl`,
+        fragment: `public/shaders/${port.stem}.frag.glsl`,
       },
       runtime_contract: runtimeContract,
       sampler_bindings: samplerBindings,
@@ -478,9 +516,10 @@ await withExtractedSelectorProgram({
       vertex_fields: Object.fromEntries(vglobals.fields.map(({ name, offset }) => [name, offset])),
       fragment_fields: Object.fromEntries(pglobals.fields.map(({ name, offset }) => [name, offset])),
       implicit_defaults: { ...metadata.shaderPropertyDefaults.textures, _CubeMap: "gray" },
-      mrt: { primary: "_1985", emissive: "_2004", secondary_rgb: "active" },
+      mrt: { primary: port.primaryOutput, emissive: port.emissiveOutput, secondary_rgb: "active" },
     }, null, 2)}\n`,
   };
   writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
-  console.log(`${CHECK ? "verified" : "generated"} selector-owned Opaque-UR-Oklab WebGL2 port`);
+  console.log(`${CHECK ? "verified" : "generated"} selector-owned ${port.shaderKey} WebGL2 port`);
 });
+}

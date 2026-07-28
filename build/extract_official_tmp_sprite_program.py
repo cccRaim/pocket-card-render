@@ -59,8 +59,8 @@ SHADER_PATH_ID = 2168984029091550199
 SHADER_NAME = "Lettuce/Common/Card/TextMeshPro/Sprite(to RT)"
 
 PINNED = {
-    "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2",
-    "sampleManifestSha256": "2515cae195ee58f06c32f5d0c7d063c6b7a1f03b5743696e2181786d074d4b4d",
+    "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+    "sampleManifestSha256": "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
     "fontBundle": {
         "byteSize": 79168397,
         "sha256": "88364448d71939764df209474b760b8d30623eba85a165d7b822e2488cc10589",

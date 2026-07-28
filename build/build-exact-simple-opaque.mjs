@@ -25,8 +25,8 @@ const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
 const SELECTOR_ID = "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13";
 const CANDIDATE_WITNESS_ID = "b887eb58c1aa886395cac04fb190ad18086c935c3f92145363e9990b9cfc5fef";
-const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
-const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "pcr-simple-opaque-"));
 
 function run(command, args) {

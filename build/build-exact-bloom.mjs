@@ -5,6 +5,10 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  officialSample,
+  officialSampleSha256,
+} from "./official-sample.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "shaders");
@@ -285,6 +289,7 @@ function readEvidence() {
 }
 
 function assertEvidence(bloom) {
+  equal(officialSample.artifacts.apkm.sha256, PINNED.source.apkmSha256, "current official sample APKM hash");
   for (const [key, expected] of Object.entries(PINNED.source)) equal(bloom.source?.[key], expected, `source.${key}`);
   for (const [key, expected] of Object.entries(PINNED.asset)) equal(bloom.shaderAsset?.[key], expected, `asset.${key}`);
   for (const [key, expected] of Object.entries(PINNED.program)) equal(bloom.shaderProgram?.[key], expected, `program.${key}`);
@@ -342,6 +347,7 @@ try {
       pass,
       parameter_entry_sha256: pinned.parameter,
       program_entry_sha256: pinned.program,
+      render_state: actual.renderState,
       modules: stages,
       attributes: cfg.interface.attributes,
       varyings: cfg.interface.varyings,
@@ -355,6 +361,8 @@ try {
     shader: PINNED.asset.name,
     generated_by: "build/build-exact-bloom.mjs",
     official: {
+      sample_id: officialSample.sampleId,
+      sample_manifest_sha256: officialSampleSha256,
       apkm_sha256: PINNED.source.apkmSha256,
       asset_sha256: PINNED.asset.rawSha256,
       compressed_program_sha256: PINNED.program.compressedSha256,

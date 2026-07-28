@@ -23,7 +23,7 @@ const flareVAT = (r, ctx) => ctx.layerTexDefaultRepeat(r, "_FlareVAT");
 function plateMaterial(r, ctx) {
   const f = r.floats || {};
   const tex = plateTex(r, ctx);
-  const exact = ctx.exactShaderPort(r, "Card_UR_Plate");
+  const exact = ctx.exactShaderPort(r);
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       uniforms: {
@@ -219,7 +219,7 @@ function parallaxUrMaterial(r, ctx) {
   const c = r.colors || {};
   const tex = parallaxTex(r, ctx);
   const dark = c._DarknessColor ? new THREE.Vector3(c._DarknessColor.r, c._DarknessColor.g, c._DarknessColor.b) : new THREE.Vector3(0, 0, 0);
-  const exact = ctx.exactShaderPort(r, "Card_Parallax_UR");
+  const exact = ctx.exactShaderPort(r);
   if (exact) {
     const m = new THREE.RawShaderMaterial({
       glslVersion: THREE.GLSL3,
@@ -285,7 +285,7 @@ function urBgHoloMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaderPort(r, "Card_Parallax_Hologram_UR_New");
+  const exact = ctx.exactShaderPort(r);
   if (exact) {
     const manifest = exact.manifest;
     const uniforms = ctx.exactPortUniforms(r, exact, ({ slot }) => ctx.layerTexDefault(r, slot));
@@ -434,7 +434,7 @@ defineMaterial("flare", {
     const f = r.floats || {}, c = r.colors || {};
     const baseMap = flareBaseMap(r, ctx);
     const vat = flareVAT(r, ctx);
-    const exact = ctx.exactShaderPort(r, "Card_UR_LensFlare");
+    const exact = ctx.exactShaderPort(r);
     if (exact) {
       const m = new THREE.RawShaderMaterial({
         uniforms: {
@@ -577,28 +577,32 @@ defineMaterial("flare", {
 // ── metal (Card_Parallax_Metal) — env-cube specular on the metallic window submesh, MULTIPLY blend.
 // metal_frag (SPIRV-Cross + shader PropInfo): out ≈ 1 + cube(reflect(-V,N))·pow(clamp(-reflect.z,0,1), _Shininess)·
 // _SpecularIntensity → a metallic env sheen at grazing/tilt (≈no-op head-on, so multiply doesn't darken). ──
+function exactMetalMaterial(r, ctx) {
+  const exact = ctx.exactShaderPort(r);
+  if (!exact) return null;
+  const m = new THREE.RawShaderMaterial({
+    glslVersion: THREE.GLSL3,
+    uniforms: ctx.exactPortUniforms(r, exact, ({ slot }) => (
+      slot === "_CubeMap" ? ctx.layerCubeDefault(r, slot) : ctx.layerTexDefault(r, slot)
+    )),
+    vertexShader: exact.vert,
+    fragmentShader: exact.frag,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  m.userData.exactShader = r.runtimeDispatch.shaderKey;
+  m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
+  m.userData.officialSelector = exact.manifest?.official_selector || null;
+  m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
+  return m;
+}
+
 defineMaterial("metal", {
   build(r, ctx) {
     const f = r.floats || {};
     const rot = r.colors?._Rotation || { r: 0, g: 0, b: 0 };
-    const exact = ctx.exactShaderPort(r, "Card_Parallax_Metal");
-    if (exact) {
-      const m = new THREE.RawShaderMaterial({
-        glslVersion: THREE.GLSL3,
-        uniforms: ctx.exactPortUniforms(r, exact, ({ slot }) => (
-          slot === "_CubeMap" ? ctx.layerCubeDefault(r, slot) : ctx.layerTexDefault(r, slot)
-        )),
-        vertexShader: exact.vert,
-        fragmentShader: exact.frag,
-        side: THREE.DoubleSide,
-        toneMapped: false,
-      });
-      m.userData.exactShader = "Card_Parallax_Metal";
-      m.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
-      m.userData.officialSelector = exact.manifest?.official_selector || null;
-      m.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
-      return m;
-    }
+    const exact = exactMetalMaterial(r, ctx);
+    if (exact) return exact;
     return new THREE.ShaderMaterial({
       uniforms: {
         envCube: { value: ctx.envCubeTex }, uHasEnv: { value: (ctx.envCubeTex && r.textures && r.textures._CubeMap) ? 1 : 0 },
@@ -664,10 +668,16 @@ defineMaterial("metal", {
   },
 });
 
+// IM MetalByTilt is not semantically interchangeable with Card_Parallax_Metal.
+defineMaterial("metalByTilt", {
+  requires: (r, ctx) => !!ctx.exactShaderPort(r),
+  build: exactMetalMaterial,
+});
+
 // Card_UR_Glitter_FlowMaps uses the selector-bound official SPIR-V port when
 // shader identity and keywords match. The hand port is a non-exact fallback.
 function glitterMaterialExact(r, ctx) {
-  const exact = ctx.exactShaderPort(r, "Card_UR_Glitter_FlowMaps");
+  const exact = ctx.exactShaderPort(r);
   if (!exact) return null;
   const rep = (slot) => ctx.layerTexDefaultRepeat(r, slot);
   const uniforms = ctx.exactPortUniforms(r, exact, (binding) => rep(binding.slot));

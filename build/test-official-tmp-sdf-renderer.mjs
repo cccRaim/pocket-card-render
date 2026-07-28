@@ -16,6 +16,7 @@ import { createOfficialUIRTMaterial } from "../public/render/official-ui-rt.js";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const app = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
 const renderer = fs.readFileSync(path.join(ROOT, "public", "render", "tmp-sdf-renderer.js"), "utf8");
+const runtimeAudit = fs.readFileSync(path.join(ROOT, "build", "audit-tmp-runtime-evidence.mjs"), "utf8");
 const contract = JSON.parse(fs.readFileSync(path.join(ROOT, "public", "render", "card-font-contract.json"), "utf8"));
 const toRTManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public", "shaders", "ui_default_to_rt_program.json"), "utf8"));
 const fromRTManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public", "shaders", "ui_default_from_rt_program.json"), "utf8"));
@@ -155,7 +156,13 @@ assert.match(renderer, /mesh\.layers\.set\(unityLayer\)/);
 assert.match(renderer, /camera\.layers\.set\(unityLayer\)/);
 assert.match(renderer, /\[\s*textSource,\s*ui\s*\]/);
 assert.match(renderer, /\[\s*holoSource,\s*holo\s*\]/);
-assert.match(app, /dynUIMat\.uniforms\[uniformName\]\.value\s*=\s*t\.ui/);
+for (const target of ["textSource", "holoSource", "ui", "holo"]) {
+  assert.match(renderer, new RegExp(`${target}: summarizeRenderTarget`));
+  assert.match(runtimeAudit, new RegExp(`readback\\?\\.${target}`));
+}
+assert.doesNotMatch(runtimeAudit, /readback\?\.premultiplied/);
+assert.match(app, /dynamicUITextMaterials/);
+assert.match(app, /material\.uniforms\[uniformName\]\.value\s*=\s*t\.ui/);
 assert.doesNotMatch(app, /__uiflipy/);
 
 console.log("official TMP SDF renderer contract: OK");

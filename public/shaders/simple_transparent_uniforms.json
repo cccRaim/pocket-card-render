@@ -679,6 +679,12 @@
   "implicit_defaults": {},
   "mrt": {
     "primary": "_29",
-    "emissive": "_40"
+    "emissive": "_40",
+    "secondary_value": [
+      0,
+      0,
+      0,
+      0
+    ]
   }
 }

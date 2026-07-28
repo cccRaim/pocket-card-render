@@ -17,12 +17,49 @@ import {
   sourceSetRoot,
   verifyRuntimeArtifact,
 } from "./runtime-evidence-provenance.mjs";
+import { getOfficialBloomLayout } from "../public/render/pipeline/official-bloom.js";
+import { exactManifestHasActiveBloomOutput } from "../public/render/pipeline/bloom-activation.js";
+import { officialPortIdentityKey } from "../public/render/official-port-identity.js";
+import {
+  compileRuntimeMaterialDispatchIndex,
+  resolveRuntimeMaterialDispatch,
+} from "../public/render/runtime-dispatch-contract.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_ARTIFACT = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
 const DEFAULT_ATTESTATION_KEY = path.join(ROOT, "$cache", "runtime-evidence-provenance.key");
 const SHA256 = /^[0-9a-f]{64}$/;
 const EXACT_UR_PLATE_SCENE = "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json";
+const BLOOM_PASS_SEQUENCE = Object.freeze([0, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5]);
+const PROGRAM_PORT_CONTRACT = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public/shaders/official_program_port_contract.json"),
+  "utf8",
+));
+const RUNTIME_DISPATCH_INDEX = compileRuntimeMaterialDispatchIndex(PROGRAM_PORT_CONTRACT);
+const BLOOM_MANIFEST_BY_PORT = new Map(PROGRAM_PORT_CONTRACT.ports.map((row) => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, row.manifest), "utf8"));
+  const key = officialPortIdentityKey(manifest.official_selector);
+  if (!key || key !== officialPortIdentityKey(row)) {
+    throw new Error(`${row.manifest}: Bloom audit port identity mismatch`);
+  }
+  return [key, manifest];
+}));
+
+function sceneUsesCurrentBloomProducer(sceneFile) {
+  const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneFile), "utf8"));
+  return Object.values(scene.materials || {}).some((recipe) => {
+    const dispatch = resolveRuntimeMaterialDispatch(RUNTIME_DISPATCH_INDEX, recipe);
+    return dispatch?.officialPorts.some((port) => (
+      exactManifestHasActiveBloomOutput(BLOOM_MANIFEST_BY_PORT.get(officialPortIdentityKey(port)))
+    )) || false;
+  });
+}
+
+const CANONICAL_BLOOM_SCENES = new Set(
+  CANONICAL_FULL_RUNTIME_SCENES
+    .filter(({ file }) => sceneUsesCurrentBloomProducer(file))
+    .map(({ file }) => file),
+);
 
 const BLEND_FACTOR = Object.freeze({
   0: "ZERO", 1: "ONE", 2: "SRC_COLOR", 3: "ONE_MINUS_SRC_COLOR",
@@ -296,6 +333,81 @@ function validateTransformProbeState(state, label, sourceSize, displaySize, erro
   return errors.length === errorStart;
 }
 
+function expectedBloomDiagnostics(width, height, enabled) {
+  const layout = getOfficialBloomLayout(width, height);
+  return {
+    base: layout.base,
+    prefilter: layout.prefilter,
+    sheet: layout.sheet,
+    levels: layout.levels.map(({ level, width: levelWidth, height: levelHeight, weight }) => ({
+      level,
+      width: levelWidth,
+      height: levelHeight,
+      weight,
+    })),
+    passSequence: enabled ? BLOOM_PASS_SEQUENCE : [],
+  };
+}
+
+function fixtureFinalBlitSampler(presented) {
+  return {
+    magFilter: "LINEAR",
+    minFilter: "LINEAR",
+    wrapS: "CLAMP_TO_EDGE",
+    wrapT: "CLAMP_TO_EDGE",
+    textureUnit: 0,
+    bindChecks: presented ? 1 : 0,
+    unbindChecks: presented ? 1 : 0,
+  };
+}
+
+function validateBloomPipelineDiagnostics(pipelines, sourceSize, displaySize, sceneFile, errors) {
+  const source = pipelines?.source;
+  const display = pipelines?.display;
+  if (!source || !display || !positiveSize(sourceSize) || !positiveSize(displaySize)) return;
+  const expectedSource = expectedBloomDiagnostics(
+    sourceSize[0],
+    sourceSize[1],
+    CANONICAL_BLOOM_SCENES.has(sceneFile),
+  );
+  const expectedDisplay = expectedBloomDiagnostics(displaySize[0], displaySize[1], false);
+  for (const [label, actual, expected, presented] of [
+    ["source", source, expectedSource, false],
+    ["display", display, expectedDisplay, true],
+  ]) {
+    for (const field of ["base", "prefilter", "sheet", "levels", "passSequence"]) {
+      if (!sameJson(actual?.[field], expected[field])) {
+        errors.push(`${label} Bloom diagnostics ${field} mismatch`);
+      }
+    }
+    const sampler = actual?.finalBlitSampler;
+    if (!sameJson(
+      sampler && {
+        magFilter: sampler.magFilter,
+        minFilter: sampler.minFilter,
+        wrapS: sampler.wrapS,
+        wrapT: sampler.wrapT,
+        textureUnit: sampler.textureUnit,
+      },
+      {
+        magFilter: "LINEAR",
+        minFilter: "LINEAR",
+        wrapS: "CLAMP_TO_EDGE",
+        wrapT: "CLAMP_TO_EDGE",
+        textureUnit: 0,
+      },
+    )) {
+      errors.push(`${label} FinalBlit inline sampler mapping mismatch`);
+    }
+    if (!Number.isInteger(sampler?.bindChecks)
+      || !Number.isInteger(sampler?.unbindChecks)
+      || sampler.unbindChecks !== sampler.bindChecks
+      || (presented ? sampler.bindChecks <= 0 : sampler.bindChecks !== 0)) {
+      errors.push(`${label} FinalBlit inline sampler presentation lifecycle mismatch`);
+    }
+  }
+}
+
 function validateCapture(capture, canonical, currentHashes, artifactErrors, runtimeContracts) {
   const errors = [];
   if (artifactErrors.length) errors.push("artifact-level identity is stale or invalid");
@@ -388,6 +500,13 @@ function validateCapture(capture, canonical, currentHashes, artifactErrors, runt
   } else if (pipelines.source.webglErrors.length || pipelines.display.webglErrors.length) {
     errors.push("postprocess diagnostics contain WebGL errors");
   }
+  validateBloomPipelineDiagnostics(
+    pipelines,
+    display.sourceSize,
+    display.displayTargetSize,
+    canonical.file,
+    errors,
+  );
 
   const sourceAttachments = capture.source?.attachments;
   if (!Array.isArray(sourceAttachments) || sourceAttachments.length !== 2) {
@@ -797,7 +916,22 @@ function selfTest() {
           displayQuaternion: [0, 0, 0, 1],
           webglErrors: [],
         },
-        pipelines: { source: { webglErrors: [] }, display: { webglErrors: [] } },
+        pipelines: {
+          source: {
+            ...expectedBloomDiagnostics(
+              2,
+              2,
+              CANONICAL_BLOOM_SCENES.has(canonical.file),
+            ),
+            webglErrors: [],
+            finalBlitSampler: fixtureFinalBlitSampler(false),
+          },
+          display: {
+            ...expectedBloomDiagnostics(2, 2, false),
+            webglErrors: [],
+            finalBlitSampler: fixtureFinalBlitSampler(true),
+          },
+        },
         tmp: { mode: "official-tmp-sdf-webgl", fallbackCount: 0, drawCount: 1, glyphCount: 1 },
       },
       source: { attachments: [pixel(0), pixel(1, 0)] },
@@ -863,6 +997,50 @@ function selfTest() {
   assert.equal(valid.validCaptureCount, 4);
   assert.ok(valid.captures.every((capture) => capture.transformPairExact));
   assert.ok(Object.values(artifact.captures).every((capture) => !Object.hasOwn(capture.provenance, "sessionNonce")));
+
+  const bloomSequenceMutation = structuredClone(artifact);
+  const bloomCapture = bloomSequenceMutation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ];
+  bloomCapture.diagnostics.pipelines.source.passSequence.pop();
+  resign(bloomSequenceMutation);
+  assert.match(audit(bloomSequenceMutation).errors.join("\n"), /Bloom diagnostics passSequence mismatch/);
+
+  const finalBlitSamplerMutation = structuredClone(artifact);
+  finalBlitSamplerMutation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ].diagnostics.pipelines.source.finalBlitSampler.minFilter = "NEAREST";
+  resign(finalBlitSamplerMutation);
+  assert.match(
+    audit(finalBlitSamplerMutation).errors.join("\n"),
+    /FinalBlit inline sampler mapping mismatch/,
+  );
+
+  const unexpectedSourcePresentation = structuredClone(artifact);
+  unexpectedSourcePresentation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ].diagnostics.pipelines.source.finalBlitSampler.bindChecks = 1;
+  unexpectedSourcePresentation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ].diagnostics.pipelines.source.finalBlitSampler.unbindChecks = 1;
+  resign(unexpectedSourcePresentation);
+  assert.match(
+    audit(unexpectedSourcePresentation).errors.join("\n"),
+    /source FinalBlit inline sampler presentation lifecycle mismatch/,
+  );
+
+  const missingDisplayPresentation = structuredClone(artifact);
+  missingDisplayPresentation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ].diagnostics.pipelines.display.finalBlitSampler.bindChecks = 0;
+  missingDisplayPresentation.captures[
+    "scene.cPK_20_008900_02_HOUOUex_UR.json|zh_TW"
+  ].diagnostics.pipelines.display.finalBlitSampler.unbindChecks = 0;
+  resign(missingDisplayPresentation);
+  assert.match(
+    audit(missingDisplayPresentation).errors.join("\n"),
+    /display FinalBlit inline sampler presentation lifecycle mismatch/,
+  );
 
   const tamperedHmac = structuredClone(artifact);
   tamperedHmac.attestation.hmacSha256 = "f".repeat(64);

@@ -105,7 +105,7 @@ assert.equal(cardLayer.stencilFuncMask, 1);
 
 const fallbackWindow = new THREE.MeshBasicMaterial();
 assert.equal(applyStencilState(fallbackWindow, {
-  shader: "Card_Parallax",
+  runtimeDispatch: { capabilities: { stencil: "read-stencil-ref" } },
   clip: "window",
   floats: { _StencilRef: 0 },
 }), true);

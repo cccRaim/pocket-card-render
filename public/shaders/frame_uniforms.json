@@ -753,6 +753,7 @@
   },
   "mrt": {
     "primary": "_21",
-    "emissive": "_45"
+    "emissive": "_45",
+    "emissive_value": "alpha-only"
   }
 }

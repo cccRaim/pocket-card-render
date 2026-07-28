@@ -1,6 +1,7 @@
 {
   "shader": "Lettuce/Common/CardNew/ShadowBox/Simple-Opaque-Hologram_Tuning",
   "generated_by": "build/build-exact-simple-opaque-hologram.mjs",
+  "selected_keywords": [],
   "official_selector": {
     "selectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
     "candidateWitnessId": "0fb8f02f1c119712efa4625a857777833259dbb56138dcbc66aed26b580e9024",

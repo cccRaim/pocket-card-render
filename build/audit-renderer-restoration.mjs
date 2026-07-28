@@ -22,6 +22,7 @@ import {
   CANONICAL_FULL_RUNTIME_SCENES,
   CANONICAL_LOCALIZED_TEXT_FILES,
 } from "./full-runtime-sources.mjs";
+import { officialSample } from "./official-sample.mjs";
 import {
   evaluatePipelineProof,
   validatePipelineProofGraph,
@@ -134,17 +135,64 @@ const PIPELINE_PROOF_NODES = validatePipelineProofGraph({
       verifiers: ["official-circular-kira", "circular-kira-state"],
       evidence: "hash-pinned CircularKira UpdateTrailParams ARM64 control flow and float32 state vectors",
     },
+    {
+      id: "pipeline.animation-timing.card-future-object",
+      verifiers: ["official-card-future"],
+      evidence: "hash-pinned CardFutureObject ARM64 state transition, serialized component and renderer binding",
+    },
   ],
   "bloom-tone-mapping": [
     {
+      id: "pipeline.bloom-tone-mapping.hdr-gamma-policy",
+      scopeId: "hdr-gamma-policy",
+      claimVerifier: "official-player-pipeline",
+      verifiers: ["official-player-pipeline", "official-postprocess"],
+      evidence: "official Gamma/HDR-disabled policy and Bloom composition without an extra tone-map stage",
+    },
+    {
       id: "pipeline.bloom-tone-mapping.official-pass-graph",
+      scopeId: "official-pass-program",
+      claimVerifier: "official-bloom-program",
+      verifiers: ["official-bloom-program", "official-postprocess"],
+      evidence: "official six-pass Bloom program bytes, bindings, state and native execution graph",
+    },
+    {
+      id: "pipeline.bloom-tone-mapping.serialized-config-sizing",
+      scopeId: "serialized-config-sizing",
+      claimVerifier: "official-postprocess",
       verifiers: ["official-postprocess"],
-      evidence: "official bloom pass graph and render-target contract",
+      evidence: "official BloomVolume values and hash-pinned ARM64 buffer/sheet sizing",
+    },
+    {
+      id: "pipeline.bloom-tone-mapping.generated-webgl-artifacts",
+      scopeId: "generated-webgl-artifacts",
+      claimVerifier: "exact-bloom",
+      verifiers: [
+        "official-bloom-program",
+        "exact-bloom",
+        "exact-final-blit",
+        "final-blit-backend-proof",
+        "final-blit-backend-proof-mutations",
+      ],
+      evidence: "current-sample-bound Bloom and FinalBlit WebGL source artifact identity",
     },
     {
       id: "pipeline.bloom-tone-mapping.material-mrt-inputs",
-      verifiers: ["official-mrt-outputs"],
-      evidence: "official per-material MRT bloom inputs",
+      scopeId: "material-mrt-inputs",
+      claimVerifier: "official-mrt-outputs",
+      verifiers: ["official-mrt-outputs", "bloom-activation", "official-program-port-coverage"],
+      evidence: "official per-material MRT bloom inputs and selector-bound activation routing",
+    },
+    {
+      id: "pipeline.bloom-tone-mapping.canonical-runtime-lifecycle",
+      scopeId: "canonical-runtime-lifecycle",
+      claimVerifier: "bloom-pipeline-proof",
+      verifiers: [
+        "bloom-pipeline-proof",
+        "bloom-pipeline-proof-mutations",
+        "full-runtime-evidence",
+      ],
+      evidence: "source-current four-card WebGL pass sequence, target layout, weights and error-free lifecycle",
     },
   ],
   "display-transfer": [
@@ -173,8 +221,16 @@ const VERIFIERS = [
   ["official-smolv-corpus", process.execPath, "build/audit-official-smolv-corpus.mjs"],
   ["official-kira-puyo", process.execPath, "build/audit-official-kira-puyo.mjs"],
   ["official-circular-kira", process.execPath, "build/audit-official-circular-kira.mjs"],
+  ["official-card-future", process.execPath, "build/audit-official-card-future.mjs"],
   ["circular-kira-state", process.execPath, "build/test-circular-kira.mjs"],
   ["bloom-activation", process.execPath, "build/test-bloom-activation.mjs"],
+  ["official-bloom-program", process.execPath, "build/audit-official-bloom-program.mjs"],
+  ["exact-bloom", process.execPath, "build/build-exact-bloom.mjs", { PCR_EXACT_CHECK: "1" }],
+  ["exact-final-blit", process.execPath, "build/build-exact-final-blit.mjs", { PCR_EXACT_CHECK: "1" }],
+  ["final-blit-backend-proof", process.execPath, "build/audit-final-blit-backend-proof.mjs"],
+  ["final-blit-backend-proof-mutations", process.execPath, "build/test-final-blit-backend-proof.mjs"],
+  ["bloom-pipeline-proof", process.execPath, "build/audit-bloom-pipeline-proof.mjs"],
+  ["bloom-pipeline-proof-mutations", process.execPath, "build/test-bloom-pipeline-proof.mjs"],
   ["official-pass-partition", process.execPath, "build/audit-official-pass-partition.mjs"],
   ["official-material-sort-inputs", process.execPath, "build/audit-official-material-sort-inputs.mjs"],
   ["official-reference-sort-inputs", process.execPath, "build/audit-official-reference-sort-inputs.mjs"],
@@ -193,6 +249,8 @@ const VERIFIERS = [
   ["official-card-examples", process.execPath, "build/build-official-card-examples.mjs", { PCR_OFFICIAL_CARD_EXAMPLES_CHECK: "1" }],
   ["official-card-example-mutations", process.execPath, "build/test-official-card-examples.mjs"],
   ["official-card-example-materialization", process.execPath, "build/test-materialize-official-card-examples.mjs"],
+  ["rarity-rendering-completeness", process.execPath, "build/audit-rarity-rendering-completeness.mjs"],
+  ["rarity-rendering-completeness-mutations", process.execPath, "build/test-rarity-rendering-completeness.mjs"],
   ["official-card-ui-layout", process.execPath, "build/build-official-card-ui-layout.mjs", { PCR_CARD_UI_LAYOUT_CHECK: "1" }],
   ["dynamic-ui-layout", process.execPath, "build/audit-dynamic-ui-layout.mjs"],
   ["official-ugui-image-state", process.execPath, "build/audit-official-ugui-image-state.mjs"],
@@ -270,6 +328,9 @@ const VERIFIERS = [
   ["official-touch-rotation", process.execPath, "build/audit-official-touch-rotation.mjs"],
   ["exact-ui-default-from-rt", process.execPath, "build/build-exact-ui-default-from-rt.mjs", { PCR_EXACT_CHECK: "1" }],
 ];
+validatePipelineProofGraph(PIPELINE_PROOF_NODES, {
+  registeredVerifiers: VERIFIERS.map(([name]) => name),
+});
 
 const evidence = buildEvidenceReport();
 const pipeline = new Map(evidence.rendererPipelineParity.stages.map((stage) => [stage.id, stage]));
@@ -569,10 +630,21 @@ function pipelineRequirement(id, label, cost) {
   });
 }
 
+const officialSemanticExecutableCount =
+  officialSample.proofSets.materialPrograms.semanticExecutableCount;
+if (
+  programPortCoverage?.summary?.officialSemanticExecutables != null
+  && programPortCoverage.summary.officialSemanticExecutables
+    !== officialSemanticExecutableCount
+) {
+  throw new Error(
+    "program-port coverage semantic denominator does not match the current official sample",
+  );
+}
 const layerEvidence = {
   layers: programPortCoverage?.summary.completeExecutableClosures || 0,
   known: programPortCoverage?.summary.stageBoundSemanticExecutables || 0,
-  total: programPortCoverage?.summary.officialSemanticExecutables || 76,
+  total: officialSemanticExecutableCount,
 };
 const commonBindingVerdicts = programPortCoverage?.fieldVerdicts?.commonBindings || {};
 const bindingEvidence = {
@@ -677,6 +749,10 @@ const cardTextRuntimeCovered = verifierPassed("official-card-text-runtime", "car
 const officialCardExamplesCovered = verifierPassed(
   "official-card-examples",
   "official-card-example-mutations",
+);
+const rarityRenderingCoverageCovered = verifierPassed(
+  "rarity-rendering-completeness",
+  "rarity-rendering-completeness-mutations",
 );
 const fieldDiffInfrastructure = verifierPassed(
   "official-local-field-diff",
@@ -1124,7 +1200,7 @@ const dimensions = [
         knownUnits: allCanonicalTmpRuntime ? 1 : 0,
         totalUnits: 1,
         evidence: allCanonicalTmpRuntime
-          ? ["source-hash-bound, no-screenshot WebGL readback proves nonempty premultiplied/UI/holo RT output for all four canonical cards"]
+          ? ["source-hash-bound, no-screenshot WebGL readback proves nonempty Text/Holo source RT and final UI/holo RT output for all four canonical cards"]
           : tmpRuntimeWired ? ["official TMP WebGL path is statically wired; fresh canonical runtime evidence is incomplete"] : [],
         remaining: allCanonicalTmpRuntime ? [] : ["open every canonical scene with ?auditrt=1 and retain source-current readback evidence"],
         cost: "textmeshpro-runtime-port",
@@ -1446,29 +1522,36 @@ const dimensions = [
         label: "Renderer generalizes to every official card/material archetype",
         status: carddataCorpusCovered && composeCorpusCovered ? "partial-exact" : "unknown",
         exactUnits: carddataCorpusCovered && composeCorpusCovered
-          ? 2 + Number(officialCardExamplesCovered)
+          ? 2
+            + Number(officialCardExamplesCovered)
+            + Number(rarityRenderingCoverageCovered)
           : 0,
         knownUnits: carddataCorpusCovered && composeCorpusCovered
-          ? 2 + Number(officialCardExamplesCovered)
+          ? 2
+            + Number(officialCardExamplesCovered)
+            + Number(rarityRenderingCoverageCovered)
           : 0,
         totalUnits: 5,
         evidence: carddataCorpusCovered && composeCorpusCovered ? [
           "all 3305 CardIDs pass authoritative masterdata parsing",
           "all 3305 CardIDs pass official-layout composition in zh_TW plus a nine-locale archetype matrix",
           ...(officialCardExamplesCovered ? [
-            "a deterministic 444-obligation matrix joins serialized card design, 76 semantic executables, 165 material-state archetypes, two explicit locator boundaries, one engine-owned variant boundary and 64 card-face semantic branches; deterministic greedy selects 112 witnesses and an independent HiGHS MILP proves 112 is the global minimum",
+            "a deterministic 444-obligation matrix joins serialized card design, 77 semantic executables, 166 material-state archetypes, zero locator boundaries, one engine-owned variant boundary and 64 card-face semantic branches; deterministic greedy selects 112 witnesses and an independent HiGHS MILP proves 112 is the global minimum",
+          ] : []),
+          ...(rarityRenderingCoverageCovered ? [
+            "a second official inventory join closes all 543 rarity x semantic-executable/material-state obligations with the 112 primary witnesses plus five independently proven minimum additional witnesses; 2,725 rendererIdentity/materialSlot/materialIdentity rows match their generated scene draws exactly",
           ] : []),
           ...(illustrationInventoryAuditPass ? [
             "the business-masterdata/decrypted-asset version inventory hash-pins 3191/3305 Face L bundles (1,181,259,080 bytes) and identifies exactly 114 absent Series B illustrations",
           ] : []),
           ...(materialProgramInventoryIntegrated ? [
-            "the official-byte corpus graph enumerates 58,057 MeshRenderer material slots, 8,460 unique Materials and 61 Shaders without scene/recipe/PNG/GLB inputs; all 77 selectors resolve to 79 pass executables / 78 container archetypes / 76 semantic executable archetypes through 74 exact-keyword selectors, two ordered multi-pass selectors and one version-locked native best-match selector",
+            "the official-byte corpus graph enumerates 58,057 MeshRenderer material slots, 8,460 fully located Materials and 62 Shaders without scene/recipe/PNG/GLB inputs; all 78 selectors resolve to 80 pass executable candidates / 79 container archetypes / 77 semantic executable archetypes through 75 exact-keyword selectors, two ordered multi-pass selectors and one version-locked native best-match selector",
             "the native selector audit pins PTCGP 1.6.0 libunity ComputeKeywordMatch, strict/best branching, first-candidate tie behavior and boot.config; engine-owned INSTANCING_ON remains explicitly runtime-bound",
           ] : []),
         ] : [],
         remaining: [
           "acquire the 114 Series B Face bundles absent from the current decrypted asset snapshot",
-          "locate the two shared cPK_90 Materials outside the bounded roots and map all 76 resolved official semantic executable archetypes to byte-identical local implementations",
+          "prove backend-semantic equivalence for all 77 official semantic executable archetypes and retain Side&Back INSTANCING_ON as an engine-owned runtime boundary until guest capture closes it",
           "capture guest runtime bindings to confirm actual multi-pass dispatch and engine-owned instancing variants without inflating static implementation coverage",
           "run source-bound no-fallback runtime coverage over every material and layout archetype",
         ],

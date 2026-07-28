@@ -13,13 +13,13 @@
 import "./render/page-errors.js";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { SHADER } from "./render/rarities.js";
 import { getMaterial } from "./render/registry.js";
 import { makeRenderContext, setBlend, applyRenderQueueState, applyDepthState, applyCullState, applyStencilState, applyOfficialPassState } from "./render/context.js";
 import { threeWorldForwardToUnity, updateGlitterFlow } from "./render/glitter-flow.js";
 import { updateKiraPuyo } from "./render/kira-puyo.js";
 import { OfficialClock, syncOfficialClockVisibility } from "./render/official-clock.js";
 import { bindCircularKiraMesh, finalizeCircularKiraBindings, updateCircularKira } from "./render/circular-kira.js";
+import { updateMegaRuntime } from "./render/mega-runtime.js";
 import {
   beginOfficialTouchDrag,
   createOfficialTouchRotationState,
@@ -78,8 +78,16 @@ import {
   officialDistanceKey,
 } from "./render/official-draw-order.js";
 import { createOfficialCapturedSortResolver } from "./render/official-sort-capture.js";
+import {
+  buildOfficialDrawIdentityIndex,
+  resolveOfficialDrawIdentity,
+} from "./render/official-draw-identity.js";
 import { orderOfficialPasses } from "./render/official-port-identity.js";
 import { loadExactShaderPortsFromContract } from "./render/exact-port-loader.js";
+import {
+  loadRuntimeMaterialDispatchFromContract,
+  resolveRuntimeMaterialDispatch,
+} from "./render/runtime-dispatch-contract.js";
 import {
   answerLayerBisect,
   createLayerBisectState,
@@ -1090,7 +1098,13 @@ async function main() {
   const coverageExamples =
     exampleManifest?.schemaVersion === 1
     && Array.isArray(exampleManifest.coverageSet?.selectedWitnesses)
-      ? exampleManifest.coverageSet.selectedWitnesses
+    && Array.isArray(
+      exampleManifest.rarityRenderingCoverageSet?.additionalWitnesses,
+    )
+      ? [
+        ...exampleManifest.coverageSet.selectedWitnesses,
+        ...exampleManifest.rarityRenderingCoverageSet.additionalWitnesses,
+      ]
       : [];
   const supplementalExamples =
     exampleManifest?.schemaVersion === 1
@@ -1269,13 +1283,16 @@ async function main() {
 
   // The generated contract is the only browser port inventory. Adding or migrating a port updates
   // the contract and its manifest; app.js owns no parallel shader/manifest/source list.
-  const exactShaders = await loadExactShaderPortsFromContract({
-    exactEnabled,
-    canonicalizeObjectClipPosition: !logicBisectCase.disableCanonicalObjectClipPosition,
-  });
+  const [exactShaders, runtimeDispatchIndex] = await Promise.all([
+    loadExactShaderPortsFromContract({
+      exactEnabled,
+      canonicalizeObjectClipPosition: !logicBisectCase.disableCanonicalObjectClipPosition,
+    }),
+    loadRuntimeMaterialDispatchFromContract(),
+  ]);
   hasBloomProducer = !qp.has("nobloom")
     && !logicBisectCase.disableBloom
-    && sceneUsesBloomProducer(scene_data.materials, exactShaders);
+    && sceneUsesBloomProducer(scene_data.materials, exactShaders, runtimeDispatchIndex);
   const [officialBloomPrograms, officialFinalBlitProgram, cardDisplayContract, homographyDisplayProgram] = await Promise.all([
     loadOfficialBloomPrograms(),
     loadOfficialFinalBlitProgram(),
@@ -1537,13 +1554,14 @@ async function main() {
   const animMats = [];
   const kiraPuyoMats = [];
   const circularKiraComponents = new Map();
+  const megaDynamicMats = [];
 
   setLoading("Loading textures…");
   await preloadOfficialTextures(scene_data.textures);
   // RenderContext: the runtime deps every material strategy needs (resolved textures, env cubemap,
   // per-frame animation lists, the DynamicUI foil). Built once, after textures load.
   const exHoloMats = [];   // EX-foil materials (the language switch swaps their dynUI/foil textures)
-  const ctx = makeRenderContext({ texInfo, envCubeTex, exactShaders, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, runtimeSettings: scene_data.runtimeSettings, dynUITex, dynHoloTex, foilTex, exHoloMats });
+  const ctx = makeRenderContext({ texInfo, envCubeTex, exactShaders, animMats, exactGlitMats, kiraPuyoMats, circularKiraComponents, megaDynamicMats, runtimeSettings: scene_data.runtimeSettings, dynUITex, dynHoloTex, foilTex, exHoloMats });
 
   const loader = new GLTFLoader();
   setLoading("Loading model…");
@@ -1572,22 +1590,21 @@ async function main() {
     // → same recipe at their own transforms; the outline primitives carry L_RaremarkFlame_a; SBM2/SBM4
     // and every multi-material node split into distinct materials automatically.
     const materials = scene_data.materials;
+    const runtimeDispatchByMaterial = new Map();
+    for (const [materialName, recipe] of Object.entries(materials)) {
+      const dispatch = resolveRuntimeMaterialDispatch(runtimeDispatchIndex, recipe);
+      if (!dispatch) {
+        throw new Error(`${materialName}: official Shader identity/keyword state has no runtime dispatch route`);
+      }
+      runtimeDispatchByMaterial.set(materialName, dispatch);
+    }
     if (scene_data.officialDrawSchemaVersion !== 2 || !Array.isArray(scene_data.officialDraws)) {
       throw new Error("scene is missing the official draw-identity table");
     }
-    const officialDrawsByMaterial = new Map();
-    const officialDrawsByNodeMaterial = new Map();
-    const nodeMaterialKey = (nodePath, materialName) => `${nodePath}\u0000${materialName}`;
-    for (const draw of scene_data.officialDraws) {
-      if (typeof draw.goPath !== "string" || !draw.goPath) {
-        throw new Error(`${draw.drawId || "official draw"}: missing GameObject path`);
-      }
-      if (!officialDrawsByMaterial.has(draw.materialName)) officialDrawsByMaterial.set(draw.materialName, []);
-      officialDrawsByMaterial.get(draw.materialName).push(draw);
-      const key = nodeMaterialKey(draw.goPath, draw.materialName);
-      if (!officialDrawsByNodeMaterial.has(key)) officialDrawsByNodeMaterial.set(key, []);
-      officialDrawsByNodeMaterial.get(key).push(draw);
-    }
+    const officialDrawIdentityIndex = buildOfficialDrawIdentityIndex(
+      scene_data.officialDraws,
+    );
+    const officialDrawsByMaterial = officialDrawIdentityIndex.byMaterial;
     function sourceNodePath(object) {
       if (typeof object.userData.officialNodePath === "string") {
         return object.userData.officialNodePath;
@@ -1600,29 +1617,22 @@ async function main() {
     }
     function resolveOfficialDraw(sourceMesh, materialName) {
       const nodePath = sourceNodePath(sourceMesh);
-      const matches = officialDrawsByNodeMaterial.get(nodeMaterialKey(nodePath, materialName)) || [];
-      if (matches.length > 1) {
-        throw new Error(`${nodePath}:${materialName} maps to multiple official draw identities`);
-      }
-      return { draw: matches[0] || null, nodePath };
+      return resolveOfficialDrawIdentity(
+        officialDrawIdentityIndex,
+        nodePath,
+        materialName,
+      );
     }
     function attachOfficialDrawIdentity(mesh, materialName, resolved) {
       mesh.userData.sourceNodePath = resolved.nodePath;
       if (resolved.draw) {
         mesh.userData.officialDraw = resolved.draw;
+        mesh.userData.officialDrawResolution = resolved.resolution;
         return;
       }
-      const candidates = officialDrawsByMaterial.get(materialName) || [];
-      if (candidates.length === 1) {
-        // AssetRipper may flatten or rename the source node path. A single material-bound official
-        // draw remains an exact identity join; multiple same-name candidates are never guessed.
-        mesh.userData.officialDraw = candidates[0];
-        mesh.userData.officialDrawResolution = "unique-material-candidate";
-        return;
-      }
-      if (candidates.length) {
+      if (resolved.candidateIds.length) {
         // Preserve the candidate set for diagnostics, but never guess by same-name occurrence order.
-        mesh.userData.officialDrawCandidates = candidates.map((draw) => draw.drawId);
+        mesh.userData.officialDrawCandidates = [...resolved.candidateIds];
       }
     }
     function attachAuditDescriptor(mesh, materialName, recipe = null) {
@@ -1637,7 +1647,8 @@ async function main() {
     // material selection and Front/Back behavior still come entirely from each scene recipe.
     const unityQuad = new THREE.PlaneGeometry(1, 1);
     for (const [matName, recipe] of Object.entries(materials)) {
-      if (recipe.shader !== "Card_UR_LensFlare" || !recipe.go) continue;
+      const dispatch = runtimeDispatchByMaterial.get(matName);
+      if (dispatch?.capabilities?.builtinGeometry !== "unity-quad" || !recipe.go) continue;
       const node = root.getObjectByName(recipe.go);
       if (!node || node.isMesh || node.children.some((child) => child.isMesh)) continue;
       const proxyMaterial = new THREE.MeshBasicMaterial();
@@ -1661,7 +1672,7 @@ async function main() {
     cardGroup.add(stencilGroup); cardGroup.add(fgGroup);
 
     let built = 0, deferred = 0, writers = 0, skipped = 0;
-    let dynUIMat = null;
+    const dynamicUITextMaterials = new Set();
     const ONLY = window.__only || "";
     // All layers remain under the same official Asset3D transform hierarchy. The later game homography
     // stage is tracked separately; do not approximate it by moving individual layers here.
@@ -1675,7 +1686,10 @@ async function main() {
       const resolvedOfficialDraw = resolveOfficialDraw(o, matName);
 
       const r = materials[matName];
-      if (!r) { skipped++; return; }                 // DefaultMaterial / unknown
+      if (!r) {
+        if (matName === "DefaultMaterial") { skipped++; return; }
+        throw new Error(`${sourceNodePath(o)}: GLB material ${matName} has no scene recipe`);
+      }
       if (!r.sort || r.sort.rendererType !== "MeshRenderer"
           || r.sort.rendererTypeValue !== OFFICIAL_RENDERER_TYPE.MeshRenderer
           || !Number.isInteger(r.sort.materialSlot) || r.sort.materialSlot < 0
@@ -1701,15 +1715,19 @@ async function main() {
           || r.sort.materialBatchStateBranch !== "hashed") {
         throw new Error(`${matName}: missing official MeshRenderer sort descriptor`);
       }
-      const cfg = SHADER[r.shader];
+      const cfg = runtimeDispatchByMaterial.get(matName);
       if (!cfg || cfg.defer) { deferred++; return; }  // metal (no-op), card back/edges, LOD
 
       // dispatch by kind → the registered material strategy (Strategy + Registry pattern). requires()
       // gates whether the layer renders; build() returns the three.js material (sets userData.straight).
-      const strat = getMaterial(cfg.kind);
-      const drawRecipe = resolvedOfficialDraw.draw?.rendererProperties
-        ? { ...r, rendererProperties: resolvedOfficialDraw.draw.rendererProperties }
-        : r;
+      const strat = getMaterial(cfg.strategy);
+      const drawRecipe = {
+        ...r,
+        runtimeDispatch: cfg,
+        ...(resolvedOfficialDraw.draw?.rendererProperties
+          ? { rendererProperties: resolvedOfficialDraw.draw.rendererProperties }
+          : {}),
+      };
       if (!strat || !strat.requires(drawRecipe, ctx)) { skipped++; return; }
       const builtMaterial = strat.build(drawRecipe, ctx);
       if (!builtMaterial) { skipped++; return; }
@@ -1727,9 +1745,7 @@ async function main() {
         rawMaterials.forEach((material) => material.dispose());
         throw new Error(`${matName}: ${error.message}`);
       }
-      const isSB = r.shader === "Simple-Opaque-Hologram_Tuning" || r.shader === "Simple-Transparent"
-                || r.shader === "Opaque-Hologram_Tuning"     // trainer SR shadowbox (same diorama mesh)
-                || r.shader === "Opaque-UR-Oklab";           // UR shadowbox (same diorama mesh, Oklab colour)
+      const hasFixedShadowboxDepth = cfg.capabilities.fixedShadowboxDepth;
       const stagedMeshes = [];
       let invalidQueue = false;
       for (const [passOrdinal, mat] of passMaterials.entries()) {
@@ -1745,17 +1761,17 @@ async function main() {
         if (!exactPassApplied) {
           // Some official shaders use material-controlled blend factors (_SrcFactor/_DstFactor).
           setBlend(mat, cfg.blend, straight, cfg.materialBlend ? r.floats : undefined);
-          if (!window.__raw) applyStencilState(mat, r);
+          if (!window.__raw) applyStencilState(mat, drawRecipe);
           applyDepthState(mat, r.floats);
           applyCullState(mat, r.floats, cfg.cull ?? 2, cfg.materialCull);
         }
         if (!applyRenderQueueState(mat, r.queue)) { invalidQueue = true; break; }
         // These shader families use fixed LEqual depth state in the official pass rather than material floats.
-        if (isSB && !exactPassApplied) {
+        if (hasFixedShadowboxDepth && !exactPassApplied) {
           mat.depthTest = true;
           mat.depthWrite = cfg.blend === "opaque";
         }
-        if (r.shader === "Card_Parallax" && logicBisectCase.id !== "baseline") {
+        if (cfg.capabilities.diagnostic === "card-parallax" && logicBisectCase.id !== "baseline") {
           if (logicBisectCase.freezeParallaxUv) {
             const heightPower = mat.uniforms?._HeightPower || mat.uniforms?.uHeightPower;
             if (!heightPower) throw new Error(`${matName}: logic bisect cannot find Card_Parallax _HeightPower`);
@@ -1795,7 +1811,7 @@ async function main() {
           mat.userData.logicBisectCase = logicBisectCase.id;
         }
         const mesh = new THREE.Mesh(o.geometry, mat);
-        if (r.shader === "Card_Parallax" && logicBisectCase.hideParallaxDraws) {
+        if (cfg.capabilities.diagnostic === "card-parallax" && logicBisectCase.hideParallaxDraws) {
           mesh.visible = false;
           mesh.userData.logicBisectHidden = true;
         }
@@ -1822,7 +1838,11 @@ async function main() {
         skipped++;
         return;
       }
-      if (matName === "L_FullFace_Text") dynUIMat = passMaterials[0];
+      for (const material of passMaterials) {
+        if (material.userData.dynamicUIRole === "text") {
+          dynamicUITextMaterials.add(material);
+        }
+      }
       for (const mesh of stagedMeshes) {
         // Stencil writers share the normal selector/pass/identity path; only their scene group differs.
         if (isStencil) {
@@ -1983,12 +2003,12 @@ async function main() {
     }
     function replaceDynamicUITextures(t) {
       if (!t) return;
-      if (dynUIMat) {
-        const uniformName = dynUIMat.userData.dynamicUIUniform;
-        if (!uniformName || !dynUIMat.uniforms[uniformName]) {
-          throw new Error("L_FullFace_Text: missing exact DynamicUI sampler binding");
+      for (const material of dynamicUITextMaterials) {
+        const uniformName = material.userData.dynamicUIUniform;
+        if (!uniformName || !material.uniforms[uniformName]) {
+          throw new Error(`${material.userData.exactShader}: missing exact DynamicUI sampler binding`);
         }
-        dynUIMat.uniforms[uniformName].value = t.ui;
+        material.uniforms[uniformName].value = t.ui;
       }
       for (const m of exHoloMats) {
         const exactUniform = m.userData.dynamicHoloUniform;
@@ -2777,6 +2797,13 @@ async function main() {
     if (window.__tilt) window.__tilt.quaternion.copy(targetQ);
     if (clockFrame.shouldUpdate) {
       for (const am of animMats) am.uniforms.uTime.value = clockFrame.globalTime;
+      updateMegaRuntime(
+        megaDynamicMats,
+        targetQ,
+        clockFrame.globalTime,
+        camera,
+        clockFrame.scaledDeltaTime,
+      );
       window.__tilt?.updateWorldMatrix(true, true);
       for (const em of exactGlitMats) {
         const glitterTransform = em.userData.glitterTransform;

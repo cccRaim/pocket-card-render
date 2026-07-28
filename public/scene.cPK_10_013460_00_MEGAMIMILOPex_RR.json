@@ -99,6 +99,14 @@
     "_Color1Tex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-728627233328056859",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-728627233328056859"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -111,6 +119,14 @@
     "_Color2Tex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "6675853219376556",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:6675853219376556"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -221,6 +237,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8600845935124375015",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8600845935124375015"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -331,6 +355,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF3",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF3.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF3",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "98394781005418280",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:98394781005418280"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -434,6 +466,14 @@
     "_Color1Tex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7378628620329903904",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:7378628620329903904"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -446,6 +486,14 @@
     "_Color2Tex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2964666856699298278",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:2964666856699298278"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -621,6 +669,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_pokemon_window",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "officialName": "card_inner_stencil_mask_pokemon_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5994683186341809779",
+      "source": "CAB-b57b4bf171c72f152c3e21e7eddd4db5",
+      "identity": "CAB-b57b4bf171c72f152c3e21e7eddd4db5:-5994683186341809779"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -755,8 +811,16 @@
    "keywords": [],
    "textures": {
     "_BaseTex": {
-     "name": "Card_Back",
-     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "name": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "officialName": "Card_Back",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3680672549930378084",
+      "source": "CAB-b3a060b8e06893eadc58cd3cc0017a42",
+      "identity": "CAB-b3a060b8e06893eadc58cd3cc0017a42:3680672549930378084"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -917,6 +981,14 @@
     "_BaseTex": {
      "name": "SimpleCard_Side02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "officialName": "SimpleCard_Side02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7427414079537827346",
+      "source": "CAB-5be2d51c53e98a3478ebace9de25b309",
+      "identity": "CAB-5be2d51c53e98a3478ebace9de25b309:7427414079537827346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1046,6 +1118,14 @@
     "_RainbowBGTex": {
      "name": "ALL_RMP_MegaEvolutionTag_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1194162536455162222",
+      "source": "CAB-393e7dde9cecdbbb6ab2b126792d402e",
+      "identity": "CAB-393e7dde9cecdbbb6ab2b126792d402e:1194162536455162222"
+     },
      "scale": {
       "x": 1,
       "y": 20
@@ -1058,6 +1138,14 @@
     "_RainbowBGTintMask": {
      "name": "RainbowTagBGTintMask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "officialName": "RainbowTagBGTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2030125973747593984",
+      "source": "CAB-61fb7d2eae962cc0201e33d658c62b9b",
+      "identity": "CAB-61fb7d2eae962cc0201e33d658c62b9b:-2030125973747593984"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1070,6 +1158,14 @@
     "_RainbowOutlineTex": {
      "name": "ALL_RMP_MegaEvolutionTag_Outline",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2326332569849762492",
+      "source": "CAB-cf0d95fedb247f4491fabcf190a7cbd3",
+      "identity": "CAB-cf0d95fedb247f4491fabcf190a7cbd3:2326332569849762492"
+     },
      "scale": {
       "x": 2,
       "y": 1
@@ -1082,6 +1178,14 @@
     "_RainbowTex": {
      "name": "ALL_RMP_MegaEvolutionTag_Base",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Base",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7343703918009151904",
+      "source": "CAB-51bcf8730198dce60e49a7a608407048",
+      "identity": "CAB-51bcf8730198dce60e49a7a608407048:7343703918009151904"
+     },
      "scale": {
       "x": 1.7999999523162842,
       "y": 1
@@ -1094,6 +1198,14 @@
     "_RainbowTintMask": {
      "name": "RainbowTagTintMask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "officialName": "RainbowTagTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4137125116236265299",
+      "source": "CAB-9626a93824fbbf2aaed0f11e21b42592",
+      "identity": "CAB-9626a93824fbbf2aaed0f11e21b42592:-4137125116236265299"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1199,6 +1311,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1211,6 +1331,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1223,6 +1351,14 @@
     "_PhaseTex": {
      "name": "Phase_EX_UI_Mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1235,6 +1371,14 @@
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1247,6 +1391,14 @@
     "_RampTex": {
      "name": "MegaRR_EXIcon_EXRule_RMP",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "officialName": "MegaRR_EXIcon_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7799951651130749836",
+      "source": "CAB-de389649dbea99e32ef7d1a48493a955",
+      "identity": "CAB-de389649dbea99e32ef7d1a48493a955:7799951651130749836"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1352,6 +1504,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1364,6 +1524,14 @@
     "_HologramMaskTex": {
      "name": "card_megaEX_EXRule_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "officialName": "card_megaEX_EXRule_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7773388559143795760",
+      "source": "CAB-4ab3c5ab4fedaabcf29403485de532d2",
+      "identity": "CAB-4ab3c5ab4fedaabcf29403485de532d2:-7773388559143795760"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1376,6 +1544,14 @@
     "_PhaseTex": {
      "name": "Phase_EX_UI_Mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1388,6 +1564,14 @@
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1400,6 +1584,14 @@
     "_RampTex": {
      "name": "MegaRR_EXRule_RMP",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "officialName": "MegaRR_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1374505480578709091",
+      "source": "CAB-2c00c8af233e869cc341e1f07ceea19c",
+      "identity": "CAB-2c00c8af233e869cc341e1f07ceea19c:1374505480578709091"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1556,6 +1748,14 @@
     "_MainTex": {
      "name": "card_rarity_outline",
      "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "officialName": "card_rarity_outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3009383940076098196",
+      "source": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59",
+      "identity": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59:-3009383940076098196"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1665,6 +1865,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1677,6 +1885,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1689,6 +1905,14 @@
     "_MainTex": {
      "name": "card_rarity_diamond_a",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "officialName": "card_rarity_diamond_a",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2330146156838843569",
+      "source": "CAB-747e6bcce71cc807bd8b67ad96fd7f94",
+      "identity": "CAB-747e6bcce71cc807bd8b67ad96fd7f94:2330146156838843569"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1701,6 +1925,14 @@
     "_PhaseTex": {
      "name": "Phase_Rarity_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "officialName": "Phase_Rarity_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-280613335593702549",
+      "source": "CAB-3ff9bb7bce2ea2583b834c91aa653065",
+      "identity": "CAB-3ff9bb7bce2ea2583b834c91aa653065:-280613335593702549"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1713,6 +1945,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_RareMark",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "officialName": "RMP_MASK_RareMark",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3850834502605539399",
+      "source": "CAB-ae66c11063b1b943772c3289afdece42",
+      "identity": "CAB-ae66c11063b1b943772c3289afdece42:3850834502605539399"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1725,6 +1965,14 @@
     "_RampTex": {
      "name": "ALL_RMP_RareMark_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "officialName": "ALL_RMP_RareMark_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5619055394819206857",
+      "source": "CAB-0fca1d01605b5c89e9d644a1d42c959b",
+      "identity": "CAB-0fca1d01605b5c89e9d644a1d42c959b:5619055394819206857"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1879,6 +2127,14 @@
     "_BaseTex": {
      "name": "card_pokemon_normal_stage1",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage1.png",
+     "officialName": "card_pokemon_normal_stage1",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage1.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3187585806802600483",
+      "source": "CAB-12c6ed033064b7e18712effe76ef31ce",
+      "identity": "CAB-12c6ed033064b7e18712effe76ef31ce:3187585806802600483"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1995,6 +2251,14 @@
     "_MainTex": {
      "name": "card_bg_fig",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_fig.png",
+     "officialName": "card_bg_fig",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_fig.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5823797222940900568",
+      "source": "CAB-0fced2c622a3b695bd39b873641041b6",
+      "identity": "CAB-0fced2c622a3b695bd39b873641041b6:-5823797222940900568"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2162,6 +2426,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2174,6 +2446,14 @@
     "_HologramMaskTex": {
      "name": "card_frame_mask_rr_mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+     "officialName": "card_frame_mask_rr_mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-216593571298144320",
+      "source": "CAB-d5f61464517eace89a90628d5c9f45d3",
+      "identity": "CAB-d5f61464517eace89a90628d5c9f45d3:-216593571298144320"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2186,6 +2466,14 @@
     "_Layer1Tex": {
      "name": "card_pokemon_base_rr_mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+     "officialName": "card_pokemon_base_rr_mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2147387467512777023",
+      "source": "CAB-babe39169119af7e8e1ed8465e118fed",
+      "identity": "CAB-babe39169119af7e8e1ed8465e118fed:2147387467512777023"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2198,6 +2486,14 @@
     "_Layer2Mask": {
      "name": "card_pokemon_base_rr_mega_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+     "officialName": "card_pokemon_base_rr_mega_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5700491643484854918",
+      "source": "CAB-76bbcf6a4fd1dc22dae0a72779175fdd",
+      "identity": "CAB-76bbcf6a4fd1dc22dae0a72779175fdd:-5700491643484854918"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2210,6 +2506,14 @@
     "_Layer2Tex": {
      "name": "FrameHighlight",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+     "officialName": "FrameHighlight",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1087797768506318855",
+      "source": "CAB-f4352a9ad69f94e7f4a9ae7c0752804f",
+      "identity": "CAB-f4352a9ad69f94e7f4a9ae7c0752804f:1087797768506318855"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2222,6 +2526,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_Border",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+     "officialName": "Phase_RR_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "441854633007384248",
+      "source": "CAB-51fe0c0b5333cf76c01ac89cd22d31d4",
+      "identity": "CAB-51fe0c0b5333cf76c01ac89cd22d31d4:441854633007384248"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2234,6 +2546,14 @@
     "_RampMaskTex": {
      "name": "SA_SSA_RR_RMPmask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "officialName": "SA_SSA_RR_RMPmask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5010855667033089828",
+      "source": "CAB-de8234c5c20092da95fd1baa96956783",
+      "identity": "CAB-de8234c5c20092da95fd1baa96956783:5010855667033089828"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2246,6 +2566,14 @@
     "_RampTex": {
      "name": "RR_RMP_Border",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+     "officialName": "RR_RMP_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7517052790243330250",
+      "source": "CAB-56c3f6f78b080b62389231b100258a9b",
+      "identity": "CAB-56c3f6f78b080b62389231b100258a9b:7517052790243330250"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2358,6 +2686,14 @@
     "_RadialTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_FLASH",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_FLASH.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_FLASH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "8420329334684542724",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:8420329334684542724"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2457,6 +2793,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2469,6 +2813,14 @@
     "_RampMaskTex": {
      "name": "SA_SSA_RR_RMPmask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "officialName": "SA_SSA_RR_RMPmask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5010855667033089828",
+      "source": "CAB-de8234c5c20092da95fd1baa96956783",
+      "identity": "CAB-de8234c5c20092da95fd1baa96956783:5010855667033089828"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2481,6 +2833,14 @@
     "_RampTex": {
      "name": "RR_RMP_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+     "officialName": "RR_RMP_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-849579689661688727",
+      "source": "CAB-ffe555d9671e45f9af92bddfccc97230",
+      "identity": "CAB-ffe555d9671e45f9af92bddfccc97230:-849579689661688727"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2591,6 +2951,14 @@
     "_ChangeColorTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "484918531058291346",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:484918531058291346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2603,6 +2971,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_ILL_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "484918531058291346",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:484918531058291346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2704,6 +3080,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_PAR1",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_PAR1.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_PAR1",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3207006845827526217",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:3207006845827526217"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2924,6 +3308,14 @@
     "_ChangeColorTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3146037969291246737",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-3146037969291246737"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2936,6 +3328,14 @@
     "_FlashMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8142261619979325211",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8142261619979325211"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2948,6 +3348,14 @@
     "_HologramMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-537607769490368416",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-537607769490368416"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2960,6 +3368,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "420429383235112580",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:420429383235112580"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2972,6 +3388,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2984,6 +3408,14 @@
     "_RampMaskTex": {
      "name": "RR_RMPmask_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2996,6 +3428,14 @@
     "_RampTex": {
      "name": "RR_RMP_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3119,6 +3559,14 @@
     "_ChangeColorTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3146037969291246737",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-3146037969291246737"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3131,6 +3579,14 @@
     "_FlashMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8142261619979325211",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8142261619979325211"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3143,6 +3599,14 @@
     "_HologramMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-537607769490368416",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-537607769490368416"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3155,6 +3619,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "420429383235112580",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:420429383235112580"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3167,6 +3639,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3179,6 +3659,14 @@
     "_RampMaskTex": {
      "name": "RR_RMPmask_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3191,6 +3679,14 @@
     "_RampTex": {
      "name": "RR_RMP_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3315,6 +3811,14 @@
     "_ChangeColorTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3146037969291246737",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-3146037969291246737"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3327,6 +3831,14 @@
     "_FlashMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8142261619979325211",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8142261619979325211"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3339,6 +3851,14 @@
     "_HologramMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-537607769490368416",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-537607769490368416"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3351,6 +3871,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "420429383235112580",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:420429383235112580"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3363,6 +3891,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3375,6 +3911,14 @@
     "_RampMaskTex": {
      "name": "RR_RMPmask_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3387,6 +3931,14 @@
     "_RampTex": {
      "name": "RR_RMP_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3511,6 +4063,14 @@
     "_ChangeColorTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3146037969291246737",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-3146037969291246737"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3523,6 +4083,14 @@
     "_FlashMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8142261619979325211",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8142261619979325211"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3535,6 +4103,14 @@
     "_HologramMaskTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-537607769490368416",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-537607769490368416"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3547,6 +4123,14 @@
     "_MainTex": {
      "name": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
      "url": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF.png",
+     "officialName": "cPK_10_013460_00_MEGAMIMILOPex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "420429383235112580",
+      "source": "CAB-b7aaf8be113bd8d6cb4b457718214ca7",
+      "identity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:420429383235112580"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3559,6 +4143,14 @@
     "_PhaseTex": {
      "name": "Phase_RR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3571,6 +4163,14 @@
     "_RampMaskTex": {
      "name": "RR_RMPmask_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3583,6 +4183,14 @@
     "_RampTex": {
      "name": "RR_RMP_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3607,7 +4215,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:4015361667665346291",
    "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
    "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:5851130203923440692",
+     "role": "effect",
+     "searchTag": "Card-Effect-Emit"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-1250571771083594700#0",
@@ -3646,7 +4261,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-5889235064301719333",
    "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
    "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8565150839220771788",
+     "role": "effect",
+     "searchTag": "Card-Effect-Emit"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6659624192928750540#0",
@@ -3906,7 +4528,14 @@
    "materialIdentity": "CAB-ac056117358bebb5a440a75fed4c54f6:-7273687426035046990",
    "shaderIdentity": "CAB-b69d132787e6b446783c630e4f5170ed:-324863385430330581",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6039407405592517580",
+     "role": "main",
+     "searchTag": "Frame-Holo-2Layer"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:2903265786942743604#0",
@@ -3919,7 +4548,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:958407387393066505",
    "shaderIdentity": "CAB-eeb3b28a77923ed00deaaa1baf8678a9:5677331643493683988",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:2903265786942743604",
+     "role": "flash",
+     "searchTag": "MRR-Parallax-Flash"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-494459790874614732#0",
@@ -3945,7 +4581,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:4405114229570784812",
    "shaderIdentity": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-7901944037374860236",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:1708510172206228532#0",
@@ -3971,7 +4614,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:8829864320448361020",
    "shaderIdentity": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-7854121186845301708",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692#1",
@@ -3984,7 +4634,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:2157300436369403097",
    "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
    "meshIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:3085430892254436847",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692#3",
@@ -3997,7 +4654,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:4665960111697626472",
    "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
    "meshIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:3085430892254436847",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692#0",
@@ -4010,7 +4674,14 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:6580620899944842813",
    "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
    "meshIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:3085430892254436847",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   },
   {
    "drawId": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692#2",
@@ -4023,12 +4694,668 @@
    "materialIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-2951605605348716958",
    "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
    "meshIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:3085430892254436847",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+     "rendererIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
   }
  ],
  "runtimeSettings": {
   "kiraPuyo": {},
-  "circularKira": {}
+  "circularKira": {},
+  "cardFuture": {},
+  "cardAncient": {},
+  "ancientBGAnimation": {},
+  "cardMarble": {},
+  "cardMSR": {},
+  "msrAnimation": {},
+  "cardMRR": {
+   "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604": {
+    "componentIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:964443821872407604",
+    "componentGoIdentity": "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6316911406917852108",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:-4978927052999397714",
+    "animationSettingsIdentity": "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485",
+    "rendererBindings": {
+     "main": [
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6039407405592517580",
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-6797555406984223692",
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-7854121186845301708",
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-7901944037374860236"
+     ],
+     "effect": [
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:-8565150839220771788",
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:5851130203923440692"
+     ],
+     "flash": [
+      "CAB-b7aaf8be113bd8d6cb4b457718214ca7:2903265786942743604"
+     ]
+    },
+    "useSpeedAdjust": 0,
+    "animStartDegree": 10,
+    "animTimeScale": 0.3499999940395355,
+    "animDuration": 1.5,
+    "flashRadialStartOffset": 0,
+    "recordingTime": 0.25,
+    "minTiltSpeed": 0.30000001192092896,
+    "maxTiltSpeed": 1.5,
+    "minAnimSpeed": 0.75,
+    "maxAnimSpeed": 1.7999999523162842,
+    "componentGoPath": "cPK_10_013460_00_MEGAMIMILOPex_RR_L"
+   }
+  },
+  "mrrAnimation": {
+   "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485": {
+    "identity": "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485",
+    "name": "MRR_FlashAnimation",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:-5383879446595615319",
+    "curves": {
+     "ChangeColorCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": 0.011479253880679607,
+        "outSlope": 0.011479253880679607,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.7228683233261108
+       },
+       {
+        "time": 0.5299999713897705,
+        "value": 0.999632716178894,
+        "inSlope": 0.014440572820603848,
+        "outSlope": 0.014440572820603848,
+        "weightedMode": 3,
+        "inWeight": 0.21792833507061005,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 0,
+        "inSlope": -1.7591193914413452,
+        "outSlope": -1.7591193914413452,
+        "weightedMode": 1,
+        "inWeight": 0.5363790988922119,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightColorIntensityCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": -0.0007782953907735646,
+        "outSlope": -0.0007782953907735646,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.9661697149276733
+       },
+       {
+        "time": 0.3051316440105438,
+        "value": 0.5191866159439087,
+        "inSlope": 1.6945178508758545,
+        "outSlope": 1.6945178508758545,
+        "weightedMode": 3,
+        "inWeight": 0.19259370863437653,
+        "outWeight": 0.1326538473367691
+       },
+       {
+        "time": 0.44718044996261597,
+        "value": 0.5923696756362915,
+        "inSlope": 0.015264581888914108,
+        "outSlope": 0.015264581888914108,
+        "weightedMode": 3,
+        "inWeight": 0.5776070356369019,
+        "outWeight": 0.35347843170166016
+       },
+       {
+        "time": 0.5533833503723145,
+        "value": 0.584721565246582,
+        "inSlope": -0.20232349634170532,
+        "outSlope": -0.20232349634170532,
+        "weightedMode": 3,
+        "inWeight": 0.33444589376449585,
+        "outWeight": 0.6183719038963318
+       },
+       {
+        "time": 0.91558438539505,
+        "value": 0,
+        "inSlope": -4.8260321617126465,
+        "outSlope": -4.8260321617126465,
+        "weightedMode": 1,
+        "inWeight": 0.1262654811143875,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightEmitIntensityCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": -0.010956007055938244,
+        "outSlope": -0.010956007055938244,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 1
+       },
+       {
+        "time": 0.44596660137176514,
+        "value": 0.4048060476779938,
+        "inSlope": 0.4866843819618225,
+        "outSlope": 0.4866843819618225,
+        "weightedMode": 3,
+        "inWeight": 0.4644043445587158,
+        "outWeight": 0.11976943165063858
+       },
+       {
+        "time": 0.6008181571960449,
+        "value": 0.40380606055259705,
+        "inSlope": -0.41837477684020996,
+        "outSlope": -0.41837477684020996,
+        "weightedMode": 3,
+        "inWeight": 0.21930503845214844,
+        "outWeight": 0.2241613119840622
+       },
+       {
+        "time": 0.8831168413162231,
+        "value": 0,
+        "inSlope": -3.504310369491577,
+        "outSlope": -3.504310369491577,
+        "weightedMode": 1,
+        "inWeight": 0.17688679695129395,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightPower": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 2,
+        "inSlope": 0.014645862393081188,
+        "outSlope": 0.014645862393081188,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.2956942915916443
+       },
+       {
+        "time": 0.4118761718273163,
+        "value": 1,
+        "inSlope": -0.000004079826794622932,
+        "outSlope": -0.000004079826794622932,
+        "weightedMode": 0,
+        "inWeight": 0.3489391505718231,
+        "outWeight": 0.19564369320869446
+       },
+       {
+        "time": 0.5840109586715698,
+        "value": 1.31421959400177,
+        "inSlope": 3.521144151687622,
+        "outSlope": 3.521144151687622,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.27606457471847534
+       },
+       {
+        "time": 0.6922973394393921,
+        "value": 1.5650837421417236,
+        "inSlope": 1.1788946390151978,
+        "outSlope": 1.1788946390151978,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 1.6355737447738647,
+        "inSlope": -0.005363957490772009,
+        "outSlope": -0.005363957490772009,
+        "weightedMode": 0,
+        "inWeight": 0.3768155574798584,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2UVXTranslateByTiltingLeft": {
+      "keys": [
+       {
+        "time": 0.002593994140625,
+        "value": 2.5,
+        "inSlope": -14.885828018188477,
+        "outSlope": -14.885828018188477,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.11762524396181107
+       },
+       {
+        "time": 0.19045886397361755,
+        "value": 0.062079958617687225,
+        "inSlope": -3.8329339027404785,
+        "outSlope": -3.8329339027404785,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.5368157625198364
+       },
+       {
+        "time": 0.29183104634284973,
+        "value": -0.27605581283569336,
+        "inSlope": -1.9009853601455688,
+        "outSlope": -1.9009853601455688,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": -0.7329114079475403,
+        "inSlope": -0.028575366362929344,
+        "outSlope": -0.028575366362929344,
+        "weightedMode": 0,
+        "inWeight": 0.18583104014396667,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2UVXTranslateByTiltingRight": {
+      "keys": [
+       {
+        "time": 0,
+        "value": -0.7329114079475403,
+        "inSlope": 0.028575366362929344,
+        "outSlope": 0.028575366362929344,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.18583104014396667
+       },
+       {
+        "time": 0.7084565162658691,
+        "value": -0.27605581283569336,
+        "inSlope": 1.9009853601455688,
+        "outSlope": 1.9009853601455688,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 0.8099484443664551,
+        "value": 0.062079958617687225,
+        "inSlope": 3.8329339027404785,
+        "outSlope": 3.8329339027404785,
+        "weightedMode": 0,
+        "inWeight": 0.5368157625198364,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 2.5,
+        "inSlope": 14.885828018188477,
+        "outSlope": 14.885828018188477,
+        "weightedMode": 0,
+        "inWeight": 0.11762524396181107,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2ColorPower": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 2.319999933242798,
+        "inSlope": -0.021901894360780716,
+        "outSlope": -0.021901894360780716,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.1700730323791504
+       },
+       {
+        "time": 0.34954342246055603,
+        "value": 2.3205087184906006,
+        "inSlope": -0.003911961335688829,
+        "outSlope": -0.003911961335688829,
+        "weightedMode": 0,
+        "inWeight": 0.12302613258361816,
+        "outWeight": 0.4160226583480835
+       },
+       {
+        "time": 0.5968150496482849,
+        "value": 4.024890422821045,
+        "inSlope": 15.945093154907227,
+        "outSlope": 15.945093154907227,
+        "weightedMode": 0,
+        "inWeight": 0.08998353779315948,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2EmissiveIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0.20000000298023224,
+        "inSlope": 0.0031882296316325665,
+        "outSlope": 0.0031882296316325665,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.9680858850479126
+       },
+       {
+        "time": 0.24837128818035126,
+        "value": 0.8038379549980164,
+        "inSlope": -0.0000012678119674092159,
+        "outSlope": -0.0000012678119674092159,
+        "weightedMode": 3,
+        "inWeight": 0.38388821482658386,
+        "outWeight": 0.15541972219944
+       },
+       {
+        "time": 0.49800148606300354,
+        "value": 0.4370706379413605,
+        "inSlope": -1.3976051807403564,
+        "outSlope": -1.3976051807403564,
+        "weightedMode": 3,
+        "inWeight": 0.7604854106903076,
+        "outWeight": 0.18031513690948486
+       },
+       {
+        "time": 1,
+        "value": 0.20000000298023224,
+        "inSlope": 0.000012225122191011906,
+        "outSlope": 0.000012225122191011906,
+        "weightedMode": 3,
+        "inWeight": 0.5194132924079895,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffSwitchColor": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000023026992494123988,
+        "inSlope": -0.02431616000831127,
+        "outSlope": -0.02431616000831127,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.41414961218833923
+       },
+       {
+        "time": 0.4156191349029541,
+        "value": 0.019978994503617287,
+        "inSlope": 1.0748882293701172,
+        "outSlope": 1.0748882293701172,
+        "weightedMode": 3,
+        "inWeight": 0.07863405346870422,
+        "outWeight": 0.5578040480613708
+       },
+       {
+        "time": 0.7350214719772339,
+        "value": 0.5647060871124268,
+        "inSlope": 0.4781627357006073,
+        "outSlope": 0.4781627357006073,
+        "weightedMode": 3,
+        "inWeight": 0.40962257981300354,
+        "outWeight": 0.32436901330947876
+       },
+       {
+        "time": 0.8494791984558105,
+        "value": 0.5798492431640625,
+        "inSlope": -0.0013956199400126934,
+        "outSlope": -0.0013956199400126934,
+        "weightedMode": 3,
+        "inWeight": 0.3348512649536133,
+        "outWeight": 0.8000335693359375
+       },
+       {
+        "time": 1.2000000476837158,
+        "value": 0,
+        "inSlope": 0.00488831102848053,
+        "outSlope": 0.00488831102848053,
+        "weightedMode": 1,
+        "inWeight": 0.7299469113349915,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffAdditiveIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 1,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       },
+       {
+        "time": 1,
+        "value": 1,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffColor3Blend": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000023026992494123988,
+        "inSlope": 0.019775135442614555,
+        "outSlope": 0.019775135442614555,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.44153568148612976
+       },
+       {
+        "time": 0.5309537649154663,
+        "value": 1,
+        "inSlope": 0.022820457816123962,
+        "outSlope": 0.022820457816123962,
+        "weightedMode": 3,
+        "inWeight": 0.4687274098396301,
+        "outWeight": 0.39058899879455566
+       },
+       {
+        "time": 0.7127354145050049,
+        "value": 0.9847624897956848,
+        "inSlope": -0.1639358401298523,
+        "outSlope": -0.1639358401298523,
+        "weightedMode": 3,
+        "inWeight": 0.2798267602920532,
+        "outWeight": 0.7295334339141846
+       },
+       {
+        "time": 1.459240436553955,
+        "value": 0,
+        "inSlope": -0.09236917644739151,
+        "outSlope": -0.09236917644739151,
+        "weightedMode": 1,
+        "inWeight": 0.6968785524368286,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffEmissiveIntensity": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000017118320101872087,
+        "inSlope": 0.009196305647492409,
+        "outSlope": 0.009196305647492409,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.6041986346244812
+       },
+       {
+        "time": 0.44409722089767456,
+        "value": 0.5879380702972412,
+        "inSlope": 0.14478641748428345,
+        "outSlope": 0.14478641748428345,
+        "weightedMode": 3,
+        "inWeight": 0.43842265009880066,
+        "outWeight": 0.3904027044773102
+       },
+       {
+        "time": 0.6428640484809875,
+        "value": 0.5742475986480713,
+        "inSlope": -0.194915309548378,
+        "outSlope": -0.194915309548378,
+        "weightedMode": 3,
+        "inWeight": 0.2604319453239441,
+        "outWeight": 0.6749913096427917
+       },
+       {
+        "time": 1,
+        "value": 0,
+        "inSlope": -0.3182857632637024,
+        "outSlope": -0.3182857632637024,
+        "weightedMode": 1,
+        "inWeight": 0.2188011258840561,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 0.030211511999368668,
+        "outSlope": 0.030211511999368668,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.7304899096488953
+       },
+       {
+        "time": 0.5992385745048523,
+        "value": 1.2695728540420532,
+        "inSlope": -0.001696626772172749,
+        "outSlope": -0.001696626772172749,
+        "weightedMode": 3,
+        "inWeight": 0.3645056188106537,
+        "outWeight": 0.7167454957962036
+       },
+       {
+        "time": 0.7480915188789368,
+        "value": 0,
+        "inSlope": -2.555307149887085,
+        "outSlope": -2.555307149887085,
+        "weightedMode": 3,
+        "inWeight": 0.008462226949632168,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashRadialScaling": {
+      "keys": [
+       {
+        "time": 0.5046589970588684,
+        "value": 1,
+        "inSlope": 0.8900613784790039,
+        "outSlope": 0.8900613784790039,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.6847476363182068
+       },
+       {
+        "time": 1,
+        "value": 1.600000023841858,
+        "inSlope": 2.173854112625122,
+        "outSlope": 2.173854112625122,
+        "weightedMode": 1,
+        "inWeight": 0.06797736138105392,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashRadialAnim": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0.0020751953125,
+        "inSlope": 0.335414320230484,
+        "outSlope": 0.335414320230484,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.3616647720336914
+       },
+       {
+        "time": 0.4371131956577301,
+        "value": 0.3038474917411804,
+        "inSlope": 1.045061469078064,
+        "outSlope": 1.045061469078064,
+        "weightedMode": 3,
+        "inWeight": 0.322907418012619,
+        "outWeight": 0.6806528568267822
+       },
+       {
+        "time": 0.831540048122406,
+        "value": 1,
+        "inSlope": 9.217402458190918,
+        "outSlope": 9.217402458190918,
+        "weightedMode": 3,
+        "inWeight": 0.007486597169190645,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     }
+    }
+   }
+  }
  },
  "textures": {
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_OFF": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF1_OFF.png",
@@ -4038,7 +5365,7 @@
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF.png",
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON": "/game/Assets/Texture2D/cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON.png",
   "card_inner_stencil_mask_pokemon_window": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
-  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
   "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
   "ALL_RMP_MegaEvolutionTag_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
   "RainbowTagBGTintMask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
@@ -4086,7 +5413,7 @@
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF": "straight",
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON": "straight",
   "card_inner_stencil_mask_pokemon_window": "opaque",
-  "Card_Back": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "opaque",
   "SimpleCard_Side02": "opaque",
   "ALL_RMP_MegaEvolutionTag_BG": "opaque",
   "RainbowTagBGTintMask": "opaque",
@@ -4134,7 +5461,7 @@
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_OFF": 1,
   "cPK_10_013460_00_MEGAMIMILOPex_RR_L_EFF2_ON": 1,
   "card_inner_stencil_mask_pokemon_window": 1,
-  "Card_Back": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": 1,
   "SimpleCard_Side02": 1,
   "ALL_RMP_MegaEvolutionTag_BG": 1,
   "RainbowTagBGTintMask": 1,

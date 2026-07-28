@@ -15,36 +15,36 @@ const EXPECTED = Object.freeze({
     meshRenderers: 45171,
     materialSlotUsages: 58057,
     uniqueMaterials: 8460,
-    resolvedMaterials: 8458,
-    uniqueShaders: 61,
-    selectorArchetypes: 77,
-    exactStaticSelectors: 74,
-    exactExecutableSelectors: 77,
-    exactExecutableCandidates: 79,
+    resolvedMaterials: 8460,
+    uniqueShaders: 62,
+    selectorArchetypes: 78,
+    exactStaticSelectors: 75,
+    exactExecutableSelectors: 78,
+    exactExecutableCandidates: 80,
     executableResolutionErrors: 0,
-    executableArchetypes: 78,
-    semanticExecutableArchetypes: 76,
+    executableArchetypes: 79,
+    semanticExecutableArchetypes: 77,
     orderedMultipassSelectors: 2,
     nativeBestMatchSelectors: 1,
     runtimeEngineVariantSelectors: 1,
     ambiguousStaticSelectors: 0,
     unmatchedStaticSelectors: 0,
-    stateArchetypes: 165,
+    stateArchetypes: 166,
     instancingMaterials: 2,
   },
   digests: {
     usageRowsSha256: "b54d9683c86902ab7dd10ae91d831cb25e0f9fc0f1d3a4df530a314a97b00c0f",
-    materialsSha256: "42841e77b9b1d16f06e43cf941d57871bf7458a27051bc9e0e9dcb94518ef5a9",
-    shadersSha256: "7a2b791ee3ba4f2b86ab8008eaca29732d463eeb77b6f232599314c48fbf5f79",
-    selectorsSha256: "07a2c11d0067e6115089120dc81a7a15f1ec0dab7f41fc4997e645ecbeb7d52d",
-    executablesSha256: "7e2363ec11731752f8060f9586f04c7a0e1caf6a7eb97e26aae267889c2c8ffc",
-    semanticExecutablesSha256: "f48f41aaae6abd55a41826e74ca7485cc836c6bb87e195ea35881ca0a7a4325c",
-    portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
-    stateArchetypesSha256: "487b6953d0c4387c8b0a44178f3de907be45a926374ac8c1037658fa84d9ce8f",
-    sourceBundlesSha256: "a0a0561057018c51df3bb6ed8b0b23de98abcafa032eca3138d97a6e2c82f542",
-    exceptionalSha256: "bd0eadd45ff1c2a1b69702d09a53abb7cee6ea57d09cb762903faa92b2fca75f",
+    materialsSha256: "aac015c4745c98833c1c69afd5dc8a8a6cd06c6de707a9624058f0a852029816",
+    shadersSha256: "45048245c3d5ad19ad788b6317db0b02b7f3af653f918ffe20a5d6e4228f6cb1",
+    selectorsSha256: "23c6a6acb9c353f45d4dba93a5b58582f82b39daecb63358b412d96735f76f4c",
+    executablesSha256: "7d46b59e271de156dbda16f8e44977858e00c5b7e7aeee438ad39809379f3da2",
+    semanticExecutablesSha256: "c0a52dd9a5c11c52052dcac4c691e5ca4cde57c72723c55f61c81561fbe4f170",
+    portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+    stateArchetypesSha256: "fed17c187fa43f756ea9e9322f356321205cee2004ea92e97ecff887c551f430",
+    sourceBundlesSha256: "b1e490b81f1176e2b7782c442b9a8b0d288afc132f91fffe6e69d0a0cfb1640d",
+    exceptionalSha256: "773ed665f39a5b586806fd46b548bfc952dc61c953564f283221444facb31215",
     nativeVariantSelectionSha256: "0cd41159b8e7cf6b953edab10ba08c1bb51265ced6b01d5ad8efb8604a69f0c4",
-    proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
+    proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
   },
 });
 
@@ -81,7 +81,7 @@ function runExtractor() {
 const result = runExtractor();
 assert.equal(result.schema, EXPECTED.schema);
 assert.equal(result.schemaVersion, 4);
-assert.equal(result.portIndex.length, 79);
+assert.equal(result.portIndex.length, 80);
 assert.equal(result.unityVersion, EXPECTED.unityVersion);
 assert.deepEqual(result.source.excludedInputs, ["scene JSON", "render recipe", "PNG", "GLB", "screenshot"]);
 assert.deepEqual(result.summary, EXPECTED.summary);
@@ -91,11 +91,22 @@ assert.equal(canonicalDigest(Object.fromEntries(
 )), EXPECTED.digests.proofGraphSha256);
 
 const unresolved = result.exceptional.unresolvedMaterialCabs;
-assert.equal(unresolved.length, 1);
-assert.equal(unresolved[0].cab, "CAB-c604e9606f62d7199af7adbf5a8b97e5");
-assert.equal(unresolved[0].materialIdentities.length, 2);
-assert.equal(unresolved[0].materialSlotUsages, 152);
-assert.ok(unresolved[0].illustrationIds.every((value) => value.startsWith("cPK_90_")));
+assert.deepEqual(unresolved, []);
+assert.deepEqual(result.exceptional.unresolvedMaterials, []);
+const logo = result.portIndex.find(
+  (row) => row.shaderName === "Lettuce/Common/CardNew/Logo/Opaque",
+);
+assert.ok(logo);
+assert.equal(logo.materialCount, 2);
+assert.equal(logo.materialSlotUsages, 152);
+assert.equal(
+  logo.shaderIdentity,
+  "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+);
+assert.equal(
+  logo.identityFields.passStateSha256,
+  "91e0b417062602e9e639ecc679cf6d181712c9531d152026a3d1beec19230d21",
+);
 
 assert.deepEqual(result.exceptional.ambiguousSelectors, []);
 assert.deepEqual(result.exceptional.unmatchedSelectors, []);
@@ -149,7 +160,7 @@ console.log(`  resolved Materials:      ${result.summary.resolvedMaterials}/${re
 console.log(`  official Shaders:        ${result.summary.uniqueShaders}`);
 console.log(`  selector programs:       ${result.summary.exactExecutableSelectors}/${result.summary.selectorArchetypes} resolved`);
 console.log(`  pass executables:        ${result.summary.exactExecutableCandidates} candidates -> ${result.summary.executableArchetypes} container / ${result.summary.semanticExecutableArchetypes} semantic archetypes`);
-console.log("  selection modes:         74 exact-keyword, 2 ordered multi-pass, 1 native best-match");
+console.log("  selection modes:         75 exact-keyword, 2 ordered multi-pass, 1 native best-match");
 console.log("  runtime boundary:        1 engine-variant selector / 2 instancing Materials");
-console.log("  locator boundary:        2 shared cPK_90 Materials / 152 slots remain outside bounded roots");
+console.log("  dependency closure:      8460/8460 Materials, including 2 shared cPK_90 Logo Materials");
 console.log(`  proof graph sha256:       ${result.digests.proofGraphSha256}`);

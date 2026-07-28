@@ -44,6 +44,19 @@ npm run audit:restoration
 npm run audit:restoration:json
 ```
 
+当前源码快照（2026-07-28，definition v34）：fresh no-browser gate 的 118 项检查全部通过，
+`auditObligationExactPercent=57.8664%`，`knownImplementationPercent=76.2490%`，
+其中 `missing=0`、`unknown=1`。这些数字只表示证据图完成率；
+`officialShaderRestorationPercent` 与 `gameFidelity` 仍不可用。
+
+独立的按稀有度 render-path 审计已闭合 543/543 个
+rarity × semantic-executable/material-state 义务，并把 2,725/2,725 条官方
+renderer/material-slot/material identity 精确关联到生成后的 scene draw。
+该集合由全局最小的 112 张机制 witness 加 5 张独立证明为最小的稀有度 witness 组成；
+117 张 witness scene 与 6 张补充回归 scene 均已内置。这表示当前 3,191 张
+source-current Face 快照的渲染路径输入闭包为 100%，不表示官方 Shader、
+backend semantic、guest runtime 或像素等价；资产快照缺少的 114 张卡仍在该闭包之外。
+
 几何维度可用 `npm run audit:official-mesh-payload` 独立验证。在四张基准卡范围内，它解析
 78 个官方 MeshFilter，单独标记 4 个 Unity 内置 Quad，并在显式 Unity→glTF 坐标转换后，
 对 74 个资产 Mesh 节点、130 个 GLB primitive 和 81,606 个展开顶点逐字节比较。
@@ -90,16 +103,17 @@ npm run audit:tmp-runtime-evidence
 
 | 维度 | 当前状态 | 推进成本 | 剩余范围 |
 |---|---:|---|---:|
-| 官方 selector 已解析 | 77/77 | `maintenance` | 0 selector |
-| stage-source-bound semantic executable | 26/76 | `shader-reverse-engineering` | 50 executable |
-| backend-semantic complete closure | 0/76 | `backend-semantic-equivalence` | 76 executable |
-| 五字段 exact obligation | 27/135 | `runtime-regression` / `target-runtime-capture` | 108 obligation |
-| 官方 Material slot stage-source-bound | 46,810/58,057 | `shader-reverse-engineering` | 11,247 slot |
+| 官方 selector 已解析 | 78/78 | `maintenance` | 0 selector |
+| stage-source-bound semantic executable | 76/77 | `shader-reverse-engineering` | 1 个 engine-owned executable |
+| backend-semantic complete closure | 0/77 | `backend-semantic-equivalence` | 77 executable |
+| 五字段 exact obligation | 164/395 | `runtime-regression` / `target-runtime-capture` | 231 obligation |
+| 官方 Material slot stage-source-bound | 51,675/58,057 | `shader-reverse-engineering` | 6,382 slot |
 | 渲染管线一致性 | `not-proven` | `runtime-pipeline-research` | guest runtime 与 backend equivalence 未闭合 |
 | 视觉一致性 | `unmeasured` | `excluded-by-policy` | 0 个自动工作单元 |
 
-这些数字来自 hash-pinned 官方 AssetBundle/Shader proof graph 与 selector port contract。当前源码变化后四卡 runtime evidence
-按 fail-closed 规则失效，必须重采后 runtime 字段才能恢复 exact credit。
+这些数字来自 hash-pinned 官方 AssetBundle/Shader proof graph 与 selector port contract。当前 source-bound 四卡
+runtime batch 已通过 4/4，并贡献 `parameterEntry=79`、`passState=28`、`commonBindings=28`、
+`runtimeDispatch=29` 个 exact 字段。
 `stage-source-bound` 表示官方 SPIR-V identity 与生成源码已绑定，不表示 Vulkan→WebGL 指令语义 exact。
 
 渲染管线这一行还会拆成 12 个机器可读阶段。每个阶段分别报告 `proven`、`partial` 或 `not-proven`、
@@ -225,7 +239,12 @@ touch 与动画时间现在来自 native 证据，不再使用指针绝对位置
 
 Bloom 审计固定全部六个官方 SPIR-V program、五级 RT 图、float32 atlas 布局与权重、blur 顺序和
 fixed-function blend state。FinalBlit 审计沿官方 ResourceManager → Material → Shader 链，固定 mip 0
-`textureLod` 最终呈现 pass，并用非对称 2×2 GPU draw/readback fixture 验证成对的 Vulkan→WebGL Y 适配。固定的 ARM64 constructor 与 `CommandBuffer.GetTemporaryRT` overload
+`textureLod` 最终呈现 pass，并用非对称 2×2 GPU draw/readback fixture 验证成对的 Vulkan→WebGL Y 适配。
+官方 `libunity` inline-sampler producer 还会独立把 FinalBlit 的 packed sampler 值 `85` 解码为
+min/mag 线性过滤、nearest mip 与三轴 clamp-to-edge。浏览器只在 display FinalBlit draw 周围绑定独立
+WebGL2 sampler，draw 后立即解绑；source pipeline 会先交给 Homography，因此不会执行自己的 presentation draw。
+这个独立 sampler 禁止改变 scene MRT 的 Point filter contract。生成后的 fragment port 也保留官方 sampled
+result 的 highp，而不是继承 mediump 默认精度。固定的 ARM64 constructor 与 `CommandBuffer.GetTemporaryRT` overload
 证明 scene 路径请求两路 ARGB32 color target 加 Depth24，并使用 Point filter；Bloom 中间 RT
 请求 ARGB32、Linear read/write、Bilinear filter、Depth0、MSAA1、volume depth 1 和非 memoryless。
 浏览器会把这些请求显式映射为 RGBA8/unsigned-byte target，scene/Bloom 分别用 Nearest/Linear，
@@ -236,8 +255,10 @@ fixed-function blend state。FinalBlit 审计沿官方 ResourceManager → Mater
 Unity top-origin、Homography sampling 与 FinalBlit `1-v` 已和目标设备实际 VkFormat、stencil aspect、
 image layout、逐 pass VkViewport 分开记录。Pass 5 已直接绑定
 scene MRT 并 additive 写入 ColorRT；WebGL2 适配对仍 active 的 EmissiveRT 输出零，在官方 shared
-blend state 下是严格 no-op。因此报告中的 Bloom program/执行图阶段为 `proven (8/8)`，
-但 render-target format 与整条 renderer pipeline 仍分别是 `partial` 和 `not-proven`。
+blend state 下是严格 no-op。当前实现 inventory 已覆盖 Bloom 的 8 个子项，但这只是 known coverage，
+不等于官方运行态等价。restoration proof graph 会按唯一 scope 单独计分；Vulkan→WebGL backend 语义和
+官方 guest 的 pass 5 attachment 提交仍未闭合。当前 Bloom 为 `6/8 exact、8/8 known`，因此 Bloom、
+render-target format 与整条 renderer pipeline 都必须保持 `partial`。
 
 MRT 输出审计会沿官方 prefab 的 Material PPtr 和完整 keyword 集合定位实际 Vulkan program，证明哪些
 Shader 写 location 1 以及 RT1 的 replace 状态。Pass partition 审计固定官方 opaque/transparent renderer

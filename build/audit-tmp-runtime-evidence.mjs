@@ -118,7 +118,12 @@ export function auditTmpRuntimeEvidence(file = process.env.PCR_TMP_RUNTIME_EVIDE
       captureErrors.push("non-ex card unexpectedly executed a TMP-Sprite draw");
     }
     if (!expectsExSprite && spriteBindings.length) captureErrors.push("non-ex card unexpectedly executed TextExSprite");
-    if (!nonemptyReadback(evidence.readback?.premultiplied)) captureErrors.push("premultiplied RT is empty or malformed");
+    if (!nonemptyReadback(evidence.readback?.textSource)) {
+      captureErrors.push("Text source RT is empty or malformed");
+    }
+    if (!nonemptyReadback(evidence.readback?.holoSource)) {
+      captureErrors.push("Holo source RT is empty or malformed");
+    }
     if (!nonemptyReadback(evidence.readback?.ui)) captureErrors.push("straight UI RT is empty or malformed");
     if (!nonemptyReadback(evidence.readback?.holo)) captureErrors.push("holo RT is empty or malformed");
     return {

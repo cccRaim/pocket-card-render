@@ -22,7 +22,7 @@ const plan = buildMaterializationPlan({
   exists: allPresent,
 });
 
-assert.equal(plan.length, 112);
+assert.equal(plan.length, 117);
 assert.equal(new Set(plan.map((row) => row.illustrationId)).size, plan.length);
 assert(plan.every((row) => row.faceAvailable));
 assert(plan.every((row) => row.recipeAvailable));
@@ -58,4 +58,5 @@ assert.throws(
 );
 
 console.log("Official card-example materialization plan tests OK");
-console.log(`  globally minimal witnesses: ${plan.length}`);
+console.log("  globally minimal witnesses: 112");
+console.log("  additional rarity-rendering witnesses: 5");

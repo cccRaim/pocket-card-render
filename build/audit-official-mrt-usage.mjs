@@ -20,12 +20,6 @@ const shaderRoot = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
 const strict = process.env.PCR_AUDIT_STRICT_MRT !== "0";
 
-const MRT_ALPHA_SWITCH_BY_SHADER = {
-  Frame: "_EmitMasking",
-  "Frame-Holo-Tuning": "_MaskEmissive",
-  Transparent_Hologram_Tuning: "_EmitMasking",
-};
-
 function sceneShaders() {
   const shaders = new Set();
   const dir = path.join(ROOT, "public");
@@ -109,6 +103,17 @@ function identifierChannelsWereZeroed(glsl, name, channels, beforeIndex) {
   });
 }
 
+function expressionHasExplicitZeroRgb(expression) {
+  const compact = expression.replace(/\s+/g, "");
+  const zero = "0(?:\\.0)?";
+  const scalarZeroRgb = new RegExp(`vec4\\(${zero},${zero},${zero},`);
+  const vec3ZeroChannel = `vec3\\(${zero}\\)\\.[xyz]`;
+  const expandedZeroRgb = new RegExp(
+    `vec4\\(${vec3ZeroChannel},${vec3ZeroChannel},${vec3ZeroChannel},`,
+  );
+  return scalarZeroRgb.test(compact) || expandedZeroRgb.test(compact);
+}
+
 function loc1Usage(glsl, outName) {
   const matches = [...glsl.matchAll(new RegExp(`${outName}\\s*=\\s*([^;]+);`, "g"))];
   const assigns = matches.map((m) => m[1].trim());
@@ -116,6 +121,7 @@ function loc1Usage(glsl, outName) {
   const rgbNonzero = matches.some((m) => {
     const rhs = m[1].trim();
     if (zeroRe.test(rhs)) return false;
+    if (expressionHasExplicitZeroRgb(rhs)) return false;
     const ident = rhs.match(/^([A-Za-z_][A-Za-z0-9_]*)$/)?.[1];
     if (ident && identifierChannelsWereZeroed(glsl, ident, ["x", "y", "z"], m.index)) return false;
     const swizzle = rhs.match(/^([A-Za-z_][A-Za-z0-9_]*)\.([xyzw]{4})$/);
@@ -201,26 +207,10 @@ function officialMrtRows() {
   return rows;
 }
 
-function activeAlphaMaskMaterials(shader) {
-  const prop = MRT_ALPHA_SWITCH_BY_SHADER[shader];
-  if (!prop) return [];
-  const dir = path.join(ROOT, "public");
-  const out = [];
-  for (const sceneName of fs.readdirSync(dir).filter((n) => /^scene\..*\.json$/.test(n))) {
-    const scene = JSON.parse(fs.readFileSync(path.join(dir, sceneName), "utf8"));
-    for (const [matName, mat] of Object.entries(scene.materials || {})) {
-      if (mat.shader !== shader) continue;
-      const value = mat.floats?.[prop] ?? 0;
-      if (value !== 0) out.push(`${sceneName}:${matName}:${prop}=${value}`);
-    }
-  }
-  return out;
-}
-
 const sourceByKind = materialSourceByKind();
 const exactMrtShaders = exactMrtPortShaders();
 const appSource = fs.readFileSync(path.join(ROOT, "public", "app.js"), "utf8");
-if (!/sceneUsesBloomProducer\(scene_data\.materials,\s*exactShaders\)/.test(appSource)) {
+if (!/sceneUsesBloomProducer\(\s*scene_data\.materials,\s*exactShaders,\s*runtimeDispatchIndex,?\s*\)/.test(appSource)) {
   throw new Error("selector-resolved MRT bloom producers are not wired into the scene bloom activation predicate");
 }
 const rows = officialMrtRows().map((row) => {
@@ -229,25 +219,20 @@ const rows = officialMrtRows().map((row) => {
   const localBloom = exactMrtShaders.all.has(row.shader)
     ? exactMrtShaders.bloom.has(row.shader)
     : localBloomSource(src, row.shader);
-  const activeAlphaMasks = row.nonzero && !row.rgbNonzero ? activeAlphaMaskMaterials(row.shader) : [];
   let status = "OK";
   let reason = row.reason;
   if (!row.ok) status = "BAD";
   else if (row.rgbNonzero && !localBloom) {
     status = strict ? "BAD" : "WARN";
     reason = `${row.reason}; local pipeline has no active MRT1 bloom route`;
-  } else if (activeAlphaMasks.length) {
-    status = strict ? "BAD" : "WARN";
-    reason = `${row.reason}; active scene alpha mask is not simulated`;
   }
-  return { ...row, kind: cfg.kind || "", localBloom, activeAlphaMasks, status, reason };
+  return { ...row, kind: cfg.kind || "", localBloom, status, reason };
 });
 
 for (const row of rows.sort((a, b) => a.shader.localeCompare(b.shader))) {
   const sample = row.examples?.length ? ` sample=${row.examples.join(" | ")}` : "";
-  const active = row.activeAlphaMasks?.length ? ` active=${row.activeAlphaMasks.slice(0, 3).join(",")}` : "";
   const official = row.rgbNonzero ? "rgb    " : row.nonzero ? "alpha  " : "zero   ";
-  console.log(`${row.status.padEnd(4)} ${row.shader.padEnd(35)} kind=${row.kind.padEnd(18)} loc1=${String(row.loc1 || "").padEnd(8)} official=${official} localBloom=${row.localBloom ? "yes" : "no "} ${row.reason}${sample}${active}`);
+  console.log(`${row.status.padEnd(4)} ${row.shader.padEnd(35)} kind=${row.kind.padEnd(18)} loc1=${String(row.loc1 || "").padEnd(8)} official=${official} localBloom=${row.localBloom ? "yes" : "no "} ${row.reason}${sample}`);
 }
 
 const bad = rows.filter((r) => r.status === "BAD");

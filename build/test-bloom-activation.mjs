@@ -7,6 +7,9 @@ import {
   sceneUsesExactBloomProducer,
 } from "../public/render/pipeline/bloom-activation.js";
 import { officialPortIdentityKey } from "../public/render/official-port-identity.js";
+import {
+  compileRuntimeMaterialDispatchIndex,
+} from "../public/render/runtime-dispatch-contract.js";
 
 function exactFixture(shader, mrt) {
   const selector = {
@@ -25,14 +28,57 @@ function exactFixture(shader, mrt) {
     runtime_contract: { shader_key: shader },
     mrt,
   };
-  return {
-    entry: {
-      manifest,
-      manifests: [manifest],
-      sourcesByPort: {
-        [officialPortIdentityKey(selector)]: { vert: "void main(){}", frag: "void main(){}" },
-      },
+  const identityKey = officialPortIdentityKey(selector);
+  const dispatchContract = {
+    schema: "pocket-card-render/official-program-port-contract@2",
+    ports: [{
+      selectorId: selector.selectorId,
+      candidateWitnessId: selector.candidateWitnessId,
+      semanticExecutableId: `${shader}-semantic`,
+      subshader: selector.subshader,
+      pass: selector.pass,
+    }],
+    runtimeDispatch: {
+      schema: "pocket-card-render/runtime-material-dispatch@1",
+      routes: [{
+        selectorId: selector.selectorId,
+        candidateWitnessId: selector.candidateWitnessId,
+        semanticExecutableId: `${shader}-semantic`,
+        shaderIdentity: selector.shaderIdentity,
+        keywords: selector.keywords,
+        selectionMode: selector.selectionMode,
+        subshader: selector.subshader,
+        pass: selector.pass,
+        runtimeEngineVariantBoundary: false,
+        dispatch: {
+          support: "implemented",
+          shaderKey: shader,
+          strategy: "fixture",
+          blend: "over",
+          defer: false,
+          materialBlend: false,
+          materialCull: false,
+          capabilities: {},
+        },
+      }],
     },
+  };
+  const source = { vert: "void main(){}", frag: "void main(){}", manifest };
+  const entry = {
+    manifest,
+    manifests: [manifest],
+    sourcesByPort: { [identityKey]: source },
+  };
+  Object.defineProperty(entry, "fixturePortSource", { value: source, enumerable: false });
+  const exactShaders = { [shader]: entry };
+  Object.defineProperty(exactShaders, "sourcesByPortIdentity", {
+    value: { [identityKey]: source },
+    enumerable: false,
+  });
+  return {
+    entry,
+    exactShaders,
+    dispatchIndex: compileRuntimeMaterialDispatchIndex(dispatchContract),
     material: {
       shader,
       official: { shader: selector.shaderIdentity, validKeywords: [] },
@@ -55,28 +101,38 @@ test("active MRT1 producers enable bloom without shader-name or material-color g
   assert.equal(exactShaderHasActiveBloomOutput(zeroSecondary.entry), false);
   assert.equal(exactShaderHasActiveBloomOutput({
     manifest: { mrt: { primary: "_20", emissive: "_21" } },
+  }), true, "an official emissive MRT attachment is an active Bloom producer unless marked inactive");
+  assert.equal(exactShaderHasActiveBloomOutput({
+    manifest: { mrt: { primary: "_20", emissive: "_21", emissive_value: "alpha-only" } },
   }), false);
   assert.equal(exactShaderHasActiveBloomOutput({
-    manifest: { mrt: { primary: "_20", emissive: "_21", webgl_bloom_route: "uBloomOnly" } },
+    manifest: { mrt: { primary: "_20", emissive: "_21", secondary_value: [0, 0, 0, 1] } },
   }), false);
+  assert.equal(exactShaderHasActiveBloomOutput({
+    manifest: { mrt: { primary: "_20", emissive: "_21", secondary_value: "emissive-rgb" } },
+  }), true);
   assert.equal(sceneUsesExactBloomProducer(
     { moving: circular.material },
-    { Card_Circular_Moving_Kira: circular.entry },
+    circular.exactShaders,
+    circular.dispatchIndex,
   ), true);
   assert.equal(sceneUsesExactBloomProducer(
     { flat: zeroSecondary.material },
-    { Card_Hologram_Tuning: zeroSecondary.entry },
+    zeroSecondary.exactShaders,
+    zeroSecondary.dispatchIndex,
   ), false);
   assert.equal(sceneUsesBloomProducer(
     { flat: zeroSecondary.material },
-    { Card_Hologram_Tuning: zeroSecondary.entry },
+    zeroSecondary.exactShaders,
+    zeroSecondary.dispatchIndex,
   ), false, "an exact zero-MRT port must suppress the legacy emissive-property guess");
 
   const mismatched = structuredClone(zeroSecondary.material);
   mismatched.official.shader = "unmatched-identity";
   assert.equal(sceneUsesBloomProducer(
     { flat: mismatched },
-    { Card_Hologram_Tuning: zeroSecondary.entry },
+    zeroSecondary.exactShaders,
+    zeroSecondary.dispatchIndex,
   ), false, "selector mismatch must not guess a bloom producer from material properties");
 
   const invalidDefaults = exactFixture(
@@ -91,10 +147,12 @@ test("active MRT1 producers enable bloom without shader-name or material-color g
   };
   assert.doesNotThrow(() => sceneUsesBloomProducer(
     { invalid: invalidDefaults.material },
-    { Card_Invalid_Defaults: invalidDefaults.entry },
+    invalidDefaults.exactShaders,
+    invalidDefaults.dispatchIndex,
   ));
   assert.equal(sceneUsesBloomProducer(
     { invalid: invalidDefaults.material },
-    { Card_Invalid_Defaults: invalidDefaults.entry },
+    invalidDefaults.exactShaders,
+    invalidDefaults.dispatchIndex,
   ), false, "pass-default disagreement must fail closed without crashing scene pre-scan");
 });

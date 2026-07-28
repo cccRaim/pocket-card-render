@@ -87,6 +87,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4833347315059369753",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:4833347315059369753"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -194,6 +202,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_BGPK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_BGPK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_BGPK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "8996543411664592044",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:8996543411664592044"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -206,6 +222,14 @@
     "_PhaseTex": {
      "name": "Phase_SR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+     "officialName": "Phase_SR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5937532967480845044",
+      "source": "CAB-e7cc1db54d57b534172e98f34c00ae12",
+      "identity": "CAB-e7cc1db54d57b534172e98f34c00ae12:-5937532967480845044"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -218,6 +242,14 @@
     "_RampMaskTex": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -230,6 +262,14 @@
     "_RampTex": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -321,6 +361,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-736260111347303297",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-736260111347303297"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -399,6 +447,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_full_v02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+     "officialName": "card_inner_stencil_mask_full_v02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3519173926683282365",
+      "source": "CAB-3779c172af2c6af5b53006d5de9b9be6",
+      "identity": "CAB-3779c172af2c6af5b53006d5de9b9be6:3519173926683282365"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -533,8 +589,16 @@
    "keywords": [],
    "textures": {
     "_BaseTex": {
-     "name": "Card_Back",
-     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "name": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "officialName": "Card_Back",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3680672549930378084",
+      "source": "CAB-b3a060b8e06893eadc58cd3cc0017a42",
+      "identity": "CAB-b3a060b8e06893eadc58cd3cc0017a42:3680672549930378084"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -695,6 +759,14 @@
     "_BaseTex": {
      "name": "SimpleCard_Side02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "officialName": "SimpleCard_Side02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7427414079537827346",
+      "source": "CAB-5be2d51c53e98a3478ebace9de25b309",
+      "identity": "CAB-5be2d51c53e98a3478ebace9de25b309:7427414079537827346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -824,6 +896,14 @@
     "_RainbowBGTex": {
      "name": "ALL_RMP_MegaEvolutionTag_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1194162536455162222",
+      "source": "CAB-393e7dde9cecdbbb6ab2b126792d402e",
+      "identity": "CAB-393e7dde9cecdbbb6ab2b126792d402e:1194162536455162222"
+     },
      "scale": {
       "x": 1,
       "y": 20
@@ -836,6 +916,14 @@
     "_RainbowBGTintMask": {
      "name": "RainbowTagBGTintMask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "officialName": "RainbowTagBGTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2030125973747593984",
+      "source": "CAB-61fb7d2eae962cc0201e33d658c62b9b",
+      "identity": "CAB-61fb7d2eae962cc0201e33d658c62b9b:-2030125973747593984"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -848,6 +936,14 @@
     "_RainbowOutlineTex": {
      "name": "ALL_RMP_MegaEvolutionTag_Outline",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2326332569849762492",
+      "source": "CAB-cf0d95fedb247f4491fabcf190a7cbd3",
+      "identity": "CAB-cf0d95fedb247f4491fabcf190a7cbd3:2326332569849762492"
+     },
      "scale": {
       "x": 2,
       "y": 1
@@ -860,6 +956,14 @@
     "_RainbowTex": {
      "name": "ALL_RMP_MegaEvolutionTag_Base",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Base",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7343703918009151904",
+      "source": "CAB-51bcf8730198dce60e49a7a608407048",
+      "identity": "CAB-51bcf8730198dce60e49a7a608407048:7343703918009151904"
+     },
      "scale": {
       "x": 1.7999999523162842,
       "y": 1
@@ -872,6 +976,14 @@
     "_RainbowTintMask": {
      "name": "RainbowTagTintMask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "officialName": "RainbowTagTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4137125116236265299",
+      "source": "CAB-9626a93824fbbf2aaed0f11e21b42592",
+      "identity": "CAB-9626a93824fbbf2aaed0f11e21b42592:-4137125116236265299"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -977,6 +1089,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -989,6 +1109,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1001,6 +1129,14 @@
     "_PhaseTex": {
      "name": "Phase_EX_UI_Mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1013,6 +1149,14 @@
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1025,6 +1169,14 @@
     "_RampTex": {
      "name": "MegaRR_EXIcon_EXRule_RMP",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "officialName": "MegaRR_EXIcon_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7799951651130749836",
+      "source": "CAB-de389649dbea99e32ef7d1a48493a955",
+      "identity": "CAB-de389649dbea99e32ef7d1a48493a955:7799951651130749836"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1130,6 +1282,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1142,6 +1302,14 @@
     "_HologramMaskTex": {
      "name": "card_megaEX_EXRule_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "officialName": "card_megaEX_EXRule_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7773388559143795760",
+      "source": "CAB-4ab3c5ab4fedaabcf29403485de532d2",
+      "identity": "CAB-4ab3c5ab4fedaabcf29403485de532d2:-7773388559143795760"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1154,6 +1322,14 @@
     "_PhaseTex": {
      "name": "Phase_EX_UI_Mega",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1166,6 +1342,14 @@
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1178,6 +1362,14 @@
     "_RampTex": {
      "name": "MegaRR_EXRule_RMP",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "officialName": "MegaRR_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1374505480578709091",
+      "source": "CAB-2c00c8af233e869cc341e1f07ceea19c",
+      "identity": "CAB-2c00c8af233e869cc341e1f07ceea19c:1374505480578709091"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1334,6 +1526,14 @@
     "_MainTex": {
      "name": "card_rarity_outline",
      "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "officialName": "card_rarity_outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3009383940076098196",
+      "source": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59",
+      "identity": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59:-3009383940076098196"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1443,6 +1643,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1455,6 +1663,14 @@
     "_MainTex": {
      "name": "card_rarity_star_a",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+     "officialName": "card_rarity_star_a",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1322653114464311142",
+      "source": "CAB-40e42bbe7879b465c5ab66ee596d2567",
+      "identity": "CAB-40e42bbe7879b465c5ab66ee596d2567:-1322653114464311142"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1467,6 +1683,14 @@
     "_PhaseTex": {
      "name": "Phase_Rarity_Star",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+     "officialName": "Phase_Rarity_Star",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-505902701385239388",
+      "source": "CAB-09eb3a3ebe4cc4d0676067e31db89ebc",
+      "identity": "CAB-09eb3a3ebe4cc4d0676067e31db89ebc:-505902701385239388"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1479,6 +1703,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_RareMark",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "officialName": "RMP_MASK_RareMark",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3850834502605539399",
+      "source": "CAB-ae66c11063b1b943772c3289afdece42",
+      "identity": "CAB-ae66c11063b1b943772c3289afdece42:3850834502605539399"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1491,6 +1723,14 @@
     "_RampTex": {
      "name": "ALL_RMP_RareMark_Star",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+     "officialName": "ALL_RMP_RareMark_Star",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3286550040773466442",
+      "source": "CAB-bcb6564720df85eadc2519a3e4c43b0f",
+      "identity": "CAB-bcb6564720df85eadc2519a3e4c43b0f:3286550040773466442"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1647,6 +1887,14 @@
     "_BaseTex": {
      "name": "card_pokemon_normal_base",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+     "officialName": "card_pokemon_normal_base",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4725138620272195076",
+      "source": "CAB-23a4ed88766d007ca036be5855484fe4",
+      "identity": "CAB-23a4ed88766d007ca036be5855484fe4:-4725138620272195076"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1772,6 +2020,14 @@
     "_BaseTex": {
      "name": "card_pokemon_base_sr_ssa",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+     "officialName": "card_pokemon_base_sr_ssa",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "6996035814683344127",
+      "source": "CAB-2853989e88a5a3fef0438e298d89c761",
+      "identity": "CAB-2853989e88a5a3fef0438e298d89c761:6996035814683344127"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1784,6 +2040,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1796,6 +2060,14 @@
     "_HologramMaskTex": {
      "name": "card_frame_mask_R_SR",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "officialName": "card_frame_mask_R_SR",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-604341785784631098",
+      "source": "CAB-a890c7ed38275a78a577243804497965",
+      "identity": "CAB-a890c7ed38275a78a577243804497965:-604341785784631098"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1808,6 +2080,14 @@
     "_PhaseTex": {
      "name": "Phase_SR_Border_01",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+     "officialName": "Phase_SR_Border_01",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8650357480425173757",
+      "source": "CAB-de3c6dbe511ccd0dec748ff4ce91c56f",
+      "identity": "CAB-de3c6dbe511ccd0dec748ff4ce91c56f:-8650357480425173757"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1820,6 +2100,14 @@
     "_RampMaskTex": {
      "name": "SR_RMPmask_Border_01",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+     "officialName": "SR_RMPmask_Border_01",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "8150689715486173636",
+      "source": "CAB-2f4fcf60742f2aea8c330f6239bdf254",
+      "identity": "CAB-2f4fcf60742f2aea8c330f6239bdf254:8150689715486173636"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1832,6 +2120,14 @@
     "_RampTex": {
      "name": "SR_RMP_Border_1",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+     "officialName": "SR_RMP_Border_1",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "393564555331490346",
+      "source": "CAB-f92c4ddc71f8b8bd2a1d506c27e0f06d",
+      "identity": "CAB-f92c4ddc71f8b8bd2a1d506c27e0f06d:393564555331490346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1965,6 +2261,14 @@
     "_HologramMaskTex": {
      "name": "card_frame_mask_R_SR",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "officialName": "card_frame_mask_R_SR",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-604341785784631098",
+      "source": "CAB-a890c7ed38275a78a577243804497965",
+      "identity": "CAB-a890c7ed38275a78a577243804497965:-604341785784631098"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1977,6 +2281,14 @@
     "_PhaseTex": {
      "name": "Phase_SR_Border_02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+     "officialName": "Phase_SR_Border_02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3319817061703196075",
+      "source": "CAB-3d07bcec3395992a2713e89f704202ff",
+      "identity": "CAB-3d07bcec3395992a2713e89f704202ff:3319817061703196075"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1989,6 +2301,14 @@
     "_RampMaskTex": {
      "name": "SR_RMPmask_Border_02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+     "officialName": "SR_RMPmask_Border_02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4069705903269191507",
+      "source": "CAB-973337436e1ad25f6e71a7a537511c46",
+      "identity": "CAB-973337436e1ad25f6e71a7a537511c46:4069705903269191507"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2001,6 +2321,14 @@
     "_RampTex": {
      "name": "SR_RMP_Border_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+     "officialName": "SR_RMP_Border_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5087433654584838039",
+      "source": "CAB-85f7c81ba15e838515c5e45862453e11",
+      "identity": "CAB-85f7c81ba15e838515c5e45862453e11:-5087433654584838039"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2162,6 +2490,14 @@
     "_AuraMask": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6831328278527416670",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6831328278527416670"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2174,6 +2510,14 @@
     "_FBMTex": {
      "name": "fbm_u14v14_x0y0_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "officialName": "fbm_u14v14_x0y0_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-226510259740242032",
+      "source": "CAB-966dcb06c0cf39ea2caa29ddebeb6408",
+      "identity": "CAB-966dcb06c0cf39ea2caa29ddebeb6408:-226510259740242032"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2186,6 +2530,14 @@
     "_FlowTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1223185633712338373",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1223185633712338373"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2285,6 +2637,14 @@
     "_PhaseTex": {
      "name": "Phase_SR_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+     "officialName": "Phase_SR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5937532967480845044",
+      "source": "CAB-e7cc1db54d57b534172e98f34c00ae12",
+      "identity": "CAB-e7cc1db54d57b534172e98f34c00ae12:-5937532967480845044"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2297,6 +2657,14 @@
     "_RampMaskTex": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2309,6 +2677,14 @@
     "_RampTex": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2406,6 +2782,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2507,6 +2891,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PAR1",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PAR1.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PAR1",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4129578569366583755",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:4129578569366583755"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2677,6 +3069,14 @@
     "_DistanceMask": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6831328278527416670",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6831328278527416670"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2689,6 +3089,14 @@
     "_FBMTex": {
      "name": "fbm_u14v14_x0y0_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "officialName": "fbm_u14v14_x0y0_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-226510259740242032",
+      "source": "CAB-966dcb06c0cf39ea2caa29ddebeb6408",
+      "identity": "CAB-966dcb06c0cf39ea2caa29ddebeb6408:-226510259740242032"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2701,6 +3109,14 @@
     "_FlowMap": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2374325172002380468",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:2374325172002380468"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2713,6 +3129,14 @@
     "_FlowTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1223185633712338373",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1223185633712338373"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2725,6 +3149,14 @@
     "_ParticleShapeMask": {
      "name": "FlowParticle_shape_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "officialName": "FlowParticle_shape_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5583123275420042728",
+      "source": "CAB-b8a2b689e97e5788a8fe3315b3c9a271",
+      "identity": "CAB-b8a2b689e97e5788a8fe3315b3c9a271:5583123275420042728"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2737,6 +3169,14 @@
     "_ParticleTex": {
      "name": "FlowParticle",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "officialName": "FlowParticle",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1396464245351795959",
+      "source": "CAB-8a7499e5916056b2cbd284fc54454876",
+      "identity": "CAB-8a7499e5916056b2cbd284fc54454876:1396464245351795959"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2907,6 +3347,14 @@
     "_DistanceMask": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6831328278527416670",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6831328278527416670"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2919,6 +3367,14 @@
     "_FBMTex": {
      "name": "fbm_u14v14_x0y0_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "officialName": "fbm_u14v14_x0y0_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-226510259740242032",
+      "source": "CAB-966dcb06c0cf39ea2caa29ddebeb6408",
+      "identity": "CAB-966dcb06c0cf39ea2caa29ddebeb6408:-226510259740242032"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2931,6 +3387,14 @@
     "_FlowMap": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2374325172002380468",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:2374325172002380468"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2943,6 +3407,14 @@
     "_FlowTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1223185633712338373",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1223185633712338373"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2955,6 +3427,14 @@
     "_ParticleShapeMask": {
      "name": "FlowParticle_shape_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "officialName": "FlowParticle_shape_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5583123275420042728",
+      "source": "CAB-b8a2b689e97e5788a8fe3315b3c9a271",
+      "identity": "CAB-b8a2b689e97e5788a8fe3315b3c9a271:5583123275420042728"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -2967,6 +3447,14 @@
     "_ParticleTex": {
      "name": "FlowParticle",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "officialName": "FlowParticle",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1396464245351795959",
+      "source": "CAB-8a7499e5916056b2cbd284fc54454876",
+      "identity": "CAB-8a7499e5916056b2cbd284fc54454876:1396464245351795959"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3137,6 +3625,14 @@
     "_DistanceMask": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6831328278527416670",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6831328278527416670"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3149,6 +3645,14 @@
     "_FBMTex": {
      "name": "fbm_u14v14_x0y0_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "officialName": "fbm_u14v14_x0y0_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-226510259740242032",
+      "source": "CAB-966dcb06c0cf39ea2caa29ddebeb6408",
+      "identity": "CAB-966dcb06c0cf39ea2caa29ddebeb6408:-226510259740242032"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3161,6 +3665,14 @@
     "_FlowMap": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2374325172002380468",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:2374325172002380468"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3173,6 +3685,14 @@
     "_FlowTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1223185633712338373",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1223185633712338373"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3185,6 +3705,14 @@
     "_ParticleShapeMask": {
      "name": "FlowParticle_shape_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "officialName": "FlowParticle_shape_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5583123275420042728",
+      "source": "CAB-b8a2b689e97e5788a8fe3315b3c9a271",
+      "identity": "CAB-b8a2b689e97e5788a8fe3315b3c9a271:5583123275420042728"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3197,6 +3725,14 @@
     "_ParticleTex": {
      "name": "FlowParticle",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "officialName": "FlowParticle",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1396464245351795959",
+      "source": "CAB-8a7499e5916056b2cbd284fc54454876",
+      "identity": "CAB-8a7499e5916056b2cbd284fc54454876:1396464245351795959"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3367,6 +3903,14 @@
     "_DistanceMask": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6831328278527416670",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6831328278527416670"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3379,6 +3923,14 @@
     "_FBMTex": {
      "name": "fbm_u14v14_x0y0_2",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "officialName": "fbm_u14v14_x0y0_2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-226510259740242032",
+      "source": "CAB-966dcb06c0cf39ea2caa29ddebeb6408",
+      "identity": "CAB-966dcb06c0cf39ea2caa29ddebeb6408:-226510259740242032"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3391,6 +3943,14 @@
     "_FlowMap": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2374325172002380468",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:2374325172002380468"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3403,6 +3963,14 @@
     "_FlowTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1223185633712338373",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1223185633712338373"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3415,6 +3983,14 @@
     "_ParticleShapeMask": {
      "name": "FlowParticle_shape_mask",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "officialName": "FlowParticle_shape_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5583123275420042728",
+      "source": "CAB-b8a2b689e97e5788a8fe3315b3c9a271",
+      "identity": "CAB-b8a2b689e97e5788a8fe3315b3c9a271:5583123275420042728"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3427,6 +4003,14 @@
     "_ParticleTex": {
      "name": "FlowParticle",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "officialName": "FlowParticle",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1396464245351795959",
+      "source": "CAB-8a7499e5916056b2cbd284fc54454876",
+      "identity": "CAB-8a7499e5916056b2cbd284fc54454876:1396464245351795959"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3557,6 +4141,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3569,6 +4161,14 @@
     "_FlipBook": {
      "name": "FlipBookReflect_es35",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "officialName": "FlipBookReflect_es35",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2326180214234990361",
+      "source": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee",
+      "identity": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee:-2326180214234990361"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3581,6 +4181,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1843680250713358428",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1843680250713358428"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3593,6 +4201,14 @@
     "_MaskTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1549590722813987634",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-1549590722813987634"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3605,6 +4221,14 @@
     "_OutlineRampTex": {
      "name": "FlipBookOutline_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "officialName": "FlipBookOutline_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3638200878790753246",
+      "source": "CAB-a4204d16c7b8ec806eada57151a584d4",
+      "identity": "CAB-a4204d16c7b8ec806eada57151a584d4:-3638200878790753246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3617,6 +4241,14 @@
     "_PhaseTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4447653599241361900",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-4447653599241361900"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3629,6 +4261,14 @@
     "_PhaseTex2": {
      "name": "Phase_SR_ShadowBox",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "officialName": "Phase_SR_ShadowBox",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2142485044764610360",
+      "source": "CAB-d829a479d009832e6dd989324e739f0c",
+      "identity": "CAB-d829a479d009832e6dd989324e739f0c:2142485044764610360"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3641,6 +4281,14 @@
     "_RampMaskTex2": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3653,6 +4301,14 @@
     "_RampTex": {
      "name": "FlipBookOutline_base_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "officialName": "FlipBookOutline_base_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6208011919033541021",
+      "source": "CAB-9ec5e241e84068f91c2feda5143c99e8",
+      "identity": "CAB-9ec5e241e84068f91c2feda5143c99e8:-6208011919033541021"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3665,6 +4321,14 @@
     "_RampTex2": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3795,6 +4459,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3807,6 +4479,14 @@
     "_FlipBook": {
      "name": "FlipBookReflect_es35",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "officialName": "FlipBookReflect_es35",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2326180214234990361",
+      "source": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee",
+      "identity": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee:-2326180214234990361"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3819,6 +4499,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1843680250713358428",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1843680250713358428"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3831,6 +4519,14 @@
     "_MaskTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1549590722813987634",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-1549590722813987634"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3843,6 +4539,14 @@
     "_OutlineRampTex": {
      "name": "FlipBookOutline_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "officialName": "FlipBookOutline_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3638200878790753246",
+      "source": "CAB-a4204d16c7b8ec806eada57151a584d4",
+      "identity": "CAB-a4204d16c7b8ec806eada57151a584d4:-3638200878790753246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3855,6 +4559,14 @@
     "_PhaseTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4447653599241361900",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-4447653599241361900"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3867,6 +4579,14 @@
     "_PhaseTex2": {
      "name": "Phase_SR_ShadowBox",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "officialName": "Phase_SR_ShadowBox",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2142485044764610360",
+      "source": "CAB-d829a479d009832e6dd989324e739f0c",
+      "identity": "CAB-d829a479d009832e6dd989324e739f0c:2142485044764610360"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3879,6 +4599,14 @@
     "_RampMaskTex2": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3891,6 +4619,14 @@
     "_RampTex": {
      "name": "FlipBookOutline_base_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "officialName": "FlipBookOutline_base_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6208011919033541021",
+      "source": "CAB-9ec5e241e84068f91c2feda5143c99e8",
+      "identity": "CAB-9ec5e241e84068f91c2feda5143c99e8:-6208011919033541021"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -3903,6 +4639,14 @@
     "_RampTex2": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4033,6 +4777,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4045,6 +4797,14 @@
     "_FlipBook": {
      "name": "FlipBookReflect_es35",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "officialName": "FlipBookReflect_es35",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2326180214234990361",
+      "source": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee",
+      "identity": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee:-2326180214234990361"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4057,6 +4817,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1843680250713358428",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1843680250713358428"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4069,6 +4837,14 @@
     "_MaskTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1549590722813987634",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-1549590722813987634"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4081,6 +4857,14 @@
     "_OutlineRampTex": {
      "name": "FlipBookOutline_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "officialName": "FlipBookOutline_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3638200878790753246",
+      "source": "CAB-a4204d16c7b8ec806eada57151a584d4",
+      "identity": "CAB-a4204d16c7b8ec806eada57151a584d4:-3638200878790753246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4093,6 +4877,14 @@
     "_PhaseTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4447653599241361900",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-4447653599241361900"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4105,6 +4897,14 @@
     "_PhaseTex2": {
      "name": "Phase_SR_ShadowBox",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "officialName": "Phase_SR_ShadowBox",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2142485044764610360",
+      "source": "CAB-d829a479d009832e6dd989324e739f0c",
+      "identity": "CAB-d829a479d009832e6dd989324e739f0c:2142485044764610360"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4117,6 +4917,14 @@
     "_RampMaskTex2": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4129,6 +4937,14 @@
     "_RampTex": {
      "name": "FlipBookOutline_base_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "officialName": "FlipBookOutline_base_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6208011919033541021",
+      "source": "CAB-9ec5e241e84068f91c2feda5143c99e8",
+      "identity": "CAB-9ec5e241e84068f91c2feda5143c99e8:-6208011919033541021"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4141,6 +4957,14 @@
     "_RampTex2": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4271,6 +5095,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4283,6 +5115,14 @@
     "_FlipBook": {
      "name": "FlipBookReflect_es35",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "officialName": "FlipBookReflect_es35",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2326180214234990361",
+      "source": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee",
+      "identity": "CAB-30c61b6d7749e22b5029df7bbd3ba4ee:-2326180214234990361"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4295,6 +5135,14 @@
     "_MainTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1843680250713358428",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1843680250713358428"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4307,6 +5155,14 @@
     "_MaskTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1549590722813987634",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-1549590722813987634"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4319,6 +5175,14 @@
     "_OutlineRampTex": {
      "name": "FlipBookOutline_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "officialName": "FlipBookOutline_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3638200878790753246",
+      "source": "CAB-a4204d16c7b8ec806eada57151a584d4",
+      "identity": "CAB-a4204d16c7b8ec806eada57151a584d4:-3638200878790753246"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4331,6 +5195,14 @@
     "_PhaseTex": {
      "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
      "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH.png",
+     "officialName": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4447653599241361900",
+      "source": "CAB-46381ce04bcae4d175f44b2ba92ee9dd",
+      "identity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-4447653599241361900"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4343,6 +5215,14 @@
     "_PhaseTex2": {
      "name": "Phase_SR_ShadowBox",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "officialName": "Phase_SR_ShadowBox",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2142485044764610360",
+      "source": "CAB-d829a479d009832e6dd989324e739f0c",
+      "identity": "CAB-d829a479d009832e6dd989324e739f0c:2142485044764610360"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4355,6 +5235,14 @@
     "_RampMaskTex2": {
      "name": "SR_RMPmask_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "officialName": "SR_RMPmask_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5292559525388007056",
+      "source": "CAB-385a09820ae01e31c747ed872fe57e07",
+      "identity": "CAB-385a09820ae01e31c747ed872fe57e07:-5292559525388007056"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4367,6 +5255,14 @@
     "_RampTex": {
      "name": "FlipBookOutline_base_ramp",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "officialName": "FlipBookOutline_base_ramp",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6208011919033541021",
+      "source": "CAB-9ec5e241e84068f91c2feda5143c99e8",
+      "identity": "CAB-9ec5e241e84068f91c2feda5143c99e8:-6208011919033541021"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4379,6 +5275,14 @@
     "_RampTex2": {
      "name": "SR_RMP_BG_SB",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "officialName": "SR_RMP_BG_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7481947564312647108",
+      "source": "CAB-9544694a1d9285225cfcf16e6d62220f",
+      "identity": "CAB-9544694a1d9285225cfcf16e6d62220f:-7481947564312647108"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -4416,7 +5320,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:4642797944511568369",
    "shaderIdentity": "CAB-feca102e2ab42d700bc7d72a39330454:8147289495056524436",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:5054787843356545059",
+     "role": "parallax",
+     "searchTag": "Card_Parallax_Transparent_Translate"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:3555862141067513891#0",
@@ -4637,7 +5548,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1452464207166521529",
    "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
    "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6925096515130699741",
+     "role": "aura",
+     "searchTag": "Card-Aura"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:949699356107067427#0",
@@ -4689,7 +5607,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:5681797264359367052",
    "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-2866116279887465125",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691",
+     "role": "aura",
+     "searchTag": "Card-Aura"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691#2",
@@ -4702,7 +5627,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-3615542081175564452",
    "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-2866116279887465125",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691",
+     "role": "aura",
+     "searchTag": "Card-Aura"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691#1",
@@ -4715,7 +5647,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6093801410670934771",
    "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-2866116279887465125",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691",
+     "role": "aura",
+     "searchTag": "Card-Aura"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691#3",
@@ -4728,7 +5667,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-8391917618666677076",
    "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-2866116279887465125",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691",
+     "role": "aura",
+     "searchTag": "Card-Aura"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189#0",
@@ -4741,7 +5687,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-5365228853561819608",
    "shaderIdentity": "CAB-357d390f82e81058a0bb8f4f50dd2880:-336364313305745452",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:3948091422977543779",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189",
+     "role": "shadowbox",
+     "searchTag": "ShadowBox_MSR"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189#2",
@@ -4754,7 +5707,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:4369167122627987324",
    "shaderIdentity": "CAB-357d390f82e81058a0bb8f4f50dd2880:-336364313305745452",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:3948091422977543779",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189",
+     "role": "shadowbox",
+     "searchTag": "ShadowBox_MSR"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189#1",
@@ -4767,7 +5727,14 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-7261834475158800977",
    "shaderIdentity": "CAB-357d390f82e81058a0bb8f4f50dd2880:-336364313305745452",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:3948091422977543779",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189",
+     "role": "shadowbox",
+     "searchTag": "ShadowBox_MSR"
+    }
+   }
   },
   {
    "drawId": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189#3",
@@ -4780,12 +5747,367 @@
    "materialIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:601542823230106939",
    "shaderIdentity": "CAB-357d390f82e81058a0bb8f4f50dd2880:-336364313305745452",
    "meshIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:3948091422977543779",
-   "rendererProperties": {}
+   "rendererProperties": {
+    "cardMSR": {
+     "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+     "rendererIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189",
+     "role": "shadowbox",
+     "searchTag": "ShadowBox_MSR"
+    }
+   }
   }
  ],
  "runtimeSettings": {
   "kiraPuyo": {},
-  "circularKira": {}
+  "circularKira": {},
+  "cardFuture": {},
+  "cardAncient": {},
+  "ancientBGAnimation": {},
+  "cardMarble": {},
+  "cardMSR": {
+   "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003": {
+    "componentIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:6623677083657556003",
+    "componentGoIdentity": "CAB-46381ce04bcae4d175f44b2ba92ee9dd:8445751528016498723",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:-1709961564312891031",
+    "animationSettingsIdentity": "CAB-cd526098ad1cc44138da75873c83fdbb:4344838477251992114",
+    "rendererBindings": {
+     "aura": [
+      "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-6925096515130699741",
+      "CAB-46381ce04bcae4d175f44b2ba92ee9dd:1280236255604166691"
+     ],
+     "parallax": [
+      "CAB-46381ce04bcae4d175f44b2ba92ee9dd:5054787843356545059"
+     ],
+     "shadowbox": [
+      "CAB-46381ce04bcae4d175f44b2ba92ee9dd:-104341104215732189"
+     ]
+    },
+    "isAnimationStopped": 0,
+    "animStartDegree": 10,
+    "animTimeScale": 1,
+    "animDuration": 2.299999952316284,
+    "endAnimDuration": 0.5,
+    "stopAnimTiming": 0.699999988079071,
+    "timeOffset": 1.5,
+    "intensityNoiseSpeed": 2.5,
+    "reflectFlipBookMaxSpeed": 0.25999999046325684,
+    "reflectStartBane": 22,
+    "reflectStartNensei": 10,
+    "reflectEndBane": 10,
+    "reflectEndNensei": 18,
+    "checkRotatingTime": 0.30000001192092896,
+    "rotatingEndThreshold": 0.009999999776482582,
+    "rotatingStartThreshold": 0.10000000149011612,
+    "disappearBane": 48,
+    "disappearNensei": 10,
+    "appearBane": 48,
+    "appearNensei": 10,
+    "componentGoPath": "cPK_20_010840_00_MEGAKAILIOSex_SR_L"
+   }
+  },
+  "msrAnimation": {
+   "CAB-cd526098ad1cc44138da75873c83fdbb:4344838477251992114": {
+    "identity": "CAB-cd526098ad1cc44138da75873c83fdbb:4344838477251992114",
+    "name": "MSR_OutlineAnimation",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:3907202908099771531",
+    "curves": {
+     "OutlineReflectCenterX": {
+      "keys": [
+       {
+        "time": 0,
+        "value": -0.2099754810333252,
+        "inSlope": 0.423104852437973,
+        "outSlope": 0.423104852437973,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.10303030163049698
+       },
+       {
+        "time": 2.200000047683716,
+        "value": 1.557201623916626,
+        "inSlope": 1.3841174840927124,
+        "outSlope": 1.3841174840927124,
+        "weightedMode": 0,
+        "inWeight": 0.07919609546661377,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "OutlineReflectColorIntensity": {
+      "keys": [
+       {
+        "time": 0.0060554686933755875,
+        "value": 1.9562734365463257,
+        "inSlope": -0.0032568129245191813,
+        "outSlope": -0.0032568129245191813,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.5243369340896606
+       },
+       {
+        "time": 0.9906312227249146,
+        "value": 1.6252602338790894,
+        "inSlope": -0.007856829091906548,
+        "outSlope": -0.007856829091906548,
+        "weightedMode": 3,
+        "inWeight": 0.301108181476593,
+        "outWeight": 0.37936931848526
+       },
+       {
+        "time": 1.7598977088928223,
+        "value": 1.7649534940719604,
+        "inSlope": 0.5558019280433655,
+        "outSlope": 0.5558019280433655,
+        "weightedMode": 3,
+        "inWeight": 0.2047986388206482,
+        "outWeight": 0.4684504568576813
+       },
+       {
+        "time": 2.200000047683716,
+        "value": 1.9562734365463257,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 1,
+        "inWeight": 0.31575825810432434,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ColorIntensityNoiseStrength": {
+      "keys": [
+       {
+        "time": -4.777909907716094e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": -0.00004901316424366087,
+        "outSlope": -0.00004901316424366087,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.31195756793022156
+       },
+       {
+        "time": 2.700000047683716,
+        "value": 0,
+        "inSlope": -0.00007008507964201272,
+        "outSlope": -0.00007008507964201272,
+        "weightedMode": 1,
+        "inWeight": 0.2708568274974823,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "OutlineReflectFlipBookAnim": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 0.015128906816244125,
+        "outSlope": 0.015128906816244125,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.23198848962783813
+       },
+       {
+        "time": 1.2609370946884155,
+        "value": 0.7056142091751099,
+        "inSlope": 0.44247299432754517,
+        "outSlope": 0.44247299432754517,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.24406014382839203
+       },
+       {
+        "time": 2.200000047683716,
+        "value": 0.8498908281326294,
+        "inSlope": -1.00134663227891e-7,
+        "outSlope": -1.00134663227891e-7,
+        "weightedMode": 0,
+        "inWeight": 0.22046107053756714,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "OutlineReflectStartSpeed": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 5.901765823364258,
+        "outSlope": 5.901765823364258,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.012515490874648094
+       },
+       {
+        "time": 1,
+        "value": 1,
+        "inSlope": -0.0015711865853518248,
+        "outSlope": -0.0015711865853518248,
+        "weightedMode": 3,
+        "inWeight": 0.9975669384002686,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "OutlineReflectEndSpeed": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 1,
+        "inSlope": -0.05755744129419327,
+        "outSlope": -0.05755744129419327,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.5631149411201477
+       },
+       {
+        "time": 0.5,
+        "value": 0,
+        "inSlope": -12.513519287109375,
+        "outSlope": -12.513519287109375,
+        "weightedMode": 3,
+        "inWeight": 0.04924333095550537,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "AuraTransparency": {
+      "keys": [
+       {
+        "time": 0.0060554686933755875,
+        "value": 1.0014029741287231,
+        "inSlope": -0.0032568129245191813,
+        "outSlope": -0.0032568129245191813,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.5243369340896606
+       },
+       {
+        "time": 0.9906312227249146,
+        "value": 0.45570406317710876,
+        "inSlope": -0.007856829091906548,
+        "outSlope": -0.007856829091906548,
+        "weightedMode": 3,
+        "inWeight": 0.301108181476593,
+        "outWeight": 0.37936931848526
+       },
+       {
+        "time": 1.7598977088928223,
+        "value": 0.737697422504425,
+        "inSlope": 0.8931022882461548,
+        "outSlope": 0.8931022882461548,
+        "weightedMode": 3,
+        "inWeight": 0.2047986388206482,
+        "outWeight": 0.3170669376850128
+       },
+       {
+        "time": 2.200000047683716,
+        "value": 1.0003076791763306,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 1,
+        "inWeight": 0.31575825810432434,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxTransparency": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 1.3534682989120483,
+        "outSlope": 1.3534682989120483,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.05187319964170456
+       },
+       {
+        "time": 1,
+        "value": 1,
+        "inSlope": 0.5267548561096191,
+        "outSlope": 0.5267548561096191,
+        "weightedMode": 0,
+        "inWeight": 0.07204610109329224,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxTranslate": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 1,
+        "outSlope": 1,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       },
+       {
+        "time": 1,
+        "value": 1,
+        "inSlope": 1,
+        "outSlope": 1,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxAppearTransparency": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxAppearTranslate": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxDisappearTransparency": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "ParallaxDisappearTranslate": {
+      "keys": [],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     }
+    }
+   }
+  }
  },
  "textures": {
   "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA.png",
@@ -4795,7 +6117,7 @@
   "SR_RMP_BG_SB": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
   "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB.png",
   "card_inner_stencil_mask_full_v02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
-  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
   "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
   "ALL_RMP_MegaEvolutionTag_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
   "RainbowTagBGTintMask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
@@ -4846,7 +6168,7 @@
   "SR_RMP_BG_SB": "opaque",
   "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB": "straight",
   "card_inner_stencil_mask_full_v02": "opaque",
-  "Card_Back": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "opaque",
   "SimpleCard_Side02": "opaque",
   "ALL_RMP_MegaEvolutionTag_BG": "opaque",
   "RainbowTagBGTintMask": "opaque",
@@ -4897,7 +6219,7 @@
   "SR_RMP_BG_SB": 1,
   "cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB": 1,
   "card_inner_stencil_mask_full_v02": 1,
-  "Card_Back": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": 1,
   "SimpleCard_Side02": 1,
   "ALL_RMP_MegaEvolutionTag_BG": 1,
   "RainbowTagBGTintMask": 1,

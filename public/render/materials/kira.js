@@ -9,7 +9,7 @@ const KIRA_SLOTS = ["_BaseTex", "_ScrollLayerMask", "_RampTex"];
 defineMaterial("scalingKira", {
   requires: (recipe, ctx) => KIRA_SLOTS.every((slot) => !!ctx.layerTexDefault(recipe, slot)),
   build(recipe, ctx) {
-    const exact = ctx.exactShaderPort(recipe, "Card_Scaling_Kira");
+    const exact = ctx.exactShaderPort(recipe);
     const component = recipe.rendererProperties?.kiraPuyo;
     const settings = component && ctx.runtimeSettings?.kiraPuyo?.[component.settingsIdentity];
     if (!exact || !component || !settings) return null;
@@ -62,9 +62,9 @@ function hasCircularContract(recipe, ctx) {
   return !!binding && !!ctx.runtimeSettings?.circularKira?.[binding.componentIdentity];
 }
 
-function circularMaterials(recipe, ctx, shader, dynamicUniforms) {
+function circularMaterials(recipe, ctx, dynamicUniforms) {
   const component = circularState(recipe, ctx);
-  const ports = ctx.exactShaderPorts(recipe, shader);
+  const ports = ctx.exactShaderPorts(recipe);
   if (!component || ports.length !== 2) return null;
   return ports.map((port) => {
     const uniforms = ctx.exactPortUniforms(
@@ -82,7 +82,7 @@ function circularMaterials(recipe, ctx, shader, dynamicUniforms) {
       toneMapped: false,
     });
     material.userData.straight = true;
-    material.userData.exactShader = shader;
+    material.userData.exactShader = recipe.runtimeDispatch.shaderKey;
     material.userData.officialPassRuntime = port.manifest?.official_pass_runtime || null;
     material.userData.officialSelector = port.manifest?.official_selector || null;
     material.userData.officialExecutableIdentity = port.manifest?.official_executable_identity || null;
@@ -96,11 +96,10 @@ function circularMaterials(recipe, ctx, shader, dynamicUniforms) {
 
 defineMaterial("circularMovingKira", {
   requires: (recipe, ctx) => hasCircularContract(recipe, ctx)
-    && ctx.exactShaderPorts(recipe, "Card_Circular_Moving_Kira").length === 2,
+    && ctx.exactShaderPorts(recipe).length === 2,
   build: (recipe, ctx) => circularMaterials(
     recipe,
     ctx,
-    "Card_Circular_Moving_Kira",
     (state) => ({
       _Tilt: { value: state.tilt },
       _CircularDefaultAngle: { value: state.defaultCircularAngle },
@@ -120,11 +119,10 @@ defineMaterial("circularMovingKira", {
 
 defineMaterial("circularTrailKira", {
   requires: (recipe, ctx) => hasCircularContract(recipe, ctx)
-    && ctx.exactShaderPorts(recipe, "Card_Circular_Trail_Kira").length === 2,
+    && ctx.exactShaderPorts(recipe).length === 2,
   build: (recipe, ctx) => circularMaterials(
     recipe,
     ctx,
-    "Card_Circular_Trail_Kira",
     (state) => ({
       _CircularDefaultAngle: { value: state.defaultCircularAngle },
       _NoiseTime: { value: state.time * 2 },

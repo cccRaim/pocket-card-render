@@ -64,4 +64,26 @@ assert.throws(() => evaluatePipelineProof({
   verifierPassed: () => true,
 }), /more proof nodes than denominator units/);
 
-console.log("restoration pipeline proof graph: 11/11 passed");
+assert.throws(() => validatePipelineProofGraph({
+  bloom: [
+    { id: "a", scopeId: "same", verifiers: ["a"] },
+    { id: "b", scopeId: "same", verifiers: ["b"] },
+  ],
+}), /duplicate pipeline proof scopeId/);
+
+assert.throws(() => validatePipelineProofGraph({
+  bloom: [
+    { id: "a", scopeId: "a", claimVerifier: "claim", verifiers: ["claim"] },
+    { id: "b", scopeId: "b", claimVerifier: "claim", verifiers: ["claim", "support"] },
+  ],
+}), /duplicate pipeline claim verifier/);
+
+assert.throws(() => validatePipelineProofGraph({
+  bloom: [{ id: "a", verifiers: ["unknown"] }],
+}, { registeredVerifiers: ["known"] }), /unknown verifier/);
+
+assert.throws(() => validatePipelineProofGraph({
+  bloom: [{ id: "a", claimVerifier: "claim", verifiers: ["support"] }],
+}), /claimVerifier is not in verifiers/);
+
+console.log("restoration pipeline proof graph: 15/15 passed");

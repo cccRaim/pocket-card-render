@@ -184,6 +184,36 @@ assert.throws(() => orderOfficialPasses([
   orderedManifests[0],
   structuredClone(orderedManifests[0]),
 ], (entry) => entry.official_selector), /duplicate composite identity/);
+
+const dispatchedShaders = {};
+Object.defineProperty(dispatchedShaders, "sourcesByPortIdentity", {
+  value: Object.fromEntries(orderedManifests.map((entry) => [
+    officialPortIdentityKey(entry.official_selector),
+    {
+      vert: `dispatch-vertex-${entry.official_selector.pass}`,
+      frag: `dispatch-fragment-${entry.official_selector.pass}`,
+      manifest: entry,
+    },
+  ])),
+});
+const dispatchedRecipe = {
+  official: { shader: "CAB-ordered:4", validKeywords: [] },
+  runtimeDispatch: {
+    shaderKey: "diagnostic-only",
+    officialPorts: orderedManifests
+      .map((entry) => ({ ...entry.official_selector }))
+      .sort((left, right) => left.pass - right.pass),
+  },
+};
+const dispatchedPorts = selectExactShaderPorts(dispatchedShaders, dispatchedRecipe);
+assert.deepEqual(
+  dispatchedPorts.map((port) => port.frag),
+  ["dispatch-fragment-0", "dispatch-fragment-1"],
+);
+const missingDispatchedSource = structuredClone(dispatchedRecipe);
+missingDispatchedSource.runtimeDispatch.officialPorts[1].candidateWitnessId = "missing";
+assert.deepEqual(selectExactShaderPorts(dispatchedShaders, missingDispatchedSource), []);
+
 assert.equal(selectExactShaderPort(withUr, {
   official: { shader: "CAB-wrong:4", validKeywords: [] },
 }, "Card_Parallax_UR"), null);

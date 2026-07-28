@@ -121,8 +121,8 @@ if (semantics.size !== 4) issues.push(`expected 4 unique semantic executables, g
 
 const baseSource = fs.readFileSync(path.join(ROOT, "public", "render", "materials", "base.js"), "utf8");
 const effectStart = baseSource.indexOf('defineMaterial("effect"');
-const exactStart = baseSource.indexOf('ctx.exactShaderPort(r, "Effect")', effectStart);
-const fallbackStart = baseSource.indexOf('ctx.compatibleStageSource("Effect")', effectStart);
+const exactStart = baseSource.indexOf("ctx.exactShaderPort(r)", effectStart);
+const fallbackStart = baseSource.indexOf("ctx.compatibleStageSource(r)", effectStart);
 if (effectStart < 0 || exactStart < effectStart || fallbackStart < exactStart) {
   issues.push("Effect exact selector dispatch must precede the non-exact fallback");
 }

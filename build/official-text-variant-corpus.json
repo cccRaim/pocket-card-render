@@ -1,8 +1,8 @@
 {
  "schema": "pocket-card-render/official-text-variant-corpus@1",
  "schemaVersion": 1,
- "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2",
- "sampleManifestSha256": "2515cae195ee58f06c32f5d0c7d063c6b7a1f03b5743696e2181786d074d4b4d",
+ "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+ "sampleManifestSha256": "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
  "sourcePolicy": {
   "expectationSources": [
    "official-card-text-design-contract",
@@ -19,7 +19,7 @@
  "inputs": {
   "cardTextDesignContract": {
    "logicalPath": "public/render/card-text-design-contract.json",
-   "sha256": "4f3071386be0d28f052f1e456f68aff1ccbbc1ff8ca0008b2f0e8f97139a98b9"
+   "sha256": "3f5d4b8c80f7b58130350a7dcd55cc6b23229928853426d720b9927e68359e45"
   },
   "cardFontContract": {
    "logicalPath": "public/render/card-font-contract.json",

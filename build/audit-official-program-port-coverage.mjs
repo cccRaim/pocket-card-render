@@ -20,8 +20,8 @@ const INVENTORY = path.resolve(process.env.PCR_MATERIAL_PROGRAM_INVENTORY
   || path.join(ROOT, "$cache", "official-material-program-inventory-v4-full.json"));
 const CONTRACT = path.join(ROOT, "public", "shaders", "official_program_port_contract.json");
 const FULL_RUNTIME = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
-const EXPECTED_PROOF = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
-const EXPECTED_PORT_INDEX = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const EXPECTED_PROOF = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const EXPECTED_PORT_INDEX = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
 const JSON_MODE = process.argv.includes("--json");
 const GENERATORS_EXTERNALLY_VERIFIED = process.env.PCR_PROGRAM_PORT_GENERATORS_EXTERNALLY_VERIFIED === "1";
 const FIELDS = ["stageProgram", "parameterEntry", "passState", "commonBindings", "runtimeDispatch"];
@@ -123,7 +123,7 @@ const { inventory, contract } = verifierSession;
 assert.equal(inventory.schema, "pocket-card-render/official-material-program-inventory@4");
 assert.equal(inventory.digests.proofGraphSha256, EXPECTED_PROOF);
 assert.equal(inventory.digests.portIndexSha256, EXPECTED_PORT_INDEX);
-assert.equal(inventory.portIndex.length, 79);
+assert.equal(inventory.portIndex.length, 80);
 assert.equal(contract.schema, "pocket-card-render/official-program-port-contract@2");
 assert.deepEqual(contract.inventory, {
   schema: inventory.schema,
@@ -142,7 +142,7 @@ for (const [key, extraction] of selectorExtractionBatch.extractions) {
 assert.equal(verifierSession.officialExtractions.size, contract.ports.length);
 
 const index = new Map(inventory.portIndex.map((row) => [indexKey(row), row]));
-assert.equal(index.size, 79);
+assert.equal(index.size, 80);
 const verificationResults = new Map(contract.ports.map((row) => [
   contractKey(row),
   Object.fromEntries(FIELDS.map((field) => [field, runVerifier(row, field)])),
@@ -223,37 +223,37 @@ const summary = {
   unmatchedContractRows: unmatched.length,
 };
 const expectedSummary = {
-  officialSemanticExecutables: 76,
-  officialSelectors: 77,
-  officialResolvedMaterials: 8458,
+  officialSemanticExecutables: 77,
+  officialSelectors: 78,
+  officialResolvedMaterials: 8460,
   officialMaterialSlotUsages: 58057,
-  manifestsWithOfficialSpirv: 46,
-  stageBoundSelectors: 43,
-  stageBoundSemanticExecutables: 42,
-  stageBoundResolvedMaterials: 7716,
-  stageBoundMaterialSlotUsages: 50650,
+  manifestsWithOfficialSpirv: 80,
+  stageBoundSelectors: 77,
+  stageBoundSemanticExecutables: 76,
+  stageBoundResolvedMaterials: 8458,
+  stageBoundMaterialSlotUsages: 51675,
   completeExecutableClosures: 0,
-  verifierChecks: 225,
-  exactFieldObligations: freshRuntimeEvidence ? 129 : 45,
+  verifierChecks: 395,
+  exactFieldObligations: freshRuntimeEvidence ? 164 : 79,
   selectorExtractionBatches: 1,
   selectorExtractionInventoryLoads: 1,
-  selectorExtractions: 45,
-  generatorChecks: GENERATORS_EXTERNALLY_VERIFIED ? 0 : 28,
+  selectorExtractions: 79,
+  generatorChecks: GENERATORS_EXTERNALLY_VERIFIED ? 0 : 39,
   runtimeVariantOnlyManifests: 1,
   unmatchedContractRows: 0,
 };
 const expectedFieldVerdicts = freshRuntimeEvidence ? {
-  stageProgram: { exact: 0, "source-hash-bound": 45, "runtime-required": 0, unproved: 0 },
-  parameterEntry: { exact: 45, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
-  passState: { exact: 28, "source-hash-bound": 0, "runtime-required": 17, unproved: 0 },
-  commonBindings: { exact: 27, "source-hash-bound": 0, "runtime-required": 18, unproved: 0 },
-  runtimeDispatch: { exact: 29, "source-hash-bound": 0, "runtime-required": 16, unproved: 0 },
+  stageProgram: { exact: 0, "source-hash-bound": 79, "runtime-required": 0, unproved: 0 },
+  parameterEntry: { exact: 79, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
+  passState: { exact: 28, "source-hash-bound": 0, "runtime-required": 51, unproved: 0 },
+  commonBindings: { exact: 28, "source-hash-bound": 0, "runtime-required": 51, unproved: 0 },
+  runtimeDispatch: { exact: 29, "source-hash-bound": 0, "runtime-required": 50, unproved: 0 },
 } : {
-  stageProgram: { exact: 0, "source-hash-bound": 45, "runtime-required": 0, unproved: 0 },
-  parameterEntry: { exact: 45, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
-  passState: { exact: 0, "source-hash-bound": 0, "runtime-required": 45, unproved: 0 },
-  commonBindings: { exact: 0, "source-hash-bound": 0, "runtime-required": 45, unproved: 0 },
-  runtimeDispatch: { exact: 0, "source-hash-bound": 0, "runtime-required": 45, unproved: 0 },
+  stageProgram: { exact: 0, "source-hash-bound": 79, "runtime-required": 0, unproved: 0 },
+  parameterEntry: { exact: 79, "source-hash-bound": 0, "runtime-required": 0, unproved: 0 },
+  passState: { exact: 0, "source-hash-bound": 0, "runtime-required": 79, unproved: 0 },
+  commonBindings: { exact: 0, "source-hash-bound": 0, "runtime-required": 79, unproved: 0 },
+  runtimeDispatch: { exact: 0, "source-hash-bound": 0, "runtime-required": 79, unproved: 0 },
 };
 const reportCurrent = process.argv.includes("--report-current");
 if (reportCurrent) {

@@ -90,7 +90,7 @@ function adaptVertex(source) {
   return `${out.trimEnd()}\n`;
 }
 
-function adaptFragment(source) {
+function adaptFragment(source, useHoloAlphaBlend) {
   let out = source.replace(/^#version 300 es\s*/m, "");
   out = replaceUbo(out, "_35_37", "_37", [
     "uniform highp mat4 viewMatrix;",
@@ -100,17 +100,24 @@ function adaptFragment(source) {
     "uniform mediump float _RampSpeed;",
     "uniform mediump float _RampOffset;",
     "uniform mediump float _RampInterval;",
+    ...(useHoloAlphaBlend ? ["uniform mediump float _HoloAlphaBlend;"] : []),
     "uniform int _TiltEnabled;",
     "uniform mediump float _TiltPower;",
     "uniform mediump float _TiltOffset;",
     "uniform mediump float _TiltIntensity;",
     "uniform mediump vec3 _Rotation;",
   ]);
-  out = replaceMembers(out, "_37", [
-    "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
-    "_RampOffset", "_RampInterval", "_TiltEnabled", "_TiltPower", "_TiltOffset",
-    "_TiltIntensity", "_Rotation",
-  ]);
+  out = replaceMembers(out, "_37", useHoloAlphaBlend
+    ? [
+      "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
+      "_RampOffset", "_RampInterval", "_HoloAlphaBlend", "_TiltEnabled", "_TiltPower",
+      "_TiltOffset", "_TiltIntensity", "_Rotation",
+    ]
+    : [
+      "viewMatrix", "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed",
+      "_RampOffset", "_RampInterval", "_TiltEnabled", "_TiltPower", "_TiltOffset",
+      "_TiltIntensity", "_Rotation",
+    ]);
   if (/_37\._m/.test(out)) throw new Error("fragment adaptation incomplete");
   return `${out.trimEnd()}\n`;
 }
@@ -148,38 +155,83 @@ const fragmentExpected = {
   textures: ["_491", "_484", "_343", "_409", "_465"].map((name, binding) => ({ name, type: "sampler2D", binding })),
 };
 
-
-const selector = {
-  selectorId: "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
-  candidateWitnessId: "0fb8f02f1c119712efa4625a857777833259dbb56138dcbc66aed26b580e9024",
-  proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-  portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
-  spirvCrossSha256: {
-    vertex: "4dc79d5b09aa26d6d392086a3c0697e0ad9d3334692e477db91e7853dc4f8926",
-    fragment: "db5d88d8881b208c72899d289f040c0a1ba8ea0a7887cc2b4b7b616bcc180284",
-  },
+const fragmentHoloAlphaExpected = {
+  ubo: { name: "_35_37", size: 124, members: [
+    member("_m0", "vec4", 0, [4]),
+    ...Array.from({ length: 7 }, (_, i) => member(`_m${i + 1}`, "float", 64 + i * 4)),
+    member("_m8", "int", 92),
+    ...Array.from({ length: 3 }, (_, i) => member(`_m${i + 9}`, "float", 96 + i * 4)),
+    member("_m12", "vec3", 112),
+  ] },
+  inputs: fragmentExpected.inputs,
+  outputs: [{ name: "_520", type: "vec4", location: 0 }, { name: "_528", type: "vec4", location: 1 }],
+  textures: ["_508", "_309", "_354", "_424", "_481"].map((name, binding) => ({
+    name, type: "sampler2D", binding,
+  })),
 };
+
+const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
+const SELECTORS = [
+  {
+    label: "base",
+    selectorId: "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+    candidateWitnessId: "0fb8f02f1c119712efa4625a857777833259dbb56138dcbc66aed26b580e9024",
+    keywords: [],
+    semanticExecutableId: "f322beaff1347d5eff35d509f959dcf260f37df1090692fd95d840f0b0d3d4de",
+    parameterBytes: 824,
+    parameterReflectionSha256: null,
+    fragmentExpected,
+    useHoloAlphaBlend: false,
+    outputPrefix: "simple_opaque_hologram_tuning",
+    spirvCrossSha256: {
+      vertex: "4dc79d5b09aa26d6d392086a3c0697e0ad9d3334692e477db91e7853dc4f8926",
+      fragment: "db5d88d8881b208c72899d289f040c0a1ba8ea0a7887cc2b4b7b616bcc180284",
+    },
+  },
+  {
+    label: "holo-alpha",
+    selectorId: "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d",
+    candidateWitnessId: "3ee9c050c886c27c13233483d13ce1597c256dfb5a40064726030f07ccfd571b",
+    keywords: ["_USEHOLOALPHABLEND_ON"],
+    semanticExecutableId: "2a475d22fd00abe9ea1c6f60dec76e45905b0b71a9b08f8e2f0ddfbfa079b09b",
+    parameterBytes: 868,
+    parameterReflectionSha256: "da9a793b74c9af9f25f92aec4bb2079388b607f0c0de5e8d813357281a82c4b0",
+    fragmentExpected: fragmentHoloAlphaExpected,
+    useHoloAlphaBlend: true,
+    outputPrefix: "simple_opaque_hologram_tuning_holo_alpha",
+    spirvCrossSha256: {
+      vertex: "4dc79d5b09aa26d6d392086a3c0697e0ad9d3334692e477db91e7853dc4f8926",
+      fragment: "240b47b203267822861348d76a561a32883f0f0529100425059327671f65fb0a",
+    },
+  },
+];
 const samplerSlots = ["_MainTex", "_HologramMaskTex", "_PhaseTex", "_RampMaskTex", "_RampTex"];
-const floats = [
+const baseFloats = [
   "_DiffractionIntensity", "_DiffractionPower", "_RampRepeat", "_RampSpeed", "_RampOffset", "_RampInterval",
   "_TiltEnabled", "_TiltPower", "_TiltOffset", "_TiltIntensity",
 ];
 const ints = ["_TiltEnabled"];
 const outputs = {};
 
-await withExtractedSelectorProgram({
+for (const selector of SELECTORS) await withExtractedSelectorProgram({
   selectorId: selector.selectorId,
   candidateWitnessId: selector.candidateWitnessId,
-  expectedProofGraphSha256: selector.proofGraphSha256,
-  expectedPortIndexSha256: selector.portIndexSha256,
+  expectedProofGraphSha256: PROOF_GRAPH_SHA256,
+  expectedPortIndexSha256: PORT_INDEX_SHA256,
   decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
-  prefix: "simple_opaque_hologram_tuning",
+  prefix: selector.outputPrefix,
   rootDir: ROOT,
   spirvCross: SPIRV_CROSS,
 }, ({ metadata, files, reflection }) => {
   assertReflection(reflection.vertex, vertexExpected);
-  assertReflection(reflection.fragment, fragmentExpected);
-  assert.equal(metadata.artifacts.parameterEntry.byteSize, 824);
+  assertReflection(reflection.fragment, selector.fragmentExpected);
+  assert.deepEqual(metadata.selector.keywords, selector.keywords);
+  assert.equal(metadata.selector.semanticExecutableId, selector.semanticExecutableId);
+  assert.equal(metadata.artifacts.parameterEntry.byteSize, selector.parameterBytes);
+  if (selector.parameterReflectionSha256) {
+    assert.equal(metadata.parameterReflectionSha256, selector.parameterReflectionSha256);
+  }
   assert.equal(metadata.parameterReflection.bindingClosure.constantBuffersMatch, true);
   assert.equal(metadata.parameterReflection.bindingClosure.constantBufferDeclarationMode, "variant-local");
 
@@ -189,7 +241,7 @@ await withExtractedSelectorProgram({
   assert.equal(sha256(officialFragment), selector.spirvCrossSha256.fragment, "fragment SPIRV-Cross shape changed");
 
   const vertex = adaptVertex(officialVertex);
-  const fragment = adaptFragment(officialFragment);
+  const fragment = adaptFragment(officialFragment, selector.useHoloAlphaBlend);
   const bindings = compileCommonBindings(metadata.commonBindings);
   const programBindings = joinProgramConstantBufferStages(
     compileProgramBindings(bindings, metadata.parameterReflection, metadata.shaderPropertyDefaults),
@@ -209,6 +261,9 @@ await withExtractedSelectorProgram({
     return row;
   });
   assert.deepEqual(samplerBindings.map(({ slot }) => slot), samplerSlots);
+  const floats = selector.useHoloAlphaBlend
+    ? [...baseFloats, "_HoloAlphaBlend"]
+    : baseFloats;
   const runtimeContract = {
     schema: "pocket-card-render/webgl-runtime-port@1",
     shader_key: "Simple-Opaque-Hologram_Tuning",
@@ -271,11 +326,12 @@ await withExtractedSelectorProgram({
     runtimeContract,
     officialProgramBindings: manifestProgramBindings,
   });
-  outputs["simple_opaque_hologram_tuning.vert.glsl"] = vertex;
-  outputs["simple_opaque_hologram_tuning.frag.glsl"] = fragment;
-  outputs["simple_opaque_hologram_tuning_uniforms.json"] = `${JSON.stringify({
+  outputs[`${selector.outputPrefix}.vert.glsl`] = vertex;
+  outputs[`${selector.outputPrefix}.frag.glsl`] = fragment;
+  outputs[`${selector.outputPrefix}_uniforms.json`] = `${JSON.stringify({
     shader: metadata.selector.shaderName,
     generated_by: "build/build-exact-simple-opaque-hologram.mjs",
+    selected_keywords: metadata.selector.keywords,
     official_selector: metadata.selector,
     official_spirv_sha256: { vertex: sha256File(files.vertexSpirv), fragment: sha256File(files.fragmentSpirv) },
     official_spirv_precision: metadata.officialSpirvPrecision,
@@ -303,8 +359,8 @@ await withExtractedSelectorProgram({
     official_shader_property_defaults: metadata.shaderPropertyDefaults,
     webgl_adaptation: adaptation,
     webgl_sources: {
-      vertex: "public/shaders/simple_opaque_hologram_tuning.vert.glsl",
-      fragment: "public/shaders/simple_opaque_hologram_tuning.frag.glsl",
+      vertex: `public/shaders/${selector.outputPrefix}.vert.glsl`,
+      fragment: `public/shaders/${selector.outputPrefix}.frag.glsl`,
     },
     runtime_contract: runtimeContract,
     sampler_bindings: samplerBindings,
@@ -319,4 +375,4 @@ await withExtractedSelectorProgram({
 });
 
 writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
-console.log(`${CHECK ? "verified" : "generated"} Simple-Opaque-Hologram_Tuning from selector-bound official SPIR-V`);
+console.log(`${CHECK ? "verified" : "generated"} ${SELECTORS.length} Simple-Opaque-Hologram_Tuning selector ports`);

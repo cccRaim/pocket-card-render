@@ -107,7 +107,7 @@ const checks = [
     msg: "local parallaxUR must keep official view-angle darkness wave and material color gate",
   },
   {
-    ok: /exactShaderPort\(r,\s*"Card_Parallax_UR"\)/.test(localParallax)
+    ok: /exactShaderPort\(r\)/.test(localParallax)
       && parallaxManifest.generated_by === "build/build-exact-card-parallax-ur.mjs"
       && parallaxManifest.official_selector?.selectorId === "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a"
       && parallaxManifest.webgl_adaptation?.vertex?.spirvCrossGlslSha256 === sha256(parallax.vert)

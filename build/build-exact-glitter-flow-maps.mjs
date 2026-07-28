@@ -151,8 +151,8 @@ const result = await generateExactSelectorPort({
   extraction: {
     selectorId: "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
     candidateWitnessId: "741330e6c5c79eb6e2a8fc9c2f214f421165df8160ee63a33b693d28906ca676",
-    expectedProofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-    expectedPortIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+    expectedProofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+    expectedPortIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
     decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
     prefix: "glitter_flow_maps",
     rootDir: ROOT,

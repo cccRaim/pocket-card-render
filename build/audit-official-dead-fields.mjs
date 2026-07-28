@@ -37,7 +37,7 @@ const sbHolo = blockFrom(holo, "function sbHoloMaterial");
 check(!!sbHolo, "sbHolo", "", "strategy block exists");
 if (sbHolo) {
   check(
-    /const primaryDiffInt = r\.shader === "Opaque-Hologram_Tuning" \? 1 : \(f\._DiffractionIntensity \?\? 0\.5\);/.test(sbHolo),
+    /const primaryDiffInt = mode === "trainer" \? 1 : \(f\._DiffractionIntensity \?\? 0\.5\);/.test(sbHolo),
     "Opaque-Hologram_Tuning",
     "_DiffractionIntensity",
     "official-dead field is guarded to constant 1 for this shader",

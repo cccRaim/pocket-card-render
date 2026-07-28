@@ -1,0 +1,2090 @@
+{
+  "shader": "Lettuce/Common/CardNew/Face/Card_Parallax_Marble",
+  "generated_by": "build/build-exact-card-parallax-marble.mjs",
+  "selected_keywords": [
+    "_USEOUTSIDERELAX_ON"
+  ],
+  "official_selector": {
+    "selectorId": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2",
+    "candidateWitnessId": "c03eec4906180772175e8f76d70f161c84996d579d54ac2434137c74aaa3b7cb",
+    "shaderIdentity": "CAB-6e711b3844abcee2209d2134bf847067:-7556975018971663688",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Marble",
+    "keywords": [
+      "_USEOUTSIDERELAX_ON"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "programBlobIndex": 4,
+    "parameterBlobIndex": 1,
+    "executableId": "2ed56b53aac316eeff2e7c2a1cfaf04c40b9151228aaa8c2435c6b0816df3a70",
+    "semanticExecutableId": "07ef596ff11da43553fedf145df55beb3187156d97576fea34ae5532a9bb5acd"
+  },
+  "official_spirv_sha256": {
+    "vertex": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
+    "fragment": "e40372ac6db0a62cbe2f6ace1f12b7595f3ec84e7467cb4729efd4cc70a0e078"
+  },
+  "official_spirv_precision": {
+    "schema": "pocket-card-render/official-spirv-precision@1",
+    "evidence_scope": "official-vulkan-spirv-structure",
+    "vulkan_to_webgl_equivalence": "not-claimed",
+    "stages": {
+      "vertex": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
+        "byte_size": 4600,
+        "word_count": 1150,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 191,
+          "schema_word": 0
+        },
+        "instruction_count": 239,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "6929403a72a6d21e95a8877eafb417a6db325255dde33aab73570742fd60aff6",
+        "facts_sha256": "d1149db18115c05be2c4b798dfaa1e941d7c4015d24668316b6ae51fab73b8c5"
+      },
+      "fragment": {
+        "schema": "pocket-card-render/spirv-stage-precision@1",
+        "source_sha256": "e40372ac6db0a62cbe2f6ace1f12b7595f3ec84e7467cb4729efd4cc70a0e078",
+        "byte_size": 24140,
+        "word_count": 6035,
+        "header": {
+          "version_word": 65536,
+          "version": "1.0.0",
+          "major": 1,
+          "minor": 0,
+          "revision": 0,
+          "generator_magic": 524298,
+          "id_bound": 956,
+          "schema_word": 0
+        },
+        "instruction_count": 1379,
+        "capabilities": {
+          "Float16Buffer": 0,
+          "Float16": 0,
+          "Float64": 0,
+          "DenormPreserve": 0,
+          "DenormFlushToZero": 0,
+          "SignedZeroInfNanPreserve": 0,
+          "RoundingModeRTE": 0,
+          "RoundingModeRTZ": 0,
+          "Float16ImageAMD": 0,
+          "FloatControls2": 0
+        },
+        "float_types": [
+          {
+            "width": 32,
+            "declaration_count": 1
+          }
+        ],
+        "decorations": {
+          "RelaxedPrecision": {
+            "decoration_value": 0,
+            "instruction_counts": {
+              "decorate": 176,
+              "member_decorate": 13,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 189,
+            "direct_application_count": 189,
+            "group_application_count": 0,
+            "effective_application_count": 189,
+            "operand_sets": [
+              {
+                "operands": [],
+                "declaration_count": 189
+              }
+            ]
+          },
+          "FPRoundingMode": {
+            "decoration_value": 39,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "FPFastMathMode": {
+            "decoration_value": 40,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          },
+          "NoContraction": {
+            "decoration_value": 42,
+            "instruction_counts": {
+              "decorate": 0,
+              "member_decorate": 0,
+              "decorate_id": 0
+            },
+            "source_instruction_count": 0,
+            "direct_application_count": 0,
+            "group_application_count": 0,
+            "effective_application_count": 0,
+            "operand_sets": []
+          }
+        },
+        "quantize_to_f16_count": 0,
+        "float_control_execution_modes": [],
+        "instruction_structure_sha256": "4122f08aba12f158738f368ee31b3f6248dabcec39c9b89c66a0070b39bb66b0",
+        "facts_sha256": "1b09e9b37fd08ca42c5990dcd8b0c1eb4ca28440f01f562604176f2a379835d6"
+      }
+    }
+  },
+  "official_executable_identity": {
+    "vertexSpirvSha256": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
+    "fragmentSpirvSha256": "e40372ac6db0a62cbe2f6ace1f12b7595f3ec84e7467cb4729efd4cc70a0e078",
+    "parameterEntrySha256": "35097e1ed136fb14f60c04bde97b2bdec1f9bb009987b3d535c89fe240e63c89",
+    "passStateSha256": "237f26f7af536c6f6ed5273506534ade0183930a4d52941430a0f0deea3d8c03",
+    "commonBindingsSha256": "f2e6500ac4a3e0925523a73a8c19fda396419257d0886d327cd8ea90b2b1957f"
+  },
+  "official_parameter_entry": {
+    "source_sha256": "35097e1ed136fb14f60c04bde97b2bdec1f9bb009987b3d535c89fe240e63c89",
+    "byte_size": 2060,
+    "reflection_sha256": "deea24ed96455c97b42fea582999e37be167b70095522d263dddf782c5fdbd7c",
+    "version": 202012090,
+    "constantBlockCount": 3,
+    "constantBuffers": [
+      {
+        "name": "",
+        "size": 0,
+        "fields": []
+      },
+      {
+        "name": "PGlobals3692547301",
+        "size": 276,
+        "fields": [
+          {
+            "name": "_Attributes",
+            "offset": 64,
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              4,
+              64
+            ]
+          },
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 48,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              48
+            ]
+          },
+          {
+            "name": "_DistLimit",
+            "offset": 136,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              136
+            ]
+          },
+          {
+            "name": "_DistPower",
+            "offset": 132,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              132
+            ]
+          },
+          {
+            "name": "_EmissiveByForceLoopCount",
+            "offset": 236,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              236
+            ]
+          },
+          {
+            "name": "_EmissiveByForcePower",
+            "offset": 240,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              240
+            ]
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 228,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              228
+            ]
+          },
+          {
+            "name": "_EmissiveIntensityTiltPower",
+            "offset": 232,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              232
+            ]
+          },
+          {
+            "name": "_Front",
+            "offset": 16,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              16
+            ]
+          },
+          {
+            "name": "_NoisyMaskScale",
+            "offset": 272,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              272
+            ]
+          },
+          {
+            "name": "_OutsideEndRadius",
+            "offset": 144,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              144
+            ]
+          },
+          {
+            "name": "_OutsideRelax",
+            "offset": 148,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              148
+            ]
+          },
+          {
+            "name": "_OutsideRelaxPower",
+            "offset": 152,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              152
+            ]
+          },
+          {
+            "name": "_OutsideStartRadius",
+            "offset": 140,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              140
+            ]
+          },
+          {
+            "name": "_PointCount",
+            "offset": 128,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              128
+            ]
+          },
+          {
+            "name": "_RadialShearCenterDefault",
+            "offset": 200,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              200
+            ]
+          },
+          {
+            "name": "_RadialShearCenterTiltMove",
+            "offset": 208,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              208
+            ]
+          },
+          {
+            "name": "_RadialShearStrength",
+            "offset": 192,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              192
+            ]
+          },
+          {
+            "name": "_RadialShearTiltStrength",
+            "offset": 196,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              196
+            ]
+          },
+          {
+            "name": "_RelaxLD",
+            "offset": 160,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              160
+            ]
+          },
+          {
+            "name": "_RelaxLU",
+            "offset": 156,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              156
+            ]
+          },
+          {
+            "name": "_RelaxRD",
+            "offset": 168,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              168
+            ]
+          },
+          {
+            "name": "_RelaxRU",
+            "offset": 164,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              164
+            ]
+          },
+          {
+            "name": "_Rotation",
+            "offset": 32,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              32
+            ]
+          },
+          {
+            "name": "_ShearDefaultDegree",
+            "offset": 220,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              220
+            ]
+          },
+          {
+            "name": "_ShearStrength",
+            "offset": 216,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              216
+            ]
+          },
+          {
+            "name": "_ShearTiltDegree",
+            "offset": 224,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              224
+            ]
+          },
+          {
+            "name": "_Shininess",
+            "offset": 44,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              44
+            ]
+          },
+          {
+            "name": "_SpecularIntensity",
+            "offset": 52,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              52
+            ]
+          },
+          {
+            "name": "_SpherizeOffsetX",
+            "offset": 184,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              184
+            ]
+          },
+          {
+            "name": "_SpherizeOffsetY",
+            "offset": 188,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              188
+            ]
+          },
+          {
+            "name": "_SpherizeStrength",
+            "offset": 180,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              180
+            ]
+          },
+          {
+            "name": "_StrengthMultiply",
+            "offset": 176,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              176
+            ]
+          },
+          {
+            "name": "_StrengthOffset",
+            "offset": 172,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              172
+            ]
+          },
+          {
+            "name": "_Tilt",
+            "offset": 12,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              12
+            ]
+          },
+          {
+            "name": "_TiltRotation",
+            "offset": 244,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              244
+            ]
+          },
+          {
+            "name": "_WorldFront",
+            "offset": 256,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              256
+            ]
+          },
+          {
+            "name": "_WorldFrontPower",
+            "offset": 268,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              268
+            ]
+          },
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "name": "VGlobals3692547301",
+        "size": 192,
+        "fields": [
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              128
+            ]
+          },
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              64
+            ]
+          }
+        ]
+      }
+    ],
+    "resourceCount": 2,
+    "resourceDecoding": "material-property-disambiguated",
+    "textures": [],
+    "constantBufferBindings": [
+      {
+        "name": "PGlobals3692547301",
+        "descriptor": [
+          1,
+          134283264,
+          0
+        ]
+      },
+      {
+        "name": "VGlobals3692547301",
+        "descriptor": [
+          1,
+          67174401,
+          0
+        ]
+      }
+    ],
+    "serializedCommonBuffers": [],
+    "serializedCommonTextures": [
+      {
+        "name": "_BaseRampTex",
+        "binding": 0,
+        "encodedIndex": 134217728,
+        "dim": 2
+      },
+      {
+        "name": "_NoisyMask",
+        "binding": 1,
+        "encodedIndex": 134217729,
+        "dim": 2
+      },
+      {
+        "name": "_DefaultNoiseRemapCurveTexture",
+        "binding": 2,
+        "encodedIndex": 134217730,
+        "dim": 2
+      },
+      {
+        "name": "_CubeMap",
+        "binding": 3,
+        "encodedIndex": 134217731,
+        "dim": 4
+      }
+    ],
+    "bindingClosure": {
+      "constantBuffersMatch": true,
+      "constantBufferDeclarationMode": "variant-local",
+      "commonConstantBufferCount": 0,
+      "variantConstantBufferCount": 2,
+      "variantTextureCount": 0,
+      "commonTextureCount": 4,
+      "constantBufferBindingCount": 2
+    }
+  },
+  "official_pass_runtime": {
+    "source_sha256": "237f26f7af536c6f6ed5273506534ade0183930a4d52941430a0f0deea3d8c03",
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "val": 4,
+        "name": null
+      },
+      "write": {
+        "val": 0,
+        "name": null
+      }
+    },
+    "culling": {
+      "val": 2,
+      "name": null
+    },
+    "stencil": {
+      "ref": {
+        "val": 0,
+        "name": null
+      },
+      "read_mask": {
+        "val": 255,
+        "name": null
+      },
+      "write_mask": {
+        "val": 255,
+        "name": null
+      },
+      "generic": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "front": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      },
+      "back": {
+        "comp": {
+          "val": 8,
+          "name": null
+        },
+        "fail": {
+          "val": 0,
+          "name": null
+        },
+        "pass": {
+          "val": 0,
+          "name": null
+        },
+        "zFail": {
+          "val": 0,
+          "name": null
+        }
+      }
+    },
+    "fixed": {
+      "zClip": {
+        "val": 1,
+        "name": null
+      },
+      "conservative": {
+        "val": 0,
+        "name": null
+      },
+      "offsetFactor": {
+        "val": 0,
+        "name": null
+      },
+      "offsetUnits": {
+        "val": 0,
+        "name": null
+      },
+      "alphaToMask": {
+        "val": 0,
+        "name": null
+      },
+      "fogMode": -1,
+      "lighting": false
+    },
+    "blend": {
+      "src_rgb": {
+        "val": 5,
+        "name": null
+      },
+      "dst_rgb": {
+        "val": 10,
+        "name": null
+      },
+      "src_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "dst_alpha": {
+        "val": 10,
+        "name": null
+      },
+      "op_rgb": {
+        "val": 0,
+        "name": null
+      },
+      "op_alpha": {
+        "val": 0,
+        "name": null
+      },
+      "color_mask": {
+        "val": 15,
+        "name": null
+      }
+    }
+  },
+  "official_common_bindings": {
+    "source_sha256": "f2e6500ac4a3e0925523a73a8c19fda396419257d0886d327cd8ea90b2b1957f",
+    "schema": "pocket-card-render/compiled-common-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseRampTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_NoisyMask",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_DefaultNoiseRemapCurveTexture",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ]
+      },
+      {
+        "name": "_CubeMap",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 4,
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ],
+    "constant_buffers": [],
+    "constant_buffer_bindings": []
+  },
+  "official_program_bindings": {
+    "common_source_sha256": "f2e6500ac4a3e0925523a73a8c19fda396419257d0886d327cd8ea90b2b1957f",
+    "parameter_reflection_sha256": "deea24ed96455c97b42fea582999e37be167b70095522d263dddf782c5fdbd7c",
+    "schema": "pocket-card-render/compiled-program-bindings@1",
+    "textures": [
+      {
+        "name": "_BaseRampTex",
+        "encodedIndex": 134217728,
+        "set": 0,
+        "binding": 0,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_NoisyMask",
+        "encodedIndex": 134217729,
+        "set": 0,
+        "binding": 1,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_DefaultNoiseRemapCurveTexture",
+        "encodedIndex": 134217730,
+        "set": 0,
+        "binding": 2,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 2,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      },
+      {
+        "name": "_CubeMap",
+        "encodedIndex": 134217731,
+        "set": 0,
+        "binding": 3,
+        "samplerIndex": -1,
+        "multisampled": false,
+        "dim": 4,
+        "stages": [
+          "progVertex"
+        ],
+        "source": "serialized-common"
+      }
+    ],
+    "common_constant_buffers": [],
+    "common_constant_buffer_bindings": [],
+    "variant_constant_buffers": [
+      {
+        "name": "PGlobals3692547301",
+        "size": 276,
+        "fields": [
+          {
+            "name": "_WorldSpaceCameraPos",
+            "offset": 0,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "_Tilt",
+            "offset": 12,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              12
+            ]
+          },
+          {
+            "name": "_Front",
+            "offset": 16,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              16
+            ]
+          },
+          {
+            "name": "_Rotation",
+            "offset": 32,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              32
+            ]
+          },
+          {
+            "name": "_Shininess",
+            "offset": 44,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              44
+            ]
+          },
+          {
+            "name": "_BaseColorIntensity",
+            "offset": 48,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              48
+            ]
+          },
+          {
+            "name": "_SpecularIntensity",
+            "offset": 52,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              52
+            ]
+          },
+          {
+            "name": "_Attributes",
+            "offset": 64,
+            "descriptor": [
+              0,
+              1,
+              4,
+              0,
+              4,
+              64
+            ]
+          },
+          {
+            "name": "_PointCount",
+            "offset": 128,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              128
+            ]
+          },
+          {
+            "name": "_DistPower",
+            "offset": 132,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              132
+            ]
+          },
+          {
+            "name": "_DistLimit",
+            "offset": 136,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              136
+            ]
+          },
+          {
+            "name": "_OutsideStartRadius",
+            "offset": 140,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              140
+            ]
+          },
+          {
+            "name": "_OutsideEndRadius",
+            "offset": 144,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              144
+            ]
+          },
+          {
+            "name": "_OutsideRelax",
+            "offset": 148,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              148
+            ]
+          },
+          {
+            "name": "_OutsideRelaxPower",
+            "offset": 152,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              152
+            ]
+          },
+          {
+            "name": "_RelaxLU",
+            "offset": 156,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              156
+            ]
+          },
+          {
+            "name": "_RelaxLD",
+            "offset": 160,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              160
+            ]
+          },
+          {
+            "name": "_RelaxRU",
+            "offset": 164,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              164
+            ]
+          },
+          {
+            "name": "_RelaxRD",
+            "offset": 168,
+            "descriptor": [
+              1,
+              1,
+              1,
+              0,
+              0,
+              168
+            ]
+          },
+          {
+            "name": "_StrengthOffset",
+            "offset": 172,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              172
+            ]
+          },
+          {
+            "name": "_StrengthMultiply",
+            "offset": 176,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              176
+            ]
+          },
+          {
+            "name": "_SpherizeStrength",
+            "offset": 180,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              180
+            ]
+          },
+          {
+            "name": "_SpherizeOffsetX",
+            "offset": 184,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              184
+            ]
+          },
+          {
+            "name": "_SpherizeOffsetY",
+            "offset": 188,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              188
+            ]
+          },
+          {
+            "name": "_RadialShearStrength",
+            "offset": 192,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              192
+            ]
+          },
+          {
+            "name": "_RadialShearTiltStrength",
+            "offset": 196,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              196
+            ]
+          },
+          {
+            "name": "_RadialShearCenterDefault",
+            "offset": 200,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              200
+            ]
+          },
+          {
+            "name": "_RadialShearCenterTiltMove",
+            "offset": 208,
+            "descriptor": [
+              0,
+              1,
+              2,
+              0,
+              0,
+              208
+            ]
+          },
+          {
+            "name": "_ShearStrength",
+            "offset": 216,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              216
+            ]
+          },
+          {
+            "name": "_ShearDefaultDegree",
+            "offset": 220,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              220
+            ]
+          },
+          {
+            "name": "_ShearTiltDegree",
+            "offset": 224,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              224
+            ]
+          },
+          {
+            "name": "_EmissiveIntensity",
+            "offset": 228,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              228
+            ]
+          },
+          {
+            "name": "_EmissiveIntensityTiltPower",
+            "offset": 232,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              232
+            ]
+          },
+          {
+            "name": "_EmissiveByForceLoopCount",
+            "offset": 236,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              236
+            ]
+          },
+          {
+            "name": "_EmissiveByForcePower",
+            "offset": 240,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              240
+            ]
+          },
+          {
+            "name": "_TiltRotation",
+            "offset": 244,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              244
+            ]
+          },
+          {
+            "name": "_WorldFront",
+            "offset": 256,
+            "descriptor": [
+              0,
+              1,
+              3,
+              0,
+              0,
+              256
+            ]
+          },
+          {
+            "name": "_WorldFrontPower",
+            "offset": 268,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              268
+            ]
+          },
+          {
+            "name": "_NoisyMaskScale",
+            "offset": 272,
+            "descriptor": [
+              0,
+              1,
+              1,
+              0,
+              0,
+              272
+            ]
+          }
+        ],
+        "binding": {
+          "name": "PGlobals3692547301",
+          "encodedIndex": 134283264,
+          "set": 1,
+          "binding": 0,
+          "stageCode": 1,
+          "trailingWord": 0,
+          "descriptor": [
+            1,
+            134283264,
+            0
+          ]
+        },
+        "source": "variant-local",
+        "stages": [
+          "progFragment"
+        ]
+      },
+      {
+        "name": "VGlobals3692547301",
+        "size": 192,
+        "fields": [
+          {
+            "name": "unity_ObjectToWorld",
+            "offset": 0,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "unity_WorldToObject",
+            "offset": 64,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              64
+            ]
+          },
+          {
+            "name": "unity_MatrixVP",
+            "offset": 128,
+            "descriptor": [
+              0,
+              4,
+              4,
+              1,
+              0,
+              128
+            ]
+          }
+        ],
+        "binding": {
+          "name": "VGlobals3692547301",
+          "encodedIndex": 67174401,
+          "set": 1,
+          "binding": 1,
+          "stageCode": 1,
+          "trailingWord": 0,
+          "descriptor": [
+            1,
+            67174401,
+            0
+          ]
+        },
+        "source": "variant-local",
+        "stages": [
+          "progVertex"
+        ]
+      }
+    ]
+  },
+  "official_vertex_inputs": {
+    "schema": "pocket-card-render/official-vertex-input-contract@1",
+    "unityVersion": "2022.3.62f2",
+    "sourceSha256": "e9c219d1813b8b4f3f0703fe725dfeb490351a9eae86c95d6e4a3f1778f95eb5",
+    "serializedSourceMap": 19,
+    "inputs": [
+      {
+        "source": 0,
+        "sourceName": "Vertex",
+        "target": 13,
+        "targetName": "Attrib1",
+        "location": 0,
+        "threeAttribute": "position",
+        "spirvName": "_11",
+        "spirvType": "vec4"
+      },
+      {
+        "source": 4,
+        "sourceName": "UV0",
+        "target": 15,
+        "targetName": "Attrib3",
+        "location": 2,
+        "threeAttribute": "uv",
+        "spirvName": "_87",
+        "spirvType": "vec2"
+      },
+      {
+        "source": 1,
+        "sourceName": "Normal",
+        "target": 14,
+        "targetName": "Attrib2",
+        "location": 1,
+        "threeAttribute": "normal",
+        "spirvName": "_134",
+        "spirvType": "vec4"
+      }
+    ]
+  },
+  "official_shader_property_defaults": {
+    "textures": {
+      "_BaseRampTex": "white",
+      "_NoisyMask": "white"
+    },
+    "textureDescriptors": {
+      "_BaseRampTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_NoisyMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      }
+    },
+    "floats": {
+      "_StrengthOffset": 0,
+      "_StrengthMultiply": 1,
+      "_DistPower": 1,
+      "_UseOutsideRelax": 0,
+      "_OutsideStartRadius": 0.44999998807907104,
+      "_OutsideEndRadius": 0.7200000286102295,
+      "_OutsideRelax": 0.699999988079071,
+      "_OutsideRelaxPower": 1,
+      "_RelaxLU": 0,
+      "_RelaxRU": 0,
+      "_RelaxLD": 0,
+      "_RelaxRD": 0,
+      "_DistLimit": 1.5,
+      "_UseMagnetic": 0,
+      "_MagneticMoveMax": 0,
+      "_MagneticMovePower": 1,
+      "_MagneticRange": 0,
+      "_SpherizeStrength": 0,
+      "_SpherizeOffsetX": 0,
+      "_SpherizeOffsetY": 0,
+      "_RadialShearStrength": 0,
+      "_RadialShearTiltStrength": 0,
+      "_ShearStrength": 1,
+      "_ShearDefaultDegree": 0,
+      "_ShearTiltDegree": 0,
+      "_EmissiveIntensity": 2,
+      "_EmissiveIntensityTiltPower": 1,
+      "_EmissiveByForceLoopCount": 0.5,
+      "_EmissiveByForcePower": 4,
+      "_NoisyMaskScale": 1,
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1
+    },
+    "colors": {},
+    "vectors": {
+      "_RadialShearCenterDefault": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_RadialShearCenterTiltMove": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "webgl_adaptation": {
+    "schema": "pocket-card-render/webgl-stage-adaptation@2",
+    "backend": "Unity Vulkan SPIR-V to Three.js WebGL2",
+    "vertex": {
+      "officialSpirvSha256": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
+      "spirvCrossGlslSha256": "0702e59df2a21494d4190ed402468081b8dc474b741e93106129e07479949790",
+      "outputSha256": "449d79e3d16d6e0ef5e15cd79941d876c9b5304ecb6c64bf6c18308b5cd7d5b3",
+      "operations": [
+        {
+          "kind": "vertex-input-binding",
+          "contract": "official-bind-channels-to-three-r165",
+          "mappingSha256": "13c5123a6892fb673ec3e16f63beaaf4286259d41ea81c6e3471918b2522271f"
+        },
+        {
+          "kind": "engine-uniform-binding",
+          "contract": "unity-builtins-to-three-r165",
+          "runtimeContractSha256": "9059552033a3fbaf2bb6fd22166bac77e1fd5f0f6367df55d89287b8630ecb1d"
+        },
+        {
+          "kind": "uniform-buffer-flattening",
+          "source": "variant-local",
+          "preservation": "names-types-precision",
+          "bindingContractSha256": "b92776302f52f8867d97a100ae265116569abc9ee45ce661d3d8c95ac12a735c"
+        },
+        {
+          "kind": "clip-space-y-conversion",
+          "from": "unity-vulkan",
+          "to": "webgl",
+          "operation": "remove-y-inversion"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
+      "substitutions": [
+        "map official Vertex/Normal/UV0 channels to Three.js r165 position/normal/uv",
+        "map unity_ObjectToWorld, unity_WorldToObject and unity_MatrixVP to Three.js engine matrices",
+        "remove Unity Vulkan clip-space Y inversion for WebGL clip space"
+      ]
+    },
+    "fragment": {
+      "officialSpirvSha256": "e40372ac6db0a62cbe2f6ace1f12b7595f3ec84e7467cb4729efd4cc70a0e078",
+      "spirvCrossGlslSha256": "1695d7a79b796bf77a51d9686bf8a65bfface9ccf962276a1d7b7e4ae219dd67",
+      "outputSha256": "1ead7d7a43ce6e261547dd04921485cc4b9378b0e5ba81a37deb10ebd6369e74",
+      "operations": [
+        {
+          "kind": "engine-uniform-binding",
+          "contract": "unity-builtins-to-three-r165",
+          "runtimeContractSha256": "9059552033a3fbaf2bb6fd22166bac77e1fd5f0f6367df55d89287b8630ecb1d"
+        },
+        {
+          "kind": "uniform-buffer-flattening",
+          "source": "variant-local",
+          "preservation": "names-types-precision",
+          "bindingContractSha256": "b92776302f52f8867d97a100ae265116569abc9ee45ce661d3d8c95ac12a735c"
+        },
+        {
+          "kind": "object-basis-conversion",
+          "contract": "unity-to-three-basis",
+          "basisContractSha256": "f7665ae07586fefed19907f56c423179782e2d83253efbde7155ecbeecac9f8b"
+        },
+        {
+          "kind": "dynamic-uniform-producer-binding",
+          "contract": "runtime-producer-to-three-uniforms",
+          "producerContractSha256": "91b1492219b6d45625bb96ec75069dcf086497289c674c26418a0f2de8ed2b82"
+        },
+        {
+          "kind": "glsl-version-ownership",
+          "owner": "three-raw-shader-material"
+        }
+      ],
+      "substitutions": [
+        "flatten the official variant-local PGlobals block to same-name typed WebGL uniforms",
+        "preserve _Attributes as vec4[4] and _PointCount as int",
+        "bind component-driven point, tilt, front, rotation and world-front values to explicit unresolved producers",
+        "bind the active curve sampler to an explicit unresolved dynamic texture producer",
+        "convert Three.js world-space inputs back to Unity data axes before official SSA arithmetic",
+        "do not substitute normalized pointer tilt for the official point-position simulation"
+      ]
+    },
+    "interfaceSha256": "588a0832230b0968e53d7f42dbb21ed5e6061a2c02aae050dd56ba628e4ca6fb",
+    "operationGraphSha256": "5f3a371306b585d206220ed65013054cf08f5cdc5f4aeabf6bd9695c1190c595"
+  },
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_marble_outside_relax.vert.glsl",
+    "fragment": "public/shaders/card_parallax_marble_outside_relax.frag.glsl"
+  },
+  "runtime_contract": {
+    "schema": "pocket-card-render/webgl-runtime-port@1",
+    "shader_key": "Card_Parallax_Marble",
+    "attributes": {
+      "position": "vec3",
+      "normal": "vec3",
+      "uv": "vec2"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4",
+      "cameraPosition": "vec3"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_BaseColorIntensity",
+        "_DistLimit",
+        "_DistPower",
+        "_EmissiveByForceLoopCount",
+        "_EmissiveByForcePower",
+        "_EmissiveIntensity",
+        "_EmissiveIntensityTiltPower",
+        "_NoisyMaskScale",
+        "_RadialShearStrength",
+        "_RadialShearTiltStrength",
+        "_ShearDefaultDegree",
+        "_ShearStrength",
+        "_ShearTiltDegree",
+        "_Shininess",
+        "_SpecularIntensity",
+        "_SpherizeOffsetX",
+        "_SpherizeOffsetY",
+        "_SpherizeStrength",
+        "_StrengthMultiply",
+        "_StrengthOffset",
+        "_WorldFrontPower",
+        "_OutsideEndRadius",
+        "_OutsideRelax",
+        "_OutsideRelaxPower",
+        "_OutsideStartRadius"
+      ],
+      "ints": [
+        "_RelaxLD",
+        "_RelaxLU",
+        "_RelaxRD",
+        "_RelaxRU"
+      ],
+      "vectors": {
+        "_RadialShearCenterDefault": "vec2",
+        "_RadialShearCenterTiltMove": "vec2"
+      }
+    },
+    "dynamic_uniforms": {
+      "_Attributes": {
+        "type": "vec4[4]",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_Front": {
+        "type": "vec2",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_PointCount": {
+        "type": "int",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_Rotation": {
+        "type": "vec3",
+        "source": "pocket-card-render/card-behaviour-hologram-rotation-arm64-port@1"
+      },
+      "_Tilt": {
+        "type": "float",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_TiltRotation": {
+        "type": "float",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_WorldFront": {
+        "type": "vec3",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_689": {
+        "type": "sampler2D",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      }
+    },
+    "require_complete_active_bindings": true,
+    "camera_from_view": true,
+    "mrt_attachments": 2,
+    "stencil_normalization": "none",
+    "stencil_face_mode": "generic",
+    "backend_basis_conversions": {
+      "fragment": {
+        "worldVectors": [
+          {
+            "source": "cameraPosition",
+            "alias": "pcrUnityCameraPosition",
+            "expectedOccurrences": 1
+          },
+          {
+            "source": "vs_TEXCOORD2",
+            "alias": "pcrUnityWorldPosition",
+            "expectedOccurrences": 1
+          },
+          {
+            "source": "vs_TEXCOORD3",
+            "alias": "pcrUnityWorldNormal",
+            "expectedOccurrences": 3
+          }
+        ],
+        "viewForwards": []
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseRampTex",
+      "spirvName": "_536",
+      "binding": 0,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_NoisyMask",
+      "spirvName": "_678",
+      "binding": 1,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_DefaultNoiseRemapCurveTexture",
+      "spirvName": "_689",
+      "binding": 2,
+      "dimension": 2,
+      "glslType": "sampler2D",
+      "stages": [
+        "fragment"
+      ]
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_890",
+      "binding": 3,
+      "dimension": 4,
+      "glslType": "samplerCube",
+      "stages": [
+        "fragment"
+      ]
+    }
+  ],
+  "samplers": [
+    "_536",
+    "_678",
+    "_689",
+    "_890"
+  ],
+  "sampler_slots": [
+    "_BaseRampTex",
+    "_NoisyMask",
+    "_DefaultNoiseRemapCurveTexture",
+    "_CubeMap"
+  ],
+  "compiled_texture_bindings": {
+    "_BaseRampTex": 0,
+    "_NoisyMask": 1,
+    "_DefaultNoiseRemapCurveTexture": 2,
+    "_CubeMap": 3
+  },
+  "implicit_defaults": {
+    "_BaseRampTex": "white",
+    "_NoisyMask": "white"
+  },
+  "mrt": {
+    "primary": "_933",
+    "emissive": "_648"
+  },
+  "runtime_boundaries": [
+    {
+      "status": "partial-exact",
+      "scope": "component-uniform-producer",
+      "producer": "pocket-card-render/card-marble-layer-arm64-state-port@1",
+      "il2cpp_evidence": {
+        "type": "Lettuce.Infrastructure.Card.Core.CardMarbleLayer",
+        "methods": [
+          "Validate",
+          "Initialize",
+          "FixedUpdate",
+          "UpdateTilt",
+          "UpdatePointGoals",
+          "UpdatePosition",
+          "UpdateMarble",
+          "ApplyParams"
+        ]
+      },
+      "payload": [
+        {
+          "name": "_Attributes",
+          "type": "vec4[4]"
+        },
+        {
+          "name": "_PointCount",
+          "type": "int"
+        },
+        {
+          "name": "_Tilt",
+          "type": "float"
+        },
+        {
+          "name": "_Front",
+          "type": "vec2"
+        },
+        {
+          "name": "_TiltRotation",
+          "type": "float"
+        },
+        {
+          "name": "_WorldFront",
+          "type": "vec3"
+        }
+      ],
+      "forbidden_substitution": "A normalized pointer tilt is not the official point-position simulation and must not be used as an exact producer.",
+      "exact_scope": "Serialized component parameters, ARM64 method bytes, point-state equations and MaterialPropertyBlock payload shape.",
+      "runtime_required": "Unity FixedUpdate scheduling and the submitted guest MaterialPropertyBlock values for a captured frame."
+    },
+    {
+      "status": "partial-exact",
+      "scope": "component-uniform-producer",
+      "producer": "pocket-card-render/card-behaviour-hologram-rotation-arm64-port@1",
+      "il2cpp_evidence": {
+        "type": "Lettuce.Infrastructure.Card.Core.CardBehaviour",
+        "method": "UpdateHologramRotation"
+      },
+      "payload": [
+        {
+          "name": "_Rotation",
+          "type": "vec3"
+        }
+      ],
+      "note": "CardBehaviour writes CardDataGroup.HologramRotation to every child Renderer. The canonical CardRenderer and UI loader paths construct CardDataGroup with UnityEngine.Vector3.zero; guest MaterialPropertyBlock submission remains runtime-required."
+    },
+    {
+      "status": "runtime-required",
+      "scope": "dynamic-curve-texture-producer",
+      "producer": "pocket-card-render/card-marble-layer-arm64-state-port@1",
+      "il2cpp_evidence": {
+        "type": "Lettuce.Infrastructure.Card.Core.CardMarbleLayer/RemapCurveSettings",
+        "method": "ApplyParams"
+      },
+      "payload": [
+        {
+          "property": "_DefaultNoiseRemapCurveTexture",
+          "webgl_uniform": "_689",
+          "type": "sampler2D"
+        }
+      ],
+      "exact_scope": "Serialized AnimationCurve keys, 2^Resolution sampling grid, curve mixing equation, clamp wrap and linear texture intent.",
+      "runtime_required": "Unity R16 quantization and the submitted guest texture object; WebGL uses an explicit R32F backend adaptation."
+    }
+  ]
+}

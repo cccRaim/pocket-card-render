@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readOfficialPostprocess } from "./official-postprocess.mjs";
+import { officialSample } from "./official-sample.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -156,6 +157,10 @@ function readBloomProgram() {
 const bloom = readBloomProgram();
 const postprocess = readOfficialPostprocess();
 const issues = [];
+
+if (officialSample.artifacts.apkm.sha256 !== EXPECTED.source.apkmSha256) {
+  issues.push("current official sample APKM hash does not match the pinned Bloom program");
+}
 
 function same(label, actual, expected) {
   if (actual !== expected) issues.push(`${label}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);

@@ -66,14 +66,14 @@ function entryByShader(fixture, shaderKey) {
   return entry;
 }
 
-test("current source-bound manifests close the full 41-port composite-key set", () => {
+test("current source-bound manifests close the full 79-port composite-key set", () => {
   const fixture = loadFixture();
   const result = audit(fixture);
   assert.deepEqual(failures(result), []);
-  assert.equal(result.expectedKeys.length, 41);
+  assert.equal(result.expectedKeys.length, 79);
   assert.deepEqual(result.discoveredKeys, result.expectedKeys);
-  assert.equal(new Set(fixture.contract.ports.map((port) => port.selectorId)).size, 39);
-  assert.equal(new Set(fixture.contract.ports.map(officialPortKey)).size, 41);
+  assert.equal(new Set(fixture.contract.ports.map((port) => port.selectorId)).size, 77);
+  assert.equal(new Set(fixture.contract.ports.map(officialPortKey)).size, 79);
 });
 
 test("missing MatCap is rejected instead of being hidden by a hand-maintained audit map", () => {

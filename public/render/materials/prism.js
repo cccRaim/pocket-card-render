@@ -5,7 +5,7 @@ import { bindDynamicUniformProducerContract } from "../dynamic-uniform-producer.
 defineMaterial("prism", {
   requires: (recipe, ctx) => !!ctx.layerTexDefault(recipe, "_BaseTex"),
   build(recipe, ctx) {
-    const exact = ctx.exactShaderPort(recipe, "Card_Prism");
+    const exact = ctx.exactShaderPort(recipe);
     if (!exact) return null;
     const uniforms = ctx.exactPortUniforms(
       recipe,

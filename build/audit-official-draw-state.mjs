@@ -14,12 +14,20 @@ import {
   applyStencilState,
   setBlend,
 } from "../public/render/context.js";
-import { SHADER } from "../public/render/rarities.js";
+import {
+  compileRuntimeMaterialDispatchIndex,
+  resolveRuntimeMaterialDispatch,
+} from "../public/render/runtime-dispatch-contract.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const IS_MAIN = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 const SHADER_ROOT = process.env.PCR_SHADERS
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
+const PROGRAM_PORT_CONTRACT = JSON.parse(fs.readFileSync(
+  path.join(ROOT, "public/shaders/official_program_port_contract.json"),
+  "utf8",
+));
+const RUNTIME_DISPATCH_INDEX = compileRuntimeMaterialDispatchIndex(PROGRAM_PORT_CONTRACT);
 
 const UNITY_BLEND_TO_WEBGL = Object.freeze({
   0: "ZERO",
@@ -88,7 +96,12 @@ function extractOfficialStates() {
     cwd: ROOT,
     env: process.env,
     shell: process.platform === "win32",
-    input: JSON.stringify({ root: SHADER_ROOT, shaders: Object.keys(SHADER).sort() }),
+    input: JSON.stringify({
+      root: SHADER_ROOT,
+      shaders: [...new Set(
+        PROGRAM_PORT_CONTRACT.runtimeDispatch.routes.map((row) => row.dispatch.shaderKey),
+      )].sort(),
+    }),
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
   });
@@ -258,8 +271,7 @@ function runtimeProbe(record) {
   return state;
 }
 
-function buildRecord(official, scene, material, recipe) {
-  const config = SHADER[recipe.shader];
+function buildRecord(official, scene, material, recipe, config) {
   const selected = selectOfficialPass(official, recipe.shader, recipe);
   const record = {
     source: { scene, material, shader: recipe.shader, officialVariant: selected.key },
@@ -274,6 +286,7 @@ function buildRecord(official, scene, material, recipe) {
       shader: recipe.shader,
       queue: recipe.queue,
       floats: recipe.floats || {},
+      runtimeDispatch: config,
     },
     pass: selected.pass,
   };
@@ -304,9 +317,9 @@ function readSceneRecords(official) {
   for (const scene of scenes) {
     const data = JSON.parse(fs.readFileSync(path.join(publicRoot, scene), "utf8"));
     for (const [material, recipe] of Object.entries(data.materials || {}).sort(([a], [b]) => a.localeCompare(b))) {
-      const config = SHADER[recipe.shader];
+      const config = resolveRuntimeMaterialDispatch(RUNTIME_DISPATCH_INDEX, recipe);
       if (!config || config.defer) continue;
-      records.push(buildRecord(official, scene, material, recipe));
+      records.push(buildRecord(official, scene, material, recipe, config));
     }
   }
   return records;

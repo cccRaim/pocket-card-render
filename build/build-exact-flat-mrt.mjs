@@ -22,8 +22,8 @@ const SHADER_ROOT = process.env.PCR_SHADERS
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
-const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
 const SHARED_VERTEX_CROSS_SHA256 = "b58c6793bd83439bc7dacfceef7c95e76d417e0359885f1a4dabb93338ebc38c";
 const PASS_POLICY = {
   rtSeparateBlend: false,
@@ -48,6 +48,7 @@ const PORTS = [
     samplerSlot: "_BaseTex",
     materialFloats: ["_EmitMasking"],
     fragmentOutputs: ["_21", "_45"],
+    emissiveValue: "alpha-only",
   },
   {
     shader: "Simple-Transparent",
@@ -62,6 +63,22 @@ const PORTS = [
     samplerSlot: "_MainTex",
     materialFloats: [],
     fragmentOutputs: ["_29", "_40"],
+    secondaryValue: [0, 0, 0, 0],
+  },
+  {
+    shader: "Text_Alpha",
+    selectorId: "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f",
+    candidateWitnessId: "449ba4e013e05df325624327980d8de353ddc5cb82ac8ea3e87a248951f6c5bc",
+    prefix: "text_alpha_exact",
+    fragmentFile: "dynamic_ui_text_alpha.frag.glsl",
+    manifestFile: "dynamic_ui_text_alpha_uniforms.json",
+    parameterReflectionSha256: "8a1d222bff295133a56014ddc234af348097f906512f55faab6e2082969780ae",
+    parameterBytes: 100,
+    fragmentCrossSha256: "0ef995f0ab6bd569d523e7dc8702768d28ffd3a01fdda18b9d80cc04b8944e04",
+    samplerSlot: "_DynamicUITex",
+    materialFloats: ["_AlphaThreshold", "_Alpha"],
+    fragmentOutputs: ["_69", "_65"],
+    emissiveValue: "alpha-only",
   },
 ];
 
@@ -90,6 +107,13 @@ function assertInterface(reflection, port) {
   if (port.shader === "Frame") {
     const fragmentUbo = reflection.fragment.ubos?.[0];
     equal({ name: fragmentUbo?.name, size: fragmentUbo?.block_size }, { name: "_28_30", size: 4 }, "Frame fragment UBO");
+  } else if (port.shader === "Text_Alpha") {
+    const fragmentUbo = reflection.fragment.ubos?.[0];
+    equal(
+      { name: fragmentUbo?.name, size: fragmentUbo?.block_size },
+      { name: "_33_35", size: 8 },
+      "Text_Alpha fragment UBO",
+    );
   } else {
     equal(reflection.fragment.ubos || [], [], "Simple-Transparent fragment UBOs");
   }
@@ -122,6 +146,16 @@ function adaptFragment(source, port) {
     out = out.replace(/layout\(std140\) uniform _28_30[\s\S]*?}\s*_30;\s*/, "uniform mediump float _EmitMasking;\n\n");
     out = out.replaceAll("_30._m0", "_EmitMasking");
     if (/_30\._m/.test(out)) throw new Error("Frame fragment adaptation incomplete");
+  } else if (port.shader === "Text_Alpha") {
+    out = out.replace(/layout\(std140\) uniform _33_35[\s\S]*?}\s*_35;\s*/, [
+      "uniform mediump float _AlphaThreshold;",
+      "uniform highp float _Alpha;",
+      "",
+    ].join("\n"));
+    out = out
+      .replaceAll("_35._m0", "_AlphaThreshold")
+      .replaceAll("_35._m1", "_Alpha");
+    if (/_35\._m/.test(out)) throw new Error("Text_Alpha fragment adaptation incomplete");
   }
   return `${out.trimEnd()}\n`;
 }
@@ -213,7 +247,7 @@ for (const port of PORTS) {
         spirvCrossGlslSha256: sha256(officialFragment),
         outputSha256: sha256(fragment),
         operations: [
-          ...(port.shader === "Frame" ? [{
+          ...(["Frame", "Text_Alpha"].includes(port.shader) ? [{
             kind: "uniform-buffer-flattening",
             source: "serialized-common",
             preservation: "names-types-precision",
@@ -222,7 +256,9 @@ for (const port of PORTS) {
         ],
         substitutions: port.shader === "Frame"
           ? ["replace serialized PGlobals _EmitMasking with the same-name Three.js material uniform"]
-          : ["remove #version directive supplied by Three.js RawShaderMaterial"],
+          : port.shader === "Text_Alpha"
+            ? ["replace serialized PGlobals _AlphaThreshold/_Alpha with same-name Three.js material uniforms"]
+            : ["remove #version directive supplied by Three.js RawShaderMaterial"],
       },
       interfaceSha256: canonicalJsonSha256({ vertex: reflection.vertex, fragment: reflection.fragment }),
       officialVertexInputs: vertexInputContract,
@@ -264,10 +300,15 @@ for (const port of PORTS) {
       sampler_slots: samplerBindings.map((row) => row.slot),
       compiled_texture_bindings: Object.fromEntries(samplerBindings.map((row) => [row.slot, row.binding])),
       implicit_defaults: metadata.shaderPropertyDefaults.textures,
-      mrt: { primary: port.fragmentOutputs[0], emissive: port.fragmentOutputs[1] },
+      mrt: {
+        primary: port.fragmentOutputs[0],
+        emissive: port.fragmentOutputs[1],
+        ...(port.emissiveValue ? { emissive_value: port.emissiveValue } : {}),
+        ...(port.secondaryValue ? { secondary_value: port.secondaryValue } : {}),
+      },
     }, null, 2)}\n`;
   });
 }
 outputs["textured.vert.glsl"] = sharedVertex;
 writeOrCheckOutputs(outputs, { outDir: OUT, check: CHECK });
-console.log(`${CHECK ? "verified" : "generated"} selector-owned Frame and Simple-Transparent WebGL2 ports`);
+console.log(`${CHECK ? "verified" : "generated"} selector-owned flat MRT WebGL2 ports`);

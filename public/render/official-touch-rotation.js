@@ -211,3 +211,10 @@ export function unityQuaternionToThree(quaternion) {
   const [x, y, z, w] = normalizeQuaternion(quaternion);
   return [-x, -y, z, w];
 }
+
+// C * R * C is an involution, so the inverse runtime-basis conversion has
+// the same component mapping. Keep the direction explicit at call sites.
+export function threeQuaternionToUnity(quaternion) {
+  const [x, y, z, w] = normalizeQuaternion(quaternion);
+  return [-x, -y, z, w];
+}

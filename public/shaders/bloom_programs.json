@@ -2,6 +2,8 @@
   "shader": "Hidden/CustomPostEffect/Bloom",
   "generated_by": "build/build-exact-bloom.mjs",
   "official": {
+    "sample_id": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+    "sample_manifest_sha256": "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
     "apkm_sha256": "9b7f9067e00a54f342bd4f17e669ceeb86b80bb7d34ff2d0d0fe82050a62f201",
     "asset_sha256": "8684703cededfb2cbd1bddb656c650be5689ba80cfe1d0ae30deecf35826ccef",
     "compressed_program_sha256": "1f923d6c1b6cb41e2ec631b66c433ff59ff27a9835e1cfc844c3f3a070a214ba",
@@ -13,6 +15,19 @@
       "pass": 0,
       "parameter_entry_sha256": "abc9260ca44693aa494b92e17dc211246ea95940de3171a4f069997a805e263c",
       "program_entry_sha256": "0461f6b48af1c0f79ac42d48d49f41bb466764cf038b0bb0ff53fcd610ba6ace",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 0,
+        "destBlendAlpha": 0,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 1,
+        "zTest": 4,
+        "zWrite": 1
+      },
       "modules": {
         "vertex": {
           "byte_size": 2388,
@@ -42,6 +57,19 @@
       "pass": 1,
       "parameter_entry_sha256": "a6437bf1be4beb49e61df7edb497f46a680eac4e3721b858a6e3f43561d9d36c",
       "program_entry_sha256": "d3af06e5a4ac1b1ede51ba4425042ee3d2d9f04cb9ede27a78c733c957cca061",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 0,
+        "destBlendAlpha": 0,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 1,
+        "zTest": 4,
+        "zWrite": 1
+      },
       "modules": {
         "vertex": {
           "byte_size": 3604,
@@ -75,6 +103,19 @@
       "pass": 2,
       "parameter_entry_sha256": "b226335b552b116b73f2a1f3825e5b993f206c7c9a68933647cfd8936ebc36ab",
       "program_entry_sha256": "b2a841a47e114952d615bdd320d1e7051df969099e37875098b28262e6ec7800",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 0,
+        "destBlendAlpha": 0,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 1,
+        "zTest": 0,
+        "zWrite": 0
+      },
       "modules": {
         "vertex": {
           "byte_size": 3504,
@@ -110,6 +151,19 @@
       "pass": 3,
       "parameter_entry_sha256": "8f688399ea775476cd53ac5139a0f1b92659437299499a8e3f511dedd9087204",
       "program_entry_sha256": "f7cea732009cf2b172dfa6bdfe97ae115ce0d2f5e5ecbbcf5345312e8e247eb2",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 0,
+        "destBlendAlpha": 0,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 1,
+        "zTest": 4,
+        "zWrite": 1
+      },
       "modules": {
         "vertex": {
           "byte_size": 3504,
@@ -143,6 +197,19 @@
       "pass": 4,
       "parameter_entry_sha256": "f48c52f47256668fe904e5086210156d55dfb4e3561fb99686bef582ce84b078",
       "program_entry_sha256": "e58a9b189797b38661b0a1ec56e0b957cc14c5e984cc3720e8af28f8b4aa93cc",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 5,
+        "destBlendAlpha": 5,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 1,
+        "zTest": 4,
+        "zWrite": 1
+      },
       "modules": {
         "vertex": {
           "byte_size": 3604,
@@ -176,6 +243,19 @@
       "pass": 5,
       "parameter_entry_sha256": "3587f63135b4dd7aab5bdf0e2488a68d3f8ea3ad15891808d6b7274165e97bbf",
       "program_entry_sha256": "c25d8ba99d108fe51249427a2ee17dfe7e5d326994233b2761cee5e68c654d38",
+      "render_state": {
+        "blendOp": 0,
+        "blendOpAlpha": 0,
+        "colorMask": 15,
+        "cull": 2,
+        "destBlend": 1,
+        "destBlendAlpha": 1,
+        "separateBlend": false,
+        "srcBlend": 1,
+        "srcBlendAlpha": 0,
+        "zTest": 0,
+        "zWrite": 0
+      },
       "modules": {
         "vertex": {
           "byte_size": 3504,

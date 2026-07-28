@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { defineMaterial } from "../registry.js";
 
-function exactStencilMaterial(recipe, ctx, shaderKey) {
-  const exact = ctx.exactShaderPort(recipe, shaderKey);
+function exactStencilMaterial(recipe, ctx) {
+  const exact = ctx.exactShaderPort(recipe);
   if (!exact) return null;
   const material = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
@@ -15,7 +15,7 @@ function exactStencilMaterial(recipe, ctx, shaderKey) {
     fragmentShader: exact.frag,
     toneMapped: false,
   });
-  material.userData.exactShader = shaderKey;
+  material.userData.exactShader = recipe.runtimeDispatch.shaderKey;
   material.userData.officialPassRuntime = exact.manifest?.official_pass_runtime || null;
   material.userData.officialSelector = exact.manifest?.official_selector || null;
   material.userData.officialExecutableIdentity = exact.manifest?.official_executable_identity || null;
@@ -23,22 +23,22 @@ function exactStencilMaterial(recipe, ctx, shaderKey) {
 }
 
 defineMaterial("outerStencil", {
-  requires: (recipe, ctx) => !!ctx.exactShaderPort(recipe, "OuterStencil"),
-  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx, "OuterStencil"),
+  requires: (recipe, ctx) => !!ctx.exactShaderPort(recipe),
+  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx),
 });
 
 defineMaterial("innerStencil", {
   requires: (recipe, ctx) => (
-    !!ctx.exactShaderPort(recipe, "InnerStencil")
+    !!ctx.exactShaderPort(recipe)
     && !!ctx.layerTexDefault(recipe, "_BaseTex")
   ),
-  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx, "InnerStencil"),
+  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx),
 });
 
 defineMaterial("illustStencil", {
   requires: (recipe, ctx) => (
-    !!ctx.exactShaderPort(recipe, "IllustStencil")
+    !!ctx.exactShaderPort(recipe)
     && !!ctx.layerTexDefault(recipe, "_BaseTex")
   ),
-  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx, "IllustStencil"),
+  build: (recipe, ctx) => exactStencilMaterial(recipe, ctx),
 });

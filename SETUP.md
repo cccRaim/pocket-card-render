@@ -64,7 +64,8 @@ cd pocket-card-render
 npm install
 ```
 
-The 112-card globally minimum coverage set plus three supplemental regression scenes are prebuilt,
+The 112-card globally minimum coverage set, five minimum additional rarity-rendering witnesses,
+and six supplemental regression scenes are prebuilt,
 but their **art is not committed** (it's the game's). Provide it
 from an AssetRipper export of **your own** copy of the game (see *Path B → step 2* for the export
 config), then gather just what the samples reference:
@@ -81,7 +82,7 @@ Run `npm run audit:official-mesh-payload` to compare the four canonical prefabs 
 triangle streams; the audit uses no screenshots or image thresholds.
 
 Open <http://127.0.0.1:8011> and use the card dropdown. It exposes all 112 globally minimum
-coverage scenes plus three supplemental regression scenes. Entries remain disabled until their
+coverage scenes, five rarity-rendering witnesses, and six supplemental regression scenes. Entries remain disabled until their
 referenced `/game/` assets have been gathered; the server never treats a generic fallback recipe as
 a ready built-in example.
 
@@ -173,7 +174,10 @@ transform), plus official Renderer/Material/Shader/Mesh `CAB:pathID` identities 
 Material/Shader keyword inputs used by native draw sorting. It also decodes compiled Shader parameter
 reflection: a decisive per-renderer property outside `UnityPerDraw` writes `srpBatcherCompatible: 0`;
 absence of that witness stays `null` rather than being guessed. The `--shared` dirs let cross-bundle
-texture/shader pointers resolve. (Schema: see
+texture/shader pointers resolve. Direct renderer dependencies outside those roots are followed by
+their serialized CAB owner identity from the nearest `decrypted` ancestor; this includes official
+cross-card Material reuse and top-level shared Logo assets without card-name aliases. Use
+`--dependency-root` only when the decrypted root cannot be inferred from the input path. (Schema: see
 [ASSETS.md](ASSETS.md).)
 
 ### 5. Build the scene

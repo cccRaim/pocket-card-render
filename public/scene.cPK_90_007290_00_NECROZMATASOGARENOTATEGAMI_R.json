@@ -7,6 +7,93 @@
  },
  "prefabGlb": "/game/Assets/PrefabHierarchyObject/cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L.glb",
  "materials": {
+  "DropEvent_LOGO": {
+   "shader": "Opaque",
+   "queue": 2900,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-9213123383961301032",
+    "shader": "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+    "customRenderQueue": 2900,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "DropEvent",
+   "floats": {
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "DropEvent_AM",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
+     "officialName": "DropEvent_AM",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3798950666842338308",
+      "source": "CAB-c604e9606f62d7199af7adbf5a8b97e5",
+      "identity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:3798950666842338308"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
   "IllustStencil_Pokemon": {
    "shader": "IllustStencil",
    "queue": 1000,
@@ -74,6 +161,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_pokemon_window",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "officialName": "card_inner_stencil_mask_pokemon_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5994683186341809779",
+      "source": "CAB-b57b4bf171c72f152c3e21e7eddd4db5",
+      "identity": "CAB-b57b4bf171c72f152c3e21e7eddd4db5:-5994683186341809779"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -152,6 +247,14 @@
     "_BaseTex": {
      "name": "card_inner_stencil_mask_pokemon_window",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "officialName": "card_inner_stencil_mask_pokemon_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5994683186341809779",
+      "source": "CAB-b57b4bf171c72f152c3e21e7eddd4db5",
+      "identity": "CAB-b57b4bf171c72f152c3e21e7eddd4db5:-5994683186341809779"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -286,8 +389,16 @@
    "keywords": [],
    "textures": {
     "_BaseTex": {
-     "name": "Card_Back",
-     "url": "/game/Assets/Texture2D/Card_Back.png",
+     "name": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "officialName": "Card_Back",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3680672549930378084",
+      "source": "CAB-b3a060b8e06893eadc58cd3cc0017a42",
+      "identity": "CAB-b3a060b8e06893eadc58cd3cc0017a42:3680672549930378084"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -448,6 +559,14 @@
     "_BaseTex": {
      "name": "SimpleCard_Side02",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "officialName": "SimpleCard_Side02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7427414079537827346",
+      "source": "CAB-5be2d51c53e98a3478ebace9de25b309",
+      "identity": "CAB-5be2d51c53e98a3478ebace9de25b309:7427414079537827346"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -553,6 +672,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -565,6 +692,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -577,6 +712,14 @@
     "_PhaseTex": {
      "name": "Phase_UB_Tag",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UB_Tag.png",
+     "officialName": "Phase_UB_Tag",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UB_Tag.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6650616028643018176",
+      "source": "CAB-ba6cf1fe7c62ae4108cb1c9f40630d7d",
+      "identity": "CAB-ba6cf1fe7c62ae4108cb1c9f40630d7d:-6650616028643018176"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -589,6 +732,14 @@
     "_RampMaskTex": {
      "name": "ALL_RMPmask_EX_135",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -601,6 +752,14 @@
     "_RampTex": {
      "name": "UB_RMP_CategoryTag",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/_Test/RMP_folder/UB_RMP_CategoryTag.png",
+     "officialName": "UB_RMP_CategoryTag",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/_Test/RMP_folder/UB_RMP_CategoryTag.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5251966549810571626",
+      "source": "CAB-6fa09ee8f4cf7b42d8bc621f92245ed7",
+      "identity": "CAB-6fa09ee8f4cf7b42d8bc621f92245ed7:5251966549810571626"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -686,7 +845,28 @@
    },
    "colors": {},
    "keywords": [],
-   "textures": {}
+   "textures": {
+    "_DynamicUITex": {
+     "name": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "officialName": "black",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1459000106877476882",
+      "source": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf",
+      "identity": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf:1459000106877476882"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
   },
   "L_RaremarkFlame_a": {
    "shader": "Simple-Opaque",
@@ -756,6 +936,14 @@
     "_MainTex": {
      "name": "card_rarity_outline",
      "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "officialName": "card_rarity_outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3009383940076098196",
+      "source": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59",
+      "identity": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59:-3009383940076098196"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -865,6 +1053,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -877,6 +1073,14 @@
     "_HologramMaskTex": {
      "name": "mask_white",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -889,6 +1093,14 @@
     "_MainTex": {
      "name": "card_rarity_diamond_a",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "officialName": "card_rarity_diamond_a",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2330146156838843569",
+      "source": "CAB-747e6bcce71cc807bd8b67ad96fd7f94",
+      "identity": "CAB-747e6bcce71cc807bd8b67ad96fd7f94:2330146156838843569"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -901,6 +1113,14 @@
     "_PhaseTex": {
      "name": "Phase_Rarity_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "officialName": "Phase_Rarity_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-280613335593702549",
+      "source": "CAB-3ff9bb7bce2ea2583b834c91aa653065",
+      "identity": "CAB-3ff9bb7bce2ea2583b834c91aa653065:-280613335593702549"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -913,6 +1133,14 @@
     "_RampMaskTex": {
      "name": "RMP_MASK_RareMark",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "officialName": "RMP_MASK_RareMark",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3850834502605539399",
+      "source": "CAB-ae66c11063b1b943772c3289afdece42",
+      "identity": "CAB-ae66c11063b1b943772c3289afdece42:3850834502605539399"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -925,6 +1153,14 @@
     "_RampTex": {
      "name": "ALL_RMP_RareMark_Diamond",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "officialName": "ALL_RMP_RareMark_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5619055394819206857",
+      "source": "CAB-0fca1d01605b5c89e9d644a1d42c959b",
+      "identity": "CAB-0fca1d01605b5c89e9d644a1d42c959b:5619055394819206857"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1079,6 +1315,14 @@
     "_BaseTex": {
      "name": "card_pokemon_normal_base",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+     "officialName": "card_pokemon_normal_base",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4725138620272195076",
+      "source": "CAB-23a4ed88766d007ca036be5855484fe4",
+      "identity": "CAB-23a4ed88766d007ca036be5855484fe4:-4725138620272195076"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1195,6 +1439,14 @@
     "_MainTex": {
      "name": "card_bg_met",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_met.png",
+     "officialName": "card_bg_met",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_met.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4963573292281750424",
+      "source": "CAB-4fbfa828322735ac49af50bda58b3b1f",
+      "identity": "CAB-4fbfa828322735ac49af50bda58b3b1f:4963573292281750424"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1350,6 +1602,14 @@
     "_BaseTex": {
      "name": "card_pokemon_base_r",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_r.png",
+     "officialName": "card_pokemon_base_r",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_r.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1592083059050618692",
+      "source": "CAB-295c091f195d7c5c2c99e44a829f0a39",
+      "identity": "CAB-295c091f195d7c5c2c99e44a829f0a39:1592083059050618692"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1362,6 +1622,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1374,6 +1642,14 @@
     "_HologramMaskTex": {
      "name": "card_frame_mask_R_SR",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "officialName": "card_frame_mask_R_SR",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-604341785784631098",
+      "source": "CAB-a890c7ed38275a78a577243804497965",
+      "identity": "CAB-a890c7ed38275a78a577243804497965:-604341785784631098"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1386,6 +1662,14 @@
     "_PhaseTex": {
      "name": "Phase_R_Border",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_Border.png",
+     "officialName": "Phase_R_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "6924595927818172936",
+      "source": "CAB-7c97d38a19ad28ae3d9d25a34e8b5701",
+      "identity": "CAB-7c97d38a19ad28ae3d9d25a34e8b5701:6924595927818172936"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1398,6 +1682,14 @@
     "_RampMaskTex": {
      "name": "R_RMPmask_Border",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_Border.png",
+     "officialName": "R_RMPmask_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7093875013367692687",
+      "source": "CAB-c124fa1dcb5ff86abe1a8155a90b1d32",
+      "identity": "CAB-c124fa1dcb5ff86abe1a8155a90b1d32:7093875013367692687"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1410,6 +1702,14 @@
     "_RampTex": {
      "name": "R_RMP_Border",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_Border.png",
+     "officialName": "R_RMP_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2923158670944746692",
+      "source": "CAB-3269f254994496e09c8aa4d764e05fa4",
+      "identity": "CAB-3269f254994496e09c8aa4d764e05fa4:2923158670944746692"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1518,6 +1818,14 @@
     "_HologramMaskTex": {
      "name": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK",
      "url": "/game/Assets/Texture2D/cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK.png",
+     "officialName": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3319956718476976011",
+      "source": "CAB-40ecde1f5dc019bd8a1221600f3ead50",
+      "identity": "CAB-40ecde1f5dc019bd8a1221600f3ead50:-3319956718476976011"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1530,6 +1838,14 @@
     "_PhaseTex": {
      "name": "Phase_R_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_BG.png",
+     "officialName": "Phase_R_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_R_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7839108418705847963",
+      "source": "CAB-81fa1a5de2b416518ca53def55ef5347",
+      "identity": "CAB-81fa1a5de2b416518ca53def55ef5347:-7839108418705847963"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1542,6 +1858,14 @@
     "_RampMaskTex": {
      "name": "R_RMPmask_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_BG.png",
+     "officialName": "R_RMPmask_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/R_RMPmask_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7340484273435608145",
+      "source": "CAB-95b312985a1d8da90e19a2a6106c34e8",
+      "identity": "CAB-95b312985a1d8da90e19a2a6106c34e8:-7340484273435608145"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1554,6 +1878,14 @@
     "_RampTex": {
      "name": "R_RMP_BG",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_BG.png",
+     "officialName": "R_RMP_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/R_RMP_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2345640788330388414",
+      "source": "CAB-c748594afaadab605fc850abadbaccb6",
+      "identity": "CAB-c748594afaadab605fc850abadbaccb6:-2345640788330388414"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1655,6 +1987,14 @@
     "_MainTex": {
      "name": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL",
      "url": "/game/Assets/Texture2D/cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL.png",
+     "officialName": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3368330589510508355",
+      "source": "CAB-40ecde1f5dc019bd8a1221600f3ead50",
+      "identity": "CAB-40ecde1f5dc019bd8a1221600f3ead50:3368330589510508355"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1754,6 +2094,14 @@
     "_CubeMap": {
      "name": "L_001_ENV",
      "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1766,6 +2114,14 @@
     "_MetalMaskTex": {
      "name": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK",
      "url": "/game/Assets/Texture2D/cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK.png",
+     "officialName": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3319956718476976011",
+      "source": "CAB-40ecde1f5dc019bd8a1221600f3ead50",
+      "identity": "CAB-40ecde1f5dc019bd8a1221600f3ead50:-3319956718476976011"
+     },
      "scale": {
       "x": 1,
       "y": 1
@@ -1779,6 +2135,19 @@
   }
  },
  "officialDraws": [
+  {
+   "drawId": "CAB-40ecde1f5dc019bd8a1221600f3ead50:-1226458434213407120#0",
+   "go": "DropEvent",
+   "goPath": "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L/L_UI_Logo_Pokemon/Pos01/DropEvent",
+   "meshName": "logo_drop",
+   "materialName": "DropEvent_LOGO",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-40ecde1f5dc019bd8a1221600f3ead50:-1226458434213407120",
+   "materialIdentity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-9213123383961301032",
+   "shaderIdentity": "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+   "meshIdentity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-2974538152035982256",
+   "rendererProperties": {}
+  },
   {
    "drawId": "CAB-40ecde1f5dc019bd8a1221600f3ead50:6481083203110737520#0",
    "go": "IllustStencil",
@@ -2029,17 +2398,27 @@
  ],
  "runtimeSettings": {
   "kiraPuyo": {},
-  "circularKira": {}
+  "circularKira": {},
+  "cardFuture": {},
+  "cardAncient": {},
+  "ancientBGAnimation": {},
+  "cardMarble": {},
+  "cardMSR": {},
+  "msrAnimation": {},
+  "cardMRR": {},
+  "mrrAnimation": {}
  },
  "textures": {
+  "DropEvent_AM": "/game/Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
   "card_inner_stencil_mask_pokemon_window": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
-  "Card_Back": "/game/Assets/Texture2D/Card_Back.png",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
   "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
   "L_001_ENV": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
   "mask_white": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
   "Phase_UB_Tag": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_UB_Tag.png",
   "ALL_RMPmask_EX_135": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
   "UB_RMP_CategoryTag": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/_Test/RMP_folder/UB_RMP_CategoryTag.png",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
   "card_rarity_outline": "/game/Assets/Texture2D/card_rarity_outline.png",
   "card_rarity_diamond_a": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
   "Phase_Rarity_Diamond": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
@@ -2059,14 +2438,16 @@
   "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL": "/game/Assets/Texture2D/cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL.png"
  },
  "alphaMode": {
+  "DropEvent_AM": "opaque",
   "card_inner_stencil_mask_pokemon_window": "opaque",
-  "Card_Back": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "opaque",
   "SimpleCard_Side02": "opaque",
   "L_001_ENV": "opaque",
   "mask_white": "opaque",
   "Phase_UB_Tag": "opaque",
   "ALL_RMPmask_EX_135": "opaque",
   "UB_RMP_CategoryTag": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "opaque",
   "card_rarity_outline": "opaque",
   "card_rarity_diamond_a": "straight",
   "Phase_Rarity_Diamond": "opaque",
@@ -2086,14 +2467,16 @@
   "cPK_90_007290_00_NECROZMATASOGARENOTATEGAMI_R_L_ILL": "opaque"
  },
  "textureColorSpace": {
+  "DropEvent_AM": 1,
   "card_inner_stencil_mask_pokemon_window": 1,
-  "Card_Back": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": 1,
   "SimpleCard_Side02": 1,
   "L_001_ENV": 1,
   "mask_white": 0,
   "Phase_UB_Tag": 0,
   "ALL_RMPmask_EX_135": 0,
   "UB_RMP_CategoryTag": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": 1,
   "card_rarity_outline": 1,
   "card_rarity_diamond_a": 1,
   "Phase_Rarity_Diamond": 0,

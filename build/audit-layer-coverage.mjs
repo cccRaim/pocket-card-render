@@ -3,29 +3,36 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { SHADER } from "../public/render/rarities.js";
 import { SHADER_TEXTURE_DEFAULTS } from "../public/render/shader-defaults.js";
+import "../public/render/materials/index.js";
+import { getMaterial, listKinds } from "../public/render/registry.js";
+import {
+  compileRuntimeMaterialDispatchIndex,
+  resolveRuntimeMaterialDispatch,
+} from "../public/render/runtime-dispatch-contract.js";
 import { CANONICAL_FULL_RUNTIME_SCENES } from "./full-runtime-sources.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sceneNames = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file).sort();
+const allScenes = process.argv.includes("--all-scenes")
+  || process.env.PCR_AUDIT_ALL_SCENES === "1";
+const sceneNames = allScenes
+  ? fs.readdirSync(path.join(ROOT, "public"))
+    .filter((name) => /^scene\..+\.json$/.test(name))
+    .sort()
+  : CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file).sort();
 
 const sentinel = {};
 const runtimeSpecialMaterials = new Set([
   // AssetRipper/glTF placeholder material; app.js intentionally skips unknown DefaultMaterial meshes.
   "DefaultMaterial",
 ]);
-const registeredKinds = scanRegisteredKinds();
-
-function scanRegisteredKinds() {
-  const dir = path.join(ROOT, "public/render/materials");
-  const kinds = new Set();
-  for (const file of fs.readdirSync(dir).filter((n) => n.endsWith(".js"))) {
-    const src = fs.readFileSync(path.join(dir, file), "utf8");
-    for (const m of src.matchAll(/defineMaterial\("([^"]+)"/g)) kinds.add(m[1]);
-  }
-  return kinds;
-}
+const registeredKinds = new Set(listKinds());
+const runtimeDispatchIndex = compileRuntimeMaterialDispatchIndex(JSON.parse(
+  fs.readFileSync(
+    path.join(ROOT, "public", "shaders", "official_program_port_contract.json"),
+    "utf8",
+  ),
+));
 
 function sceneId(sceneName) {
   return sceneName.replace(/^scene\.|\.json$/g, "");
@@ -36,14 +43,17 @@ function hasBoundTexture(mat, slot) {
 }
 
 function makeAuditContext(scene) {
-  return {
+  const ctx = {
     envCubeTex: sentinel,
     dynUITex: sentinel,
     dynHoloTex: sentinel,
     foilTex: sentinel,
+    runtimeSettings: scene.runtimeSettings || {},
+    circularKiraComponents: new Map(),
     animMats: [],
     exactGlitMats: [],
     exHoloMats: [],
+    kiraPuyoMats: [],
     layerTex: (mat, slot) => hasBoundTexture(mat, slot) ? sentinel : null,
     layerTexNoColorSpace: (mat, slot) => hasBoundTexture(mat, slot) ? sentinel : null,
     layerTexRepeat: (mat, slot) => hasBoundTexture(mat, slot) ? sentinel : null,
@@ -53,8 +63,21 @@ function makeAuditContext(scene) {
     layerTexDefaultRepeat: (mat, slot) => (
       hasBoundTexture(mat, slot) || SHADER_TEXTURE_DEFAULTS[mat.shader]?.[slot]
     ) ? sentinel : null,
+    layerCubeDefault: (mat, slot) => (
+      hasBoundTexture(mat, slot) || SHADER_TEXTURE_DEFAULTS[mat.shader]?.[slot]
+    ) ? sentinel : null,
     texStraight: (name) => !!(name && scene.alphaMode?.[name] === "straight"),
   };
+  ctx.exactShaderPorts = (mat) => (
+    mat.runtimeDispatch?.support === "implemented"
+      ? mat.runtimeDispatch.officialPorts.map(() => sentinel)
+      : []
+  );
+  ctx.exactShaderPort = (mat) => {
+    const ports = ctx.exactShaderPorts(mat);
+    return ports.length === 1 ? ports[0] : null;
+  };
+  return ctx;
 }
 
 function usedGlbMaterials(scene) {
@@ -83,47 +106,6 @@ function usedGlbMaterials(scene) {
   return used;
 }
 
-const hasMainTex = (mat, ctx) => !!(ctx.layerTex(mat, "_MainTex") || ctx.layerTex(mat, "_BaseTex"));
-const hasMainTexDefault = (mat, ctx) => !!(ctx.layerTexDefault(mat, "_MainTex") || ctx.layerTexDefault(mat, "_BaseTex"));
-const hasDefault = (slot) => (mat, ctx) => !!ctx.layerTexDefault(mat, slot);
-const hasDefaultRepeat = (slot) => (mat, ctx) => !!ctx.layerTexDefaultRepeat(mat, slot);
-const hasLayer = (slot) => (mat, ctx) => !!ctx.layerTex(mat, slot);
-
-const REQUIREMENTS = {
-  outerStencil: () => true,
-  innerStencil: hasDefault("_BaseTex"),
-  illustStencil: hasDefault("_BaseTex"),
-  dynamicText: (_mat, ctx) => !!ctx.dynHoloTex,
-  textured: hasMainTex,
-  illustTextured: hasMainTex,
-  simpleTransparent: hasMainTex,
-  depthParallax: hasMainTexDefault,
-  effect: hasDefault("_MainTex"),
-  frameOutline: () => true,
-  frame2LayerUR: (_mat, ctx) => !!ctx.envCubeTex,
-  holo: (mat, ctx) => hasDefault("_PhaseTex")(mat, ctx) && hasDefault("_RampMaskTex")(mat, ctx) && hasDefault("_RampTex")(mat, ctx),
-  frameHolo: (mat, ctx) => hasDefault("_RampTex")(mat, ctx) && (hasDefault("_HologramMaskTex")(mat, ctx) || hasLayer("_LayerMaskTex")(mat, ctx)),
-  frameHoloUR: (mat, ctx) => [
-    "_BaseTex", "_HologramMaskTex", "_PhaseTex", "_PhaseMaskTex", "_RampMaskTex", "_RampTex", "_FakeSpecularMask",
-  ].every((slot) => hasDefault(slot)(mat, ctx)),
-  exHolo: (mat, ctx) => !!(ctx.dynUITex && ctx.dynHoloTex && ctx.foilTex)
-    && ["_PhaseTex", "_RampMaskTex", "_RampTex"].every((slot) => hasDefault(slot)(mat, ctx)),
-  exHoloUR: (_mat, ctx) => !!(ctx.dynUITex && ctx.dynHoloTex),
-  rarity: (mat, ctx) => hasLayer("_MainTex")(mat, ctx)
-    && ["_PhaseTex", "_RampMaskTex", "_RampTex"].every((slot) => hasDefault(slot)(mat, ctx)),
-  sbHolo: hasLayer("_MainTex"),
-  plate: (mat, ctx) => !!(ctx.layerTex(mat, "_MainTex") || ctx.layerTex(mat, "_BaseTex") || ctx.layerTexDefault(mat, "_MainTex")),
-  parallaxUR: (mat, ctx) => !!(ctx.layerTex(mat, "_MainTex") || ctx.layerTex(mat, "_BaseTex") || ctx.layerTexDefault(mat, "_MainTex")),
-  urBgHolo: (mat, ctx) => ["_PhaseTex", "_RampMaskTex", "_RampTex", "_FakeSpecularMask"].every((slot) => hasDefault(slot)(mat, ctx)),
-  flare: (mat, ctx) => !!(
-    ctx.layerTex(mat, "_BaseMap") || ctx.layerTex(mat, "_MainTex") || ctx.layerTexDefault(mat, "_BaseMap")
-  ) && hasDefaultRepeat("_FlareVAT")(mat, ctx),
-  metal: () => true,
-  matCapLighting: (mat, ctx) => hasDefault("_MatCapLightTex")(mat, ctx) && hasDefault("_LightingMask")(mat, ctx),
-  glitter: (mat, ctx) => hasDefault("_ABaseTex")(mat, ctx) && hasDefault("_FlowAMap")(mat, ctx),
-  sideBack: hasDefault("_BaseTex"),
-};
-
 const rows = [];
 for (const sceneName of sceneNames) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneName), "utf8"));
@@ -143,42 +125,86 @@ for (const sceneName of sceneNames) {
     }
   }
   for (const [matName, mat] of Object.entries(scene.materials || {})) {
-    if (used && !used.has(matName)) continue;
     const shader = mat.shader;
     if (!shader) continue;
-    const cfg = SHADER[shader];
-    if (!cfg) {
-      rows.push({ ok: false, scene: sceneId(sceneName), mat: matName, shader, reason: "unmapped shader" });
+    const dispatch = resolveRuntimeMaterialDispatch(runtimeDispatchIndex, mat);
+    if (!dispatch) {
+      rows.push({
+        ok: false,
+        scene: sceneId(sceneName),
+        mat: matName,
+        shader,
+        reason: "missing runtime dispatch",
+      });
       continue;
     }
-    if (cfg.defer) {
-      rows.push({ ok: true, scene: sceneId(sceneName), mat: matName, shader, kind: "(defer)", reason: "deferred" });
+    if (dispatch.defer) {
+      rows.push({
+        ok: true,
+        scene: sceneId(sceneName),
+        mat: matName,
+        shader,
+        kind: "(defer)",
+        reason: "deferred",
+      });
       continue;
     }
-    if (!registeredKinds.has(cfg.kind)) {
-      rows.push({ ok: false, scene: sceneId(sceneName), mat: matName, shader, kind: cfg.kind, reason: "missing strategy" });
+    if (!registeredKinds.has(dispatch.strategy)) {
+      rows.push({
+        ok: false,
+        scene: sceneId(sceneName),
+        mat: matName,
+        shader,
+        kind: dispatch.strategy,
+        reason: "missing strategy",
+      });
       continue;
     }
-    const requires = REQUIREMENTS[cfg.kind];
-    if (!requires) {
-      rows.push({ ok: false, scene: sceneId(sceneName), mat: matName, shader, kind: cfg.kind, reason: "missing audit gate" });
+    const strategy = getMaterial(dispatch.strategy);
+    const officialDraws = (scene.officialDraws || [])
+      .filter((draw) => draw.materialName === matName);
+    if (officialDraws.length === 0) {
+      rows.push({
+        ok: false,
+        scene: sceneId(sceneName),
+        mat: matName,
+        shader,
+        kind: dispatch.strategy,
+        reason: "missing official draw identity",
+      });
       continue;
     }
-    let passes = false;
-    try {
-      passes = !!requires(mat, ctx);
-    } catch (err) {
-      rows.push({ ok: false, scene: sceneId(sceneName), mat: matName, shader, kind: cfg.kind, reason: `requires threw: ${err.message}` });
-      continue;
+    for (const draw of officialDraws) {
+      const drawRecipe = {
+        ...mat,
+        runtimeDispatch: dispatch,
+        ...(draw.rendererProperties
+          ? { rendererProperties: draw.rendererProperties }
+          : {}),
+      };
+      let passes = false;
+      try {
+        passes = !!strategy.requires(drawRecipe, ctx);
+      } catch (err) {
+        rows.push({
+          ok: false,
+          scene: sceneId(sceneName),
+          mat: matName,
+          shader,
+          kind: dispatch.strategy,
+          reason: `requires threw: ${err.message}`,
+        });
+        continue;
+      }
+      rows.push({
+        ok: passes,
+        scene: sceneId(sceneName),
+        mat: matName,
+        shader,
+        kind: dispatch.strategy,
+        reason: passes ? "renders" : "requires=false",
+      });
     }
-    rows.push({
-      ok: passes,
-      scene: sceneId(sceneName),
-      mat: matName,
-      shader,
-      kind: cfg.kind,
-      reason: passes ? "renders" : "requires=false",
-    });
   }
 }
 

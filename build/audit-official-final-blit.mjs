@@ -42,8 +42,8 @@ const EXPECTED = {
   },
   generated: {
     "final_blit.vert.glsl": "c3524b1ef34211c4f6329a3df60cbcfcfcad3cdefe795c53a545e0d44961b16e",
-    "final_blit.frag.glsl": "945247d0ef3094c3be011a087419bb3d6d7c7b27436cfb50567ca69e9c4e10d4",
-    "final_blit_program.json": "55a9d77da17d2ab5b0d16995fcfa7db07c29ff018afe417ff251e5a14ff6d356",
+    "final_blit.frag.glsl": "7cf35998bb4d1cd26864ab1bacd6210407ade29def37061b4c57b58800887971",
+    "final_blit_program.json": "70ba247bc42b7556030484e3f45c626f84685de38c7573ee208f4429d0ae914f",
   },
 };
 

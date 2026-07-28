@@ -27,6 +27,14 @@ const SHADER_ROOT = process.env.PCR_SHADERS
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
+const CARD_MSR_PRODUCER =
+  "pocket-card-render/card-msr-object-arm64-state-port@1";
+const CARD_MSR_FLIP_UNIFORMS = Object.freeze([
+  "_FlipAnim",
+  "_FlipAnimOffset",
+  "_FlipBlend",
+  "_ReflectIntensity",
+]);
 
 function member(name, type, offset, array = undefined) {
   return { name, type, offset, ...(array ? { array } : {}) };
@@ -131,8 +139,8 @@ const programs = [
     selector: {
       selectorId: "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292",
       candidateWitnessId: "0ef6f9b87baee73555ff44ac36da4c06e7d1bc97763009fd107af70c438cb883",
-      proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-      portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
       spirvCrossSha256: {
         vertex: "88fc3caeeb669e813b29695973eabb9c8c2d26ef3e5366f84cf3e5f4c47bb319",
         fragment: "2198f4519354a1789cdda51e3f78a208ae58114de6a9564cdb93610f3f4ddc08",
@@ -237,8 +245,8 @@ const programs = [
     selector: {
       selectorId: "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64",
       candidateWitnessId: "0543da854f45effa6f1ab2679ccdf6dfc0a04ff851e8d5b57c996ef7b2a5dd42",
-      proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-      portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
       spirvCrossSha256: {
         vertex: "5e34f963caadde451581bb53fa2e861a018bfcd28dedbb37a7cec6a08a8b0934",
         fragment: "84a61b348956689ecd1cfd481ff215bf055ef8a310a9e69ff302017ac9aa6f65",
@@ -340,6 +348,321 @@ const programs = [
       ],
     },
   },
+  {
+    shader: "Hologram-FlipOutline",
+    stem: "hologram_flip_outline",
+    selector: {
+      selectorId: "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c",
+      candidateWitnessId: "d708e42a7ee009407c20605b182fdc53f9803c8743034d97f1222417614f4f8e",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+      spirvCrossSha256: {
+        vertex: "99ed238b634d1f6ff004b14ae7fedd02e22eed5eca844239270179085f44470a",
+        fragment: "71509de70a8a998ed60438e64e0de5a56089a1da0e667ecd012f6be71788d66b",
+      },
+    },
+    samplerSlots: [
+      "_MainTex", "_MaskTex", "_NormalMap", "_CubeMap", "_PhaseTex",
+      "_RampTex", "_FlipBook", "_OutlineRampTex", "_PhaseTex2",
+      "_RampMaskTex2", "_RampTex2",
+    ],
+    vertex: {
+      block: "_19_21", owner: "_21",
+      attributes: {
+        "layout(location = 0) in vec4 _11;": "in vec3 position;",
+        "layout(location = 1) in vec2 _99;": "in vec2 uv;",
+        "layout(location = 2) in vec3 _115;": "in vec3 normal;",
+        "layout(location = 3) in mediump vec4 _155;": "in vec4 tangent;",
+      },
+      locals: [
+        "    vec4 _11 = vec4(position, 1.0);", "    vec2 _99 = uv;",
+        "    vec3 _115 = normal;", "    vec4 _155 = tangent;",
+        "    mat4 _ObjectToWorld = modelMatrix;",
+        "    mat4 _WorldToObject = inverse(modelMatrix);",
+        "    mat4 _ViewProjection = projectionMatrix * viewMatrix;",
+      ],
+      mapping: ["_ObjectToWorld", "_WorldToObject", "_ViewProjection"],
+      reflection: {
+        ubo: { name: "_19_21", size: 192, members: matrixMembers },
+        inputs: [
+          { name: "_11", type: "vec4", location: 0 },
+          { name: "_99", type: "vec2", location: 1 },
+          { name: "_115", type: "vec3", location: 2 },
+          { name: "_155", type: "vec4", location: 3 },
+        ],
+        outputs: [
+          { name: "vs_TEXCOORD0", type: "vec4", location: 0 },
+          { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
+          { name: "vs_TEXCOORD3", type: "vec3", location: 3 },
+          { name: "vs_TEXCOORD4", type: "vec3", location: 4 },
+        ],
+        textures: [],
+      },
+    },
+    fragment: {
+      block: "_56_58", owner: "_58",
+      uniforms: [
+        "uniform highp vec3 cameraPosition;", "uniform highp mat4 viewMatrix;",
+        "uniform int _FlipX;", "uniform int _FlipY;",
+        "uniform highp float _UVScale;", "uniform highp float _FlipAnim;",
+        "uniform highp float _FlipAnimOffset;", "uniform highp float _FlipBlend;",
+        "uniform highp float _ReflectIntensity;", "uniform highp float _ReflectEmitIntensity;",
+        "uniform vec3 _OutlineColor;", "uniform float _DiffuseIntensity;",
+        "uniform float _Shininess;", "uniform float _SpecularIntensity;",
+        "uniform float _DiffractionPower;", "uniform float _OrientationU;",
+        "uniform float _OrientationV;", "uniform float _ChangeSpeed;",
+        "uniform float _RampOffset;", "uniform int _UsePositionAsUV;",
+        "uniform int _UseOutlineNormalFilter;",
+        "uniform highp float _OutlineNormalFilterThreshold;",
+        "uniform float _DiffractionIntensity2;", "uniform float _DiffractionPower2;",
+        "uniform float _RampRepeat2;", "uniform float _RampSpeed2;",
+        "uniform float _RampOffset2;", "uniform float _RampInterval2;",
+        "uniform int _TiltEnabled;", "uniform float _TiltPower;",
+        "uniform float _TiltOffset;", "uniform float _TiltIntensity;",
+        "uniform vec3 _Rotation;",
+      ],
+      mapping: [
+        "cameraPosition", "viewMatrix", "_FlipX", "_FlipY", "_UVScale",
+        "_FlipAnim", "_FlipAnimOffset", "_FlipBlend", "_ReflectIntensity",
+        "_ReflectEmitIntensity", "_OutlineColor", "_DiffuseIntensity",
+        "_Shininess", "_SpecularIntensity", "_DiffractionPower",
+        "_OrientationU", "_OrientationV", "_ChangeSpeed", "_RampOffset",
+        "_UsePositionAsUV", "_UseOutlineNormalFilter",
+        "_OutlineNormalFilterThreshold", "_DiffractionIntensity2",
+        "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
+        "_RampInterval2", "_TiltEnabled", "_TiltPower", "_TiltOffset",
+        "_TiltIntensity", "_Rotation",
+      ],
+      basisConversions: {
+        worldVectors: [
+          { source: "cameraPosition", alias: "pcrUnityCameraPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD1", alias: "pcrUnityWorldPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 5 },
+          { source: "vs_TEXCOORD3", alias: "pcrUnityWorldTangent", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD4", alias: "pcrUnityWorldBitangent", expectedOccurrences: 1 },
+        ],
+        viewForwards: [{ matrixName: "viewMatrix", targetName: "_79" }],
+      },
+      required: [
+        /_1254\s*=\s*_40;/,
+        /_1036\.w\s*=\s*1\.0;/,
+        /^((?!discard).)*$/s,
+      ],
+      reflection: {
+        ubo: { name: "_56_58", size: 220, members: [
+          member("_m0", "vec3", 0), member("_m1", "vec4", 16, [4]),
+          member("_m2", "int", 80), member("_m3", "int", 84),
+          ...Array.from({ length: 6 }, (_, index) => member(`_m${index + 4}`, "float", 88 + index * 4)),
+          member("_m10", "vec3", 112),
+          ...Array.from({ length: 8 }, (_, index) => member(`_m${index + 11}`, "float", 124 + index * 4)),
+          member("_m19", "int", 156), member("_m20", "int", 160),
+          ...Array.from({ length: 7 }, (_, index) => member(`_m${index + 21}`, "float", 164 + index * 4)),
+          member("_m28", "int", 192),
+          member("_m29", "float", 196), member("_m30", "float", 200),
+          member("_m31", "float", 204), member("_m32", "vec3", 208),
+        ] },
+        inputs: [
+          { name: "vs_TEXCOORD0", type: "vec4", location: 0 },
+          { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
+          { name: "vs_TEXCOORD3", type: "vec3", location: 3 },
+          { name: "vs_TEXCOORD4", type: "vec3", location: 4 },
+        ],
+        outputs: [
+          { name: "_1254", type: "vec4", location: 0 },
+          { name: "_1036", type: "vec4", location: 1 },
+        ],
+        textures: [
+          { name: "_13", type: "sampler2D", binding: 0 },
+          { name: "_32", type: "sampler2D", binding: 1 },
+          { name: "_163", type: "sampler2D", binding: 2 },
+          { name: "_499", type: "samplerCube", binding: 3 },
+          { name: "_540", type: "sampler2D", binding: 4 },
+          { name: "_622", type: "sampler2D", binding: 5 },
+          { name: "_874", type: "sampler2D", binding: 6 },
+          { name: "_1000", type: "sampler2D", binding: 7 },
+          { name: "_1046", type: "sampler2D", binding: 8 },
+          { name: "_1052", type: "sampler2D", binding: 9 },
+          { name: "_1211", type: "sampler2D", binding: 10 },
+        ],
+      },
+    },
+    manifest: {
+      samplers: ["_13", "_32", "_163", "_499", "_540", "_622", "_874", "_1000", "_1046", "_1052", "_1211"],
+      floats: [
+        "_UVScale", "_FlipAnim", "_FlipAnimOffset", "_FlipBlend",
+        "_ReflectIntensity", "_ReflectEmitIntensity", "_DiffuseIntensity",
+        "_Shininess", "_SpecularIntensity", "_DiffractionPower",
+        "_OrientationU", "_OrientationV", "_ChangeSpeed", "_RampOffset",
+        "_OutlineNormalFilterThreshold", "_DiffractionIntensity2",
+        "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
+        "_RampInterval2", "_TiltPower", "_TiltOffset", "_TiltIntensity",
+      ],
+      colors: ["_OutlineColor", "_Rotation"],
+      aliases: {},
+      ints: ["_FlipX", "_FlipY", "_UsePositionAsUV", "_UseOutlineNormalFilter", "_TiltEnabled"],
+      mrt: { primary: "_1254", secondary: "_1036", secondary_value: "emissive-rgb" },
+    },
+    runtime: {
+      attributes: { position: "vec3", uv: "vec2", normal: "vec3", tangent: "vec4" },
+      vertexSubstitutions: [
+        "position location 0 := vec4(three.position, 1.0)",
+        "UV0 location 1 := three.uv",
+        "normal location 2 := three.normal",
+        "tangent location 3 := three.tangent",
+      ],
+    },
+  },
+  {
+    shader: "Transparent-Hologram",
+    stem: "transparent_hologram",
+    selector: {
+      selectorId: "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1",
+      candidateWitnessId: "08dfe09b2f80f63fe168b13be9a0a919e8c91ddfbf9f0d5134a1678632d11621",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+      spirvCrossSha256: {
+        vertex: "4ecf7bbbce740af134be0acbf9358c761294e4d08a6cb36376bf8dafa2238433",
+        fragment: "d735b3960f68b01ba6f7c82cf3578b1cfd072040eba587335e79d241e63cdcf1",
+      },
+    },
+    samplerSlots: [
+      "_MainTex", "_MaskTex", "_NormalMap", "_CubeMap", "_PhaseTex",
+      "_RampTex", "_PhaseTex2", "_RampMaskTex2", "_RampTex2",
+    ],
+    vertex: {
+      block: "_19_21", owner: "_21",
+      attributes: {
+        "layout(location = 0) in vec4 _11;": "in vec3 position;",
+        "layout(location = 1) in vec2 _99;": "in vec2 uv;",
+        "layout(location = 2) in vec3 _115;": "in vec3 normal;",
+        "layout(location = 3) in mediump vec4 _155;": "in vec4 tangent;",
+      },
+      locals: [
+        "    vec4 _11 = vec4(position, 1.0);", "    vec2 _99 = uv;",
+        "    vec3 _115 = normal;", "    vec4 _155 = tangent;",
+        "    mat4 _ObjectToWorld = modelMatrix;",
+        "    mat4 _WorldToObject = inverse(modelMatrix);",
+        "    mat4 _ViewProjection = projectionMatrix * viewMatrix;",
+      ],
+      mapping: ["_ObjectToWorld", "_WorldToObject", "_ViewProjection"],
+      reflection: {
+        ubo: { name: "_19_21", size: 192, members: matrixMembers },
+        inputs: [
+          { name: "_11", type: "vec4", location: 0 },
+          { name: "_99", type: "vec2", location: 1 },
+          { name: "_115", type: "vec3", location: 2 },
+          { name: "_155", type: "vec4", location: 3 },
+        ],
+        outputs: [
+          { name: "vs_TEXCOORD0", type: "vec4", location: 0 },
+          { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
+          { name: "vs_TEXCOORD3", type: "vec3", location: 3 },
+          { name: "vs_TEXCOORD4", type: "vec3", location: 4 },
+        ],
+        textures: [],
+      },
+    },
+    fragment: {
+      block: "_34_36", owner: "_36",
+      uniforms: [
+        "uniform highp vec3 cameraPosition;", "uniform highp mat4 viewMatrix;",
+        "uniform float _DiffuseIntensity;", "uniform float _Shininess;",
+        "uniform float _SpecularIntensity;", "uniform float _DiffractionPower;",
+        "uniform float _OrientationU;", "uniform float _OrientationV;",
+        "uniform float _ChangeSpeed;", "uniform float _RampOffset;",
+        "uniform int _UsePositionAsUV;", "uniform int _UseOutlineNormalFilter;",
+        "uniform highp float _OutlineNormalFilterThreshold;",
+        "uniform float _DiffractionIntensity2;", "uniform float _DiffractionPower2;",
+        "uniform float _RampRepeat2;", "uniform float _RampSpeed2;",
+        "uniform float _RampOffset2;", "uniform float _RampInterval2;",
+        "uniform int _UseOldBlend;", "uniform vec3 _OutlineColor;",
+        "uniform int _TiltEnabled;", "uniform float _TiltPower;",
+        "uniform float _TiltOffset;", "uniform float _TiltIntensity;",
+        "uniform vec3 _Rotation;",
+      ],
+      mapping: [
+        "cameraPosition", "viewMatrix", "_DiffuseIntensity", "_Shininess",
+        "_SpecularIntensity", "_DiffractionPower", "_OrientationU", "_OrientationV",
+        "_ChangeSpeed", "_RampOffset", "_UsePositionAsUV",
+        "_UseOutlineNormalFilter", "_OutlineNormalFilterThreshold",
+        "_DiffractionIntensity2", "_DiffractionPower2", "_RampRepeat2",
+        "_RampSpeed2", "_RampOffset2", "_RampInterval2", "_UseOldBlend",
+        "_OutlineColor", "_TiltEnabled", "_TiltPower", "_TiltOffset",
+        "_TiltIntensity", "_Rotation",
+      ],
+      basisConversions: {
+        worldVectors: [
+          { source: "cameraPosition", alias: "pcrUnityCameraPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD1", alias: "pcrUnityWorldPosition", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD2", alias: "pcrUnityWorldNormal", expectedOccurrences: 5 },
+          { source: "vs_TEXCOORD3", alias: "pcrUnityWorldTangent", expectedOccurrences: 1 },
+          { source: "vs_TEXCOORD4", alias: "pcrUnityWorldBitangent", expectedOccurrences: 1 },
+        ],
+        viewForwards: [{ matrixName: "viewMatrix", targetName: "_30" }],
+      },
+      required: [/_882\s*=\s*_176;/, /_884\s*=\s*vec4\(0\.0\)/, /^((?!discard).)*$/s],
+      reflection: {
+        ubo: { name: "_34_36", size: 204, members: [
+          member("_m0", "vec3", 0), member("_m1", "vec4", 16, [4]),
+          ...Array.from({ length: 8 }, (_, index) => member(`_m${index + 2}`, "float", 80 + index * 4)),
+          member("_m10", "int", 112), member("_m11", "int", 116),
+          ...Array.from({ length: 7 }, (_, index) => member(`_m${index + 12}`, "float", 120 + index * 4)),
+          member("_m19", "int", 148), member("_m20", "vec3", 160),
+          member("_m21", "int", 172), member("_m22", "float", 176),
+          member("_m23", "float", 180), member("_m24", "float", 184),
+          member("_m25", "vec3", 192),
+        ] },
+        inputs: [
+          { name: "vs_TEXCOORD0", type: "vec4", location: 0 },
+          { name: "vs_TEXCOORD1", type: "vec3", location: 1 },
+          { name: "vs_TEXCOORD2", type: "vec3", location: 2 },
+          { name: "vs_TEXCOORD3", type: "vec3", location: 3 },
+          { name: "vs_TEXCOORD4", type: "vec3", location: 4 },
+        ],
+        outputs: [
+          { name: "_882", type: "vec4", location: 0 },
+          { name: "_884", type: "vec4", location: 1 },
+        ],
+        textures: [
+          { name: "_622", type: "sampler2D", binding: 0 },
+          { name: "_189", type: "sampler2D", binding: 1 },
+          { name: "_157", type: "sampler2D", binding: 2 },
+          { name: "_464", type: "samplerCube", binding: 3 },
+          { name: "_529", type: "sampler2D", binding: 4 },
+          { name: "_607", type: "sampler2D", binding: 5 },
+          { name: "_752", type: "sampler2D", binding: 6 },
+          { name: "_691", type: "sampler2D", binding: 7 },
+          { name: "_738", type: "sampler2D", binding: 8 },
+        ],
+      },
+    },
+    manifest: {
+      samplers: ["_622", "_189", "_157", "_464", "_529", "_607", "_752", "_691", "_738"],
+      floats: [
+        "_DiffuseIntensity", "_Shininess", "_SpecularIntensity",
+        "_DiffractionPower", "_OrientationU", "_OrientationV", "_ChangeSpeed",
+        "_RampOffset", "_OutlineNormalFilterThreshold", "_DiffractionIntensity2",
+        "_DiffractionPower2", "_RampRepeat2", "_RampSpeed2", "_RampOffset2",
+        "_RampInterval2", "_TiltPower", "_TiltOffset", "_TiltIntensity",
+      ],
+      colors: ["_OutlineColor", "_Rotation"],
+      aliases: {},
+      ints: ["_UsePositionAsUV", "_UseOutlineNormalFilter", "_UseOldBlend", "_TiltEnabled"],
+      mrt: { primary: "_882", secondary: "_884", secondary_value: "zero" },
+    },
+    runtime: {
+      attributes: { position: "vec3", uv: "vec2", normal: "vec3", tangent: "vec4" },
+      vertexSubstitutions: [
+        "position location 0 := vec4(three.position, 1.0)",
+        "UV0 location 1 := three.uv",
+        "normal location 2 := three.normal",
+        "tangent location 3 := three.tangent",
+      ],
+    },
+  },
 ];
 
 const outputs = {};
@@ -368,8 +691,16 @@ for (const program of programs) {
         const fragment = adaptFragment(officialFragment, program.fragment);
         const bindings = compileCommonBindings(selectorMetadata.commonBindings);
         const typedV2 = program.shader === "Frame-Holo-Tuning"
-          || program.shader === "Opaque-Hologram_Tuning";
+          || program.shader === "Opaque-Hologram_Tuning"
+          || program.shader === "Hologram-FlipOutline"
+          || program.shader === "Transparent-Hologram";
+        const usesCardMSR = program.shader === "Hologram-FlipOutline";
+        const cardMSRUniforms = new Set(
+          usesCardMSR ? CARD_MSR_FLIP_UNIFORMS : [],
+        );
         const isOpaqueShadowBox = program.shader === "Opaque-Hologram_Tuning";
+        const isTransparentShadowBox = program.shader === "Transparent-Hologram";
+        const usesCubeDefault = isTransparentShadowBox || program.shader === "Hologram-FlipOutline";
         const programBindings = typedV2
           ? joinProgramConstantBufferStages(
             compileProgramBindings(
@@ -407,15 +738,31 @@ for (const program of programs) {
             modelMatrix: "mat4", viewMatrix: "mat4", projectionMatrix: "mat4", cameraPosition: "vec3",
           },
           material_uniforms: {
-            floats: program.manifest.floats.filter((name) => !program.manifest.ints.includes(name)),
+            floats: program.manifest.floats.filter(
+              (name) => !program.manifest.ints.includes(name)
+                && !cardMSRUniforms.has(name),
+            ),
             ints: program.manifest.ints,
             vectors: Object.fromEntries(program.manifest.colors.map((name) => [name, "vec3"])),
           },
+          ...(usesCardMSR ? {
+            dynamic_uniforms: Object.fromEntries(
+              CARD_MSR_FLIP_UNIFORMS.map((name) => [
+                name,
+                { type: "float", source: CARD_MSR_PRODUCER },
+              ]),
+            ),
+          } : {}),
           camera_from_view: true,
           mrt_attachments: 2,
           stencil_normalization: "disable-when-always-keep",
           stencil_face_mode: "generic",
-          ...(isOpaqueShadowBox ? { require_complete_active_bindings: true } : {}),
+          ...(typedV2
+            ? { require_complete_active_bindings: true }
+            : {}),
+          ...(usesCubeDefault
+            ? { backend_texture_defaults: { _CubeMap: "neutral-gray-cube" } }
+            : {}),
           ...(typedV2 && program.fragment.basisConversions ? {
             backend_basis_conversions: {
               fragment: program.fragment.basisConversions,
@@ -466,6 +813,10 @@ for (const program of programs) {
                 ...(program.fragment.basisConversions
                   ? [{ kind: "object-basis-conversion", contract: "unity-to-three-basis" }]
                   : []),
+                ...(usesCardMSR ? [{
+                  kind: "dynamic-uniform-producer-binding",
+                  contract: "runtime-producer-to-three-uniforms",
+                }] : []),
                 { kind: "glsl-version-ownership", owner: "three-raw-shader-material" },
               ],
               substitutions: [
@@ -473,6 +824,9 @@ for (const program of programs) {
                 ...(program.fragment.basisConversions ? [
                   "convert Three camera, world position, and world normal vectors back to the official Unity data basis",
                   "convert Three view-matrix forward Z to the official Unity data basis",
+                ] : []),
+                ...(usesCardMSR ? [
+                  "bind reflection animation uniforms through the serialized CardMSRObject shadowbox renderer role",
                 ] : []),
               ],
             },
@@ -547,6 +901,15 @@ for (const program of programs) {
             fragment: `public/shaders/${program.stem}.frag.glsl`,
           },
           runtime_contract: runtimeContract,
+          ...(usesCardMSR ? {
+            runtime_boundaries: [{
+              status: "runtime-required",
+              scope: "component-uniform-producer",
+              producer: CARD_MSR_PRODUCER,
+              payload: CARD_MSR_FLIP_UNIFORMS,
+              note: "The ARM64 producer algorithm, serialized CardMSRObject fields, MSRAnimationSettings curves, and ShadowBox_MSR SearchTag binding are locally ported. Unity PerlinNoise, LateUpdate scheduling, and official guest MaterialPropertyBlock submission remain runtime-required.",
+            }],
+          } : {}),
           sampler_bindings: samplerBindings,
           samplers: samplerBindings.map((row) => row.spirvName),
           sampler_slots: samplerBindings.map((row) => row.slot),

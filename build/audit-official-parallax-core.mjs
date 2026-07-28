@@ -106,8 +106,9 @@ const checks = [
     msg: "local depthParallax must keep the official 0.42 tangent-view denominator bias",
   },
   {
-    ok: /exactShaderPort\(r,\s*"Card_Parallax"\)/.test(localDepth)
-      && /official_selector\.selectionMode/.test(localDepth),
+    ok: /exactParallaxMaterial\(r,\s*ctx\)/.test(localDepth)
+      && /const exact = ctx\.exactShaderPort\(r\)/.test(baseSrc)
+      && /official_selector\.selectionMode/.test(baseSrc),
     msg: "local depthParallax exact path must be selector-gated",
   },
   {

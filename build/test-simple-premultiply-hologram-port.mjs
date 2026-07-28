@@ -53,6 +53,17 @@ assert.doesNotMatch(`${vertex}\n${fragment}`, /uniform\s+_19_21|uniform\s+_35_37
 const exactShaders = {
   [shaderKey]: { vert: vertex, frag: fragment, manifest, manifests: [manifest] },
 };
+Object.defineProperty(exactShaders, "sourcesByPortIdentity", {
+  value: {
+    [JSON.stringify([
+      manifest.official_selector.selectorId,
+      manifest.official_selector.candidateWitnessId,
+      manifest.official_selector.subshader,
+      manifest.official_selector.pass,
+    ])]: { vert: vertex, frag: fragment, manifest, shaderKey },
+  },
+  enumerable: false,
+});
 const recipe = {
   shader: shaderKey,
   official: {
@@ -76,7 +87,11 @@ assert.equal(selectExactShaderPort(exactShaders, {
   official: { ...recipe.official, shader: "CAB-mutated:1" },
 }, shaderKey), null);
 
-assert.deepEqual(SHADER[shaderKey], { blend: "premult", kind: "simplePremultiplyHologram" });
+assert.deepEqual(SHADER[shaderKey], {
+  blend: "premult",
+  kind: "simplePremultiplyHologram",
+  capabilities: { stencil: "shadowbox", fixedShadowboxDepth: true },
+});
 assert.deepEqual(SHADER_TEXTURE_DEFAULTS[shaderKey], {
   _PhaseTex: "white",
   _RampMaskTex: "black",
@@ -85,6 +100,14 @@ assert.deepEqual(SHADER_TEXTURE_DEFAULTS[shaderKey], {
 });
 const texture = new THREE.Texture();
 const texInfo = new Map(Object.values(recipe.textures).map(({ name }) => [name, { tex: texture, straight: false }]));
+const dispatchRecipe = {
+  ...recipe,
+  runtimeDispatch: {
+    shaderKey,
+    capabilities: SHADER[shaderKey].capabilities,
+    officialPorts: [manifest.official_selector],
+  },
+};
 const context = makeRenderContext({
   texInfo,
   envCubeTex: null,
@@ -96,8 +119,8 @@ const context = makeRenderContext({
   exHoloMats: [],
 });
 const strategy = getMaterial("simplePremultiplyHologram");
-assert.ok(strategy?.requires(recipe, context));
-const material = strategy.build(recipe, context);
+assert.ok(strategy?.requires(dispatchRecipe, context));
+const material = strategy.build(dispatchRecipe, context);
 assert.ok(material.isRawShaderMaterial);
 assert.equal(material.userData.exactShader, shaderKey);
 assert.equal(material.userData.officialSelector.selectorId, manifest.official_selector.selectorId);
@@ -118,7 +141,7 @@ const noExactContext = makeRenderContext({
   circularKiraComponents: new Map(),
   exHoloMats: [],
 });
-assert.equal(strategy.build(recipe, noExactContext), null,
+assert.equal(strategy.build(dispatchRecipe, noExactContext), null,
   "selector/source loss must fail closed instead of using an approximate hologram");
 
 console.log("Simple-PreMultiply-Hologram selector/runtime port checks OK");

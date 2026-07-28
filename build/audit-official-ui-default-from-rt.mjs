@@ -43,7 +43,7 @@ const EXPECTED = {
   generated: {
     "ui_default_from_rt.vert.glsl": "b9c2d4a22c0b39699de05142e2b82b7669a6188cc6b8648046af790816e92719",
     "ui_default_from_rt.frag.glsl": "d362f05c53a47a75178aa5490bf22f291a69f11a32eb23efca449e7950346288",
-    "ui_default_from_rt_program.json": "fd9b28865749e988524ae3600c2a6196d8804be8844e7ea747ea0384c484ea45",
+    "ui_default_from_rt_program.json": "1fb382d9c0f21880c9ca8e1ee583e9ba848d0ebf47e6fb23a81fffc86a89bc0f",
   },
 };
 

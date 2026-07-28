@@ -36,7 +36,7 @@ if (/\bbgRT\b|\bbgQuad\b|window\.__bg/.test(app)) {
   issues.push("public/app.js: legacy single-target UR background precompose must not bypass the official MRT");
 }
 if (!/window\.__post\s*=\s*makeBloomPass\(hasBloomProducer\)/.test(app)
-    || !/sceneUsesBloomProducer\(scene_data\.materials,\s*exactShaders\)/.test(app)) {
+    || !/sceneUsesBloomProducer\(\s*scene_data\.materials,\s*exactShaders,\s*runtimeDispatchIndex,?\s*\)/.test(app)) {
   issues.push("public/app.js: all cards must render through the final postprocess encode pass");
 }
 if (!/loadOfficialBloomPrograms/.test(app) || !/createOfficialBloomPipeline/.test(app)) {
@@ -53,7 +53,7 @@ if (!/post\.apply\(\)/.test(app)
     || !/displayPost\.present\(\)/.test(app)) {
   issues.push("public/app.js: Bloom and Homography MRT must finish before the final presentation pass");
 }
-if (!/applyBlendState\(pass5,\s*THREE\.OneFactor,\s*THREE\.OneFactor,\s*THREE\.ZeroFactor,\s*THREE\.OneFactor\)/.test(bloom)) {
+if (!/compileOfficialPostprocessState\(\s*program\.renderState/.test(bloom)) {
   issues.push("official Bloom pass 5 RGB/alpha blend state is missing");
 }
 if (!/draw\(fullMesh,\s*sceneTarget,\s*pass5,\s*"pass5-add-to-scene-color",\s*false\)/.test(bloom)) {

@@ -1,0 +1,5634 @@
+{
+ "officialDrawSchemaVersion": 2,
+ "card": {
+  "id": "cPK_90_012950_00_MEGAPIGEOTex_RR",
+  "name": "MEGAPIGEOTex",
+  "rarityToken": "RR"
+ },
+ "prefabGlb": "/game/Assets/PrefabHierarchyObject/cPK_90_012950_00_MEGAPIGEOTex_RR_L.glb",
+ "materials": {
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MEGA_EFM1": {
+   "shader": "Effect_Emit",
+   "queue": 2550,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-360143589472363797",
+    "shader": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+    "customRenderQueue": 2550,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_ONCOLOR1AREA_ON",
+     "_USECOLOR3BLEND_ON",
+     "_USEEMISSIVE_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "01",
+   "floats": {
+    "_AdditiveIntensity": 0,
+    "_Color1AlphaBlend": 1,
+    "_Color3BlendMax": 1,
+    "_DepthOffset": 0,
+    "_EmissiveIntensity": 0,
+    "_NotColor1AreaAlphaBlend": 0.5,
+    "_OnColor1Area": 1,
+    "_Stencil": 1,
+    "_Switch": 0,
+    "_UVScale": 1,
+    "_UseColor3Blend": 1,
+    "_UseColor3Mask": 0,
+    "_UseEmissive": 1,
+    "_UseEmissiveMask": 0,
+    "_ZTest": 4
+   },
+   "colors": {
+    "_Color3": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_Color1Tex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "8014880672954452914",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:8014880672954452914"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_Color2Tex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4309880316469040320",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4309880316469040320"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM2": {
+   "shader": "Effect",
+   "queue": 2540,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 9,
+    "serializedLocalKeywordStateHex": "8000000000000000",
+    "serializedLocalKeywordHash": 947801797,
+    "serializedLocalKeywordHashLow8": 197,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:215671746009177748",
+    "shader": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+    "customRenderQueue": 2540,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_LAYER_EFF2"
+    ],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_UseViewMask",
+     "_UseGradationMap",
+     "_LAYER_EFF1",
+     "_LAYER_EFF2",
+     "_LAYER_EFF3"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "02_2",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AnglePower": 0,
+    "_BlendMode": 0,
+    "_CullMode": 0,
+    "_DepthOffset": 0,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_Edge": 0,
+    "_Layer": 1,
+    "_MainPower": 1,
+    "_MaskPower": 0,
+    "_Progress": 0,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_Stencil": 1,
+    "_UseGradationMap": 0,
+    "_UseViewMask": 0,
+    "_ZTest": 4,
+    "_ZWriteParam": 0
+   },
+   "colors": {},
+   "keywords": [
+    "_LAYER_EFF2"
+   ],
+   "textures": {
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1776399677211667343",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1776399677211667343"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM3": {
+   "shader": "Effect",
+   "queue": 2502,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 9,
+    "serializedLocalKeywordStateHex": "0001000000000000",
+    "serializedLocalKeywordHash": 545665726,
+    "serializedLocalKeywordHashLow8": 190,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-1662440023753269438",
+    "shader": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+    "customRenderQueue": 2502,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_LAYER_EFF3"
+    ],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_UseViewMask",
+     "_UseGradationMap",
+     "_LAYER_EFF1",
+     "_LAYER_EFF2",
+     "_LAYER_EFF3"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "03",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AnglePower": 0,
+    "_BlendMode": 1,
+    "_CullMode": 0,
+    "_DepthOffset": 0,
+    "_DstFactor": 1,
+    "_DstFactorA": 1,
+    "_Edge": 0,
+    "_Layer": 2,
+    "_MainPower": 1,
+    "_MaskPower": 0,
+    "_Progress": 0,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_Stencil": 1,
+    "_UseGradationMap": 0,
+    "_UseViewMask": 0,
+    "_ZTest": 4,
+    "_ZWriteParam": 0
+   },
+   "colors": {},
+   "keywords": [
+    "_LAYER_EFF3"
+   ],
+   "textures": {
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-8972187678182602285",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8972187678182602285"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MEGA_EFM2": {
+   "shader": "Effect_Emit",
+   "queue": 2545,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-966345765349493873",
+    "shader": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+    "customRenderQueue": 2545,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_ONCOLOR1AREA_ON",
+     "_USECOLOR3BLEND_ON",
+     "_USEEMISSIVE_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "02_1",
+   "floats": {
+    "_AdditiveIntensity": 0,
+    "_Color1AlphaBlend": 1,
+    "_Color3BlendMax": 1,
+    "_DepthOffset": 0,
+    "_EmissiveIntensity": 0,
+    "_NotColor1AreaAlphaBlend": 0.5,
+    "_OnColor1Area": 1,
+    "_Stencil": 1,
+    "_Switch": 0,
+    "_UVScale": 1,
+    "_UseColor3Blend": 1,
+    "_UseColor3Mask": 0,
+    "_UseEmissive": 1,
+    "_UseEmissiveMask": 0,
+    "_ZTest": 4
+   },
+   "colors": {
+    "_Color3": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_Color1Tex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5694779355314073242",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:5694779355314073242"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_Color2Tex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1478043401489042984",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1478043401489042984"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM4": {
+   "shader": "Effect",
+   "queue": 2345,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 9,
+    "serializedLocalKeywordStateHex": "0001000000000000",
+    "serializedLocalKeywordHash": 545665726,
+    "serializedLocalKeywordHashLow8": 190,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8426969791124958733",
+    "shader": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+    "customRenderQueue": 2345,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_LAYER_EFF3"
+    ],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_UseViewMask",
+     "_UseGradationMap",
+     "_LAYER_EFF1",
+     "_LAYER_EFF2",
+     "_LAYER_EFF3"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "04",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AnglePower": 0,
+    "_BlendMode": 1,
+    "_CullMode": 0,
+    "_DepthOffset": 0,
+    "_DstFactor": 1,
+    "_DstFactorA": 1,
+    "_Edge": 0,
+    "_Layer": 2,
+    "_MainPower": 1,
+    "_MaskPower": 0,
+    "_Progress": 0,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_Stencil": 1,
+    "_UseGradationMap": 0,
+    "_UseViewMask": 0,
+    "_ZTest": 4,
+    "_ZWriteParam": 0
+   },
+   "colors": {},
+   "keywords": [
+    "_LAYER_EFF3"
+   ],
+   "textures": {}
+  },
+  "DropEvent_LOGO": {
+   "shader": "Opaque",
+   "queue": 2900,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-9213123383961301032",
+    "shader": "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+    "customRenderQueue": 2900,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "DropEvent",
+   "floats": {
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "DropEvent_AM",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
+     "officialName": "DropEvent_AM",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3798950666842338308",
+      "source": "CAB-c604e9606f62d7199af7adbf5a8b97e5",
+      "identity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:3798950666842338308"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "InnerStencil_Window": {
+   "shader": "InnerStencil",
+   "queue": 1000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-40edce138949e7d8493c275431592e5c:5632862269281222530",
+    "shader": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "InnerStencil_Window",
+   "floats": {
+    "_AlphaThreshold": 0.35199999809265137
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_inner_stencil_mask_pokemon_window",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "officialName": "card_inner_stencil_mask_pokemon_window",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5994683186341809779",
+      "source": "CAB-b57b4bf171c72f152c3e21e7eddd4db5",
+      "identity": "CAB-b57b4bf171c72f152c3e21e7eddd4db5:-5994683186341809779"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Card_R_M": {
+   "shader": "Side&Back",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 1,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+    "shader": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": true,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_EnableFog",
+     "_MODE_NONE"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "INSTANCING_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_EnableFog": 1,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 48,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularIntensity": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.5,
+     "g": 0.5,
+     "b": 0.5,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 0.8726415038108826,
+     "g": 0.9632075428962708,
+     "b": 1,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "officialName": "Card_Back",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3680672549930378084",
+      "source": "CAB-b3a060b8e06893eadc58cd3cc0017a42",
+      "identity": "CAB-b3a060b8e06893eadc58cd3cc0017a42:3680672549930378084"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Card_S_M": {
+   "shader": "Side&Back",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 2,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+    "shader": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": true,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_MODE_NONE",
+     "_SPECULARENABLED_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "INSTANCING_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_BlendRatio": 0,
+    "_ChangeSpeed": 3,
+    "_CullMode": 2,
+    "_DarknessEnabled": 0,
+    "_DarknessOffset": 0,
+    "_DiffractionIntensity": 0.5,
+    "_DiffractionPower": 64,
+    "_DiffuseSmooth": 0.34299999475479126,
+    "_DiffuseStep": 0,
+    "_EnableFog": 0,
+    "_FakeSpecularEnabled": 0,
+    "_FakeSpecularIntensity": 1,
+    "_FakeSpecularMaskScale": 1,
+    "_FakeSpecularPower": 1,
+    "_FogFar": 10,
+    "_FogNear": 0,
+    "_Mode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_Shininess": 32,
+    "_SpecularEnabled": 1,
+    "_SpecularIntensity": 1,
+    "_SpecularSmooth": 0.36500000953674316,
+    "_SpecularStep": 0.4050000011920929,
+    "_UseMask": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Blend": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_BlendColor": {
+     "r": 0.43396228551864624,
+     "g": 0.43396228551864624,
+     "b": 0.43396228551864624,
+     "a": 1
+    },
+    "_Color": {
+     "r": 0.7529411911964417,
+     "g": 0.7529411911964417,
+     "b": 0.7529411911964417,
+     "a": 1
+    },
+    "_DarknessColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FakeSpecularColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_FogColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_LightDir": {
+     "r": -1,
+     "g": -3.700000047683716,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecularColor": {
+     "r": 0.09251514077186584,
+     "g": 0.10015178471803665,
+     "b": 0.10377359390258789,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "SimpleCard_Side02",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "officialName": "SimpleCard_Side02",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7427414079537827346",
+      "source": "CAB-5be2d51c53e98a3478ebace9de25b309",
+      "identity": "CAB-5be2d51c53e98a3478ebace9de25b309:7427414079537827346"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_CategoryTag_MegaEvolution": {
+   "shader": "Card_ShadowBoxUI_Transparent_Rainbow",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-8d400a72af4746df434072d7f78f7926:4453257784478530875",
+    "shader": "CAB-2d26115c8d7b0e19ac650f71bbdc7525:-7286864420773527812",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "DYNAMIC_UI",
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Hologram_MegaEvolutionTag",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_BaseColorIntensity": 1,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 0,
+    "_DiffractionPower": 20,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.2160000056028366,
+    "_RampRepeat": 3,
+    "_RampSpeed": 1,
+    "_Shininess": 256,
+    "_SpecularIntensity": 0,
+    "_UseDynamicUI": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_RainbowAnimationScale": {
+     "r": 0.4000000059604645,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_RainbowBGAnimationScale": {
+     "r": 1,
+     "g": -0.4000000059604645,
+     "b": 1,
+     "a": 1
+    },
+    "_RainbowOutlineAnimationScale": {
+     "r": -0.4000000059604645,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_RainbowTintColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0.6000000238418579
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_RainbowBGTex": {
+     "name": "ALL_RMP_MegaEvolutionTag_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1194162536455162222",
+      "source": "CAB-393e7dde9cecdbbb6ab2b126792d402e",
+      "identity": "CAB-393e7dde9cecdbbb6ab2b126792d402e:1194162536455162222"
+     },
+     "scale": {
+      "x": 1,
+      "y": 20
+     },
+     "offset": {
+      "x": 0,
+      "y": 0.6000000238418579
+     }
+    },
+    "_RainbowBGTintMask": {
+     "name": "RainbowTagBGTintMask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "officialName": "RainbowTagBGTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-2030125973747593984",
+      "source": "CAB-61fb7d2eae962cc0201e33d658c62b9b",
+      "identity": "CAB-61fb7d2eae962cc0201e33d658c62b9b:-2030125973747593984"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RainbowOutlineTex": {
+     "name": "ALL_RMP_MegaEvolutionTag_Outline",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2326332569849762492",
+      "source": "CAB-cf0d95fedb247f4491fabcf190a7cbd3",
+      "identity": "CAB-cf0d95fedb247f4491fabcf190a7cbd3:2326332569849762492"
+     },
+     "scale": {
+      "x": 2,
+      "y": 1
+     },
+     "offset": {
+      "x": -0.15000000596046448,
+      "y": 0
+     }
+    },
+    "_RainbowTex": {
+     "name": "ALL_RMP_MegaEvolutionTag_Base",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "officialName": "ALL_RMP_MegaEvolutionTag_Base",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7343703918009151904",
+      "source": "CAB-51bcf8730198dce60e49a7a608407048",
+      "identity": "CAB-51bcf8730198dce60e49a7a608407048:7343703918009151904"
+     },
+     "scale": {
+      "x": 1.7999999523162842,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RainbowTintMask": {
+     "name": "RainbowTagTintMask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "officialName": "RainbowTagTintMask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4137125116236265299",
+      "source": "CAB-9626a93824fbbf2aaed0f11e21b42592",
+      "identity": "CAB-9626a93824fbbf2aaed0f11e21b42592:-4137125116236265299"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_FullFace_Holo_P_MegaExIcon": {
+   "shader": "Transparent_Hologram_Tuning",
+   "queue": 2950,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-489c97ccde8e26aa82cbc57823596734:9010643771930582225",
+    "shader": "CAB-a19350d90bad9bf70f2b6d1349b69bc9:5721436585460533703",
+    "customRenderQueue": 2950,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "DYNAMIC_UI",
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Hologram_EXIcon",
+   "floats": {
+    "_AlphaBlend": 0.15000000596046448,
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 8,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.5,
+    "_RampRepeat": 3,
+    "_RampSpeed": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_UseDynamicUI": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_EX_UI_Mega",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "ALL_RMPmask_EX_135",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "MegaRR_EXIcon_EXRule_RMP",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "officialName": "MegaRR_EXIcon_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7799951651130749836",
+      "source": "CAB-de389649dbea99e32ef7d1a48493a955",
+      "identity": "CAB-de389649dbea99e32ef7d1a48493a955:7799951651130749836"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_FullFace_Holo_P_MegaExRule": {
+   "shader": "Transparent_Hologram_Tuning",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-68abebe6d877046e22b1c693fdd5a2c0:3888977823485247219",
+    "shader": "CAB-a19350d90bad9bf70f2b6d1349b69bc9:5721436585460533703",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "DYNAMIC_UI",
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Hologram_EXRule",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_BaseColorIntensity": 0.75,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1.100000023841858,
+    "_DiffractionPower": 17,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.44999998807907104,
+    "_RampRepeat": 3,
+    "_RampSpeed": 0.10000000149011612,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75,
+    "_UseDynamicUI": 1,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "card_megaEX_EXRule_mask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "officialName": "card_megaEX_EXRule_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-7773388559143795760",
+      "source": "CAB-4ab3c5ab4fedaabcf29403485de532d2",
+      "identity": "CAB-4ab3c5ab4fedaabcf29403485de532d2:-7773388559143795760"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_EX_UI_Mega",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "officialName": "Phase_EX_UI_Mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-6275022122954080713",
+      "source": "CAB-3ea3483a7e4ef9fca6e154592bffbf79",
+      "identity": "CAB-3ea3483a7e4ef9fca6e154592bffbf79:-6275022122954080713"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "ALL_RMPmask_EX_135",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "officialName": "ALL_RMPmask_EX_135",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7490438917109954014",
+      "source": "CAB-7d8655d4dec37b4dab6f90b9039106f1",
+      "identity": "CAB-7d8655d4dec37b4dab6f90b9039106f1:7490438917109954014"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "MegaRR_EXRule_RMP",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "officialName": "MegaRR_EXRule_RMP",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1374505480578709091",
+      "source": "CAB-2c00c8af233e869cc341e1f07ceea19c",
+      "identity": "CAB-2c00c8af233e869cc341e1f07ceea19c:1374505480578709091"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_FullFace_Text_EmitMask_02": {
+   "shader": "Text",
+   "queue": 2900,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-8202f4317b0489a8c93d72ac4edbe86d:-4309031131503618210",
+    "shader": "CAB-8a93e31cb5e318823fe7c18ec9b8c0f9:2245828404536736759",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Dynamic_Text",
+   "floats": {
+    "_Alpha": 1,
+    "_AlphaThreshold": 0.10000000149011612,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 0.550000011920929,
+    "_DiffractionPower": 16,
+    "_DiffuseIntensity": 0.75,
+    "_EmitMasking": 1,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.75
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_DynamicUITex": {
+     "name": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "officialName": "black",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1459000106877476882",
+      "source": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf",
+      "identity": "CAB-99420d4fc194ac5fe3a021d9bb6f8baf:1459000106877476882"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_RaremarkFlame_a": {
+   "shader": "Simple-Opaque",
+   "queue": 2801,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+    "shader": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+    "customRenderQueue": 2801,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_RareMark_Diamond_a",
+   "floats": {
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "card_rarity_outline",
+     "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+     "officialName": "card_rarity_outline",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_outline.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3009383940076098196",
+      "source": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59",
+      "identity": "CAB-8a0aa68c0ed48f1bbc319f9e36e8bf59:-3009383940076098196"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "L_Raremark_Diamond_a": {
+   "shader": "Opaque_Hologram_Tuning",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 1,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+    "shader": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+    "customRenderQueue": 2800,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 0,
+   "go": "L_UI_RareMark_Diamond_a",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 10,
+    "_DiffuseIntensity": 0.75,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampInterval": 0,
+    "_RampOffset": 0.2639999985694885,
+    "_RampRepeat": 1,
+    "_RampSpeed": 2,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.6499999761581421,
+    "_Stencil": 0,
+    "_UseMask": 0,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_OutlineColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "mask_white",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "officialName": "mask_white",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1138694547396766852",
+      "source": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d",
+      "identity": "CAB-38986e685e8f7d784ccf3fa6bc3ee86d:-1138694547396766852"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "card_rarity_diamond_a",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "officialName": "card_rarity_diamond_a",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2330146156838843569",
+      "source": "CAB-747e6bcce71cc807bd8b67ad96fd7f94",
+      "identity": "CAB-747e6bcce71cc807bd8b67ad96fd7f94:2330146156838843569"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_Rarity_Diamond",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "officialName": "Phase_Rarity_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-280613335593702549",
+      "source": "CAB-3ff9bb7bce2ea2583b834c91aa653065",
+      "identity": "CAB-3ff9bb7bce2ea2583b834c91aa653065:-280613335593702549"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RMP_MASK_RareMark",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "officialName": "RMP_MASK_RareMark",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3850834502605539399",
+      "source": "CAB-ae66c11063b1b943772c3289afdece42",
+      "identity": "CAB-ae66c11063b1b943772c3289afdece42:3850834502605539399"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "ALL_RMP_RareMark_Diamond",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "officialName": "ALL_RMP_RareMark_Diamond",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5619055394819206857",
+      "source": "CAB-0fca1d01605b5c89e9d644a1d42c959b",
+      "identity": "CAB-0fca1d01605b5c89e9d644a1d42c959b:5619055394819206857"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "OuterStencil": {
+   "shader": "OuterStencil",
+   "queue": 1000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+    "shader": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "OuterStencil",
+   "floats": {},
+   "colors": {},
+   "keywords": [],
+   "textures": {}
+  },
+  "Panel_Pokemon_Normal_EmitMask_Stage2_02": {
+   "shader": "Frame",
+   "queue": 2800,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-f9f7d0aea58cf8970e5b73fa55131ec7:-3209737125407259815",
+    "shader": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+    "customRenderQueue": 2800,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "USE_HOLOGRAM"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_UI_Panel_Pokemon",
+   "floats": {
+    "_ChangeSpeed": 5.599999904632568,
+    "_CullMode": 0,
+    "_DiffractionIntensity": 0.800000011920929,
+    "_DiffractionPower": 16,
+    "_DiffuseIntensity": 1,
+    "_EmissiveAlpha": 0,
+    "_EmissiveMasking": 0,
+    "_EmitMasking": 1,
+    "_OrientationU": 1,
+    "_OrientationV": -0.08699999749660492,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.10000000149011612,
+    "_ZTest": 0,
+    "_ZWrite": 0
+   },
+   "colors": {},
+   "keywords": [],
+   "textures": {
+    "_BaseTex": {
+     "name": "card_pokemon_normal_stage2",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+     "officialName": "card_pokemon_normal_stage2",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5208153827356700712",
+      "source": "CAB-304033d6337f43be3836126b07feb460",
+      "identity": "CAB-304033d6337f43be3836126b07feb460:-5208153827356700712"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "Pokemon_EnergyType_Colorless": {
+   "shader": "Card_Illust",
+   "queue": 2100,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-d1b7ed7be5c2266fcdeb73309c4c72f5:1264562113327669848",
+    "shader": "CAB-dacac64c95b70409ad52b4bce1b63ad3:6715688836837633753",
+    "customRenderQueue": 2100,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_LAYER2BLENDMODE_ALPHABLEND"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Pokemon_Full_EnergyType_BG",
+   "floats": {
+    "_BaseColorIntensity": 0.5,
+    "_ChangeSpeed": 5.599999904632568,
+    "_DiffractionIntensity": 1,
+    "_DiffractionPower": 16,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": -0.4000000059604645,
+    "_Height1": -0.4000000059604645,
+    "_Height2": -0.20000000298023224,
+    "_HeightPower": 0.4000000059604645,
+    "_HeightPower1": 0.4000000059604645,
+    "_HeightPower2": 0,
+    "_Layer1BaseColorIntensity": 0.800000011920929,
+    "_Layer1DiffractionIntensity": 0.5,
+    "_Layer1DiffractionPower": 64,
+    "_Layer1Shininess": 2,
+    "_Layer1SpecularIntensity": 0.20000000298023224,
+    "_Layer2BlendMode": 0,
+    "_OrientationU": 1,
+    "_OrientationV": 1,
+    "_RampOffset": 0,
+    "_RampOffset2": 0,
+    "_Scale": 1.5499999523162842,
+    "_Scale1": 1.5499999523162842,
+    "_Scale2": 1,
+    "_Shininess": 2,
+    "_SpecularIntensity": 0.5,
+    "_StencilRef": 0,
+    "_UseUv": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_HologramBaseColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_MainTex": {
+     "name": "card_bg_nor",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_nor.png",
+     "officialName": "card_bg_nor",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_nor.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5523153737122437221",
+      "source": "CAB-a442d83bda95ccb78e4eef769a58a22f",
+      "identity": "CAB-a442d83bda95ccb78e4eef769a58a22f:5523153737122437221"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "Pokemon_Frame_MRR": {
+   "shader": "Frame-Holo-2Layer",
+   "queue": 2200,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-ac056117358bebb5a440a75fed4c54f6:-7273687426035046990",
+    "shader": "CAB-b69d132787e6b446783c630e4f5170ed:-324863385430330581",
+    "customRenderQueue": -1,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "Card_F",
+   "floats": {
+    "_AlphaBlend": 1,
+    "_AlphaClip": 0,
+    "_BaseColorIntensity": 1,
+    "_Blend": 0,
+    "_BumpScale": 1,
+    "_ClearCoatMask": 0,
+    "_ClearCoatSmoothness": 0,
+    "_Cull": 2,
+    "_CutOut": 0.009999999776482582,
+    "_Cutoff": 0.5,
+    "_DetailAlbedoMapScale": 1,
+    "_DetailNormalMapScale": 1,
+    "_DiffractionIntensity": 1.2000000476837158,
+    "_DiffractionPower": 30,
+    "_DstBlend": 0,
+    "_EnvironmentReflections": 1,
+    "_FrontMaskPower": 64,
+    "_GlossMapScale": 0,
+    "_Glossiness": 0,
+    "_GlossyReflections": 0,
+    "_HoloAlphaBlend": 0,
+    "_IsPreMultiply": 0,
+    "_Layer2AlphaBlend": 0,
+    "_Layer2ColorPower": 1,
+    "_Layer2EmissiveIntensity": 1,
+    "_Layer2UVRotate": -45,
+    "_Layer2UVScale": 2,
+    "_Metallic": 0,
+    "_OcclusionStrength": 1,
+    "_Parallax": 0.004999999888241291,
+    "_PhaseRotate": 0,
+    "_PhaseScale": 1,
+    "_QueueOffset": 0,
+    "_RampInterval": 0,
+    "_RampOffset": -0.44999998807907104,
+    "_RampRepeat": 1,
+    "_RampRotate": 0,
+    "_RampScale": 1,
+    "_RampSpeed": 3,
+    "_RampUVOffset": 0,
+    "_RampUVTiltOffset": 0,
+    "_ReceiveShadows": 1,
+    "_RemoveMetallic": 0,
+    "_Shininess": 50.29999923706055,
+    "_Smoothness": 0.5,
+    "_SmoothnessTextureChannel": 0,
+    "_SpecularHighlights": 1,
+    "_SpecularIntensity": 0.5,
+    "_SrcBlend": 1,
+    "_Surface": 0,
+    "_WorkflowMode": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_BaseColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_Color": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 1
+    },
+    "_EmissionColor": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_Layer2UVTranslate": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 1
+    },
+    "_SpecColor": {
+     "r": 0.20000000298023224,
+     "g": 0.20000000298023224,
+     "b": 0.20000000298023224,
+     "a": 1
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_CubeMap": {
+     "name": "L_001_ENV",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+     "officialName": "L_001_ENV",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.tif",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-4408330918281824566",
+      "source": "CAB-9a571db14358c7f822b72d31872207e7",
+      "identity": "CAB-9a571db14358c7f822b72d31872207e7:-4408330918281824566"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "card_frame_mask_rr_mega",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+     "officialName": "card_frame_mask_rr_mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-216593571298144320",
+      "source": "CAB-d5f61464517eace89a90628d5c9f45d3",
+      "identity": "CAB-d5f61464517eace89a90628d5c9f45d3:-216593571298144320"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_Layer1Tex": {
+     "name": "card_pokemon_base_rr_mega",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+     "officialName": "card_pokemon_base_rr_mega",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2147387467512777023",
+      "source": "CAB-babe39169119af7e8e1ed8465e118fed",
+      "identity": "CAB-babe39169119af7e8e1ed8465e118fed:2147387467512777023"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_Layer2Mask": {
+     "name": "card_pokemon_base_rr_mega_mask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+     "officialName": "card_pokemon_base_rr_mega_mask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-5700491643484854918",
+      "source": "CAB-76bbcf6a4fd1dc22dae0a72779175fdd",
+      "identity": "CAB-76bbcf6a4fd1dc22dae0a72779175fdd:-5700491643484854918"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_Layer2Tex": {
+     "name": "FrameHighlight",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+     "officialName": "FrameHighlight",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1087797768506318855",
+      "source": "CAB-f4352a9ad69f94e7f4a9ae7c0752804f",
+      "identity": "CAB-f4352a9ad69f94e7f4a9ae7c0752804f:1087797768506318855"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_RR_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+     "officialName": "Phase_RR_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "441854633007384248",
+      "source": "CAB-51fe0c0b5333cf76c01ac89cd22d31d4",
+      "identity": "CAB-51fe0c0b5333cf76c01ac89cd22d31d4:441854633007384248"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "SA_SSA_RR_RMPmask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "officialName": "SA_SSA_RR_RMPmask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5010855667033089828",
+      "source": "CAB-de8234c5c20092da95fd1baa96956783",
+      "identity": "CAB-de8234c5c20092da95fd1baa96956783:5010855667033089828"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_Border",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+     "officialName": "RR_RMP_Border",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "7517052790243330250",
+      "source": "CAB-56c3f6f78b080b62389231b100258a9b",
+      "identity": "CAB-56c3f6f78b080b62389231b100258a9b:7517052790243330250"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH": {
+   "shader": "Card_Parallax_Flash",
+   "queue": 2010,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 5,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1027969984387311025",
+    "shader": "CAB-eeb3b28a77923ed00deaaa1baf8678a9:5677331643493683988",
+    "customRenderQueue": 2010,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_VISUALIZECENTER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_EFF_Flash_MRR",
+   "floats": {
+    "_AlphaBlend": 0,
+    "_EmissiveIntensity": 0,
+    "_FakeCameraHeight": 0,
+    "_FlashIntensityByMat": 4.5,
+    "_Height": 1,
+    "_HeightPower": 0,
+    "_RadialAnim": 0,
+    "_RadialFlashPow": 0.800000011920929,
+    "_RadialFlashRange": 0.30000001192092896,
+    "_RadialScaling": 1.6369999647140503,
+    "_Scale": 1,
+    "_StencilRef": 0,
+    "_VisualizeCenter": 0,
+    "_ZTest": 4
+   },
+   "colors": {
+    "_BrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_DarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.9411765336990356,
+     "a": 0
+    },
+    "_ScaleCenter": {
+     "r": 0,
+     "g": -0.3400000035762787,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_RadialTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3332796435994173807",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:3332796435994173807"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_HOLO": {
+   "shader": "Card_Parallax_Hologram_Tuning",
+   "queue": 2020,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2612925906441378707",
+    "shader": "CAB-a9ff84e8c58ed394bfc86fbba120d22a:-1402989987002036257",
+    "customRenderQueue": 2020,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Pokemon_Full_Hologram",
+   "floats": {
+    "_DiffractionIntensity": 2,
+    "_DiffractionPower": 50,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": -0.4000000059604645,
+    "_HeightPower": 0.28999999165534973,
+    "_RampInterval": 0,
+    "_RampOffset": -0.30000001192092896,
+    "_RampRepeat": 2.4000000953674316,
+    "_RampSpeed": 2,
+    "_Scale": 1.2999999523162842,
+    "_StencilRef": 0,
+    "_UseMaskUv": 0,
+    "_UseUv": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_PhaseTex": {
+     "name": "Phase_RR_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "SA_SSA_RR_RMPmask",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "officialName": "SA_SSA_RR_RMPmask",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "5010855667033089828",
+      "source": "CAB-de8234c5c20092da95fd1baa96956783",
+      "identity": "CAB-de8234c5c20092da95fd1baa96956783:5010855667033089828"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+     "officialName": "RR_RMP_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-849579689661688727",
+      "source": "CAB-ffe555d9671e45f9af92bddfccc97230",
+      "identity": "CAB-ffe555d9671e45f9af92bddfccc97230:-849579689661688727"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL": {
+   "shader": "Card_Parallax_MRR",
+   "queue": 2300,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-7349655374939338958",
+    "shader": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
+    "customRenderQueue": 2300,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": null,
+   "go": "L_Pokemon_Full_Parallax",
+   "floats": {
+    "_BlendMode": 0,
+    "_ChangeColor": 0,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_Height": -0.20000000298023224,
+    "_HeightPower": 0,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_Scale": 1,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_StencilRef": 0,
+    "_Transparent": 0,
+    "_UseUv": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.6000000238418579,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ChangeColorTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1854628650749795201",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-1854628650749795201"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-1854628650749795201",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-1854628650749795201"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1": {
+   "shader": "Card_Parallax",
+   "queue": 2000,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 7,
+    "serializedLocalKeywordStateHex": "1000000000000000",
+    "serializedLocalKeywordHash": 3159871262,
+    "serializedLocalKeywordHashLow8": 30,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2364745061194950232",
+    "shader": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+    "customRenderQueue": 2000,
+    "enableInstancingVariants": false,
+    "validKeywords": [
+     "_UVASPECTRATIO_SQUARE"
+    ],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON",
+     "_UVASPECTRATIO_SQUARE",
+     "_UVASPECTRATIO_CARDFULL",
+     "_UVASPECTRATIO_CARDWINDOW"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     1
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "L_Pokemon_Window_Parallax",
+   "floats": {
+    "_BlendMode": 0,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_Height": -0.4000000059604645,
+    "_HeightPower": 0.30000001192092896,
+    "_Scale": 1.3200000524520874,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_StencilRef": 0,
+    "_UVAspectRatio": 0,
+    "_UseUv": 1,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {},
+   "keywords": [
+    "_UVASPECTRATIO_SQUARE"
+   ],
+   "textures": {
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "1378923954872883699",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1378923954872883699"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR2": {
+   "shader": "Card_Parallax_MRR",
+   "queue": 2030,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1570989627641157465",
+    "shader": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
+    "customRenderQueue": 2030,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": null,
+   "go": "L_Pokemon_Window_Parallax",
+   "floats": {
+    "_BlendMode": 0,
+    "_ChangeColor": 0,
+    "_DstFactor": 10,
+    "_DstFactorA": 10,
+    "_FakeCameraHeight": 0.19050000607967377,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_Height": -0.20000000298023224,
+    "_HeightPower": 0.11999999731779099,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_Scale": 1.2599999904632568,
+    "_SrcFactor": 1,
+    "_SrcFactorA": 0,
+    "_StencilRef": 0,
+    "_Transparent": 0,
+    "_UseUv": 1,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.6000000238418579,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {}
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM1": {
+   "shader": "Flash",
+   "queue": 2100,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 0,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:8916522284609909958",
+    "shader": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+    "customRenderQueue": 2100,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_TILTENABLED_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": 2,
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "floats": {
+    "_BlendDstAlpha": 1,
+    "_BlendDstColor": 0,
+    "_BlendSrcAlpha": 0,
+    "_BlendSrcColor": 1,
+    "_ChangeColor": 0,
+    "_DiffractionIntensity": 4,
+    "_DiffractionPower": 20,
+    "_EmissiveIntensity": 1,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.5,
+    "_RampRepeat": 2,
+    "_RampSpeed": 3,
+    "_Stencil": 2,
+    "_TiltEnabled": 1,
+    "_TiltIntensity": 1,
+    "_TiltOffset": 0,
+    "_TiltPower": 2,
+    "_Transparent": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.9411765336990356,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ChangeColorTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4769501780072962610",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4769501780072962610"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_FlashMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2688798365292853576",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2688798365292853576"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3075091781772700415",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3075091781772700415"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "83471969812008620",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:83471969812008620"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_RR_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RR_RMPmask_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM2": {
+   "shader": "Flash",
+   "queue": 2400,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 2,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7981966106986972093",
+    "shader": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+    "customRenderQueue": 2400,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_TILTENABLED_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "floats": {
+    "_BlendDstAlpha": 1,
+    "_BlendDstColor": 0,
+    "_BlendSrcAlpha": 0,
+    "_BlendSrcColor": 1,
+    "_ChangeColor": 0,
+    "_DiffractionIntensity": 4,
+    "_DiffractionPower": 20,
+    "_EmissiveIntensity": 1,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.5,
+    "_RampRepeat": 2,
+    "_RampSpeed": 3,
+    "_Stencil": 1,
+    "_TiltEnabled": 1,
+    "_TiltIntensity": 1,
+    "_TiltOffset": 0,
+    "_TiltPower": 2,
+    "_Transparent": 0,
+    "_ZTest": 4,
+    "_ZWrite": 1
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.9411765336990356,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ChangeColorTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4769501780072962610",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4769501780072962610"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_FlashMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2688798365292853576",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2688798365292853576"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3075091781772700415",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3075091781772700415"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "83471969812008620",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:83471969812008620"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_RR_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RR_RMPmask_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM3": {
+   "shader": "Flash",
+   "queue": 2401,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 1,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6508906262392039939",
+    "shader": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+    "customRenderQueue": 2401,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_TILTENABLED_ON",
+     "_TRANSPARENT_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "window",
+   "stencil": 2,
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "floats": {
+    "_BlendDstAlpha": 10,
+    "_BlendDstColor": 10,
+    "_BlendSrcAlpha": 0,
+    "_BlendSrcColor": 1,
+    "_ChangeColor": 0,
+    "_DiffractionIntensity": 4,
+    "_DiffractionPower": 20,
+    "_EmissiveIntensity": 1,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.5,
+    "_RampRepeat": 2,
+    "_RampSpeed": 3,
+    "_Stencil": 2,
+    "_TiltEnabled": 1,
+    "_TiltIntensity": 1,
+    "_TiltOffset": 0,
+    "_TiltPower": 2,
+    "_Transparent": 1,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.9411765336990356,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ChangeColorTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4769501780072962610",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4769501780072962610"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_FlashMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2688798365292853576",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2688798365292853576"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3075091781772700415",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3075091781772700415"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "83471969812008620",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:83471969812008620"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_RR_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RR_RMPmask_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  },
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM4": {
+   "shader": "Flash",
+   "queue": 2402,
+   "sort": {
+    "rendererType": "MeshRenderer",
+    "rendererTypeValue": 1,
+    "rendererPriority": 0,
+    "materialSlot": 3,
+    "staticBatchFirstSubMesh": 0,
+    "staticBatchSubMeshCount": 0,
+    "lightmapIndex": 65535,
+    "lightmapIndexDynamic": 65535,
+    "packedLightmapIndices": 4294967295,
+    "lodFadeHighByte": 0,
+    "lodFadeSource": "non-LODGroup-native-default",
+    "sortingGroupId": 1048575,
+    "sortingGroupOrder": 0,
+    "sortingGroupKey": 4294963200,
+    "sortingGroupSource": "no-SortingGroup-native-default",
+    "canvasOrder": 0,
+    "sortingLayerId": 0,
+    "sortingLayerValue": 0,
+    "sortingOrder": 0,
+    "distanceOffset": 0,
+    "distanceOffsetSource": "MeshRenderer-native-zero",
+    "srpBatcherCompatible": 0,
+    "srpBatcherSource": "non-UnityPerDraw-unity_ObjectToWorld",
+    "materialBatchStateBranch": "hashed",
+    "materialBatchStateBranchSource": "DrawOpaque/DrawTransparent-command-selector-zero",
+    "localKeywordCount": 4,
+    "serializedLocalKeywordStateHex": "0000000000000000",
+    "serializedLocalKeywordHash": 3989861089,
+    "serializedLocalKeywordHashLow8": 225,
+    "serializedLocalKeywordHashSource": "m_KeywordNames-order+m_ValidKeywords+XXH32-seed-0x8f37154b"
+   },
+   "official": {
+    "material": "CAB-5f3f071f13501b6d6c715f5ed95d85de:8611656812090639541",
+    "shader": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+    "customRenderQueue": 2402,
+    "enableInstancingVariants": false,
+    "validKeywords": [],
+    "invalidKeywords": [
+     "_TILTENABLED_ON",
+     "_TRANSPARENT_ON"
+    ],
+    "shaderKeywordNames": [
+     "STEREO_INSTANCING_ON",
+     "UNITY_SINGLE_PASS_STEREO",
+     "STEREO_MULTIVIEW_ON",
+     "STEREO_CUBEMAP_RENDER_ON"
+    ],
+    "shaderKeywordFlags": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "clip": "card",
+   "stencil": 1,
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "floats": {
+    "_BlendDstAlpha": 10,
+    "_BlendDstColor": 10,
+    "_BlendSrcAlpha": 0,
+    "_BlendSrcColor": 1,
+    "_ChangeColor": 0,
+    "_DiffractionIntensity": 4,
+    "_DiffractionPower": 20,
+    "_EmissiveIntensity": 1,
+    "_FlashIntensity": 1.2000000476837158,
+    "_GradationPower": 2.299999952316284,
+    "_LightAreaAlphaBlend": 0,
+    "_LightEmitIntensity": 0,
+    "_LightPower": 1,
+    "_RampInterval": 0,
+    "_RampOffset": -0.5,
+    "_RampRepeat": 2,
+    "_RampSpeed": 3,
+    "_Stencil": 1,
+    "_TiltEnabled": 1,
+    "_TiltIntensity": 1,
+    "_TiltOffset": 0,
+    "_TiltPower": 2,
+    "_Transparent": 1,
+    "_ZTest": 4,
+    "_ZWrite": 0
+   },
+   "colors": {
+    "_FlashBrightColor": {
+     "r": 1,
+     "g": 1,
+     "b": 1,
+     "a": 0
+    },
+    "_FlashDarkColor": {
+     "r": 1,
+     "g": 0,
+     "b": 0.9411765336990356,
+     "a": 0
+    },
+    "_Rotation": {
+     "r": 0,
+     "g": 0,
+     "b": 0,
+     "a": 0
+    }
+   },
+   "keywords": [],
+   "textures": {
+    "_ChangeColorTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4769501780072962610",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4769501780072962610"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_FlashMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "2688798365292853576",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2688798365292853576"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_HologramMaskTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-3075091781772700415",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3075091781772700415"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_MainTex": {
+     "name": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "url": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF.png",
+     "officialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF",
+     "assetPath": null,
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "83471969812008620",
+      "source": "CAB-5f3f071f13501b6d6c715f5ed95d85de",
+      "identity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:83471969812008620"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_PhaseTex": {
+     "name": "Phase_RR_BG",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "officialName": "Phase_RR_BG",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "3838486761573460394",
+      "source": "CAB-dbe067f0288c25e87df65a000e64e2b5",
+      "identity": "CAB-dbe067f0288c25e87df65a000e64e2b5:3838486761573460394"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampMaskTex": {
+     "name": "RR_RMPmask_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "officialName": "RR_RMPmask_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "4373435525177636464",
+      "source": "CAB-18c43553ec6dfe103a214cffae9a1c24",
+      "identity": "CAB-18c43553ec6dfe103a214cffae9a1c24:4373435525177636464"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    },
+    "_RampTex": {
+     "name": "RR_RMP_SB",
+     "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "officialName": "RR_RMP_SB",
+     "assetPath": "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+     "textureIdentity": {
+      "fileId": 0,
+      "pathId": "-677688544188407246",
+      "source": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76",
+      "identity": "CAB-79a4e67e1b4ef916d5a7f17f82b30e76:-677688544188407246"
+     },
+     "scale": {
+      "x": 1,
+      "y": 1
+     },
+     "offset": {
+      "x": 0,
+      "y": 0
+     }
+    }
+   }
+  }
+ },
+ "officialDraws": [
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9205439709110231094#0",
+   "go": "01",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_StackEffect_MRR/01",
+   "meshName": "L_Card_EffectBase_R4",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MEGA_EFM1",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9205439709110231094",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-360143589472363797",
+   "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+   "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9205439709110231094",
+     "role": "effect",
+     "searchTag": "Card-Effect-Emit"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4148630913780637750#0",
+   "go": "02_2",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_StackEffect_MRR/02_2",
+   "meshName": "L_Card_EffectBase_R4",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM2",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4148630913780637750",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:215671746009177748",
+   "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+   "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-463230618515038262#0",
+   "go": "03",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_StackEffect_MRR/03",
+   "meshName": "L_Card_EffectBase_R4",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM3",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-463230618515038262",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-1662440023753269438",
+   "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+   "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8438041458136932406#0",
+   "go": "02_1",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_StackEffect_MRR/02_1",
+   "meshName": "L_Card_EffectBase_R4",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MEGA_EFM2",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8438041458136932406",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-966345765349493873",
+   "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+   "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8438041458136932406",
+     "role": "effect",
+     "searchTag": "Card-Effect-Emit"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1662200818641706954#0",
+   "go": "04",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_StackEffect_MRR/04",
+   "meshName": "L_Card_EffectBase_R4",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFM4",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1662200818641706954",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8426969791124958733",
+   "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+   "meshIdentity": "CAB-0408c7bdd3154d88e79bac4cbd1d9763:475035410585740588",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:177631933651591114#0",
+   "go": "DropEvent",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Logo_Pokemon/Pos01/DropEvent",
+   "meshName": "logo_drop",
+   "materialName": "DropEvent_LOGO",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:177631933651591114",
+   "materialIdentity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-9213123383961301032",
+   "shaderIdentity": "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+   "meshIdentity": "CAB-c604e9606f62d7199af7adbf5a8b97e5:-2974538152035982256",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:9139169391533465546#0",
+   "go": "InnerStencil_Window",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Stencil_Window/InnerStencil_Window",
+   "meshName": "Card_F",
+   "materialName": "InnerStencil_Window",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:9139169391533465546",
+   "materialIdentity": "CAB-40edce138949e7d8493c275431592e5c:5632862269281222530",
+   "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250#1",
+   "go": "Card_F",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "L_Card_R_M",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250",
+   "materialIdentity": "CAB-e3e6fc13be4e9cb5d35e550c0ef95a87:-973451362924139007",
+   "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250#2",
+   "go": "Card_F",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "L_Card_S_M",
+   "materialSlot": 2,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250",
+   "materialIdentity": "CAB-e863b5bddb61bbca4e23f0bf9bc249cc:-6503822316906939454",
+   "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2397767231434154038#0",
+   "go": "L_UI_Hologram_MegaEvolutionTag",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Hologram_MegaEvolutionTag",
+   "meshName": "RainbowTag",
+   "materialName": "L_CategoryTag_MegaEvolution",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2397767231434154038",
+   "materialIdentity": "CAB-8d400a72af4746df434072d7f78f7926:4453257784478530875",
+   "shaderIdentity": "CAB-2d26115c8d7b0e19ac650f71bbdc7525:-7286864420773527812",
+   "meshIdentity": "CAB-72046c631431b08dd8a8720167e4aa4e:-1582729788577664765",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8596394616402501686#0",
+   "go": "L_UI_Hologram_EXIcon",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Hologram_EXIcon",
+   "meshName": "EXIcon",
+   "materialName": "L_FullFace_Holo_P_MegaExIcon",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8596394616402501686",
+   "materialIdentity": "CAB-489c97ccde8e26aa82cbc57823596734:9010643771930582225",
+   "shaderIdentity": "CAB-a19350d90bad9bf70f2b6d1349b69bc9:5721436585460533703",
+   "meshIdentity": "CAB-1ff4404dbd0297ff115207d4316b5db6:-942243677845242392",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:3281751787335819210#0",
+   "go": "L_UI_Hologram_EXRule",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Hologram_EXRule",
+   "meshName": "MegaEXRule",
+   "materialName": "L_FullFace_Holo_P_MegaExRule",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:3281751787335819210",
+   "materialIdentity": "CAB-68abebe6d877046e22b1c693fdd5a2c0:3888977823485247219",
+   "shaderIdentity": "CAB-a19350d90bad9bf70f2b6d1349b69bc9:5721436585460533703",
+   "meshIdentity": "CAB-c1feedb84ec8999621c607550ce53f46:3165204095657197473",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2586630302734966838#0",
+   "go": "L_UI_Dynamic_Text",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Dynamic_Text",
+   "meshName": "Card_Base_UI",
+   "materialName": "L_FullFace_Text_EmitMask_02",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2586630302734966838",
+   "materialIdentity": "CAB-8202f4317b0489a8c93d72ac4edbe86d:-4309031131503618210",
+   "shaderIdentity": "CAB-8a93e31cb5e318823fe7c18ec9b8c0f9:2245828404536736759",
+   "meshIdentity": "CAB-9a3847ea880de0a021b6ce6e82673242:-7382184488764102",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3221164734657486902#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (3)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3221164734657486902",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1590148469267210186#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (2)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1590148469267210186",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6954189844274651082#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (1)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6954189844274651082",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7797471692269985738#0",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_RaremarkFlame_a",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7797471692269985738",
+   "materialIdentity": "CAB-7828a045825d6754f97c11536a675f82:-2653420540558705266",
+   "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3221164734657486902#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (3)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-3221164734657486902",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1590148469267210186#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (2)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1590148469267210186",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6954189844274651082#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a (1)/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6954189844274651082",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7797471692269985738#1",
+   "go": "L_UI_RareMark_Diamond_a",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Hidden/L_UI_RareMark_Diamond_a/L_UI_RareMark_Diamond_a",
+   "meshName": "L_UI_RareMark_Diamond_a",
+   "materialName": "L_Raremark_Diamond_a",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7797471692269985738",
+   "materialIdentity": "CAB-c7e948d7e17336917678424616a4177d:8888281158305920245",
+   "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+   "meshIdentity": "CAB-859d31e35b7c2226949b3a1071ac98ec:-6056319823335762327",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:562088530790883274#0",
+   "go": "OuterStencil",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/Stencil_Window/OuterStencil",
+   "meshName": "Card_F",
+   "materialName": "OuterStencil",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:562088530790883274",
+   "materialIdentity": "CAB-0f742992059a41784a1d1acbfc0af9d3:898611635634795531",
+   "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4260920925016793034#0",
+   "go": "L_UI_Panel_Pokemon",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_UI_Panel_Pokemon",
+   "meshName": "Card_F",
+   "materialName": "Panel_Pokemon_Normal_EmitMask_Stage2_02",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4260920925016793034",
+   "materialIdentity": "CAB-f9f7d0aea58cf8970e5b73fa55131ec7:-3209737125407259815",
+   "shaderIdentity": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:438668764450627530#0",
+   "go": "L_Pokemon_Full_EnergyType_BG",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Pokemon_Full_EnergyType_BG",
+   "meshName": "Card_F",
+   "materialName": "Pokemon_EnergyType_Colorless",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:438668764450627530",
+   "materialIdentity": "CAB-d1b7ed7be5c2266fcdeb73309c4c72f5:1264562113327669848",
+   "shaderIdentity": "CAB-dacac64c95b70409ad52b4bce1b63ad3:6715688836837633753",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250#0",
+   "go": "Card_F",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Card_Base_Pokemon/Card_F",
+   "meshName": "Card_F",
+   "materialName": "Pokemon_Frame_MRR",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250",
+   "materialIdentity": "CAB-ac056117358bebb5a440a75fed4c54f6:-7273687426035046990",
+   "shaderIdentity": "CAB-b69d132787e6b446783c630e4f5170ed:-324863385430330581",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250",
+     "role": "main",
+     "searchTag": "Frame-Holo-2Layer"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4171702516889313334#0",
+   "go": "L_EFF_Flash_MRR",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_EFF_Flash_MRR",
+   "meshName": "Card_F",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4171702516889313334",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1027969984387311025",
+   "shaderIdentity": "CAB-eeb3b28a77923ed00deaaa1baf8678a9:5677331643493683988",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4171702516889313334",
+     "role": "flash",
+     "searchTag": "MRR-Parallax-Flash"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4853559531093598154#0",
+   "go": "L_Pokemon_Full_Hologram",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Pokemon_Full_Hologram",
+   "meshName": "Card_F",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_HOLO",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4853559531093598154",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-2612925906441378707",
+   "shaderIdentity": "CAB-a9ff84e8c58ed394bfc86fbba120d22a:-1402989987002036257",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-332304328072454198#0",
+   "go": "L_Pokemon_Full_Parallax",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Pokemon_Full_Parallax",
+   "meshName": "Card_F",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-332304328072454198",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-7349655374939338958",
+   "shaderIdentity": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-332304328072454198",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-5508785090357780534#0",
+   "go": "L_Pokemon_Window_Parallax",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Pokemon_Window_Parallax",
+   "meshName": "Card_F",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-5508785090357780534",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:2364745061194950232",
+   "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {}
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4852683987084156874#0",
+   "go": "L_Pokemon_Window_Parallax",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/L_Pokemon_Window_Parallax",
+   "meshName": "Card_F",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR2",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4852683987084156874",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1570989627641157465",
+   "shaderIdentity": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
+   "meshIdentity": "CAB-053564e7ef27d7bfe811376147ed6788:-7495677884130850129",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:4852683987084156874",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078#0",
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "meshName": "Card_Geo",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM1",
+   "materialSlot": 0,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:8916522284609909958",
+   "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+   "meshIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-229874912002271126",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078#2",
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "meshName": "Card_Geo",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM2",
+   "materialSlot": 2,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:7981966106986972093",
+   "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+   "meshIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-229874912002271126",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078#1",
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "meshName": "Card_Geo",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM3",
+   "materialSlot": 1,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:6508906262392039939",
+   "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+   "meshIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-229874912002271126",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  },
+  {
+   "drawId": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078#3",
+   "go": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "goPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L/cPK_90_012950_00_MEGAPIGEOTex_RR_L_SB",
+   "meshName": "Card_Geo",
+   "materialName": "cPK_90_012950_00_MEGAPIGEOTex_RR_L_SBM4",
+   "materialSlot": 3,
+   "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+   "materialIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:8611656812090639541",
+   "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+   "meshIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-229874912002271126",
+   "rendererProperties": {
+    "cardMRR": {
+     "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+     "rendererIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+     "role": "main",
+     "searchTag": "MRR-ChangeColor-Lighting"
+    }
+   }
+  }
+ ],
+ "runtimeSettings": {
+  "kiraPuyo": {},
+  "circularKira": {},
+  "cardFuture": {},
+  "cardAncient": {},
+  "ancientBGAnimation": {},
+  "cardMarble": {},
+  "cardMSR": {},
+  "msrAnimation": {},
+  "cardMRR": {
+   "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678": {
+    "componentIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:-537827894733594678",
+    "componentGoIdentity": "CAB-5f3f071f13501b6d6c715f5ed95d85de:1233992914509733834",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:-4978927052999397714",
+    "animationSettingsIdentity": "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485",
+    "rendererBindings": {
+     "main": [
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:-332304328072454198",
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9151397555949953078",
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:1372656769971298250",
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:4852683987084156874"
+     ],
+     "effect": [
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:-8438041458136932406",
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:-9205439709110231094"
+     ],
+     "flash": [
+      "CAB-5f3f071f13501b6d6c715f5ed95d85de:-4171702516889313334"
+     ]
+    },
+    "useSpeedAdjust": 0,
+    "animStartDegree": 10,
+    "animTimeScale": 0.3499999940395355,
+    "animDuration": 1.5,
+    "flashRadialStartOffset": 0.1599999964237213,
+    "recordingTime": 0.25,
+    "minTiltSpeed": 0.30000001192092896,
+    "maxTiltSpeed": 1.5,
+    "minAnimSpeed": 0.75,
+    "maxAnimSpeed": 1.7999999523162842,
+    "componentGoPath": "cPK_90_012950_00_MEGAPIGEOTex_RR_L"
+   }
+  },
+  "mrrAnimation": {
+   "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485": {
+    "identity": "CAB-f6658af8a4c8142c58363fda8a488df9:-817433177353697485",
+    "name": "MRR_FlashAnimation",
+    "scriptIdentity": "CAB-1e36700dd93ee778e75c5e8df73b6de5:-5383879446595615319",
+    "curves": {
+     "ChangeColorCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": 0.011479253880679607,
+        "outSlope": 0.011479253880679607,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.7228683233261108
+       },
+       {
+        "time": 0.5299999713897705,
+        "value": 0.999632716178894,
+        "inSlope": 0.014440572820603848,
+        "outSlope": 0.014440572820603848,
+        "weightedMode": 3,
+        "inWeight": 0.21792833507061005,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 0,
+        "inSlope": -1.7591193914413452,
+        "outSlope": -1.7591193914413452,
+        "weightedMode": 1,
+        "inWeight": 0.5363790988922119,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightColorIntensityCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": -0.0007782953907735646,
+        "outSlope": -0.0007782953907735646,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.9661697149276733
+       },
+       {
+        "time": 0.3051316440105438,
+        "value": 0.5191866159439087,
+        "inSlope": 1.6945178508758545,
+        "outSlope": 1.6945178508758545,
+        "weightedMode": 3,
+        "inWeight": 0.19259370863437653,
+        "outWeight": 0.1326538473367691
+       },
+       {
+        "time": 0.44718044996261597,
+        "value": 0.5923696756362915,
+        "inSlope": 0.015264581888914108,
+        "outSlope": 0.015264581888914108,
+        "weightedMode": 3,
+        "inWeight": 0.5776070356369019,
+        "outWeight": 0.35347843170166016
+       },
+       {
+        "time": 0.5533833503723145,
+        "value": 0.584721565246582,
+        "inSlope": -0.20232349634170532,
+        "outSlope": -0.20232349634170532,
+        "weightedMode": 3,
+        "inWeight": 0.33444589376449585,
+        "outWeight": 0.6183719038963318
+       },
+       {
+        "time": 0.91558438539505,
+        "value": 0,
+        "inSlope": -4.8260321617126465,
+        "outSlope": -4.8260321617126465,
+        "weightedMode": 1,
+        "inWeight": 0.1262654811143875,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightEmitIntensityCurve": {
+      "keys": [
+       {
+        "time": -4.922039806842804e-7,
+        "value": 0.000034549739211797714,
+        "inSlope": -0.010956007055938244,
+        "outSlope": -0.010956007055938244,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 1
+       },
+       {
+        "time": 0.44596660137176514,
+        "value": 0.4048060476779938,
+        "inSlope": 0.4866843819618225,
+        "outSlope": 0.4866843819618225,
+        "weightedMode": 3,
+        "inWeight": 0.4644043445587158,
+        "outWeight": 0.11976943165063858
+       },
+       {
+        "time": 0.6008181571960449,
+        "value": 0.40380606055259705,
+        "inSlope": -0.41837477684020996,
+        "outSlope": -0.41837477684020996,
+        "weightedMode": 3,
+        "inWeight": 0.21930503845214844,
+        "outWeight": 0.2241613119840622
+       },
+       {
+        "time": 0.8831168413162231,
+        "value": 0,
+        "inSlope": -3.504310369491577,
+        "outSlope": -3.504310369491577,
+        "weightedMode": 1,
+        "inWeight": 0.17688679695129395,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "LightPower": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 2,
+        "inSlope": 0.014645862393081188,
+        "outSlope": 0.014645862393081188,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.2956942915916443
+       },
+       {
+        "time": 0.4118761718273163,
+        "value": 1,
+        "inSlope": -0.000004079826794622932,
+        "outSlope": -0.000004079826794622932,
+        "weightedMode": 0,
+        "inWeight": 0.3489391505718231,
+        "outWeight": 0.19564369320869446
+       },
+       {
+        "time": 0.5840109586715698,
+        "value": 1.31421959400177,
+        "inSlope": 3.521144151687622,
+        "outSlope": 3.521144151687622,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.27606457471847534
+       },
+       {
+        "time": 0.6922973394393921,
+        "value": 1.5650837421417236,
+        "inSlope": 1.1788946390151978,
+        "outSlope": 1.1788946390151978,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 1.6355737447738647,
+        "inSlope": -0.005363957490772009,
+        "outSlope": -0.005363957490772009,
+        "weightedMode": 0,
+        "inWeight": 0.3768155574798584,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2UVXTranslateByTiltingLeft": {
+      "keys": [
+       {
+        "time": 0.002593994140625,
+        "value": 2.5,
+        "inSlope": -14.885828018188477,
+        "outSlope": -14.885828018188477,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.11762524396181107
+       },
+       {
+        "time": 0.19045886397361755,
+        "value": 0.062079958617687225,
+        "inSlope": -3.8329339027404785,
+        "outSlope": -3.8329339027404785,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.5368157625198364
+       },
+       {
+        "time": 0.29183104634284973,
+        "value": -0.27605581283569336,
+        "inSlope": -1.9009853601455688,
+        "outSlope": -1.9009853601455688,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": -0.7329114079475403,
+        "inSlope": -0.028575366362929344,
+        "outSlope": -0.028575366362929344,
+        "weightedMode": 0,
+        "inWeight": 0.18583104014396667,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2UVXTranslateByTiltingRight": {
+      "keys": [
+       {
+        "time": 0,
+        "value": -0.7329114079475403,
+        "inSlope": 0.028575366362929344,
+        "outSlope": 0.028575366362929344,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.18583104014396667
+       },
+       {
+        "time": 0.7084565162658691,
+        "value": -0.27605581283569336,
+        "inSlope": 1.9009853601455688,
+        "outSlope": 1.9009853601455688,
+        "weightedMode": 0,
+        "inWeight": 0.3333333432674408,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 0.8099484443664551,
+        "value": 0.062079958617687225,
+        "inSlope": 3.8329339027404785,
+        "outSlope": 3.8329339027404785,
+        "weightedMode": 0,
+        "inWeight": 0.5368157625198364,
+        "outWeight": 0.3333333432674408
+       },
+       {
+        "time": 1,
+        "value": 2.5,
+        "inSlope": 14.885828018188477,
+        "outSlope": 14.885828018188477,
+        "weightedMode": 0,
+        "inWeight": 0.11762524396181107,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2ColorPower": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 2.319999933242798,
+        "inSlope": -0.021901894360780716,
+        "outSlope": -0.021901894360780716,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0.1700730323791504
+       },
+       {
+        "time": 0.34954342246055603,
+        "value": 2.3205087184906006,
+        "inSlope": -0.003911961335688829,
+        "outSlope": -0.003911961335688829,
+        "weightedMode": 0,
+        "inWeight": 0.12302613258361816,
+        "outWeight": 0.4160226583480835
+       },
+       {
+        "time": 0.5968150496482849,
+        "value": 4.024890422821045,
+        "inSlope": 15.945093154907227,
+        "outSlope": 15.945093154907227,
+        "weightedMode": 0,
+        "inWeight": 0.08998353779315948,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "Layer2EmissiveIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0.20000000298023224,
+        "inSlope": 0.0031882296316325665,
+        "outSlope": 0.0031882296316325665,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.9680858850479126
+       },
+       {
+        "time": 0.24837128818035126,
+        "value": 0.8038379549980164,
+        "inSlope": -0.0000012678119674092159,
+        "outSlope": -0.0000012678119674092159,
+        "weightedMode": 3,
+        "inWeight": 0.38388821482658386,
+        "outWeight": 0.15541972219944
+       },
+       {
+        "time": 0.49800148606300354,
+        "value": 0.4370706379413605,
+        "inSlope": -1.3976051807403564,
+        "outSlope": -1.3976051807403564,
+        "weightedMode": 3,
+        "inWeight": 0.7604854106903076,
+        "outWeight": 0.18031513690948486
+       },
+       {
+        "time": 1,
+        "value": 0.20000000298023224,
+        "inSlope": 0.000012225122191011906,
+        "outSlope": 0.000012225122191011906,
+        "weightedMode": 3,
+        "inWeight": 0.5194132924079895,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffSwitchColor": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000023026992494123988,
+        "inSlope": -0.02431616000831127,
+        "outSlope": -0.02431616000831127,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.41414961218833923
+       },
+       {
+        "time": 0.4156191349029541,
+        "value": 0.019978994503617287,
+        "inSlope": 1.0748882293701172,
+        "outSlope": 1.0748882293701172,
+        "weightedMode": 3,
+        "inWeight": 0.07863405346870422,
+        "outWeight": 0.5578040480613708
+       },
+       {
+        "time": 0.7350214719772339,
+        "value": 0.5647060871124268,
+        "inSlope": 0.4781627357006073,
+        "outSlope": 0.4781627357006073,
+        "weightedMode": 3,
+        "inWeight": 0.40962257981300354,
+        "outWeight": 0.32436901330947876
+       },
+       {
+        "time": 0.8494791984558105,
+        "value": 0.5798492431640625,
+        "inSlope": -0.0013956199400126934,
+        "outSlope": -0.0013956199400126934,
+        "weightedMode": 3,
+        "inWeight": 0.3348512649536133,
+        "outWeight": 0.8000335693359375
+       },
+       {
+        "time": 1.2000000476837158,
+        "value": 0,
+        "inSlope": 0.00488831102848053,
+        "outSlope": 0.00488831102848053,
+        "weightedMode": 1,
+        "inWeight": 0.7299469113349915,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffAdditiveIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 1,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       },
+       {
+        "time": 1,
+        "value": 1,
+        "inSlope": 0,
+        "outSlope": 0,
+        "weightedMode": 0,
+        "inWeight": 0,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffColor3Blend": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000023026992494123988,
+        "inSlope": 0.019775135442614555,
+        "outSlope": 0.019775135442614555,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.44153568148612976
+       },
+       {
+        "time": 0.5309537649154663,
+        "value": 1,
+        "inSlope": 0.022820457816123962,
+        "outSlope": 0.022820457816123962,
+        "weightedMode": 3,
+        "inWeight": 0.4687274098396301,
+        "outWeight": 0.39058899879455566
+       },
+       {
+        "time": 0.7127354145050049,
+        "value": 0.9847624897956848,
+        "inSlope": -0.1639358401298523,
+        "outSlope": -0.1639358401298523,
+        "weightedMode": 3,
+        "inWeight": 0.2798267602920532,
+        "outWeight": 0.7295334339141846
+       },
+       {
+        "time": 1.459240436553955,
+        "value": 0,
+        "inSlope": -0.09236917644739151,
+        "outSlope": -0.09236917644739151,
+        "weightedMode": 1,
+        "inWeight": 0.6968785524368286,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "EffEmissiveIntensity": {
+      "keys": [
+       {
+        "time": 0.2031959593296051,
+        "value": 0.000017118320101872087,
+        "inSlope": 0.009196305647492409,
+        "outSlope": 0.009196305647492409,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.6041986346244812
+       },
+       {
+        "time": 0.44409722089767456,
+        "value": 0.5879380702972412,
+        "inSlope": 0.14478641748428345,
+        "outSlope": 0.14478641748428345,
+        "weightedMode": 3,
+        "inWeight": 0.43842265009880066,
+        "outWeight": 0.3904027044773102
+       },
+       {
+        "time": 0.6428640484809875,
+        "value": 0.5742475986480713,
+        "inSlope": -0.194915309548378,
+        "outSlope": -0.194915309548378,
+        "weightedMode": 3,
+        "inWeight": 0.2604319453239441,
+        "outWeight": 0.6749913096427917
+       },
+       {
+        "time": 1,
+        "value": 0,
+        "inSlope": -0.3182857632637024,
+        "outSlope": -0.3182857632637024,
+        "weightedMode": 1,
+        "inWeight": 0.2188011258840561,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashIntensity": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0,
+        "inSlope": 0.030211511999368668,
+        "outSlope": 0.030211511999368668,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.7304899096488953
+       },
+       {
+        "time": 0.5992385745048523,
+        "value": 1.2695728540420532,
+        "inSlope": -0.001696626772172749,
+        "outSlope": -0.001696626772172749,
+        "weightedMode": 3,
+        "inWeight": 0.3645056188106537,
+        "outWeight": 0.7167454957962036
+       },
+       {
+        "time": 0.7480915188789368,
+        "value": 0,
+        "inSlope": -2.555307149887085,
+        "outSlope": -2.555307149887085,
+        "weightedMode": 3,
+        "inWeight": 0.008462226949632168,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashRadialScaling": {
+      "keys": [
+       {
+        "time": 0.5046589970588684,
+        "value": 1,
+        "inSlope": 0.8900613784790039,
+        "outSlope": 0.8900613784790039,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.6847476363182068
+       },
+       {
+        "time": 1,
+        "value": 1.600000023841858,
+        "inSlope": 2.173854112625122,
+        "outSlope": 2.173854112625122,
+        "weightedMode": 1,
+        "inWeight": 0.06797736138105392,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     },
+     "FlashRadialAnim": {
+      "keys": [
+       {
+        "time": 0,
+        "value": 0.0020751953125,
+        "inSlope": 0.335414320230484,
+        "outSlope": 0.335414320230484,
+        "weightedMode": 3,
+        "inWeight": 0,
+        "outWeight": 0.3616647720336914
+       },
+       {
+        "time": 0.4371131956577301,
+        "value": 0.3038474917411804,
+        "inSlope": 1.045061469078064,
+        "outSlope": 1.045061469078064,
+        "weightedMode": 3,
+        "inWeight": 0.322907418012619,
+        "outWeight": 0.6806528568267822
+       },
+       {
+        "time": 0.831540048122406,
+        "value": 1,
+        "inSlope": 9.217402458190918,
+        "outSlope": 9.217402458190918,
+        "weightedMode": 3,
+        "inWeight": 0.007486597169190645,
+        "outWeight": 0
+       }
+      ],
+      "preInfinity": 2,
+      "postInfinity": 2,
+      "rotationOrder": 4
+     }
+    }
+   }
+  }
+ },
+ "textures": {
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON.png",
+  "DropEvent_AM": "/game/Assets/Lettuce/_Data/Common/CardNew/Logo/Item/DropEvent/Textures/DropEvent_AM.png",
+  "card_inner_stencil_mask_pokemon_window": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+  "SimpleCard_Side02": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+  "ALL_RMP_MegaEvolutionTag_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+  "RainbowTagBGTintMask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+  "ALL_RMP_MegaEvolutionTag_Outline": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+  "ALL_RMP_MegaEvolutionTag_Base": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+  "RainbowTagTintMask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+  "L_001_ENV": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+  "mask_white": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+  "Phase_EX_UI_Mega": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+  "ALL_RMPmask_EX_135": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+  "MegaRR_EXIcon_EXRule_RMP": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+  "card_megaEX_EXRule_mask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+  "MegaRR_EXRule_RMP": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+  "card_rarity_outline": "/game/Assets/Texture2D/card_rarity_outline.png",
+  "card_rarity_diamond_a": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+  "Phase_Rarity_Diamond": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+  "RMP_MASK_RareMark": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+  "ALL_RMP_RareMark_Diamond": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+  "card_pokemon_normal_stage2": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+  "card_bg_nor": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_nor.png",
+  "card_frame_mask_rr_mega": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+  "card_pokemon_base_rr_mega": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+  "card_pokemon_base_rr_mega_mask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+  "FrameHighlight": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+  "Phase_RR_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+  "SA_SSA_RR_RMPmask": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+  "RR_RMP_Border": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH.png",
+  "Phase_RR_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+  "RR_RMP_BG": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK.png",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF": "/game/Assets/Texture2D/cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF.png",
+  "RR_RMPmask_SB": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+  "RR_RMP_SB": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png"
+ },
+ "alphaMode": {
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON": "straight",
+  "DropEvent_AM": "opaque",
+  "card_inner_stencil_mask_pokemon_window": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": "opaque",
+  "SimpleCard_Side02": "opaque",
+  "ALL_RMP_MegaEvolutionTag_BG": "opaque",
+  "RainbowTagBGTintMask": "opaque",
+  "ALL_RMP_MegaEvolutionTag_Outline": "opaque",
+  "ALL_RMP_MegaEvolutionTag_Base": "opaque",
+  "RainbowTagTintMask": "opaque",
+  "L_001_ENV": "opaque",
+  "mask_white": "opaque",
+  "Phase_EX_UI_Mega": "opaque",
+  "ALL_RMPmask_EX_135": "opaque",
+  "MegaRR_EXIcon_EXRule_RMP": "opaque",
+  "card_megaEX_EXRule_mask": "opaque",
+  "MegaRR_EXRule_RMP": "opaque",
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": "opaque",
+  "card_rarity_outline": "opaque",
+  "card_rarity_diamond_a": "straight",
+  "Phase_Rarity_Diamond": "opaque",
+  "RMP_MASK_RareMark": "opaque",
+  "ALL_RMP_RareMark_Diamond": "opaque",
+  "card_pokemon_normal_stage2": "premult",
+  "card_bg_nor": "straight",
+  "card_frame_mask_rr_mega": "opaque",
+  "card_pokemon_base_rr_mega": "straight",
+  "card_pokemon_base_rr_mega_mask": "opaque",
+  "FrameHighlight": "opaque",
+  "Phase_RR_Border": "opaque",
+  "SA_SSA_RR_RMPmask": "opaque",
+  "RR_RMP_Border": "opaque",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH": "opaque",
+  "Phase_RR_BG": "opaque",
+  "RR_RMP_BG": "opaque",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1": "opaque",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON": "straight",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM": "opaque",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK": "opaque",
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF": "straight",
+  "RR_RMPmask_SB": "opaque",
+  "RR_RMP_SB": "opaque"
+ },
+ "textureColorSpace": {
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_OFF": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF1_ON": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF3": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_OFF": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_EFF2_ON": 1,
+  "DropEvent_AM": 1,
+  "card_inner_stencil_mask_pokemon_window": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png": 1,
+  "SimpleCard_Side02": 1,
+  "ALL_RMP_MegaEvolutionTag_BG": 1,
+  "RainbowTagBGTintMask": 1,
+  "ALL_RMP_MegaEvolutionTag_Outline": 1,
+  "ALL_RMP_MegaEvolutionTag_Base": 1,
+  "RainbowTagTintMask": 1,
+  "L_001_ENV": 1,
+  "mask_white": 0,
+  "Phase_EX_UI_Mega": 0,
+  "ALL_RMPmask_EX_135": 0,
+  "MegaRR_EXIcon_EXRule_RMP": 1,
+  "card_megaEX_EXRule_mask": 0,
+  "MegaRR_EXRule_RMP": 1,
+  "Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png": 1,
+  "card_rarity_outline": 1,
+  "card_rarity_diamond_a": 1,
+  "Phase_Rarity_Diamond": 0,
+  "RMP_MASK_RareMark": 0,
+  "ALL_RMP_RareMark_Diamond": 1,
+  "card_pokemon_normal_stage2": 1,
+  "card_bg_nor": 1,
+  "card_frame_mask_rr_mega": 0,
+  "card_pokemon_base_rr_mega": 1,
+  "card_pokemon_base_rr_mega_mask": 1,
+  "FrameHighlight": 1,
+  "Phase_RR_Border": 0,
+  "SA_SSA_RR_RMPmask": 0,
+  "RR_RMP_Border": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_FLASH": 1,
+  "Phase_RR_BG": 0,
+  "RR_RMP_BG": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_ILL_OFF": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_PAR1": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_ON": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_LM": 1,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_MASK": 0,
+  "cPK_90_012950_00_MEGAPIGEOTex_RR_L_AM_OFF": 1,
+  "RR_RMPmask_SB": 0,
+  "RR_RMP_SB": 1
+ },
+ "_missing": []
+}

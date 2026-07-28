@@ -1327,6 +1327,7 @@
     "mrt_attachments": 2,
     "stencil_normalization": "disable-when-always-keep",
     "stencil_face_mode": "generic",
+    "require_complete_active_bindings": true,
     "backend_basis_conversions": {
       "fragment": {
         "worldVectors": [

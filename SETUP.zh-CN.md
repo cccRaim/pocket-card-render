@@ -56,8 +56,9 @@ cd pocket-card-render
 npm install
 ```
 
-三张样例 scene 已预置,但它们的**美术不提交**(那是游戏的)。请用**你自己**那份游戏的 AssetRipper
-导出来提供美术(导出配置见*路径 B → 第 2 步*),然后只收集样例引用到的部分:
+全局最小的 112 张机制覆盖 scene、5 张最小按稀有度补充 witness 与 6 张补充回归 scene
+均已预置，但它们的**美术不提交**（那是游戏的）。请用**你自己**那份游戏的 AssetRipper
+导出来提供美术（导出配置见*路径 B → 第 2 步*），然后只收集样例引用到的部分：
 
 ```bash
 npm run gather -- /path/to/AssetRipper-export   # 把网格+贴图复制进 public/game/
@@ -70,7 +71,9 @@ npm run serve                                    # → http://127.0.0.1:8011
 `npm run audit:official-mesh-payload` 可把四张基准卡的 prefab 按展开后的有序三角形流逐字节对比；
 该审计不使用截图或图像阈值。
 
-打开 <http://127.0.0.1:8011>,再加 `?scene=scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json` / `scene.cTR_20_000230_00_LEAF_SR.json` / `scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json`。
+打开 <http://127.0.0.1:8011> 并使用选卡菜单。菜单包含 112 张全局最小机制覆盖卡、
+5 张按稀有度补充 witness 和 6 张补充回归卡。只有在对应 `/game/` 资产完成 `gather`
+后条目才可选择；服务端不会把通用 fallback recipe 当成已就绪的内置样例。
 
 ---
 
@@ -170,7 +173,7 @@ node build/gather.mjs "<export-root>"      # 只复制 scene 引用到的 /game/
 
 ### 7.（可选)卡面文本
 
-三张样例自带合成好的文本(`public/text/`、`public/locales/`)。给新卡重新生成文本需要游戏
+全部内置样例自带合成好的文本（`public/text/`、`public/locales/`）。给新卡重新生成文本需要游戏
 **masterdata** + `build/compose.mjs` / `build/carddata.mjs`,是单独一步;没有它,卡也能渲染,只是
 **没有**名称/HP/招式叠加(美术不受影响)。
 

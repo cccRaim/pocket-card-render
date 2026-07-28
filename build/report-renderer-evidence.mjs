@@ -699,9 +699,7 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
         : ["target Android lifecycle-to-Unity pause dispatch and browser visibility-policy equivalence"],
     },
     "bloom-tone-mapping": {
-      status: officialBloomKnown && bloomRuntime && finalBlitRuntime && bloomDirectColorRt
-        ? "proven"
-        : (officialBloomKnown ? "partial" : "not-proven"),
+      status: officialBloomKnown ? "partial" : "not-proven",
       coveredSubscopes: officialBloomKnown
         ? (officialBloomConfigurationKnown
           ? (mrtOutputAudit
@@ -717,18 +715,18 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
         ...(officialBloomKnown ? ["official Bloom pass graph and SPIR-V math"] : []),
         ...(officialBloomConfigurationKnown ? ["official serialized Bloom membership/volume values, GetBufferSize geometry, and pinned FinalBlit body"] : []),
         ...(mrtOutputAudit ? ["official per-material MRT1 formulas and configured nonzero shader set"] : []),
-        ...(bloomRuntime ? ["browser exact pass0-5 programs, five-level RT graph, sheet float32 layout/weights, blur order, and fixed-function blend states"] : []),
-        ...(finalBlitRuntime ? ["ResourceManager-to-Material-to-Shader FinalBlit chain, exact textureLod program, scaleBias/mip-0 state, and browser runtime wiring"] : []),
-        ...(bloomDirectColorRt ? ["pass 5 direct additive write to RendererData.ColorRT"] : []),
+        ...(bloomRuntime ? ["source-current local pass0-5 programs, five-level RT graph, sheet float32 layout/weights, blur order, and fixed-function blend states"] : []),
+        ...(finalBlitRuntime ? ["ResourceManager-to-Material-to-Shader FinalBlit chain, source-bound textureLod program, scaleBias/mip-0 state, and local runtime wiring"] : []),
+        ...(bloomDirectColorRt ? ["local pass 5 direct additive write to scene ColorRT"] : []),
       ],
-      remaining: finalBlitRuntime && bloomDirectColorRt
-        ? []
-        : bloomRuntime
-          ? [
-            ...(finalBlitRuntime ? [] : ["FinalBlit shader selection, blend semantics, and final presentation program"]),
-            ...(bloomDirectColorRt ? [] : ["pass 5 direct additive write to scene ColorRT without a full-size bridge target"]),
-          ]
-        : ["Bloom sheet weights and complete per-level downsample/blur sizes", "FinalBlit shader selection, blend semantics, and final presentation program"],
+      remaining: [
+        ...(bloomRuntime ? [] : ["Bloom sheet weights and complete per-level downsample/blur sizes"]),
+        ...(finalBlitRuntime ? [] : ["FinalBlit shader selection, blend semantics, and final presentation program"]),
+        ...(bloomDirectColorRt ? [] : ["local pass 5 direct additive write to scene ColorRT without a full-size bridge target"]),
+        "Vulkan-to-WebGL backend semantic equivalence for the six Bloom programs and FinalBlit",
+        "official guest pass-5 attachment, viewport, descriptor and image-layout submission",
+        "target-device physical intermediate formats and final compositor transfer",
+      ],
     },
     "display-transfer": {
       status: gamma && rawDisplay && uiDefaultFromRtAudit ? "partial" : "not-proven",
@@ -765,7 +763,10 @@ export function buildPipelineParityStages(rows = collectEvidenceRows()) {
       advancementCost: {
         class: stage.status === "proven" ? "maintenance" : workClass,
         relative: stage.status === "proven" ? "low" : relativeCost,
-        remainingSubscopes: stage.totalSubscopes - stage.coveredSubscopes,
+        remainingSubscopes: Math.max(
+          stage.totalSubscopes - stage.coveredSubscopes,
+          stage.remaining.length > 0 ? 1 : 0,
+        ),
       },
       sourceError: [
         official ? null : officialResult.error,

@@ -32,8 +32,8 @@ const PROGRAM = {
   selector: {
     selectorId: "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
     candidateWitnessId: "b54f79946809a035762c9175061af64d2b48572b4a7143332d3d673339f75a9b",
-    proofGraphSha256: "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0",
-    portIndexSha256: "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f",
+    proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+    portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
     spirvCrossSha256: {
       vertex: "14125d71fc0599c80e23279c8dd3a38ef9419e7f0e60f2beed8b8ac256d6032f",
       fragment: "ad5cc1328e9f058f735c45f5b8efe8e23bb674122852205f82a80019fd6c5ffa",

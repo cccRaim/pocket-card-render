@@ -24,10 +24,10 @@ const ASSETS = process.env.PCR_GAME_SRC || join(SIB, "assets");   // AssetRipper
 const OUTPUT = process.env.PCR_RECIPES || join(SIB, "output");    // material recipes + shader-state + alpha cache
 const PUB = join(ROOT, "public");
 
-// Text is emitted as a normal selector-bound draw. Text_Alpha is a distinct official executable and
-// remains excluded until it has its own exact port. EX foils consume the same encoded DynamicUI RT.
+// Every official shader is emitted. Unsupported executables remain visible to the runtime dispatch
+// and audit contracts instead of disappearing silently during scene generation.
 const SKIP_GO = new Set();
-const SKIP_SHADER = new Set(["Text_Alpha"]);
+const SKIP_SHADER = new Set();
 const short = (s) => (s || "").split("/").pop();
 const toUrl = (abs) =>
   encodeURI("/game/" + relative(ASSETS, abs).replace(/\\/g, "/"));
@@ -231,9 +231,29 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   // world transforms; multi-material nodes (SBM2/SBM4, diamond/outline) split into distinct materials.
   const materials = {};
   const officialDraws = [];
-  const runtimeSettings = full.runtimeSettings || { kiraPuyo: {}, circularKira: {} };
+  const runtimeSettings = full.runtimeSettings
+    || {
+      kiraPuyo: {},
+      circularKira: {},
+      cardFuture: {},
+      cardAncient: {},
+      ancientBGAnimation: {},
+      cardMarble: {},
+      cardMSR: {},
+      msrAnimation: {},
+      cardMRR: {},
+      mrrAnimation: {},
+    };
   const kiraPuyoSettings = runtimeSettings.kiraPuyo || {};
   const circularKiraSettings = runtimeSettings.circularKira || {};
+  const cardFutureSettings = runtimeSettings.cardFuture || {};
+  const cardAncientSettings = runtimeSettings.cardAncient || {};
+  const ancientBGAnimationSettings = runtimeSettings.ancientBGAnimation || {};
+  const cardMarbleSettings = runtimeSettings.cardMarble || {};
+  const cardMSRSettings = runtimeSettings.cardMSR || {};
+  const msrAnimationSettings = runtimeSettings.msrAnimation || {};
+  const cardMRRSettings = runtimeSettings.cardMRR || {};
+  const mrrAnimationSettings = runtimeSettings.mrrAnimation || {};
   const circularScalarFields = [
     "defaultCircularAnglePattern", "defaultCircularAngleManual", "tiltPower", "tiltThreshold",
     "tiltStateChangeDelay", "rotateAccel", "brakeDuration", "primTypeASymmetryCount",
@@ -263,6 +283,214 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
       throw new Error(`${CARD_ID}: incomplete CircularKiraObject contract ${componentIdentity}`);
     }
   }
+  const cardFutureScalarFields = [
+    "animationTexFrameCount", "animationFrameCount", "animSwitchSpeed",
+    "animFrameOffset", "skipAnimThreshold", "accellRatio", "isAnimationStopped",
+  ];
+  for (const [componentIdentity, config] of Object.entries(cardFutureSettings)) {
+    if (config?.componentIdentity !== componentIdentity
+        || typeof config?.componentGoIdentity !== "string"
+        || typeof config?.componentGoPath !== "string" || !config.componentGoPath
+        || typeof config?.scriptIdentity !== "string"
+        || !Array.isArray(config?.rendererBindings) || config.rendererBindings.length === 0
+        || config.rendererBindings.some((identity) => typeof identity !== "string")
+        || cardFutureScalarFields.some((field) => !Number.isFinite(config?.[field]))
+        || ![0, 1].includes(config?.isAnimationStopped)) {
+      throw new Error(`${CARD_ID}: incomplete CardFutureObject contract ${componentIdentity}`);
+    }
+  }
+  const cardAncientScalarFields = [
+    "animCurveScale", "animStartDelayRangeA", "animStartDelayRangeB",
+    "changeRangeStart", "changeRangeEnd", "zuzuGoalAnimThreshold",
+    "goalThreshold", "scrollLength", "shapeChangeSpeed", "dot2Multiply",
+    "accellRatio", "diffOffset", "shakeSpeed", "noiseScale",
+    "frictionScale", "maxFriction", "startSandBaseEmissionRate",
+    "middleSandBaseEmissionRate", "endSandBaseEmissionRate",
+    "isAnimationStopped",
+  ];
+  const cardAncientVectorFields = [
+    "shakeAIntensity", "shakeAFrequency", "shakeBIntensity", "shakeBFrequency",
+  ];
+  const ancientCurveNames = [
+    "ZuzuA", "ZuzuB", "ZuzuC", "Zzzzz", "ZuzuGoal", "ShakeIntensity",
+  ];
+  const usedAncientCurves = new Set(["ZuzuA", "Zzzzz", "ZuzuGoal", "ShakeIntensity"]);
+  for (const [settingsIdentity, settings] of Object.entries(ancientBGAnimationSettings)) {
+    if (settings?.identity !== settingsIdentity
+        || typeof settings?.scriptIdentity !== "string"
+        || !settings.scriptIdentity.includes(":")
+        || ancientCurveNames.some((name) => {
+          const keys = settings?.curves?.[name]?.keys;
+          return !Array.isArray(keys) || (usedAncientCurves.has(name) && keys.length < 2)
+            || keys.some((key) => [
+              "time", "value", "inSlope", "outSlope",
+              "weightedMode", "inWeight", "outWeight",
+            ].some((field) => !Number.isFinite(key?.[field])));
+        })) {
+      throw new Error(`${CARD_ID}: incomplete AncientBGAnimationSettings contract ${settingsIdentity}`);
+    }
+  }
+  for (const [componentIdentity, config] of Object.entries(cardAncientSettings)) {
+    if (config?.componentIdentity !== componentIdentity
+        || typeof config?.componentGoIdentity !== "string"
+        || typeof config?.componentGoPath !== "string" || !config.componentGoPath
+        || typeof config?.scriptIdentity !== "string"
+        || typeof config?.curveSettingsIdentity !== "string"
+        || !ancientBGAnimationSettings[config.curveSettingsIdentity]
+        || !Array.isArray(config?.rendererBindings) || config.rendererBindings.length === 0
+        || config.rendererBindings.some((identity) => typeof identity !== "string")
+        || !Array.isArray(config?.scrolls) || config.scrolls.length < 6
+        || config.scrolls.some((value) => !Number.isFinite(value))
+        || cardAncientScalarFields.some((field) => !Number.isFinite(config?.[field]))
+        || cardAncientVectorFields.some((field) =>
+          !Number.isFinite(config?.[field]?.x) || !Number.isFinite(config?.[field]?.y))
+        || ![0, 1].includes(config?.isAnimationStopped)) {
+      throw new Error(`${CARD_ID}: incomplete CardAncientObject contract ${componentIdentity}`);
+    }
+  }
+  const cardMarbleScalarFields = [
+    "tiltPower", "delayTime2", "pointAccel", "shearAccel",
+    "dorodoroDistance", "resistancePower", "minDorodoroCoef",
+    "maxPointSpeed", "minPointSpeed", "goalThreshold",
+    "pointMoveByTilt", "pointForceChangeByTilt",
+  ];
+  const cardMarblePointFields = [
+    "rotationWithTilt", "defaultForce", "tiltForce",
+  ];
+  const cardMarbleCurveFields = [
+    "defaultRemapCurve", "tiltRemapCurve", "remapRemapCurve",
+  ];
+  for (const [componentIdentity, config] of Object.entries(cardMarbleSettings)) {
+    const remap = config?.defaultNoiseRemapSettings;
+    if (config?.componentIdentity !== componentIdentity
+        || typeof config?.componentGoIdentity !== "string"
+        || typeof config?.componentGoPath !== "string" || !config.componentGoPath
+        || typeof config?.scriptIdentity !== "string"
+        || !Array.isArray(config?.rendererBindings) || config.rendererBindings.length === 0
+        || config.rendererBindings.some((identity) => typeof identity !== "string")
+        || ![0, 1].includes(config?.useMarbleDelay)
+        || cardMarbleScalarFields.some((field) => !Number.isFinite(config?.[field]))
+        || !Array.isArray(config?.points) || config.points.length < 1
+        || config.points.length > 4
+        || config.points.some((point) =>
+          cardMarblePointFields.some((field) => !Number.isFinite(point?.[field]))
+          || ["defaultPosition", "tiltMovePosition"].some((field) =>
+            !Number.isFinite(point?.[field]?.x) || !Number.isFinite(point?.[field]?.y)))
+        || remap?.curveLabel !== "_DefaultNoiseRemapCurveTexture"
+        || !Number.isInteger(remap?.resolution)
+        || remap.resolution < 1 || remap.resolution > 12
+        || cardMarbleCurveFields.some((field) => {
+          const keys = remap?.[field]?.keys;
+          return !Array.isArray(keys) || keys.length < 2
+            || keys.some((key) => [
+              "time", "value", "inSlope", "outSlope",
+              "weightedMode", "inWeight", "outWeight",
+            ].some((name) => !Number.isFinite(key?.[name])));
+        })) {
+      throw new Error(`${CARD_ID}: incomplete CardMarbleLayer contract ${componentIdentity}`);
+    }
+  }
+  const cardMSRScalarFields = [
+    "animStartDegree", "animTimeScale", "animDuration", "endAnimDuration",
+    "stopAnimTiming", "timeOffset", "intensityNoiseSpeed",
+    "reflectFlipBookMaxSpeed", "reflectStartBane", "reflectStartNensei",
+    "reflectEndBane", "reflectEndNensei", "checkRotatingTime",
+    "rotatingEndThreshold", "rotatingStartThreshold", "disappearBane",
+    "disappearNensei", "appearBane", "appearNensei",
+  ];
+  const msrCurveNames = [
+    "OutlineReflectCenterX", "OutlineReflectColorIntensity",
+    "ColorIntensityNoiseStrength", "OutlineReflectFlipBookAnim",
+    "OutlineReflectStartSpeed", "OutlineReflectEndSpeed",
+    "AuraTransparency", "ParallaxTransparency", "ParallaxTranslate",
+    "ParallaxAppearTransparency", "ParallaxAppearTranslate",
+    "ParallaxDisappearTransparency", "ParallaxDisappearTranslate",
+  ];
+  const requiredMSRCurves = new Set(msrCurveNames.slice(0, 9));
+  for (const [settingsIdentity, settings] of Object.entries(msrAnimationSettings)) {
+    if (settings?.identity !== settingsIdentity
+        || typeof settings?.scriptIdentity !== "string"
+        || !settings.scriptIdentity.includes(":")
+        || msrCurveNames.some((name) => {
+          const keys = settings?.curves?.[name]?.keys;
+          return !Array.isArray(keys)
+            || (requiredMSRCurves.has(name) && keys.length < 2)
+            || keys.some((key) => [
+              "time", "value", "inSlope", "outSlope",
+              "weightedMode", "inWeight", "outWeight",
+            ].some((field) => !Number.isFinite(key?.[field])));
+        })) {
+      throw new Error(`${CARD_ID}: incomplete MSRAnimationSettings contract ${settingsIdentity}`);
+    }
+  }
+  for (const [componentIdentity, config] of Object.entries(cardMSRSettings)) {
+    const rendererBindings = config?.rendererBindings;
+    if (config?.componentIdentity !== componentIdentity
+        || typeof config?.componentGoIdentity !== "string"
+        || typeof config?.componentGoPath !== "string" || !config.componentGoPath
+        || typeof config?.scriptIdentity !== "string"
+        || typeof config?.animationSettingsIdentity !== "string"
+        || !msrAnimationSettings[config.animationSettingsIdentity]
+        || !["aura", "parallax", "shadowbox"].every((role) =>
+          Array.isArray(rendererBindings?.[role])
+          && rendererBindings[role].length > 0
+          && rendererBindings[role].every((identity) =>
+            typeof identity === "string" && identity.includes(":")))
+        || cardMSRScalarFields.some((field) => !Number.isFinite(config?.[field]))
+        || ![0, 1].includes(config?.isAnimationStopped)) {
+      throw new Error(`${CARD_ID}: incomplete CardMSRObject contract ${componentIdentity}`);
+    }
+  }
+  const cardMRRScalarFields = [
+    "animStartDegree", "animTimeScale", "animDuration",
+    "flashRadialStartOffset", "recordingTime", "minTiltSpeed",
+    "maxTiltSpeed", "minAnimSpeed", "maxAnimSpeed",
+  ];
+  const mrrCurveNames = [
+    "ChangeColorCurve", "LightColorIntensityCurve",
+    "LightEmitIntensityCurve", "LightPower",
+    "Layer2UVXTranslateByTiltingLeft",
+    "Layer2UVXTranslateByTiltingRight",
+    "Layer2ColorPower", "Layer2EmissiveIntensity", "EffSwitchColor",
+    "EffAdditiveIntensity", "EffColor3Blend", "EffEmissiveIntensity",
+    "FlashIntensity", "FlashRadialScaling", "FlashRadialAnim",
+  ];
+  for (const [settingsIdentity, settings] of Object.entries(mrrAnimationSettings)) {
+    if (settings?.identity !== settingsIdentity
+        || typeof settings?.scriptIdentity !== "string"
+        || !settings.scriptIdentity.includes(":")
+        || mrrCurveNames.some((name) => {
+          const keys = settings?.curves?.[name]?.keys;
+          return !Array.isArray(keys) || keys.length < 2
+            || keys.some((key) => [
+              "time", "value", "inSlope", "outSlope",
+              "weightedMode", "inWeight", "outWeight",
+            ].some((field) => !Number.isFinite(key?.[field])));
+        })) {
+      throw new Error(`${CARD_ID}: incomplete MRRAnimationSettings contract ${settingsIdentity}`);
+    }
+  }
+  for (const [componentIdentity, config] of Object.entries(cardMRRSettings)) {
+    const rendererBindings = config?.rendererBindings;
+    if (config?.componentIdentity !== componentIdentity
+        || typeof config?.componentGoIdentity !== "string"
+        || typeof config?.componentGoPath !== "string" || !config.componentGoPath
+        || typeof config?.scriptIdentity !== "string"
+        || typeof config?.animationSettingsIdentity !== "string"
+        || !mrrAnimationSettings[config.animationSettingsIdentity]
+        || !["main", "effect", "flash"].every((role) =>
+          Array.isArray(rendererBindings?.[role])
+          && rendererBindings[role].length > 0
+          && rendererBindings[role].every((identity) =>
+            typeof identity === "string" && identity.includes(":")))
+        || cardMRRScalarFields.some((field) => !Number.isFinite(config?.[field]))
+        || ![0, 1].includes(config?.useSpeedAdjust)
+        || config.animTimeScale <= 0
+        || config.recordingTime < 0
+        || config.maxTiltSpeed <= config.minTiltSpeed) {
+      throw new Error(`${CARD_ID}: incomplete CardMRRObject contract ${componentIdentity}`);
+    }
+  }
   const requireIdentity = (value, field, mat) => {
     const identity = value?.identity;
     if (typeof identity !== "string" || !identity.includes(":")) {
@@ -272,7 +500,17 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   };
   for (const l of full.layers) {
     const go = l.go || "", shader = short(l.shader), mat = l.material || "";
-    if (!mat) continue;
+    if (!mat) {
+      const unresolvedMaterial = l.materialIdentity?.pathId
+        && l.materialIdentity.pathId !== "0";
+      if (unresolvedMaterial && l.renderer_enabled !== false) {
+        throw new Error(
+          `${CARD_ID}: ${go} material slot ${l.materialSlot} has unresolved official Material `
+          + `${l.materialIdentity.identity}; regenerate the recipe with CAB dependency closure`,
+        );
+      }
+      continue;
+    }
     if (SKIP_GO.has(go) || SKIP_SHADER.has(shader) || l.renderer_enabled === false) continue;
     if (l.rendererType !== "MeshRenderer") {
       throw new Error(`${CARD_ID}: unsupported rendererType ${l.rendererType || "<missing>"} for ${mat}`);
@@ -372,6 +610,84 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
           || shader !== expectedShader) {
         throw new Error(`${CARD_ID}: inconsistent CircularKiraObject binding for ${mat}:${go}`);
       }
+    }
+    if (shader === "Card_Parallax_Future") {
+      const binding = rendererProperties.cardFuture;
+      const config = binding && cardFutureSettings[binding.componentIdentity];
+      if (!config || binding.rendererIdentity !== official.renderer
+          || !config.rendererBindings.includes(official.renderer)) {
+        throw new Error(`${CARD_ID}: inconsistent CardFutureObject binding for ${mat}:${go}`);
+      }
+    } else if (rendererProperties.cardFuture) {
+      throw new Error(`${CARD_ID}: unexpected CardFutureObject binding for ${mat}:${go}`);
+    }
+    if (shader === "Card_Parallax_Strata") {
+      const binding = rendererProperties.cardAncient;
+      const config = binding && cardAncientSettings[binding.componentIdentity];
+      if (!config || binding.rendererIdentity !== official.renderer
+          || !config.rendererBindings.includes(official.renderer)
+          || !ancientBGAnimationSettings[config.curveSettingsIdentity]) {
+        throw new Error(`${CARD_ID}: inconsistent CardAncientObject binding for ${mat}:${go}`);
+      }
+    } else if (rendererProperties.cardAncient) {
+      throw new Error(`${CARD_ID}: unexpected CardAncientObject binding for ${mat}:${go}`);
+    }
+    if (shader === "Card_Parallax_Marble") {
+      const binding = rendererProperties.cardMarble;
+      const config = binding && cardMarbleSettings[binding.componentIdentity];
+      if (!config || binding.rendererIdentity !== official.renderer
+          || !config.rendererBindings.includes(official.renderer)) {
+        throw new Error(`${CARD_ID}: inconsistent CardMarbleLayer binding for ${mat}:${go}`);
+      }
+    } else if (rendererProperties.cardMarble) {
+      throw new Error(`${CARD_ID}: unexpected CardMarbleLayer binding for ${mat}:${go}`);
+    }
+    const msrTagRoles = {
+      "Card-Aura": "aura",
+      Card_Parallax_Transparent_Translate: "parallax",
+      ShadowBox_MSR: "shadowbox",
+    };
+    const msrSearchTags = (l.shaderSearchTags || [])
+      .filter((tag) => Object.hasOwn(msrTagRoles, tag));
+    if (msrSearchTags.length > 1) {
+      throw new Error(`${CARD_ID}: multiple CardMSRObject SearchTags for ${mat}:${go}`);
+    }
+    if (msrSearchTags.length === 1) {
+      const binding = rendererProperties.cardMSR;
+      const config = binding && cardMSRSettings[binding.componentIdentity];
+      const role = msrTagRoles[msrSearchTags[0]];
+      if (!config || binding.rendererIdentity !== official.renderer
+          || binding.role !== role || binding.searchTag !== msrSearchTags[0]
+          || !config.rendererBindings[role].includes(official.renderer)
+          || !msrAnimationSettings[config.animationSettingsIdentity]) {
+        throw new Error(`${CARD_ID}: inconsistent CardMSRObject binding for ${mat}:${go}`);
+      }
+    } else if (rendererProperties.cardMSR) {
+      throw new Error(`${CARD_ID}: unexpected CardMSRObject binding for ${mat}:${go}`);
+    }
+    const mrrTagRoles = {
+      "MRR-ChangeColor-Lighting": "main",
+      "Frame-Holo-2Layer": "main",
+      "Card-Effect-Emit": "effect",
+      "MRR-Parallax-Flash": "flash",
+    };
+    const mrrSearchTags = (l.shaderSearchTags || [])
+      .filter((tag) => Object.hasOwn(mrrTagRoles, tag));
+    if (mrrSearchTags.length > 1) {
+      throw new Error(`${CARD_ID}: multiple CardMRRObject SearchTags for ${mat}:${go}`);
+    }
+    if (mrrSearchTags.length === 1) {
+      const binding = rendererProperties.cardMRR;
+      const config = binding && cardMRRSettings[binding.componentIdentity];
+      const role = mrrTagRoles[mrrSearchTags[0]];
+      if (!config || binding.rendererIdentity !== official.renderer
+          || binding.role !== role || binding.searchTag !== mrrSearchTags[0]
+          || !config.rendererBindings[role].includes(official.renderer)
+          || !mrrAnimationSettings[config.animationSettingsIdentity]) {
+        throw new Error(`${CARD_ID}: inconsistent CardMRRObject binding for ${mat}:${go}`);
+      }
+    } else if (rendererProperties.cardMRR) {
+      throw new Error(`${CARD_ID}: unexpected CardMRRObject binding for ${mat}:${go}`);
     }
     if (!Number.isInteger(l.renderQueue) || typeof l.enableInstancingVariants !== "boolean"
         || !Array.isArray(l.keywords) || !Array.isArray(l.invalidKeywords)

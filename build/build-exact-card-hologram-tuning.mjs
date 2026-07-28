@@ -29,8 +29,8 @@ const OUT = path.join(ROOT, "public", "shaders");
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
 const SELECTOR_ID = "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380";
 const CANDIDATE_WITNESS_ID = "df81cc574e4b0bb1bb3c8e8a91279f297885cbafe79b84f9a1fee512d7cd2519";
-const PROOF_GRAPH_SHA256 = "9862f63e11f359ed3b92b0191d21a2b6520de5a37159fd14612bdaf1908396b0";
-const PORT_INDEX_SHA256 = "30bc4d0eab1c1ad82147e880c642cbd8fba6d55cbd2227c2aa78f082f14e7e3f";
+const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
+const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
 const OFFICIAL_CROSS_SHA256 = {
   vertex: "94dc4cd2a68dfa9d1a705bbea05a76341c6cb01e47db10168708c8b12f8d2443",
   fragment: "7cd083ccdd2d6a308775354059f5184b35e67eb98031fba74491159af73677d4",

@@ -117,6 +117,7 @@ export async function loadExactShaderPortsFromContract({
   }
 
   const result = {};
+  const sourcesByPortIdentity = {};
   for (const [key, group] of groups) {
     const firstIdentity = officialPortIdentityKey(group.manifests[0]?.official_selector);
     const primary = group.sourcesByPort[firstIdentity];
@@ -130,6 +131,18 @@ export async function loadExactShaderPortsFromContract({
       vertexRuntimePolicy: group.vertexRuntimePolicy,
       canonicalObjectClipPosition: group.canonicalObjectClipPosition,
     };
+    for (const manifest of group.manifests) {
+      const identityKey = officialPortIdentityKey(manifest.official_selector);
+      const sources = group.sourcesByPort[identityKey];
+      sourcesByPortIdentity[identityKey] = {
+        ...sources,
+        manifest,
+        shaderKey: key,
+        stageSourceOnly: false,
+        vertexRuntimePolicy: group.vertexRuntimePolicy,
+        canonicalObjectClipPosition: group.canonicalObjectClipPosition,
+      };
+    }
   }
 
   for (const row of contract.runtimeBound) {
@@ -162,5 +175,11 @@ export async function loadExactShaderPortsFromContract({
     };
   }
 
+  Object.defineProperty(result, "sourcesByPortIdentity", {
+    value: Object.freeze(sourcesByPortIdentity),
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  });
   return result;
 }

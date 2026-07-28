@@ -20,10 +20,26 @@ assert.equal(
 assert.equal(examples.schemaVersion, 1);
 assert.equal(examples.summary.featureUniverseCount, 444);
 assert.equal(examples.summary.minimumWitnessCount, 112);
+assert.equal(examples.summary.rarityRenderingFeatureCount, 543);
+assert.equal(examples.summary.primaryRarityRenderingFeatureCount, 533);
+assert.equal(
+  examples.summary.minimumAdditionalRarityRenderingWitnessCount,
+  5,
+);
 assert.equal(examples.optimality.lowerBound, 112);
 assert.equal(examples.optimality.upperBound, 112);
 assert.equal(examples.optimality.mipGap, 0);
 assert.deepEqual(examples.coverageSet.uncovered, []);
+assert.deepEqual(examples.rarityRenderingCoverageSet.uncovered, []);
+assert.equal(
+  examples.rarityRenderingCoverageSet.optimality.lowerBound,
+  5,
+);
+assert.equal(
+  examples.rarityRenderingCoverageSet.optimality.upperBound,
+  5,
+);
+assert.equal(examples.rarityRenderingCoverageSet.optimality.mipGap, 0);
 assert.deepEqual(examples.sourcePolicy.forbiddenExpectationSources, [
   "scene",
   "render-recipe",
@@ -41,6 +57,20 @@ assert.equal(
 const covered = new Set(selected.flatMap((card) => card.obligations));
 assert.deepEqual(
   [...features].filter((id) => !covered.has(id)),
+  [],
+);
+const rarityRenderingSelected = [
+  ...selected,
+  ...examples.rarityRenderingCoverageSet.additionalWitnesses,
+];
+const rarityRenderingCovered = new Set(
+  rarityRenderingSelected.flatMap(
+    (card) => card.rarityRenderingObligations,
+  ),
+);
+assert.deepEqual(
+  examples.rarityRenderingCoverageSet.featureUniverse
+    .filter((id) => !rarityRenderingCovered.has(id)),
   [],
 );
 
@@ -76,14 +106,21 @@ for (const card of selected) {
 
 const bundled = [
   ...selected.filter((card) => card.bundledSceneFile),
+  ...examples.rarityRenderingCoverageSet.additionalWitnesses
+    .filter((card) => card.bundledSceneFile),
   ...examples.supplementalBundledExamples,
 ];
 assert.equal(
   bundled.length,
   examples.summary.bundledSelectedCount
+    + examples.summary.bundledAdditionalRarityRenderingWitnessCount
     + examples.summary.bundledSupplementalCount,
 );
 assert.equal(examples.summary.bundledSelectedCount, selected.length);
+assert.equal(
+  examples.summary.bundledAdditionalRarityRenderingWitnessCount,
+  examples.rarityRenderingCoverageSet.additionalWitnesses.length,
+);
 assert.equal(
   examples.boundaries.find((item) => item.scope === "local-playability")?.count,
   0,
@@ -105,7 +142,21 @@ assert(
   "removing a witness did not break coverage",
 );
 
+const rarityMutation = structuredClone(examples);
+rarityMutation.rarityRenderingCoverageSet.additionalWitnesses.pop();
+const mutatedRarityCoverage = new Set([
+  ...rarityMutation.coverageSet.selectedWitnesses,
+  ...rarityMutation.rarityRenderingCoverageSet.additionalWitnesses,
+].flatMap((card) => card.rarityRenderingObligations));
+assert(
+  rarityMutation.rarityRenderingCoverageSet.featureUniverse
+    .some((id) => !mutatedRarityCoverage.has(id)),
+  "removing an additional rarity witness did not break coverage",
+);
+
 console.log("Official card examples audit OK");
 console.log(`  official feature obligations: ${features.size}`);
 console.log(`  globally minimal witnesses:   ${selected.length}`);
+console.log("  rarity rendering obligations: 543");
+console.log("  additional rarity witnesses:  5");
 console.log(`  bundled playable examples:    ${bundled.length}`);

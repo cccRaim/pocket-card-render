@@ -10,7 +10,12 @@ const MARGIN = 9;
 const f32 = Math.fround;
 
 export async function loadOfficialBloomPrograms() {
-  const programs = await Promise.all(Array.from({ length: 6 }, async (_, pass) => {
+  const [manifest, programs] = await Promise.all([
+    fetch("shaders/bloom_programs.json").then((response) => {
+      if (!response.ok) throw new Error(`Bloom manifest: HTTP ${response.status}`);
+      return response.json();
+    }),
+    Promise.all(Array.from({ length: 6 }, async (_, pass) => {
     const [vertexShader, fragmentShader] = await Promise.all([
       fetch(`shaders/bloom_pass${pass}.vert.glsl`).then((response) => {
         if (!response.ok) throw new Error(`Bloom pass ${pass} vertex shader: HTTP ${response.status}`);
@@ -22,12 +27,22 @@ export async function loadOfficialBloomPrograms() {
       }),
     ]);
     return { vertexShader, fragmentShader };
-  }));
-  return programs;
+    })),
+  ]);
+  if (!Array.isArray(manifest?.passes) || manifest.passes.length !== programs.length) {
+    throw new Error("Bloom manifest must describe all six passes");
+  }
+  return programs.map((program, pass) => {
+    const entry = manifest.passes[pass];
+    if (entry?.pass !== pass || !entry.render_state) {
+      throw new Error(`Bloom manifest pass ${pass} render state is missing`);
+    }
+    return { ...program, pass, renderState: entry.render_state };
+  });
 }
 
 export async function loadOfficialFinalBlitProgram() {
-  const [vertexShader, fragmentShader] = await Promise.all([
+  const [vertexShader, fragmentShader, manifest] = await Promise.all([
     fetch("shaders/final_blit.vert.glsl").then((response) => {
       if (!response.ok) throw new Error(`FinalBlit vertex shader: HTTP ${response.status}`);
       return response.text();
@@ -36,8 +51,20 @@ export async function loadOfficialFinalBlitProgram() {
       if (!response.ok) throw new Error(`FinalBlit fragment shader: HTTP ${response.status}`);
       return response.text();
     }),
+    fetch("shaders/final_blit_program.json").then((response) => {
+      if (!response.ok) throw new Error(`FinalBlit manifest: HTTP ${response.status}`);
+      return response.json();
+    }),
   ]);
-  return { vertexShader, fragmentShader };
+  if (!manifest?.render_state) throw new Error("FinalBlit manifest render state is missing");
+  if (!manifest?.sampler_state) throw new Error("FinalBlit manifest sampler state is missing");
+  return {
+    vertexShader,
+    fragmentShader,
+    pass: "final-blit",
+    renderState: manifest.render_state,
+    samplerState: manifest.sampler_state,
+  };
 }
 
 export function getOfficialBloomBufferSize(width, height, bufferSize = BUFFER_SIZE) {
@@ -183,28 +210,112 @@ function sheetToImageGeometry(layout) {
   }, indices);
 }
 
+const BLEND_FACTOR = Object.freeze({
+  0: THREE.ZeroFactor,
+  1: THREE.OneFactor,
+  5: THREE.SrcAlphaFactor,
+});
+
+function compileOfficialPostprocessState(renderState, label) {
+  if (!renderState || typeof renderState !== "object") {
+    throw new Error(`${label} official render state is missing`);
+  }
+  if (renderState.blendOp !== 0 || renderState.blendOpAlpha !== 0) {
+    throw new Error(`${label} uses an unsupported non-add blend equation`);
+  }
+  if (renderState.colorMask !== 15) {
+    throw new Error(`${label} uses unsupported partial color mask ${renderState.colorMask}`);
+  }
+  if (![0, 4].includes(renderState.zTest) || ![0, 1].includes(renderState.zWrite)) {
+    throw new Error(`${label} uses unsupported depth state`);
+  }
+  if (![0, 2].includes(renderState.cull)) {
+    throw new Error(`${label} uses unsupported cull mode ${renderState.cull}`);
+  }
+  const factors = [
+    renderState.srcBlend,
+    renderState.destBlend,
+    renderState.srcBlendAlpha,
+    renderState.destBlendAlpha,
+  ].map((factor) => BLEND_FACTOR[factor]);
+  if (factors.some((factor) => factor === undefined)) {
+    throw new Error(`${label} uses an unsupported blend factor`);
+  }
+  const opaque = renderState.srcBlend === 1
+    && renderState.destBlend === 0
+    && renderState.srcBlendAlpha === 1
+    && renderState.destBlendAlpha === 0;
+  return {
+    transparent: !opaque,
+    blending: opaque ? THREE.NoBlending : THREE.CustomBlending,
+    blendEquation: THREE.AddEquation,
+    blendEquationAlpha: THREE.AddEquation,
+    blendSrc: factors[0],
+    blendDst: factors[1],
+    blendSrcAlpha: factors[2],
+    blendDstAlpha: factors[3],
+    depthTest: renderState.zTest !== 0,
+    depthFunc: renderState.zTest === 4 ? THREE.LessEqualDepth : THREE.AlwaysDepth,
+    depthWrite: renderState.zWrite !== 0,
+    colorWrite: true,
+    side: renderState.cull === 2 ? THREE.FrontSide : THREE.DoubleSide,
+    toneMapped: false,
+  };
+}
+
+function createOfficialInlineSampler(renderer, samplerState) {
+  const gl = renderer.getContext?.();
+  if (!gl || typeof gl.createSampler !== "function"
+    || typeof gl.samplerParameteri !== "function"
+    || typeof gl.bindSampler !== "function") {
+    throw new Error("FinalBlit official inline sampler requires WebGL2 sampler objects");
+  }
+  if (samplerState?.bind_point !== 0x08000001
+    || samplerState?.packed_value !== 85
+    || samplerState?.webgl2?.minFilter !== "LINEAR"
+    || samplerState?.webgl2?.magFilter !== "LINEAR"
+    || samplerState?.webgl2?.wrapS !== "CLAMP_TO_EDGE"
+    || samplerState?.webgl2?.wrapT !== "CLAMP_TO_EDGE") {
+    throw new Error("FinalBlit inline sampler manifest is unsupported or incomplete");
+  }
+  const sampler = gl.createSampler();
+  if (!sampler) throw new Error("FinalBlit WebGLSampler allocation failed");
+  gl.samplerParameteri(sampler, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.samplerParameteri(sampler, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.samplerParameteri(sampler, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.samplerParameteri(sampler, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return {
+    gl,
+    sampler,
+    textureUnit: 0,
+    bindChecks: 0,
+    unbindChecks: 0,
+  };
+}
+
+function assertSamplerBinding(inlineSampler, expected) {
+  const { gl, textureUnit } = inlineSampler;
+  if (typeof gl.activeTexture !== "function" || typeof gl.getParameter !== "function") {
+    throw new Error("FinalBlit inline sampler state inspection is unavailable");
+  }
+  const previousActiveTexture = gl.getParameter(gl.ACTIVE_TEXTURE);
+  gl.activeTexture(gl.TEXTURE0 + textureUnit);
+  const actual = gl.getParameter(gl.SAMPLER_BINDING);
+  gl.activeTexture(previousActiveTexture);
+  if (actual !== expected) throw new Error("FinalBlit WebGLSampler binding did not reach the requested texture unit");
+}
+
 function material(program, uniforms = {}) {
   return new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
     vertexShader: program.vertexShader,
     fragmentShader: program.fragmentShader,
     uniforms,
-    depthTest: false,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-    toneMapped: false,
+    ...compileOfficialPostprocessState(
+      program.renderState,
+      `Bloom pass ${program.pass ?? "unknown"}`,
+    ),
   });
-}
-
-function applyBlendState(target, src, dst, srcAlpha = src, dstAlpha = dst) {
-  target.transparent = true;
-  target.blending = THREE.CustomBlending;
-  target.blendEquation = THREE.AddEquation;
-  target.blendEquationAlpha = THREE.AddEquation;
-  target.blendSrc = src;
-  target.blendDst = dst;
-  target.blendSrcAlpha = srcAlpha;
-  target.blendDstAlpha = dstAlpha;
 }
 
 export function createOfficialBloomPipeline({
@@ -252,12 +363,10 @@ export function createOfficialBloomPipeline({
     _MainTex: { value: null },
     _GlobalMipBias: { value: new THREE.Vector2(0, 0) },
   });
-  applyBlendState(pass4, THREE.OneFactor, THREE.SrcAlphaFactor);
   const pass5 = material(programs[5], {
     _MainTex: { value: null },
     _GlobalMipBias: { value: new THREE.Vector2(0, 0) },
   });
-  applyBlendState(pass5, THREE.OneFactor, THREE.OneFactor, THREE.ZeroFactor, THREE.OneFactor);
 
   const present = new THREE.RawShaderMaterial({
     glslVersion: THREE.GLSL3,
@@ -268,10 +377,12 @@ export function createOfficialBloomPipeline({
     },
     vertexShader: finalBlitProgram.vertexShader,
     fragmentShader: finalBlitProgram.fragmentShader,
-    depthTest: false,
-    depthWrite: false,
-    toneMapped: false,
+    ...compileOfficialPostprocessState(
+      finalBlitProgram.renderState,
+      "FinalBlit",
+    ),
   });
+  const presentSampler = createOfficialInlineSampler(renderer, finalBlitProgram.samplerState);
 
   let layout = null;
   let targets = null;
@@ -315,7 +426,7 @@ export function createOfficialBloomPipeline({
     sheetToImageMesh.frustumCulled = false;
   };
 
-  const draw = (mesh, target, drawMaterial, stage, clear = true) => {
+  const draw = (mesh, target, drawMaterial, stage, clear = true, inlineSampler = null) => {
     const previousAutoClear = renderer.autoClear;
     renderer.autoClear = clear;
     fullMesh.visible = mesh === fullMesh;
@@ -330,7 +441,20 @@ export function createOfficialBloomPipeline({
     }
     mesh.material = drawMaterial;
     renderer.setRenderTarget(target);
-    renderer.render(postScene, postCamera);
+    if (inlineSampler) {
+      inlineSampler.gl.bindSampler(inlineSampler.textureUnit, inlineSampler.sampler);
+      assertSamplerBinding(inlineSampler, inlineSampler.sampler);
+      inlineSampler.bindChecks += 1;
+    }
+    try {
+      renderer.render(postScene, postCamera);
+    } finally {
+      if (inlineSampler) {
+        inlineSampler.gl.bindSampler(inlineSampler.textureUnit, null);
+        assertSamplerBinding(inlineSampler, null);
+        inlineSampler.unbindChecks += 1;
+      }
+    }
     renderer.autoClear = previousAutoClear;
     drainWebglErrors(stage);
   };
@@ -389,7 +513,7 @@ export function createOfficialBloomPipeline({
 
   const presentToScreen = () => {
     present.uniforms._BlitTexture.value = sceneTarget.textures[0];
-    draw(finalMesh, null, present, "final-present");
+    draw(finalMesh, null, present, "final-present", true, presentSampler);
     renderer.setRenderTarget(null);
   };
 
@@ -406,6 +530,12 @@ export function createOfficialBloomPipeline({
       levels: layout.levels.map(({ level, width, height, weight }) => ({ level, width, height, weight })),
       passSequence: enabled ? [0, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5] : [],
       webglErrors: webglErrors.map((entry) => ({ ...entry })),
+      finalBlitSampler: {
+        ...finalBlitProgram.samplerState.webgl2,
+        textureUnit: presentSampler.textureUnit,
+        bindChecks: presentSampler.bindChecks,
+        unbindChecks: presentSampler.unbindChecks,
+      },
     }),
   };
 }

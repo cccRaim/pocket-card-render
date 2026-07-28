@@ -10,7 +10,7 @@ function frame2LayerUrMaterial(r, ctx) {
   const f = r.floats || {};
   const c = r.colors || {};
   const rot = c._Rotation || { r: 0, g: 0, b: 0 };
-  const exact = ctx.exactShaderPort(r, "Frame-2Layer-UR");
+  const exact = ctx.exactShaderPort(r);
   if (exact) {
     const manifest = exact.manifest;
     const uniforms = ctx.exactPortUniforms(r, exact, ({ slot }) => {

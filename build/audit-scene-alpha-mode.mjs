@@ -15,7 +15,7 @@ function sceneId(sceneName) {
 
 function pngPath(url) {
   if (!url || !url.startsWith("/game/")) return null;
-  return path.join(PUBLIC, url.replace(/^\//, ""));
+  return path.join(PUBLIC, decodeURI(url.replace(/^\//, "")));
 }
 
 const rows = [];

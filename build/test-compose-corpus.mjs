@@ -8,6 +8,8 @@ import { isIdentityUiAffine } from "../public/render/ui-affine-transform.js";
 
 const MASTER_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
 const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
+const ASSETS = process.env.PCR_GAME_SRC
+  || join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "assets");
 const LOCALES = ["de_DE", "en_US", "es_ES", "fr_FR", "it_IT", "ja_JP", "ko_KR", "pt_BR", "zh_TW"];
 const TRAINER_NODE_SUF = {
   ja_JP: "jp", en_US: "en_id", fr_FR: "fr", it_IT: "it", de_DE: "de",
@@ -44,6 +46,14 @@ const textDesign = JSON.parse(readFileSync(
   join(import.meta.dirname, "..", "public", "render", "card-text-design-contract.json"),
   "utf8",
 ));
+const exampleManifest = JSON.parse(readFileSync(
+  join(import.meta.dirname, "..", "public", "card-examples.json"),
+  "utf8",
+));
+const exampleIllustrationIds = new Set([
+  ...exampleManifest.coverageSet.selectedWitnesses,
+  ...exampleManifest.rarityRenderingCoverageSet.additionalWitnesses,
+].map((row) => row.illustrationId));
 const uiLayout = JSON.parse(readFileSync(join(import.meta.dirname, "..", "public", "render", "card-ui-layout-contract.json"), "utf8"));
 const layoutNodes = new Map();
 for (const prefab of uiLayout.prefabs) {
@@ -376,14 +386,29 @@ for (const category of [2, 3]) {
   assert(composition.elements.some((element) => element.layoutPath?.includes(`/TrainersCardUI/${view}/`) && element.category), `Trainer category ${category} was not activated`);
 }
 
-const evolutionCard = pokemonCards.find((card) => {
+const evolutionCards = pokemonCards.filter((card) => {
   const characterId = pokemonById.get(card.PokemonID).PreevolvedCharacterID;
-  return characterId && existsSync(join(PUBLIC_GAME, `Assets/Lettuce/_Data/Common/CardNew/Pokemon/${characterId}/${characterId}.png`));
+  return exampleIllustrationIds.has(card.IllustrationID)
+    && characterId
+    && existsSync(join(
+      ASSETS,
+      `Assets/Lettuce/_Data/Common/CardNew/Pokemon/${characterId}/${characterId}.png`,
+    ));
 });
-assert(evolutionCard, "gathered assets contain no evolution source sprite");
-const evolutionComposition = composeFace(evolutionCard.CardID, "zh_TW", evolutionCard.IllustrationID);
-assert(hasPath(evolutionComposition, "/PokemonCardUI/PokemonSourceView/source_elm/source_txt"));
-assert(hasPath(evolutionComposition, "/PokemonCardUI/PokemonSourceView/source_elm/source_img"));
+assert(evolutionCards.length > 0, "official assets contain no evolution source sprite");
+for (const card of evolutionCards) {
+  const characterId = pokemonById.get(card.PokemonID).PreevolvedCharacterID;
+  const composition = composeFace(card.CardID, "zh_TW", card.IllustrationID);
+  assert(
+    hasPath(composition, "/PokemonCardUI/PokemonSourceView/source_elm/source_txt"),
+    `${card.CardID} is missing its evolution source text`,
+  );
+  const sourceImage = composition.elements.find(
+    (element) => element.layoutPath === "/PokemonCardUI/PokemonSourceView/source_elm/source_img",
+  );
+  assert(sourceImage, `${card.CardID} is missing its evolution source image`);
+  assert.equal(sourceImage.sourceCharacterId, characterId);
+}
 
 for (const symbol of [1, 2, 3]) {
   const row = pokemon.find((candidate) => (candidate.PokemonAttackIDs || []).some((id) => attackById.get(id).DamageSymbol === symbol));
