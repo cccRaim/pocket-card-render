@@ -10,6 +10,7 @@
         "artifacts.apkm",
         "artifacts.baseApk",
         "artifacts.arm64Split",
+        "artifacts.bundledTreeSplit",
         "artifacts.libunity",
         "artifacts.libil2cpp",
         "artifacts.globalMetadataEncrypted",
@@ -50,6 +51,8 @@
       "triggers": [
         "game.versionName",
         "unity.serializedVersion",
+        "artifacts.bundledTreeSplit",
+        "artifacts.globalGameManagers",
         "snapshots",
         "canonicalCorpus"
       ],
@@ -85,6 +88,8 @@
       "id": "runtime-evidence",
       "triggers": [
         "game",
+        "sampleId",
+        "status",
         "unity",
         "artifacts",
         "snapshots",
@@ -104,6 +109,8 @@
       "id": "documentation",
       "triggers": [
         "game",
+        "sampleId",
+        "status",
         "unity",
         "snapshots",
         "proofSets"

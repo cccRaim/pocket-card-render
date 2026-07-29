@@ -102,14 +102,18 @@ if (officialWrapAndAutosizeCount !== 1) issues.push(`expected one official wrap+
 
 const pokemonPrefab = layout.prefabs.find((prefab) => prefab.kind === "pokemon");
 const layerByPath = new Map();
+const fontKeyByPath = new Map();
 function collectOfficialLayers(node, parentPath = "") {
   const nodePath = `${parentPath}/${node.gameObject.name}`;
   layerByPath.set(nodePath, node.gameObject.layer);
+  if (node.tmp?.fontGroupKey != null) fontKeyByPath.set(nodePath, node.tmp.fontGroupKey);
   for (const child of node.children || []) collectOfficialLayers(child, nodePath);
 }
 for (const root of pokemonPrefab?.roots || []) collectOfficialLayers(root);
 for (const [pathSuffix, expectedLayer] of [
   ["/PokemonCardUI/energy_view/CardEnergyIconView/icn_gra_img", 17],
+  ["/PokemonCardUI/mega_name_elm/card_name_txt", 18],
+  ["/PokemonCardUI/mega_name_elm/card_name_txt_outline", 17],
   ["/PokemonCardUI/name_elm/Ex/EX/ImgEx", 18],
   ["/PokemonCardUI/name_elm/Ex/EX/ImgExOutline", 17],
   ["/PokemonCardUI/PokemonExRuleView/frm_bg", 18],
@@ -118,6 +122,14 @@ for (const [pathSuffix, expectedLayer] of [
 ]) {
   if (layerByPath.get(pathSuffix) !== expectedLayer) {
     issues.push(`card-ui-layout-contract.json: ${pathSuffix} expected Unity layer ${expectedLayer}`);
+  }
+}
+for (const [pathSuffix, expectedKey] of [
+  ["/PokemonCardUI/mega_name_elm/card_name_txt", 100],
+  ["/PokemonCardUI/mega_name_elm/card_name_txt_outline", 118],
+]) {
+  if (fontKeyByPath.get(pathSuffix) !== expectedKey) {
+    issues.push(`card-ui-layout-contract.json: ${pathSuffix} expected CardTextKey ${expectedKey}`);
   }
 }
 
@@ -178,6 +190,10 @@ if (!/const\s+nameElmPath\s*=\s*cd\.isMega/.test(compose)
     || !/\/PokemonCardUI\/mega_name_elm/.test(compose)
     || !/\/PokemonCardUI\/name_elm/.test(compose)) {
   issues.push("build/compose.mjs: Pokemon ex layout must derive the normal/Mega name_elm branch");
+}
+if (!/pokemonNameLayoutLayers/.test(compose)
+    || !/\/PokemonCardUI\/mega_name_elm\/card_name_txt_outline/.test(compose)) {
+  issues.push("build/compose.mjs: official Mega Pokemon base/outline TMP hierarchy is not emitted");
 }
 if (!/contractId:\s*["']PokemonCardNameView\.UpdateExLayout["']/.test(compose)
     || !/authoredParentX:\s*exParent\.box\.l/.test(compose)

@@ -42,7 +42,8 @@ DEFAULT_DECRYPTED_ROOT = (
     / ".output"
     / "decrypted"
 )
-UNITY_VERSION = "2022.3.62f2"
+BASELINE_UNITY_VERSION = "2022.3.62f2"
+UNITY_VERSION = BASELINE_UNITY_VERSION
 SCHEMA = "pocket-card-render/official-material-program-inventory@4"
 IDENTITY_RE = re.compile(r"^(CAB-[0-9a-f]{32}):(-?[0-9]+)$")
 CAB_HEADER_RE = re.compile(rb"CAB-[0-9a-fA-F]{32}")
@@ -98,6 +99,8 @@ NATIVE_VARIANT_SELECTION = {
     "tieBreak": "first-serialized-candidate",
     "audit": "build/audit-official-shader-variant-selection.mjs",
 }
+ACTIVE_NATIVE_VARIANT_SELECTION = NATIVE_VARIANT_SELECTION
+ALLOW_NATIVE_BEST_MATCH = True
 
 UnityPy.config.FALLBACK_UNITY_VERSION = UNITY_VERSION
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
@@ -936,6 +939,7 @@ def locate_material_bundles(
     locator: dict[str, Path],
     material_cabs: set[str],
     cab_illustrations: dict[str, set[str]],
+    illustration_roots: dict[str, Path],
 ) -> set[str]:
     unresolved = set(material_cabs) - set(locator)
     card_new_root = decrypted_root / "Common" / "CardNew"
@@ -951,7 +955,9 @@ def locate_material_bundles(
     # L prefab or CardNew/Common. Search only the referencing illustration roots.
     for cab in sorted(unresolved):
         for illustration_id in sorted(cab_illustrations[cab]):
-            face_root = decrypted_root / "Common" / "CardNew" / "Face" / illustration_id
+            face_root = illustration_roots.get(illustration_id)
+            if face_root is None:
+                continue
             for path in sorted(face_root.rglob("*_bundles"), key=lambda value: value.as_posix()):
                 if path.resolve() in set(locator.values()):
                     continue
@@ -972,9 +978,28 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
         raise RuntimeError(f"official decrypted roots are absent under {decrypted_root}")
 
     prefab_paths = sorted(
-        face_root.glob("*/L/Prefabs/*_L.prefab_bundles"),
+        face_root.rglob("*_L.prefab_bundles"),
         key=lambda value: value.as_posix(),
     )
+    illustration_roots: dict[str, Path] = {}
+    for prefab_path in prefab_paths:
+        illustration_id = prefab_path.name.removesuffix("_L.prefab_bundles")
+        illustration_root = prefab_path.parent.parent.parent
+        if (
+            prefab_path.parent.name != "Prefabs"
+            or prefab_path.parent.parent.name != "L"
+            or illustration_root.name != illustration_id
+        ):
+            raise RuntimeError(
+                f"canonical L prefab hierarchy does not match filename: {prefab_path}"
+            )
+        if illustration_id in illustration_roots:
+            raise RuntimeError(
+                f"duplicate canonical L prefab for illustration: {illustration_id}"
+            )
+        illustration_roots[illustration_id] = illustration_root
+    if not prefab_paths:
+        raise RuntimeError(f"no canonical Face L prefabs found under {face_root}")
     usage_rows = []
     material_identities: set[str] = set()
     material_cabs: set[str] = set()
@@ -1010,7 +1035,11 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
     gc.collect()
 
     unresolved_cabs = locate_material_bundles(
-        decrypted_root, locator, material_cabs, cab_illustrations
+        decrypted_root,
+        locator,
+        material_cabs,
+        cab_illustrations,
+        illustration_roots,
     )
     unresolved_materials = sorted(
         identity for identity in material_identities
@@ -1079,7 +1108,7 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
             shader_trees[material["shaderIdentity"]], tuple(material["keywords"])
         )
         candidate_selection = "exact-keywords"
-        if not candidates and not unknown_keywords:
+        if not candidates and not unknown_keywords and ALLOW_NATIVE_BEST_MATCH:
             candidates, unknown_keywords = native_best_match_vulkan_candidates(
                 shader_trees[material["shaderIdentity"]], tuple(material["keywords"])
             )
@@ -1353,7 +1382,9 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
         "stateArchetypesSha256": canonical_digest(state_archetypes),
         "sourceBundlesSha256": canonical_digest(source_bundle_rows),
         "exceptionalSha256": canonical_digest(exceptional),
-        "nativeVariantSelectionSha256": canonical_digest(NATIVE_VARIANT_SELECTION),
+        "nativeVariantSelectionSha256": canonical_digest(
+            ACTIVE_NATIVE_VARIANT_SELECTION
+        ),
     }
     digests["proofGraphSha256"] = canonical_digest(digests)
     output = {
@@ -1364,7 +1395,7 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
             "decryptedRoot": decrypted_root.as_posix(),
             "definition": "serialized Face L MeshRenderer slots -> Material -> Shader -> static Vulkan candidates",
             "excludedInputs": ["scene JSON", "render recipe", "PNG", "GLB", "screenshot"],
-            "nativeVariantSelection": NATIVE_VARIANT_SELECTION,
+            "nativeVariantSelection": ACTIVE_NATIVE_VARIANT_SELECTION,
         },
         "summary": {
             "lPrefabs": len(prefab_paths),
@@ -1410,6 +1441,9 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
 
 
 def main() -> None:
+    global UNITY_VERSION
+    global ACTIVE_NATIVE_VARIANT_SELECTION
+    global ALLOW_NATIVE_BEST_MATCH
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--decrypted-root",
@@ -1419,7 +1453,125 @@ def main() -> None:
     parser.add_argument("--full", action="store_true")
     parser.add_argument("--pretty", action="store_true")
     parser.add_argument("--out", type=Path)
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", BASELINE_UNITY_VERSION),
+    )
+    parser.add_argument(
+        "--native-variant-selection-mode",
+        choices=("baseline", "unresolved", "proved"),
+        default="baseline",
+        help=(
+            "Use the hash-pinned 1.6.0 contract, leave candidate native "
+            "best-match unresolved, or load a fresh candidate proof."
+        ),
+    )
+    parser.add_argument(
+        "--native-variant-selection-proof",
+        type=Path,
+        help="Fresh proof JSON required by --native-variant-selection-mode proved.",
+    )
     args = parser.parse_args()
+    UNITY_VERSION = args.unity_version
+    UnityPy.config.FALLBACK_UNITY_VERSION = UNITY_VERSION
+    if args.native_variant_selection_mode == "baseline":
+        if UNITY_VERSION != BASELINE_UNITY_VERSION:
+            parser.error(
+                "baseline native variant selection is valid only for "
+                f"Unity {BASELINE_UNITY_VERSION}; use "
+                "--native-variant-selection-mode unresolved"
+            )
+        ACTIVE_NATIVE_VARIANT_SELECTION = NATIVE_VARIANT_SELECTION
+        ALLOW_NATIVE_BEST_MATCH = True
+    elif args.native_variant_selection_mode == "unresolved":
+        ACTIVE_NATIVE_VARIANT_SELECTION = {
+            "unityVersion": UNITY_VERSION,
+            "status": "runtime-required",
+            "reason": (
+                "candidate libunity variant best-match producer has not been "
+                "relocated and byte-verified"
+            ),
+        }
+        ALLOW_NATIVE_BEST_MATCH = False
+    else:
+        if args.native_variant_selection_proof is None:
+            parser.error(
+                "--native-variant-selection-mode proved requires "
+                "--native-variant-selection-proof"
+            )
+        proof_bytes = args.native_variant_selection_proof.read_bytes()
+        proof = json.loads(proof_bytes.decode("utf-8-sig"))
+        if (
+            proof.get("schema")
+            != "pocket-card-render/official-native-variant-selection-proof@1"
+            or proof.get("status") != "proved"
+            or proof.get("failures") != []
+            or proof.get("unityVersion") != UNITY_VERSION
+        ):
+            parser.error("candidate native variant selection proof is invalid")
+        contract = proof.get("contract") or {}
+        if contract != {
+            "strictShaderVariantMatching": False,
+            "score": (
+                "popcount(requested & candidate) - 16 * "
+                "popcount(candidate & ~requested)"
+            ),
+            "tieBreak": "first-serialized-candidate",
+        }:
+            parser.error("candidate native variant selection contract changed")
+        functions = proof.get("functions") or {}
+        required_functions = (
+            "ComputeKeywordMatch",
+            "FindBestMatchingSubProgram",
+            "StrictVariantGetter",
+        )
+        if any(
+            not isinstance((functions.get(name) or {}).get("bodySha256"), str)
+            for name in required_functions
+        ):
+            parser.error("candidate native variant function proof is incomplete")
+        inputs = proof.get("inputs") or {}
+        required_inputs = (
+            "baseApkSha256",
+            "arm64SplitSha256",
+            "libunitySha256",
+            "bootConfigSha256",
+        )
+        if any(
+            not isinstance(inputs.get(name), str)
+            or len(inputs[name]) != 64
+            for name in required_inputs
+        ):
+            parser.error("candidate native variant input proof is incomplete")
+        expected_sample_input_sha256 = canonical_digest(
+            {
+                "sampleId": proof.get("sampleId"),
+                "unityVersion": proof.get("unityVersion"),
+                "inputs": inputs,
+            }
+        )
+        if proof.get("sampleInputSha256") != expected_sample_input_sha256:
+            parser.error("candidate native variant sample input identity changed")
+        ACTIVE_NATIVE_VARIANT_SELECTION = {
+            "unityVersion": UNITY_VERSION,
+            "sampleId": proof.get("sampleId"),
+            "sampleInputSha256": proof["sampleInputSha256"],
+            "libunitySha256": inputs["libunitySha256"],
+            "bootConfigSha256": inputs["bootConfigSha256"],
+            "computeKeywordMatchBodySha256": (
+                functions["ComputeKeywordMatch"]["bodySha256"]
+            ),
+            "findBestMatchingBodySha256": (
+                functions["FindBestMatchingSubProgram"]["bodySha256"]
+            ),
+            "strictVariantGetterBodySha256": (
+                functions["StrictVariantGetter"]["bodySha256"]
+            ),
+            **contract,
+            "audit": "build/audit-candidate-shader-variant-selection.mjs",
+            "proofSha256": sha256_bytes(proof_bytes),
+        }
+        ALLOW_NATIVE_BEST_MATCH = True
     result = extract(args.decrypted_root, include_full=args.full)
     encoded = json.dumps(
         result,

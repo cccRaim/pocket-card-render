@@ -941,7 +941,7 @@
     "vertex": {
       "officialSpirvSha256": "ca47232c57b518ba25159b1de656b7986ec732549e32d6669f554beac3340d78",
       "spirvCrossGlslSha256": "3637a47cdfc0f906bf1a9e4a2d6d1567e5bcf3564dd354b3423265366a67022e",
-      "outputSha256": "356eb01eb3cbbd257e1f8917de944ae563705141f0cf59c425911c285eb64a22",
+      "outputSha256": "5c7c57dfdae063378504a98edd0191b73fc75304f1fb13a58a071e10aaa0e3a7",
       "operations": [
         {
           "kind": "vertex-input-binding",

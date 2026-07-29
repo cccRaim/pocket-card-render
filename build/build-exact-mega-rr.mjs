@@ -14,12 +14,41 @@ import {
 } from "../public/render/card-mrr.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const CANDIDATE = process.argv.includes("--candidate");
+const LOCAL_DECODER_ROOT = path.resolve(ROOT, "..", "ptcgp-tools-master", "masterdata_decoder");
+const SAMPLE = CANDIDATE
+  ? {
+      id: "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+      unityVersion: "6000.0.69f1",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output-full", "decrypted"),
+      inventory: path.join(LOCAL_DECODER_ROOT, ".output-full", "material-program-inventory-full.json"),
+      manifest: path.join(ROOT, "build", "official-samples", "ptcgp-1.7.0-unity-6000.0.69f1-candidate.json"),
+      out: path.join(LOCAL_DECODER_ROOT, ".output-full", "webgl-ports", "mega-rr"),
+      webglSourceRoot: "candidate/ptcgp-1.7.0-unity-6000.0.69f1/shaders",
+      proofGraphSha256: "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      portIndexSha256: "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b",
+    }
+  : {
+      id: "ptcgp-1.6.0-unity-2022.3.62f2",
+      unityVersion: "2022.3.62f2",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output", "decrypted"),
+      inventory: null,
+      manifest: null,
+      out: path.join(ROOT, "public", "shaders"),
+      webglSourceRoot: "public/shaders",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+    };
+const DECRYPTED_ROOT = path.resolve(process.env.PCR_DECRYPTED_ROOT || SAMPLE.decryptedRoot);
 const SHADER_ROOT = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const OUT = path.join(ROOT, "public", "shaders");
+  || path.join(DECRYPTED_ROOT, "Common", "Shader");
+const INVENTORY = process.env.PCR_PROGRAM_INVENTORY
+  ? path.resolve(process.env.PCR_PROGRAM_INVENTORY)
+  : SAMPLE.inventory;
+const OUT = path.resolve(process.env.PCR_SHADER_OUT || SAMPLE.out);
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
-const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
+const PROOF_GRAPH_SHA256 = SAMPLE.proofGraphSha256;
+const PORT_INDEX_SHA256 = SAMPLE.portIndexSha256;
 const GENERATED_BY = "build/build-exact-mega-rr.mjs";
 const PASS_POLICY = {
   rtSeparateBlend: false,
@@ -55,7 +84,9 @@ function replaceMembers(source, owner, members) {
 }
 
 function finishVertex(source, owner) {
-  const output = source.replace(/^\s*gl_Position\.y\s*=\s*-gl_Position\.y;\s*$/m, "");
+  const output = source
+    .replace(/^\s*gl_Position\.y\s*=\s*-gl_Position\.y;\s*$/m, "")
+    .replace(/[ \t]+$/gm, "");
   if (new RegExp(`${owner}\\._m|gl_Position\\.y\\s*=\\s*-gl_Position\\.y`).test(output)) {
     throw new Error(`${owner}: vertex adaptation is incomplete`);
   }
@@ -203,7 +234,7 @@ function adaptFragment(source, spec) {
   return `${output.trimEnd()}\n`;
 }
 
-const PORTS = [
+const BASELINE_PORTS = [
   {
     shaderKey: "Flash",
     shaderName: "Lettuce/Common/CardNew/ShadowBox/Flash",
@@ -424,6 +455,16 @@ const PORTS = [
   },
 ];
 
+const PORTS = CANDIDATE
+  ? BASELINE_PORTS
+    .filter(({ shaderKey }) => shaderKey === "Flash")
+    .map((port) => ({
+      ...port,
+      candidateWitnessId: "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+      semanticExecutableId: "dfc77dc0e742fdfbdfda5e84e1b4b5de5ac03b0f09fe7f3565a8ee0d63f2bf94",
+    }))
+  : BASELINE_PORTS;
+
 const standardVertexOps = [
   { kind: "vertex-input-binding", contract: "official-bind-channels-to-three-r165" },
   { kind: "engine-uniform-binding", contract: "unity-builtins-to-three-r165" },
@@ -468,12 +509,15 @@ for (const port of PORTS) {
   const result = await generateExactSelectorPort({
     shader: port.shaderName,
     generatedBy: GENERATED_BY,
+    ...(SAMPLE.manifest ? { officialSampleManifest: SAMPLE.manifest } : {}),
     extraction: {
       selectorId: port.selectorId,
       candidateWitnessId: port.candidateWitnessId,
       expectedProofGraphSha256: PROOF_GRAPH_SHA256,
       expectedPortIndexSha256: PORT_INDEX_SHA256,
       decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+      ...(INVENTORY ? { inventory: INVENTORY } : {}),
+      unityVersion: SAMPLE.unityVersion,
       prefix: port.stem,
       rootDir: ROOT,
     },
@@ -539,8 +583,8 @@ for (const port of PORTS) {
       ],
     },
     webglSources: {
-      vertex: `public/shaders/${port.stem}.vert.glsl`,
-      fragment: `public/shaders/${port.stem}.frag.glsl`,
+      vertex: `${SAMPLE.webglSourceRoot}/${port.stem}.vert.glsl`,
+      fragment: `${SAMPLE.webglSourceRoot}/${port.stem}.frag.glsl`,
     },
     manifestExtras: {
       mrt: port.mrt,
@@ -566,4 +610,7 @@ for (const port of PORTS) {
   );
 }
 
-console.log(`${CHECK ? "verified" : "generated"} ${PORTS.length} Mega RR selector ports`);
+console.log(
+  `${CHECK ? "verified" : "generated"} ${SAMPLE.id} ${PORTS.length} `
+  + "Mega RR selector ports",
+);

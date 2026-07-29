@@ -1,0 +1,2230 @@
+{
+  "schema": "pocket-card-render/candidate-changed-route-migration-subcorpus@1",
+  "schemaVersion": 1,
+  "scope": {
+    "name": "changed-route-migration-subcorpus",
+    "included": "Nine changed selector routes plus the one rejected static-reuse selector route",
+    "canonicalCorpus": false,
+    "runtimeFidelity": false,
+    "gameFidelity": false,
+    "officialShaderRestorationPercent": null,
+    "excludedClaims": [
+      "candidate canonical corpus completeness",
+      "guest runtime dispatch or binding fidelity",
+      "Vulkan to WebGL backend equivalence",
+      "pixel or game-display fidelity"
+    ]
+  },
+  "candidate": {
+    "selectionPointer": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "75203a0cd38d29e6b78884cf151f62dc2132e943a0328517233fd8084cab9d15",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "inputs": {
+    "shaderAnalysis": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-shader-analysis.json",
+      "sha256": "2f40c5b237388668272c9e55503ed412e4c1632be473edd0c97234686a78b0e8"
+    },
+    "candidateMaterialInventory": {
+      "logicalSourceId": "candidate-material-program-inventory-full",
+      "sha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+      "schema": "pocket-card-render/official-material-program-inventory@4",
+      "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b"
+    },
+    "cardExamples": {
+      "logicalPath": "public/card-examples.json",
+      "sha256": "f8c7dfa33b6415834b6ad19d85e00e7ed5ab96a27a6e5e332c1e7854661502ec",
+      "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+      "availabilityOnly": true
+    }
+  },
+  "summary": {
+    "changedSelectorCount": 9,
+    "staticReuseRejectedSelectorCount": 1,
+    "selectorObligationCount": 10,
+    "exactMinimumWitnessCount": 5,
+    "selectedWitnessCount": 5,
+    "selectedSceneReadyCount": 5,
+    "selectedExamplePresentCount": 5,
+    "selectedLocaleTextCompleteCount": 5,
+    "selectedMissingGameReferenceCount": 0,
+    "uncoveredSelectorCount": 0
+  },
+  "optimality": {
+    "claim": "global-minimum-cardinality-for-this-ten-selector-subcorpus",
+    "solver": "exact-dynamic-programming-over-the-selector-subset-lattice",
+    "statesVisited": 80,
+    "lowerBound": 5,
+    "upperBound": 5,
+    "selectorFactsSource": "candidate inventory materials plus usageRows only",
+    "availabilityTieBreak": [
+      "maximize fully available witnesses",
+      "maximize ready public scenes",
+      "maximize card-examples membership",
+      "maximize complete nine-locale text",
+      "lexicographically smallest illustrationId list"
+    ]
+  },
+  "selectorObligations": [
+    {
+      "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+      "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+      "keywords": [
+        "_USE_COL4"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 13,
+      "inventoryMaterialSlotUsageCount": 13,
+      "candidateCardWitnessCount": 13,
+      "selectedWitnesses": [
+        "cPK_20_016430_00_MEGAGANGARex_SR"
+      ]
+    },
+    {
+      "selectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+      "candidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+      "keywords": [
+        "_USE_OLD_NOISE"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 12,
+      "inventoryMaterialSlotUsageCount": 12,
+      "candidateCardWitnessCount": 12,
+      "selectedWitnesses": [
+        "cPK_20_010840_00_MEGAKAILIOSex_SR"
+      ]
+    },
+    {
+      "selectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+      "candidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+      "keywords": [],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 5,
+      "inventoryMaterialSlotUsageCount": 5,
+      "candidateCardWitnessCount": 5,
+      "selectedWitnesses": [
+        "cPK_20_016210_00_MEGAYADORANex_SR"
+      ]
+    },
+    {
+      "selectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+      "candidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+      "keywords": [
+        "_USE_COL4"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 29,
+      "inventoryMaterialSlotUsageCount": 29,
+      "candidateCardWitnessCount": 13,
+      "selectedWitnesses": [
+        "cPK_20_016430_00_MEGAGANGARex_SR"
+      ]
+    },
+    {
+      "selectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+      "candidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+      "keywords": [
+        "_USE_OLD_NOISE"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 26,
+      "inventoryMaterialSlotUsageCount": 26,
+      "candidateCardWitnessCount": 12,
+      "selectedWitnesses": [
+        "cPK_20_010840_00_MEGAKAILIOSex_SR"
+      ]
+    },
+    {
+      "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+      "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+      "sourceKind": "changed",
+      "sourceClassification": "engine-uniform-layout-only",
+      "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+      "keywords": [],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "vertexSpirvSha256",
+        "parameterEntrySha256",
+        "commonBindingsSha256"
+      ],
+      "inventoryMaterialCount": 10,
+      "inventoryMaterialSlotUsageCount": 10,
+      "candidateCardWitnessCount": 5,
+      "selectedWitnesses": [
+        "cPK_20_016210_00_MEGAYADORANex_SR"
+      ]
+    },
+    {
+      "selectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+      "candidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+      "sourceKind": "changed",
+      "sourceClassification": "shader-logic-changed",
+      "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+      "keywords": [
+        "_USESHADOWLAYERG_ON",
+        "_USESHADOWLAYERR_ON"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "fragmentSpirvSha256",
+        "parameterEntrySha256"
+      ],
+      "inventoryMaterialCount": 13,
+      "inventoryMaterialSlotUsageCount": 13,
+      "candidateCardWitnessCount": 13,
+      "selectedWitnesses": [
+        "cPK_20_000360_03_LIZARDONex_SR"
+      ]
+    },
+    {
+      "selectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+      "candidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+      "sourceKind": "changed",
+      "sourceClassification": "shader-logic-changed",
+      "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+      "keywords": [],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "fragmentSpirvSha256",
+        "parameterEntrySha256"
+      ],
+      "inventoryMaterialCount": 13,
+      "inventoryMaterialSlotUsageCount": 13,
+      "candidateCardWitnessCount": 13,
+      "selectedWitnesses": [
+        "cPK_20_000360_03_LIZARDONex_SR"
+      ]
+    },
+    {
+      "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+      "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+      "sourceKind": "static-reuse-rejected",
+      "sourceClassification": "shader-default-only",
+      "shaderName": "Lettuce/Common/CardNew/ShadowBox/Flash",
+      "keywords": [],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "shaderPropertyDefaults"
+      ],
+      "inventoryMaterialCount": 144,
+      "inventoryMaterialSlotUsageCount": 144,
+      "candidateCardWitnessCount": 36,
+      "selectedWitnesses": [
+        "cPK_10_012330_00_MEGAABSOLex_RR"
+      ]
+    },
+    {
+      "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+      "candidateWitnessId": "7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6",
+      "sourceKind": "changed",
+      "sourceClassification": "shader-logic-changed",
+      "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Shadow",
+      "keywords": [
+        "_USESHADOWLAYERR_ON"
+      ],
+      "subshader": 0,
+      "pass": 0,
+      "changedFields": [
+        "fragmentSpirvSha256",
+        "parameterEntrySha256"
+      ],
+      "inventoryMaterialCount": 39,
+      "inventoryMaterialSlotUsageCount": 39,
+      "candidateCardWitnessCount": 13,
+      "selectedWitnesses": [
+        "cPK_20_000360_03_LIZARDONex_SR"
+      ]
+    }
+  ],
+  "witnesses": [
+    {
+      "illustrationId": "cPK_10_012330_00_MEGAABSOLex_RR",
+      "cardId": "PK_10_012330_00",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/10/012000/cPK_10_012330_00_MEGAABSOLex_RR/L/Prefabs/cPK_10_012330_00_MEGAABSOLex_RR_L.prefab_bundles",
+        "byteLength": 2040507,
+        "sha256": "33610bc4559cbac52c05d779e562b34ce37b09142b25659a98c1d9819c04696d"
+      },
+      "selectorCoverage": [
+        {
+          "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+          "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+          "sourceKind": "static-reuse-rejected",
+          "sourceClassification": "shader-default-only",
+          "shaderName": "Lettuce/Common/CardNew/ShadowBox/Flash",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-f731c5775275400aecf1f07fa326ddbd:-1619521223788716386",
+              "name": "cPK_10_012330_00_MEGAABSOLex_RR_L_SBM4",
+              "sourceBundle": "Common/CardNew/Face/PK/10/012000/cPK_10_012330_00_MEGAABSOLex_RR/L/Prefabs/cPK_10_012330_00_MEGAABSOLex_RR_L.prefab_bundles",
+              "sourceBundleSha256": "33610bc4559cbac52c05d779e562b34ce37b09142b25659a98c1d9819c04696d",
+              "rawSha256": "71c79d54e2041f9b97ac2caa32f7eaaa1df24fca64c2ddad31b3a37309dceb6f",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-f731c5775275400aecf1f07fa326ddbd:-4520311515031552087",
+              "name": "cPK_10_012330_00_MEGAABSOLex_RR_L_SBM1",
+              "sourceBundle": "Common/CardNew/Face/PK/10/012000/cPK_10_012330_00_MEGAABSOLex_RR/L/Prefabs/cPK_10_012330_00_MEGAABSOLex_RR_L.prefab_bundles",
+              "sourceBundleSha256": "33610bc4559cbac52c05d779e562b34ce37b09142b25659a98c1d9819c04696d",
+              "rawSha256": "6336de7735ec440c2b7c17edc55ef305170d39bd3a09ed90b60c1cbb2c23e35c",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-f731c5775275400aecf1f07fa326ddbd:3470756077019254420",
+              "name": "cPK_10_012330_00_MEGAABSOLex_RR_L_SBM3",
+              "sourceBundle": "Common/CardNew/Face/PK/10/012000/cPK_10_012330_00_MEGAABSOLex_RR/L/Prefabs/cPK_10_012330_00_MEGAABSOLex_RR_L.prefab_bundles",
+              "sourceBundleSha256": "33610bc4559cbac52c05d779e562b34ce37b09142b25659a98c1d9819c04696d",
+              "rawSha256": "76da4e6355949b31d7f922f1630614b09638aae2b72696cc63bdae87d9c54a86",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-f731c5775275400aecf1f07fa326ddbd:5162074434024168330",
+              "name": "cPK_10_012330_00_MEGAABSOLex_RR_L_SBM2",
+              "sourceBundle": "Common/CardNew/Face/PK/10/012000/cPK_10_012330_00_MEGAABSOLex_RR/L/Prefabs/cPK_10_012330_00_MEGAABSOLex_RR_L.prefab_bundles",
+              "sourceBundleSha256": "33610bc4559cbac52c05d779e562b34ce37b09142b25659a98c1d9819c04696d",
+              "rawSha256": "5b9b767022aade0a936c56d6057896e80a7c13fdfb5b3b1c2acfff64f992e5a9",
+              "slotUsageCount": 1
+            }
+          ]
+        }
+      ],
+      "availability": {
+        "illustrationId": "cPK_10_012330_00_MEGAABSOLex_RR",
+        "cardId": "PK_10_012330_00",
+        "sceneExists": true,
+        "sceneReady": true,
+        "examplePresent": true,
+        "localeTextCount": 9,
+        "localeTextComplete": true,
+        "fullyAvailable": true,
+        "publicScene": {
+          "logicalPath": "public/scene.cPK_10_012330_00_MEGAABSOLex_RR.json",
+          "byteLength": 174494,
+          "sha256": "f819dea4330efd3c0f89bd2e74354891a93c9bbf9bc5138bb494fa65f431c445",
+          "officialDrawCount": 33,
+          "declaredMissing": []
+        },
+        "cardExamples": {
+          "sections": [
+            "coverageSet.selectedWitnesses"
+          ]
+        },
+        "localeText": [
+          {
+            "locale": "de_DE",
+            "logicalPath": "public/text/PK_10_012330_00.de_DE.json",
+            "sha256": "383376e669f738103e9ca770ef9311e1301354348382baeb4018863b37e65bed"
+          },
+          {
+            "locale": "en_US",
+            "logicalPath": "public/text/PK_10_012330_00.en_US.json",
+            "sha256": "6434278b36addba2abab3fdcd42178799a4a0b069fca5d5e6451408a377a98db"
+          },
+          {
+            "locale": "es_ES",
+            "logicalPath": "public/text/PK_10_012330_00.es_ES.json",
+            "sha256": "4e7d41de9282e372b1b9d3afb4af66eb2876d3ba8b5b52e8b0aea2bc67eff7d4"
+          },
+          {
+            "locale": "fr_FR",
+            "logicalPath": "public/text/PK_10_012330_00.fr_FR.json",
+            "sha256": "12ef72e6410d5c516a030b08b017b5a82f1fb9c25e065cf2d47f6356d5000cad"
+          },
+          {
+            "locale": "it_IT",
+            "logicalPath": "public/text/PK_10_012330_00.it_IT.json",
+            "sha256": "dbdce16546cbcc8cd5202d5865b9130517cd1e2a72abe06393cdf34cd10f4b5b"
+          },
+          {
+            "locale": "ja_JP",
+            "logicalPath": "public/text/PK_10_012330_00.ja_JP.json",
+            "sha256": "8866093a8558604a942a3c2a46788815a92dbe31b6400d63bd89258f10da4693"
+          },
+          {
+            "locale": "ko_KR",
+            "logicalPath": "public/text/PK_10_012330_00.ko_KR.json",
+            "sha256": "407fa83e8e471b41264580e1207c02df8563713700c36d00b556ed9ab504307d"
+          },
+          {
+            "locale": "pt_BR",
+            "logicalPath": "public/text/PK_10_012330_00.pt_BR.json",
+            "sha256": "ea618a6c26bfbf33a088bb717cf807c9211729ca0a7f98bde8f36f11e4a764f8"
+          },
+          {
+            "locale": "zh_TW",
+            "logicalPath": "public/text/PK_10_012330_00.zh_TW.json",
+            "sha256": "cbfd2dbd491ab892d6b9d59cab8a4385becaa807385620bdb7a2cee0e5ae7420"
+          }
+        ],
+        "gameAssets": {
+          "referenceCount": 49,
+          "missing": [],
+          "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+              "byteLength": 954627,
+              "sha256": "58d0cf3992069fffb1ebe6c944cff2936dd7b0dc9d50b4dc8849a5dd2463ed75"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+              "byteLength": 14987,
+              "sha256": "03299ffba690fa43e087c80dd163a62a3b1ab385c4e24e5bfd0e1e955bae0be2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega.png",
+              "byteLength": 87610,
+              "sha256": "1e6b581712517a9a5feac242a27491dc04054d89eb57a98980f89a72147d0302"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_rr_mega_mask.png",
+              "byteLength": 5862,
+              "sha256": "0030d8daddd4bd36c51a0cd7a10a2c366dbda9e699bf73ee8dba15cbf826a95f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+              "byteLength": 42364,
+              "sha256": "b4e176951acfe24ac0847e25416d120aa1d63625a5ec1df4e6b47d4cd3a091dc"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardUIBg/card_bg_dar.png",
+              "byteLength": 1522220,
+              "sha256": "09fd8235e68ac5818eb1adb0a35ba23cf91d38e9bee69f0e6ac40766135cf1f2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FrameHighlight.png",
+              "byteLength": 8508,
+              "sha256": "be0baf7a342634781b6eacd5517c09cec3612f9f1fb9f51eaebb0c0aca5d95e0"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+              "byteLength": 161723,
+              "sha256": "781930758871220b66d154b12a74e1032f469ab4064b2f11f14d99008b8f9b97"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+              "byteLength": 21113,
+              "sha256": "a3da9271429d3cecd156cb2e507f751abb790911ab3ad7872f94ea9c3fca9f7f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+              "byteLength": 19798,
+              "sha256": "ec50334a9ad5b6c2ed419bddb389f30aa48f6629c1664d9f8af33b455c4e3e9b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_rr_mega.png",
+              "byteLength": 8583,
+              "sha256": "e103987eeb8472ecedf8be4142e3242604e79f2ad973fab54c73df0ae6f78638"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_pokemon_window.png",
+              "byteLength": 5828,
+              "sha256": "ecda5a8f87ff3f1067e15e4416ebfea0bab7a6f668cb1cf86fc5404ff3ebe7f4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+              "byteLength": 22149,
+              "sha256": "d1fdc3f138e0decbb776ace2a1c332232f3107dadd8c2b140506af25aa004cd6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+              "byteLength": 258,
+              "sha256": "ccd2d179ea85e6439f9579030cb724b2a1678aa7a80a8c0cee1be2b052594cd5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+              "byteLength": 737,
+              "sha256": "8884ef8591888b7a065ebd612e6cb9415988aa1f7e5f463704ba26f24fde8012"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+              "byteLength": 737,
+              "sha256": "875ecb13e9c0cef3ff653f083cfc75cf9c26c5b7532162665c076cf390ae9979"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+              "byteLength": 820,
+              "sha256": "ddd12c66b78d42a4ba158ddb6722199f22c53476731eeaef15f53f3606f9213c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Diamond.png",
+              "byteLength": 1965,
+              "sha256": "efd955a44295b285e1334f455b7d308bfce69bff8b0e136f301470f6fec54808"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+              "byteLength": 939,
+              "sha256": "39e9e930a27cb499aaadb9918153e54bb866ad861db53e727bedcb262e912882"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+              "byteLength": 879,
+              "sha256": "cf94bb690a2a928cb9e3e235d91ec0f19f6aabad2200ba36fe7501f682d6b059"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_BG.png",
+              "byteLength": 2010,
+              "sha256": "3fba3b61fe1b0a8d60c75e79d7089a5f44c5bb48a58170406bf518380fd889bf"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_Border.png",
+              "byteLength": 2134,
+              "sha256": "b53a06f2c73edb73f0e1697219bd0b6451e5ec9891c13670b497eb5980733508"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/RR_RMP_SB.png",
+              "byteLength": 598,
+              "sha256": "f730e7e51602ea7421539acd4e4a8071be8eae42735088fc917372816c9674c5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+              "byteLength": 1330,
+              "sha256": "1de6b562883cbd100db42da6ed02b2e7ec90ad3a35ce45cc082525de224afe4d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+              "byteLength": 11504,
+              "sha256": "7c81cfbb4984a217533207eb8b8fec5c0521c05fccbbec79cbe96b3d54c877f9"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RR_RMPmask_SB.png",
+              "byteLength": 10473,
+              "sha256": "775f53111c0fa28ee3b0a1dd32d8a1ab4a30de2ffcd0801547ec849ba0b73b0a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SA_SSA_RR_RMPmask.png",
+              "byteLength": 10473,
+              "sha256": "775f53111c0fa28ee3b0a1dd32d8a1ab4a30de2ffcd0801547ec849ba0b73b0a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+              "byteLength": 188308,
+              "sha256": "e68d3239421381919db6790e236532ab88dd9d784f65949f367c2ad60165af82"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_BG.png",
+              "byteLength": 290868,
+              "sha256": "300a5e75d31b1d7097f1c0a45de8c56100bced8eb525f149d44fbd8640dfaefe"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_RR_Border.png",
+              "byteLength": 1119183,
+              "sha256": "6a5457df6b44811d65b89d6edd6c5f05e885bb938358f441744c9ca22d434c71"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Diamond.png",
+              "byteLength": 21282,
+              "sha256": "d494536088495e76cac80f5ed6045ff67b6a87bc75b16f16f5552646ed475535"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_diamond_a.png",
+              "byteLength": 1705,
+              "sha256": "98f40edc85fc3735392e36e37f9818322e4dda5960ef6e54ae84653b7e32250b"
+            },
+            {
+              "url": "/game/Assets/PrefabHierarchyObject/cPK_10_012330_00_MEGAABSOLex_RR_L.glb",
+              "byteLength": 6977808,
+              "sha256": "11cbc2f76e17497296c5d83064dcc14f114f90423c803751f3b26fadfab0b813"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_AM_LM.png",
+              "byteLength": 340914,
+              "sha256": "684641b09967acbfd266e7fe94a3b9e4cfa4bba53a10ab9e0815f6a34edec600"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_AM_OFF.png",
+              "byteLength": 1152994,
+              "sha256": "6ab758ce38dbecc5c37cce76a2380ac9f9b3f08c8b6b2ac6db8c7a3719236951"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_AM_ON.png",
+              "byteLength": 1124172,
+              "sha256": "4308428a63121b068b7dc9411ae5c4c5b027b10bb2b7176dc10130bcb1df1f81"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF1_OFF.png",
+              "byteLength": 150773,
+              "sha256": "ca67153e513abcc6a7dd4b98205fafaf69f35526db27b2286c6d2de5274e1651"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF1_ON.png",
+              "byteLength": 278392,
+              "sha256": "cddf603eb14458673aa6269c0f43b9b6c1fe7a23b6cd01c45ac1bc165d5ea815"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF2.png",
+              "byteLength": 450983,
+              "sha256": "b6fd18961a2382db5860128f9f42f6d1954e2bfcf2f0a19e89e890d31fbe5def"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF2_OFF.png",
+              "byteLength": 113226,
+              "sha256": "3f48b6530f2e348a3693478d8be88931858f55af30c7bc06071a089cc5fde8d4"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF2_ON.png",
+              "byteLength": 301050,
+              "sha256": "a06aea0e47cc8b1878a44445dbe69267ce1ab5b21d3a0a649da0eaa7abc5d393"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_EFF3.png",
+              "byteLength": 592333,
+              "sha256": "0d842711ab7789b1c7f6fecbc5738b9c49e9b8da72fa09a7cce82473f2bffc7c"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_FLASH.png",
+              "byteLength": 682965,
+              "sha256": "e43e2c7ba5ad0b74f633a40bb90aa9875db1147bb8b815c8a8d867017daad291"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_ILL_LM.png",
+              "byteLength": 42428,
+              "sha256": "3732d85c117b7f11bbd7f88b27be87cdd4e9b1bd6317319ff1489b0fa10e74ad"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_ILL_OFF.png",
+              "byteLength": 93707,
+              "sha256": "82b397ae796f313a5d3c7273fde3674da4e8f9e3d34c1c2e5d6a878730685a4e"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_ILL_ON.png",
+              "byteLength": 95880,
+              "sha256": "f7a750fea9d47bbee2c55819144785ce045254dd37d439f70836b26828efa91f"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_MASK.png",
+              "byteLength": 7048,
+              "sha256": "41d8a2fec54e9eae8f5abe7375177a870693245f307cde78fcdf81b2c23974e8"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_10_012330_00_MEGAABSOLex_RR_L_PAR1.png",
+              "byteLength": 296871,
+              "sha256": "2cea1d52d80d3a5b9e076ce6a2f4a1fe48d95cf79363e3b7284b9627aec6f85d"
+            },
+            {
+              "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+              "byteLength": 109,
+              "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
+            }
+          ],
+          "referenceSetSha256": "726ed3b503b0ffdb68c5851932f3f007bbb47c444b280e90b7e43ace9631a65a"
+        }
+      }
+    },
+    {
+      "illustrationId": "cPK_20_000360_03_LIZARDONex_SR",
+      "cardId": "PK_20_000360_03",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+        "byteLength": 1036034,
+        "sha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b"
+      },
+      "selectorCoverage": [
+        {
+          "selectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+          "candidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+          "keywords": [
+            "_USESHADOWLAYERG_ON",
+            "_USESHADOWLAYERR_ON"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-74cec7daedc07628548d27c55f3371fb:-7433292795941986916",
+              "name": "cPK_20_000360_03_LIZARDONex_SR_L_PAR_BG",
+              "sourceBundle": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b",
+              "rawSha256": "9a76de0b06ac3f74b4684197f008e45bd9b162add23c7692e820a3d8f157c748",
+              "slotUsageCount": 1
+            }
+          ]
+        },
+        {
+          "selectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+          "candidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-74cec7daedc07628548d27c55f3371fb:1808906398782266426",
+              "name": "cPK_20_000360_03_LIZARDONex_SR_L_PAR_EFF",
+              "sourceBundle": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b",
+              "rawSha256": "dccb9be65b3cadd9b75eac0b9ba7fdfbed2631f847bc8e343a8d54df41ed46d1",
+              "slotUsageCount": 1
+            }
+          ]
+        },
+        {
+          "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+          "candidateWitnessId": "7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Shadow",
+          "keywords": [
+            "_USESHADOWLAYERR_ON"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-74cec7daedc07628548d27c55f3371fb:-6364854472386775737",
+              "name": "cPK_20_000360_03_LIZARDONex_SR_L_SBM2",
+              "sourceBundle": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b",
+              "rawSha256": "fff1688d1c046a381a6621913c78ea79a3eb3dde719f67db08df93ad81283f76",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-74cec7daedc07628548d27c55f3371fb:-9010623175228979950",
+              "name": "cPK_20_000360_03_LIZARDONex_SR_L_SBM1",
+              "sourceBundle": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b",
+              "rawSha256": "c63e1bdc4bf4fba7c375b32fcbc4cf1822b8ce134110a7b066dccab3587281bc",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-74cec7daedc07628548d27c55f3371fb:2735014252101694634",
+              "name": "cPK_20_000360_03_LIZARDONex_SR_L_SBM3",
+              "sourceBundle": "Common/CardNew/Face/PK/20/000000/cPK_20_000360_03_LIZARDONex_SR/L/Prefabs/cPK_20_000360_03_LIZARDONex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "8f446ca54ecb43600543964f790844cea45d7c4282de17bae96df40c1c38455b",
+              "rawSha256": "683ba9664778af04599f909eee0a259bcfce0ec056147fd16aa0980657ff6515",
+              "slotUsageCount": 1
+            }
+          ]
+        }
+      ],
+      "availability": {
+        "illustrationId": "cPK_20_000360_03_LIZARDONex_SR",
+        "cardId": "PK_20_000360_03",
+        "sceneExists": true,
+        "sceneReady": true,
+        "examplePresent": true,
+        "localeTextCount": 9,
+        "localeTextComplete": true,
+        "fullyAvailable": true,
+        "publicScene": {
+          "logicalPath": "public/scene.cPK_20_000360_03_LIZARDONex_SR.json",
+          "byteLength": 86732,
+          "sha256": "9557d3b2981ffc26bcaf8d78e448531ab7322bc77d5572019dbd1ae0970a97b4",
+          "officialDrawCount": 19,
+          "declaredMissing": []
+        },
+        "cardExamples": {
+          "sections": [
+            "coverageSet.selectedWitnesses"
+          ]
+        },
+        "localeText": [
+          {
+            "locale": "de_DE",
+            "logicalPath": "public/text/PK_20_000360_03.de_DE.json",
+            "sha256": "9a65f50a3c55151e4db729bf3b3979e410bca0eb51c43726aa636c6347ccf3ae"
+          },
+          {
+            "locale": "en_US",
+            "logicalPath": "public/text/PK_20_000360_03.en_US.json",
+            "sha256": "bd4f7ddfaadef02b789dc7c604fd81444b9e2f041108f9fa9e5ca2394b8b2b47"
+          },
+          {
+            "locale": "es_ES",
+            "logicalPath": "public/text/PK_20_000360_03.es_ES.json",
+            "sha256": "991e4dfd49477c1d349768012791b05ce132a591f1078753255eb3f34b385a5c"
+          },
+          {
+            "locale": "fr_FR",
+            "logicalPath": "public/text/PK_20_000360_03.fr_FR.json",
+            "sha256": "ce7de90642e5a010a5640a866b35879f58564cdae2fa8014b6773bcbbe214263"
+          },
+          {
+            "locale": "it_IT",
+            "logicalPath": "public/text/PK_20_000360_03.it_IT.json",
+            "sha256": "73e34dcae413b0320195d1826c169305a706d2a57ff58eaa09c0a7a0e4577212"
+          },
+          {
+            "locale": "ja_JP",
+            "logicalPath": "public/text/PK_20_000360_03.ja_JP.json",
+            "sha256": "94d2557d19d97b18530f380635572a1fde73ad06dd1fcb764f772febd02373fd"
+          },
+          {
+            "locale": "ko_KR",
+            "logicalPath": "public/text/PK_20_000360_03.ko_KR.json",
+            "sha256": "31fe45a3af3922019774c3c99516e16fb3a2e4073feca50ca45c62548fbd2d7b"
+          },
+          {
+            "locale": "pt_BR",
+            "logicalPath": "public/text/PK_20_000360_03.pt_BR.json",
+            "sha256": "6c624197c4e47a550ea76ada466ab554f2a47d02b3bdd31a9e1d1b63d10991ff"
+          },
+          {
+            "locale": "zh_TW",
+            "logicalPath": "public/text/PK_20_000360_03.zh_TW.json",
+            "sha256": "e79e0299ab162fb65c6b190fdc819cb018963d62ee456fd8698246cf71b47820"
+          }
+        ],
+        "gameAssets": {
+          "referenceCount": 39,
+          "missing": [],
+          "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+              "byteLength": 14987,
+              "sha256": "03299ffba690fa43e087c80dd163a62a3b1ab385c4e24e5bfd0e1e955bae0be2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+              "byteLength": 79168,
+              "sha256": "b9fdd3de7255d7544b3e4997e7b8e23d33122872d61ff82b2ceaa4d28f3cc794"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+              "byteLength": 64336,
+              "sha256": "cae6dc300a4f5ea44a2d128e4babe7ed237b51519b5e21d48b33e6932ddc6e4c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+              "byteLength": 161723,
+              "sha256": "781930758871220b66d154b12a74e1032f469ab4064b2f11f14d99008b8f9b97"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/Relief/BG_RELIEF_HM.png",
+              "byteLength": 184461,
+              "sha256": "b711c4ad44e88435e2357784f9e63946b64b8927f3b38e7664aee4905c4a649f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/Relief/PARTS_RELIEF_HM.png",
+              "byteLength": 103549,
+              "sha256": "d64a0a5903b3698e15dffa96bd40107c738d78622fb7cf160430b867f1fcaa18"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/Relief/PARTS_RELIEF_SH.png",
+              "byteLength": 112882,
+              "sha256": "33e4664d3fdc38a14ef7f05536c89381d493286c17b2adfad866140cdde893bf"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+              "byteLength": 8564,
+              "sha256": "267cee1096c5ab498efe44ccbb016bfbeaa48175bff2d2494e561b5c82d3e93c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+              "byteLength": 5892,
+              "sha256": "e5ca4bc0e2af890f7675491d7f0e18f5e7591b4a21065d393a681026a38eafc7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/HologramPhase/Full_HPH.png",
+              "byteLength": 701601,
+              "sha256": "40407cc707fe7c58abfe15c648bcc0a12c27e342636abb47d4863aab1c86a3a0"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+              "byteLength": 258,
+              "sha256": "ccd2d179ea85e6439f9579030cb724b2a1678aa7a80a8c0cee1be2b052594cd5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_EX.png",
+              "byteLength": 1655,
+              "sha256": "5fc34bf74bd231ae9056e612fb5f4592ee581ee7b6fad24ced3e57265f6b0664"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+              "byteLength": 1732,
+              "sha256": "dbe674b6d29f6c2ed953d03dd6d4fb90107e22ebaf5cd580991bad1628dfd8d7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+              "byteLength": 1881,
+              "sha256": "48b8b0a6c48034b6d8c4964c47b48a93bd1c2b632ce165e149c17207fc31d527"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+              "byteLength": 1361,
+              "sha256": "e8a3dbbb184c7910583d27b66eb5e721983498fe98d09f4e2fa269d8952e91a6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+              "byteLength": 1690,
+              "sha256": "81b5a039aa4cc5edc1323775493e0cbc3da91e7f812a52c9923e0c506e66b804"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_SB_Outline_RELIEF.png",
+              "byteLength": 1352,
+              "sha256": "799da685b2b3827efd3b5557bb957d93692d7faaf442b5c5a67da3d461ce94f4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+              "byteLength": 1330,
+              "sha256": "1de6b562883cbd100db42da6ed02b2e7ec90ad3a35ce45cc082525de224afe4d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+              "byteLength": 11504,
+              "sha256": "7c81cfbb4984a217533207eb8b8fec5c0521c05fccbbec79cbe96b3d54c877f9"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+              "byteLength": 17062,
+              "sha256": "c708559b615b746fac7ac81ad083bd1b3ca1acef84b3415f9caa93b0b8c6649b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+              "byteLength": 16466,
+              "sha256": "4bc13c392c552971a7c9f4f4a0c758738ded977e757b2ffcf2baa6a0ad36cc5f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+              "byteLength": 4957,
+              "sha256": "c6f461024d951648fc2a40d3f24a962b260ef58aaaa279fd117489f7d2e888f8"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI.png",
+              "byteLength": 59887,
+              "sha256": "3037c927fe4d1cbc36683938ec4ea773b7c4cf1e86a76d70c27dd723d85a2518"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+              "byteLength": 18542,
+              "sha256": "761c1966bff501d1626ecbaaaecfd2b650771439958df748915a36375ba02e08"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+              "byteLength": 290874,
+              "sha256": "4b71f2f1a7a9f27ab709cdc5a9a64a8af0d7696f843c0bfd450643bcd01ad96d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+              "byteLength": 59274,
+              "sha256": "d254b49e1dd062f21a112fd651a0f5cd75c67a8bfa2abeca5f51b2bdfbccea5a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+              "byteLength": 65624,
+              "sha256": "c375edbd09e35c4d0950714870279008f2ad70ca2955779d039ea37a8252a8b4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+              "byteLength": 309072,
+              "sha256": "25780bd7cdce8641fb767aaaf1e7233b67e3421de24ed368c03ac9d43cdb6e52"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+              "byteLength": 3087,
+              "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
+            },
+            {
+              "url": "/game/Assets/PrefabHierarchyObject/cPK_20_000360_03_LIZARDONex_SR_L.glb",
+              "byteLength": 2999156,
+              "sha256": "ff634b3dcd4f0efec14e923bbcf107473fd8401d9272bbc2636a363513c100a9"
+            },
+            {
+              "url": "/game/Assets/Texture2D/Card_Back.png",
+              "byteLength": 27529,
+              "sha256": "e58623bb37d694ea5418796b93bca7fb23356082c61515986a2a995a4b4c7812"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_BG_RELIEF_AM.png",
+              "byteLength": 351805,
+              "sha256": "0fcb0e0ab32cc8b8a832fb0965b41cfe0eec94587a9d6955a44516741a822b49"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_EFF_RELIEF_AM.png",
+              "byteLength": 212931,
+              "sha256": "cdebe3aa75e1fe7f60cab455f8c7f056f3ae92f7e29f0bac5e395d3984079e8a"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_EFF_RELIEF_HM.png",
+              "byteLength": 54447,
+              "sha256": "c425b0ab9f2024c7ac6db34dd8bb0276a8a039e52fdb3db773897ad8224b8b58"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_PARTS_RELIEF_AM.png",
+              "byteLength": 243329,
+              "sha256": "a5c9b3f1b407dcd6fafde9b78a11f15b4d5ee93c690785d534fbf58f61826952"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_RELIEF_AM.png",
+              "byteLength": 635059,
+              "sha256": "035c90d48ca66ddb64859dae42b6100b9ad88aa511894dac490f1be5ed9bf8a5"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_RELIEF_HM.png",
+              "byteLength": 307434,
+              "sha256": "48571747dbecb4d9c1c16a34318779aa523f4c8fe00e5d0a031efb031d5edf79"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_RELIEF_SHADOWS.png",
+              "byteLength": 187366,
+              "sha256": "1e53d33b19610be8412749fc580ca6ce5bdb438b35d7055ecb65963bca0bf7a8"
+            },
+            {
+              "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+              "byteLength": 109,
+              "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
+            }
+          ],
+          "referenceSetSha256": "cf66f41e10d72a8b876909b2ecc433bd8ce33a8beb341e56aa68589ad7411109"
+        }
+      }
+    },
+    {
+      "illustrationId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+      "cardId": "PK_20_010840_00",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+        "byteLength": 2388000,
+        "sha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b"
+      },
+      "selectorCoverage": [
+        {
+          "selectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+          "candidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [
+            "_USE_OLD_NOISE"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-2217b2dee29582fa6412914aa1b59481:1452464207166521529",
+              "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_FULLAURA",
+              "sourceBundle": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b",
+              "rawSha256": "fd6a2998a1b9abadd239f5e22daeab5f662cd137e5982b0530f9b42e3bb0de69",
+              "slotUsageCount": 1
+            }
+          ]
+        },
+        {
+          "selectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+          "candidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [
+            "_USE_OLD_NOISE"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-2217b2dee29582fa6412914aa1b59481:-3615542081175564452",
+              "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_SBAM2",
+              "sourceBundle": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b",
+              "rawSha256": "dc2ce4bc718d9b86dc07a7bbe45e3404ff67479eeb00927bd624073e3903989f",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-2217b2dee29582fa6412914aa1b59481:-8391917618666677076",
+              "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_SBAM4",
+              "sourceBundle": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b",
+              "rawSha256": "61a5e68182a34af9424ecd244f33c9a2738dcb5b1a947b7c9136ee7c8b2000ab",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-2217b2dee29582fa6412914aa1b59481:5681797264359367052",
+              "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_SBAM1",
+              "sourceBundle": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b",
+              "rawSha256": "d626b9c11778ca39750c6d1d19dd3c2a7280c86617d27c0b41655145108a46a8",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-2217b2dee29582fa6412914aa1b59481:6093801410670934771",
+              "name": "cPK_20_010840_00_MEGAKAILIOSex_SR_L_SBAM3",
+              "sourceBundle": "Common/CardNew/Face/PK/20/010000/cPK_20_010840_00_MEGAKAILIOSex_SR/L/Prefabs/cPK_20_010840_00_MEGAKAILIOSex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "cd2c61736f3f87d938b6015fb3c4095567060d0d55fd9bab767c99bbb0888c4b",
+              "rawSha256": "99aa26ebae5b4ab56ae84b33f7ff07aeaf7696b7efd2990b0741a6b270611170",
+              "slotUsageCount": 1
+            }
+          ]
+        }
+      ],
+      "availability": {
+        "illustrationId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+        "cardId": "PK_20_010840_00",
+        "sceneExists": true,
+        "sceneReady": true,
+        "examplePresent": true,
+        "localeTextCount": 9,
+        "localeTextComplete": true,
+        "fullyAvailable": true,
+        "publicScene": {
+          "logicalPath": "public/scene.cPK_20_010840_00_MEGAKAILIOSex_SR.json",
+          "byteLength": 198470,
+          "sha256": "d65bc2eb4c24578a184d8b61289f531e73d06aed36056000f6048c8a461831d4",
+          "officialDrawCount": 30,
+          "declaredMissing": []
+        },
+        "cardExamples": {
+          "sections": [
+            "coverageSet.selectedWitnesses"
+          ]
+        },
+        "localeText": [
+          {
+            "locale": "de_DE",
+            "logicalPath": "public/text/PK_20_010840_00.de_DE.json",
+            "sha256": "58d144c1946a59033cd29b8ef37b590fce8c7100441977ea078e4f0e58157b57"
+          },
+          {
+            "locale": "en_US",
+            "logicalPath": "public/text/PK_20_010840_00.en_US.json",
+            "sha256": "9ed8c53e8c63ffd93247525d945e5343e2e1b34d2b0430d52194401b56a28669"
+          },
+          {
+            "locale": "es_ES",
+            "logicalPath": "public/text/PK_20_010840_00.es_ES.json",
+            "sha256": "8a1b8b4c4a821d2ca54b0b6eb792dab03ab84248254f7f253c6f67470cd962f2"
+          },
+          {
+            "locale": "fr_FR",
+            "logicalPath": "public/text/PK_20_010840_00.fr_FR.json",
+            "sha256": "142181e99172a380b6949662dd3451f61445276450a51fe5a20cea0d9740aceb"
+          },
+          {
+            "locale": "it_IT",
+            "logicalPath": "public/text/PK_20_010840_00.it_IT.json",
+            "sha256": "68de927a4bbe5a415245502cab900bcda67fbeae4152719fb88cdcbe1b72302e"
+          },
+          {
+            "locale": "ja_JP",
+            "logicalPath": "public/text/PK_20_010840_00.ja_JP.json",
+            "sha256": "6c8a2ed28f77f1105b0ef768c6512af23799c6b05e50f01e6582cbaae9f24072"
+          },
+          {
+            "locale": "ko_KR",
+            "logicalPath": "public/text/PK_20_010840_00.ko_KR.json",
+            "sha256": "40318dbd5b0a03feef9cbef9f08610b5478ee110d62fcce366b8d23bf369ae90"
+          },
+          {
+            "locale": "pt_BR",
+            "logicalPath": "public/text/PK_20_010840_00.pt_BR.json",
+            "sha256": "f4cbd95acbb0a4cba3f105826b5d6abcfe5afdf0deccc8817824340e4fe7463d"
+          },
+          {
+            "locale": "zh_TW",
+            "logicalPath": "public/text/PK_20_010840_00.zh_TW.json",
+            "sha256": "63eccc78afe3b8b92e6d8ae7d8134b4dd479cc46e47847eeb0caecf4f827b742"
+          }
+        ],
+        "gameAssets": {
+          "referenceCount": 50,
+          "missing": [],
+          "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+              "byteLength": 954627,
+              "sha256": "58d0cf3992069fffb1ebe6c944cff2936dd7b0dc9d50b4dc8849a5dd2463ed75"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+              "byteLength": 14987,
+              "sha256": "03299ffba690fa43e087c80dd163a62a3b1ab385c4e24e5bfd0e1e955bae0be2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+              "byteLength": 79168,
+              "sha256": "b9fdd3de7255d7544b3e4997e7b8e23d33122872d61ff82b2ceaa4d28f3cc794"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_base.png",
+              "byteLength": 42364,
+              "sha256": "b4e176951acfe24ac0847e25416d120aa1d63625a5ec1df4e6b47d4cd3a091dc"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+              "byteLength": 1275458,
+              "sha256": "6b031d00cc0d60fc1d17a26b1a3bf3aa1de39a00e2c2b67af9e3fcdd177ba25d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+              "byteLength": 222255,
+              "sha256": "092703e202fabe1defc0b58c639ac2e934ff033b06ec2000020cca701ce7f952"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+              "byteLength": 661997,
+              "sha256": "cd4bb952ac89cece80beefc8826e95fcf18253fc4cbb565e300e1444608160a7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+              "byteLength": 161723,
+              "sha256": "781930758871220b66d154b12a74e1032f469ab4064b2f11f14d99008b8f9b97"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+              "byteLength": 835590,
+              "sha256": "fad93bf3ae5dbeb047f1c34fd169cff6c67b830b8893a7f1e14c9f014245f2de"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+              "byteLength": 21113,
+              "sha256": "a3da9271429d3cecd156cb2e507f751abb790911ab3ad7872f94ea9c3fca9f7f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+              "byteLength": 19798,
+              "sha256": "ec50334a9ad5b6c2ed419bddb389f30aa48f6629c1664d9f8af33b455c4e3e9b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+              "byteLength": 8564,
+              "sha256": "267cee1096c5ab498efe44ccbb016bfbeaa48175bff2d2494e561b5c82d3e93c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+              "byteLength": 5892,
+              "sha256": "e5ca4bc0e2af890f7675491d7f0e18f5e7591b4a21065d393a681026a38eafc7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+              "byteLength": 22149,
+              "sha256": "d1fdc3f138e0decbb776ace2a1c332232f3107dadd8c2b140506af25aa004cd6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+              "byteLength": 258,
+              "sha256": "ccd2d179ea85e6439f9579030cb724b2a1678aa7a80a8c0cee1be2b052594cd5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+              "byteLength": 737,
+              "sha256": "8884ef8591888b7a065ebd612e6cb9415988aa1f7e5f463704ba26f24fde8012"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+              "byteLength": 737,
+              "sha256": "875ecb13e9c0cef3ff653f083cfc75cf9c26c5b7532162665c076cf390ae9979"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+              "byteLength": 820,
+              "sha256": "ddd12c66b78d42a4ba158ddb6722199f22c53476731eeaef15f53f3606f9213c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+              "byteLength": 1732,
+              "sha256": "dbe674b6d29f6c2ed953d03dd6d4fb90107e22ebaf5cd580991bad1628dfd8d7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+              "byteLength": 150,
+              "sha256": "c5c4122aba952f5bc5b8da403503ae3ff48d6fcbc272013b66839f40b4c399fb"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+              "byteLength": 1110,
+              "sha256": "d036400baf2359b88891057640e22f7404f7e7aaba271aaa3edd7c0d3bf00ec7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+              "byteLength": 939,
+              "sha256": "39e9e930a27cb499aaadb9918153e54bb866ad861db53e727bedcb262e912882"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+              "byteLength": 879,
+              "sha256": "cf94bb690a2a928cb9e3e235d91ec0f19f6aabad2200ba36fe7501f682d6b059"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+              "byteLength": 1881,
+              "sha256": "48b8b0a6c48034b6d8c4964c47b48a93bd1c2b632ce165e149c17207fc31d527"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+              "byteLength": 1361,
+              "sha256": "e8a3dbbb184c7910583d27b66eb5e721983498fe98d09f4e2fa269d8952e91a6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+              "byteLength": 1690,
+              "sha256": "81b5a039aa4cc5edc1323775493e0cbc3da91e7f812a52c9923e0c506e66b804"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+              "byteLength": 1330,
+              "sha256": "1de6b562883cbd100db42da6ed02b2e7ec90ad3a35ce45cc082525de224afe4d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+              "byteLength": 11504,
+              "sha256": "7c81cfbb4984a217533207eb8b8fec5c0521c05fccbbec79cbe96b3d54c877f9"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+              "byteLength": 17062,
+              "sha256": "c708559b615b746fac7ac81ad083bd1b3ca1acef84b3415f9caa93b0b8c6649b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+              "byteLength": 16466,
+              "sha256": "4bc13c392c552971a7c9f4f4a0c758738ded977e757b2ffcf2baa6a0ad36cc5f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+              "byteLength": 4957,
+              "sha256": "c6f461024d951648fc2a40d3f24a962b260ef58aaaa279fd117489f7d2e888f8"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+              "byteLength": 188308,
+              "sha256": "e68d3239421381919db6790e236532ab88dd9d784f65949f367c2ad60165af82"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+              "byteLength": 18542,
+              "sha256": "761c1966bff501d1626ecbaaaecfd2b650771439958df748915a36375ba02e08"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+              "byteLength": 290874,
+              "sha256": "4b71f2f1a7a9f27ab709cdc5a9a64a8af0d7696f843c0bfd450643bcd01ad96d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+              "byteLength": 59274,
+              "sha256": "d254b49e1dd062f21a112fd651a0f5cd75c67a8bfa2abeca5f51b2bdfbccea5a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+              "byteLength": 65624,
+              "sha256": "c375edbd09e35c4d0950714870279008f2ad70ca2955779d039ea37a8252a8b4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+              "byteLength": 309072,
+              "sha256": "25780bd7cdce8641fb767aaaf1e7233b67e3421de24ed368c03ac9d43cdb6e52"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+              "byteLength": 3087,
+              "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
+            },
+            {
+              "url": "/game/Assets/PrefabHierarchyObject/cPK_20_010840_00_MEGAKAILIOSex_SR_L.glb",
+              "byteLength": 4737108,
+              "sha256": "17908b365babdcf9965d096d0dc0eeb13db2f9dd971fd3f6bc38b3ce5c97ef64"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AM.png",
+              "byteLength": 1042182,
+              "sha256": "ae21b48d224104c9b6fb18fd15c7156da114092236cdc9cff0d2c7b01cd19035"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAFLOW.png",
+              "byteLength": 480821,
+              "sha256": "e86255bfc3d7cd995a01e2abe4f20791ba93181bc6ce341c264e04e25a43eb78"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_AURAMASK.png",
+              "byteLength": 434571,
+              "sha256": "6d4edac96339f6a75963334ab10e751c054ec94a45fd504cdfcf753e8fefb599"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_BGPK.png",
+              "byteLength": 98235,
+              "sha256": "a30563a6ee4f0913cd7622d475029d28dc1f52f57533d77bc5c102c4d56d1ec5"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFA.png",
+              "byteLength": 85325,
+              "sha256": "a1dff5bb3dc5e386f07d12ab22311a7f8156da089194536d6d0ff96bdf464485"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_EFFB.png",
+              "byteLength": 116412,
+              "sha256": "94819f87f7e9096b7ab2c59cf7aec15b562e89acae7fbd4af79832c3f2958e8c"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HM.png",
+              "byteLength": 226910,
+              "sha256": "51378abab0dbfaefdd6f91d4b72e0cb3a8767da576b144e91a5611d448e8081f"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_HPH.png",
+              "byteLength": 545824,
+              "sha256": "58a06beaa029d0f763c1d53230fb7b90d767042f8ac083f3379922608cd8ed12"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PAR1.png",
+              "byteLength": 854374,
+              "sha256": "c446b7c23c4f23024f09733cf232c0fa80156239df5a83babc9f6e425b29e197"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_010840_00_MEGAKAILIOSex_SR_L_PARTICLEFLOW.png",
+              "byteLength": 232392,
+              "sha256": "e9f226e056d57929f7a127eea7168b89c576b38a4496bde8e92a090e809e4fbc"
+            },
+            {
+              "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+              "byteLength": 109,
+              "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
+            }
+          ],
+          "referenceSetSha256": "ea8ff925ba94913deb68116df3127adf347b011173dee0c9ec1b58af61ff4080"
+        }
+      }
+    },
+    {
+      "illustrationId": "cPK_20_016210_00_MEGAYADORANex_SR",
+      "cardId": "PK_20_016210_00",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/20/016000/cPK_20_016210_00_MEGAYADORANex_SR/L/Prefabs/cPK_20_016210_00_MEGAYADORANex_SR_L.prefab_bundles",
+        "byteLength": 2324096,
+        "sha256": "7efee3db4bd663bae17eceb7067315e1650d50923ed34b81ea8382e88ca425e7"
+      },
+      "selectorCoverage": [
+        {
+          "selectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+          "candidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-f8baf9c78eb65993bca5e073ccba75f3:-5535386937357487372",
+              "name": "cPK_20_016210_00_MEGAYADORANex_SR_L_FULLAURA",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016210_00_MEGAYADORANex_SR/L/Prefabs/cPK_20_016210_00_MEGAYADORANex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "7efee3db4bd663bae17eceb7067315e1650d50923ed34b81ea8382e88ca425e7",
+              "rawSha256": "4420226b92892ca0c2d103cab0c983546f5a97190e579dcd1da180fd094567d5",
+              "slotUsageCount": 1
+            }
+          ]
+        },
+        {
+          "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+          "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-f8baf9c78eb65993bca5e073ccba75f3:-6698567066356384021",
+              "name": "cPK_20_016210_00_MEGAYADORANex_SR_L_SBAM1",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016210_00_MEGAYADORANex_SR/L/Prefabs/cPK_20_016210_00_MEGAYADORANex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "7efee3db4bd663bae17eceb7067315e1650d50923ed34b81ea8382e88ca425e7",
+              "rawSha256": "89011d31ca9e40e13d29f4a90162b41333584d56bce20b5f8f953af94de2da48",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-f8baf9c78eb65993bca5e073ccba75f3:4834357335697351083",
+              "name": "cPK_20_016210_00_MEGAYADORANex_SR_L_SBAM2",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016210_00_MEGAYADORANex_SR/L/Prefabs/cPK_20_016210_00_MEGAYADORANex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "7efee3db4bd663bae17eceb7067315e1650d50923ed34b81ea8382e88ca425e7",
+              "rawSha256": "6978e029d1e9f5cb5c914acea97a4e6f0494741969d5f64cd5b712b85183f0c7",
+              "slotUsageCount": 1
+            }
+          ]
+        }
+      ],
+      "availability": {
+        "illustrationId": "cPK_20_016210_00_MEGAYADORANex_SR",
+        "cardId": "PK_20_016210_00",
+        "sceneExists": true,
+        "sceneReady": true,
+        "examplePresent": true,
+        "localeTextCount": 9,
+        "localeTextComplete": true,
+        "fullyAvailable": true,
+        "publicScene": {
+          "logicalPath": "public/scene.cPK_20_016210_00_MEGAYADORANex_SR.json",
+          "byteLength": 159298,
+          "sha256": "d1f528430367ef75e926a46324ea9f3433b05d0fa30e7e99705f12ea69436a24",
+          "officialDrawCount": 26,
+          "declaredMissing": []
+        },
+        "cardExamples": {
+          "sections": [
+            "coverageSet.selectedWitnesses"
+          ]
+        },
+        "localeText": [
+          {
+            "locale": "de_DE",
+            "logicalPath": "public/text/PK_20_016210_00.de_DE.json",
+            "sha256": "c65f727b872cc8efacc73dd75cd1a62638d7d0e8b4723656a468d21c6f1fe838"
+          },
+          {
+            "locale": "en_US",
+            "logicalPath": "public/text/PK_20_016210_00.en_US.json",
+            "sha256": "ed43a01aa78af9c16f8b08af19a870f387b9d5c70a2fd8b16d402db1108f5e7b"
+          },
+          {
+            "locale": "es_ES",
+            "logicalPath": "public/text/PK_20_016210_00.es_ES.json",
+            "sha256": "eac56ea630cd026994d502ef59b20d97b585ed5b81c6a89a7a0f7fc528b7f71a"
+          },
+          {
+            "locale": "fr_FR",
+            "logicalPath": "public/text/PK_20_016210_00.fr_FR.json",
+            "sha256": "555ba698bb5993f60de640a6978320f3b2adb5be419911358e44651ca33f737b"
+          },
+          {
+            "locale": "it_IT",
+            "logicalPath": "public/text/PK_20_016210_00.it_IT.json",
+            "sha256": "415ec8ff5629b294b7aac3bec3d2261f72201f5f8bbf4d4b8651ee6b1eb39bd9"
+          },
+          {
+            "locale": "ja_JP",
+            "logicalPath": "public/text/PK_20_016210_00.ja_JP.json",
+            "sha256": "a2700ed41c42de50a11fe1dcdbfc0f733232dab7723038bed5b95585cfea4679"
+          },
+          {
+            "locale": "ko_KR",
+            "logicalPath": "public/text/PK_20_016210_00.ko_KR.json",
+            "sha256": "8fb18f9fd2d217f3c312120ef1fc0f3bbdecd99fc470a13542d24e4d945cf5d7"
+          },
+          {
+            "locale": "pt_BR",
+            "logicalPath": "public/text/PK_20_016210_00.pt_BR.json",
+            "sha256": "4126b123234946741c6aa7da9b377c8c1aafd34cdb6d1569d05729c919805612"
+          },
+          {
+            "locale": "zh_TW",
+            "logicalPath": "public/text/PK_20_016210_00.zh_TW.json",
+            "sha256": "adb415f1827a0c469d44d903bb75df00f8cd23e3f7b9dbe9d534564639fa3e4a"
+          }
+        ],
+        "gameAssets": {
+          "referenceCount": 50,
+          "missing": [],
+          "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+              "byteLength": 954627,
+              "sha256": "58d0cf3992069fffb1ebe6c944cff2936dd7b0dc9d50b4dc8849a5dd2463ed75"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+              "byteLength": 14987,
+              "sha256": "03299ffba690fa43e087c80dd163a62a3b1ab385c4e24e5bfd0e1e955bae0be2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+              "byteLength": 79168,
+              "sha256": "b9fdd3de7255d7544b3e4997e7b8e23d33122872d61ff82b2ceaa4d28f3cc794"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage1.png",
+              "byteLength": 64448,
+              "sha256": "45566c50a85dfe80c27cb7b90e771aa78d9d55941625690019a86e3e1a808e1a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_2.png",
+              "byteLength": 1275458,
+              "sha256": "6b031d00cc0d60fc1d17a26b1a3bf3aa1de39a00e2c2b67af9e3fcdd177ba25d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+              "byteLength": 222255,
+              "sha256": "092703e202fabe1defc0b58c639ac2e934ff033b06ec2000020cca701ce7f952"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+              "byteLength": 661997,
+              "sha256": "cd4bb952ac89cece80beefc8826e95fcf18253fc4cbb565e300e1444608160a7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+              "byteLength": 161723,
+              "sha256": "781930758871220b66d154b12a74e1032f469ab4064b2f11f14d99008b8f9b97"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es45.png",
+              "byteLength": 759873,
+              "sha256": "cefa6a4099890b0eddb9dad9d8a5c9c6f47089528822e2d79f9aa231d53a871d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+              "byteLength": 21113,
+              "sha256": "a3da9271429d3cecd156cb2e507f751abb790911ab3ad7872f94ea9c3fca9f7f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+              "byteLength": 19798,
+              "sha256": "ec50334a9ad5b6c2ed419bddb389f30aa48f6629c1664d9f8af33b455c4e3e9b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+              "byteLength": 8564,
+              "sha256": "267cee1096c5ab498efe44ccbb016bfbeaa48175bff2d2494e561b5c82d3e93c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+              "byteLength": 5892,
+              "sha256": "e5ca4bc0e2af890f7675491d7f0e18f5e7591b4a21065d393a681026a38eafc7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+              "byteLength": 22149,
+              "sha256": "d1fdc3f138e0decbb776ace2a1c332232f3107dadd8c2b140506af25aa004cd6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+              "byteLength": 258,
+              "sha256": "ccd2d179ea85e6439f9579030cb724b2a1678aa7a80a8c0cee1be2b052594cd5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+              "byteLength": 737,
+              "sha256": "8884ef8591888b7a065ebd612e6cb9415988aa1f7e5f463704ba26f24fde8012"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+              "byteLength": 737,
+              "sha256": "875ecb13e9c0cef3ff653f083cfc75cf9c26c5b7532162665c076cf390ae9979"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+              "byteLength": 820,
+              "sha256": "ddd12c66b78d42a4ba158ddb6722199f22c53476731eeaef15f53f3606f9213c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+              "byteLength": 1732,
+              "sha256": "dbe674b6d29f6c2ed953d03dd6d4fb90107e22ebaf5cd580991bad1628dfd8d7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+              "byteLength": 150,
+              "sha256": "c5c4122aba952f5bc5b8da403503ae3ff48d6fcbc272013b66839f40b4c399fb"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+              "byteLength": 1110,
+              "sha256": "d036400baf2359b88891057640e22f7404f7e7aaba271aaa3edd7c0d3bf00ec7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+              "byteLength": 939,
+              "sha256": "39e9e930a27cb499aaadb9918153e54bb866ad861db53e727bedcb262e912882"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+              "byteLength": 879,
+              "sha256": "cf94bb690a2a928cb9e3e235d91ec0f19f6aabad2200ba36fe7501f682d6b059"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+              "byteLength": 1881,
+              "sha256": "48b8b0a6c48034b6d8c4964c47b48a93bd1c2b632ce165e149c17207fc31d527"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+              "byteLength": 1361,
+              "sha256": "e8a3dbbb184c7910583d27b66eb5e721983498fe98d09f4e2fa269d8952e91a6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+              "byteLength": 1690,
+              "sha256": "81b5a039aa4cc5edc1323775493e0cbc3da91e7f812a52c9923e0c506e66b804"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+              "byteLength": 1330,
+              "sha256": "1de6b562883cbd100db42da6ed02b2e7ec90ad3a35ce45cc082525de224afe4d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+              "byteLength": 11504,
+              "sha256": "7c81cfbb4984a217533207eb8b8fec5c0521c05fccbbec79cbe96b3d54c877f9"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+              "byteLength": 17062,
+              "sha256": "c708559b615b746fac7ac81ad083bd1b3ca1acef84b3415f9caa93b0b8c6649b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+              "byteLength": 16466,
+              "sha256": "4bc13c392c552971a7c9f4f4a0c758738ded977e757b2ffcf2baa6a0ad36cc5f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+              "byteLength": 4957,
+              "sha256": "c6f461024d951648fc2a40d3f24a962b260ef58aaaa279fd117489f7d2e888f8"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+              "byteLength": 188308,
+              "sha256": "e68d3239421381919db6790e236532ab88dd9d784f65949f367c2ad60165af82"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+              "byteLength": 18542,
+              "sha256": "761c1966bff501d1626ecbaaaecfd2b650771439958df748915a36375ba02e08"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+              "byteLength": 290874,
+              "sha256": "4b71f2f1a7a9f27ab709cdc5a9a64a8af0d7696f843c0bfd450643bcd01ad96d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+              "byteLength": 59274,
+              "sha256": "d254b49e1dd062f21a112fd651a0f5cd75c67a8bfa2abeca5f51b2bdfbccea5a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+              "byteLength": 65624,
+              "sha256": "c375edbd09e35c4d0950714870279008f2ad70ca2955779d039ea37a8252a8b4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+              "byteLength": 309072,
+              "sha256": "25780bd7cdce8641fb767aaaf1e7233b67e3421de24ed368c03ac9d43cdb6e52"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+              "byteLength": 3087,
+              "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
+            },
+            {
+              "url": "/game/Assets/PrefabHierarchyObject/cPK_20_016210_00_MEGAYADORANex_SR_L.glb",
+              "byteLength": 5230404,
+              "sha256": "a276a911762c522fe15e0dceee0f7d223e146119e850bcfb775b3f0311af70fd"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_AM.png",
+              "byteLength": 1096998,
+              "sha256": "beeea24c2fc90d0abe7bdbb370e3afb530d48f7aee575e5a1d9c320271907c2b"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_AURAFLOW.png",
+              "byteLength": 399751,
+              "sha256": "7faf3ba9c7bcc952d27af0234bc2f1d3b72d11da837494e7be01df8bf704d43d"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_AURAMASK.png",
+              "byteLength": 380854,
+              "sha256": "db4b15d8315f5086afcc88c226a5faf4091244e794efb18ebc787512aaed28e9"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_BGPK.png",
+              "byteLength": 148961,
+              "sha256": "05cff0b56888b48197aa05ff319280cd93a1c6853d29b26408bf40ef752186af"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_EFFA.png",
+              "byteLength": 262550,
+              "sha256": "553ab8b1cbab1dc50ee68aaadfb54ba0989b146a9ccb5d1a9933e07997970e0d"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_EFFB.png",
+              "byteLength": 126414,
+              "sha256": "4b597155a4cac70c82d3d68d02abbf616b5dfce0dcbba7ab905e99c3820425fc"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_HM.png",
+              "byteLength": 141539,
+              "sha256": "2d1a34e1070db55ee9dc85dee2f30d2618e17a0945ca56c8251a2deb6ba597bc"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_HPH.png",
+              "byteLength": 517867,
+              "sha256": "95a2b2c2321375fe6baecf935b1491a29056a97d8a3b7a9c29b0b25011b9df87"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_PAR1.png",
+              "byteLength": 1083331,
+              "sha256": "2fdbd8c0abd915e93a6fa7be1ab9398b324863aca10fa00598baa1046b97d00f"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016210_00_MEGAYADORANex_SR_L_PARTICLEFLOW.png",
+              "byteLength": 166741,
+              "sha256": "2122dbb863ffabf98f7c35072d20ee76260a609c5b7c2e0cb99d61e8f5829a18"
+            },
+            {
+              "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+              "byteLength": 109,
+              "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
+            }
+          ],
+          "referenceSetSha256": "f8a9e8646246c304cd159c3f3a4d0bb9c9c9b8e7d43eea5ff32b2f41d9870281"
+        }
+      }
+    },
+    {
+      "illustrationId": "cPK_20_016430_00_MEGAGANGARex_SR",
+      "cardId": "PK_20_016430_00",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/20/016000/cPK_20_016430_00_MEGAGANGARex_SR/L/Prefabs/cPK_20_016430_00_MEGAGANGARex_SR_L.prefab_bundles",
+        "byteLength": 2380201,
+        "sha256": "d50b1ae980b5e5f940f9a0692aca83c81085e415ab278609fd98b7e1cf6ef8e7"
+      },
+      "selectorCoverage": [
+        {
+          "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+          "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [
+            "_USE_COL4"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-e9e93a4cebc8dd73d5e86039e2db7a15:5917330356644993575",
+              "name": "cPK_20_016430_00_MEGAGANGARex_SR_L_FULLAURA",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016430_00_MEGAGANGARex_SR/L/Prefabs/cPK_20_016430_00_MEGAGANGARex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "d50b1ae980b5e5f940f9a0692aca83c81085e415ab278609fd98b7e1cf6ef8e7",
+              "rawSha256": "428cba3827ef203baf3850ef7c7cdeeb6da0e2db8c18d691a4a5e3e8f569ae16",
+              "slotUsageCount": 1
+            }
+          ]
+        },
+        {
+          "selectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+          "candidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [
+            "_USE_COL4"
+          ],
+          "subshader": 0,
+          "pass": 0,
+          "materials": [
+            {
+              "identity": "CAB-e9e93a4cebc8dd73d5e86039e2db7a15:-4021745176861220160",
+              "name": "cPK_20_016430_00_MEGAGANGARex_SR_L_SBAM2",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016430_00_MEGAGANGARex_SR/L/Prefabs/cPK_20_016430_00_MEGAGANGARex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "d50b1ae980b5e5f940f9a0692aca83c81085e415ab278609fd98b7e1cf6ef8e7",
+              "rawSha256": "5f83a79255fd0ca312c1673bcbb8db97c66a0f8e7759ed22ef60debaaf7c2ce5",
+              "slotUsageCount": 1
+            },
+            {
+              "identity": "CAB-e9e93a4cebc8dd73d5e86039e2db7a15:-5415608178163949268",
+              "name": "cPK_20_016430_00_MEGAGANGARex_SR_L_SBAM1",
+              "sourceBundle": "Common/CardNew/Face/PK/20/016000/cPK_20_016430_00_MEGAGANGARex_SR/L/Prefabs/cPK_20_016430_00_MEGAGANGARex_SR_L.prefab_bundles",
+              "sourceBundleSha256": "d50b1ae980b5e5f940f9a0692aca83c81085e415ab278609fd98b7e1cf6ef8e7",
+              "rawSha256": "e75f89ad256367a2fa2b38921b85e5d1bb4354e4d0708fbca9648aed55db9034",
+              "slotUsageCount": 1
+            }
+          ]
+        }
+      ],
+      "availability": {
+        "illustrationId": "cPK_20_016430_00_MEGAGANGARex_SR",
+        "cardId": "PK_20_016430_00",
+        "sceneExists": true,
+        "sceneReady": true,
+        "examplePresent": true,
+        "localeTextCount": 9,
+        "localeTextComplete": true,
+        "fullyAvailable": true,
+        "publicScene": {
+          "logicalPath": "public/scene.cPK_20_016430_00_MEGAGANGARex_SR.json",
+          "byteLength": 159539,
+          "sha256": "47b53521ef1b103c5256b8992b2de236347e8dedabb72197ca5cff62e075163d",
+          "officialDrawCount": 26,
+          "declaredMissing": []
+        },
+        "cardExamples": {
+          "sections": [
+            "coverageSet.selectedWitnesses"
+          ]
+        },
+        "localeText": [
+          {
+            "locale": "de_DE",
+            "logicalPath": "public/text/PK_20_016430_00.de_DE.json",
+            "sha256": "d758d5331b3dc6c5f29b5c5d93ae11b2f9d3ec5c5fdfbb1a296c96ca1251607b"
+          },
+          {
+            "locale": "en_US",
+            "logicalPath": "public/text/PK_20_016430_00.en_US.json",
+            "sha256": "76be178c3ca13717c1b9d6c0c22e087b69346ff2a21cd48efe50a9397ae50a26"
+          },
+          {
+            "locale": "es_ES",
+            "logicalPath": "public/text/PK_20_016430_00.es_ES.json",
+            "sha256": "b07557cf55da3c2d836a8df40c4ae9c82e316c9d9d3a6d66814fe66e687d5491"
+          },
+          {
+            "locale": "fr_FR",
+            "logicalPath": "public/text/PK_20_016430_00.fr_FR.json",
+            "sha256": "858cb4fb37ff210dd7752a4f8c7d0c840a7be9fe44463ae2b076e9ae15ec0b78"
+          },
+          {
+            "locale": "it_IT",
+            "logicalPath": "public/text/PK_20_016430_00.it_IT.json",
+            "sha256": "9a1b3535fcf477c918cd933d84750bb037aa43aa67dc999f04c09663def527d6"
+          },
+          {
+            "locale": "ja_JP",
+            "logicalPath": "public/text/PK_20_016430_00.ja_JP.json",
+            "sha256": "2e00ae285041f7149d31df7786b1f2bf58871d6418bfe26848ec7a324528b170"
+          },
+          {
+            "locale": "ko_KR",
+            "logicalPath": "public/text/PK_20_016430_00.ko_KR.json",
+            "sha256": "da7e1a4725ac79a5619b19f5864531a28faf11dba1d606f5efd888842189d455"
+          },
+          {
+            "locale": "pt_BR",
+            "logicalPath": "public/text/PK_20_016430_00.pt_BR.json",
+            "sha256": "4daa3e36a2212c69e5ca5e080d41fac1adb63ce13f65142081041dc7cf4dd705"
+          },
+          {
+            "locale": "zh_TW",
+            "logicalPath": "public/text/PK_20_016430_00.zh_TW.json",
+            "sha256": "82ad316cdcf42b915fdadb6d6b53889c55a8f2ea5b59629b5cd449e49c66abda"
+          }
+        ],
+        "gameAssets": {
+          "referenceCount": 50,
+          "missing": [],
+          "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+              "byteLength": 954627,
+              "sha256": "58d0cf3992069fffb1ebe6c944cff2936dd7b0dc9d50b4dc8849a5dd2463ed75"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
+              "byteLength": 14987,
+              "sha256": "03299ffba690fa43e087c80dd163a62a3b1ab385c4e24e5bfd0e1e955bae0be2"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_base_sr_ssa.png",
+              "byteLength": 79168,
+              "sha256": "b9fdd3de7255d7544b3e4997e7b8e23d33122872d61ff82b2ceaa4d28f3cc794"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/CardBase/card_pokemon_normal_stage2.png",
+              "byteLength": 64336,
+              "sha256": "cae6dc300a4f5ea44a2d128e4babe7ed237b51519b5e21d48b33e6932ddc6e4c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FBM/fbm_u14v14_x0y0_3.png",
+              "byteLength": 1275582,
+              "sha256": "42c30491f215b7c23c723c87d43889d5dc9d998392059d2430e6002c8b412629"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle.png",
+              "byteLength": 222255,
+              "sha256": "092703e202fabe1defc0b58c639ac2e934ff033b06ec2000020cca701ce7f952"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Effect/FlowParticle_shape_mask.png",
+              "byteLength": 661997,
+              "sha256": "cd4bb952ac89cece80beefc8826e95fcf18253fc4cbb565e300e1444608160a7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/EnvironmentMap/L_001_ENV.png",
+              "byteLength": 161723,
+              "sha256": "781930758871220b66d154b12a74e1032f469ab4064b2f11f14d99008b8f9b97"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/FlipBook/Outline/FlipBookReflect_es35.png",
+              "byteLength": 835590,
+              "sha256": "fad93bf3ae5dbeb047f1c34fd169cff6c67b830b8893a7f1e14c9f014245f2de"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagBGTintMask.png",
+              "byteLength": 21113,
+              "sha256": "a3da9271429d3cecd156cb2e507f751abb790911ab3ad7872f94ea9c3fca9f7f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/RainbowTagTintMask.png",
+              "byteLength": 19798,
+              "sha256": "ec50334a9ad5b6c2ed419bddb389f30aa48f6629c1664d9f8af33b455c4e3e9b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_frame_mask_R_SR.png",
+              "byteLength": 8564,
+              "sha256": "267cee1096c5ab498efe44ccbb016bfbeaa48175bff2d2494e561b5c82d3e93c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Mask/card_inner_stencil_mask_full_v02.png",
+              "byteLength": 5892,
+              "sha256": "e5ca4bc0e2af890f7675491d7f0e18f5e7591b4a21065d393a681026a38eafc7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/card_megaEX_EXRule_mask.png",
+              "byteLength": 22149,
+              "sha256": "d1fdc3f138e0decbb776ace2a1c332232f3107dadd8c2b140506af25aa004cd6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/PhaseMask/mask_white.png",
+              "byteLength": 258,
+              "sha256": "ccd2d179ea85e6439f9579030cb724b2a1678aa7a80a8c0cee1be2b052594cd5"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_BG.png",
+              "byteLength": 737,
+              "sha256": "8884ef8591888b7a065ebd612e6cb9415988aa1f7e5f463704ba26f24fde8012"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Base.png",
+              "byteLength": 737,
+              "sha256": "875ecb13e9c0cef3ff653f083cfc75cf9c26c5b7532162665c076cf390ae9979"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_MegaEvolutionTag_Outline.png",
+              "byteLength": 820,
+              "sha256": "ddd12c66b78d42a4ba158ddb6722199f22c53476731eeaef15f53f3606f9213c"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/ALL_RMP_RareMark_Star.png",
+              "byteLength": 1732,
+              "sha256": "dbe674b6d29f6c2ed953d03dd6d4fb90107e22ebaf5cd580991bad1628dfd8d7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_base_ramp.png",
+              "byteLength": 150,
+              "sha256": "c5c4122aba952f5bc5b8da403503ae3ff48d6fcbc272013b66839f40b4c399fb"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/FlipBookOutline_ramp.png",
+              "byteLength": 1110,
+              "sha256": "d036400baf2359b88891057640e22f7404f7e7aaba271aaa3edd7c0d3bf00ec7"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXIcon_EXRule_RMP.png",
+              "byteLength": 939,
+              "sha256": "39e9e930a27cb499aaadb9918153e54bb866ad861db53e727bedcb262e912882"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/MegaRR_EXRule_RMP.png",
+              "byteLength": 879,
+              "sha256": "cf94bb690a2a928cb9e3e235d91ec0f19f6aabad2200ba36fe7501f682d6b059"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_BG_SB.png",
+              "byteLength": 1881,
+              "sha256": "48b8b0a6c48034b6d8c4964c47b48a93bd1c2b632ce165e149c17207fc31d527"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_1.png",
+              "byteLength": 1361,
+              "sha256": "e8a3dbbb184c7910583d27b66eb5e721983498fe98d09f4e2fa269d8952e91a6"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/Ramp/SR_RMP_Border_2.png",
+              "byteLength": 1690,
+              "sha256": "81b5a039aa4cc5edc1323775493e0cbc3da91e7f812a52c9923e0c506e66b804"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/ALL_RMPmask_EX_135.png",
+              "byteLength": 1330,
+              "sha256": "1de6b562883cbd100db42da6ed02b2e7ec90ad3a35ce45cc082525de224afe4d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/RMP_MASK_RareMark.png",
+              "byteLength": 11504,
+              "sha256": "7c81cfbb4984a217533207eb8b8fec5c0521c05fccbbec79cbe96b3d54c877f9"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_BG_SB.png",
+              "byteLength": 17062,
+              "sha256": "c708559b615b746fac7ac81ad083bd1b3ca1acef84b3415f9caa93b0b8c6649b"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_01.png",
+              "byteLength": 16466,
+              "sha256": "4bc13c392c552971a7c9f4f4a0c758738ded977e757b2ffcf2baa6a0ad36cc5f"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/OldHologram/RampMask/SR_RMPmask_Border_02.png",
+              "byteLength": 4957,
+              "sha256": "c6f461024d951648fc2a40d3f24a962b260ef58aaaa279fd117489f7d2e888f8"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_EX_UI_Mega.png",
+              "byteLength": 188308,
+              "sha256": "e68d3239421381919db6790e236532ab88dd9d784f65949f367c2ad60165af82"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_Rarity_Star.png",
+              "byteLength": 18542,
+              "sha256": "761c1966bff501d1626ecbaaaecfd2b650771439958df748915a36375ba02e08"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_BG.png",
+              "byteLength": 290874,
+              "sha256": "4b71f2f1a7a9f27ab709cdc5a9a64a8af0d7696f843c0bfd450643bcd01ad96d"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_01.png",
+              "byteLength": 59274,
+              "sha256": "d254b49e1dd062f21a112fd651a0f5cd75c67a8bfa2abeca5f51b2bdfbccea5a"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_Border_02.png",
+              "byteLength": 65624,
+              "sha256": "c375edbd09e35c4d0950714870279008f2ad70ca2955779d039ea37a8252a8b4"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Phase/Phase_SR_ShadowBox.png",
+              "byteLength": 309072,
+              "sha256": "25780bd7cdce8641fb767aaaf1e7233b67e3421de24ed368c03ac9d43cdb6e52"
+            },
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/UI/card_rarity_star_a.png",
+              "byteLength": 3087,
+              "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
+            },
+            {
+              "url": "/game/Assets/PrefabHierarchyObject/cPK_20_016430_00_MEGAGANGARex_SR_L.glb",
+              "byteLength": 4640968,
+              "sha256": "d9b1eb8f6e5f02296e51765530ef62d736e9ce2a10e1f8428020744703ae134a"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_AM.png",
+              "byteLength": 928181,
+              "sha256": "f9aaee6bc5c955899c2615e7c41e9d318b907aa04446d7bf96a9b86d92c9c416"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_AURAFLOW.png",
+              "byteLength": 495263,
+              "sha256": "73e47b6695af4e6ccbda67e184458cc9c9edd59561131e98e467c31451509f48"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_AURAMASK.png",
+              "byteLength": 390486,
+              "sha256": "6aa3a50979972e427a472e0d0e317dd592c32d7fa39fc80bd1f7b7096d57913a"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_BGPK.png",
+              "byteLength": 111456,
+              "sha256": "e5524eed2541a1ca0da00b8eb8f392241bc2d354df11a521515bf259b6d7e854"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_EFFA.png",
+              "byteLength": 139585,
+              "sha256": "86dc594bcbda7128b6cba0fea8484b51a530c3e168cd1691557443e462c73db7"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_EFFB.png",
+              "byteLength": 125702,
+              "sha256": "bb3d7143c82823ddcea74865f68bc995db46cd9d0a39a9305821b76b7372d8e6"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_HM.png",
+              "byteLength": 160222,
+              "sha256": "c7667fcff7622aa14aefbc26d9eb1c8363ccf7980e062221b0b81dba98f219e3"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_HPH.png",
+              "byteLength": 488968,
+              "sha256": "c878c4f6dbad358c649b62bbe0c19d969ad1512a8e989ea7eaa33eaae33e98b1"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_PAR1.png",
+              "byteLength": 825130,
+              "sha256": "f7424f8eed3b94c3faddf6fb132c8f650c591b7a1e884c448595124100285782"
+            },
+            {
+              "url": "/game/Assets/Texture2D/cPK_20_016430_00_MEGAGANGARex_SR_L_PARTICLEFLOW.png",
+              "byteLength": 236887,
+              "sha256": "7e6e084d01be51aae72f0cdb29b3bc19be8493828b7c1ae73daf2d7bb3f10b5b"
+            },
+            {
+              "url": "/game/Assets/Texture2D/card_rarity_outline.png",
+              "byteLength": 109,
+              "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
+            }
+          ],
+          "referenceSetSha256": "b146e2457fbe4f7af34b4ad4d0acb57cc6c36d3dc57712b14527f9feb186f3b6"
+        }
+      }
+    }
+  ],
+  "uncoveredSelectors": [],
+  "boundaries": [
+    {
+      "scope": "selector-and-material-witnessing",
+      "status": "exact-static",
+      "detail": "Selector, Material, slot usage, Face bundle, and minimum set-cover facts come from the candidate inventory and its hash-bound source bundles."
+    },
+    {
+      "scope": "published-scene-and-resource-availability",
+      "status": "availability-only",
+      "detail": "Existing scenes, card-examples membership, localized text, and /game files are audited only for local availability and do not establish candidate provenance."
+    },
+    {
+      "scope": "canonical-corpus-and-runtime",
+      "status": "out-of-scope",
+      "detail": "This migration subcorpus is not the candidate canonical corpus and contains no runtime or display-fidelity claim."
+    }
+  ]
+}

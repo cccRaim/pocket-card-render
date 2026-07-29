@@ -7,6 +7,10 @@ import { fileURLToPath } from "node:url";
 import {
   buildWebglAdaptationV2,
 } from "./webgl-adaptation-contract.mjs";
+import {
+  loadOfficialSample,
+  officialSampleDigest,
+} from "./official-sample.mjs";
 
 const MODULE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
@@ -1229,7 +1233,14 @@ const THREE_ATTRIBUTE_BY_SHADER_CHANNEL = Object.freeze({
   SkinBoneIndex: "skinIndex",
 });
 
-export function compileOfficialVertexInputContract(programBindChannels, vertexReflection) {
+export function compileOfficialVertexInputContract(
+  programBindChannels,
+  vertexReflection,
+  unityVersion = "2022.3.62f2",
+) {
+  if (!/^(?:20\d{2}|6\d{3})\.\d+\.\d+f\d+$/.test(unityVersion)) {
+    fail(`invalid official vertex-input Unity version ${unityVersion}`);
+  }
   const serialized = record(programBindChannels, "program bind channels");
   const storedHash = hashString(ownDataValue(serialized, "sha256", "program bind channels"), "program bind channels.sha256");
   const canonicalSource = Object.fromEntries(
@@ -1281,7 +1292,7 @@ export function compileOfficialVertexInputContract(programBindChannels, vertexRe
   }
   return {
     schema: "pocket-card-render/official-vertex-input-contract@1",
-    unityVersion: "2022.3.62f2",
+    unityVersion,
     sourceSha256: storedHash,
     serializedSourceMap: integer(ownDataValue(serialized, "serializedSourceMap", "program bind channels"), "program bind channels.serializedSourceMap", { min: 0 }),
     inputs,
@@ -1412,6 +1423,18 @@ export async function withExtractedSelectorProgram(options, callback) {
       "--prefix", prefix,
       "--metadata", metadataFile,
     ];
+    if (config.inventory !== undefined) {
+      args.push(
+        "--inventory",
+        path.resolve(nonEmptyString(config.inventory, "selector extraction inventory")),
+      );
+    }
+    if (config.unityVersion !== undefined) {
+      args.push(
+        "--unity-version",
+        nonEmptyString(config.unityVersion, "selector extraction Unity version"),
+      );
+    }
     const processOutput = runner(python, args, { cwd: rootDir });
     if (processOutput && typeof processOutput.then === "function") {
       fail("selector extraction commandRunner must be synchronous");
@@ -1630,7 +1653,26 @@ export async function generateExactSelectorPort(options) {
     const vertexInputContract = compileOfficialVertexInputContract(
       metadata.programBindChannels,
       reflection.vertex,
+      metadata.unityVersion,
     );
+    let officialSample = null;
+    if (config.officialSampleManifest !== undefined) {
+      const loadedSample = loadOfficialSample(
+        nonEmptyString(config.officialSampleManifest, "officialSampleManifest"),
+      );
+      if (loadedSample.sample.unity.serializedVersion !== metadata.unityVersion) {
+        fail(
+          `official sample Unity version ${loadedSample.sample.unity.serializedVersion} `
+          + `does not match selector metadata ${metadata.unityVersion}`,
+        );
+      }
+      officialSample = {
+        sampleId: loadedSample.sample.sampleId,
+        sampleManifestSha256: officialSampleDigest(loadedSample.sample),
+        unityVersion: loadedSample.sample.unity.serializedVersion,
+        status: loadedSample.sample.status,
+      };
+    }
     const manifestProgramBindings = {
       common_source_sha256: metadata.identityFields.commonBindingsSha256,
       parameter_reflection_sha256: metadata.parameterReflectionSha256,
@@ -1667,6 +1709,8 @@ export async function generateExactSelectorPort(options) {
       generated_by: generatedBy,
       selected_keywords: metadata.selector.keywords,
       official_selector: metadata.selector,
+      ...(officialSample ? { official_sample: officialSample } : {}),
+      ...(officialSample ? { official_inventory: metadata.inventory } : {}),
       official_spirv_sha256: {
         vertex: officialSpirvPrecision.stages.vertex.source_sha256,
         fragment: officialSpirvPrecision.stages.fragment.source_sha256,

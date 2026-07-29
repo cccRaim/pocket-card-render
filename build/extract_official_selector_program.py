@@ -239,15 +239,18 @@ class SelectorProgramExtractionSession:
         *,
         inventory_path: Path = DEFAULT_INVENTORY,
         decrypted_root: Path = Path(os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)),
+        unity_version: str = UNITY_VERSION,
         expected_proof_graph_sha256: str,
         expected_port_index_sha256: str,
         environment_loader=UnityPy.load,
     ) -> None:
         self.inventory_path = Path(inventory_path)
         self.decrypted_root = Path(decrypted_root).resolve()
+        self.unity_version = unity_version
         self.expected_proof_graph_sha256 = expected_proof_graph_sha256
         self.expected_port_index_sha256 = expected_port_index_sha256
         self.environment_loader = environment_loader
+        UnityPy.config.FALLBACK_UNITY_VERSION = self.unity_version
         self._bundle_cache: dict[Path, dict] = {}
         self._shader_cache: dict[str, dict] = {}
         self._stats = {
@@ -269,6 +272,11 @@ class SelectorProgramExtractionSession:
         inventory = json.loads(self.inventory_path.read_text(encoding="utf-8-sig"))
         if inventory.get("schema") != SCHEMA or inventory.get("schemaVersion") != 4:
             fail(f"expected {SCHEMA}, got {inventory.get('schema')}")
+        if inventory.get("unityVersion") != self.unity_version:
+            fail(
+                "inventory Unity version differs from the extraction session: "
+                f"{inventory.get('unityVersion')} != {self.unity_version}"
+            )
         graph = inventory.get("proofGraph")
         if not isinstance(graph, dict):
             fail("selector extraction requires a --full v4 proof graph")
@@ -291,7 +299,60 @@ class SelectorProgramExtractionSession:
         for name, digest in verified_digests.items():
             if stored_digests.get(name) != digest:
                 fail(f"inventory {name} does not describe its proof rows")
-        native_digest = canonical_digest(NATIVE_VARIANT_SELECTION)
+        inventory_native_selection = (
+            (inventory.get("source") or {}).get("nativeVariantSelection") or {}
+        )
+        if self.unity_version == UNITY_VERSION:
+            if inventory_native_selection != NATIVE_VARIANT_SELECTION:
+                fail("baseline inventory native variant selection contract changed")
+        else:
+            unresolved_candidate = (
+                inventory_native_selection.get("unityVersion")
+                == self.unity_version
+                and inventory_native_selection.get("status") == "runtime-required"
+                and bool(inventory_native_selection.get("reason"))
+            )
+            proved_candidate = (
+                inventory_native_selection.get("unityVersion")
+                == self.unity_version
+                and inventory_native_selection.get("strictShaderVariantMatching")
+                is False
+                and inventory_native_selection.get("score")
+                == (
+                    "popcount(requested & candidate) - 16 * "
+                    "popcount(candidate & ~requested)"
+                )
+                and inventory_native_selection.get("tieBreak")
+                == "first-serialized-candidate"
+                and isinstance(
+                    inventory_native_selection.get(
+                        "computeKeywordMatchBodySha256"
+                    ),
+                    str,
+                )
+                and isinstance(
+                    inventory_native_selection.get(
+                        "findBestMatchingBodySha256"
+                    ),
+                    str,
+                )
+                and isinstance(
+                    inventory_native_selection.get(
+                        "strictVariantGetterBodySha256"
+                    ),
+                    str,
+                )
+                and isinstance(
+                    inventory_native_selection.get("proofSha256"),
+                    str,
+                )
+            )
+            if not unresolved_candidate and not proved_candidate:
+                fail(
+                    "candidate inventory native variant selection must be "
+                    "runtime-required or carry a proved contract"
+                )
+        native_digest = canonical_digest(inventory_native_selection)
         if stored_digests.get("nativeVariantSelectionSha256") != native_digest:
             fail("inventory native variant selection digest changed")
         verified_digests["nativeVariantSelectionSha256"] = native_digest
@@ -522,7 +583,7 @@ class SelectorProgramExtractionSession:
 
         metadata = {
             "schema": "pocket-card-render/official-selector-program-extract@1",
-            "unityVersion": UNITY_VERSION,
+            "unityVersion": self.unity_version,
             "inventory": {
                 "schema": SCHEMA,
                 "proofGraphSha256": self.proof_hash,
@@ -570,6 +631,7 @@ def main() -> None:
     parser.add_argument("--selector-id", required=True)
     parser.add_argument("--candidate-witness-id", required=True)
     parser.add_argument("--inventory", type=Path, default=DEFAULT_INVENTORY)
+    parser.add_argument("--unity-version", default=UNITY_VERSION)
     parser.add_argument(
         "--decrypted-root",
         type=Path,
@@ -585,6 +647,7 @@ def main() -> None:
     session = SelectorProgramExtractionSession(
         inventory_path=args.inventory,
         decrypted_root=args.decrypted_root,
+        unity_version=args.unity_version,
         expected_proof_graph_sha256=args.expected_proof_graph_sha256,
         expected_port_index_sha256=args.expected_port_index_sha256,
     )

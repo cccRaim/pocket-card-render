@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 import struct
 import sys
@@ -23,7 +24,10 @@ from UnityPy.helpers.MeshHelper import MeshHandler
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DECRYPTED_ROOT = Path(
-    "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted"
+    os.environ.get(
+        "PCR_DECRYPTED_ROOT",
+        "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted",
+    )
 )
 CARDS = (
     "cPK_10_000040_00_FUSHIGIBANAex_RR",

@@ -27,8 +27,23 @@ import {
   evaluatePipelineProof,
   validatePipelineProofGraph,
 } from "./restoration-proof-graph.mjs";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const officialInputs = resolveOfficialSampleInputs();
+const officialEnvironment = {
+  ...process.env,
+  ...officialInputs.environment,
+};
+function spawnOfficial(runner, args, options = {}) {
+  return spawnSync(runner, args, {
+    ...options,
+    env: {
+      ...officialEnvironment,
+      ...(options.env || {}),
+    },
+  });
+}
 const DEFINITION_VERSION = 34;
 const STATUS = new Set(["exact", "partial-exact", "inferred", "runtime-required", "missing", "unknown"]);
 const CANONICAL_SCENES = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => file);
@@ -209,6 +224,7 @@ const PIPELINE_PROOF_NODES = validatePipelineProofGraph({
   ],
 });
 const VERIFIERS = [
+  ["official-sample-layout", process.execPath, "build/official-sample-inputs.mjs"],
   ["restoration-proof-graph", process.execPath, "build/test-restoration-proof-graph.mjs"],
   ["claim-contract", process.execPath, "build/audit-render-claim-contract.mjs"],
   ["official-player-pipeline", process.execPath, "build/audit-official-player-pipeline.mjs"],
@@ -345,7 +361,7 @@ const tmpFontManifest = fs.existsSync(tmpFontManifestPath)
   : null;
 const inlineElementAudit = auditOfficialInlineElements();
 const tmpSpriteAudit = auditOfficialTmpSprite();
-const tmpSpriteProgramAuditResult = spawnSync(
+const tmpSpriteProgramAuditResult = spawnOfficial(
   process.execPath,
   ["build/build-official-tmp-sprite-program.mjs", "--check"],
   {
@@ -354,7 +370,7 @@ const tmpSpriteProgramAuditResult = spawnSync(
     windowsHide: true,
   },
 );
-const tmpSpriteProgramMutationResult = spawnSync(
+const tmpSpriteProgramMutationResult = spawnOfficial(
   process.execPath,
   ["build/test-official-tmp-sprite-program.mjs"],
   {
@@ -365,7 +381,7 @@ const tmpSpriteProgramMutationResult = spawnSync(
 );
 const tmpSpriteProgramAuditPass = tmpSpriteProgramAuditResult.status === 0
   && tmpSpriteProgramMutationResult.status === 0;
-const tmpSpriteRuntimeRouteResult = spawnSync(
+const tmpSpriteRuntimeRouteResult = spawnOfficial(
   process.execPath,
   ["build/test-official-tmp-sprite-runtime.mjs"],
   {
@@ -378,43 +394,43 @@ const tmpSpriteRuntimeRoutePass = tmpSpriteRuntimeRouteResult.status === 0;
 const tmpFallbackAudit = auditOfficialTmpFallback();
 const tmpAutoSizeAudit = auditOfficialTmpAutoSize();
 const tmpGlyphQuadAudit = auditOfficialTmpGlyphQuad();
-const tmpLineLayoutAuditResult = spawnSync(process.execPath, ["build/audit-official-tmp-line-layout.mjs"], {
+const tmpLineLayoutAuditResult = spawnOfficial(process.execPath, ["build/audit-official-tmp-line-layout.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const tmpLineLayoutAuditPass = tmpLineLayoutAuditResult.status === 0;
-const localeCoverageAuditResult = spawnSync(process.execPath, ["build/audit-official-locale-coverage.mjs"], {
+const localeCoverageAuditResult = spawnOfficial(process.execPath, ["build/audit-official-locale-coverage.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const localeCoverageAuditPass = localeCoverageAuditResult.status === 0;
-const materialPropertiesAuditResult = spawnSync(process.execPath, ["build/audit-official-material-properties.mjs"], {
+const materialPropertiesAuditResult = spawnOfficial(process.execPath, ["build/audit-official-material-properties.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const materialPropertiesAuditPass = materialPropertiesAuditResult.status === 0;
-const uguiImageStateAuditResult = spawnSync(process.execPath, ["build/audit-official-ugui-image-state.mjs"], {
+const uguiImageStateAuditResult = spawnOfficial(process.execPath, ["build/audit-official-ugui-image-state.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const uguiImageStateAuditPass = uguiImageStateAuditResult.status === 0;
-const uguiResourceAuditResult = spawnSync(process.execPath, ["build/audit-official-ugui-resources.mjs"], {
+const uguiResourceAuditResult = spawnOfficial(process.execPath, ["build/audit-official-ugui-resources.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const uguiResourceAuditPass = uguiResourceAuditResult.status === 0;
-const uguiRuntimeStateAuditResult = spawnSync(process.execPath, ["build/audit-official-ugui-runtime-state.mjs"], {
+const uguiRuntimeStateAuditResult = spawnOfficial(process.execPath, ["build/audit-official-ugui-runtime-state.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const uguiRuntimeStateAuditPass = uguiRuntimeStateAuditResult.status === 0;
-const officialLayoutFittersAuditResult = spawnSync(
+const officialLayoutFittersAuditResult = spawnOfficial(
   process.execPath,
   ["build/build-official-layout-fitters.mjs", "--check"],
   {
@@ -424,7 +440,7 @@ const officialLayoutFittersAuditResult = spawnSync(
   },
 );
 const officialLayoutFittersAuditPass = officialLayoutFittersAuditResult.status === 0;
-const layoutFitterMutationResult = spawnSync(
+const layoutFitterMutationResult = spawnOfficial(
   process.execPath,
   ["build/test-layout-fitters.mjs"],
   {
@@ -434,7 +450,7 @@ const layoutFitterMutationResult = spawnSync(
   },
 );
 const layoutFitterMutationPass = layoutFitterMutationResult.status === 0;
-const layoutRebuilderMutationResult = spawnSync(
+const layoutRebuilderMutationResult = spawnOfficial(
   process.execPath,
   ["build/test-layout-rebuilder.mjs"],
   {
@@ -444,13 +460,13 @@ const layoutRebuilderMutationResult = spawnSync(
   },
 );
 const layoutRebuilderMutationPass = layoutRebuilderMutationResult.status === 0;
-const illustrationInventoryAuditResult = spawnSync(process.execPath, ["build/audit-official-illustration-inventory.mjs"], {
+const illustrationInventoryAuditResult = spawnOfficial(process.execPath, ["build/audit-official-illustration-inventory.mjs"], {
   cwd: ROOT,
   encoding: "utf8",
   windowsHide: true,
 });
 const illustrationInventoryAuditPass = illustrationInventoryAuditResult.status === 0;
-const programPortGeneratorAuditResult = spawnSync(process.execPath, [
+const programPortGeneratorAuditResult = spawnOfficial(process.execPath, [
   "build/audit-official-program-port-generators.mjs", "--json",
 ], {
   cwd: ROOT,
@@ -459,7 +475,7 @@ const programPortGeneratorAuditResult = spawnSync(process.execPath, [
   maxBuffer: 16 * 1024 * 1024,
 });
 const programPortCoverageResult = programPortGeneratorAuditResult.status === 0
-  ? spawnSync(process.execPath, [
+  ? spawnOfficial(process.execPath, [
     "build/audit-official-program-port-coverage.mjs", "--json",
   ], {
     cwd: ROOT,
@@ -479,7 +495,7 @@ const programPortCoverageResult = programPortGeneratorAuditResult.status === 0
 const programPortCoverage = programPortCoverageResult.status === 0
   ? JSON.parse(programPortCoverageResult.stdout)
   : null;
-const officialVertexInputAuditResult = spawnSync(process.env.PYTHON || "python", [
+const officialVertexInputAuditResult = spawnOfficial(process.env.PYTHON || "python", [
   "-B", "build/audit_official_vertex_inputs.py", "--json",
 ], {
   cwd: ROOT,
@@ -491,7 +507,7 @@ const officialVertexInputAuditResult = spawnSync(process.env.PYTHON || "python",
 const officialVertexInputAudit = officialVertexInputAuditResult.status === 0
   ? JSON.parse(officialVertexInputAuditResult.stdout)
   : null;
-const officialMeshVertexBindingAuditResult = spawnSync(process.env.PYTHON || "python", [
+const officialMeshVertexBindingAuditResult = spawnOfficial(process.env.PYTHON || "python", [
   "-B", "build/audit_official_mesh_vertex_bindings.py", "--json",
 ], {
   cwd: ROOT,
@@ -1677,9 +1693,9 @@ function runVerification() {
       };
     }
     const started = Date.now();
-    const result = spawnSync(runner, [script], {
+    const result = spawnOfficial(runner, [script], {
       cwd: ROOT,
-      env: { ...process.env, ...extraEnv },
+      env: extraEnv,
       encoding: "utf8",
       maxBuffer: 64 * 1024 * 1024,
       shell: process.platform === "win32" && runner === "python",

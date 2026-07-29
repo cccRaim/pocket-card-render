@@ -310,6 +310,23 @@ test("official vertex inputs join bind semantics to SPIR-V locations and Three a
     { sourceName: "UV1", location: 3, threeAttribute: "uv1" },
     { sourceName: "Color", location: 4, threeAttribute: "color" },
   ]);
+  const candidateContract = compileOfficialVertexInputContract(
+    bindChannelFixture(),
+    {
+      inputs: [
+        { location: 0, name: "_position", type: "vec4" },
+        { location: 3, name: "_uv1", type: "vec2" },
+        { location: 4, name: "_color", type: "vec4" },
+      ],
+    },
+    "6000.0.69f1",
+  );
+  assert.equal(contract.unityVersion, "2022.3.62f2");
+  assert.equal(candidateContract.unityVersion, "6000.0.69f1");
+  assert.throws(
+    () => compileOfficialVertexInputContract(bindChannelFixture(), { inputs: [] }, "future"),
+    /invalid official vertex-input Unity version/,
+  );
 });
 
 test("official vertex input join fails on hash, target/location, and unbound input drift", () => {
@@ -630,6 +647,11 @@ test("selector extraction validates hashes, reflects both stages, and always rem
   const candidateWitnessId = "2".repeat(64);
   const proofGraphSha256 = "3".repeat(64);
   const portIndexSha256 = "4".repeat(64);
+  const inventory = path.join(root, "candidate-inventory.json");
+  const candidateSampleId = "ptcgp-1.7.0-unity-6000.0.69f1-candidate";
+  const unityVersion = "6000.0.69f1";
+  assert.match(candidateSampleId, new RegExp(`unity-${unityVersion}-candidate$`));
+  fs.writeFileSync(inventory, "{}\n");
   let capturedTempDir;
   let validatedStageCount = 0;
 
@@ -647,6 +669,8 @@ test("selector extraction validates hashes, reflects both stages, and always rem
     const out = option("--out");
     const prefix = option("--prefix");
     const metadataFile = option("--metadata");
+    assert.equal(option("--inventory"), inventory);
+    assert.equal(option("--unity-version"), unityVersion);
     const bytes = {
       vertex: precisionSpirvFixture(),
       fragment: precisionSpirvFixture(),
@@ -684,6 +708,8 @@ test("selector extraction validates hashes, reflects both stages, and always rem
     candidateWitnessId,
     expectedProofGraphSha256: proofGraphSha256,
     expectedPortIndexSha256: portIndexSha256,
+    inventory,
+    unityVersion,
     prefix: "fixture",
     decryptedRoot,
     rootDir: root,
@@ -743,6 +769,7 @@ test("high-level selector generator closes the standard manifest envelope and fa
     ] },
   };
   const metadata = {
+    unityVersion: "2022.3.62f2",
     selector: {
       selectorId: "1".repeat(64),
       candidateWitnessId: "2".repeat(64),

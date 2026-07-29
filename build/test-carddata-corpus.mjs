@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { buildCardData } from "./carddata.mjs";
 
-const MASTER_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
+const MASTER_ROOT = process.env.PTCG_MASTERDATA
+  || "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
 const LOCALE_ROOT = process.env.PTCG_LOCALE_ROOT
   || join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "output");
 const LOCALES = ["de_DE", "en_US", "es_ES", "fr_FR", "it_IT", "ja_JP", "ko_KR", "pt_BR", "zh_TW"];

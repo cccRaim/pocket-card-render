@@ -1,0 +1,116 @@
+{
+  "schema": "pocket-card-render/official-native-variant-selection-proof@1",
+  "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+  "unityVersion": "6000.0.69f1",
+  "sampleInputSha256": "2d04f17a1c99409d394492b28a100db5ffef6c4c26cab4138afbc19cf6227b27",
+  "status": "proved",
+  "authority": "official PTCGP 1.7.0 ARM64 libunity.so + base.apk boot.config bytes",
+  "contract": {
+    "strictShaderVariantMatching": false,
+    "score": "popcount(requested & candidate) - 16 * popcount(candidate & ~requested)",
+    "tieBreak": "first-serialized-candidate"
+  },
+  "inputs": {
+    "baseApkSha256": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9",
+    "arm64SplitSha256": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984",
+    "libunitySha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067",
+    "bootConfigSha256": "4b57eb5a17ba0f539e372117e84310a929fd7be45aa6b7bd8c939142113df6f1"
+  },
+  "functions": {
+    "ComputeKeywordMatch": {
+      "startRva": 7193784,
+      "endRva": 7193920,
+      "bodySha256": "5a7872d98aab22609b72c13eb26110f15c9b4cf162a34957e60bc40350ab883b"
+    },
+    "FindBestMatchingSubProgram": {
+      "startRva": 7286640,
+      "endRva": 7286988,
+      "bodySha256": "c2b49b0e6ddb3d8fcb929891f9f42a31d65a663d1f7b665ed90c0e6e49e57950"
+    },
+    "StrictVariantGetter": {
+      "startRva": 7277880,
+      "endRva": 7278040,
+      "bodySha256": "4cfc70300fe08dd112ede2a03dc600db2497c1743314c5e6143318a8a44b3277"
+    }
+  },
+  "checks": [
+    {
+      "label": "base APK SHA-256",
+      "status": "proved",
+      "actual": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9"
+    },
+    {
+      "label": "arm64 split SHA-256",
+      "status": "proved",
+      "actual": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984"
+    },
+    {
+      "label": "libunity.so SHA-256",
+      "status": "proved",
+      "actual": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067"
+    },
+    {
+      "label": "boot.config SHA-256",
+      "status": "proved",
+      "actual": "4b57eb5a17ba0f539e372117e84310a929fd7be45aa6b7bd8c939142113df6f1"
+    },
+    {
+      "label": "Unity version",
+      "status": "proved"
+    },
+    {
+      "label": "strict-shader-variant-matching absent",
+      "status": "proved"
+    },
+    {
+      "label": "strict-shader-variant-matching string unique",
+      "status": "proved"
+    },
+    {
+      "label": "ComputeKeywordMatch body SHA-256",
+      "status": "proved",
+      "actual": "5a7872d98aab22609b72c13eb26110f15c9b4cf162a34957e60bc40350ab883b"
+    },
+    {
+      "label": "FindBestMatchingSubProgram body SHA-256",
+      "status": "proved",
+      "actual": "c2b49b0e6ddb3d8fcb929891f9f42a31d65a663d1f7b665ed90c0e6e49e57950"
+    },
+    {
+      "label": "StrictVariantGetter body SHA-256",
+      "status": "proved",
+      "actual": "4cfc70300fe08dd112ede2a03dc600db2497c1743314c5e6143318a8a44b3277"
+    },
+    {
+      "label": "keywordScore exact ARM64 bytes",
+      "status": "proved",
+      "actual": "8d8540f8080500f16e8540f8cf010d8aad012e8ae001679ea101679e0058200e2158200e0038302e2138302e0d00261e2e00261e29010d0b4a010e0b21feff5420110a4bc0035fd6"
+    },
+    {
+      "label": "bestScoreAndTie exact ARM64 bytes",
+      "status": "proved",
+      "actual": "1b00b0521a0080121405805206000014fb03002afa03192a390700913f0318ebc0040054681640f91f2003d52123149be00315aa36a5ff971f001b6bedfeff54686a41f9"
+    },
+    {
+      "label": "strictBranch exact ARM64 bytes",
+      "status": "proved",
+      "actual": "cbf5ff97c00c0036fc0000b4887e43b909058052e04301910871a99b01a10091bea2ff97e1430191e2730091e00314aab1feff97"
+    },
+    {
+      "label": "bestCall exact ARM64 bytes",
+      "status": "proved",
+      "actual": "e1430191e2730091e00314aaeffdff97"
+    },
+    {
+      "label": "strictDefaultFalse exact ARM64 bytes",
+      "status": "proved",
+      "actual": "a86d0090ab6d0090017200f021202a91083140f9e9d3ffb029f13491e20313aa0a0140f96b2d40f93f2400a9f44f44a93f600039"
+    },
+    {
+      "label": "strictFlagGetter exact ARM64 bytes",
+      "status": "proved",
+      "actual": "fe0f1ff8087200f008c12a9108fddf0828010036087200f008012b9109fddf08087200f04902003600e16a39fe0741f8c0035fd6"
+    }
+  ],
+  "failures": []
+}

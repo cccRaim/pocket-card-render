@@ -5,8 +5,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const IL2CPP = path.resolve(ROOT, "../ptcg-apk-parser/apks/output/libil2cpp.so");
-const METADATA = path.resolve(ROOT, "../ptcg-apk-parser/apks/output/global-metadata.dat");
+const IL2CPP = path.resolve(process.env.PCR_IL2CPP
+  || path.join(ROOT, "../ptcg-apk-parser/apks/output/libil2cpp.so"));
+const METADATA = path.resolve(process.env.PCR_GLOBAL_METADATA
+  || path.join(ROOT, "../ptcg-apk-parser/apks/output/global-metadata.dat"));
 const EXPECTED_LIBRARY = Object.freeze({
   byteLength: 128218264,
   sha256: "3e78eedc62770fff4cb129b4b8d898950e131b710b3c099237fe20d2d34ca48e",

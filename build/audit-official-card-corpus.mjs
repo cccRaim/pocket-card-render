@@ -4,7 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const BUSINESS_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata";
+const BUSINESS_ROOT = path.resolve(process.env.PCR_BUSINESS_MASTERDATA_ROOT
+  || "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata");
 const MASTER_ROOT = path.join(BUSINESS_ROOT, "MasterData");
 const BUSINESS_LOCALE_ROOT = path.join(BUSINESS_ROOT, "Locale");
 const LOCALE_ROOT = path.resolve(process.env.PTCG_LOCALE_ROOT

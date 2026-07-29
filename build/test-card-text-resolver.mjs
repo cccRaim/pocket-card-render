@@ -10,7 +10,8 @@ import {
 } from "./card-text-resolver.mjs";
 
 const locale = JSON.parse(fs.readFileSync(
-  "D:/DevProjectes/ptcg-apk-parser/apks/output/locale_en_US.json",
+  `${process.env.PTCG_LOCALE_ROOT
+    || "D:/DevProjectes/ptcg-apk-parser/apks/output"}/locale_en_US.json`,
   "utf8",
 )).Master;
 const resolve = createCardTextResolver(locale, {

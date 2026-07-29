@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import {
   loadOfficialSample,
   officialSample,
+  officialSampleDigest,
   officialSampleSha256,
   officialSampleLabel,
   officialSampleManifestRelative,
@@ -23,6 +24,20 @@ const SKIP_DIRECTORIES = new Set([
   "public/game",
 ]);
 const CURRENT_MANIFEST_DIR = "build/official-samples";
+const CANDIDATE_SCOPES = fs.readdirSync(path.join(ROOT, CURRENT_MANIFEST_DIR))
+  .filter((name) => name.endsWith(".json") && name !== "current.json")
+  .map((name) => {
+    const candidate = JSON.parse(
+      fs.readFileSync(path.join(ROOT, CURRENT_MANIFEST_DIR, name), "utf8"),
+    );
+    if (candidate.status !== "candidate") return null;
+    return {
+      sampleId: candidate.sampleId,
+      gameVersion: candidate.game?.versionName,
+      unityVersion: candidate.unity?.serializedVersion,
+    };
+  })
+  .filter(Boolean);
 const obligations = JSON.parse(
   fs.readFileSync(path.join(ROOT, "build/official-migration-obligations.json"), "utf8"),
 );
@@ -62,7 +77,13 @@ function matchesFor(source, pattern) {
 }
 
 function baseUnityVersion(value) {
-  return value.match(/^\d{4}\.\d+\.\d+f\d+/)?.[0] || value;
+  return value.match(/^(?:20\d{2}|6\d{3})\.\d+\.\d+f\d+/)?.[0] || value;
+}
+
+function candidateScope(source, kind, value) {
+  return CANDIDATE_SCOPES.find((candidate) => (
+    candidate[kind] === value && source.includes(candidate.sampleId)
+  ))?.sampleId || null;
 }
 
 function versionFootprint(sample) {
@@ -73,9 +94,14 @@ function versionFootprint(sample) {
     const source = fs.readFileSync(path.join(ROOT, relative), "utf8");
     for (const match of matchesFor(
       source,
-      /\b(20\d{2}\.\d+\.\d+f\d+(?:c\d+)?(?:_[0-9a-f]+)?)\b/g,
+      /\b((?:20\d{2}|6\d{3})\.\d+\.\d+f\d+(?:c\d+)?(?:_[0-9a-f]+)?)\b/g,
     )) {
-      unity.push({ file: relative, ...match });
+      const version = baseUnityVersion(match.value);
+      unity.push({
+        file: relative,
+        ...match,
+        candidateSampleId: candidateScope(source, "unityVersion", version),
+      });
     }
     const patterns = [
       /\bPTCGP\s+(\d+\.\d+\.\d+)\b/g,
@@ -83,13 +109,23 @@ function versionFootprint(sample) {
       /["']versionName["']\s*:\s*["'](\d+\.\d+\.\d+)["']/g,
     ];
     for (const pattern of patterns) {
-      for (const match of matchesFor(source, pattern)) game.push({ file: relative, ...match });
+      for (const match of matchesFor(source, pattern)) {
+        game.push({
+          file: relative,
+          ...match,
+          candidateSampleId: candidateScope(source, "gameVersion", match.value),
+        });
+      }
     }
   }
   const unityConflicts = unity.filter(
-    ({ value }) => baseUnityVersion(value) !== sample.unity.serializedVersion,
+    ({ value, candidateSampleId }) => (
+      baseUnityVersion(value) !== sample.unity.serializedVersion && !candidateSampleId
+    ),
   );
-  const gameConflicts = game.filter(({ value }) => value !== sample.game.versionName);
+  const gameConflicts = game.filter(
+    ({ value, candidateSampleId }) => value !== sample.game.versionName && !candidateSampleId,
+  );
   return { unity, game, unityConflicts, gameConflicts };
 }
 
@@ -99,7 +135,6 @@ function flatten(value, prefix = "", output = new Map()) {
     return output;
   }
   for (const [key, child] of Object.entries(value)) {
-    if (key === "status" || key === "sampleId") continue;
     flatten(child, prefix ? `${prefix}.${key}` : key, output);
   }
   return output;
@@ -124,8 +159,12 @@ function triggered(trigger, changes) {
 }
 
 const candidateArgIndex = process.argv.indexOf("--candidate");
-const candidatePath = candidateArgIndex >= 0 ? process.argv[candidateArgIndex + 1] : null;
-if (candidateArgIndex >= 0 && !candidatePath) throw new Error("--candidate requires a manifest path");
+const candidateArgument = candidateArgIndex >= 0 ? process.argv[candidateArgIndex + 1] : null;
+const candidatePath = candidateArgIndex >= 0 ? candidateArgument : null;
+if (candidateArgIndex >= 0 && (!candidatePath || candidatePath.startsWith("--"))) {
+  throw new Error("--candidate requires a manifest or pointer path");
+}
+const requireCompleteMigration = process.argv.includes("--require-complete");
 
 const footprint = versionFootprint(officialSample);
 const report = {
@@ -142,6 +181,8 @@ const report = {
     unityFiles: new Set(footprint.unity.map(({ file }) => file)).size,
     gameReferences: footprint.game.length,
     gameFiles: new Set(footprint.game.map(({ file }) => file)).size,
+    candidateScopedReferences: [...footprint.unity, ...footprint.game]
+      .filter(({ candidateSampleId }) => candidateSampleId).length,
     conflicts: [...footprint.unityConflicts, ...footprint.gameConflicts],
   },
   migration: null,
@@ -177,6 +218,12 @@ report.bindings = {
 
 if (candidatePath) {
   const candidate = loadOfficialSample(candidatePath);
+  if (candidate.sample.status !== "candidate") {
+    throw new Error("--candidate must select a status:candidate manifest");
+  }
+  if (officialSampleDigest(candidate.sample) === officialSampleSha256) {
+    throw new Error("--candidate must not select the active baseline manifest");
+  }
   const changes = changedPaths(officialSample, candidate.sample);
   report.migration = {
     candidateManifest: candidate.manifestRelative,
@@ -192,6 +239,42 @@ if (candidatePath) {
         auditors,
       })),
   };
+  const canonicalCandidatePointer = path.join(
+    ROOT,
+    "build",
+    "official-samples",
+    "candidate.json",
+  );
+  if (
+    requireCompleteMigration
+    && process.env.PCR_SKIP_CANDIDATE_READINESS !== "1"
+    && path.resolve(candidate.selectionPath) === canonicalCandidatePointer
+  ) {
+    const { auditCandidateMigrationReadiness } = await import(
+      "./audit-candidate-migration-readiness.mjs"
+    );
+    const readiness = auditCandidateMigrationReadiness({
+      candidateManifest: candidate.selectionPath,
+      deep: true,
+    });
+    const readinessByDomain = new Map(
+      readiness.domains.map((domain) => [domain.id, domain]),
+    );
+    report.migration.readiness = readiness;
+    report.migration.invalidatedDomains = report.migration.invalidatedDomains
+      .map((domain) => {
+        const state = readinessByDomain.get(domain.id);
+        return state
+          ? {
+              ...domain,
+              status: state.status,
+              checks: state.checks,
+              remaining: state.remaining,
+              blockedBy: state.blockedBy,
+            }
+          : domain;
+      });
+  }
 }
 
 if (process.argv.includes("--json")) {
@@ -203,6 +286,7 @@ if (process.argv.includes("--json")) {
   console.log(`  manifest hash:  ${report.active.sampleManifestSha256}`);
   console.log(`  Unity pins:     ${report.footprint.unityReferences} refs in ${report.footprint.unityFiles} files`);
   console.log(`  game pins:      ${report.footprint.gameReferences} refs in ${report.footprint.gameFiles} files`);
+  console.log(`  candidate pins: ${report.footprint.candidateScopedReferences} explicitly scoped refs`);
   console.log(`  corpus binding: ${report.bindings.canonicalCorpus.status}`);
   console.log(`  port binding:   ${report.bindings.programPortContract.status}`);
   console.log(`  obligations:    ${report.bindings.migrationObligations.status} (${obligations.domains.length} domains)`);
@@ -210,7 +294,9 @@ if (process.argv.includes("--json")) {
     console.log(`Candidate: ${report.migration.candidateSampleId}`);
     for (const change of report.migration.changedPaths) console.log(`  changed: ${change}`);
     for (const domain of report.migration.invalidatedDomains) {
-      console.log(`  rebuild ${domain.id}: ${domain.action}`);
+      console.log(
+        `  ${domain.status.padEnd(7)} ${domain.id}: ${domain.action}`,
+      );
     }
   }
 }
@@ -219,6 +305,10 @@ for (const conflict of report.footprint.conflicts) {
   console.error(`BAD ${conflict.file}:${conflict.line} references conflicting version ${conflict.value}`);
 }
 if (report.footprint.conflicts.length
-  || Object.values(report.bindings).some(({ status }) => status !== "clean")) {
+  || Object.values(report.bindings).some(({ status }) => status !== "clean")
+  || (
+    requireCompleteMigration
+    && report.migration?.invalidatedDomains.some(({ status }) => status !== "pass")
+  )) {
   process.exitCode = 1;
 }

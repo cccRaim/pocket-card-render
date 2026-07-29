@@ -120,7 +120,10 @@ class OfficialBundleIndex:
 
     def register(self, path: Path) -> None:
         path = path.resolve()
-        environment = UnityPy.load(str(path))
+        try:
+            environment = UnityPy.load(str(path))
+        except Exception as error:
+            raise RuntimeError(f"failed to load official bundle {path}: {error}") from error
         cabs = sorted({str(obj.assets_file.name) for obj in environment.objects})
         if not cabs:
             raise RuntimeError(f"bundle has no serialized CAB: {path}")

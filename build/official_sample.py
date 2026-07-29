@@ -13,6 +13,20 @@ import re
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SELECTION = ROOT / "build" / "official-samples" / "current.json"
+REQUIRED_ARTIFACTS = {
+    "apkm",
+    "baseApk",
+    "arm64Split",
+    "bundledTreeSplit",
+    "libunity",
+    "libil2cpp",
+    "globalMetadataEncrypted",
+    "globalMetadataPlaintext",
+    "bootConfig",
+    "globalGameManagers",
+    "unityReleasePlayer",
+    "unityReleaseSymbols",
+}
 
 
 def _require(condition: bool, message: str) -> None:
@@ -27,30 +41,101 @@ def _sha256(value: object) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _is_unresolved(value: object) -> bool:
+    return isinstance(value, dict) and value.get("status") == "unresolved"
+
+
+def _validate_identity(name: str, artifact: dict) -> None:
+    _require(
+        artifact.get("status") in {None, "resolved"},
+        f"{name} has invalid status",
+    )
+    _require(
+        re.fullmatch(r"[0-9a-f]{64}", artifact.get("sha256", "")) is not None,
+        f"{name} has invalid SHA-256",
+    )
+    _require(artifact.get("byteLength", 0) > 0, f"{name} has invalid byteLength")
+
+
+def _validate_candidate_root(name: str, value: dict) -> None:
+    if _is_unresolved(value):
+        _require(
+            isinstance(value.get("reason"), str) and len(value["reason"].strip()) >= 12,
+            f"{name} unresolved root must explain why",
+        )
+        return
+    _validate_identity(name, value)
+
+
 def validate_official_sample(sample: dict) -> dict:
-    _require(sample.get("schemaVersion") == 2, "unsupported schemaVersion")
+    schema_version = sample.get("schemaVersion")
+    _require(schema_version in {2, 3}, "unsupported schemaVersion")
     _require(
         re.fullmatch(r"[a-z0-9.-]+", sample.get("sampleId", "")) is not None,
         "invalid sampleId",
     )
     _require(sample.get("status") in {"baseline", "candidate"}, "invalid status")
+    if schema_version == 3:
+        _require(sample.get("status") == "candidate", "schemaVersion 3 is candidate-only")
     game = sample.get("game", {})
     unity = sample.get("unity", {})
     _require(game.get("packageName") == "jp.pokemon.pokemontcgp", "unexpected package")
     _require(game.get("architecture") == "arm64-v8a", "unsupported architecture")
-    _require(
-        unity.get("playerBuildVersion", "").startswith(
-            f"{unity.get('serializedVersion', '')}_"
-        ),
-        "Unity player build does not match serialized version",
-    )
-    for name, artifact in sample.get("artifacts", {}).items():
+    if schema_version == 2:
         _require(
-            re.fullmatch(r"[0-9a-f]{64}", artifact.get("sha256", "")) is not None,
-            f"{name} has invalid SHA-256",
+            unity.get("playerBuildVersion", "").startswith(
+                f"{unity.get('serializedVersion', '')}_"
+            ),
+            "Unity player build does not match serialized version",
         )
-        _require(artifact.get("byteLength", 0) > 0, f"{name} has invalid byteLength")
-    _require(len(sample.get("artifacts", {})) == 12, "artifact root set is incomplete")
+    else:
+        _require(
+            game.get("packageSource", {}).get("kind") == "split-directory",
+            "candidate packageSource must identify split-directory",
+        )
+        for name in ("playerBuildVersion", "releaseSupportVersion"):
+            value = unity.get(name)
+            if _is_unresolved(value):
+                _validate_candidate_root(f"unity.{name}", value)
+            else:
+                _require(
+                    isinstance(value, str)
+                    and unity.get("serializedVersion", "") in value,
+                    f"{name} does not match serialized version",
+                )
+    artifacts = sample.get("artifacts", {})
+    _require(set(artifacts) == REQUIRED_ARTIFACTS, "artifact root set is incomplete")
+    for name, artifact in artifacts.items():
+        if schema_version == 3:
+            _validate_candidate_root(name, artifact)
+        else:
+            _validate_identity(name, artifact)
+    material_programs = sample.get("proofSets", {}).get("materialPrograms", {})
+    if schema_version == 3 and _is_unresolved(material_programs):
+        _validate_candidate_root("proofSets.materialPrograms", material_programs)
+    else:
+        _require(
+            re.fullmatch(
+                r"[0-9a-f]{64}", material_programs.get("proofGraphSha256", "")
+            )
+            is not None,
+            "invalid shader proofGraphSha256",
+        )
+        _require(
+            re.fullmatch(
+                r"[0-9a-f]{64}", material_programs.get("portIndexSha256", "")
+            )
+            is not None,
+            "invalid shader portIndexSha256",
+        )
+    corpus = sample.get("canonicalCorpus", {})
+    if schema_version == 3 and _is_unresolved(corpus):
+        _validate_candidate_root("canonicalCorpus", corpus)
+    else:
+        _require(
+            re.fullmatch(r"[0-9a-f]{64}", corpus.get("sha256", "")) is not None,
+            "invalid canonicalCorpus SHA-256",
+        )
     return sample
 
 

@@ -6,11 +6,18 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const verbose = process.argv.includes("--verbose");
+const officialInputs = resolveOfficialSampleInputs();
+const officialEnvironment = {
+  ...process.env,
+  ...officialInputs.environment,
+};
 
 const AUDITS = [
+  ["official-sample-layout", "build/official-sample-inputs.mjs"],
   ["official-version-boundary-tests", "build/test-official-version-boundaries.mjs"],
   ["official-version-boundaries", "build/audit-official-version-boundaries.mjs"],
   ["render-claim-contract", "build/audit-render-claim-contract.mjs"],
@@ -250,7 +257,7 @@ for (const [name, script, extraEnv = {}, runner = process.execPath] of AUDITS) {
   const t0 = Date.now();
   const result = spawnSync(runner, [script], {
     cwd: ROOT,
-    env: { ...process.env, ...extraEnv },
+    env: { ...officialEnvironment, ...extraEnv },
     encoding: "utf8",
     maxBuffer: 64 * 1024 * 1024,
     shell: process.platform === "win32" && runner === "python",

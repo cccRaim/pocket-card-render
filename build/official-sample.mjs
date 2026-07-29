@@ -15,6 +15,44 @@ function requireValue(condition, message) {
   if (!condition) throw new Error(`official sample manifest: ${message}`);
 }
 
+const REQUIRED_ARTIFACTS = [
+  "apkm",
+  "baseApk",
+  "arm64Split",
+  "bundledTreeSplit",
+  "libunity",
+  "libil2cpp",
+  "globalMetadataEncrypted",
+  "globalMetadataPlaintext",
+  "bootConfig",
+  "globalGameManagers",
+  "unityReleasePlayer",
+  "unityReleaseSymbols",
+];
+
+function isUnresolved(value) {
+  return value?.status === "unresolved";
+}
+
+function validateResolvedIdentity(name, identity) {
+  requireValue(identity?.status === undefined || identity.status === "resolved",
+    `${name} has invalid status`);
+  requireValue(isSha256(identity?.sha256), `${name} has invalid SHA-256`);
+  requireValue(Number.isInteger(identity?.byteLength) && identity.byteLength > 0,
+    `${name} has invalid byteLength`);
+}
+
+function validateCandidateRoot(name, value) {
+  if (isUnresolved(value)) {
+    requireValue(
+      typeof value.reason === "string" && value.reason.trim().length >= 12,
+      `${name} unresolved root must explain why`,
+    );
+    return;
+  }
+  validateResolvedIdentity(name, value);
+}
+
 function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
   if (value && typeof value === "object") {
@@ -34,45 +72,57 @@ export function officialSampleDigest(sample) {
 
 export function validateOfficialSample(sample) {
   requireValue(sample && typeof sample === "object", "root must be an object");
-  requireValue(sample.schemaVersion === 2, `unsupported schemaVersion ${sample.schemaVersion}`);
+  requireValue(sample.schemaVersion === 2 || sample.schemaVersion === 3,
+    `unsupported schemaVersion ${sample.schemaVersion}`);
   requireValue(/^[a-z0-9.-]+$/.test(sample.sampleId || ""), "invalid sampleId");
   requireValue(sample.status === "baseline" || sample.status === "candidate", "invalid status");
+  if (sample.schemaVersion === 3) {
+    requireValue(sample.status === "candidate", "schemaVersion 3 is candidate-only");
+  }
   requireValue(sample.game?.packageName === "jp.pokemon.pokemontcgp", "unexpected packageName");
   requireValue(/^\d+\.\d+\.\d+$/.test(sample.game?.versionName || ""), "invalid game versionName");
   requireValue(Number.isInteger(sample.game?.versionCode), "invalid game versionCode");
   requireValue(sample.game?.architecture === "arm64-v8a", "unsupported architecture");
-  requireValue(
-    sample.game?.apkmBasename ===
-      `${sample.game.packageName}_${sample.game.versionName}.apkm`,
-    "APKM basename does not match package/version",
-  );
+  if (sample.schemaVersion === 2) {
+    requireValue(
+      sample.game?.apkmBasename ===
+        `${sample.game.packageName}_${sample.game.versionName}.apkm`,
+      "APKM basename does not match package/version",
+    );
+  } else {
+    requireValue(
+      sample.game?.packageSource?.kind === "split-directory",
+      "candidate packageSource must identify the split-directory source",
+    );
+  }
   requireValue(
     /^\d{4}\.\d+\.\d+f\d+$/.test(sample.unity?.serializedVersion || ""),
     "invalid Unity serializedVersion",
   );
+  if (sample.schemaVersion === 2) {
+    requireValue(
+      sample.unity?.playerBuildVersion?.startsWith(`${sample.unity.serializedVersion}_`),
+      "playerBuildVersion does not match serializedVersion",
+    );
+  } else {
+    for (const name of ["playerBuildVersion", "releaseSupportVersion"]) {
+      const value = sample.unity?.[name];
+      if (isUnresolved(value)) {
+        validateCandidateRoot(`unity.${name}`, value);
+      } else {
+        requireValue(typeof value === "string" && value.includes(sample.unity.serializedVersion),
+          `${name} does not match serializedVersion`);
+      }
+    }
+  }
   requireValue(
-    sample.unity?.playerBuildVersion?.startsWith(`${sample.unity.serializedVersion}_`),
-    "playerBuildVersion does not match serializedVersion",
+    Object.keys(sample.artifacts || {}).length === REQUIRED_ARTIFACTS.length,
+    "artifact root set is incomplete",
   );
-  const requiredArtifacts = [
-    "apkm",
-    "baseApk",
-    "arm64Split",
-    "bundledTreeSplit",
-    "libunity",
-    "libil2cpp",
-    "globalMetadataEncrypted",
-    "globalMetadataPlaintext",
-    "bootConfig",
-    "globalGameManagers",
-    "unityReleasePlayer",
-    "unityReleaseSymbols",
-  ];
-  for (const name of requiredArtifacts) {
+  for (const name of REQUIRED_ARTIFACTS) {
     const identity = sample.artifacts?.[name];
-    requireValue(isSha256(identity?.sha256), `${name} has invalid SHA-256`);
-    requireValue(Number.isInteger(identity?.byteLength) && identity.byteLength > 0,
-      `${name} has invalid byteLength`);
+    if (sample.schemaVersion === 3) validateCandidateRoot(name, identity);
+    else validateResolvedIdentity(name, identity);
   }
   requireValue(isSha256(sample.snapshots?.masterdata?.pokemonSha256),
     "invalid Pokemon masterdata SHA-256");
@@ -80,14 +130,23 @@ export function validateOfficialSample(sample) {
     "invalid Trainer masterdata SHA-256");
   requireValue(isSha256(sample.snapshots?.faceBundles?.inventorySha256),
     "invalid Face inventory SHA-256");
-  requireValue(isSha256(sample.proofSets?.materialPrograms?.proofGraphSha256),
-    "invalid shader proofGraphSha256");
-  requireValue(isSha256(sample.proofSets?.materialPrograms?.portIndexSha256),
-    "invalid shader portIndexSha256");
-  requireValue(typeof sample.canonicalCorpus?.path === "string",
-    "canonicalCorpus path must be present");
-  requireValue(isSha256(sample.canonicalCorpus?.sha256),
-    "invalid canonicalCorpus SHA-256");
+  const materialPrograms = sample.proofSets?.materialPrograms;
+  if (sample.schemaVersion === 3 && isUnresolved(materialPrograms)) {
+    validateCandidateRoot("proofSets.materialPrograms", materialPrograms);
+  } else {
+    requireValue(isSha256(materialPrograms?.proofGraphSha256),
+      "invalid shader proofGraphSha256");
+    requireValue(isSha256(materialPrograms?.portIndexSha256),
+      "invalid shader portIndexSha256");
+  }
+  if (sample.schemaVersion === 3 && isUnresolved(sample.canonicalCorpus)) {
+    validateCandidateRoot("canonicalCorpus", sample.canonicalCorpus);
+  } else {
+    requireValue(typeof sample.canonicalCorpus?.path === "string",
+      "canonicalCorpus path must be present");
+    requireValue(isSha256(sample.canonicalCorpus?.sha256),
+      "invalid canonicalCorpus SHA-256");
+  }
   return sample;
 }
 

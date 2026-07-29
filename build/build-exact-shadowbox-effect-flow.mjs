@@ -11,18 +11,52 @@ import {
 } from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SHADER_ROOT = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
+const CANDIDATE = process.argv.includes("--candidate");
+const LOCAL_DECODER_ROOT = path.resolve(ROOT, "..", "ptcgp-tools-master", "masterdata_decoder");
+const SAMPLE = CANDIDATE
+  ? {
+      id: "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+      unityVersion: "6000.0.69f1",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output-full", "decrypted"),
+      inventory: path.join(LOCAL_DECODER_ROOT, ".output-full", "material-program-inventory-full.json"),
+      manifest: path.join(ROOT, "build", "official-samples", "ptcgp-1.7.0-unity-6000.0.69f1-candidate.json"),
+      out: path.join(LOCAL_DECODER_ROOT, ".output-full", "webgl-ports", "shadowbox-effect-flow"),
+      webglSourceRoot: "candidate/ptcgp-1.7.0-unity-6000.0.69f1/shaders",
+      proofGraphSha256: "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      portIndexSha256: "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b",
+      passStateSha256: "7718c6ed17afd30971b0b566f9fcc2bf5ef31947baf73130062e31c939e22a31",
+      commonBindingsSha256: "743c84d37fad3d781c276de28360cc9a473d7ceb4cfdcc6e293af31b47535370",
+      unityPerDrawSize: 720,
+    }
+  : {
+      id: "ptcgp-1.6.0-unity-2022.3.62f2",
+      unityVersion: "2022.3.62f2",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output", "decrypted"),
+      inventory: null,
+      manifest: null,
+      out: path.join(ROOT, "public", "shaders"),
+      webglSourceRoot: "public/shaders",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+      passStateSha256: "acf0bc4d48dc729ec5fbaab1b37820c5714cbd564a6ee1e333de5ca1b5d9fd8c",
+      commonBindingsSha256: "bfaeaa65eafee13cef798fd966ce40d3fdf0b2c375a8be7dc9b2b05159bcf4d1",
+      unityPerDrawSize: 688,
+    };
+const DECRYPTED_ROOT = path.resolve(process.env.PCR_DECRYPTED_ROOT || SAMPLE.decryptedRoot);
+const SHADER_ROOT = process.env.PCR_SHADERS || path.join(DECRYPTED_ROOT, "Common", "Shader");
+const INVENTORY = process.env.PCR_PROGRAM_INVENTORY
+  ? path.resolve(process.env.PCR_PROGRAM_INVENTORY)
+  : SAMPLE.inventory;
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const GLSLANG = process.env.GLSLANG_VALIDATOR || "glslangValidator";
-const OUT = path.join(ROOT, "public", "shaders");
+const OUT = path.resolve(process.env.PCR_SHADER_OUT || SAMPLE.out);
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
 const SHADER = "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow";
 const GENERATED_BY = "build/build-exact-shadowbox-effect-flow.mjs";
-const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
-const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
-const PASS_STATE_SHA256 = "acf0bc4d48dc729ec5fbaab1b37820c5714cbd564a6ee1e333de5ca1b5d9fd8c";
-const COMMON_BINDINGS_SHA256 = "bfaeaa65eafee13cef798fd966ce40d3fdf0b2c375a8be7dc9b2b05159bcf4d1";
+const PROOF_GRAPH_SHA256 = SAMPLE.proofGraphSha256;
+const PORT_INDEX_SHA256 = SAMPLE.portIndexSha256;
+const PASS_STATE_SHA256 = SAMPLE.passStateSha256;
+const COMMON_BINDINGS_SHA256 = SAMPLE.commonBindingsSha256;
 const MSR_PRODUCER =
   "pocket-card-render/card-msr-object-arm64-state-port@1";
 const FLOW_COMPONENT_SOURCE =
@@ -118,7 +152,7 @@ const COL4_VERTEX_OUTPUTS = [
   ["_300", "vec3", 2],
 ];
 
-const PORTS = [
+const BASELINE_PORTS = [
   {
     id: "default",
     stem: "shadowbox_effect_flow_default",
@@ -206,6 +240,50 @@ const PORTS = [
     mrt: { primary: "_2090", emissive: "_2083" },
   },
 ];
+
+const CANDIDATE_PORT_OVERRIDES = {
+  default: {
+    candidateWitnessId: "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+    executableId: "20c645082357a3c0e8eeaa0e1e3ab28956474708f6d5b30af448de1b7676d7ff",
+    semanticExecutableId: "cce8935a3a49ca58526350b8c85a61ccf90010450fd14e96ed68fe73bf3ffd4c",
+    vertexSpirvSha256: "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
+    parameterEntrySha256: "5842a333485fb9c79b38f14775db3c7247a3282ec378b09b8d2b12a2bd0cc888",
+    parameterReflectionSha256: "0f664c5f54e470cd71a1e01ef7fdc5ba864d0140b28b6e8766ef09f3ee198397",
+    parameterSuffix: "319933277",
+  },
+  use_col4: {
+    candidateWitnessId: "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+    executableId: "f056bab94789dec5d8b3ea2f4718ba0412fb0fc568d5ba30e780208a2a9e04a5",
+    semanticExecutableId: "765d248a0a5cc866b4e71981340eedd187b26f1d9c717bd6719fe669101076af",
+    vertexSpirvSha256: "dbf4376bbef97034b67af22245f9434bdc806afbf556f1d480668cedb2411125",
+    parameterEntrySha256: "9a8f6d54e0d78b065d82d66cf24de1fe976fc16fc85f1b6a578abc50dc463cad",
+    parameterReflectionSha256: "b4be485f1a2b73b022b165dc61c2fe2117268bdc620ceefeae072bf6f0eddfe0",
+    parameterSuffix: "2616232892",
+  },
+  use_old_noise: {
+    candidateWitnessId: "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+    executableId: "e58b3ee8c63d085f764447410d6a5cf222c89e829e7c61cbc72ef55b42918ac0",
+    semanticExecutableId: "74f30dba711d67d5a5b1fe8325baee1f45cb8e4bc06670b0b26176a42668bf81",
+    vertexSpirvSha256: "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
+    parameterEntrySha256: "16461a04e62b41881fb83e559892ec6831cbb69f312df9b355c4aa8544d9960f",
+    parameterReflectionSha256: "91b891ee159ae77671a3b312fdc569517f1e0dbe8a7c69995a66cd6107560d0d",
+    parameterSuffix: "4241906160",
+  },
+};
+
+const PORTS = BASELINE_PORTS.map((port) => {
+  if (!CANDIDATE) return port;
+  const override = CANDIDATE_PORT_OVERRIDES[port.id];
+  assert.ok(override, `${port.id}: candidate profile is absent`);
+  return {
+    ...port,
+    ...override,
+    cross: {
+      ...port.cross,
+      vertex: "2929ab66c92099b1ce5a08d902d3ec171197765109479d4c0ee0e61f860fe958",
+    },
+  };
+});
 
 const SAMPLER_SLOTS = [
   "_ParticleShapeMask",
@@ -394,7 +472,7 @@ function assertParameterReflection(metadata, port) {
     [
       { name: "", size: 0 },
       { name: `PGlobals${port.parameterSuffix}`, size: port.fields.at(-1)[2] + 4 },
-      { name: "UnityPerDraw", size: 688 },
+      { name: "UnityPerDraw", size: SAMPLE.unityPerDrawSize },
       { name: `VGlobals${port.parameterSuffix}`, size: 100 },
     ],
   );
@@ -442,7 +520,7 @@ function assertReflection(reflection, metadata, port) {
       name, block_size, set, binding,
     })),
     [
-      { name: "_22_24", block_size: 688, set: 1, binding: 2 },
+      { name: "_22_24", block_size: SAMPLE.unityPerDrawSize, set: 1, binding: 2 },
       { name: "_56_58", block_size: 100, set: 1, binding: 1 },
     ],
   );
@@ -587,12 +665,15 @@ for (const port of PORTS) {
   const result = await generateExactSelectorPort({
     shader: SHADER,
     generatedBy: GENERATED_BY,
+    ...(SAMPLE.manifest ? { officialSampleManifest: SAMPLE.manifest } : {}),
     extraction: {
       selectorId: port.selectorId,
       candidateWitnessId: port.candidateWitnessId,
       expectedProofGraphSha256: PROOF_GRAPH_SHA256,
       expectedPortIndexSha256: PORT_INDEX_SHA256,
       decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+      ...(INVENTORY ? { inventory: INVENTORY } : {}),
+      unityVersion: SAMPLE.unityVersion,
       prefix: port.stem,
       rootDir: ROOT,
     },
@@ -645,8 +726,8 @@ for (const port of PORTS) {
       fragment: fragmentOperations,
     },
     webglSources: {
-      vertex: `public/shaders/${port.stem}.vert.glsl`,
-      fragment: `public/shaders/${port.stem}.frag.glsl`,
+      vertex: `${SAMPLE.webglSourceRoot}/${port.stem}.vert.glsl`,
+      fragment: `${SAMPLE.webglSourceRoot}/${port.stem}.frag.glsl`,
     },
     runtimeContract: contract,
     manifestExtras: {
@@ -692,4 +773,7 @@ for (const port of PORTS) {
   );
 }
 
-console.log(`${CHECK ? "verified" : "generated"} ${PORTS.length} Card_ShadowBox_Effect_Flow selector ports`);
+console.log(
+  `${CHECK ? "verified" : "generated"} ${SAMPLE.id} ${PORTS.length} `
+  + "Card_ShadowBox_Effect_Flow selector ports",
+);

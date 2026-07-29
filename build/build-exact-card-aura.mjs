@@ -11,16 +11,46 @@ import {
 } from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SHADER_ROOT = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
+const CANDIDATE = process.argv.includes("--candidate");
+const LOCAL_DECODER_ROOT = path.resolve(ROOT, "..", "ptcgp-tools-master", "masterdata_decoder");
+const SAMPLE = CANDIDATE
+  ? {
+      id: "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+      unityVersion: "6000.0.69f1",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output-full", "decrypted"),
+      inventory: path.join(LOCAL_DECODER_ROOT, ".output-full", "material-program-inventory-full.json"),
+      manifest: path.join(ROOT, "build", "official-samples", "ptcgp-1.7.0-unity-6000.0.69f1-candidate.json"),
+      out: path.join(LOCAL_DECODER_ROOT, ".output-full", "webgl-ports", "card-aura"),
+      webglSourceRoot: "candidate/ptcgp-1.7.0-unity-6000.0.69f1/shaders",
+      proofGraphSha256: "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      portIndexSha256: "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b",
+      unityPerDrawSize: 720,
+    }
+  : {
+      id: "ptcgp-1.6.0-unity-2022.3.62f2",
+      unityVersion: "2022.3.62f2",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output", "decrypted"),
+      inventory: null,
+      manifest: null,
+      out: path.join(ROOT, "public", "shaders"),
+      webglSourceRoot: "public/shaders",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+      unityPerDrawSize: 688,
+    };
+const DECRYPTED_ROOT = path.resolve(process.env.PCR_DECRYPTED_ROOT || SAMPLE.decryptedRoot);
+const SHADER_ROOT = process.env.PCR_SHADERS || path.join(DECRYPTED_ROOT, "Common", "Shader");
+const INVENTORY = process.env.PCR_PROGRAM_INVENTORY
+  ? path.resolve(process.env.PCR_PROGRAM_INVENTORY)
+  : SAMPLE.inventory;
 const SPIRV_CROSS = process.env.SPIRV_CROSS || "spirv-cross";
 const GLSLANG = process.env.GLSLANG_VALIDATOR || "glslangValidator";
-const OUT = path.join(ROOT, "public", "shaders");
+const OUT = path.resolve(process.env.PCR_SHADER_OUT || SAMPLE.out);
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
 const SHADER = "Lettuce/Common/CardNew/Card_Aura";
 const GENERATED_BY = "build/build-exact-card-aura.mjs";
-const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
-const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
+const PROOF_GRAPH_SHA256 = SAMPLE.proofGraphSha256;
+const PORT_INDEX_SHA256 = SAMPLE.portIndexSha256;
 const MSR_PRODUCER =
   "pocket-card-render/card-msr-object-arm64-state-port@1";
 
@@ -79,12 +109,17 @@ const COL4_FIELDS = [
   ...BASE_FIELDS.slice(23),
 ];
 
-const COMMON_IDENTITY = {
-  passStateSha256: "5ef465917d7f5e76b83a199d250735ba9af6ed614fd3bd676d277f8206d498c6",
-  commonBindingsSha256: "6a0877da5f472e52f5d90883d4e012aff20fb5991eddd70f51da331274c82480",
-};
+const COMMON_IDENTITY = CANDIDATE
+  ? {
+      passStateSha256: "ecb5f2d8ae4062033db6a47a3bdbbd71c6a13ef62e8cf38bffcd7aff4c05a20f",
+      commonBindingsSha256: "7ed3df2c439386142864b4b4b9d01aa5784b34170583beb34b69b884c27e0114",
+    }
+  : {
+      passStateSha256: "5ef465917d7f5e76b83a199d250735ba9af6ed614fd3bd676d277f8206d498c6",
+      commonBindingsSha256: "6a0877da5f472e52f5d90883d4e012aff20fb5991eddd70f51da331274c82480",
+    };
 
-const PORTS = [
+const BASELINE_PORTS = [
   {
     id: "base",
     stem: "card_aura_base",
@@ -180,6 +215,50 @@ const PORTS = [
   },
 ];
 
+const CANDIDATE_PORT_OVERRIDES = {
+  base: {
+    candidateWitnessId: "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+    semanticExecutableId: "80068ad1c3c2a64be356122958e0127aa0207aa2fdb9fbff4cc63d4cea6d0eff",
+    vertexSpirvSha256: "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
+    parameterEntrySha256: "9e0d5b79a355f129b7e24eb143b708336f4f2a18b008ca13dcfc803a23a3d572",
+    parameterReflectionSha256: "ec66b0e072d43c359d06d0257e2d5ad1bbc86bd7425c3a8d1db2537112ab15d6",
+  },
+  col4: {
+    candidateWitnessId: "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+    semanticExecutableId: "bc1ebd48e6c776b95f1fc3878f39a31982ab80c7e6c59a4594a2586eaaa8da0b",
+    vertexSpirvSha256: "972aaad150b30373099b4bfc7a028c20317a473b7db535ea4895291cc18a56af",
+    parameterEntrySha256: "086e7f973d5d9aa434abaea9c53701b81c611e29b847ec6d4c24af0f8e703392",
+    parameterReflectionSha256: "35ec753414857f4e779bc943247465004328f911f9daf6bc411e55bfe2b48b7a",
+  },
+  old_noise: {
+    candidateWitnessId: "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+    semanticExecutableId: "fba54420bfc96aae88786583d3d6d4ed1bc449701efb0e75a1fa7b6de1f52bd5",
+    vertexSpirvSha256: "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
+    parameterEntrySha256: "26569e173d2a749745354feda9d9aaedd46747ea1b7aebbda0a0b90a2adb6f3a",
+    parameterReflectionSha256: "030a0bd794970cc2c72921947dc814610e12f55622fe12285b9abdb564cc599b",
+  },
+};
+
+const PORTS = BASELINE_PORTS.map((port) => {
+  if (!CANDIDATE) return port;
+  const override = CANDIDATE_PORT_OVERRIDES[port.id];
+  assert.ok(override, `${port.id}: candidate profile is absent`);
+  return {
+    ...port,
+    ...override,
+    identityFields: {
+      ...port.identityFields,
+      vertexSpirvSha256: override.vertexSpirvSha256,
+      parameterEntrySha256: override.parameterEntrySha256,
+      ...COMMON_IDENTITY,
+    },
+    crossSha256: {
+      ...port.crossSha256,
+      vertex: "1f57876e9aad8f61db6e37a288a9312f386b3e4538f2733a1b568bc2a78c4454",
+    },
+  };
+});
+
 function normalizedSource(source) {
   return source.replace(/\r\n/g, "\n");
 }
@@ -265,7 +344,7 @@ function assertReflection(reflection, metadata, port) {
 
   assert.deepEqual(uboRows(reflection.vertex.ubos), [
     ["_56_58", 80, 1, 1],
-    ["_22_24", 688, 1, 2],
+    ["_22_24", SAMPLE.unityPerDrawSize, 1, 2],
   ], `${port.id}: vertex UBOs`);
   assert.deepEqual(uboRows(reflection.fragment.ubos), [
     ["_21_23", port.fragmentUboSize, 1, 0],
@@ -434,12 +513,15 @@ for (const port of PORTS) {
   const result = await generateExactSelectorPort({
     shader: SHADER,
     generatedBy: GENERATED_BY,
+    ...(SAMPLE.manifest ? { officialSampleManifest: SAMPLE.manifest } : {}),
     extraction: {
       selectorId: port.selectorId,
       candidateWitnessId: port.candidateWitnessId,
       expectedProofGraphSha256: PROOF_GRAPH_SHA256,
       expectedPortIndexSha256: PORT_INDEX_SHA256,
       decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+      ...(INVENTORY ? { inventory: INVENTORY } : {}),
+      unityVersion: SAMPLE.unityVersion,
       prefix: port.stem,
       rootDir: ROOT,
       spirvCross: SPIRV_CROSS,
@@ -524,8 +606,8 @@ for (const port of PORTS) {
       ],
     },
     webglSources: {
-      vertex: `public/shaders/${port.stem}.vert.glsl`,
-      fragment: `public/shaders/${port.stem}.frag.glsl`,
+      vertex: `${SAMPLE.webglSourceRoot}/${port.stem}.vert.glsl`,
+      fragment: `${SAMPLE.webglSourceRoot}/${port.stem}.frag.glsl`,
     },
     manifestExtras: {
       mrt: {
@@ -556,4 +638,4 @@ for (const port of PORTS) {
   );
 }
 
-console.log(`${CHECK ? "verified" : "generated"} ${PORTS.length} Card_Aura selector ports`);
+console.log(`${CHECK ? "verified" : "generated"} ${SAMPLE.id} ${PORTS.length} Card_Aura selector ports`);

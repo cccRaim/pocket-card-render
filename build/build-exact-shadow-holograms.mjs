@@ -10,12 +10,40 @@ import {
 } from "./exact-selector-port-core.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SHADER_ROOT = process.env.PCR_SHADERS
-  || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/Shader";
-const OUT = path.join(ROOT, "public", "shaders");
+const CANDIDATE = process.argv.includes("--candidate");
+const LOCAL_DECODER_ROOT = path.resolve(ROOT, "..", "ptcgp-tools-master", "masterdata_decoder");
+const SAMPLE = CANDIDATE
+  ? {
+      id: "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+      unityVersion: "6000.0.69f1",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output-full", "decrypted"),
+      inventory: path.join(LOCAL_DECODER_ROOT, ".output-full", "material-program-inventory-full.json"),
+      manifest: path.join(ROOT, "build", "official-samples", "ptcgp-1.7.0-unity-6000.0.69f1-candidate.json"),
+      out: path.join(LOCAL_DECODER_ROOT, ".output-full", "webgl-ports", "shadow-holograms"),
+      webglSourceRoot: "candidate/ptcgp-1.7.0-unity-6000.0.69f1/shaders",
+      proofGraphSha256: "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      portIndexSha256: "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b",
+    }
+  : {
+      id: "ptcgp-1.6.0-unity-2022.3.62f2",
+      unityVersion: "2022.3.62f2",
+      decryptedRoot: path.join(LOCAL_DECODER_ROOT, ".output", "decrypted"),
+      inventory: null,
+      manifest: null,
+      out: path.join(ROOT, "public", "shaders"),
+      webglSourceRoot: "public/shaders",
+      proofGraphSha256: "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+      portIndexSha256: "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9",
+    };
+const DECRYPTED_ROOT = path.resolve(process.env.PCR_DECRYPTED_ROOT || SAMPLE.decryptedRoot);
+const SHADER_ROOT = process.env.PCR_SHADERS || path.join(DECRYPTED_ROOT, "Common", "Shader");
+const INVENTORY = process.env.PCR_PROGRAM_INVENTORY
+  ? path.resolve(process.env.PCR_PROGRAM_INVENTORY)
+  : SAMPLE.inventory;
+const OUT = path.resolve(process.env.PCR_SHADER_OUT || SAMPLE.out);
 const CHECK = process.argv.includes("--check") || process.env.PCR_EXACT_CHECK === "1";
-const PROOF_GRAPH_SHA256 = "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4";
-const PORT_INDEX_SHA256 = "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9";
+const PROOF_GRAPH_SHA256 = SAMPLE.proofGraphSha256;
+const PORT_INDEX_SHA256 = SAMPLE.portIndexSha256;
 const GENERATED_BY = "build/build-exact-shadow-holograms.mjs";
 const PASS_POLICY = {
   rtSeparateBlend: false,
@@ -71,7 +99,7 @@ const COMMON_SHADOW_VECTORS = {
   _Rotation: "vec3",
 };
 
-const PORTS = [
+const BASELINE_PORTS = [
   {
     shaderKey: "Card_Parallax_Hologram_Shadow",
     stem: "card_parallax_hologram_shadow_layers",
@@ -210,6 +238,91 @@ const PORTS = [
     attributes: { position: "vec3", uv: "vec2", normal: "vec3" },
   },
 ];
+
+const CANDIDATE_PORT_OVERRIDES = {
+  card_parallax_hologram_shadow_layers: {
+    candidateWitnessId: "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+    semanticExecutableId: "00728cc1979e67a2a3a6e3578fc1ca44ecb39b0f63ee415d947534ec4452f311",
+    parameterEntryBytes: 2492,
+    parameterReflectionSha256: "59449635bd3c8c842f828212aeaa21cd95efcd474129a82b9985cc261be4d8ba",
+    crossSha256: {
+      vertex: "3f62f5ac4dfb217ffdacbcb180e97a8edfec787a279904a67fd2fa9094f5f24f",
+      fragment: "d3a860e7e36a8a04e71f9544a6e704ad02b5d96df9f0e966e27512b41e43dff4",
+    },
+    fragment: {
+      block: "_36_38",
+      owner: "_38",
+      size: 284,
+      outputs: ["_1234", "_1242"],
+      worldVectors: [
+        ["cameraPosition", "pcrUnityCameraPosition", 1],
+        ["vs_TEXCOORD2", "pcrUnityWorldPosition", 1],
+        ["vs_TEXCOORD3", "pcrUnityWorldNormal", 4],
+      ],
+      viewForwardTarget: "_143",
+    },
+  },
+  card_parallax_hologram_shadow_effect: {
+    candidateWitnessId: "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+    semanticExecutableId: "f17512db76ee4b7bfaca8d2865268f53fece4869bf0d3c129609029d1cbb6a1a",
+    parameterEntryBytes: 2324,
+    parameterReflectionSha256: "1eb818a2dab1a2dfcdf8be1cf16a91172cd17ab169fca14b03b19c606ba62c2d",
+    crossSha256: {
+      vertex: "3f62f5ac4dfb217ffdacbcb180e97a8edfec787a279904a67fd2fa9094f5f24f",
+      fragment: "4e27b571ced33169c057d95c4b220d4f1a0ad4c72121e7e230d8721bdbe4f41e",
+    },
+    fragment: {
+      block: "_29_31",
+      owner: "_31",
+      size: 236,
+      outputs: ["_1147", "_1155"],
+      worldVectors: [
+        ["cameraPosition", "pcrUnityCameraPosition", 1],
+        ["vs_TEXCOORD2", "pcrUnityWorldPosition", 1],
+        ["vs_TEXCOORD3", "pcrUnityWorldNormal", 4],
+      ],
+      viewForwardTarget: "_432",
+    },
+  },
+  opaque_hologram_shadow: {
+    candidateWitnessId: "7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6",
+    semanticExecutableId: "b8bf3b70ec43af1713abe86201fea1a9ef7e4fd73d26b88613f3fb855ad969b0",
+    parameterEntryBytes: 2036,
+    parameterReflectionSha256: "e018d57d9a1f8583f78281c88fe9fd530f060338b2184f938e911332402c46f8",
+    crossSha256: {
+      vertex: "06d5f2bfd0b53078250371df1513296b7252e2667ccaae19483dd082cebac715",
+      fragment: "f6faf0630f958963efb3107397d17b0b7b58d545c9a56c87bd6954743c554674",
+    },
+    fragment: {
+      block: "_142_144",
+      owner: "_144",
+      size: 252,
+      outputs: ["_86", "_1130"],
+      worldVectors: [
+        ["cameraPosition", "pcrUnityCameraPosition", 1],
+        ["vs_TEXCOORD3", "pcrUnityWorldPosition", 1],
+        ["vs_TEXCOORD4", "pcrUnityWorldNormal", 4],
+      ],
+      viewForwardTarget: "_457",
+    },
+  },
+};
+
+const PORTS = BASELINE_PORTS.map((port) => {
+  if (!CANDIDATE) return port;
+  const override = CANDIDATE_PORT_OVERRIDES[port.stem];
+  assert.ok(override, `${port.stem}: candidate profile is absent`);
+  return {
+    ...port,
+    ...override,
+    crossSha256: { ...port.crossSha256, ...override.crossSha256 },
+    fragment: { ...port.fragment, ...override.fragment },
+    materialUniforms: {
+      ...port.materialUniforms,
+      floats: [...port.materialUniforms.floats, "_ShadowDecay", "_DecayRate"],
+    },
+  };
+});
 
 const ENGINE_ALIASES = Object.freeze({
   _WorldSpaceCameraPos: "cameraPosition",
@@ -445,12 +558,15 @@ for (const port of PORTS) {
   const result = await generateExactSelectorPort({
     shader: port.shaderKey,
     generatedBy: GENERATED_BY,
+    ...(SAMPLE.manifest ? { officialSampleManifest: SAMPLE.manifest } : {}),
     extraction: {
       selectorId: port.selectorId,
       candidateWitnessId: port.candidateWitnessId,
       expectedProofGraphSha256: PROOF_GRAPH_SHA256,
       expectedPortIndexSha256: PORT_INDEX_SHA256,
       decryptedRoot: path.resolve(SHADER_ROOT, "..", ".."),
+      ...(INVENTORY ? { inventory: INVENTORY } : {}),
+      unityVersion: SAMPLE.unityVersion,
       prefix: port.stem,
       rootDir: ROOT,
     },
@@ -509,8 +625,8 @@ for (const port of PORTS) {
       ],
     },
     webglSources: {
-      vertex: `public/shaders/${vertexFile}`,
-      fragment: `public/shaders/${fragmentFile}`,
+      vertex: `${SAMPLE.webglSourceRoot}/${vertexFile}`,
+      fragment: `${SAMPLE.webglSourceRoot}/${fragmentFile}`,
     },
     manifestExtras: {
       mrt: {
@@ -531,5 +647,5 @@ for (const port of PORTS) {
     port.samplerSlots,
     `${port.shaderKey}: active sampler slots changed`,
   );
-  console.log(`${CHECK ? "verified" : "generated"} ${port.stem}`);
+  console.log(`${CHECK ? "verified" : "generated"} ${SAMPLE.id} ${port.stem}`);
 }

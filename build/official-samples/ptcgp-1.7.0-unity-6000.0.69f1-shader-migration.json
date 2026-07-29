@@ -1,0 +1,1032 @@
+{
+  "schema": "pocket-card-render/official-program-migration-diff@1",
+  "schemaVersion": 1,
+  "definition": {
+    "routeKey": "Shader name + sorted keywords + subshader + pass",
+    "staticPortReuseCandidate": "matching vertex SPIR-V, fragment SPIR-V, parameter entry, common bindings, and normalized render state",
+    "normalizedRenderStateExcludes": [
+      "pass.platforms (compiled-program platform route)",
+      "pass.state.gpuProgramID (compiled-program identifier)"
+    ],
+    "limitation": "static reuse does not transfer native variant selection, engine defaults, guest dispatch/bindings, backend semantics, or runtime capture"
+  },
+  "baseline": {
+    "sampleId": "ptcgp-1.6.0-unity-2022.3.62f2-proof-r2",
+    "sampleManifestSha256": "6308a8551afa4702c359c26f8506a62fb74774c98b6af09747a4e560af8901e6",
+    "inventorySha256": "05f74f1fa243d31fd8f4edcc32a2e21f65c3f0174bd3160fac5132705c982e05",
+    "proofGraphSha256": "307ed3660e5d3b1bfd8cf9e6b3d64e44937af215da3b6ed84ead198800eeadc4",
+    "portIndexSha256": "15095f34b9e75515bbcc3924f6f8b2abb826ba96b48e819ec911486bcfa6f5a9"
+  },
+  "candidate": {
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "75203a0cd38d29e6b78884cf151f62dc2132e943a0328517233fd8084cab9d15",
+    "inventorySha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+    "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+    "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b"
+  },
+  "summary": {
+    "baselineRoutes": 80,
+    "candidateRoutes": 79,
+    "commonRoutes": 79,
+    "staticPortReuseCandidates": 70,
+    "changedRoutes": 9,
+    "removedRoutes": 1,
+    "addedRoutes": 0,
+    "fieldMatches": {
+      "vertexSpirvSha256": 73,
+      "fragmentSpirvSha256": 76,
+      "parameterEntrySha256": 70,
+      "commonBindingsSha256": 73,
+      "renderState": 79
+    }
+  },
+  "routes": {
+    "staticPortReuseCandidates": [
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect_Emit",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02",
+        "candidateSelectorId": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02",
+        "baselineCandidateWitnessId": "84babac1bb73867d8d7ad8bd3e1568087b6d426dc3a813afc65038838c1e18ed",
+        "candidateCandidateWitnessId": "f2fd1d27774133c221aa11f70dae2308c7d5220cbce65d7e24d9a25c2abd3aa8"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF1",
+          "_UseGradationMap",
+          "_UseViewMask"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb",
+        "candidateSelectorId": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb",
+        "baselineCandidateWitnessId": "84928d4e6e5c618fd444730f6445a6ca035178e75eab8589777d2dc45fffad75",
+        "candidateCandidateWitnessId": "44c61ec705cfab11f8706ebecc8e3b2a8bf83a32bf3649c97d31107b5f237cb6"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF1"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039",
+        "candidateSelectorId": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039",
+        "baselineCandidateWitnessId": "8a5107415863ffbca95a302e650c49b3ada5d4edf51d8ad9b808427ce69b757a",
+        "candidateCandidateWitnessId": "f761d9a4a37683acf07b2a7ad3938f12cb0b9feac49cf1881b5ba0ad7999ff3d"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF2",
+          "_UseGradationMap",
+          "_UseViewMask"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "be2fa01af3260bcb40dd21c0a1d3f58df18f764c5de649bbc4213c828565580d",
+        "candidateSelectorId": "be2fa01af3260bcb40dd21c0a1d3f58df18f764c5de649bbc4213c828565580d",
+        "baselineCandidateWitnessId": "04789c9857b8e44e7266785bcfe2d0b7ea4f16ad45d7e75c7a48b7adc38cecf9",
+        "candidateCandidateWitnessId": "8ebbea72e4f15b43f100abac110d1570213be44c29706389280d327d8d9091b7"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF2"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "223dc2f97532cc74be6effcc35c7cc8cbb88e974b25206a26e9a730a4f7ebddb",
+        "candidateSelectorId": "223dc2f97532cc74be6effcc35c7cc8cbb88e974b25206a26e9a730a4f7ebddb",
+        "baselineCandidateWitnessId": "a2594e3b9d6c41b9cfb402631f31f9aaa178dfc081f5725a5fb020498ce071bf",
+        "candidateCandidateWitnessId": "7d7886ba1d8e288262cbf953f8ba6212dead481bd68e7bc48dfc50b7db2d056f"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF3",
+          "_UseGradationMap"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "43d3e5f021a5caec0cdbeddecd49965ee155874fb2e5bf1e9c463480e808df90",
+        "candidateSelectorId": "43d3e5f021a5caec0cdbeddecd49965ee155874fb2e5bf1e9c463480e808df90",
+        "baselineCandidateWitnessId": "cfbcafd35448639e7f0b78680716fff73dec36f1997fd6f41adf39065c66cf9f",
+        "candidateCandidateWitnessId": "3dbd5d400239f3449eaf52b67da091fbff558ee4b85a7411a1a4ec80c8592ef3"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Effect",
+        "keywords": [
+          "_LAYER_EFF3"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "418f6be89856a2598af04e8a57b44b7d6221f91b6423ba8fef2b3537f4fc863c",
+        "candidateSelectorId": "418f6be89856a2598af04e8a57b44b7d6221f91b6423ba8fef2b3537f4fc863c",
+        "baselineCandidateWitnessId": "77477f414227d115726d9acdd09d08574f6adf6bc9ba1361335dd7f9b8f3aeed",
+        "candidateCandidateWitnessId": "75f2d1d70c638ecd63a148aac0a72b28bacf93a1b65de5e870238b943ed91990"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Moving_Kira",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "candidateSelectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "baselineCandidateWitnessId": "d144f36a25157e6512c2db8de22f1f54acf42de328268aecf2d4a61bcf09c1ce",
+        "candidateCandidateWitnessId": "57263e503607d12bcef0b5134fcb84c3a4e89a25c8a5994baf5da09a7155899c"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Moving_Kira",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 1,
+        "baselineSelectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "candidateSelectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "baselineCandidateWitnessId": "2285af075af0f74f11362da701f1e028c2ac15dd6c1ed33ac75cd68b62267e2a",
+        "candidateCandidateWitnessId": "5ee5767765fd56052cc3a68092d589e907cab6b9672122dc9f7990590e4c3826"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Trail_Kira",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "candidateSelectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "baselineCandidateWitnessId": "296aa903e9c796cf24cde3eb7b918b58792983ef052502b278d7e295517d5b8c",
+        "candidateCandidateWitnessId": "58ddb5f5a32f7e4cac70af3cd89aa1aaa592a8e222a03be7ca3d1591ada9f9c0"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Trail_Kira",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 1,
+        "baselineSelectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "candidateSelectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "baselineCandidateWitnessId": "6466d49d6b942d0756b3de11ccfdc4b3f60d0507b6de71f3f03d3d21f15531b5",
+        "candidateCandidateWitnessId": "41c433f707550fb175d6d84e5fcd6cf66ad58d7dfa7cb727f5623eb04e9205f7"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380",
+        "candidateSelectorId": "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380",
+        "baselineCandidateWitnessId": "df81cc574e4b0bb1bb3c8e8a91279f297885cbafe79b84f9a1fee512d7cd2519",
+        "candidateCandidateWitnessId": "15ac8df77b789704c1db407bd67278e6bcde49187f49089bde3734930089009e"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Illust_DoubleTexture",
+        "keywords": [
+          "_USEGRADATIONTEXTURE_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77",
+        "candidateSelectorId": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77",
+        "baselineCandidateWitnessId": "4f9e990e7bb17f97ce3fa0b361317bf1d8ae390922b134e568bd7d0d7035de55",
+        "candidateCandidateWitnessId": "352081cbea49f0301799150f952a626e4004830e894c78b81b093d66b2ce3728"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Illust_DoubleTexture",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0",
+        "candidateSelectorId": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0",
+        "baselineCandidateWitnessId": "7281055a2695341a7d8b9c743344955b9aef75b0858ba6f462f6577b615f7191",
+        "candidateCandidateWitnessId": "75f46d7da4425de6135bc6e03e3c38ae00a68147a89b3e2f71193350cfad5b9f"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Illust",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f8644f04a9862f3b698729e1ae0853eaba21dee2bb87946b6e5e1941e547d723",
+        "candidateSelectorId": "f8644f04a9862f3b698729e1ae0853eaba21dee2bb87946b6e5e1941e547d723",
+        "baselineCandidateWitnessId": "b2885890c4f8fa6c4399f442c04a4405db3ab9708337d7223a1eddb392266f95",
+        "candidateCandidateWitnessId": "4ab2306c07edd8ba6e5322d6fe74ad038f22363c06f94dd06256827735bbc890"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_EmitMask",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "5086e6fa4eca3e1e047f50850e5baf5109dffc922add1f24fe5e8cc7b92b5e49",
+        "candidateSelectorId": "5086e6fa4eca3e1e047f50850e5baf5109dffc922add1f24fe5e8cc7b92b5e49",
+        "baselineCandidateWitnessId": "b02b9ed09442f20e455c6cca4c49efbf7d1f1bf5cb38269276833849654d5ec2",
+        "candidateCandidateWitnessId": "42ec060b34f86564fa8de992bdcee366fde7e7f3c47995faa2efa2937f140d8c"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Flash",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd",
+        "candidateSelectorId": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd",
+        "baselineCandidateWitnessId": "75db875cc77d6dee514cb0b1c18828b469af2a0fbb047123b80da1fa6bcc4036",
+        "candidateCandidateWitnessId": "75e09a8fc22a584f2d1e14428181d6ee3a34ad3c4d88212857712a5555c4c246"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Future",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d",
+        "candidateSelectorId": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d",
+        "baselineCandidateWitnessId": "42946e126fc5a6a2f47c21ec375f4d8fdc1e27b6473e94815c096a102c0d86b6",
+        "candidateCandidateWitnessId": "ec656d0015989845a88372ac9d3cf0fbe247a4001981ab0e22ee546d7718552c"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
+        "candidateSelectorId": "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
+        "baselineCandidateWitnessId": "b54f79946809a035762c9175061af64d2b48572b4a7143332d3d673339f75a9b",
+        "candidateCandidateWitnessId": "d6ac9d1cdb3ad7fdf6c485d868d7bb0e937be8774385d701d87d553ec0d1d509"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_UR_New",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "66a7cb5f20f3617a45802722879bae65f2a18e2824167bb4e0a124a8d240bd9e",
+        "candidateSelectorId": "66a7cb5f20f3617a45802722879bae65f2a18e2824167bb4e0a124a8d240bd9e",
+        "baselineCandidateWitnessId": "619c77a741662746ac7867f6fffd193c6ff17d3b48d5a01d97bd3f030f2690b3",
+        "candidateCandidateWitnessId": "9da5b140cb5e1202f1a013afbefbc7ee72d6bc07b99c4e40b5efeb7e706b0715"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Immersive",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "bf76a81655b9ff3dd32548cf62d529426eb40486470b291799c191ccccb60659",
+        "candidateSelectorId": "bf76a81655b9ff3dd32548cf62d529426eb40486470b291799c191ccccb60659",
+        "baselineCandidateWitnessId": "a70149ec90014953c1f3b11cba096a4a914c1a1b1a7de8b3e59dc42148168086",
+        "candidateCandidateWitnessId": "dc76ddb5db3d23539f7a84d69d2afd557bc1ca04f99530b0d274e472977b82aa"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Marble",
+        "keywords": [
+          "_USEMAGNETIC_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6",
+        "candidateSelectorId": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6",
+        "baselineCandidateWitnessId": "0d5e2b0f004bf5148a64fdc3fa1c7aa3513f72d9b9f5c040a23237d2f510dadd",
+        "candidateCandidateWitnessId": "13354238319705038515caab8f3798abbfe71ba27c6d1dda65ec174ed8812b9d"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Marble",
+        "keywords": [
+          "_USEOUTSIDERELAX_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2",
+        "candidateSelectorId": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2",
+        "baselineCandidateWitnessId": "c03eec4906180772175e8f76d70f161c84996d579d54ac2434137c74aaa3b7cb",
+        "candidateCandidateWitnessId": "0beddb479416af4b577bea5b2f002ce5d3f030606e4f99b45559fc7287b42b3b"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_MatCap_Lighting",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+        "candidateSelectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+        "baselineCandidateWitnessId": "60d74858874bf4a236896b464909975dff080498545e876ee63d7f9251f262a6",
+        "candidateCandidateWitnessId": "6fb618e8f04e0c4347ac20782088b8786b68d1b565582cd977c05792e8d26c3f"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Metal",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+        "candidateSelectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+        "baselineCandidateWitnessId": "723f76de6fb22268408a97849213a3bb510424a8a21084ab651cf45baeab7811",
+        "candidateCandidateWitnessId": "a75619c6701832240e109b72ce57f3a3cf73c9efb710ac33b5cd386a08d189a2"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_MetalByTilt",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "bd90afa8536d13c9107d8badccf43919ab387c61b52833e06a5654b1859816c2",
+        "candidateSelectorId": "bd90afa8536d13c9107d8badccf43919ab387c61b52833e06a5654b1859816c2",
+        "baselineCandidateWitnessId": "892e273fe2d6f61ddc6f47dfbfbd97d518c49032a53aeb60a0ecf916404067a2",
+        "candidateCandidateWitnessId": "eb124f1a132ad66a7842eb1f87d5f83594ce130cb602a2d1ef1d912eebc4450d"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_MRR",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "b29c4ba1a2496615aacd7565709c049b2deb3ec072529c40484baa5958ae655b",
+        "candidateSelectorId": "b29c4ba1a2496615aacd7565709c049b2deb3ec072529c40484baa5958ae655b",
+        "baselineCandidateWitnessId": "d22e51506c21931d0653e5d0d144d685ed52ac70befc01573acc40ddb190cc40",
+        "candidateCandidateWitnessId": "e578dbb6557389709b3000ce3163fab49d20ec0c4c744d95ca66047e942c487a"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Strata",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f972087746bf2b351267b5816d259f913b2fb9fa050ad41e11979f4cdcbea51e",
+        "candidateSelectorId": "f972087746bf2b351267b5816d259f913b2fb9fa050ad41e11979f4cdcbea51e",
+        "baselineCandidateWitnessId": "b2f8255598bd7048899929089cc4915fafe3ebf5b3cc9be498a57be7df44f7e8",
+        "candidateCandidateWitnessId": "c4ca3c26badcf8796d93daec339dd36021ae70adad33bf53a21c088df9768349"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Transparent_Translate",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "b64f842cf9933438d2646de74af54cf71a7f49c6c180f66ed733c006f8b523b5",
+        "candidateSelectorId": "b64f842cf9933438d2646de74af54cf71a7f49c6c180f66ed733c006f8b523b5",
+        "baselineCandidateWitnessId": "08eabc1672f42c34f85bae29323d59d65b172dc8186063193ccd821b2c938395",
+        "candidateCandidateWitnessId": "2d21404dc38f3a8cc9fba45a867d2aa46636187000c9377cbe662728775168b3"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_UR",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a",
+        "candidateSelectorId": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a",
+        "baselineCandidateWitnessId": "fa18a0f97c8bc9e4a3dd08cd7de9e493d66e896c27ec1901544ab2aa318e1d82",
+        "candidateCandidateWitnessId": "bbec92ec0d4596560b6385f569c173596185a6454f43644ca4663993e350b095"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax",
+        "keywords": [
+          "_UVASPECTRATIO_CARDFULL"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "6b15110734185fce59434bc48692e2daa7801971bf0065926698b465b50c1977",
+        "candidateSelectorId": "6b15110734185fce59434bc48692e2daa7801971bf0065926698b465b50c1977",
+        "baselineCandidateWitnessId": "19669c42522870127be07386867e0bafdad85de90bb4bed22c2e7ebb825bd9c8",
+        "candidateCandidateWitnessId": "fc6e66cfccfbddc5250c7b0dde8f011470e071bdfd978d835e91a7acfc44fcf9"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax",
+        "keywords": [
+          "_UVASPECTRATIO_CARDWINDOW"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "4eddbe42b3aad7a33c0087927e44803a97149e772bbec502e662d535be411cf9",
+        "candidateSelectorId": "4eddbe42b3aad7a33c0087927e44803a97149e772bbec502e662d535be411cf9",
+        "baselineCandidateWitnessId": "1ba398f45b0a88917674e37de90dd40d651898abbfc0e1300491339d921b7fb5",
+        "candidateCandidateWitnessId": "f723f602d010d47d0d9d63b344f2575dfab34145921e1ee9a02fc55f0a231edf"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax",
+        "keywords": [
+          "_UVASPECTRATIO_SQUARE"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "4416645d0bbeb3d037161525bdcf9aa7ed9e6b39e284c6ed446f09184b38532f",
+        "candidateSelectorId": "4416645d0bbeb3d037161525bdcf9aa7ed9e6b39e284c6ed446f09184b38532f",
+        "baselineCandidateWitnessId": "1b99ea91f2aa85c39a767541b7ef357ea17cbd033621c8838871287c203b32ca",
+        "candidateCandidateWitnessId": "f47a5ad699a5afd82c35500ea9e3a4fc76ac9dc77bc32174e146b89c2b77df9f"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Prism",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+        "candidateSelectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+        "baselineCandidateWitnessId": "3101394a11fce8f689324ae82849ef917392a8734af7f80226de74dd309dcf45",
+        "candidateCandidateWitnessId": "a2db62d36bfb449cc9bc34103e8c83b3708ba1083fa67c142d16ca0441bd2d41"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Scaling_Kira",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c",
+        "candidateSelectorId": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c",
+        "baselineCandidateWitnessId": "38f12962b40e8427d0f7f6138a2084afb4b8ecd1a80e20e7d49d6d72717f48ee",
+        "candidateCandidateWitnessId": "510d608e3f5231070ed7b2f1988532f7a3a369c1207d0aeb28ba80c7745b6b60"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_UR_Glitter_FlowMaps",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+        "candidateSelectorId": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+        "baselineCandidateWitnessId": "741330e6c5c79eb6e2a8fc9c2f214f421165df8160ee63a33b693d28906ca676",
+        "candidateCandidateWitnessId": "d98b5f95ce632832d413ce274a76375259253995c575e91dc315c43c55ce49c6"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_UR_LensFlare",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62",
+        "candidateSelectorId": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62",
+        "baselineCandidateWitnessId": "91e3b24bc22236ed08620090ac7e4743a03d4eb0af3791a00078356329013b0d",
+        "candidateCandidateWitnessId": "5de5f555115c6f76574558abb1c48c51634be6223d621a24715ae086011bf800"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_UR_Plate",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f",
+        "candidateSelectorId": "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f",
+        "baselineCandidateWitnessId": "dbaf20c45c9886086ace387db281ef59447ed2d468104fd45219704768dc36f4",
+        "candidateCandidateWitnessId": "538a93d9cd74817bd77e3c0310f03e2cb3a3755efd65463425a4d9c1b77ca351"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-2Layer-UR",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e",
+        "candidateSelectorId": "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e",
+        "baselineCandidateWitnessId": "35d3ee7215e6c73746d6a66c6670b2b5563b435ddf7c0f6a6c3a51c6c1c4de90",
+        "candidateCandidateWitnessId": "f04eee1c0e3c33fdf7a2d128194ae20ddc00a5eb93876c66b3de0a55ba55a316"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-2Layer",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "a9ecd9600fcbad72d48f2a364c224375e92811abd07d0d0b7e11c8e702dee08f",
+        "candidateSelectorId": "a9ecd9600fcbad72d48f2a364c224375e92811abd07d0d0b7e11c8e702dee08f",
+        "baselineCandidateWitnessId": "fc8db10bf97b53bf25837c24994dbee26b2837bb791924748b0a1173b8d7406e",
+        "candidateCandidateWitnessId": "d8fcc71e1968349be2e7b4431e9362c77d59b657d54015e4497f9182acd3a557"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-Immersive",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c",
+        "candidateSelectorId": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c",
+        "baselineCandidateWitnessId": "adf55085ec015af53ae7aeca5d6f6aa4affcc4858780541ccb92adac8e8db76f",
+        "candidateCandidateWitnessId": "02601f6c0b76c782d762a81ee2722f710f3557d9903100107ea6ba19dae4aa6b"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-ImmersiveUI",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "3dddf11a1dea4aad910b128a44787a6a4e5a0300c5341144d9af74b9b21421a6",
+        "candidateSelectorId": "3dddf11a1dea4aad910b128a44787a6a4e5a0300c5341144d9af74b9b21421a6",
+        "baselineCandidateWitnessId": "fcac942d24f300bc89351b7f08f03a7399f708d97eb9a636962f396cf984a8fa",
+        "candidateCandidateWitnessId": "1e1d58e03fc306568efea04b18265782b7d53280e78291d532f5fef11766b1a9"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292",
+        "candidateSelectorId": "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292",
+        "baselineCandidateWitnessId": "0ef6f9b87baee73555ff44ac36da4c06e7d1bc97763009fd107af70c438cb883",
+        "candidateCandidateWitnessId": "f061c45e88441195b5cb636859f255b91486436f806cd55fc182f470648e13dd"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-UR-New",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6",
+        "candidateSelectorId": "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6",
+        "baselineCandidateWitnessId": "ae75586ab5eb5009c12e838f37ba77cea0ce76343ffa23c4629c7aefdcc1307c",
+        "candidateCandidateWitnessId": "7ab49aa57ad486c6845e910cdece188eb4cd4cc82879ae65e9b912f562e278c1"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "bcb60b22bef8badefd443c779615ba8418fbf9be6d959747838cb91b1f825ec5",
+        "candidateSelectorId": "bcb60b22bef8badefd443c779615ba8418fbf9be6d959747838cb91b1f825ec5",
+        "baselineCandidateWitnessId": "a21d03fd70814fd48331b13450dfb9a6b9e9c779c75a9864cd4ef9e4756b989c",
+        "candidateCandidateWitnessId": "855cdb803c9ceff3c5dbffacfe3f39b75029a21d677173236c19f67ca95d016a"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Frame",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2",
+        "candidateSelectorId": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2",
+        "baselineCandidateWitnessId": "4089f1cd646da48bbe8b218644eb189f7c51c342f6af6d56e5b8aed0a3426760",
+        "candidateCandidateWitnessId": "bcdd7e6918cfa5f2734bc728e17d7ee748c326d35ccda96bfdd6dd52a2b05049"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Side&Back",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "098442249c67e59493c894726abb769128c8429b2021d6d665424f72f8ae3814",
+        "candidateSelectorId": "098442249c67e59493c894726abb769128c8429b2021d6d665424f72f8ae3814",
+        "baselineCandidateWitnessId": "b72a542ce2da332012aaf0b3ae9d5d8e03407502f8a86cb2425706abfdc651d6",
+        "candidateCandidateWitnessId": "dbe501fbb9e5a52446020ead12e4eff84c2865e9da46aecac82e2981f1697550"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Logo/Opaque",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "23fba2d0f26091a424cc0b5b83a45dcf03068d57a8abf2d01ac9cd2858406637",
+        "candidateSelectorId": "23fba2d0f26091a424cc0b5b83a45dcf03068d57a8abf2d01ac9cd2858406637",
+        "baselineCandidateWitnessId": "e65443ac76083cec5397404a522f5a9f5f0a975b0a22ecd3306aa05d7b368ceb",
+        "candidateCandidateWitnessId": "7a9a5e243a280814db54afca957490783e9ca0c67d57d2fc30f455ca0637ae28"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Flash",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+        "candidateSelectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+        "baselineCandidateWitnessId": "a259f140ec37538c50c25a2ec3cc706b45df7c99babf81183ac34a910244e3f0",
+        "candidateCandidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Hologram-FlipOutline",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c",
+        "candidateSelectorId": "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c",
+        "baselineCandidateWitnessId": "d708e42a7ee009407c20605b182fdc53f9803c8743034d97f1222417614f4f8e",
+        "candidateCandidateWitnessId": "13cd8a2030afc8eced7ca31c097c1c2491e9c512c133a0530e5e6b82ff95fab2"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64",
+        "candidateSelectorId": "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64",
+        "baselineCandidateWitnessId": "0543da854f45effa6f1ab2679ccdf6dfc0a04ff851e8d5b57c996ef7b2a5dd42",
+        "candidateCandidateWitnessId": "9c87599aa5cfd41057c34d24b948c3cb90905ef8dee996419363dc6c4e4e6565"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-UR-Oklab",
+        "keywords": [
+          "_DARKNESSENABLED_ON",
+          "_FAKESPECULARENABLED_ON",
+          "_HOLOGRAM2ENABLED_ON",
+          "_REFLECTIONENABLED_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+        "candidateSelectorId": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+        "baselineCandidateWitnessId": "25b29591d0c4004e6451aff10e7b8e86c669038a7069955227c43c87f5e32866",
+        "candidateCandidateWitnessId": "56ce2e59eaa541313880a1573ec30c192037c39411adc692aa743e56838a5d42"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-Opaque-Hologram_Tuning",
+        "keywords": [
+          "_USEHOLOALPHABLEND_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d",
+        "candidateSelectorId": "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d",
+        "baselineCandidateWitnessId": "3ee9c050c886c27c13233483d13ce1597c256dfb5a40064726030f07ccfd571b",
+        "candidateCandidateWitnessId": "aa63b45cf67b563e5593d688fe45a2a0ceaa816c2a13b58b5f7f4b069a33c0eb"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-Opaque-Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+        "candidateSelectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+        "baselineCandidateWitnessId": "0fb8f02f1c119712efa4625a857777833259dbb56138dcbc66aed26b580e9024",
+        "candidateCandidateWitnessId": "e710254f073915bac36480d928a8cdb7248c9874e4781921436ab58433869fe7"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-Opaque",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "47c914ef7efdabdb9ee66f2512db54ba7ce752cb00d43456e15a8c4a6a5558df",
+        "candidateSelectorId": "47c914ef7efdabdb9ee66f2512db54ba7ce752cb00d43456e15a8c4a6a5558df",
+        "baselineCandidateWitnessId": "a58a79e446a89bcf89092017069da308a3909d03c6aeaa90ef3f58100ca9dd48",
+        "candidateCandidateWitnessId": "b4ad73ce82376afafa3f7c8a4834bf540e5fcbb03cb5856c05b0a353d995515b"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-PreMultiply-Hologram",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d",
+        "candidateSelectorId": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d",
+        "baselineCandidateWitnessId": "f12371cc222c53d980a281d8870889277b7efb3223e9d857453f19f17717a901",
+        "candidateCandidateWitnessId": "1cd97cd5a35e5f321f3469d6a130766f65f257db33b77e26e1e68131f326b327"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Simple-Transparent",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "4d69b686fb131f9a98fd78a7a9954d02acece8221a1d6c859050903f5492ba5e",
+        "candidateSelectorId": "4d69b686fb131f9a98fd78a7a9954d02acece8221a1d6c859050903f5492ba5e",
+        "baselineCandidateWitnessId": "9333a06b73b596186e51bcc980106c4db68ec63c5d3e80428413a8a99c959bf1",
+        "candidateCandidateWitnessId": "690f2f2e3dffda52a27b7c3bd153b100947149a7122a4d3256d94f4897258381"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Transparent-Hologram",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1",
+        "candidateSelectorId": "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1",
+        "baselineCandidateWitnessId": "08dfe09b2f80f63fe168b13be9a0a919e8c91ddfbf9f0d5134a1678632d11621",
+        "candidateCandidateWitnessId": "0ec9c9a3f1124b5af74f330032d5399964b2120d10e4f35ec23afaac2e61ba31"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Transparent-UR-Oklab",
+        "keywords": [
+          "_DARKNESSENABLED_ON",
+          "_FAKESPECULARENABLED_ON",
+          "_HOLOGRAM2ENABLED_ON",
+          "_REFLECTIONENABLED_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2",
+        "candidateSelectorId": "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2",
+        "baselineCandidateWitnessId": "586d63d1f47a6df09c3de249fb98331c1c07f629207acc1fb900dff192612915",
+        "candidateCandidateWitnessId": "e6df7b870ad8ef1e3593613bfca11db3f078ae4f3cd3c6068fd5b763a093cf6e"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Card_ShadowBoxUI_Transparent_Rainbow",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+        "candidateSelectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+        "baselineCandidateWitnessId": "d8f87a6565c65cca98b4fbbb418a2c37282ba4923b420a912412af19a1b1da91",
+        "candidateCandidateWitnessId": "f668811dcdd5dbede09ba683fa0dcce19ccdefcc7180144f2d79a9dde52e373c"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Opaque_Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "871457e8f364eeed14f609dc84a84b493b61ea71128a66b8849c721e7ae5e6d4",
+        "candidateSelectorId": "871457e8f364eeed14f609dc84a84b493b61ea71128a66b8849c721e7ae5e6d4",
+        "baselineCandidateWitnessId": "4fff43f2df1325b078c2fe1c92f7e1753a22e1a4b6d0b3e0d9b809c2533f6e22",
+        "candidateCandidateWitnessId": "4d5b63dab94cbd1972f9bacd6365612445244d5f122ec8cbb3bc1f5c4b5e9fef"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Simple-Opaque",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13",
+        "candidateSelectorId": "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13",
+        "baselineCandidateWitnessId": "b887eb58c1aa886395cac04fb190ad18086c935c3f92145363e9990b9cfc5fef",
+        "candidateCandidateWitnessId": "3c7bf027e82dd6ca62eaee84642d90713a17f0e28a105ccf3ba65dfa3eebe429"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Transparent_Hologram_Tuning",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2",
+        "candidateSelectorId": "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2",
+        "baselineCandidateWitnessId": "ac5e02751605b754011910a4bd968dfed8df0cd6100a635a257e47695554d2fd",
+        "candidateCandidateWitnessId": "e807f853961e6b671ea9d523f6b0b29b481a3bcf306eb7dff13876193a81e1e2"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Transparent_HologramLayer",
+        "keywords": [
+          "_USE_DYNAMIC_UI_AS_HOLO_MASK",
+          "_USE_DYNAMIC_UI_AS_METALLIC_MASK"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+        "candidateSelectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+        "baselineCandidateWitnessId": "99e646ebcd42d4c407758b90977df456a708594ea1fbaf09929744be5b39cd5b",
+        "candidateCandidateWitnessId": "c12b649ea6ed8cfd33f06067dab790b7fe7c2a8b6d366a392b1cd07bb40d1a59"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Transparent-UR-New",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249",
+        "candidateSelectorId": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249",
+        "baselineCandidateWitnessId": "c58307e6086263c9ebb245e2a3f4e0661893df93f7db34837ed8509aa4d02a7d",
+        "candidateCandidateWitnessId": "fc136482a2ab9f4c5285962f0ec02812c45d91ac0f7697da995fed3f6882078d"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Stencil/IllustStencil",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f953cc26992425f821a93cc76e31fe72136496d658a2968d988d776c922794b7",
+        "candidateSelectorId": "f953cc26992425f821a93cc76e31fe72136496d658a2968d988d776c922794b7",
+        "baselineCandidateWitnessId": "4f8e66161c8b9c6d0543632c802b39543a42248956b13f13cc1552f5d1ad5b0a",
+        "candidateCandidateWitnessId": "241359e3f35c806e8a713c5d7cf19553b9c38153a822f61c5fcc0c745dbea074"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Stencil/InnerStencil",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee",
+        "candidateSelectorId": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee",
+        "baselineCandidateWitnessId": "4c4a34e681b1c401c4d962bb779227c27ce5cf711733e92cd5cd80a4d155be59",
+        "candidateCandidateWitnessId": "c4deae40c665b8824a37ce7d7706815916e23908efb384f260a809fa83f6e6f3"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Stencil/OuterStencil",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6",
+        "candidateSelectorId": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6",
+        "baselineCandidateWitnessId": "4a0cf7cebd7dc612eef656e06aa617035040e318cbb38eaf271077055895a2e1",
+        "candidateCandidateWitnessId": "abcd3f173af8af498056f14773c624acbaa328edbdc5529cc58e05caeb688e45"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Text_Alpha",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f",
+        "candidateSelectorId": "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f",
+        "baselineCandidateWitnessId": "449ba4e013e05df325624327980d8de353ddc5cb82ac8ea3e87a248951f6c5bc",
+        "candidateCandidateWitnessId": "b07f89174c8b04ccdc3779586971bd39884c7f681c9d4f2b0ddaa3133836028a"
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Text",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "32560a48adec5d08001f64750c1751d6e1fe95b84346c4907463cbaa2f1e2b1a",
+        "candidateSelectorId": "32560a48adec5d08001f64750c1751d6e1fe95b84346c4907463cbaa2f1e2b1a",
+        "baselineCandidateWitnessId": "ec3e0937fa970e386e2448efcfa054aa00784019d0cf300568f4173a4b4254cf",
+        "candidateCandidateWitnessId": "07308a831cd269183292df8cf58a72eef32536821d7708ef471bb585d5fe4cfb"
+      }
+    ],
+    "changed": [
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+        "keywords": [
+          "_USE_COL4"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+        "candidateSelectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+        "baselineCandidateWitnessId": "1b654aa5e1c4d5e80ce9a1254e206a7b8936512172676330c2b9e12aaec4b6b1",
+        "candidateCandidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "eb9da9a38724dbabf0419277dd1c9ea5a57e79ce9ca8dc226b45b3b25ce010e6",
+          "parameterEntrySha256": "419276619389d242e0a619498aaa05aed5688f30ac2ab4fabea725146cd08fdf",
+          "commonBindingsSha256": "6a0877da5f472e52f5d90883d4e012aff20fb5991eddd70f51da331274c82480"
+        },
+        "after": {
+          "vertexSpirvSha256": "972aaad150b30373099b4bfc7a028c20317a473b7db535ea4895291cc18a56af",
+          "parameterEntrySha256": "086e7f973d5d9aa434abaea9c53701b81c611e29b847ec6d4c24af0f8e703392",
+          "commonBindingsSha256": "7ed3df2c439386142864b4b4b9d01aa5784b34170583beb34b69b884c27e0114"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+        "keywords": [
+          "_USE_OLD_NOISE"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+        "candidateSelectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+        "baselineCandidateWitnessId": "1aa9fd0b00eb90d8f83b3213f88162e6c4037adf4a84b2057dff3324da36c04d",
+        "candidateCandidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "2f06f309872e02af9f2ad6ce9bba3e2a6878a1de2e6e07cde10ba1d787085974",
+          "parameterEntrySha256": "f5fecaf4257e926f2222a9d3575873fbccee53a31f197998305a86780db6e06d",
+          "commonBindingsSha256": "6a0877da5f472e52f5d90883d4e012aff20fb5991eddd70f51da331274c82480"
+        },
+        "after": {
+          "vertexSpirvSha256": "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
+          "parameterEntrySha256": "26569e173d2a749745354feda9d9aaedd46747ea1b7aebbda0a0b90a2adb6f3a",
+          "commonBindingsSha256": "7ed3df2c439386142864b4b4b9d01aa5784b34170583beb34b69b884c27e0114"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+        "candidateSelectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+        "baselineCandidateWitnessId": "26e94f48a624a1e25e5a36ec1949268ead263798da068ff5f991b743ddafd037",
+        "candidateCandidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "2f06f309872e02af9f2ad6ce9bba3e2a6878a1de2e6e07cde10ba1d787085974",
+          "parameterEntrySha256": "c9b67e0e57411910c0812b65985d3eb493bae228ed930abfce7be940e7d59b63",
+          "commonBindingsSha256": "6a0877da5f472e52f5d90883d4e012aff20fb5991eddd70f51da331274c82480"
+        },
+        "after": {
+          "vertexSpirvSha256": "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
+          "parameterEntrySha256": "9e0d5b79a355f129b7e24eb143b708336f4f2a18b008ca13dcfc803a23a3d572",
+          "commonBindingsSha256": "7ed3df2c439386142864b4b4b9d01aa5784b34170583beb34b69b884c27e0114"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+        "keywords": [
+          "_USE_COL4"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+        "candidateSelectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+        "baselineCandidateWitnessId": "851dfa1e7b27676ecbff466bda9355741b4d5bb7d52178c825e578dce6f44b0f",
+        "candidateCandidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "07f1fba958c355b35861ebb1dd537d1a21b0bf1a84b7e9a0302a2518fc9525a1",
+          "parameterEntrySha256": "6fea5e5da38334b0182f322a7f01dfb8a570a466a1cbdcd5bf9f6419bb2c8420",
+          "commonBindingsSha256": "bfaeaa65eafee13cef798fd966ce40d3fdf0b2c375a8be7dc9b2b05159bcf4d1"
+        },
+        "after": {
+          "vertexSpirvSha256": "dbf4376bbef97034b67af22245f9434bdc806afbf556f1d480668cedb2411125",
+          "parameterEntrySha256": "9a8f6d54e0d78b065d82d66cf24de1fe976fc16fc85f1b6a578abc50dc463cad",
+          "commonBindingsSha256": "743c84d37fad3d781c276de28360cc9a473d7ceb4cfdcc6e293af31b47535370"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+        "keywords": [
+          "_USE_OLD_NOISE"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+        "candidateSelectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+        "baselineCandidateWitnessId": "bc50eab7ea6ecacec9548d2a7177d89d75ed3bf4a7385d48a4db97c8a9b1165e",
+        "candidateCandidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "a5fd469702cc00751c100f87f183515faa21bc1de913aeb6cc7df34ec0f78da9",
+          "parameterEntrySha256": "838a9ef26ef3f9c053e3e5c4bc5487277c89ef870254fdeda6a31ac9983dfc8c",
+          "commonBindingsSha256": "bfaeaa65eafee13cef798fd966ce40d3fdf0b2c375a8be7dc9b2b05159bcf4d1"
+        },
+        "after": {
+          "vertexSpirvSha256": "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
+          "parameterEntrySha256": "16461a04e62b41881fb83e559892ec6831cbb69f312df9b355c4aa8544d9960f",
+          "commonBindingsSha256": "743c84d37fad3d781c276de28360cc9a473d7ceb4cfdcc6e293af31b47535370"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+        "candidateSelectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+        "baselineCandidateWitnessId": "6d2b2cffeafb89ba2e9309d5e8b0728d73bb3c7713aa0e29cad662b8cb516acc",
+        "candidateCandidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+        "changedFields": [
+          "vertexSpirvSha256",
+          "parameterEntrySha256",
+          "commonBindingsSha256"
+        ],
+        "before": {
+          "vertexSpirvSha256": "a5fd469702cc00751c100f87f183515faa21bc1de913aeb6cc7df34ec0f78da9",
+          "parameterEntrySha256": "679395332512e5b7c71730de4edaf858ed706dc08b478719c991425b78770711",
+          "commonBindingsSha256": "bfaeaa65eafee13cef798fd966ce40d3fdf0b2c375a8be7dc9b2b05159bcf4d1"
+        },
+        "after": {
+          "vertexSpirvSha256": "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
+          "parameterEntrySha256": "5842a333485fb9c79b38f14775db3c7247a3282ec378b09b8d2b12a2bd0cc888",
+          "commonBindingsSha256": "743c84d37fad3d781c276de28360cc9a473d7ceb4cfdcc6e293af31b47535370"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+        "keywords": [
+          "_USESHADOWLAYERG_ON",
+          "_USESHADOWLAYERR_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+        "candidateSelectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+        "baselineCandidateWitnessId": "a44d38d48d7d2370ad9c2162392738d2049cd8c90d609cdb3632cd6015ea1815",
+        "candidateCandidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+        "changedFields": [
+          "fragmentSpirvSha256",
+          "parameterEntrySha256"
+        ],
+        "before": {
+          "fragmentSpirvSha256": "9274189a737cc93d7636953d097a40dd7f8070e1c897e5558a423c2c06e60f50",
+          "parameterEntrySha256": "1cbaa344b71ae944d3c75abfb02bd0c1589164d0334d225ee67e123b0f9fd3b0"
+        },
+        "after": {
+          "fragmentSpirvSha256": "a7446201995aec89958b99e261ea321b6f18b642bd26c31c8ee110b19b99caf3",
+          "parameterEntrySha256": "3d8032187d9f999aab4e2ce6e75194753ca824974dee067f2e02d0146bbfe252"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+        "candidateSelectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+        "baselineCandidateWitnessId": "7918bda097d1db4d0dce9704bd237bd646955a2440f289a0a8eaddb4162a7344",
+        "candidateCandidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+        "changedFields": [
+          "fragmentSpirvSha256",
+          "parameterEntrySha256"
+        ],
+        "before": {
+          "fragmentSpirvSha256": "273dfee647b005f46a93f44b9664f1ca61f4985559d49fc49b179a16dc5d64c4",
+          "parameterEntrySha256": "2265336b66a53707827cee1695d3287d5c296de3533ce0d535291d8fe42707a1"
+        },
+        "after": {
+          "fragmentSpirvSha256": "b4b8471732c34a657e3752cb08511437da7926454de14761d0f4d6a70c70dfd4",
+          "parameterEntrySha256": "304c787b381da9a268c50daa656c4d027521c20335b7c0b248d43d9b0c156731"
+        }
+      },
+      {
+        "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Shadow",
+        "keywords": [
+          "_USESHADOWLAYERR_ON"
+        ],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+        "candidateSelectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+        "baselineCandidateWitnessId": "737b6b37bcb07e8a0fa304f1a694baca1fea8ee5f74ea5af9731dc742c24ccc3",
+        "candidateCandidateWitnessId": "7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6",
+        "changedFields": [
+          "fragmentSpirvSha256",
+          "parameterEntrySha256"
+        ],
+        "before": {
+          "fragmentSpirvSha256": "d61ac39f4569e82711d817b36758c2dee4e251d07d18af94feb4f62d73f6ca46",
+          "parameterEntrySha256": "71c7269e4fd0d7e697e10d0a5f7da1a07063c6b199cec0ffb54363023f5e5b3b"
+        },
+        "after": {
+          "fragmentSpirvSha256": "71ff80814e31b44a56fd89f04e3b333708265837437510666160e6b48456dbd3",
+          "parameterEntrySha256": "f9e46662f1b682a6b83c9a613dad2c50ecdf6401bd607ea8be9458d2f1da0175"
+        }
+      }
+    ],
+    "removed": [
+      {
+        "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax",
+        "keywords": [],
+        "subshader": 0,
+        "pass": 0,
+        "baselineSelectionMode": "native-best-match"
+      }
+    ],
+    "added": []
+  }
+}

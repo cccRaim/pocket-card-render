@@ -3,7 +3,8 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
-const BUSINESS_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata";
+const BUSINESS_ROOT = process.env.PCR_BUSINESS_MASTERDATA_ROOT
+  || "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata";
 const MASTER_ROOT = path.join(BUSINESS_ROOT, "MasterData");
 const FACE_ROOT = process.env.PCR_OFFICIAL_FACE_ROOT
   || "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted/Common/CardNew/Face";

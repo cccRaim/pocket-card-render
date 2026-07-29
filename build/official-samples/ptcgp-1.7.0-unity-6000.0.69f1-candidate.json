@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 3,
+  "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+  "status": "candidate",
+  "game": {
+    "packageName": "jp.pokemon.pokemontcgp",
+    "versionName": "1.7.0",
+    "versionCode": 342951,
+    "architecture": "arm64-v8a",
+    "packageSource": {
+      "kind": "split-directory",
+      "splits": {
+        "baseApk": "jp.pokemon.pokemontcgp.apk",
+        "arm64Split": "jp.pokemon.pokemontcgp.config.arm64_v8a.apk",
+        "bundledTreeSplit": "jp.pokemon.pokemontcgp.bundledtree.apk"
+      }
+    }
+  },
+  "unity": {
+    "serializedVersion": "6000.0.69f1",
+    "playerBuildVersion": "6000.0.69f1_5f8607f5118b",
+    "releaseSupportVersion": {
+      "status": "unresolved",
+      "reason": "release support identity requires the matching Unity release player and symbol package"
+    }
+  },
+  "artifacts": {
+    "apkm": {
+      "status": "unresolved",
+      "reason": "official input was delivered as raw split APKs; no original APKM container is available"
+    },
+    "baseApk": {
+      "status": "resolved",
+      "byteLength": 46323142,
+      "sha256": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9",
+      "entry": "jp.pokemon.pokemontcgp.apk"
+    },
+    "arm64Split": {
+      "status": "resolved",
+      "byteLength": 191465137,
+      "sha256": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984",
+      "entry": "jp.pokemon.pokemontcgp.config.arm64_v8a.apk"
+    },
+    "bundledTreeSplit": {
+      "status": "resolved",
+      "byteLength": 547381019,
+      "sha256": "462cf966a3ebc0c5fb18485e6fc609ec2951f540f784fdff2e0f15a5923b8839",
+      "entry": "jp.pokemon.pokemontcgp.bundledtree.apk"
+    },
+    "libunity": {
+      "status": "resolved",
+      "byteLength": 21722400,
+      "sha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067",
+      "entry": "jp.pokemon.pokemontcgp.config.arm64_v8a.apk!lib/arm64-v8a/libunity.so"
+    },
+    "libil2cpp": {
+      "status": "resolved",
+      "byteLength": 135778312,
+      "sha256": "0a1ea598b11f3ea7732c80a6f4c80b8d939222b2ea87cf8707f35db26f1799d3",
+      "entry": "jp.pokemon.pokemontcgp.config.arm64_v8a.apk!lib/arm64-v8a/libil2cpp.so"
+    },
+    "globalMetadataEncrypted": {
+      "status": "resolved",
+      "byteLength": 33398388,
+      "sha256": "1271f749e93ec5b05736e14483731ba47057331a5aebb4f4f5c600ee09dfa2d0",
+      "entry": "jp.pokemon.pokemontcgp.apk!assets/bin/Data/Managed/Metadata/global-metadata.dat"
+    },
+    "bootConfig": {
+      "status": "resolved",
+      "byteLength": 192,
+      "sha256": "4b57eb5a17ba0f539e372117e84310a929fd7be45aa6b7bd8c939142113df6f1",
+      "entry": "jp.pokemon.pokemontcgp.apk!assets/bin/Data/boot.config"
+    },
+    "globalGameManagers": {
+      "status": "resolved",
+      "byteLength": 942116,
+      "sha256": "3bed94f87dc65228516dd774c15532728f4f3143b5803cd8bfd160763b446a3d",
+      "entry": "jp.pokemon.pokemontcgp.apk!assets/bin/Data/globalgamemanagers"
+    },
+    "globalMetadataPlaintext": {
+      "status": "resolved",
+      "byteLength": 33406576,
+      "sha256": "0549bbe20be1e528856ad6643c3a2252e3e101d0365c3465d2eaa299d91e7323"
+    },
+    "unityReleasePlayer": {
+      "status": "unresolved",
+      "reason": "matching Unity release player for 6000.0.69f1 has not been acquired and hash-verified"
+    },
+    "unityReleaseSymbols": {
+      "status": "unresolved",
+      "reason": "matching Unity release symbols for 6000.0.69f1 have not been acquired and hash-verified"
+    }
+  },
+  "snapshots": {
+    "masterdata": {
+      "illustrations": 3546,
+      "pokemonSha256": "7f644fef50fb64f2b9988007e795af48329c90c98f302e61524dae4b51975815",
+      "trainerSha256": "884c6aa575085c8ac548dbd902f0657d5f98ffb1a2b214e006c0c53e433fc5b2"
+    },
+    "faceBundles": {
+      "count": 3546,
+      "byteLength": 782861832,
+      "inventorySha256": "d7ee8b3f304a54deb820cd5af84419262e948737ec159409ee89401cf83e6fed",
+      "missingIllustrations": 0,
+      "missingIllustrationsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "proofSets": {
+    "materialPrograms": {
+      "status": "resolved",
+      "inventorySchema": "pocket-card-render/official-material-program-inventory@4",
+      "inventorySha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+      "materialCount": 9395,
+      "resolvedMaterialCount": 9395,
+      "shaderCount": 62,
+      "selectorCount": 77,
+      "passExecutableCount": 79,
+      "semanticExecutableCount": 77,
+      "sourceBundlesSha256": "24c4a5952afbc6603db4f75709a663e9631d594c48c172c8e75ec38cf305e055",
+      "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b",
+      "nativeVariantSelection": {
+        "unityVersion": "6000.0.69f1",
+        "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+        "sampleInputSha256": "2d04f17a1c99409d394492b28a100db5ffef6c4c26cab4138afbc19cf6227b27",
+        "libunitySha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067",
+        "bootConfigSha256": "4b57eb5a17ba0f539e372117e84310a929fd7be45aa6b7bd8c939142113df6f1",
+        "computeKeywordMatchBodySha256": "5a7872d98aab22609b72c13eb26110f15c9b4cf162a34957e60bc40350ab883b",
+        "findBestMatchingBodySha256": "c2b49b0e6ddb3d8fcb929891f9f42a31d65a663d1f7b665ed90c0e6e49e57950",
+        "strictVariantGetterBodySha256": "4cfc70300fe08dd112ede2a03dc600db2497c1743314c5e6143318a8a44b3277",
+        "strictShaderVariantMatching": false,
+        "score": "popcount(requested & candidate) - 16 * popcount(candidate & ~requested)",
+        "tieBreak": "first-serialized-candidate",
+        "audit": "build/audit-candidate-shader-variant-selection.mjs",
+        "proofSha256": "92e98c9ca7b83aa56a50928f1ebe43cbe033951bffeb851838f67548f8b6370f"
+      }
+    }
+  },
+  "canonicalCorpus": {
+    "status": "unresolved",
+    "reason": "Unity 6 canonical card corpus has not been regenerated and runtime-captured"
+  }
+}

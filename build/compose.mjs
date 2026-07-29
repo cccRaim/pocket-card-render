@@ -774,6 +774,16 @@ function pokemonNameLayoutPath(cardData) {
   return `/PokemonCardUI/name_elm/${nodeName}`;
 }
 
+function pokemonNameLayoutLayers(cardData) {
+  const basePath = pokemonNameLayoutPath(cardData);
+  return cardData.isMega
+    ? [
+        { layer: "base", path: basePath },
+        { layer: "outline", path: "/PokemonCardUI/mega_name_elm/card_name_txt_outline" },
+      ]
+    : [{ layer: "base", path: basePath }];
+}
+
 function prefabTree(name) {
   const kind = name.startsWith("Pokemon") ? "pokemon" : "trainer";
   const e = prefabs.find((candidate) => candidate.kind === kind);
@@ -925,10 +935,19 @@ function composePokemonFace(cd, lc, officialDesign) {
     if (sourceText) els.push(sourceText);
   }
   els.push(...categoryElements(layout, cd.additionalCategories, lc, "/PokemonCardUI"));
-  const namePath = pokemonNameLayoutPath(cd);
-  const name = textEl(nodeByPath(namePath), nameWithoutEx(cd.name, cd.isEX), ol);
+  const localizedName = nameWithoutEx(cd.name, cd.isEX);
+  const nameLayers = pokemonNameLayoutLayers(cd).map(({ layer, path }) => {
+    const element = textEl(nodeByPath(path), localizedName, ol);
+    if (!element) {
+      throw new Error(`official Pokemon name ${layer} layer is absent at ${path}`);
+    }
+    element.autosize = true;
+    element.fsmin = element.fsmin || element.fs * 0.1;
+    return element;
+  });
+  const name = nameLayers[0];
+  const namePath = name?.layoutPath;
   if (name) {
-    name.autosize = true; name.fsmin = name.fsmin || name.fs * 0.1;
     if (cd.isEX) {
       const nameElmPath = cd.isMega
         ? "/PokemonCardUI/mega_name_elm"
@@ -975,7 +994,7 @@ function composePokemonFace(cd, lc, officialDesign) {
         els.push(icon);
       }
     }
-    els.push(name);
+    els.push(...nameLayers);
   }
   if (cd.hp) {
     const hpLabel = textEl(

@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
@@ -284,8 +285,14 @@ def audit_port(port: dict, metadata: dict, vertex_spirv: Path, spirv_cross: str)
 
 
 def run_audit(spirv_cross: str) -> dict:
+    inventory_path = Path(
+        os.environ.get("PCR_PROGRAM_INVENTORY", DEFAULT_INVENTORY)
+    ).resolve()
+    decrypted_root = Path(
+        os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)
+    ).resolve()
     contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
-    inventory = json.loads(DEFAULT_INVENTORY.read_text(encoding="utf-8-sig"))
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8-sig"))
     proof_hash = inventory["digests"]["proofGraphSha256"]
     port_hash = inventory["digests"]["portIndexSha256"]
     if contract["inventory"]["proofGraphSha256"] != proof_hash:
@@ -294,8 +301,8 @@ def run_audit(spirv_cross: str) -> dict:
         fail("program-port contract port index changed")
 
     session = SelectorProgramExtractionSession(
-        inventory_path=DEFAULT_INVENTORY,
-        decrypted_root=Path(DEFAULT_DECRYPTED_ROOT).resolve(),
+        inventory_path=inventory_path,
+        decrypted_root=decrypted_root,
         expected_proof_graph_sha256=proof_hash,
         expected_port_index_sha256=port_hash,
     )

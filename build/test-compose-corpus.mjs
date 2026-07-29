@@ -6,7 +6,8 @@ import { composeFace } from "./compose.mjs";
 import { compactOfficialUIImageState } from "../public/render/official-ugui-image.js";
 import { isIdentityUiAffine } from "../public/render/ui-affine-transform.js";
 
-const MASTER_ROOT = "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
+const MASTER_ROOT = process.env.PTCG_MASTERDATA
+  || "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
 const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
 const ASSETS = process.env.PCR_GAME_SRC
   || join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "assets");
@@ -149,10 +150,36 @@ for (const card of allCards) {
       : `/PokemonCardUI/name_elm/${
         /\r\n|\r|\n/.test(cardData.name) ? "card_name_two_line_txt" : "card_name_txt"
       }`;
+    const name = elementAt(composition, expectedNamePath);
     assert(
-      elementAt(composition, expectedNamePath),
+      name,
       `${card.IllustrationID} selected the wrong Pokemon name line variant`,
     );
+    if (cardData.isMega) {
+      const nameOutlinePath = "/PokemonCardUI/mega_name_elm/card_name_txt_outline";
+      const nameOutline = elementAt(composition, nameOutlinePath);
+      assert(nameOutline, `${card.IllustrationID} lost its official Mega name outline layer`);
+      assert.equal(name.unityLayer, 18, `${card.IllustrationID} Mega name base serialized layer`);
+      assert.equal(nameOutline.unityLayer, 17, `${card.IllustrationID} Mega name outline serialized layer`);
+      assert.equal(nameOutline.text, name.text);
+      assert.deepEqual(nameOutline.box, name.box);
+      assert.deepEqual(nameOutline.uiTransform, name.uiTransform);
+      assert.equal(nameOutline.autosize, name.autosize);
+      assert(
+        Number(nameOutline.sdf?.outlineWidth) > 0,
+        `${card.IllustrationID} Mega name outline did not resolve its official FontGroup material`,
+      );
+      assert(
+        Number(nameOutline.outline?.width) > 0,
+        `${card.IllustrationID} Mega name outline draw-op lost its official outline`,
+      );
+    } else {
+      assert.equal(
+        elementAt(composition, "/PokemonCardUI/mega_name_elm/card_name_txt_outline"),
+        undefined,
+        `${card.IllustrationID} rendered a Mega-only name outline`,
+      );
+    }
     if (cardData.isEX) {
       const ruleRoot = cardData.isMega ? "PokemoMegaExRuleView" : "PokemonExRuleView";
       const ruleNode = cardData.isMega
