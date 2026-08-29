@@ -1,10 +1,7 @@
 precision mediump float;
 precision highp int;
 
-layout(std140) uniform _43_45
-{
-    highp float _m0;
-} _45;
+uniform highp float _EmitMasking;
 
 uniform mediump sampler2D _13;
 
@@ -20,6 +17,6 @@ void main()
     _22 = _9.www * _9.xyz;
     _29 = vec4(_22.x, _22.y, _22.z, _29.w);
     _29.w = _9.w;
-    _40.w = _9.w * _45._m0;
+    _40.w = _9.w * _EmitMasking;
     _40 = vec4(vec3(0.0).x, vec3(0.0).y, vec3(0.0).z, _40.w);
 }

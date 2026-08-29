@@ -1,0 +1,186 @@
+{
+  "schema": "pocket-card-render/candidate-serialized-ui-corpus@3",
+  "schemaVersion": 3,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "exact-serialized-and-candidate-native-producers-with-runtime-state-boundary",
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "inputs": {
+    "renderTextureDetailCardViewBundle": {
+      "logicalPath": "candidate-decrypted-root/Common/UI/Prefabs/Common/CommonUICardDetailCard.prefab_bundles",
+      "byteLength": 7905,
+      "sha256": "dbde055e4b8505784e55c4a69a44382756973763e2255dfd9468431b092a0d0f"
+    },
+    "masterdata": {
+      "illustrationCount": 3546,
+      "pokemonSha256": "7f644fef50fb64f2b9988007e795af48329c90c98f302e61524dae4b51975815",
+      "trainerSha256": "884c6aa575085c8ac548dbd902f0657d5f98ffb1a2b214e006c0c53e433fc5b2"
+    },
+    "faceBundles": {
+      "count": 3546,
+      "inventorySha256": "d7ee8b3f304a54deb820cd5af84419262e948737ec159409ee89401cf83e6fed"
+    },
+    "candidateTmpFontEngine": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+      "byteLength": 17345,
+      "sha256": "7751441d1f95c3adebeea08dd6021436a49a2c13f9654e7205aa3ca813c92058"
+    },
+    "extractors": {
+      "cardUiLayout": {
+        "logicalPath": "build/extract_official_card_ui_layout.py",
+        "sha256": "8132ba3423e800b3c12ecfb9746e7d630b9a359523d14d05f5a5cbfaaa2ea32e"
+      },
+      "cardTextDesign": {
+        "logicalPath": "build/extract_official_card_text_design_contract.py",
+        "sha256": "7cdeb1672fe912c9d72641d9ecad9bd14985a26e23ff679ac234a40ef0f7cb1e"
+      },
+      "candidateUguiNative": {
+        "logicalPath": "build/extract_candidate_ugui_native.py",
+        "sha256": "b68aad3357ea2bdcdc7b45de53ab7922c10e726a001ff6dc628bd6d44e79d9af"
+      },
+      "uguiResources": {
+        "logicalPath": "build/extract_official_ugui_resources.py",
+        "sha256": "28b06f5a2a3fba271e4a300edc2ce814328cbc27032d6b0076cc77df00c4413d"
+      },
+      "cardFontContract": {
+        "logicalPath": "build/extract_official_card_font_contract.py",
+        "sha256": "b720c1ae144984de3cf9c68e13e583f9e98182d0aa3d4689b1cce9d7db848ca5"
+      },
+      "tmpSdf": {
+        "logicalPath": "build/extract_official_tmp_sdf.py",
+        "sha256": "74a685feefe32f34437a218e7b7dc29eee18de283fdde56647a4873f8c8afc01"
+      },
+      "layoutFitters": {
+        "logicalPath": "build/extract_official_layout_fitters.py",
+        "sha256": "b1c7e1a6731071f662e89bb4802ae2543a478c9b9529927c127a7cd621c33b93"
+      }
+    }
+  },
+  "artifacts": {
+    "card-ui-layout-contract.json": {
+      "logicalPath": "serialized-ui/card-ui-layout-contract.json",
+      "byteLength": 2413272,
+      "sha256": "beb0d2938a7babf8e5248637699d1e67306a83dc4f624a2188bd2a26eae344a1"
+    },
+    "card-text-design-contract.json": {
+      "logicalPath": "serialized-ui/card-text-design-contract.json",
+      "byteLength": 3725427,
+      "sha256": "85fa7c88d731711526d4b6b69b649dc286cc7ed53b0de17cf20d0d7449e49103"
+    },
+    "candidate-ugui-native-producers.json": {
+      "logicalPath": "serialized-ui/candidate-ugui-native-producers.json",
+      "byteLength": 15706,
+      "sha256": "2d8695f01671b1bff4b984f79ce34d639fe93c1c10d6106ce628196c2f2c35f4"
+    },
+    "card-ui-resource-contract.json": {
+      "logicalPath": "serialized-ui/card-ui-resource-contract.json",
+      "byteLength": 669200,
+      "sha256": "9135e66ea5738b2a3c11ef98c69a05fddbe3a3e466e571e6bf79cccf7d10c62c"
+    },
+    "card-font-contract.json": {
+      "logicalPath": "serialized-ui/card-font-contract.json",
+      "byteLength": 307867,
+      "sha256": "3cd2e82cbab3cecc882c94048b17d294af9eade5365f1935e5366312277f5fb9"
+    },
+    "tmp-sdf-program-evidence.json": {
+      "logicalPath": "serialized-ui/tmp-sdf-program-evidence.json",
+      "byteLength": 60346,
+      "sha256": "4a8eda87556134f3271ee06c01c0fd86a69a6a48a720aa64a14ff12f5784027a"
+    },
+    "official-layout-fitters.json": {
+      "logicalPath": "serialized-ui/official-layout-fitters.json",
+      "byteLength": 242857,
+      "sha256": "772ce3d6660d4df1702602a4315bdd0cb24c15fd45c196cccb88cdbbec917902"
+    }
+  },
+  "aggregateSha256": "4e7890e3080d87b71d10f5833ca9f4a71c4c50a53f23116d54a4c6c1ba0f6065",
+  "nativeProducerProof": {
+    "status": "exact-candidate-il2cpp-control-flow",
+    "artifact": {
+      "logicalPath": "serialized-ui/candidate-ugui-native-producers.json",
+      "byteLength": 15706,
+      "sha256": "2d8695f01671b1bff4b984f79ce34d639fe93c1c10d6106ce628196c2f2c35f4"
+    },
+    "methodCount": 3,
+    "exactMethodCount": 3,
+    "controlFlowContractCount": 3,
+    "exactControlFlowContractCount": 3,
+    "runtimeStateStatus": "runtime-required"
+  },
+  "summary": {
+    "cardSettingsCount": 3546,
+    "missingIllustrationCount": 0,
+    "designSettingsCount": 98,
+    "referencedDesignSettingsCount": 89,
+    "fontConditionCount": 12,
+    "fontGroupCount": 12,
+    "selectedFontGroupCount": 10,
+    "uiRectTransformCount": 517,
+    "uiTmpComponentCount": 72,
+    "uiImageComponentCount": 314,
+    "uiCanvasRendererComponentCount": 418,
+    "uguiImageCount": 314,
+    "uguiSpriteCount": 168,
+    "uguiTextureCount": 168,
+    "fontLocaleCount": 9,
+    "fontAssetCount": 14,
+    "fontMaterialCount": 73,
+    "tmpSdfModuleCount": 2,
+    "tmpSdfTextureBindingCount": 3,
+    "layoutFitterComponentCount": 127,
+    "nativeProducerStaticStatus": "exact-candidate-il2cpp-control-flow",
+    "nativeProducerRuntimeStatus": "runtime-required",
+    "nativeProducerMethodCount": 3,
+    "exactNativeProducerMethodCount": 3,
+    "nativeProducerControlFlowContractCount": 3,
+    "exactNativeProducerControlFlowContractCount": 3,
+    "nativeFontEngineFunctionCount": 9,
+    "exactNativeFontEngineFunctionCount": 9
+  },
+  "runtimeBoundaries": [
+    {
+      "id": "card-design-native-runtime-state",
+      "status": "runtime-required",
+      "staticProducerEvidence": "serialized-ui/candidate-ugui-native-producers.json",
+      "requiredEvidence": [
+        "live CardData energy and selected FontGroupSettings",
+        "live CardDynamicUIView enumerable membership and order",
+        "Unity GameObject names and SetActive outcomes"
+      ],
+      "reason": "candidate producer bodies are exact, but live CardData, enumerable membership/order, Unity object names, and SetActive outcomes require runtime evidence"
+    },
+    {
+      "id": "unity6-tmp-fontengine",
+      "status": "runtime-required",
+      "nativeProducerStatus": "exact-candidate-native-control-flow",
+      "nativeProducerEvidence": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+      "requiredEvidence": [
+        "official guest dynamic glyph request order",
+        "official guest dynamic atlas allocation and mutation",
+        "official guest generated glyph metrics and mesh bindings",
+        "official guest TMP descriptor and uniform bindings"
+      ],
+      "reason": "candidate native SDFAA producer bodies are exact, but guest request order, atlas placement, generated mesh and submitted resources remain runtime-required"
+    },
+    {
+      "id": "candidate-tmp-sdf-dispatch",
+      "status": "runtime-required",
+      "requiredEvidence": [
+        "official guest TMP draw dispatch",
+        "descriptor/uniform bindings",
+        "generated atlas and glyph mesh resources"
+      ],
+      "reason": "glyph atlas contents, generated glyph mesh data, and per-draw resolved uniforms still require runtime evidence"
+    }
+  ]
+}

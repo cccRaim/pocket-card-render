@@ -1,0 +1,141 @@
+{
+  "schema": "pocket-card-render/candidate-guest-platform-blocker@1",
+  "schemaVersion": 1,
+  "status": "tested-platform-blocked",
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "packageName": "jp.pokemon.pokemontcgp",
+    "gameVersion": "1.7.0",
+    "versionCode": 342951,
+    "architecture": "arm64-v8a",
+    "unityVersion": "6000.0.69f1"
+  },
+  "platform": {
+    "kind": "BlueStacks-ARM-native-bridge",
+    "serialHashSha256": "6460677a198b1872315bae7231fb6131092f3569882742677a6ee620177b668b",
+    "androidSdk": 28,
+    "buildFingerprint": "samsung/p3sxxx/p3s:9/SP1A.210812.016/G998BXXU4BULF:user/release-keys",
+    "buildType": "user",
+    "productAbi": "x86_64",
+    "productAbiList": "x86_64,x86,arm64-v8a,armeabi-v7a,armeabi",
+    "nativeBridge": "libnb.so",
+    "manufacturer": "samsung",
+    "model": "SM-G998B",
+    "product": "p3sxxx",
+    "hardware": "exynos2100",
+    "rootAvailable": true,
+    "externalLayerEligible": false,
+    "targetDebuggable": false,
+    "targetInjectLayersEnabled": false
+  },
+  "installedPackage": {
+    "versionName": "1.7.0",
+    "versionCode": 342951,
+    "primaryAbi": "arm64-v8a",
+    "libunitySha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067",
+    "libil2cppSha256": "0a1ea598b11f3ea7732c80a6f4c80b8d939222b2ea87cf8707f35db26f1799d3",
+    "nativeIdentityMatchesCandidate": true
+  },
+  "crash": {
+    "buildFingerprint": "samsung/p3sxxx/p3s:9/SP1A.210812.016/G998BXXU4BULF:user/release-keys",
+    "processAbi": "x86_64",
+    "pid": 4578,
+    "tid": 4610,
+    "threadName": "UnityMain",
+    "packageName": "jp.pokemon.pokemontcgp",
+    "signalNumber": 11,
+    "signalName": "SIGSEGV",
+    "signalCode": 1,
+    "signalCodeName": "SEGV_MAPERR",
+    "faultAddress": "0xdead0000",
+    "backtrace": [
+      "#00 pc 00000000002f1ab7  /system/lib64/libhoudini.so",
+      "#01 pc 00000000001db250  /system/lib64/libhoudini.so",
+      "#02 pc 00000000000f9f66  /system/lib64/libhoudini.so",
+      "#03 pc 00000000002f6143  /system/lib64/libhoudini.so"
+    ],
+    "backtraceModules": [
+      "/system/lib64/libhoudini.so"
+    ],
+    "nativeBridgeModule": "/system/lib64/libhoudini.so",
+    "libunityBuildIds": [
+      "a6a1bed477d11ce3"
+    ],
+    "gfxreconstructMapped": false
+  },
+  "cleanRestartLog": {
+    "candidateUnityVersionObserved": true,
+    "candidatePackageObserved": true,
+    "vulkanInitializationObserved": true,
+    "sigsegvObserved": true,
+    "tokioRuntimeThreadObserved": true,
+    "gfxreconstructInitializationObserved": false,
+    "selectedLines": [
+      "07-30 09:15:31.219  2000  2183 I ActivityManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=jp.pokemon.pokemontcgp/com.unity3d.player.UnityPlayerActivity} from uid 2000",
+      "07-30 09:15:38.196  3874  3911 I Unity   : ApplicationInfo 'jp.pokemon.pokemontcgp', Version '1.7.0', Min API Level '24', Target API Level '36'",
+      "07-30 09:15:38.196  3874  3911 I Unity   : Built from '6000.0/staging' branch, Version '6000.0.69f1 (5f8607f5118b)', Build type 'Release', Scripting Backend 'il2cpp', CPU 'arm64-v8a', Stripping 'Enabled'",
+      "07-30 09:15:40.077  3874  3911 E eglCodecCommon: vulkan config = [true]",
+      "07-30 09:15:40.092  3874  3911 D vulkan  : searching for layers in '/data/app/jp.pokemon.pokemontcgp-2sjkcrl_05tAfEFqkUmRGg==/lib/arm64'",
+      "07-30 09:15:40.092  3874  3911 D vulkan  : searching for layers in '/data/app/jp.pokemon.pokemontcgp-2sjkcrl_05tAfEFqkUmRGg==/base.apk!/lib/arm64-v8a'",
+      "07-30 09:15:40.093  3874  3911 D vulkan  : searching for layers in '/data/app/jp.pokemon.pokemontcgp-2sjkcrl_05tAfEFqkUmRGg==/split_bundledtree.apk!/lib/arm64-v8a'",
+      "07-30 09:15:40.097  3874  3911 D vulkan  : searching for layers in '/data/app/jp.pokemon.pokemontcgp-2sjkcrl_05tAfEFqkUmRGg==/split_config.arm64_v8a.apk!/lib/arm64-v8a'",
+      "07-30 09:15:48.185  3874  4316 E CRASH   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***",
+      "07-30 09:15:48.185  3874  4316 E CRASH   : Version '6000.0.69f1 (5f8607f5118b)', Build type 'Release', Scripting Backend 'il2cpp', CPU 'arm64-v8a', Stripping 'Enabled'",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : Build fingerprint: 'samsung/p3sxxx/p3s:9/SP1A.210812.016/G998BXXU4BULF:user/release-keys'",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : Revision: '0'",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : ABI: 'arm64'",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : Timestamp: 2026-07-30 09:15:48.186192206+0900",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : pid: 3874, tid: 4316, name: tokio-runtime-w  >>> jp.pokemon.pokemontcgp <<<",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : uid: 10066",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr --------",
+      "07-30 09:15:48.186  3874  4316 E CRASH   : Cause: null pointer dereference",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x0  0000000000040000  x1  0000753d702d9720  x2  0000000000002020  x3  0000000000000022",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x4  00000000ffffffff  x5  0000000000000000  x6  be4d8023a5f6f3cf  x7  839fb0b2531f0020",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x8  0000000000000000  x9  0000753e0ffcd000  x10 0000000002044c10  x11 0000753e0fd88000",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x12 0000000000040000  x13 0000753e0ffccf78  x14 0000000000000270  x15 0000753e46ce4000",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x16 0000753e46cf8038  x17 000000000b383734  x18 0000000000000001  x19 0000000000040000",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x20 0000753e0fdb9000  x21 0000000000004c10  x22 0000753e0fdbaa38  x23 0000753e0ffcd000",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x24 0000753e0ffcd000  x25 0000753e0fd88000  x26 0000753e0ffcc000  x27 0000753d7bfce0b0",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     x28 0000753d7bfcdfc0  x29 0000753d7bfce320",
+      "07-30 09:15:48.186  3874  4316 E CRASH   :     lr  0000753e0ae7c2e0  sp  0000753d7bfcdb80  pc  0000753e0ae4c074  pst 0000000000000000",
+      "07-30 09:15:48.284  2000  3779 I ActivityManager: Process jp.pokemon.pokemontcgp (pid 3874) has died: vis  +99TOP "
+    ]
+  },
+  "source": {
+    "tombstone": {
+      "logicalId": "BlueStacks Pie64 /data/tombstones/tombstone_04",
+      "byteLength": 836437,
+      "sha256": "665d3e236873d6e68e411930e36b61ea07d2221955cd10133659f8b8d6358f05"
+    },
+    "logcat": {
+      "logicalId": "clean post-reboot candidate launch logcat",
+      "byteLength": 397287,
+      "sha256": "4d72df62bc3454c285162c0889d85c177347b1732c4164726113896d12cf994c"
+    }
+  },
+  "scope": {
+    "testedPlatformOnly": true,
+    "closesOfficialGuestRuntime": false,
+    "closesNativeDeviceDisplay": false,
+    "createsCaptureData": false,
+    "fidelityContribution": 0,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false
+  },
+  "blocker": {
+    "id": "bluestacks-houdini-unity6-candidate-crash",
+    "status": "external-platform-blocker",
+    "reason": "the hash-matched ARM64 candidate crashes inside the x86_64 libhoudini native bridge before a stable captureable card frame",
+    "remediation": "use a real ARM64 device or an eng/userdebug ARM64 environment that can run the candidate and authorize an external Vulkan layer"
+  },
+  "limitations": [
+    "this proves only that the tested BlueStacks Pie64 environment is unsuitable",
+    "it does not prove that the official game crashes on a real ARM64 device",
+    "it does not provide a guest Vulkan capture, descriptor, uniform, attachment, vertex, compositor or display fact",
+    "it contributes zero units to official shader restoration or game fidelity"
+  ],
+  "proofSha256": "6441e3bbd3aac760af0ea5611bdb5b317267bf7e3816301bd64ec24193ac6306"
+}

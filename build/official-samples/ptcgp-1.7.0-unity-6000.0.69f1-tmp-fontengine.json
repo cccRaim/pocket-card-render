@@ -1,0 +1,454 @@
+{
+  "schema": "pocket-card-render/candidate-tmp-fontengine-report@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1",
+    "playerBuildVersion": "6000.0.69f1_5f8607f5118b"
+  },
+  "scope": {
+    "status": "exact-candidate-native-producer-with-guest-output-boundary",
+    "nativeProducer": "exact-candidate-native-control-flow",
+    "guestDynamicAtlas": "runtime-required",
+    "guestGlyphMeshAndBindings": "runtime-required",
+    "baselineUnity2022EvidenceReused": false,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "tools": {
+    "extractor": {
+      "logicalPath": "build/extract_candidate_tmp_fontengine.py",
+      "byteLength": 19378,
+      "sha256": "32d86c0c91c627e32816ead41bb5ac21079408c34d220adf9f3e7c6738ba6f7f"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-tmp-fontengine-report.mjs",
+      "byteLength": 8552,
+      "sha256": "31150636bb678c540a9a56af0452b1526a9fe01a04095fbdb881f79b42d400e4"
+    }
+  },
+  "sources": {
+    "arm64Split": {
+      "byteLength": 191465137,
+      "sha256": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984"
+    },
+    "gameLibunity": {
+      "byteLength": 21722400,
+      "sha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067"
+    },
+    "releasePlayer": {
+      "byteLength": 26943064,
+      "sha256": "b058c0ba533ab14a9615610a962d738c783a7061cd4276753bfdbf36bc6d1029"
+    },
+    "releaseSymbols": {
+      "byteLength": 12579536,
+      "sha256": "98d6235fb72048bd065a3ddc7a6d336cf2be11a4c998e21dd6ad4ff06ddd6989"
+    }
+  },
+  "nativeProducer": {
+    "status": "exact-candidate-native-producer-chain",
+    "normalization": "mask relocation-owned BL/ADR/ADRP/literal/load-store/ADD-SUB immediates; preserve unconditional B and prove the RenderGlyphToTextureJob literal-load thunk/rejoin",
+    "functions": [
+      {
+        "id": "setPixelSizeAndUpsampling",
+        "symbol": "_ZN8TextCore30SetPixelSizeAndUpSamplingValueENS_10RenderModeERi",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd3bbf4",
+        "gameRva": "0xa2f4b4",
+        "byteSize": 208,
+        "releaseBodySha256": "71ed96d9268c1ece1c9a553f3a1c0897fdb9d70803dc7f23c147f2da72c20d26",
+        "gameBodySha256": "eb86b27d7f6cf260134e667b98bbe34c9f00db6f3c3dd85da6b20d59aa115a1d",
+        "normalizedShapeSha256": "e6ee01a8b28eb720a9db3fd03c6df75ee73e858fd2367809f84a6b67f145ee63",
+        "wholeFunctionExact": false
+      },
+      {
+        "id": "loadGlyphSlot",
+        "symbol": "_ZN8TextCore17Load_FT_GlyphSlotENS_10RenderModeEjR10FT_Bitmap_RKP16FT_GlyphSlotRec_RiS7_RbRhi",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd3bdb4",
+        "gameRva": "0xa2f674",
+        "byteSize": 624,
+        "releaseBodySha256": "0f3e5851809e5b54ddf2f1354a0e2766eb488c38adc5f8668a62d7a013f8b6cd",
+        "gameBodySha256": "67d4b0e5108aba1b70fde9116ce9ffd855eff4710eca7bdf5b2c37afe1acf0ae",
+        "normalizedShapeSha256": "b909cc42e490b8b113bf8b4e3b1fed4f669c82c4063c4dd3c745fce9404da41b",
+        "wholeFunctionExact": false
+      },
+      {
+        "id": "copyGlyphSlotToTexture",
+        "symbol": "_ZN8TextCore31Copy_FT_GlyphSlot_DataToTextureENS_10RenderModeEPNS_9GlyphRectEPhiP10FT_Bitmap_iiiih",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd3c024",
+        "gameRva": "0xa2f8e4",
+        "byteSize": 460,
+        "releaseBodySha256": "c6ae0fa422cce989465ce7c49656e836313c98cb8ba626caa41a266d0ba5db4d",
+        "gameBodySha256": "c6ae0fa422cce989465ce7c49656e836313c98cb8ba626caa41a266d0ba5db4d",
+        "normalizedShapeSha256": "06c5530458afa16360b458136d56e0022044e245b956590494dbae7337242159",
+        "wholeFunctionExact": true
+      },
+      {
+        "id": "generateSdf",
+        "symbol": "_ZN8TextCore12Generate_SDFEPhiS0_iiiiii",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd3c1f0",
+        "gameRva": "0xa2fab0",
+        "byteSize": 564,
+        "releaseBodySha256": "40b882d7a4ff5d97c0fe5f0988e4a0e946bf4853dbba5fe075c9fc04187cb9d3",
+        "gameBodySha256": "822fda092be999c52c6231d863e8b3e5bc7808d9787a8040a32e7e4904c07916",
+        "normalizedShapeSha256": "34787182879ff8e168a1806239e2f9f7039347c5539ebd1fada749afa869b827",
+        "wholeFunctionExact": false
+      },
+      {
+        "id": "generate3x3AaEdt",
+        "symbol": "_ZN8TextCore17Generate_3X3AAEDTEPhiiiS0_iiii",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd3c424",
+        "gameRva": "0xa2fce4",
+        "byteSize": 532,
+        "releaseBodySha256": "0309b5412f51b53a4ee0c56772176949561562dc6e53f88b0f71776fcbb6266c",
+        "gameBodySha256": "cb283110afd74d4d8aadaf4e27b53f8fe66ccdac71952c1b87f6a8684bd3d31d",
+        "normalizedShapeSha256": "a1acecdd8d05a418aceb062f089454ea8c0223b58e5734d40e05c814722d7e29",
+        "wholeFunctionExact": false
+      },
+      {
+        "id": "renderGlyphToTextureJob",
+        "symbol": "_ZN8TextCore23RenderGlyphToTextureJobEPNS_18RenderGlyphJobDataE",
+        "status": "exact-normalized-shape-with-literal-load-thunk",
+        "releaseRva": "0xd3ccd0",
+        "gameRva": "0xa2fef8",
+        "byteSize": 424,
+        "releaseBodySha256": "6c642eb1671798b5a2be5748805555fa9aa3bb8507c58eb27f205bab2d5fcf6e",
+        "gameBodySha256": "9d6146832c2bb717cf96583618fe73ccf55082d3c366febefe19cb7d9da5079a",
+        "normalizedSemanticShapeSha256": "70a89d26c544e9a52b94921757993875f3371e760e6c2f6121893fb66c80b063",
+        "copyCall": {
+          "rva": "0xa2ff9c",
+          "relativeOffset": "0xa4",
+          "text": "bl #0xa2f8e4",
+          "bytesHex": "52feff97",
+          "byteLength": 4,
+          "sha256": "6384cca0a82f6d2cd847d76f711fb2f348be2608c6e088215a60c8edde033c86"
+        },
+        "literalLoadThunk": {
+          "branch": {
+            "rva": "0xa30004",
+            "relativeOffset": "0x10c",
+            "text": "b #0x1453cb0",
+            "bytesHex": "2b8f2814",
+            "byteLength": 4,
+            "sha256": "e9b3c950a45090cc017bf8c021e8f4397f916e09b260351ff3b38aed610e3d43"
+          },
+          "targetRva": "0x1453cb0",
+          "load": {
+            "rva": "0x1453cb0",
+            "relativeOffset": "0x0",
+            "text": "ldr q0, [x10, #0xbd0]",
+            "bytesHex": "40f5c23d",
+            "byteLength": 4,
+            "sha256": "ac704d6f1a6e2d43faf90d555c92d4e9979938814fbe792d94ef000d6c3f1486"
+          },
+          "rejoin": {
+            "rva": "0x1453cb4",
+            "relativeOffset": "0x4",
+            "text": "b #0xa30008",
+            "bytesHex": "d570d717",
+            "byteLength": 4,
+            "sha256": "330f857f62265d6fd5dc314bd9ce3dd5802ba46b1b16b125817960d8e51325ee"
+          },
+          "status": "exact-out-of-line-literal-load-and-rejoin"
+        }
+      },
+      {
+        "id": "computeEdgeGradient",
+        "symbol": "_ZN8TextCore19ComputeEdgeGradientEPNS_5PixelEPhiii",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd42e04",
+        "gameRva": "0xa32744",
+        "byteSize": 392,
+        "releaseBodySha256": "e38be3deacc04e2268d7b4f97ca84e3185eb383921c9617d4dc32180e3bf51e0",
+        "gameBodySha256": "d94e4a3e8d85ee5e52d523541ab634d44a5475d80fadcc24793562efbb887469",
+        "normalizedShapeSha256": "8bba74878458727ac7e700453051b18cd6e2b8a4e84c9779d03c922febf0b484",
+        "wholeFunctionExact": false
+      },
+      {
+        "id": "approximateEdgeDelta",
+        "symbol": "_ZN8TextCore20ApproximateEdgeDeltaEfff",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd42f8c",
+        "gameRva": "0xa328cc",
+        "byteSize": 192,
+        "releaseBodySha256": "b2b1b5826da197a0ce5b4273e7c2e1a10c5db4818163045a803d5a93ec6b3fd8",
+        "gameBodySha256": "b2b1b5826da197a0ce5b4273e7c2e1a10c5db4818163045a803d5a93ec6b3fd8",
+        "normalizedShapeSha256": "b2b1b5826da197a0ce5b4273e7c2e1a10c5db4818163045a803d5a93ec6b3fd8",
+        "wholeFunctionExact": true
+      },
+      {
+        "id": "calculate3x3AaEdt",
+        "symbol": "_ZN8TextCore17Calculate3x3AAEDTEPhiiiiPNS_5PixelE",
+        "status": "exact-normalized-instruction-shape",
+        "releaseRva": "0xd4304c",
+        "gameRva": "0xa3298c",
+        "byteSize": 2004,
+        "releaseBodySha256": "55c33cf4b4d2aa4633a3eec3d60e81d46ec26ac5e375db09b12fe1bb66407e7a",
+        "gameBodySha256": "55c33cf4b4d2aa4633a3eec3d60e81d46ec26ac5e375db09b12fe1bb66407e7a",
+        "normalizedShapeSha256": "bbcca465496bc1a499231960b637b1b7861b82657a0aa0f8abe944612ea5cc3a",
+        "wholeFunctionExact": true
+      }
+    ]
+  },
+  "facts": {
+    "dynamicAtlasRenderMode": {
+      "decimal": 4165,
+      "hex": "0x1045",
+      "selectedInstructionChecks": [
+        {
+          "rva": "0xa2f730",
+          "relativeOffset": "0xbc",
+          "text": "mov w9, #0x1045",
+          "bytesHex": "a9088252",
+          "byteLength": 4,
+          "sha256": "8a1b6cd29c12cd3dc6c31f088083e539aa1c7b86cc00546371b5957ef09ecd97"
+        },
+        {
+          "rva": "0xa2f734",
+          "relativeOffset": "0xc0",
+          "text": "cmp w8, w9",
+          "bytesHex": "1f01096b",
+          "byteLength": 4,
+          "sha256": "a01b352d515aef1b58047c226463031d82d17219a1f63d8f6359d7e294ae3e49"
+        },
+        {
+          "rva": "0xa2f740",
+          "relativeOffset": "0xcc",
+          "text": "mov w2, #6",
+          "bytesHex": "c2008052",
+          "byteLength": 4,
+          "sha256": "6b5b29dc14919785096fb34af8608a89a4313f8b52c67dfd71ba734fa4bd7685"
+        }
+      ]
+    },
+    "glyphLoadFlags": 6,
+    "glyphSlotCopy": {
+      "dynamicAtlasTarget": "generate3x3AaEdt",
+      "freeTypeSdfTarget": "generateSdf",
+      "selectedInstructionChecks": [
+        {
+          "rva": "0xa2fa08",
+          "relativeOffset": "0x124",
+          "text": "b #0xa2fce4",
+          "bytesHex": "b7000014",
+          "byteLength": 4,
+          "sha256": "87e0f5a9f528901a1358727e06b37b78f36f836eb0ef055de5218c8a538d1aaf"
+        },
+        {
+          "rva": "0xa2fa98",
+          "relativeOffset": "0x1b4",
+          "text": "b #0xa2fab0",
+          "bytesHex": "06000014",
+          "byteLength": 4,
+          "sha256": "d9d0ef4ab4751094b71c55b6991f36ad1ac5437a4f3be46d82d552737ac4f0b5"
+        }
+      ]
+    },
+    "renderJobCallsGlyphSlotCopy": {
+      "value": true,
+      "instruction": {
+        "rva": "0xa2ff9c",
+        "relativeOffset": "0xa4",
+        "text": "bl #0xa2f8e4",
+        "bytesHex": "52feff97",
+        "byteLength": 4,
+        "sha256": "6384cca0a82f6d2cd847d76f711fb2f348be2608c6e088215a60c8edde033c86"
+      }
+    },
+    "distanceTransform": {
+      "generator": "generate3x3AaEdt",
+      "calculator": "calculate3x3AaEdt",
+      "edgeGradient": "computeEdgeGradient",
+      "edgeDelta": "approximateEdgeDelta",
+      "edgeDeltaCallCount": 9,
+      "edgeGradientCallCount": 1,
+      "edgeDeltaCalls": [
+        {
+          "rva": "0xa32b44",
+          "relativeOffset": "0x1b8",
+          "text": "bl #0xa328cc",
+          "bytesHex": "62ffff97",
+          "byteLength": 4,
+          "sha256": "941c6910823be5db1c4c2f1bced8b077cc8a4259d1b473d9be2ba660b96ec582"
+        },
+        {
+          "rva": "0xa32bc0",
+          "relativeOffset": "0x234",
+          "text": "bl #0xa328cc",
+          "bytesHex": "43ffff97",
+          "byteLength": 4,
+          "sha256": "edfcde0a0c4aafc784c80d07e9566f3395d4834652c921949b65c443d83046ac"
+        },
+        {
+          "rva": "0xa32c3c",
+          "relativeOffset": "0x2b0",
+          "text": "bl #0xa328cc",
+          "bytesHex": "24ffff97",
+          "byteLength": 4,
+          "sha256": "908c09adc4e15fd86b50cb11179c66c484dbb9977e05d3350598b0f7b557abd1"
+        },
+        {
+          "rva": "0xa32ccc",
+          "relativeOffset": "0x340",
+          "text": "bl #0xa328cc",
+          "bytesHex": "00ffff97",
+          "byteLength": 4,
+          "sha256": "f9b166ff43aebb0d70272bff2741276cd2c13c82966b737c734ffcd277326620"
+        },
+        {
+          "rva": "0xa32d3c",
+          "relativeOffset": "0x3b0",
+          "text": "bl #0xa328cc",
+          "bytesHex": "e4feff97",
+          "byteLength": 4,
+          "sha256": "f02d4541c49099f05ac3858dedd95988ad83bef17ff036eacd42dd346b5e7917"
+        },
+        {
+          "rva": "0xa32ecc",
+          "relativeOffset": "0x540",
+          "text": "bl #0xa328cc",
+          "bytesHex": "80feff97",
+          "byteLength": 4,
+          "sha256": "77d548f0bb4b3d63452a1cc34aa518189a7bbc8b6160d777206061c565ed6e1e"
+        },
+        {
+          "rva": "0xa32f74",
+          "relativeOffset": "0x5e8",
+          "text": "bl #0xa328cc",
+          "bytesHex": "56feff97",
+          "byteLength": 4,
+          "sha256": "e7638c40fbd64099cb18ff79a78c26cdda464fc2bbfb350058a033fb36a5a64f"
+        },
+        {
+          "rva": "0xa32fec",
+          "relativeOffset": "0x660",
+          "text": "bl #0xa328cc",
+          "bytesHex": "38feff97",
+          "byteLength": 4,
+          "sha256": "03d551e7a70f3009348d0045fa419ed19377fcdeda09684b6c8ffecb49cac3aa"
+        },
+        {
+          "rva": "0xa330a0",
+          "relativeOffset": "0x714",
+          "text": "bl #0xa328cc",
+          "bytesHex": "0bfeff97",
+          "byteLength": 4,
+          "sha256": "4a99ce8b731324d6d15fdb6487f899822f19a349afae1851b68d092273379868"
+        }
+      ],
+      "edgeGradientCalls": [
+        {
+          "rva": "0xa32d2c",
+          "relativeOffset": "0x3a0",
+          "text": "bl #0xa32744",
+          "bytesHex": "86feff97",
+          "byteLength": 4,
+          "sha256": "2a2db0f3fa5000dd36b64778c063b84f987ffef4328e055e5b14f33b70a98cd1"
+        }
+      ],
+      "pixelStrideBytes": 32,
+      "outputCenter": 127,
+      "outputScaleFormula": "255 / (2 * padding + 2)",
+      "rounding": "add 0.5 then fcvtzs",
+      "selectedInstructionChecks": [
+        {
+          "rva": "0xa2fe54",
+          "relativeOffset": "0x170",
+          "text": "fsqrt s3, s3",
+          "bytesHex": "63c0211e",
+          "byteLength": 4,
+          "sha256": "2f1f02a19654b7fd977b1f6db4642d293209c12faa3c69d38168cf8d10759984"
+        },
+        {
+          "rva": "0xa2fe60",
+          "relativeOffset": "0x17c",
+          "text": "fmul s3, s0, s3",
+          "bytesHex": "0308231e",
+          "byteLength": 4,
+          "sha256": "0ed682253ecb4bcd0bc5ae0d542896881bb7381ca4fbbf1e16b6f9fe3c520d1e"
+        },
+        {
+          "rva": "0xa2fe64",
+          "relativeOffset": "0x180",
+          "text": "fminnm s3, s3, s4",
+          "bytesHex": "6378241e",
+          "byteLength": 4,
+          "sha256": "bcaafcf7d74b60b32eb8dc84bfc84d1312df23e6a42967c4e5cbc56c7914c987"
+        },
+        {
+          "rva": "0xa2fe68",
+          "relativeOffset": "0x184",
+          "text": "fmaxnm s3, s3, s1",
+          "bytesHex": "6368211e",
+          "byteLength": 4,
+          "sha256": "deb9919935d35733e212d33fea57b132e4b3a76ed6deeadd59520be73477a778"
+        },
+        {
+          "rva": "0xa2fe6c",
+          "relativeOffset": "0x188",
+          "text": "fsub s3, s4, s3",
+          "bytesHex": "8338231e",
+          "byteLength": 4,
+          "sha256": "9a0cb031df63b5c0580ce8242e2540de631cc6a5f7ebfcd54f7b6418da2e745b"
+        },
+        {
+          "rva": "0xa2fe78",
+          "relativeOffset": "0x194",
+          "text": "fsqrt s3, s3",
+          "bytesHex": "63c0211e",
+          "byteLength": 4,
+          "sha256": "2f1f02a19654b7fd977b1f6db4642d293209c12faa3c69d38168cf8d10759984"
+        },
+        {
+          "rva": "0xa2fe90",
+          "relativeOffset": "0x1ac",
+          "text": "fadd s3, s3, s4",
+          "bytesHex": "6328241e",
+          "byteLength": 4,
+          "sha256": "bbb2a9b699bcd56604986df1b1b4d2a88fe569b080542b5035fc252aaaa07d8c"
+        },
+        {
+          "rva": "0xa2fe94",
+          "relativeOffset": "0x1b0",
+          "text": "fadd s3, s3, s2",
+          "bytesHex": "6328221e",
+          "byteLength": 4,
+          "sha256": "c7284f3ec66a41d7a275c4378a16d6f229d713504dabc6dc64ae3f1b266a8d58"
+        },
+        {
+          "rva": "0xa2fea4",
+          "relativeOffset": "0x1c0",
+          "text": "fcvtzs w0, s3",
+          "bytesHex": "6000381e",
+          "byteLength": 4,
+          "sha256": "61dd80c45c1918a02b02df482afbe3f81ca6bb1b1a9f136d083c4ff9d79c0d30"
+        }
+      ]
+    }
+  },
+  "runtimeBoundary": {
+    "status": "runtime-required",
+    "requiredEvidence": [
+      "official guest dynamic glyph request order",
+      "official guest dynamic atlas allocation and mutation",
+      "official guest generated glyph metrics and mesh bindings",
+      "official guest TMP descriptor and uniform bindings"
+    ],
+    "reason": "exact Unity 6 native SDFAA producer bodies do not prove which glyphs the guest requests, atlas placement, generated mesh data or submitted GPU resources"
+  },
+  "summary": {
+    "nativeFunctionCount": 9,
+    "exactNativeFunctionCount": 9,
+    "wholeFunctionExactCount": 3,
+    "literalLoadThunkFunctionCount": 1
+  }
+}

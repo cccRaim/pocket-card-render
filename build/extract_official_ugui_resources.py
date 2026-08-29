@@ -30,14 +30,17 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DECRYPTED_ROOT = Path(
     "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted"
 )
-UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
 SCHEMA = "pocket-card-render/official-ugui-resources@1"
 PREFABS = {
     "pokemon": Path("Common/CardNew/System/Prefabs/PokemonCardUI.prefab_bundles"),
     "trainer": Path("Common/CardNew/System/Prefabs/TrainersCardUI.prefab_bundles"),
 }
 
-UnityPy.config.FALLBACK_UNITY_VERSION = UNITY_VERSION
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
 
 
@@ -288,10 +291,14 @@ def locate_complete(
     raise RuntimeError(f"could not locate official {role} CABs: {', '.join(sorted(unresolved))}")
 
 
-def extract(decrypted_root: Path) -> dict:
+def extract(
+    decrypted_root: Path,
+    unity_version: str = DEFAULT_UNITY_VERSION,
+) -> dict:
     decrypted_root = decrypted_root.resolve()
     if not decrypted_root.is_dir():
         raise RuntimeError(f"decrypted root does not exist: {decrypted_root}")
+    UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
     index = OfficialBundleIndex(decrypted_root)
 
     prefabs = []
@@ -353,7 +360,7 @@ def extract(decrypted_root: Path) -> dict:
     return {
         "schema": SCHEMA,
         "schemaVersion": 1,
-        "unityVersion": UNITY_VERSION,
+        "unityVersion": unity_version,
         "locator": {
             "cardBundleFiles": len(card_bundles),
             "shaderBundleFiles": len(shader_bundles),
@@ -386,9 +393,13 @@ def main() -> None:
         type=Path,
         default=Path(os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)),
     )
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
     parser.add_argument("--pretty", action="store_true")
     args = parser.parse_args()
-    result = extract(args.decrypted_root)
+    result = extract(args.decrypted_root, args.unity_version)
     print(
         json.dumps(
             result,

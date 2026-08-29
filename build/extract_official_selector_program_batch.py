@@ -150,9 +150,18 @@ def validate_request(value: dict) -> dict:
 def extract_batch(config: dict) -> dict:
     out = config["out"]
     out.parent.mkdir(parents=True, exist_ok=True)
+    inventory_header = object_value(
+        json.loads(config["inventory"].read_text(encoding="utf-8-sig")),
+        "official selector inventory",
+    )
+    unity_version = string_value(
+        inventory_header.get("unityVersion"),
+        "official selector inventory.unityVersion",
+    )
     session = SelectorProgramExtractionSession(
         inventory_path=config["inventory"],
         decrypted_root=config["decryptedRoot"],
+        unity_version=unity_version,
         expected_proof_graph_sha256=config["expectedProofGraphSha256"],
         expected_port_index_sha256=config["expectedPortIndexSha256"],
     )

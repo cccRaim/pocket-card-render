@@ -5,8 +5,11 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   CANONICAL_FULL_RUNTIME_SCENES,
+  FULL_RUNTIME_DEFINITION,
   FULL_RUNTIME_OFFICIAL_SAMPLE,
   FULL_RUNTIME_SCHEMA_VERSION,
+  fullRuntimeOfficialSampleIdentity,
+  fullRuntimeOfficialSampleIdentityMatches,
   fullRuntimeSourceIdentityMatches,
   fullRuntimeSourceFiles,
 } from "./full-runtime-sources.mjs";
@@ -24,6 +27,10 @@ import {
   compileRuntimeMaterialDispatchIndex,
   resolveRuntimeMaterialDispatch,
 } from "../public/render/runtime-dispatch-contract.js";
+import {
+  createRuntimePortAssetResolver,
+  RUNTIME_CANDIDATE_PORT_ROUTE,
+} from "./runtime-port-assets.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_ARTIFACT = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
@@ -31,19 +38,39 @@ const DEFAULT_ATTESTATION_KEY = path.join(ROOT, "$cache", "runtime-evidence-prov
 const SHA256 = /^[0-9a-f]{64}$/;
 const EXACT_UR_PLATE_SCENE = "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json";
 const BLOOM_PASS_SEQUENCE = Object.freeze([0, 1, 1, 1, 1, 1, 2, 3, 3, 4, 5]);
-const PROGRAM_PORT_CONTRACT = JSON.parse(fs.readFileSync(
-  path.join(ROOT, "public/shaders/official_program_port_contract.json"),
-  "utf8",
-));
+const RUNTIME_PORT_ASSETS = createRuntimePortAssetResolver({
+  root: ROOT,
+  definition: FULL_RUNTIME_DEFINITION,
+});
+const PROGRAM_PORT_CONTRACT = RUNTIME_PORT_ASSETS.contract;
 const RUNTIME_DISPATCH_INDEX = compileRuntimeMaterialDispatchIndex(PROGRAM_PORT_CONTRACT);
-const BLOOM_MANIFEST_BY_PORT = new Map(PROGRAM_PORT_CONTRACT.ports.map((row) => {
-  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, row.manifest), "utf8"));
+const PROGRAM_PORT_MANIFESTS = PROGRAM_PORT_CONTRACT.ports.map((row) => {
+  const manifest = row.manifest.startsWith("candidate-port:")
+    ? JSON.parse(RUNTIME_PORT_ASSETS.read(
+      `${RUNTIME_CANDIDATE_PORT_ROUTE}${row.manifest.slice("candidate-port:".length)}`,
+    ).bytes.toString("utf8"))
+    : JSON.parse(fs.readFileSync(path.join(ROOT, row.manifest), "utf8"));
   const key = officialPortIdentityKey(manifest.official_selector);
   if (!key || key !== officialPortIdentityKey(row)) {
     throw new Error(`${row.manifest}: Bloom audit port identity mismatch`);
   }
-  return [key, manifest];
-}));
+  return { key, manifest };
+});
+const BLOOM_MANIFEST_BY_PORT = new Map(
+  PROGRAM_PORT_MANIFESTS.map(({ key, manifest }) => [key, manifest]),
+);
+
+function uniqueProgramManifest(shaderKey) {
+  const matches = PROGRAM_PORT_MANIFESTS
+    .map(({ manifest }) => manifest)
+    .filter((manifest) => manifest.runtime_contract?.shader_key === shaderKey);
+  if (matches.length !== 1) {
+    throw new Error(`${shaderKey}: expected one selected runtime manifest, got ${matches.length}`);
+  }
+  return matches[0];
+}
+
+const UR_PLATE_RUNTIME_MANIFEST = uniqueProgramManifest("Card_UR_Plate");
 
 function sceneUsesCurrentBloomProducer(sceneFile) {
   const scene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", sceneFile), "utf8"));
@@ -62,8 +89,8 @@ const CANONICAL_BLOOM_SCENES = new Set(
 );
 
 const BLEND_FACTOR = Object.freeze({
-  0: "ZERO", 1: "ONE", 2: "SRC_COLOR", 3: "ONE_MINUS_SRC_COLOR",
-  4: "DST_COLOR", 5: "SRC_ALPHA", 6: "ONE_MINUS_SRC_ALPHA",
+  0: "ZERO", 1: "ONE", 2: "DST_COLOR", 3: "SRC_COLOR",
+  4: "ONE_MINUS_DST_COLOR", 5: "SRC_ALPHA", 6: "ONE_MINUS_SRC_COLOR",
   7: "DST_ALPHA", 8: "ONE_MINUS_DST_ALPHA", 9: "SRC_ALPHA_SATURATE",
   10: "ONE_MINUS_SRC_ALPHA",
 });
@@ -86,8 +113,10 @@ function sameJson(actual, expected) {
   return JSON.stringify(actual) === JSON.stringify(expected);
 }
 
-function officialStateValue(parameter, floats) {
-  const value = parameter?.name ? floats?.[parameter.name] : parameter?.val;
+function officialStateValue(parameter, floats, defaults = {}) {
+  const value = parameter?.name
+    ? floats?.[parameter.name] ?? defaults?.[parameter.name] ?? parameter?.val
+    : parameter?.val;
   return Number.isFinite(Number(value)) ? Number(value) : null;
 }
 
@@ -95,6 +124,10 @@ function validateUrPlateRuntimeDraw(draw, recipe, manifest, prefix, errors) {
   const selector = manifest?.official_selector;
   const executableIdentity = manifest?.official_executable_identity;
   const pass = manifest?.official_pass_runtime;
+  const defaults = manifest?.official_shader_property_defaults?.floats || {};
+  const stateValue = (parameter) => (
+    officialStateValue(parameter, recipe?.floats, defaults)
+  );
   if (!selector || !executableIdentity || !pass) {
     errors.push(`${prefix} exact manifest is incomplete`);
     return;
@@ -173,30 +206,37 @@ function validateUrPlateRuntimeDraw(draw, recipe, manifest, prefix, errors) {
   const blend = draw?.pipeline?.blend || {};
   const expectedBlend = pass.blend;
   const blendChecks = [
-    ["srcRgb", BLEND_FACTOR[officialStateValue(expectedBlend.src_rgb, recipe?.floats)]],
-    ["dstRgb", BLEND_FACTOR[officialStateValue(expectedBlend.dst_rgb, recipe?.floats)]],
-    ["srcAlpha", BLEND_FACTOR[officialStateValue(expectedBlend.src_alpha, recipe?.floats)]],
-    ["dstAlpha", BLEND_FACTOR[officialStateValue(expectedBlend.dst_alpha, recipe?.floats)]],
-    ["equationRgb", BLEND_OP[officialStateValue(expectedBlend.op_rgb, recipe?.floats)]],
-    ["equationAlpha", BLEND_OP[officialStateValue(expectedBlend.op_alpha, recipe?.floats)]],
+    ["srcRgb", BLEND_FACTOR[stateValue(expectedBlend.src_rgb)]],
+    ["dstRgb", BLEND_FACTOR[stateValue(expectedBlend.dst_rgb)]],
+    ["srcAlpha", BLEND_FACTOR[stateValue(expectedBlend.src_alpha)]],
+    ["dstAlpha", BLEND_FACTOR[stateValue(expectedBlend.dst_alpha)]],
+    ["equationRgb", BLEND_OP[stateValue(expectedBlend.op_rgb)]],
+    ["equationAlpha", BLEND_OP[stateValue(expectedBlend.op_alpha)]],
   ];
   if (blend.enabled !== true) errors.push(`${prefix} blend is disabled`);
   for (const [key, expected] of blendChecks) {
     if (!expected || blend[key] !== expected) errors.push(`${prefix} blend ${key} mismatch`);
   }
-  const colorMask = officialStateValue(expectedBlend.color_mask, recipe?.floats);
-  if (!sameJson(blend.colorMask, colorMask === 15 ? [true, true, true, true] : [false, false, false, false])) {
+  const colorMask = stateValue(expectedBlend.color_mask);
+  const expectedColorMask = colorMask === 15
+    ? [true, true, true, true]
+    : colorMask === 0
+      ? [false, false, false, false]
+      : null;
+  if (!expectedColorMask) {
+    errors.push(`${prefix} unsupported partial color mask ${colorMask}`);
+  } else if (!sameJson(blend.colorMask, expectedColorMask)) {
     errors.push(`${prefix} color mask mismatch`);
   }
 
-  const zTest = officialStateValue(pass.depth?.test, recipe?.floats);
-  const zWrite = officialStateValue(pass.depth?.write, recipe?.floats);
+  const zTest = stateValue(pass.depth?.test);
+  const zWrite = stateValue(pass.depth?.write);
   if (draw?.pipeline?.depth?.test !== (zTest !== 0)
     || (zTest !== 0 && draw.pipeline.depth.func !== DEPTH_FUNC[zTest])
     || draw?.pipeline?.depth?.write !== (zWrite !== 0)) {
     errors.push(`${prefix} depth state mismatch`);
   }
-  const cull = officialStateValue(pass.culling, recipe?.floats);
+  const cull = stateValue(pass.culling);
   const raster = draw?.pipeline?.raster || {};
   if (raster.cullEnabled !== (cull !== 0)
     || (cull === 2 && raster.cullFace !== "BACK")
@@ -205,17 +245,17 @@ function validateUrPlateRuntimeDraw(draw, recipe, manifest, prefix, errors) {
   }
 
   const stencil = pass.stencil;
-  const stencilFunc = officialStateValue(stencil?.generic?.comp, recipe?.floats);
+  const stencilFunc = stateValue(stencil?.generic?.comp);
   const stencilOps = ["fail", "zFail", "pass"]
-    .map((name) => officialStateValue(stencil?.generic?.[name], recipe?.floats));
+    .map((name) => stateValue(stencil?.generic?.[name]));
   const expectedStencil = {
     func: STENCIL_FUNC[stencilFunc],
-    ref: officialStateValue(stencil?.ref, recipe?.floats),
-    valueMask: officialStateValue(stencil?.read_mask, recipe?.floats),
-    writeMask: officialStateValue(stencil?.write_mask, recipe?.floats),
-    fail: STENCIL_OP[officialStateValue(stencil?.generic?.fail, recipe?.floats)],
-    depthFail: STENCIL_OP[officialStateValue(stencil?.generic?.zFail, recipe?.floats)],
-    pass: STENCIL_OP[officialStateValue(stencil?.generic?.pass, recipe?.floats)],
+    ref: stateValue(stencil?.ref),
+    valueMask: stateValue(stencil?.read_mask),
+    writeMask: stateValue(stencil?.write_mask),
+    fail: STENCIL_OP[stateValue(stencil?.generic?.fail)],
+    depthFail: STENCIL_OP[stateValue(stencil?.generic?.zFail)],
+    pass: STENCIL_OP[stateValue(stencil?.generic?.pass)],
   };
   const expectedStencilEnabled = stencilFunc !== 8 || stencilOps.some((value) => value !== 0);
   if (draw?.pipeline?.stencil?.enabled !== expectedStencilEnabled
@@ -284,6 +324,21 @@ function validatePixelSummary(summary, attachment, expectedSize, label, errors) 
     || summary.nonzeroPixels < 0 || summary.nonzeroPixels > pixelCount) {
     errors.push(`${label} nonzeroPixels is invalid`);
   }
+  if (!Number.isInteger(summary.rgbNonzeroPixels)
+    || summary.rgbNonzeroPixels < 0 || summary.rgbNonzeroPixels > pixelCount) {
+    errors.push(`${label} rgbNonzeroPixels is invalid`);
+  }
+  if (!Number.isSafeInteger(summary.rgbEnergy)
+    || summary.rgbEnergy < 0 || summary.rgbEnergy > pixelCount * 255 * 3) {
+    errors.push(`${label} rgbEnergy is invalid`);
+  }
+  if (!Number.isInteger(summary.rgbMax) || summary.rgbMax < 0 || summary.rgbMax > 255) {
+    errors.push(`${label} rgbMax is invalid`);
+  }
+  if ((summary.rgbNonzeroPixels === 0) !== (summary.rgbEnergy === 0)
+    || (summary.rgbNonzeroPixels === 0) !== (summary.rgbMax === 0)) {
+    errors.push(`${label} RGB occupancy metrics are inconsistent`);
+  }
   if (!Number.isInteger(summary.alphaNonzero)
     || summary.alphaNonzero < 0 || summary.alphaNonzero > pixelCount) {
     errors.push(`${label} alphaNonzero is invalid`);
@@ -301,7 +356,7 @@ function validatePixelSummary(summary, attachment, expectedSize, label, errors) 
   } else if (summary.bounds !== null) {
     errors.push(`${label} empty bounds must be null`);
   }
-  return summary.nonzeroPixels > 0;
+  return summary.rgbNonzeroPixels > 0 && summary.rgbEnergy > 0 && summary.rgbMax > 0;
 }
 
 function validateTransformProbeState(state, label, sourceSize, displaySize, errors) {
@@ -417,6 +472,7 @@ function validateCapture(capture, canonical, currentHashes, artifactErrors, runt
   }
 
   const diagnostics = capture.diagnostics || {};
+  const expectedSampleIdentity = fullRuntimeOfficialSampleIdentity();
   const scene = diagnostics.scene || {};
   const quality = diagnostics.quality || {};
   const surface = diagnostics.surface || {};
@@ -426,9 +482,17 @@ function validateCapture(capture, canonical, currentHashes, artifactErrors, runt
   const tmp = diagnostics.tmp || {};
 
   if (capture.scene !== canonical.file || scene.file !== canonical.file) errors.push("scene filename mismatch");
+  if (diagnostics.shaderContract?.sampleId !== expectedSampleIdentity.sampleId
+    || diagnostics.shaderContract?.sampleManifestSha256
+      !== expectedSampleIdentity.sampleManifestSha256) {
+    errors.push("shader contract official-sample identity mismatch");
+  }
   if (capture.locale !== "zh_TW" || diagnostics.locale !== "zh_TW") errors.push("locale must be zh_TW");
   if (scene.id !== canonical.cardId) errors.push("canonical card identity mismatch");
   if (scene.sha256 !== currentHashes[`public/${canonical.file}`]) errors.push("scene byte hash mismatch");
+  if (canonical.sha256 && scene.sha256 !== canonical.sha256) {
+    errors.push("scene hash differs from candidate canonical scene evidence");
+  }
   if (typeof quality.requested !== "string" || !quality.requested
     || typeof quality.selected !== "string" || !quality.selected
     || !(Number.isFinite(quality.factor) && quality.factor > 0)
@@ -647,7 +711,7 @@ export function auditFullRuntimeArtifact(artifact, { root = ROOT, attestationKey
     currentHashes = Object.fromEntries(sourceFiles.map((source) => [source, sha256(root, source)]));
     runtimeContracts = {
       scene: JSON.parse(fs.readFileSync(path.join(root, "public", EXACT_UR_PLATE_SCENE), "utf8")),
-      urPlate: JSON.parse(fs.readFileSync(path.join(root, "public/shaders/ur_plate_uniforms.json"), "utf8")),
+      urPlate: UR_PLATE_RUNTIME_MANIFEST,
     };
   } catch (error) {
     artifactErrors.push(`cannot build current source inventory: ${error.message}`);
@@ -657,6 +721,9 @@ export function auditFullRuntimeArtifact(artifact, { root = ROOT, attestationKey
   if (artifact?.schemaVersion !== FULL_RUNTIME_SCHEMA_VERSION) artifactErrors.push("unsupported schemaVersion");
   if (artifact?.kind !== "full-card-no-screenshot-runtime") artifactErrors.push("artifact kind mismatch");
   if (artifact?.officialSample !== FULL_RUNTIME_OFFICIAL_SAMPLE) artifactErrors.push("official sample mismatch");
+  if (!fullRuntimeOfficialSampleIdentityMatches(artifact)) {
+    artifactErrors.push("official sample manifest/canonical corpus identity mismatch");
+  }
   if (!fullRuntimeSourceIdentityMatches(artifact, sourceFiles, currentHashes)) {
     artifactErrors.push("runtime source inventory is incomplete or stale");
   }
@@ -686,7 +753,11 @@ export function auditFullRuntimeArtifact(artifact, { root = ROOT, attestationKey
 
   const expectedKeys = CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => `${file}|zh_TW`).sort();
   const actualKeys = Object.keys(artifact?.captures || {}).sort();
-  if (!sameStringArray(actualKeys, expectedKeys)) artifactErrors.push("capture inventory must be exactly the four canonical zh_TW scenes");
+  if (!sameStringArray(actualKeys, expectedKeys)) {
+    artifactErrors.push(
+      `capture inventory must be exactly the ${expectedKeys.length} canonical zh_TW scenes`,
+    );
+  }
   if (!sameStringArray(provenance?.captureKeys, expectedKeys)) artifactErrors.push("runtime provenance capture-key set mismatch");
   for (const [captureKey, capture] of Object.entries(artifact?.captures || {})) {
     const capturedAtMs = Date.parse(capture?.capturedAt || "");
@@ -737,7 +808,10 @@ export function auditFullRuntimeEvidence(file = process.env.PCR_FULL_RUNTIME_EVI
     file,
     validCaptureCount: 0,
     captures: [],
-    errors: ["full runtime evidence artifact is absent; capture all four canonical scenes with ?auditrt=1&lc=zh_TW"],
+    errors: [
+      `full runtime evidence artifact is absent; capture all ${CANONICAL_FULL_RUNTIME_SCENES.length}`
+      + " canonical scenes with ?auditrt=1&lc=zh_TW",
+    ],
   };
   try {
     const report = auditFullRuntimeArtifact(JSON.parse(fs.readFileSync(file, "utf8")));
@@ -774,11 +848,14 @@ function selfTest() {
     height: 2,
     pixelCount: 4,
     nonzeroPixels,
+    rgbNonzeroPixels: nonzeroPixels,
+    rgbEnergy: nonzeroPixels * 3,
+    rgbMax: nonzeroPixels ? 1 : 0,
     alphaNonzero: nonzeroPixels,
     bounds: nonzeroPixels ? [0, 0, 0, 0] : null,
     rgbaSha256: hashDigit.repeat(64),
   });
-  const urPlateManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "public/shaders/ur_plate_uniforms.json"), "utf8"));
+  const urPlateManifest = UR_PLATE_RUNTIME_MANIFEST;
   const urPlateScene = JSON.parse(fs.readFileSync(path.join(ROOT, "public", EXACT_UR_PLATE_SCENE), "utf8"));
   const [urPlateMaterialName] = Object.entries(urPlateScene.materials)
     .find(([, recipe]) => recipe.shader === "Card_UR_Plate");
@@ -898,6 +975,10 @@ function selfTest() {
       capturedAt,
       diagnostics: {
         scene: { file: canonical.file, id: canonical.cardId, sha256: sourceHashes[`public/${canonical.file}`] },
+        shaderContract: {
+          sampleId: fullRuntimeOfficialSampleIdentity().sampleId,
+          sampleManifestSha256: fullRuntimeOfficialSampleIdentity().sampleManifestSha256,
+        },
         locale: "zh_TW",
         quality: { requested: "middle", selected: "Middle", factor: 1, requestedDisplaySide: 2 },
         surface: {
@@ -970,6 +1051,7 @@ function selfTest() {
     schemaVersion: FULL_RUNTIME_SCHEMA_VERSION,
     kind: "full-card-no-screenshot-runtime",
     officialSample: FULL_RUNTIME_OFFICIAL_SAMPLE,
+    officialSampleIdentity: fullRuntimeOfficialSampleIdentity(),
     sourceFiles,
     sourceHashes,
     provenance: {
@@ -994,7 +1076,7 @@ function selfTest() {
   };
   const valid = audit(artifact);
   assert.equal(valid.status, "pass", valid.errors.join("\n"));
-  assert.equal(valid.validCaptureCount, 4);
+  assert.equal(valid.validCaptureCount, CANONICAL_FULL_RUNTIME_SCENES.length);
   assert.ok(valid.captures.every((capture) => capture.transformPairExact));
   assert.ok(Object.values(artifact.captures).every((capture) => !Object.hasOwn(capture.provenance, "sessionNonce")));
 
@@ -1060,12 +1142,46 @@ function selfTest() {
     legacyCompatible.sourceHashes[file] = "f".repeat(64);
   }
   legacyCompatible.sourceFiles.sort();
-  assert.equal(audit(resign(legacyCompatible)).status, "pass");
+  assert.equal(
+    audit(resign(legacyCompatible)).status,
+    FULL_RUNTIME_DEFINITION.sample.status === "candidate" ? "invalid" : "pass",
+  );
 
   const unknownExtra = structuredClone(artifact);
   unknownExtra.sourceFiles.push("unrelated.txt");
   unknownExtra.sourceHashes["unrelated.txt"] = "f".repeat(64);
   assert.equal(audit(resign(unknownExtra)).status, "invalid");
+
+  const wrongSampleManifest = structuredClone(artifact);
+  wrongSampleManifest.officialSampleIdentity.sampleManifestSha256 = "f".repeat(64);
+  assert.match(
+    audit(resign(wrongSampleManifest)).errors.join("\n"),
+    /official sample manifest\/canonical corpus identity mismatch/,
+  );
+
+  const wrongCanonicalCorpus = structuredClone(artifact);
+  wrongCanonicalCorpus.officialSampleIdentity.canonicalCorpus.sha256 = "f".repeat(64);
+  assert.match(
+    audit(resign(wrongCanonicalCorpus)).errors.join("\n"),
+    /official sample manifest\/canonical corpus identity mismatch/,
+  );
+
+  const missingSampleIdentity = structuredClone(artifact);
+  delete missingSampleIdentity.officialSampleIdentity;
+  const missingIdentityAudit = audit(resign(missingSampleIdentity));
+  if (FULL_RUNTIME_DEFINITION.sample.status === "baseline"
+    && !FULL_RUNTIME_DEFINITION.explicitSelection) {
+    assert.equal(
+      missingIdentityAudit.status,
+      "pass",
+      "implicit current baseline must retain legacy artifact compatibility",
+    );
+  } else {
+    assert.match(
+      missingIdentityAudit.errors.join("\n"),
+      /official sample manifest\/canonical corpus identity mismatch/,
+    );
+  }
 
   const duplicatedPose = structuredClone(artifact);
   const duplicatedCapture = duplicatedPose.captures[`${CANONICAL_FULL_RUNTIME_SCENES[0].file}|zh_TW`];
@@ -1082,6 +1198,18 @@ function selfTest() {
   const inertInvalid = audit(inertTilt);
   assert.equal(inertInvalid.status, "invalid");
   assert.match(inertInvalid.errors.join("\n"), /source card pixels did not respond/);
+
+  const opaqueBlack = structuredClone(artifact);
+  const opaqueBlackCapture =
+    opaqueBlack.captures[`${CANONICAL_FULL_RUNTIME_SCENES[0].file}|zh_TW`];
+  Object.assign(opaqueBlackCapture.source.attachments[0], {
+    rgbNonzeroPixels: 0,
+    rgbEnergy: 0,
+    rgbMax: 0,
+  });
+  const opaqueBlackInvalid = audit(opaqueBlack);
+  assert.equal(opaqueBlackInvalid.status, "invalid");
+  assert.match(opaqueBlackInvalid.errors.join("\n"), /source card MRT0 is empty/);
 
   const wrongSelector = structuredClone(artifact);
   wrongSelector.captures[`${EXACT_UR_PLATE_SCENE}|zh_TW`]
@@ -1116,7 +1244,9 @@ if (isMain) {
   } else {
     const report = auditFullRuntimeEvidence();
     console.log(`Full-card no-screenshot runtime evidence: ${report.status}`);
-    console.log(`  valid captures: ${report.validCaptureCount}/4`);
+    console.log(
+      `  valid captures: ${report.validCaptureCount}/${CANONICAL_FULL_RUNTIME_SCENES.length}`,
+    );
     for (const capture of report.captures) console.log(`  ${capture.status.padEnd(19)} ${capture.scene}|${capture.locale}`);
     for (const error of report.errors) console.log(`  ERROR ${error}`);
     if (report.status === "invalid" || (process.argv.includes("--require") && report.status !== "pass")) process.exitCode = 1;

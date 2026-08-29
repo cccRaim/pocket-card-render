@@ -9,6 +9,7 @@ import {
   buildOfficialCardExamples,
   serializeOfficialCardExamples,
 } from "./build-official-card-examples.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 import { buildScene, sceneFileName } from "./build.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -221,7 +222,7 @@ function materializeScenes(rows, args) {
       [],
       `${row.illustrationId} has unresolved exact texture bindings`,
     );
-    fs.writeFileSync(row.sceneFile, `${JSON.stringify(scene, null, 1)}\n`);
+    atomicWriteFileSync(row.sceneFile, `${JSON.stringify(scene, null, 1)}\n`);
     row.sceneAvailable = true;
     console.log(
       `[scene ${index + 1}/${pending.length}] ${row.illustrationId}`,
@@ -258,7 +259,7 @@ async function main() {
   materializeScenes(rows, args);
 
   const refreshed = buildOfficialCardExamples();
-  fs.writeFileSync(EXAMPLE_MANIFEST, serializeOfficialCardExamples(refreshed));
+  atomicWriteFileSync(EXAMPLE_MANIFEST, serializeOfficialCardExamples(refreshed));
   if (args.gather) {
     const gathered = await runProcess(process.execPath, [
       "build/gather.mjs",

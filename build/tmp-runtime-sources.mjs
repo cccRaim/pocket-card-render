@@ -1,5 +1,53 @@
 import fs from "node:fs";
 import path from "node:path";
+import {
+  FULL_RUNTIME_DEFINITION,
+  fullRuntimeOfficialSampleIdentity,
+  fullRuntimeOfficialSampleIdentityMatches,
+  loadFullRuntimeDefinition,
+  validateFullRuntimeCanonicalCorpus,
+} from "./full-runtime-sources.mjs";
+
+export const validateTmpRuntimeCanonicalCorpus = validateFullRuntimeCanonicalCorpus;
+
+export function loadTmpRuntimeDefinition({
+  root,
+  manifestPath = process.env.PCR_OFFICIAL_SAMPLE_MANIFEST,
+} = {}) {
+  return loadFullRuntimeDefinition({
+    ...(root ? { root } : {}),
+    manifestPath,
+  });
+}
+
+export const TMP_RUNTIME_DEFINITION = FULL_RUNTIME_DEFINITION;
+export const TMP_RUNTIME_OFFICIAL_SAMPLE = TMP_RUNTIME_DEFINITION.sampleLabel;
+export const TMP_RUNTIME_CANONICAL_SCENES = TMP_RUNTIME_DEFINITION.scenes;
+
+export function tmpRuntimeOfficialSampleIdentity(definition = TMP_RUNTIME_DEFINITION) {
+  return fullRuntimeOfficialSampleIdentity(definition);
+}
+
+export function tmpRuntimeOfficialSampleIdentityMatches(
+  artifact,
+  definition = TMP_RUNTIME_DEFINITION,
+) {
+  return fullRuntimeOfficialSampleIdentityMatches(artifact, definition);
+}
+
+export function tmpRuntimeExpectedCaptureKeys(definition = TMP_RUNTIME_DEFINITION) {
+  return definition.scenes.map(({ file }) => `${file}|zh_TW`).sort();
+}
+
+export function tmpRuntimeCaptureInventoryMatches(
+  artifact,
+  definition = TMP_RUNTIME_DEFINITION,
+) {
+  const expected = tmpRuntimeExpectedCaptureKeys(definition);
+  const actual = Object.keys(artifact?.captures || {}).sort();
+  return actual.length === expected.length
+    && actual.every((value, index) => value === expected[index]);
+}
 
 export const TMP_RUNTIME_LEGACY_NON_RENDER_SOURCES = Object.freeze([
   "build/audit-tmp-runtime-evidence.mjs",
@@ -56,10 +104,21 @@ function matchingFiles(root, directory, pattern) {
     .map((name) => `${directory}/${name}`);
 }
 
-export function tmpRuntimeSourceFiles(root) {
-  return [
+export function tmpRuntimeSourceFiles(root, definition = TMP_RUNTIME_DEFINITION) {
+  return [...new Set([
+    ...(definition.explicitSelection || definition.sample.status === "candidate"
+      ? [
+        definition.selectionRelative,
+        definition.manifestRelative,
+        definition.canonicalCorpusRelative,
+      ]
+      : []),
+    ...(definition.sample.status === "candidate"
+      ? [definition.canonicalScenesRelative]
+      : []),
     ...FIXED,
+    ...definition.scenes.map(({ file }) => `public/${file}`),
     ...matchingFiles(root, "public/text", /\.json$/),
     ...matchingFiles(root, "public/locales", /^card_ui\..+\.json$/),
-  ].sort();
+  ])].sort();
 }

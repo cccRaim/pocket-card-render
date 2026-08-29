@@ -4,12 +4,10 @@ import {
   link,
   mkdir,
   readFile,
-  rename,
-  rm,
   stat,
-  writeFile,
 } from "node:fs/promises";
 import path from "node:path";
+import { atomicWriteFile } from "./atomic-publish.mjs";
 
 const ASSET_BASE_URL =
   "https://prod-game-assets-app-41283.akamaized.net/Default";
@@ -78,12 +76,9 @@ async function downloadBlob(entry, outputRoot) {
   const hash = entry.blobHash.toLowerCase();
   const directory = path.join(outputRoot, "blob", hash.slice(0, 2));
   const destination = path.join(directory, `${hash}.aladin`);
-  const temporary = `${destination}.part`;
   await mkdir(directory, { recursive: true });
 
   if ((await fileSize(destination)) !== entry.blobSize) {
-    await rm(destination, { force: true });
-    await rm(temporary, { force: true });
     const url = `${ASSET_BASE_URL}/blob/${hash.slice(0, 2)}/${hash}.aladin`;
     const response = await fetch(url);
     if (!response.ok) {
@@ -95,8 +90,7 @@ async function downloadBlob(entry, outputRoot) {
         `Blob size mismatch for ${hash}: expected ${entry.blobSize}, got ${bytes.length}`,
       );
     }
-    await writeFile(temporary, bytes);
-    await rename(temporary, destination);
+    await atomicWriteFile(destination, bytes);
   }
 
   const bytes = await readFile(destination);
@@ -250,7 +244,7 @@ async function main() {
     blobs,
   };
   const manifestPath = path.join(args["output-root"], "repair-manifest.json");
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  await atomicWriteFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
   console.log(`Repair manifest: ${manifestPath}`);
   console.log(`Repair assets: ${corrupt.length}; blobs: ${blobs.length}`);
 }

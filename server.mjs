@@ -6,17 +6,31 @@
 // pipeline + their own game data); the default demo uses the prebuilt static scene.*.json.
 import { createServer } from "node:http";
 import { createHash, randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { join, extname, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
-import { tmpRuntimeSourceFiles, tmpRuntimeSourceIdentityMatches } from "./build/tmp-runtime-sources.mjs";
+import {
+  TMP_RUNTIME_CANONICAL_SCENES,
+  TMP_RUNTIME_OFFICIAL_SAMPLE,
+  tmpRuntimeOfficialSampleIdentity,
+  tmpRuntimeOfficialSampleIdentityMatches,
+  tmpRuntimeSourceFiles,
+  tmpRuntimeSourceIdentityMatches,
+} from "./build/tmp-runtime-sources.mjs";
 import {
   CANONICAL_FULL_RUNTIME_SCENES,
+  FULL_RUNTIME_DEFINITION,
   FULL_RUNTIME_OFFICIAL_SAMPLE,
   FULL_RUNTIME_SCHEMA_VERSION,
+  fullRuntimeOfficialSampleIdentity,
+  fullRuntimeOfficialSampleIdentityMatches,
   fullRuntimeSourceIdentityMatches,
   fullRuntimeSourceFiles,
 } from "./build/full-runtime-sources.mjs";
+import {
+  createRuntimePortAssetResolver,
+  RUNTIME_PORT_CONTRACT_ROUTE,
+} from "./build/runtime-port-assets.mjs";
 import {
   FULL_RUNTIME_PROVENANCE_PROTOCOL,
   manifestSetRoot,
@@ -24,6 +38,12 @@ import {
   signRuntimeArtifact,
   sourceSetRoot,
 } from "./build/runtime-evidence-provenance.mjs";
+import {
+  atomicWriteFile,
+  readOrCreateFile,
+  replaceFile,
+  withFileLock,
+} from "./build/atomic-publish.mjs";
 import { sceneExampleAvailability } from "./build/scene-example-availability.mjs";
 
 const HERE = join(fileURLToPath(new URL(".", import.meta.url)));
@@ -38,8 +58,17 @@ const FULL_RUNTIME_PROVENANCE_KEY = join(HERE, "$cache", "runtime-evidence-prove
 const FULL_RUNTIME_SCENE_MAP = new Map(CANONICAL_FULL_RUNTIME_SCENES.map((scene) => [scene.file, scene]));
 const SHA256 = /^[0-9a-f]{64}$/;
 let fullRuntimeEvidenceWrite = Promise.resolve();
+let tmpRuntimeEvidenceWrite = Promise.resolve();
+let runtimeProvenanceKeyLoad;
 const fullRuntimeSessions = new Map();
 const FULL_RUNTIME_SESSION_TTL_MS = 30 * 60 * 1000;
+const TMP_RUNTIME_SCENE_SET = new Set(
+  TMP_RUNTIME_CANONICAL_SCENES.map(({ file }) => file),
+);
+const runtimePortAssets = createRuntimePortAssetResolver({
+  root: HERE,
+  definition: FULL_RUNTIME_DEFINITION,
+});
 
 function safeDecodeRequestPath(value) {
   try {
@@ -80,7 +109,12 @@ async function serveCompose(req, res) {
 }
 
 async function readJsonIfExists(file) {
-  return JSON.parse(await readFile(file, "utf8").catch(() => "null"));
+  try {
+    return JSON.parse(await readFile(file, "utf8"));
+  } catch (error) {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 async function fullRuntimeIdentity() {
@@ -96,13 +130,18 @@ async function fullRuntimeIdentity() {
   };
 }
 
-async function runtimeProvenanceKey() {
-  await mkdir(join(HERE, "$cache"), { recursive: true });
-  const existing = await readFile(FULL_RUNTIME_PROVENANCE_KEY).catch(() => null);
-  if (existing?.length === 32) return existing;
-  const created = randomBytes(32);
-  await writeFile(FULL_RUNTIME_PROVENANCE_KEY, created, { mode: 0o600 });
-  return created;
+function runtimeProvenanceKey() {
+  runtimeProvenanceKeyLoad ??= readOrCreateFile(
+    FULL_RUNTIME_PROVENANCE_KEY,
+    () => randomBytes(32),
+    {
+      mode: 0o600,
+      validate(value) {
+        if (value.length !== 32) throw new Error("runtime provenance key has an invalid length");
+      },
+    },
+  );
+  return runtimeProvenanceKeyLoad;
 }
 
 function canonicalRuntimeUrl(rawUrl, req) {
@@ -288,32 +327,35 @@ async function readRequestJson(req, limit = 64 * 1024) {
   return JSON.parse(Buffer.concat(chunks).toString("utf8"));
 }
 
-async function recordTmpRuntimeEvidence(req, res) {
-  if (req.method !== "POST") {
-    res.writeHead(405, { allow: "POST" }).end("method not allowed");
-    return;
-  }
-  const body = await readRequestJson(req);
+async function writeTmpRuntimeEvidence(body) {
   const scene = String(body.scene || "");
   const locale = String(body.locale || "");
   const evidence = body.evidence;
-  if (!/^scene\.[\w-]+\.json$/.test(scene)
-    || !/^[a-z]{2}_[A-Z]{2}$/.test(locale)
+  if (!TMP_RUNTIME_SCENE_SET.has(scene)
+    || locale !== "zh_TW"
     || evidence?.mode !== "official-tmp-sdf-webgl"
     || !Number.isInteger(evidence.drawCount)
     || !Number.isInteger(evidence.glyphCount)
     || evidence.fallbackCount !== 0
     || !evidence.readback) {
-    res.writeHead(400).end("invalid TMP runtime evidence");
-    return;
+    throw new TypeError("invalid TMP runtime evidence");
   }
   const sourceHashes = Object.fromEntries(await Promise.all(
     tmpRuntimeSourceFiles(HERE).map(async (file) => [file, await sha256File(join(HERE, file))]),
   ));
   const previous = await readJsonIfExists(TMP_RUNTIME_EVIDENCE);
-  const artifact = previous?.schemaVersion === 1 && tmpRuntimeSourceIdentityMatches(previous.sourceHashes, sourceHashes)
+  const artifact = previous?.schemaVersion === 1
+    && previous.officialSample === TMP_RUNTIME_OFFICIAL_SAMPLE
+    && tmpRuntimeOfficialSampleIdentityMatches(previous)
+    && tmpRuntimeSourceIdentityMatches(previous.sourceHashes, sourceHashes)
     ? { ...previous, sourceHashes }
-    : { schemaVersion: 1, officialSample: FULL_RUNTIME_OFFICIAL_SAMPLE, sourceHashes, captures: {} };
+    : {
+        schemaVersion: 1,
+        officialSample: TMP_RUNTIME_OFFICIAL_SAMPLE,
+        officialSampleIdentity: tmpRuntimeOfficialSampleIdentity(),
+        sourceHashes,
+        captures: {},
+      };
   artifact.generatedAt = new Date().toISOString();
   artifact.captures[`${scene}|${locale}`] = {
     scene,
@@ -322,7 +364,29 @@ async function recordTmpRuntimeEvidence(req, res) {
     capturedAt: artifact.generatedAt,
     evidence,
   };
-  await writeFile(TMP_RUNTIME_EVIDENCE, `${JSON.stringify(artifact, null, 2)}\n`);
+  await atomicWriteFile(TMP_RUNTIME_EVIDENCE, `${JSON.stringify(artifact, null, 2)}\n`);
+}
+
+async function recordTmpRuntimeEvidence(req, res) {
+  if (req.method !== "POST") {
+    res.writeHead(405, { allow: "POST" }).end("method not allowed");
+    return;
+  }
+  const body = await readRequestJson(req);
+  const pending = tmpRuntimeEvidenceWrite.then(() => withFileLock(
+    TMP_RUNTIME_EVIDENCE,
+    () => writeTmpRuntimeEvidence(body),
+  ));
+  tmpRuntimeEvidenceWrite = pending.catch(() => {});
+  try {
+    await pending;
+  } catch (error) {
+    if (error instanceof TypeError) {
+      res.writeHead(400).end(error.message);
+      return;
+    }
+    throw error;
+  }
   res.writeHead(204, { "cache-control": "no-store" }).end();
 }
 
@@ -332,13 +396,27 @@ function validPixelSummary(value, attachment) {
     || !Number.isInteger(value.height) || value.height <= 0
     || value.pixelCount !== value.width * value.height
     || !Number.isInteger(value.nonzeroPixels) || value.nonzeroPixels < 0 || value.nonzeroPixels > value.pixelCount
+    || !Number.isInteger(value.rgbNonzeroPixels) || value.rgbNonzeroPixels < 0
+      || value.rgbNonzeroPixels > value.pixelCount
+    || !Number.isSafeInteger(value.rgbEnergy) || value.rgbEnergy < 0
+      || value.rgbEnergy > value.pixelCount * 255 * 3
+    || !Number.isInteger(value.rgbMax) || value.rgbMax < 0 || value.rgbMax > 255
     || !Number.isInteger(value.alphaNonzero) || value.alphaNonzero < 0 || value.alphaNonzero > value.pixelCount
     || !SHA256.test(value.rgbaSha256 || "")) return false;
+  if ((value.rgbNonzeroPixels === 0) !== (value.rgbEnergy === 0)
+    || (value.rgbNonzeroPixels === 0) !== (value.rgbMax === 0)) return false;
   if (value.nonzeroPixels === 0) return value.bounds === null;
   return Array.isArray(value.bounds) && value.bounds.length === 4 && value.bounds.every(Number.isInteger)
     && value.bounds[0] >= 0 && value.bounds[1] >= 0
     && value.bounds[2] >= value.bounds[0] && value.bounds[3] >= value.bounds[1]
     && value.bounds[2] < value.width && value.bounds[3] < value.height;
+}
+
+function validVisiblePixelSummary(value, attachment) {
+  return validPixelSummary(value, attachment)
+    && value.rgbNonzeroPixels > 0
+    && value.rgbEnergy > 0
+    && value.rgbMax > 0;
 }
 
 function finiteArray(value, length) {
@@ -354,15 +432,16 @@ function validTransformProbeState(value) {
     && finiteArray(value.homography, 9)
     && finiteArray(value.inverseHomography, 9)
     && Array.isArray(value.source?.attachments) && value.source.attachments.length === 2
-    && validPixelSummary(value.source.attachments[0], 0)
+    && validVisiblePixelSummary(value.source.attachments[0], 0)
     && validPixelSummary(value.source.attachments[1], 1)
-    && validPixelSummary(value.display?.attachment, 0)
+    && validVisiblePixelSummary(value.display?.attachment, 0)
     && Number.isInteger(value.localDrawCount) && value.localDrawCount > 0;
 }
 
 function validFullRuntimeCapture(body) {
   const canonical = FULL_RUNTIME_SCENE_MAP.get(body?.scene);
   const diagnostics = body?.diagnostics;
+  const officialSampleIdentity = fullRuntimeOfficialSampleIdentity();
   const display = diagnostics?.display;
   const surface = diagnostics?.surface;
   const sourceAttachments = body?.source?.attachments;
@@ -378,6 +457,9 @@ function validFullRuntimeCapture(body) {
     && body.locale === "zh_TW"
     && diagnostics?.scene?.file === canonical.file
     && diagnostics.scene.id === canonical.cardId
+    && diagnostics.shaderContract?.sampleId === officialSampleIdentity.sampleId
+    && diagnostics.shaderContract?.sampleManifestSha256
+      === officialSampleIdentity.sampleManifestSha256
     && diagnostics.locale === "zh_TW"
     && typeof diagnostics.quality?.requested === "string"
     && typeof diagnostics.quality?.selected === "string"
@@ -399,9 +481,9 @@ function validFullRuntimeCapture(body) {
     && Number.isInteger(diagnostics.tmp?.drawCount) && diagnostics.tmp.drawCount >= 0
     && Number.isInteger(diagnostics.tmp?.glyphCount) && diagnostics.tmp.glyphCount >= 0
     && Array.isArray(sourceAttachments) && sourceAttachments.length === 2
-    && validPixelSummary(sourceAttachments[0], 0)
+    && validVisiblePixelSummary(sourceAttachments[0], 0)
     && validPixelSummary(sourceAttachments[1], 1)
-    && validPixelSummary(body?.display?.attachment, 0)
+    && validVisiblePixelSummary(body?.display?.attachment, 0)
     && Array.isArray(localDraws) && localDraws.length > 0
     && localDraws.every((draw, ordinal) => draw?.ordinal === ordinal
       && typeof draw?.identity?.materialName === "string" && draw.identity.materialName
@@ -419,13 +501,22 @@ function validFullRuntimeCapture(body) {
 
 async function writeFullRuntimeCapture(body, session, identity) {
   const { sourceFiles, sourceHashes } = identity;
+  const canonicalScene = FULL_RUNTIME_SCENE_MAP.get(body.scene);
   if (body.diagnostics.scene.sha256 !== sourceHashes[`public/${body.scene}`]) {
     throw new Error("runtime scene hash does not match the current canonical scene");
   }
-  const previous = await readJsonIfExists(FULL_RUNTIME_EVIDENCE_STAGING).catch(() => null);
+  if (canonicalScene?.sha256
+    && body.diagnostics.scene.sha256 !== canonicalScene.sha256) {
+    throw new Error(
+      "runtime scene hash does not match candidate canonical scene evidence",
+    );
+  }
+  const previous = await readJsonIfExists(FULL_RUNTIME_EVIDENCE_STAGING);
+  const officialSampleIdentity = fullRuntimeOfficialSampleIdentity();
   const sourceIdentityMatches = previous?.schemaVersion === FULL_RUNTIME_SCHEMA_VERSION
     && previous.kind === "full-card-no-screenshot-runtime"
     && previous.officialSample === FULL_RUNTIME_OFFICIAL_SAMPLE
+    && fullRuntimeOfficialSampleIdentityMatches(previous)
     && previous.provenance?.batchId === session.batchId
     && previous.captures && typeof previous.captures === "object"
     && fullRuntimeSourceIdentityMatches(previous, sourceFiles, sourceHashes);
@@ -433,6 +524,7 @@ async function writeFullRuntimeCapture(body, session, identity) {
     schemaVersion: FULL_RUNTIME_SCHEMA_VERSION,
     kind: "full-card-no-screenshot-runtime",
     officialSample: FULL_RUNTIME_OFFICIAL_SAMPLE,
+    officialSampleIdentity,
     sourceFiles,
     sourceHashes,
     provenance: {
@@ -469,13 +561,12 @@ async function writeFullRuntimeCapture(body, session, identity) {
     keyId: createHash("sha256").update(key).digest("hex").slice(0, 16),
   };
   artifact.attestation.hmacSha256 = signRuntimeArtifact(artifact, key);
-  await mkdir(join(HERE, "$cache"), { recursive: true });
-  await writeFile(FULL_RUNTIME_EVIDENCE_STAGING, `${JSON.stringify(artifact, null, 2)}\n`);
+  await atomicWriteFile(
+    FULL_RUNTIME_EVIDENCE_STAGING,
+    `${JSON.stringify(artifact, null, 2)}\n`,
+  );
   if (complete) {
-    // Windows rename does not reliably replace an existing target, especially
-    // when the previous evidence file inherited a different local ACL.
-    if (process.platform === "win32") await rm(FULL_RUNTIME_EVIDENCE, { force: true });
-    await rename(FULL_RUNTIME_EVIDENCE_STAGING, FULL_RUNTIME_EVIDENCE);
+    await replaceFile(FULL_RUNTIME_EVIDENCE_STAGING, FULL_RUNTIME_EVIDENCE);
   }
 }
 
@@ -517,7 +608,10 @@ async function recordFullRuntimeEvidence(req, res) {
     res.writeHead(409).end("runtime sources changed during capture batch");
     return;
   }
-  const pending = fullRuntimeEvidenceWrite.then(() => writeFullRuntimeCapture(body, session, identity));
+  const pending = fullRuntimeEvidenceWrite.then(() => withFileLock(
+    FULL_RUNTIME_EVIDENCE,
+    () => writeFullRuntimeCapture(body, session, identity),
+  ));
   fullRuntimeEvidenceWrite = pending.catch(() => {});
   await pending;
   session.usedCaptureKeys.add(captureKey);
@@ -534,6 +628,19 @@ createServer(async (req, res) => {
     if (p === "/audit/tmp-runtime") return await recordTmpRuntimeEvidence(req, res);
     if (p === "/audit/full-runtime/session") return await createOrExtendFullRuntimeSession(req, res);
     if (p === "/audit/full-runtime") return await recordFullRuntimeEvidence(req, res);
+    if (p === RUNTIME_PORT_CONTRACT_ROUTE || p.startsWith("/runtime/candidate-port/")) {
+      const asset = runtimePortAssets.read(p);
+      if (!asset) {
+        res.writeHead(404).end("runtime port asset not found");
+        return;
+      }
+      res.writeHead(200, {
+        "content-type": MIME[asset.extension] || "application/octet-stream",
+        "cache-control": "no-store",
+      });
+      res.end(asset.bytes);
+      return;
+    }
     if (p.startsWith("/game/")) return await serveFrom(GAME, p.slice("/game/".length), res);
     if (p.startsWith("/vendor/three/")) return await serveFrom(THREE, p.slice("/vendor/three/".length), res);
     return await serveFrom(PUB, p, res);

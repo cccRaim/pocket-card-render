@@ -9,6 +9,7 @@ import {
   loadOfficialSample,
   officialSampleDigest,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -809,7 +810,7 @@ function main() {
     );
     console.log("Candidate changed-route migration subcorpus check OK");
   } else {
-    fs.writeFileSync(outputAbsolute, serialized);
+    atomicWriteFileSync(outputAbsolute, serialized);
     console.log(`wrote ${repoPath(outputAbsolute)}`);
   }
   console.log([

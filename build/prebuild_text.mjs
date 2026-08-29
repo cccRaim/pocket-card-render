@@ -1,5 +1,6 @@
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 import { composeFace } from "./compose.mjs";
 
 const root = join(import.meta.dirname, "..");
@@ -10,20 +11,6 @@ const illByCard = new Map();
 const check = process.argv.includes("--check") || process.env.PCR_TEXT_CHECK === "1";
 const localeManifest = JSON.parse(readFileSync(join(publicDir, "locales", "manifest.json"), "utf8"));
 const locales = localeManifest.locales.map((entry) => entry.lc);
-const RETRYABLE_WRITE_ERRORS = new Set(["UNKNOWN", "EBUSY", "EPERM", "EACCES"]);
-
-function writeGeneratedText(file, encoded) {
-  for (let attempt = 0; ; attempt += 1) {
-    try {
-      writeFileSync(file, encoded);
-      return;
-    } catch (error) {
-      if (attempt >= 9 || !RETRYABLE_WRITE_ERRORS.has(error?.code)) throw error;
-      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 25);
-    }
-  }
-}
-
 for (const name of sceneFiles) {
   const scene = JSON.parse(readFileSync(join(publicDir, name), "utf8"));
   const illId = scene.card?.id || "";
@@ -47,7 +34,7 @@ for (const { cardId, locale, name } of targets.sort((a, b) => a.name.localeCompa
       throw new Error(`${name} is missing or stale`);
     }
   } else {
-    writeGeneratedText(file, encoded);
+    atomicWriteFileSync(file, encoded);
   }
   count += 1;
 }

@@ -1,0 +1,750 @@
+{
+  "schema": "pocket-card-render/candidate-metadata-derivation-proof@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "exact-candidate-static-transformation",
+    "authority": "hash-verified official split APK entries and candidate ARM64 libil2cpp bytes",
+    "algorithmProof": "ARM64 operand/data extraction plus canonical AES tables and standard KAT",
+    "outputIdentityRole": "required endpoint check; not treated as algorithm provenance",
+    "il2CppDumperRole": "downstream consumer only; not used to establish the transformation",
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "tools": {
+    "extractor": {
+      "logicalPath": "build/extract_candidate_metadata_derivation.py",
+      "byteLength": 27560,
+      "sha256": "1740f8430ecdd19354610ff664c62f9a88ed207fd261b18fb8a4ef78134f7eef"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-metadata-derivation-report.mjs",
+      "byteLength": 8641,
+      "sha256": "b9ea455c0843ca4cea236dac3d3834c54a62517183569754269faaebd85f3a7d"
+    }
+  },
+  "sources": {
+    "baseApk": {
+      "byteLength": 46323142,
+      "sha256": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9"
+    },
+    "arm64Split": {
+      "byteLength": 191465137,
+      "sha256": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984"
+    },
+    "libil2cpp": {
+      "byteLength": 135778312,
+      "sha256": "0a1ea598b11f3ea7732c80a6f4c80b8d939222b2ea87cf8707f35db26f1799d3"
+    },
+    "globalMetadataEncrypted": {
+      "byteLength": 33398388,
+      "sha256": "1271f749e93ec5b05736e14483731ba47057331a5aebb4f4f5c600ee09dfa2d0"
+    },
+    "globalMetadataPlaintextExpected": {
+      "byteLength": 33406576,
+      "sha256": "0549bbe20be1e528856ad6643c3a2252e3e101d0365c3465d2eaa299d91e7323"
+    }
+  },
+  "nativeContract": {
+    "status": "exact-candidate-native-transformation-contract",
+    "locatorPolicy": "candidate-version RVA seeds locate code only; KEY8, table, prefix and counter semantics are re-extracted from hash-verified bytes",
+    "functions": {
+      "Aes128KeySchedule": {
+        "startRva": "0x3259c58",
+        "endRva": "0x3259ef4",
+        "byteLength": 668,
+        "sha256": "38da2c4cc508fd32729e6ee02c304b0b6f926e2be102e5ad5fa95558ad04422c"
+      },
+      "Aes128EncryptBlock": {
+        "startRva": "0x3259ef4",
+        "endRva": "0x325a840",
+        "byteLength": 2380,
+        "sha256": "e07661f9f0c6bc1d0c94ccbb8b1b003c09a832edf714d02747bf87c9575dc4a8"
+      },
+      "MetadataDecryptor": {
+        "startRva": "0x325a8d0",
+        "endRva": "0x325ab30",
+        "byteLength": 608,
+        "sha256": "2558739352ee6f21b728759643eec174e378b77c042ee8d9b0232565778908b4"
+      },
+      "CtrStreamReader": {
+        "startRva": "0x325ab30",
+        "endRva": "0x325acd0",
+        "byteLength": 416,
+        "sha256": "68d68fb94766ea0f4bf483a4fba92650a624a57f16c56d8864b5b97f98132746"
+      },
+      "CounterIncrement": {
+        "startRva": "0x325acd0",
+        "endRva": "0x325ae48",
+        "byteLength": 376,
+        "sha256": "d89e3e77bcb30abc242799857928426883d8046e169c12095f85ea9f585f312f"
+      },
+      "AesKeySetup": {
+        "startRva": "0x325aec4",
+        "endRva": "0x325af64",
+        "byteLength": 160,
+        "sha256": "8e8ce413cd59e051eee895377a08934c273142e47695cbbfd38a159eb74734c0"
+      },
+      "MetadataLoadCaller": {
+        "startRva": "0x326341c",
+        "endRva": "0x326358c",
+        "byteLength": 368,
+        "sha256": "ba0a74374b8a9e98f2ad71fe7c7151d8628d9f0426173f5783059df8d686bd46"
+      }
+    },
+    "selectedInstructionChecks": [
+      {
+        "label": "KEY8 low immediate",
+        "rva": "0x3263564",
+        "bytesHex": "c15d81d2",
+        "sha256": "06c6307c2c3c86df8fe036f8609014e385aaee253b496449ce2ee4418bde5dd3",
+        "instruction": "mov x1, #0xaee"
+      },
+      {
+        "label": "KEY8 bits 16..31",
+        "rva": "0x326356c",
+        "bytesHex": "01e4bcf2",
+        "sha256": "0862062dd295113fdb1e18c6e942cfb46e5a3d0112734ff069de0f489a837421",
+        "instruction": "movk x1, #0xe720, lsl #16"
+      },
+      {
+        "label": "KEY8 bits 32..47",
+        "rva": "0x3263570",
+        "bytesHex": "e144ddf2",
+        "sha256": "d682f4e1bfe977f528381b1e933cacab717245745b8f2e854102236e3ca80a51",
+        "instruction": "movk x1, #0xea27, lsl #32"
+      },
+      {
+        "label": "KEY8 bits 48..63",
+        "rva": "0x3263574",
+        "bytesHex": "01d0eff2",
+        "sha256": "2fe616c04e7400a0777ac21d3b2f7721e56abeda460e7ca8dd36549923d3fc83",
+        "instruction": "movk x1, #0x7e80, lsl #48"
+      },
+      {
+        "label": "metadata decryptor call",
+        "rva": "0x3263578",
+        "bytesHex": "d6dcff97",
+        "sha256": "3d47c9b21982f933e08231045121f0e0758a1b8232d4f3acab23ef0350611792",
+        "instruction": "bl #0x325a8d0"
+      },
+      {
+        "label": "metadata key table page",
+        "rva": "0x325a954",
+        "bytesHex": "497902f0",
+        "sha256": "361c30d04e7e73ed1e4d35bfe31d35d4208b7a49e5c662e1f79f8868438e2b16",
+        "instruction": "adrp x9, #0x8185000"
+      },
+      {
+        "label": "metadata key table offset",
+        "rva": "0x325a958",
+        "bytesHex": "29753d91",
+        "sha256": "2f2bcf6f188b2f25c753009cc45928d4e97c287f21043dc3c65f6a0ba309b0e3",
+        "instruction": "add x9, x9, #0xf5d"
+      },
+      {
+        "label": "embedded prefix length page",
+        "rva": "0x325a908",
+        "bytesHex": "487902b0",
+        "sha256": "3f47ceb74b3294f9cb2daf03262effa24802ea9f7bac52c69157fb7250b194db",
+        "instruction": "adrp x8, #0x8183000"
+      },
+      {
+        "label": "embedded prefix length offset",
+        "rva": "0x325a90c",
+        "bytesHex": "08d13b91",
+        "sha256": "bdf26f28f7f27487f747f5c019a43ad3fa826a1cf92423292234a8063137ec2c",
+        "instruction": "add x8, x8, #0xef4"
+      },
+      {
+        "label": "embedded prefix base page",
+        "rva": "0x325aa54",
+        "bytesHex": "497902b0",
+        "sha256": "46b209481a6a32b5e7f4b0dec53c59dd404cb14afbebedb246a782d5807116b6",
+        "instruction": "adrp x9, #0x8183000"
+      },
+      {
+        "label": "embedded prefix base offset",
+        "rva": "0x325aa58",
+        "bytesHex": "29e13b91",
+        "sha256": "92babe960e7f23e54e013caf4bc53b97e3cf5c77ce5bfe861e6977ddf2f18d1b",
+        "instruction": "add x9, x9, #0xef8"
+      },
+      {
+        "label": "embedded prefix data adjustment",
+        "rva": "0x325aa4c",
+        "bytesHex": "08410011",
+        "sha256": "bb48a170daff059e87c16c3173975b7b2150ca9223ffbc1b250fa67604055129",
+        "instruction": "add w8, w8, #0x10"
+      },
+      {
+        "label": "encrypted suffix size header load",
+        "rva": "0x325a8f4",
+        "bytesHex": "080140b9",
+        "sha256": "f43cd98fdc5c8c92a9e3a678c01afe02c413c1089aaef0f7242582610272d9a6",
+        "instruction": "ldr w8, [x8]"
+      },
+      {
+        "label": "encrypted suffix begins after header",
+        "rva": "0x325a900",
+        "bytesHex": "08110091",
+        "sha256": "6b59312e40fabd4757814aae2921d969dfe05bfc5fff1bc20f21db139adb2e42",
+        "instruction": "add x8, x8, #4"
+      },
+      {
+        "label": "key table byte load",
+        "rva": "0x325a960",
+        "bytesHex": "08014039",
+        "sha256": "be71312d9d91bccfda8b6115308deba8a28d3c6728a7fda465893e9ee732ac91",
+        "instruction": "ldrb w8, [x8]"
+      },
+      {
+        "label": "KEY8 repeat mask value",
+        "rva": "0x325a968",
+        "bytesHex": "ea008052",
+        "sha256": "2a7bf558cc4aeabad4038b21f9dbcc0d80807186edbd9a4f6de1071a96b94a14",
+        "instruction": "mov w10, #7"
+      },
+      {
+        "label": "KEY8 repeated over eight bytes",
+        "rva": "0x325a96c",
+        "bytesHex": "29010a0a",
+        "sha256": "eac7a1b5a464743e97132c1ba4c8a10c44386793309b9060068153ead15f893d",
+        "instruction": "and w9, w9, w10"
+      },
+      {
+        "label": "key derivation XOR",
+        "rva": "0x325a980",
+        "bytesHex": "0801094a",
+        "sha256": "f80dc45179cb1731eeb5cbd8d466eafa695e179f5fb928d1fd57bbf6d0b4eebf",
+        "instruction": "eor w8, w8, w9"
+      },
+      {
+        "label": "derived key byte store",
+        "rva": "0x325a990",
+        "bytesHex": "28010039",
+        "sha256": "e38a5be2e6e2c67a57f0e37b0bbc7c90d965c01112c7a684cd5d902a62bde508",
+        "instruction": "strb w8, [x9]"
+      },
+      {
+        "label": "embedded prefix branch threshold",
+        "rva": "0x325aa38",
+        "bytesHex": "1f01096b",
+        "sha256": "a01b352d515aef1b58047c226463031d82d17219a1f63d8f6359d7e294ae3e49",
+        "instruction": "cmp w8, w9"
+      },
+      {
+        "label": "embedded prefix plaintext XOR",
+        "rva": "0x325aa74",
+        "bytesHex": "0801094a",
+        "sha256": "f80dc45179cb1731eeb5cbd8d466eafa695e179f5fb928d1fd57bbf6d0b4eebf",
+        "instruction": "eor w8, w8, w9"
+      },
+      {
+        "label": "suffix plaintext XOR",
+        "rva": "0x325aad0",
+        "bytesHex": "0801094a",
+        "sha256": "f80dc45179cb1731eeb5cbd8d466eafa695e179f5fb928d1fd57bbf6d0b4eebf",
+        "instruction": "eor w8, w8, w9"
+      },
+      {
+        "label": "AES key setup call",
+        "rva": "0x325a9b0",
+        "bytesHex": "45010094",
+        "sha256": "8de62d9327100d6e946a062a6cb9c7aae4678752a32fa6af2f67972cdb2f2c69",
+        "instruction": "bl #0x325aec4"
+      },
+      {
+        "label": "CTR stream read call",
+        "rva": "0x325a9e0",
+        "bytesHex": "54000094",
+        "sha256": "6cd8137902a6026a52d47c52d075b62c90d27a9cbb99e05c838700825b244dd4",
+        "instruction": "bl #0x325ab30"
+      },
+      {
+        "label": "counter state zero initialization",
+        "rva": "0x325a87c",
+        "bytesHex": "e11f0053",
+        "sha256": "dfa226dfbf47e9e34890e72496c0848a091ccea75af027b561907f110c58b8b0",
+        "instruction": "uxtb w1, wzr"
+      },
+      {
+        "label": "counter state byte size",
+        "rva": "0x325a880",
+        "bytesHex": "020280d2",
+        "sha256": "eae46167634954541117f12a9e3a7fbbd05975cf15ff7366c725ab652264cbbc",
+        "instruction": "mov x2, #0x10"
+      },
+      {
+        "label": "counter increment",
+        "rva": "0x325ad7c",
+        "bytesHex": "08050091",
+        "sha256": "1b0e6fa7195ad1f2aa66d2bef501d36d3f86cdb0b67c0e1ba009cbd51f13c27f",
+        "instruction": "add x8, x8, #1"
+      },
+      {
+        "label": "big-endian counter byte 0 store",
+        "rva": "0x325ad98",
+        "bytesHex": "28210339",
+        "sha256": "83546e63b1f3fe1b7b72bbf2bb420035943e66e093a1cae9554a5b86d572db9a",
+        "instruction": "strb w8, [x9, #0xc8]"
+      },
+      {
+        "label": "big-endian counter byte 1 store",
+        "rva": "0x325adb0",
+        "bytesHex": "28250339",
+        "sha256": "46a29399fd4067806aba65cf23fe3f71617ac2e1c2423d5cbb2b4b2debab9af1",
+        "instruction": "strb w8, [x9, #0xc9]"
+      },
+      {
+        "label": "big-endian counter byte 2 store",
+        "rva": "0x325adc8",
+        "bytesHex": "28290339",
+        "sha256": "1d25a658b06a9b9fa9a3453f76d5d30bc1f9709bb270fbb5f93b7a5893d01686",
+        "instruction": "strb w8, [x9, #0xca]"
+      },
+      {
+        "label": "big-endian counter byte 3 store",
+        "rva": "0x325ade0",
+        "bytesHex": "282d0339",
+        "sha256": "b7082e0e4eb042dd2f39fa0aafcef838e8cef729280eaf7501f27b0084fa203c",
+        "instruction": "strb w8, [x9, #0xcb]"
+      },
+      {
+        "label": "big-endian counter byte 4 store",
+        "rva": "0x325adf8",
+        "bytesHex": "28310339",
+        "sha256": "a6caf6a26a57b3b4107ae85d13082ecf9ce3adda48f7590284d5f0b07ec1896d",
+        "instruction": "strb w8, [x9, #0xcc]"
+      },
+      {
+        "label": "big-endian counter byte 5 store",
+        "rva": "0x325ae10",
+        "bytesHex": "28350339",
+        "sha256": "18a8283b3c0748514b4af2338d9672f2342a039fbf5000405f7467388ecece6d",
+        "instruction": "strb w8, [x9, #0xcd]"
+      },
+      {
+        "label": "big-endian counter byte 6 store",
+        "rva": "0x325ae28",
+        "bytesHex": "28390339",
+        "sha256": "b930488aff16a86fc8d092c9b59009cc41ee7bd4d76176fdebb74252b5158cea",
+        "instruction": "strb w8, [x9, #0xce]"
+      },
+      {
+        "label": "big-endian counter byte 7 store",
+        "rva": "0x325ae3c",
+        "bytesHex": "283d0339",
+        "sha256": "02731cda08b3d487e57bbe239258afa4f966c9f8593051899d8cfe499f788359",
+        "instruction": "strb w8, [x9, #0xcf]"
+      },
+      {
+        "label": "AES Rcon table page",
+        "rva": "0x3259e50",
+        "bytesHex": "aa77fff0",
+        "sha256": "d9ef3f3c50abe94c8702385c8dd6242c7f9d8a0820c3507cfcc623b989a44884",
+        "instruction": "adrp x10, #0x2150000"
+      },
+      {
+        "label": "AES Rcon table offset",
+        "rva": "0x3259e54",
+        "bytesHex": "4a413891",
+        "sha256": "8ec576e24d1885f116bba212b7478eaa0af10625bb6ff66095b9e2e54fda5fa5",
+        "instruction": "add x10, x10, #0xe10"
+      },
+      {
+        "label": "AES encryption table 0 page",
+        "rva": "0x325af90",
+        "bytesHex": "a977ffd0",
+        "sha256": "93e7ec27e78b98321c260ce1e907351a743adce932ca4f4d7d4a036a6e01fd8d",
+        "instruction": "adrp x9, #0x2150000"
+      },
+      {
+        "label": "AES encryption table 0 offset",
+        "rva": "0x325af94",
+        "bytesHex": "29e13891",
+        "sha256": "b829e02d51ecdec221137d1174d3dc89469da0c3cbaa24e94ac590fb763e5167",
+        "instruction": "add x9, x9, #0xe38"
+      },
+      {
+        "label": "AES encryption table 1 page",
+        "rva": "0x325afcc",
+        "bytesHex": "a977fff0",
+        "sha256": "6a0fab8ed490ad6ac124367461396a130eb46c6e3be0b97de649cff1baa52b7a",
+        "instruction": "adrp x9, #0x2151000"
+      },
+      {
+        "label": "AES encryption table 1 offset",
+        "rva": "0x325afd0",
+        "bytesHex": "29e10891",
+        "sha256": "cb6f9059d75181e5d3e73aa9e13e4ecd6d613176f0c6cbbf4070b27d2570e58f",
+        "instruction": "add x9, x9, #0x238"
+      },
+      {
+        "label": "AES encryption table 2 page",
+        "rva": "0x325b008",
+        "bytesHex": "a977ffd0",
+        "sha256": "93e7ec27e78b98321c260ce1e907351a743adce932ca4f4d7d4a036a6e01fd8d",
+        "instruction": "adrp x9, #0x2151000"
+      },
+      {
+        "label": "AES encryption table 2 offset",
+        "rva": "0x325b00c",
+        "bytesHex": "29e11891",
+        "sha256": "c0821982c889804cb996b9e1208160d1a61a929fa0a258babe41b0a8203ecf99",
+        "instruction": "add x9, x9, #0x638"
+      },
+      {
+        "label": "AES encryption table 3 page",
+        "rva": "0x325b040",
+        "bytesHex": "a977ffd0",
+        "sha256": "93e7ec27e78b98321c260ce1e907351a743adce932ca4f4d7d4a036a6e01fd8d",
+        "instruction": "adrp x9, #0x2151000"
+      },
+      {
+        "label": "AES encryption table 3 offset",
+        "rva": "0x325b044",
+        "bytesHex": "29e12891",
+        "sha256": "1a1d2ea15999dac1118b1d0756c96d776c395ca2cee90639d61d56b26dfd3f48",
+        "instruction": "add x9, x9, #0xa38"
+      },
+      {
+        "label": "AES-128 ten-round key schedule",
+        "rva": "0x3259ed0",
+        "bytesHex": "1f290071",
+        "sha256": "39934de298c1392a70606b9fd57d308aebe0fbfbbe464b53151d20a981853611",
+        "instruction": "cmp w8, #0xa"
+      }
+    ],
+    "profile": {
+      "cipher": "AES-128-CTR",
+      "keyDerivation": "table16[i] XOR littleEndian(key8)[i & 7]",
+      "key8Source": {
+        "callerRva": "0x3263564",
+        "valueHex": "7e80ea27e7200aee",
+        "littleEndianBytesHex": "ee0a20e727ea807e"
+      },
+      "table": {
+        "rva": "0x8185f5d",
+        "bytesHex": "886e19d41688b31dda39438242d9e348",
+        "byteLength": 16,
+        "sha256": "d0f7ba48418d7cf3fe8d0d8faf78188c7f8406501c956080f5d7d885f6d16fa9"
+      },
+      "derivedKey": {
+        "bytesHex": "66643933316233633433636565336336",
+        "ascii": "fd931b3c43cee3c6",
+        "byteLength": 16,
+        "sha256": "3740fb24243f6f2012489d8dd3718df196ce9b95ea4f574dea9030881bf723bb"
+      },
+      "embeddedCiphertextPrefix": {
+        "lengthRva": "0x8183ef4",
+        "rva": "0x8183f08",
+        "byteLength": 8192,
+        "sha256": "c2eca41f3e42df5634f6addaa986d20c3851081d968e496834a43818ee945893"
+      },
+      "counter": {
+        "initialStateHex": "00000000000000000000000000000000",
+        "incrementBeforeEncrypt": true,
+        "incrementedField": "bytes[8:16] as big-endian uint64",
+        "firstCounterBlockHex": "00000000000000000000000000000001"
+      }
+    },
+    "aesEvidence": {
+      "algorithm": "AES-128 encryption",
+      "rcon": {
+        "rva": "0x2150e10",
+        "byteLength": 40,
+        "sha256": "e47588a34ad373c5b8486c13d0a9b42dae24acb6ea58dae259a3ef2a68c49106"
+      },
+      "encryptionTables": [
+        {
+          "index": 0,
+          "rva": "0x2150e38",
+          "byteLength": 1024,
+          "sha256": "783fb0a44be7670eb6ec170cf7f16bb2b6f23f4964b87b60c4eb506c7c6a286d"
+        },
+        {
+          "index": 1,
+          "rva": "0x2151238",
+          "byteLength": 1024,
+          "sha256": "15a0e7628178b3fe6546e9b60f35e2b1c4864e020b16376866f38f72c74b45a9"
+        },
+        {
+          "index": 2,
+          "rva": "0x2151638",
+          "byteLength": 1024,
+          "sha256": "e8058399671d13082c35b6b3ce7f9e282507edd458ccfdd3bad9f35d90016f62"
+        },
+        {
+          "index": 3,
+          "rva": "0x2151a38",
+          "byteLength": 1024,
+          "sha256": "09fdc69aa887ac8d36e0c8284c7b1d53e580e4880b72a67ff80d7e38317115d9"
+        }
+      ],
+      "standardKnownAnswerTest": {
+        "keyHex": "000102030405060708090a0b0c0d0e0f",
+        "plaintextHex": "00112233445566778899aabbccddeeff",
+        "expectedCiphertextHex": "69c4e0d86a7b0430d8cdb78070b4c55a",
+        "actualCiphertextHex": "69c4e0d86a7b0430d8cdb78070b4c55a",
+        "passed": true
+      }
+    }
+  },
+  "transformation": {
+    "status": "exact-byte-derivation",
+    "encryptedContainer": {
+      "byteLength": 33398388,
+      "sha256": "1271f749e93ec5b05736e14483731ba47057331a5aebb4f4f5c600ee09dfa2d0",
+      "headerByteLength": 4,
+      "declaredSuffixByteLength": 33398384,
+      "suffixSha256": "35222f3f73ff75ce24496b8f7db98d9c9ce43abeeaf59c41d5258aa063102b22"
+    },
+    "reconstructedCiphertext": {
+      "byteLength": 33406576,
+      "sha256": "b0ff8350ebfa2e47caebdfbbde9fdf10f15f761b15faf7c75c4c17c1ed56a527",
+      "composition": "libil2cpp embedded prefix || encrypted[4:]",
+      "blockCount": 2087911,
+      "firstCiphertextBlockHex": "9cbe15e39d24002d9ff64bf90d4ecd31"
+    },
+    "decrypt": {
+      "derivedPlaintext": {
+        "byteLength": 33406576,
+        "sha256": "0549bbe20be1e528856ad6643c3a2252e3e101d0365c3465d2eaa299d91e7323"
+      },
+      "firstCounterBlockHex": "00000000000000000000000000000001",
+      "firstKeystreamBlockHex": "33a5a4198224002d9ff74bf96dbcc931",
+      "firstPlaintextBlockHex": "af1bb1fa1f0000000001000060f20400"
+    },
+    "reencrypt": {
+      "byteEqualToReconstructedCiphertext": true,
+      "byteLength": 33406576,
+      "sha256": "b0ff8350ebfa2e47caebdfbbde9fdf10f15f761b15faf7c75c4c17c1ed56a527"
+    }
+  },
+  "metadata": {
+    "status": "strict-il2cpp-metadata-v31",
+    "magic": "0xfab11baf",
+    "version": 31,
+    "headerByteLength": 256,
+    "headerSha256": "909ab28e368d98e99554d4e10da86832ba5618a3244dea9c056cf4ce49d2dada",
+    "tableCount": 31,
+    "tableInventorySha256": "53cc31a7c9198ff487027bd5a800398cae6c24e8781d0fa7fa87d797fe7bec6d",
+    "tables": [
+      {
+        "index": 0,
+        "offset": 256,
+        "byteLength": 324192,
+        "sha256": "d775d2dac78d828d06f015315b51d00b14b700cfcf5e28fdfc7b917b335faa8b"
+      },
+      {
+        "index": 1,
+        "offset": 324448,
+        "byteLength": 1679844,
+        "sha256": "3b7401691d46507d050188865f050ec48f5095ed1ed2da12759ab46f2aa77c69"
+      },
+      {
+        "index": 2,
+        "offset": 2004292,
+        "byteLength": 4313504,
+        "sha256": "28dfc64cd8e99580dca03b7fdc1a0398b62b9e16d792e5c5727265b876647a3b"
+      },
+      {
+        "index": 3,
+        "offset": 6317796,
+        "byteLength": 5184,
+        "sha256": "6186971fb40baae919937ad5deb2c109dfaab295f5af39ffd8ad4b65260123c3"
+      },
+      {
+        "index": 4,
+        "offset": 6322980,
+        "byteLength": 1101560,
+        "sha256": "aebbd3177f32880aa07e4b827782b02c39b2efab8d62d7e4badf6bb271aea713"
+      },
+      {
+        "index": 5,
+        "offset": 7424540,
+        "byteLength": 9934344,
+        "sha256": "7d06ee7bf2fdce74650a3c64292778e5f741a1a3974855ebc1989055344f02d4"
+      },
+      {
+        "index": 6,
+        "offset": 17358884,
+        "byteLength": 72984,
+        "sha256": "c1d91025c66900e2ae57b1c77e920a4dc95b0b9c3ec9c669c2eb6a1d200dfe19"
+      },
+      {
+        "index": 7,
+        "offset": 17431868,
+        "byteLength": 361632,
+        "sha256": "6a1e4d5c3137dcc3f61714a08ecae23f619318e935e6faa06522ad1429807286"
+      },
+      {
+        "index": 8,
+        "offset": 17793504,
+        "byteLength": 1150148,
+        "sha256": "474ca40e1c620ba51f1995ca4907a0578a7c8c43e8435e2f69df1e9b66fcedca"
+      },
+      {
+        "index": 9,
+        "offset": 18943652,
+        "byteLength": 102276,
+        "sha256": "588eec909ed42be87da2b5fa5dfb6c6afb05d50869481d3d688d064b3136ef52"
+      },
+      {
+        "index": 10,
+        "offset": 19045928,
+        "byteLength": 2677728,
+        "sha256": "5022605a5eac11e977dd10f7a7b2fa6a914efed15b691e2c064cef64b45c96b3"
+      },
+      {
+        "index": 11,
+        "offset": 21723656,
+        "byteLength": 2103852,
+        "sha256": "70729a8fed7a0c968155ad1fffbff6a4c3616479cad5b483b6aa0255e3205f0e"
+      },
+      {
+        "index": 12,
+        "offset": 23827508,
+        "byteLength": 89776,
+        "sha256": "9771b73fab89eaaf722b7f99ed96e83434034c4e2d708d1cc7eca2700e9c34ac"
+      },
+      {
+        "index": 13,
+        "offset": 23917284,
+        "byteLength": 8048,
+        "sha256": "e2fcf6ea3dc6e30f767fb5356fb60853c42055aa61cd673174c40107d7ea45f9"
+      },
+      {
+        "index": 14,
+        "offset": 23925332,
+        "byteLength": 66624,
+        "sha256": "fd26896291796d597f19f07124de1815dfb1da967a9e84d4be0e3ddb3be2e24f"
+      },
+      {
+        "index": 15,
+        "offset": 23991956,
+        "byteLength": 81928,
+        "sha256": "d54a613e8c2d3b76ed76b0b2fee8b1c31c4c5544c525ab9924c6e1a87f0fedc7"
+      },
+      {
+        "index": 16,
+        "offset": 24073884,
+        "byteLength": 134544,
+        "sha256": "41de59aeb50c60cfd85f245c1c5eaea2b176f067a8b7b0a82fef1338f353ba7b"
+      },
+      {
+        "index": 17,
+        "offset": 24208428,
+        "byteLength": 1592324,
+        "sha256": "502efda6bdc4049c3285ffc5d3ddd4e254c1c1162d701d0213a255e5f2ccc715"
+      },
+      {
+        "index": 18,
+        "offset": 25800752,
+        "byteLength": 458616,
+        "sha256": "3cd4d53abac6ba7f50ff4579a60982ce45532912676bafed7d992944a3a36966"
+      },
+      {
+        "index": 19,
+        "offset": 26259368,
+        "byteLength": 4019312,
+        "sha256": "b233a0042ef1fcdf4531c0a7e42a9a0d57838ccb7998da6a9f95dd11239ea92f"
+      },
+      {
+        "index": 20,
+        "offset": 30278680,
+        "byteLength": 13680,
+        "sha256": "61c98de39809c673e213f149e04a1ff287826fa1ea12b9baba4825e3e7da2547"
+      },
+      {
+        "index": 21,
+        "offset": 30292360,
+        "byteLength": 21888,
+        "sha256": "39b104218782edc84af012a260b52c7d93a913f1a8a2a2f7f3afb68d3bbe1c2b"
+      },
+      {
+        "index": 22,
+        "offset": 30314248,
+        "byteLength": 17336,
+        "sha256": "1cb533f35d41b5317bd6e4d835c2b613f10b92e7744b02fa30e026b4c6905df1"
+      },
+      {
+        "index": 23,
+        "offset": 30331584,
+        "byteLength": 15840,
+        "sha256": "70641931a695387c6c3dab757b8affc01eb43bf729cc37256aad633d1cb9d14d"
+      },
+      {
+        "index": 24,
+        "offset": 30347424,
+        "byteLength": 1771576,
+        "sha256": "3968bf497479f683ce15d5cfd3e9248cb487f6c3e7cfc9b69393a6ccd0f31549"
+      },
+      {
+        "index": 25,
+        "offset": 32119000,
+        "byteLength": 1238432,
+        "sha256": "e95ee8170c77412dd7535527b0b2b10a381e135d6687d4109d9ff2b9be1dd04d"
+      },
+      {
+        "index": 26,
+        "offset": 33357432,
+        "byteLength": 24200,
+        "sha256": "d5ee3f63447570010981196bf151bc9bd7cc91d32d204eed95a2a380624beed1"
+      },
+      {
+        "index": 27,
+        "offset": 33381632,
+        "byteLength": 14520,
+        "sha256": "c2afb59567b0a3388cfc59347c47b65b3a08bacea8aa9a16f636b0d1390d3ce2"
+      },
+      {
+        "index": 28,
+        "offset": 33396152,
+        "byteLength": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 29,
+        "offset": 33396152,
+        "byteLength": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "index": 30,
+        "offset": 33396152,
+        "byteLength": 10424,
+        "sha256": "683efc035fbea369fc1ee5be028ed88a39c60cda72753921d6bf02e6fee8978a"
+      }
+    ],
+    "paddingRanges": [
+      {
+        "beforeTable": 8,
+        "offset": 17793500,
+        "byteLength": 4,
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+      }
+    ],
+    "strictChecks": {
+      "exactMagic": true,
+      "exactVersion": true,
+      "exactHeaderSize": true,
+      "exactTableCount": true,
+      "alignedOffsets": true,
+      "orderedNonOverlappingTables": true,
+      "zeroFilledInterTablePadding": true,
+      "completePlaintextCoverage": true
+    }
+  },
+  "extractionProofSha256": "4a31d6c25af3aaa9242095f67b37a5f4cc48f10a580ea65ebc48b93a10cacb32",
+  "proofSha256": "cbc0b06dd5187b3a046285f0ba8ae5164b7cfa9dcd16461ac9344b2913b5b621"
+}

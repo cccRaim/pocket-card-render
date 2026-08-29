@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "shaders");
@@ -265,7 +266,7 @@ try {
     const file = path.join(OUT, name);
     if (CHECK) {
       if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) throw new Error(`${name} does not match pinned generation`);
-    } else fs.writeFileSync(file, content);
+    } else atomicWriteFileSync(file, content);
   }
   console.log(`${CHECK ? "verified" : "generated"} official UI Default From RT WebGL2 program from Vulkan SPIR-V`);
 } finally {

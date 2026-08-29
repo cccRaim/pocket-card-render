@@ -1,0 +1,410 @@
+{
+  "schema": "pocket-card-render/candidate-canonical-scenes@3",
+  "schemaVersion": 3,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "exact-static-scene-draw-material-state-and-texture-bindings",
+    "denominator": "baseline regression scenes union candidate changed/default-sensitive route witnesses",
+    "completeForDeclaredMigrationWitnessSet": true,
+    "fullMaterialSerializedState": "exact-official-raw-bytes-and-renderer-projection",
+    "effectiveRenderQueue": "exact Material override or serialized Shader SubShader Queue tag",
+    "candidateCanonicalCorpus": true,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "inputs": {
+    "canonicalCorpus": {
+      "logicalPath": "build/canonical-corpus.ptcgp-1.7.0-unity-6000.0.69f1.json",
+      "sha256": "8e917e28f6cfd292c60068d73298c5c554fa398ec19e164d45cea5585f813e51"
+    },
+    "baselineRegressionCorpus": {
+      "logicalPath": "build/canonical-corpus.json",
+      "sha256": "1634af0e6f00b6ddb9c2032bbcad7975b248c916092e259053d9346716e65cfd"
+    },
+    "changedRouteCorpus": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-changed-route-corpus.json",
+      "sha256": "38b5cd830598d2ea2255e32564e9546f040364b467b14de30c88796ce26606da"
+    },
+    "materialProgramInventory": {
+      "logicalSourceId": "candidate-material-program-inventory-full",
+      "sha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+      "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a"
+    },
+    "generators": {
+      "recipe": {
+        "logicalPath": "build/dump_recipe.py",
+        "sha256": "b2cc59191e76ec6b9747c9ad8d644e830ca6879cc57a77f6a353f00a98fa79ad"
+      },
+      "scene": {
+        "logicalPath": "build/build.mjs",
+        "sha256": "5c9c57481c446320f1ac6773c622cf79a650bfc362ef5bdf2baa3561c9c21cb3"
+      },
+      "texture": {
+        "logicalPath": "build/extract_official_texture_sampler.py",
+        "sha256": "2df68d9b2d7b66290865ae1286372d41088dd0274a5ba894ba1946bee7ada13c"
+      }
+    }
+  },
+  "scenes": [
+    {
+      "file": "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "textStem": "PK_10_000040_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "selectorObligations": [],
+      "byteLength": 146025,
+      "sha256": "c5ce04d80b647709fc7881516cd49aabd24945eb0b187260cc8dca3727b7e2c0",
+      "recipe": {
+        "logicalPath": "recipes/cPK_10_000040_00_FUSHIGIBANAex_RR_render_full.json",
+        "byteLength": 170545,
+        "sha256": "29d5f99278238d650e9f1475562b0cb4431ddef45430412e18228bea2b72ef86"
+      },
+      "materialCount": 23,
+      "officialDrawCount": 30,
+      "textureCount": 32,
+      "materialStateDrawCount": 30,
+      "exactMaterialStateDrawCount": 30,
+      "uniqueMaterialStateCount": 23
+    },
+    {
+      "file": "scene.cPK_20_008900_02_HOUOUex_UR.json",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "textStem": "PK_20_008900_02",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "selectorObligations": [],
+      "byteLength": 192161,
+      "sha256": "7c7839b9da6cdbbc28bfa9f221dcde34846c0ba9193c2252128ff39030eede08",
+      "recipe": {
+        "logicalPath": "recipes/cPK_20_008900_02_HOUOUex_UR_render_full.json",
+        "byteLength": 174086,
+        "sha256": "055763c04852a567251cd29db400df83956d359fd868592f3aa84f4e6f8fdaa9"
+      },
+      "materialCount": 21,
+      "officialDrawCount": 22,
+      "textureCount": 57,
+      "materialStateDrawCount": 22,
+      "exactMaterialStateDrawCount": 22,
+      "uniqueMaterialStateCount": 21
+    },
+    {
+      "file": "scene.cTR_20_000230_00_LEAF_SR.json",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "textStem": "TR_20_000230_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "selectorObligations": [],
+      "byteLength": 148291,
+      "sha256": "b3634ba9f1cfbf31829bba69c18a62504be648b51d52d4a96a8a5c4df575abfa",
+      "recipe": {
+        "logicalPath": "recipes/cTR_20_000230_00_LEAF_SR_render_full.json",
+        "byteLength": 139777,
+        "sha256": "3c9e3d5e9ff28c424a1f491a4005191f61e70905d8078876446dc94e28f097a3"
+      },
+      "materialCount": 21,
+      "officialDrawCount": 23,
+      "textureCount": 40,
+      "materialStateDrawCount": 23,
+      "exactMaterialStateDrawCount": 23,
+      "uniqueMaterialStateCount": 21
+    },
+    {
+      "file": "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "textStem": "TR_20_000670_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "selectorObligations": [],
+      "byteLength": 210647,
+      "sha256": "8949a57ba2bd8617ae2cf1475fce9cdc24cd58d9f9ede91696bc734d5c154390",
+      "recipe": {
+        "logicalPath": "recipes/cTR_20_000670_00_IIBUINOBAKKU_UR_render_full.json",
+        "byteLength": 180216,
+        "sha256": "a144b84ae76fa35cc7ce63e2cb6a8b70fb8a60e3032658cea2bec65804bc45a7"
+      },
+      "materialCount": 23,
+      "officialDrawCount": 23,
+      "textureCount": 63,
+      "materialStateDrawCount": 23,
+      "exactMaterialStateDrawCount": 23,
+      "uniqueMaterialStateCount": 23
+    },
+    {
+      "file": "scene.cPK_10_012330_00_MEGAABSOLex_RR.json",
+      "cardId": "cPK_10_012330_00_MEGAABSOLex_RR",
+      "textStem": "PK_10_012330_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "selectorObligations": [
+        {
+          "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+          "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+          "sourceKind": "static-reuse-rejected",
+          "sourceClassification": "shader-default-only",
+          "shaderName": "Lettuce/Common/CardNew/ShadowBox/Flash",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0
+        }
+      ],
+      "byteLength": 225760,
+      "sha256": "7fa7bdaca13a98e0a360fea8848f465b41603bda8793d808294039daa29a0fcb",
+      "recipe": {
+        "logicalPath": "recipes/cPK_10_012330_00_MEGAABSOLex_RR_render_full.json",
+        "byteLength": 234695,
+        "sha256": "43daccd42b9a77295beed764d460bb2be883a82b93f4fa9be2133c49bcde6911"
+      },
+      "materialCount": 27,
+      "officialDrawCount": 33,
+      "textureCount": 49,
+      "materialStateDrawCount": 33,
+      "exactMaterialStateDrawCount": 33,
+      "uniqueMaterialStateCount": 27
+    },
+    {
+      "file": "scene.cPK_20_000360_03_LIZARDONex_SR.json",
+      "cardId": "cPK_20_000360_03_LIZARDONex_SR",
+      "textStem": "PK_20_000360_03",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "selectorObligations": [
+        {
+          "selectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+          "candidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+          "keywords": [
+            "_USESHADOWLAYERG_ON",
+            "_USESHADOWLAYERR_ON"
+          ],
+          "subshader": 0,
+          "pass": 0
+        },
+        {
+          "selectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+          "candidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Hologram_Shadow",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0
+        },
+        {
+          "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+          "candidateWitnessId": "7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6",
+          "sourceKind": "changed",
+          "sourceClassification": "shader-logic-changed",
+          "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Shadow",
+          "keywords": [
+            "_USESHADOWLAYERR_ON"
+          ],
+          "subshader": 0,
+          "pass": 0
+        }
+      ],
+      "byteLength": 145133,
+      "sha256": "bac00af813eaf293799a08a3d4754dc88bfa24517bf3011ee07ca4724f158e37",
+      "recipe": {
+        "logicalPath": "recipes/cPK_20_000360_03_LIZARDONex_SR_render_full.json",
+        "byteLength": 142149,
+        "sha256": "83a860990483ea75091ce7a60aed0f091d06a6e388f077d1e30a3ab7911724d4"
+      },
+      "materialCount": 16,
+      "officialDrawCount": 19,
+      "textureCount": 39,
+      "materialStateDrawCount": 19,
+      "exactMaterialStateDrawCount": 19,
+      "uniqueMaterialStateCount": 16
+    },
+    {
+      "file": "scene.cPK_20_010840_00_MEGAKAILIOSex_SR.json",
+      "cardId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+      "textStem": "PK_20_010840_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "selectorObligations": [
+        {
+          "selectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+          "candidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [
+            "_USE_OLD_NOISE"
+          ],
+          "subshader": 0,
+          "pass": 0
+        },
+        {
+          "selectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+          "candidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [
+            "_USE_OLD_NOISE"
+          ],
+          "subshader": 0,
+          "pass": 0
+        }
+      ],
+      "byteLength": 253573,
+      "sha256": "5406a0a82776c7b4bbf9ad2f890a043e680213cf6da6ca73e9bd0927068b1d16",
+      "recipe": {
+        "logicalPath": "recipes/cPK_20_010840_00_MEGAKAILIOSex_SR_render_full.json",
+        "byteLength": 233445,
+        "sha256": "68c2d3b36c2030c4ee56478fc42eb38d9f18c30925d3e40c2d11c23e8fe259b2"
+      },
+      "materialCount": 28,
+      "officialDrawCount": 30,
+      "textureCount": 50,
+      "materialStateDrawCount": 30,
+      "exactMaterialStateDrawCount": 30,
+      "uniqueMaterialStateCount": 28
+    },
+    {
+      "file": "scene.cPK_20_016210_00_MEGAYADORANex_SR.json",
+      "cardId": "cPK_20_016210_00_MEGAYADORANex_SR",
+      "textStem": "PK_20_016210_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "selectorObligations": [
+        {
+          "selectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+          "candidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0
+        },
+        {
+          "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+          "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [],
+          "subshader": 0,
+          "pass": 0
+        }
+      ],
+      "byteLength": 204725,
+      "sha256": "6460f4dfbb0b3889c8e63a4e941fb2edbb4612b61d765a960aa912886455423a",
+      "recipe": {
+        "logicalPath": "recipes/cPK_20_016210_00_MEGAYADORANex_SR_render_full.json",
+        "byteLength": 189856,
+        "sha256": "68717f577d0ce7409efa0e5c644fd088b6e397d2fa02fbc4fda78ee579fb36ef"
+      },
+      "materialCount": 24,
+      "officialDrawCount": 26,
+      "textureCount": 50,
+      "materialStateDrawCount": 26,
+      "exactMaterialStateDrawCount": 26,
+      "uniqueMaterialStateCount": 24
+    },
+    {
+      "file": "scene.cPK_20_016430_00_MEGAGANGARex_SR.json",
+      "cardId": "cPK_20_016430_00_MEGAGANGARex_SR",
+      "textStem": "PK_20_016430_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "selectorObligations": [
+        {
+          "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+          "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+          "keywords": [
+            "_USE_COL4"
+          ],
+          "subshader": 0,
+          "pass": 0
+        },
+        {
+          "selectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+          "candidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+          "sourceKind": "changed",
+          "sourceClassification": "engine-uniform-layout-only",
+          "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+          "keywords": [
+            "_USE_COL4"
+          ],
+          "subshader": 0,
+          "pass": 0
+        }
+      ],
+      "byteLength": 205022,
+      "sha256": "2e27defd9f2b71fcfd7832a5cf34e8892d9146440b1e050371ace58cd6e9c999",
+      "recipe": {
+        "logicalPath": "recipes/cPK_20_016430_00_MEGAGANGARex_SR_render_full.json",
+        "byteLength": 190140,
+        "sha256": "3168f00c34f52a9f33e2a905f904623ff45f1f92dac7a428bea4ac0d549f55ff"
+      },
+      "materialCount": 24,
+      "officialDrawCount": 26,
+      "textureCount": 50,
+      "materialStateDrawCount": 26,
+      "exactMaterialStateDrawCount": 26,
+      "uniqueMaterialStateCount": 24
+    }
+  ],
+  "textureEvidence": {
+    "logicalPath": "scenes/texture-sampler-evidence.json",
+    "byteLength": 1517136,
+    "sha256": "47b6eb7e94d1297dc70c0509c9a52ac784d7d422737374df3f33259f7171f46c"
+  },
+  "aggregateSha256": "fcea9e2613b15cace187eae50b0048779bb32317de548b87420ca602716ef678",
+  "summary": {
+    "sceneCount": 9,
+    "baselineRegressionSceneCount": 4,
+    "changedRouteWitnessSceneCount": 5,
+    "selectorObligationCount": 10,
+    "coveredSelectorObligationCount": 10,
+    "materialCount": 207,
+    "materialStateDrawCount": 232,
+    "exactMaterialStateDrawCount": 232,
+    "uniqueMaterialStateCount": 138,
+    "officialDrawCount": 232,
+    "sceneTextureCount": 430,
+    "textureBindingCount": 699,
+    "uniqueTextureCount": 218,
+    "exactTextureCount": 218,
+    "payloadEquivalentTextureCount": 0,
+    "unresolvedTextureCount": 0
+  },
+  "runtimeBoundaries": [
+    {
+      "id": "candidate-scene-guest-dispatch",
+      "status": "runtime-required",
+      "reason": "serialized renderer/material/texture closure does not prove candidate guest draw dispatch, descriptors, uniforms, or attachments"
+    },
+    {
+      "id": "candidate-runtime-render-texture",
+      "status": "runtime-required",
+      "reason": "_DynamicUITex is produced at runtime and is outside static Texture2D/Cubemap bundle evidence"
+    }
+  ]
+}

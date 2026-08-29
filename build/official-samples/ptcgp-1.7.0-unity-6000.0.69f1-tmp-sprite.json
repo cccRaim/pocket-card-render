@@ -1,0 +1,159 @@
+{
+  "schema": "pocket-card-render/candidate-tmp-sprite-report@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "partial-exact-with-explicit-runtime-boundary",
+    "serializedSpriteAsset": "exact",
+    "nativePreprocessor": "exact-native-instruction-pattern",
+    "unity6TextGeneratorLayout": "runtime-required",
+    "runtimeCaptureUsed": false,
+    "baselineUnity2022LayoutReused": false,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false
+  },
+  "inputs": {
+    "fontBundle": {
+      "logicalPath": "Common/Font_bundles",
+      "byteLength": 79228393,
+      "sha256": "668565de6a41fecc7e14d7a06c1abf8da39c1710539d45a243ad9c4d2ea84eeb"
+    },
+    "il2cpp": {
+      "logicalPath": "candidate arm64-v8a libil2cpp.so",
+      "byteLength": 135778312,
+      "sha256": "0a1ea598b11f3ea7732c80a6f4c80b8d939222b2ea87cf8707f35db26f1799d3"
+    },
+    "il2cppDumper": {
+      "scriptJsonSha256": "c1ba09a7bbd4fa509005ba7b83691932048fa1bc5975065053421b067003d562",
+      "stringLiteralJsonSha256": "27fea2c810c002219495b252e71cdf05b49cba04a4f98949de70f145f334f502",
+      "dumpCsSha256": "df719958d7c732af14c8afc00c464dbd8bd9c86d5f81135eaebc0a2197e9e5e0"
+    },
+    "extractor": {
+      "logicalPath": "build/extract_candidate_tmp_sprite.py",
+      "sha256": "94b0bd26e225bc336cd63dce6ff218e879081fd2f5799980606a1075cd9bfa4a"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-tmp-sprite-report.mjs",
+      "sha256": "02fa503002e00290afe64636b0b0c6cc0e1012ad1461a4873a11a887df2ab63a"
+    }
+  },
+  "artifact": {
+    "contract": {
+      "logicalPath": "serialized-tmp/tmp-sprite-contract.json",
+      "byteLength": 11530,
+      "sha256": "334f372a72ca6fccce0ad5a13ed6d19bc249d79a1d7c55b9ee28cac284d65677"
+    },
+    "texturePng": {
+      "logicalPath": "serialized-tmp/TextExSprite.png",
+      "byteLength": 12866,
+      "sha256": "3581b830f4e1b76868a6aee34b79940ca43e9f9a68fe610867b8cf0290909dff"
+    }
+  },
+  "summary": {
+    "spriteAssetCount": 1,
+    "glyphCount": 4,
+    "characterCount": 4,
+    "nativeMethodCount": 3,
+    "spriteIndexTableValueCount": 4,
+    "textureWidth": 512,
+    "textureHeight": 256
+  },
+  "identities": {
+    "spriteAsset": {
+      "pathId": "840073264968542736",
+      "objectSha256": "71515c2223760e74e3b36bf4ccdf322aeac049e2ff1a9df395b02ea5a014e5d4"
+    },
+    "material": {
+      "pathId": "-1050951510632854060",
+      "objectSha256": "d5161b0bbbe99257643d3b9fd127b0433029beee5b87386eb796e20a5911b984"
+    },
+    "texture": {
+      "pathId": "3209478181533236899",
+      "objectSha256": "ab119a1a5c9180c37d0314f1591914b8bed2240d9ee98d78340333c720558c33",
+      "compressedPayloadSha256": "041def58c34618782cf3ded71ce0b08283ea6c9a03effea79912265c005861a7",
+      "decodedRgbaSha256": "a5844651ffd27f40725e9eb1399f9d89bdded513ca6af502aec0c5279d1486e9"
+    }
+  },
+  "preprocessor": {
+    "methods": {
+      "preProcessEx": {
+        "name": "Lettuce.Infrastructure.LocLabel.TagCommandImpl.LtUIImgTagCommand$$PreProcessEX",
+        "rva": "0x4a2ad1c",
+        "endRva": "0x4a2ae5c",
+        "byteSize": 320,
+        "sha256": "fbdb4457377f8438c60d0a156d29ddacfb62830c71deb9e1f0dd1139685c0e65",
+        "instructionCount": 80,
+        "instructionSha256": "1e27e61f8ee866f8c58a93278f2808176c0acae0090bf60052377ac1565b9346"
+      },
+      "getFontSize": {
+        "name": "Lettuce.Infrastructure.LocLabel.TagCommandImpl.LtUIImgTagCommand$$GetFontSize",
+        "rva": "0x4a2af78",
+        "endRva": "0x4a2b048",
+        "byteSize": 208,
+        "sha256": "3eb08017fde8fd747acaa169930f7b1f9a2d27a5267fc8732f51360f42a24c93",
+        "instructionCount": 52,
+        "instructionSha256": "de3d001e7efc81059dea1bfacfd71e795e5f1eeea02fd8e1c18e666f99371e75"
+      },
+      "getRuleImgTagFontType": {
+        "name": "Lettuce.Infrastructure.Card.Core.PokemonCardUIBehaviour$$GetRuleImgTagFontType",
+        "rva": "0x4800378",
+        "endRva": "0x48003a0",
+        "byteSize": 40,
+        "sha256": "35981eda1a674b1cddec814fcebafc11daec603f1f77ee212467110133d5c541",
+        "instructionCount": 10,
+        "instructionSha256": "1dcde944501070451f7e74dd86c2aec98017a332c8bdd7b7810cc3a1da7c8259"
+      }
+    },
+    "spriteIndexTable": {
+      "rva": "0x1cdfe10",
+      "bytes": "00000000020000000100000003000000",
+      "sha256": "3c52e07ea6f9c688f7921e6114ac155e13c5922f6fe7dd46e242c18e42262a1e",
+      "values": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "proof": {
+        "addressInstruction": {
+          "address": "0x4a2ad90",
+          "mnemonic": "add",
+          "operands": "x9, x9, #0xe10"
+        },
+        "indexedLoadInstruction": {
+          "address": "0x4a2ada4",
+          "mnemonic": "ldr",
+          "operands": "w22, [x9, w8, sxtw #2]"
+        },
+        "derivation": "ADRP+ADD target consumed by signed-indexed 32-bit LDR"
+      }
+    },
+    "fontTypeToSpriteIndex": {
+      "Black": 0,
+      "White": 2,
+      "BlackWithWhiteOutline": 1,
+      "ExBlack": 3
+    },
+    "pokemonRuleSelection": {
+      "normalEx": "ExBlack",
+      "megaEx": "White"
+    }
+  },
+  "runtimeBoundary": {
+    "status": "runtime-required",
+    "baselineUnity2022LayoutReused": false,
+    "requiredEvidence": [
+      "matching Unity 6000.0.69f1 TextGenerator source or release symbols",
+      "candidate guest TMP sprite quad positions and advance",
+      "candidate guest SpriteAsset material and texture submission"
+    ],
+    "reason": "candidate serialized glyph metrics and native tag preprocessing do not prove Unity 6 TextGenerator pointSize-zero layout semantics"
+  }
+}

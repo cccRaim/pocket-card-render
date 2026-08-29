@@ -7,12 +7,17 @@ import json
 import struct
 import zlib
 from pathlib import Path
+import os
 
 import UnityPy
 
 
 LOCALES = ("de_DE", "en_US", "es_ES", "fr_FR", "it_IT", "ja_JP", "ko_KR", "pt_BR", "zh_TW")
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 
 
 def sha256(data):
@@ -95,13 +100,19 @@ def main():
     parser.add_argument("--output-root", required=True, help="Directory for locale_<locale>.json")
     parser.add_argument("--asset-index", help="Official .aladin index used to fetch the bundles")
     parser.add_argument("--asset-catalog", help="JSON catalog produced from the same official index")
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
     args = parser.parse_args()
+    UnityPy.config.FALLBACK_UNITY_VERSION = args.unity_version
 
     input_root = Path(args.input_root).resolve()
     output_root = Path(args.output_root).resolve()
     output_root.mkdir(parents=True, exist_ok=True)
     provenance = {
         "schemaVersion": 1,
+        "unityVersion": args.unity_version,
         "inputRoot": str(input_root),
         "assetIndex": None,
         "locales": {},

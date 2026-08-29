@@ -291,14 +291,18 @@ def extract_prefab(path: Path, kind: str, relative: str) -> dict:
     }
 
 
-def extract(decrypted_root: Path) -> dict:
+def extract(
+    decrypted_root: Path,
+    unity_version: str = UNITY_VERSION,
+) -> dict:
+    UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
     prefabs = [
         extract_prefab(decrypted_root / relative, kind, relative)
         for kind, relative in PREFABS.items()
     ]
     return {
         "schemaVersion": 3,
-        "unityVersion": UNITY_VERSION,
+        "unityVersion": unity_version,
         "source": "official PokemonCardUI/TrainersCardUI prefab bundles",
         "prefabs": prefabs,
         "summary": {
@@ -324,8 +328,13 @@ def extract(decrypted_root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--decrypted-root", type=Path, default=DEFAULT_DECRYPTED_ROOT)
+    parser.add_argument("--unity-version", default=UNITY_VERSION)
     args = parser.parse_args()
-    print(json.dumps(extract(args.decrypted_root.resolve()), ensure_ascii=True, separators=(",", ":")))
+    print(json.dumps(
+        extract(args.decrypted_root.resolve(), args.unity_version),
+        ensure_ascii=True,
+        separators=(",", ":"),
+    ))
 
 
 if __name__ == "__main__":

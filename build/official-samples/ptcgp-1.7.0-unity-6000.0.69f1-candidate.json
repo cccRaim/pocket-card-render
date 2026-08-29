@@ -19,10 +19,7 @@
   "unity": {
     "serializedVersion": "6000.0.69f1",
     "playerBuildVersion": "6000.0.69f1_5f8607f5118b",
-    "releaseSupportVersion": {
-      "status": "unresolved",
-      "reason": "release support identity requires the matching Unity release player and symbol package"
-    }
+    "releaseSupportVersion": "6000.0.69f1_5f8607f5118b"
   },
   "artifacts": {
     "apkm": {
@@ -83,12 +80,30 @@
       "sha256": "0549bbe20be1e528856ad6643c3a2252e3e101d0365c3465d2eaa299d91e7323"
     },
     "unityReleasePlayer": {
-      "status": "unresolved",
-      "reason": "matching Unity release player for 6000.0.69f1 has not been acquired and hash-verified"
+      "status": "resolved",
+      "byteLength": 26943064,
+      "sha256": "b058c0ba533ab14a9615610a962d738c783a7061cd4276753bfdbf36bc6d1029",
+      "source": {
+        "kind": "unity-official-android-build-support",
+        "version": "6000.0.69f1",
+        "changeset": "5f8607f5118b",
+        "installerByteLength": 501118984,
+        "installerSha256": "5f457db4cea49b076e60b7a5bfbdb5938850da08c8c6851a33091d1c41318b70",
+        "entry": "Variations/il2cpp/Release/Libs/arm64-v8a/libunity.so"
+      }
     },
     "unityReleaseSymbols": {
-      "status": "unresolved",
-      "reason": "matching Unity release symbols for 6000.0.69f1 have not been acquired and hash-verified"
+      "status": "resolved",
+      "byteLength": 12579536,
+      "sha256": "98d6235fb72048bd065a3ddc7a6d336cf2be11a4c998e21dd6ad4ff06ddd6989",
+      "source": {
+        "kind": "unity-official-android-build-support",
+        "version": "6000.0.69f1",
+        "changeset": "5f8607f5118b",
+        "installerByteLength": 501118984,
+        "installerSha256": "5f457db4cea49b076e60b7a5bfbdb5938850da08c8c6851a33091d1c41318b70",
+        "entry": "Variations/il2cpp/Release/Symbols/arm64-v8a/libunity.sym.so"
+      }
     }
   },
   "snapshots": {
@@ -137,7 +152,9 @@
     }
   },
   "canonicalCorpus": {
-    "status": "unresolved",
-    "reason": "Unity 6 canonical card corpus has not been regenerated and runtime-captured"
+    "status": "resolved",
+    "byteLength": 2358,
+    "path": "build/canonical-corpus.ptcgp-1.7.0-unity-6000.0.69f1.json",
+    "sha256": "8e917e28f6cfd292c60068d73298c5c554fa398ec19e164d45cea5585f813e51"
   }
 }

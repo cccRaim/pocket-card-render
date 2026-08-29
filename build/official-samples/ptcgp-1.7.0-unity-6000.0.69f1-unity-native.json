@@ -1,0 +1,2126 @@
+{
+  "schema": "pocket-card-render/candidate-unity-native-report@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1",
+    "playerBuildVersion": "6000.0.69f1_5f8607f5118b",
+    "releaseSupportVersion": "6000.0.69f1_5f8607f5118b"
+  },
+  "scope": {
+    "status": "partial-exact-native-migration",
+    "releasePlayerAndSymbols": "exact-official-hash-bound",
+    "lifecycle": "exact-candidate-native-contract",
+    "sortFunctionRelocation": "partial-exact-static",
+    "sortControlFlow": "partial-exact-static",
+    "sortFieldSemantics": "partial-exact-static",
+    "sortRuntimeSemantics": "runtime-required",
+    "oldUnity2022EvidenceInherited": false,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "tools": {
+    "extractor": {
+      "logicalPath": "build/extract_candidate_unity_native.py",
+      "byteLength": 68699,
+      "sha256": "758e049f23644110ae96e59a6e9996bcb35d1c386f13e9938e8bea45197cb103"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-unity-native-report.mjs",
+      "byteLength": 11184,
+      "sha256": "1e2ef528575cd9e277db9b84bbc2595bd3b2c5f4830acb94be6c6154a61bbaad"
+    }
+  },
+  "sources": {
+    "arm64Split": {
+      "byteLength": 191465137,
+      "sha256": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984"
+    },
+    "gameLibunity": {
+      "byteLength": 21722400,
+      "sha256": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067"
+    },
+    "releaseInstaller": {
+      "byteLength": 501118984,
+      "sha256": "5f457db4cea49b076e60b7a5bfbdb5938850da08c8c6851a33091d1c41318b70"
+    },
+    "releasePlayer": {
+      "byteLength": 26943064,
+      "sha256": "b058c0ba533ab14a9615610a962d738c783a7061cd4276753bfdbf36bc6d1029"
+    },
+    "releaseSymbols": {
+      "byteLength": 12579536,
+      "sha256": "98d6235fb72048bd065a3ddc7a6d336cf2be11a4c998e21dd6ad4ff06ddd6989"
+    }
+  },
+  "mapping": {
+    "normalization": "mask BL/ADR/ADRP/literal-address/load-store-offset/ADD-SUB-immediate fields for initial relocation only; preserve unconditional B and require target-specific branch/thunk/linkage proof for partial-exact-static records",
+    "partialStaticProofModel": {
+      "status": "partial-exact-static",
+      "location": "caller-edge consensus or address-taken callback from a consensus-mapped parent",
+      "controlFlow": "classify every direct B/BL; bind internal offsets and external target bodies without globally masking B",
+      "linkage": "bind GOT slots, R_AARCH64_RELATIVE addends, thunk body and rejoin while leaving stripped globals unresolved"
+    },
+    "records": [
+      {
+        "group": "lifecycle",
+        "id": "UnityPlayerLoop",
+        "symbol": "_Z15UnityPlayerLoopv",
+        "release": {
+          "rva": "0xa5a840",
+          "byteSize": 916,
+          "bodySha256": "3cb6ab33f06c4c18b5117eb9c959dc0ff7c021cc9d088ccb3519da757f899922",
+          "normalizedShapeSha256": "1d79631eb83dbf57d4d3c4899a6e346389180956e9ad37c07fd2c88f4f321267"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x826fac"
+        ],
+        "game": {
+          "rva": "0x826fac",
+          "byteSize": 916,
+          "bodySha256": "a8c530837597716d03a7ffe88fffea0e0ed04b62ef5db757ea256c48ccf6d7f9",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "lifecycle",
+        "id": "UnityPause",
+        "symbol": "_Z10UnityPausei",
+        "release": {
+          "rva": "0xa5abd4",
+          "byteSize": 456,
+          "bodySha256": "6de60271c0b8387ee60902312af2dac149802a19c17454f608b6e91269445aae",
+          "normalizedShapeSha256": "12c57bac207fd757e08edf7a4915383d539fcff176025718caafc120e8989dea"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x827340"
+        ],
+        "game": {
+          "rva": "0x827340",
+          "byteSize": 456,
+          "bodySha256": "5d616ce894fe0e3ea1694c2435f75d3252427dfa6799e51f3e7cef7a1902d96b",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "lifecycle",
+        "id": "nativePause",
+        "symbol": "_Z11nativePauseP7_JNIEnvP8_jobject",
+        "release": {
+          "rva": "0xa5b798",
+          "byteSize": 100,
+          "bodySha256": "f94ce2b66de664a34da073ddc964f4a2fafe7e7dbcc6f7134f5ef64a2d1f70eb",
+          "normalizedShapeSha256": "435bb0a1e75e6958a0e79b7e05e84a38abfdb9d31715d2891f11780af117a872"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x827e20"
+        ],
+        "game": {
+          "rva": "0x827e20",
+          "byteSize": 100,
+          "bodySha256": "52ce7d93b432d6ac10dd930d8844a8b7ab81ae4d901fac5c68089dcade8b27b8",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "lifecycle",
+        "id": "nativeResume",
+        "symbol": "_Z12nativeResumeP7_JNIEnvP8_jobject",
+        "release": {
+          "rva": "0xa5b7fc",
+          "byteSize": 96,
+          "bodySha256": "1f177929206f1da1c6ffc1a2c40a6ece21ec76130e473a8f0eb7a51b50c77cf5",
+          "normalizedShapeSha256": "fa4e5c063de51bc4b998906f5f4d1259beadfcfccaacf5ee145ed9e2ecb0ef53"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x827e84"
+        ],
+        "game": {
+          "rva": "0x827e84",
+          "byteSize": 96,
+          "bodySha256": "81ebe50a97e1e0ff5c683a2d932bde4223b87ed09674c7469df8acd386a19ec9",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "lifecycle",
+        "id": "SetPlayerPause",
+        "symbol": "_Z14SetPlayerPause11PlayerPauseb",
+        "release": {
+          "rva": "0x89c0dc",
+          "byteSize": 412,
+          "bodySha256": "f2f0cdd8a2124a6ecdb45ac938d66c001e2a3a2f3f02c7a294acea9cc212cae2",
+          "normalizedShapeSha256": "330e39dedc259a75412bf414e6ed35e2388eeac76d0e3af0dc5d12e93759cda8"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x67d464"
+        ],
+        "game": {
+          "rva": "0x67d464",
+          "byteSize": 412,
+          "bodySha256": "5cf59e61b0c11566eca1551015cc351a8fce0a035189981070a40f26afe564c4",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "lifecycle",
+        "id": "GetPlayerPause",
+        "symbol": "_Z14GetPlayerPausev",
+        "release": {
+          "rva": "0x88e3a0",
+          "byteSize": 12,
+          "bodySha256": "9b8aa370e9cb12bbb75a899773c689feec483729cc42eaae104625069b5ed497",
+          "normalizedShapeSha256": "d1cd0413be50609ca51c1e87502f11ad401acf747b415b4ccd6633e7c574027b"
+        },
+        "status": "exact-normalized-shape-via-caller-edges",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x66f224"
+        ],
+        "game": {
+          "rva": "0x66f224",
+          "byteSize": 12,
+          "bodySha256": "4964d6fbf0cc5a79d8fc5715d6b21793d6cbb3f9aaa7966175c7c5ace56ce5b0",
+          "wholeBodyExact": false
+        },
+        "callerEdges": [
+          {
+            "caller": "UnityPlayerLoop",
+            "callerOffset": 480,
+            "gameTarget": "0x66f224"
+          },
+          {
+            "caller": "UnityPause",
+            "callerOffset": 64,
+            "gameTarget": "0x66f224"
+          },
+          {
+            "caller": "UnityPause",
+            "callerOffset": 268,
+            "gameTarget": "0x66f224"
+          },
+          {
+            "caller": "SetPlayerPause",
+            "callerOffset": 36,
+            "gameTarget": "0x66f224"
+          },
+          {
+            "caller": "SetPlayerPause",
+            "callerOffset": 68,
+            "gameTarget": "0x66f224"
+          },
+          {
+            "caller": "SetPlayerPause",
+            "callerOffset": 80,
+            "gameTarget": "0x66f224"
+          }
+        ]
+      },
+      {
+        "group": "lifecycle",
+        "id": "SetPlayerPauseDirect",
+        "symbol": "_Z20SetPlayerPauseDirect11PlayerPause",
+        "release": {
+          "rva": "0x88e3ac",
+          "byteSize": 12,
+          "bodySha256": "dcb42a18cab3ed8966423365b142937da6d77be507f91ed27b17d7234382dff9",
+          "normalizedShapeSha256": "f791a46bdfe5d0e40d85564895e7306a305b952d20118e677b05d6ca9f19325c"
+        },
+        "status": "exact-normalized-shape-via-caller-edges",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x66f230"
+        ],
+        "game": {
+          "rva": "0x66f230",
+          "byteSize": 12,
+          "bodySha256": "f323f6a0c1100cea84f49934f910b4ffe0c89957d53a187e9239a2bfb265b115",
+          "wholeBodyExact": false
+        },
+        "callerEdges": [
+          {
+            "caller": "SetPlayerPause",
+            "callerOffset": 268,
+            "gameTarget": "0x66f230"
+          }
+        ]
+      },
+      {
+        "group": "lifecycle",
+        "id": "InputSubsystemHandleAppPaused",
+        "symbol": "_ZL29InputSubsystemHandleAppPausedb",
+        "release": {
+          "rva": "0xed5368",
+          "byteSize": 128,
+          "bodySha256": "a8b897f68c108a11c943b824da058e486f39f443332eb927d4cba2ca7446bf34",
+          "normalizedShapeSha256": "f4cd57c826c5959467fc0811b1ed753b854ed875fd922444b6d45b87c3becefd"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xb61134"
+        ],
+        "game": {
+          "rva": "0xb61134",
+          "byteSize": 128,
+          "bodySha256": "76bf013a6f12190aff6a0115e3054ece2d5f47083047fa9d349b1a61f687ea3f",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort",
+        "id": "entryComparator",
+        "symbol": "_ZNK18RenderObjectSorterclERK24ScriptableLoopObjectDataS2_",
+        "release": {
+          "rva": "0x864800",
+          "byteSize": 660,
+          "bodySha256": "28e2c193c2c3ad481fdff7a7e5c067b0e95dfad75adc6c082d32d6bfa8a26769",
+          "normalizedShapeSha256": "43b55c16793d8110c6cedd2119423c2cbb9828ced72b60842068ac68c0d4eb0a"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x645730"
+        ],
+        "game": {
+          "rva": "0x645730",
+          "byteSize": 660,
+          "bodySha256": "28e2c193c2c3ad481fdff7a7e5c067b0e95dfad75adc6c082d32d6bfa8a26769",
+          "wholeBodyExact": true
+        }
+      },
+      {
+        "group": "sort",
+        "id": "findPasses",
+        "symbol": "_Z10FindPassesPK12MaterialInfobP11ShaderTagIDiS2_Pi",
+        "release": {
+          "rva": "0x864b14",
+          "byteSize": 240,
+          "bodySha256": "b423c4b9364f2f5404fde5c909e148eb6bf6393a25ae384649509c3663e5c4f7",
+          "normalizedShapeSha256": "dd448a69248c860335c8d2bdab1903e81bff7d5c388175d95ad532b3eb2b9953"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x645a44"
+        ],
+        "game": {
+          "rva": "0x645a44",
+          "byteSize": 240,
+          "bodySha256": "e91a42ad592e68fb728775df8e9436d6d5423ccc9c2371b6c05c42a67a21a5e5",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort",
+        "id": "nodeHasMotion",
+        "symbol": "_Z13NodeHasMotionRK10RenderNodei",
+        "release": {
+          "rva": "0x864c04",
+          "byteSize": 84,
+          "bodySha256": "2c27271d3a0e1e87315f1088df0c9117384b62531d7366dd0dfffc6f768ce056",
+          "normalizedShapeSha256": "226f943fbb3cdae82eafd0c113f8f6f7b51b70d9a30f5c8053cb571ba253ac86"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x645b34"
+        ],
+        "game": {
+          "rva": "0x645b34",
+          "byteSize": 84,
+          "bodySha256": "ddc19fea42256c6d19441ad249e0631ba248d7e8b15929b51fc59042d571cbb0",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort",
+        "id": "sortInputBuilder",
+        "symbol": "_Z31PrepareScriptableLoopObjectDataRK15RenderNodeQueueRK20DrawRenderersCommandPK20OverrideMaterialInfoPK18OverrideShaderInfoPK12MaterialInfoimmRN4core6vectorI24ScriptableLoopObjectDataNSE_9allocatorISG_Lm0EEEEE",
+        "release": {
+          "rva": "0x864c58",
+          "byteSize": 4680,
+          "bodySha256": "8b26ed995887d2f4fb4cc74f862f7cbd943d0778e9b274bceda90e4addde36f1",
+          "normalizedShapeSha256": "a063a6e81489e03baf393d86faeb78abc681f69693359153bc481f9e1e41286f"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x645b88"
+        ],
+        "game": {
+          "rva": "0x645b88",
+          "byteSize": 4680,
+          "bodySha256": "b191fd0a6b74035c74bd757b33f88e5dfb9c39c626328b3d1ba7b9ef26cddc71",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort",
+        "id": "distanceKey",
+        "symbol": "_ZL22ComputeSortingDistance22RendererDistanceMetricRK10Matrix4x4f8Vector3fS3_S3_f",
+        "release": {
+          "rva": "0x865ea0",
+          "byteSize": 192,
+          "bodySha256": "0bf6f388ae9d82eb5d01410a18a7b92babead4ee37577825ad50ecd351add485",
+          "normalizedShapeSha256": "b4df5e31fc7b29ddaaeb8bbe830f635237c99ee62cb2401de6ebffcdfd079f0a"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x646dd0"
+        ],
+        "game": {
+          "rva": "0x646dd0",
+          "byteSize": 192,
+          "bodySha256": "0bf6f388ae9d82eb5d01410a18a7b92babead4ee37577825ad50ecd351add485",
+          "wholeBodyExact": true
+        },
+        "semanticStaticProof": {
+          "status": "exact-static-semantic-shape",
+          "normalization": "mask ADRP/ADR/literal addresses only; preserve BL/B, load-store offsets and ADD/SUB immediates",
+          "releaseShapeSha256": "0bf6f388ae9d82eb5d01410a18a7b92babead4ee37577825ad50ecd351add485",
+          "gameShapeSha256": "0bf6f388ae9d82eb5d01410a18a7b92babead4ee37577825ad50ecd351add485",
+          "byteSize": 192,
+          "preservesLoadStoreOffsets": true,
+          "preservesAddSubImmediates": true,
+          "preservesDirectCalls": true,
+          "proved": "sorting-distance metric branches, float operations and field offsets",
+          "remaining": "live guest inputs and the produced per-frame sort output",
+          "proofSha256": "73e22fa300224c1ffb536e00ebd8e873a147f0c3c4eca44952386a30140f92e4"
+        }
+      },
+      {
+        "group": "sort",
+        "id": "sortWithFence",
+        "symbol": "_ZL37SortScriptableLoopObjectDataWithFenceR8JobFenceRK15RenderNodeQueue23RendererSortingCriteriaRN4core6vectorI24ScriptableLoopObjectDataNS5_9allocatorIS7_Lm0EEEEE",
+        "release": {
+          "rva": "0x865f60",
+          "byteSize": 84,
+          "bodySha256": "de744b515771e8ed118fce08e547530e531a8ed54b1968605c85b753998c3813",
+          "normalizedShapeSha256": "ff943e88e844f7f3dd0721a5f631e326f21e3d286d6d9f520dfd57a3aebd2d34"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x646e90"
+        ],
+        "game": {
+          "rva": "0x646e90",
+          "byteSize": 84,
+          "bodySha256": "b187feae2edbc1dd90c4fc2f8e5bff0d052bddf7c9797e2679ee098f33d1be38",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort",
+        "id": "prepareCommand",
+        "symbol": "_Z27PrepareDrawRenderersCommandRK20DrawRenderersCommandR18JobBatchDispatcher",
+        "release": {
+          "rva": "0x865fb4",
+          "byteSize": 1676,
+          "bodySha256": "6c704ed3e8e4772a0a2345da3710f7827e93b95df7608e26205842efcfe3421b",
+          "normalizedShapeSha256": "849036d083e5eeccf63c4572159d968c335f91b1303b226b9535e5da5d510fba"
+        },
+        "status": "partial-exact-static",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x646ee4"
+        ],
+        "game": {
+          "rva": "0x646ee4",
+          "byteSize": 1676,
+          "bodySha256": "0d8d8a14bb55be65d2b67fad1410f468111af1cffb77b88f73553160519e93fb",
+          "normalizedShapeSha256": "be0f99955745db46ccd696794960b0b93b434dd3f55fc8aa1e9082e8d9736020",
+          "wholeBodyExact": false
+        },
+        "locationProof": {
+          "method": "caller-edge-consensus",
+          "status": "exact-static-location",
+          "independentCallerCount": 2,
+          "callerEdges": [
+            {
+              "callerSymbol": "_ZN23ScriptableRenderContext25PrepareRendererListsAsyncEPK12RendererListi",
+              "instructionOffset": 352,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0x85ac54",
+              "gameCallerRva": "0x63ac78",
+              "releaseTarget": "0x865fb4",
+              "gameTarget": "0x646ee4",
+              "releaseCallerBodySha256": "7f0d633e0203e17247e2e4c78188e68cfb90891bc16358265d9c670c472b565c",
+              "gameCallerBodySha256": "1d967168dc00e1808e6ce987d9b3228ccaddacda2fb773841903f6e92b6ae46b",
+              "callerNormalizedShapeSha256": "0c870d8e81aea45695ad1e75cf66b869f6f46c9b0db02605afbfd855935fdb06"
+            },
+            {
+              "callerSymbol": "_ZN23ScriptableRenderContext27ExecuteScriptableRenderLoopEv",
+              "instructionOffset": 1348,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0x859770",
+              "gameCallerRva": "0x6394dc",
+              "releaseTarget": "0x865fb4",
+              "gameTarget": "0x646ee4",
+              "releaseCallerBodySha256": "dfe26cd07aac055f2db0540c09f8ac4f7b4d4cd338800a6829f90c5399c98f0b",
+              "gameCallerBodySha256": "6ce1505af17666cd1d02a9fab0098e48e47e7750b63d5ba0baf2af9e202c792a",
+              "callerNormalizedShapeSha256": "d7b33393167c5e1930c6e075b522667c86280c7cac29913eb3de458e55f9c215"
+            }
+          ],
+          "consensusGameRva": "0x646ee4",
+          "proofSha256": "dabe13084c91e13568f65f18eefc245b1521143407a949610bf7b0a7f34a76ce"
+        },
+        "controlFlowProof": {
+          "status": "partial-exact-static",
+          "globalBranchImmediateMasking": false,
+          "allDirectBranchesClassified": true,
+          "instructionCount": 419,
+          "rawInstructionDifferenceCount": 65,
+          "normalizedResidualOffsets": [
+            288,
+            1568
+          ],
+          "directBranchCount": 42,
+          "edges": [
+            {
+              "instructionOffset": 56,
+              "instructionKind": "BL",
+              "releaseTarget": "0xfa0fb8",
+              "gameTarget": "0xbf6494",
+              "releaseSymbols": [
+                "_ZN27BatchRendererCullingOutputs26SyncFencesAndFinishCullingEv"
+              ],
+              "targetByteSize": 268,
+              "releaseTargetBodySha256": "2b20da4c891db1025f1894a309a8c2ac8376257c85aa71bdc9ee12b67a987e6d",
+              "gameTargetBodySha256": "aa4cde11f5e0b5fa9ec14f862c0d5138420ecd35d4288022a747334106bb9093",
+              "releaseTargetNormalizedShapeSha256": "5ee6a81e42a48dfc7e1b83b7921cb81ed198a6f83658b1a17aa82d8d9696746a",
+              "gameTargetNormalizedShapeSha256": "5ee6a81e42a48dfc7e1b83b7921cb81ed198a6f83658b1a17aa82d8d9696746a",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 64,
+              "instructionKind": "BL",
+              "releaseTarget": "0xfa4bf0",
+              "gameTarget": "0xbfa3b8",
+              "releaseSymbols": [
+                "_ZNK27BatchRendererCullingOutputs23ComputeDrawCommandCountEv"
+              ],
+              "targetByteSize": 292,
+              "releaseTargetBodySha256": "6e6aff253a35b1db852434674b811768bc482c9f2d38df161cd0c94fdfc5e73d",
+              "gameTargetBodySha256": "dbdb278f7258a8d6ae2f62d3d076e0291c1d82197c895092d3548fc3db06d3be",
+              "releaseTargetNormalizedShapeSha256": "b49ad7ba0588a8c6432daa6f64cb4732c7a310a3987bbba17634d0b149e3bf5f",
+              "gameTargetNormalizedShapeSha256": "b49ad7ba0588a8c6432daa6f64cb4732c7a310a3987bbba17634d0b149e3bf5f",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 72,
+              "instructionKind": "BL",
+              "releaseTarget": "0xfa53bc",
+              "gameTarget": "0xbfab7c",
+              "releaseSymbols": [
+                "_ZN18BatchRendererGroup21UpdateInjectionFilterEv"
+              ],
+              "targetByteSize": 92,
+              "releaseTargetBodySha256": "0a02ebe77e3c99b5478b0a1d544952dffa197978a540d517d48fbb5d29ea8257",
+              "gameTargetBodySha256": "ee287dab5f9fbbaf76960b9e1282dc960ffebef8dde08dc8038174f7749e575e",
+              "releaseTargetNormalizedShapeSha256": "e6b4ef5a09ac03a9a90f58896e3337f29eeb7c0057e2cd4c244f7384cbf1b298",
+              "gameTargetNormalizedShapeSha256": "e6b4ef5a09ac03a9a90f58896e3337f29eeb7c0057e2cd4c244f7384cbf1b298",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 108,
+              "instructionKind": "BL",
+              "releaseTarget": "0x857fdc",
+              "gameTarget": "0x637d88",
+              "releaseSymbols": [
+                "_Z23CalculateRenderJobCounti"
+              ],
+              "targetByteSize": 88,
+              "releaseTargetBodySha256": "e5b3f64f50d955eea137eb6f5a304a1949bd61a82db1a3df43c7692acc2a854a",
+              "gameTargetBodySha256": "b9160535abb7e06ffef4ad56085374403d7a6336bdb7434bcbdae2ce2b284adc",
+              "releaseTargetNormalizedShapeSha256": "2a60b988a236bfcd3abc43dd6c1673df7b4e86df80100531b7a90d49fac94134",
+              "gameTargetNormalizedShapeSha256": "491e8fa81680bf6ea7dcd7012d313485481edd7bc7286a3f9953699c438e8cf5",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 148,
+              "instructionKind": "BL",
+              "releaseTarget": "0x765b08",
+              "gameTarget": "0x559fcc",
+              "releaseSymbols": [
+                "_Znam10MemLabelIdmPKci",
+                "_Znwm10MemLabelIdmPKci"
+              ],
+              "targetByteSize": 28,
+              "releaseTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "releaseTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 276,
+              "instructionKind": "BL",
+              "releaseTarget": "0x1927760",
+              "gameTarget": "0x1453d90",
+              "targetWindowByteSize": 16,
+              "releaseTargetWindowSha256": "22338f447412ae941be4e2a0f41af6849f14052fcebe8f3e708b2dceb29f4983",
+              "gameTargetWindowSha256": "79776bc6ad33391f445b31bfd64ae81a2140e4c971ceffb82c1982e447b609d4",
+              "relation": "anonymous-target-window-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 288,
+              "releaseKind": "direct-load",
+              "gameKind": "B",
+              "relation": "linker-thunk-rejoin",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 316,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 368,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 400,
+              "instructionKind": "BL",
+              "releaseTarget": "0x765b08",
+              "gameTarget": "0x559fcc",
+              "releaseSymbols": [
+                "_Znam10MemLabelIdmPKci",
+                "_Znwm10MemLabelIdmPKci"
+              ],
+              "targetByteSize": 28,
+              "releaseTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "releaseTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 432,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 484,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 488,
+              "instructionKind": "BL",
+              "releaseTarget": "0x8e7f34",
+              "gameTarget": "0x6cf930",
+              "releaseSymbols": [
+                "_ZN8Material25AcquireSharedMaterialDataEv"
+              ],
+              "targetByteSize": 300,
+              "releaseTargetBodySha256": "1983da20a9353402f14ed72033ea7e0c7826c563d0d11c3bd179567b9cd33d78",
+              "gameTargetBodySha256": "840892f9a817e9e27a29c2e2835d2213018f01f0b6d403ee339ec49c8cad730a",
+              "releaseTargetNormalizedShapeSha256": "aae9c595ad121da6001066f43835e0bab013611b1eab9d1d28673b7a5de967c8",
+              "gameTargetNormalizedShapeSha256": "aae9c595ad121da6001066f43835e0bab013611b1eab9d1d28673b7a5de967c8",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 520,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 572,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 636,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 692,
+              "instructionKind": "B",
+              "releaseTarget": "0x8662dc",
+              "gameTarget": "0x64720c",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 808,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 768,
+              "instructionKind": "BL",
+              "releaseTarget": "0x1234eec",
+              "gameTarget": "0xe66dd8",
+              "releaseSymbols": [
+                "_Z17DebugStringToFileRK21DebugStringToFileData"
+              ],
+              "targetByteSize": 860,
+              "releaseTargetBodySha256": "27215251e04e319e4c5e267ab154b3f2870aa1facadbb659cbf81ab1c2931109",
+              "gameTargetBodySha256": "d1915a82aa6fad3f73592df8daed2334587450426593bcb261aacce764132ff7",
+              "releaseTargetNormalizedShapeSha256": "c16cd355402fa8218d0089cfc6acbd1c5a5c4540bdc256f8b824ac75bf0ed4af",
+              "gameTargetNormalizedShapeSha256": "c16cd355402fa8218d0089cfc6acbd1c5a5c4540bdc256f8b824ac75bf0ed4af",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 776,
+              "instructionKind": "B",
+              "releaseTarget": "0x86661c",
+              "gameTarget": "0x64754c",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 1640,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 784,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 820,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 872,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 944,
+              "instructionKind": "BL",
+              "releaseTarget": "0x1234eec",
+              "gameTarget": "0xe66dd8",
+              "releaseSymbols": [
+                "_Z17DebugStringToFileRK21DebugStringToFileData"
+              ],
+              "targetByteSize": 860,
+              "releaseTargetBodySha256": "27215251e04e319e4c5e267ab154b3f2870aa1facadbb659cbf81ab1c2931109",
+              "gameTargetBodySha256": "d1915a82aa6fad3f73592df8daed2334587450426593bcb261aacce764132ff7",
+              "releaseTargetNormalizedShapeSha256": "c16cd355402fa8218d0089cfc6acbd1c5a5c4540bdc256f8b824ac75bf0ed4af",
+              "gameTargetNormalizedShapeSha256": "c16cd355402fa8218d0089cfc6acbd1c5a5c4540bdc256f8b824ac75bf0ed4af",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 948,
+              "instructionKind": "B",
+              "releaseTarget": "0x866448",
+              "gameTarget": "0x647378",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 1172,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 964,
+              "instructionKind": "B",
+              "releaseTarget": "0x8663bc",
+              "gameTarget": "0x6472ec",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 1032,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 984,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1036,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 1068,
+              "instructionKind": "BL",
+              "releaseTarget": "0x765b08",
+              "gameTarget": "0x559fcc",
+              "releaseSymbols": [
+                "_Znam10MemLabelIdmPKci",
+                "_Znwm10MemLabelIdmPKci"
+              ],
+              "targetByteSize": 28,
+              "releaseTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "releaseTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1100,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1152,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 1200,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1252,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 1284,
+              "instructionKind": "BL",
+              "releaseTarget": "0x765b08",
+              "gameTarget": "0x559fcc",
+              "releaseSymbols": [
+                "_Znam10MemLabelIdmPKci",
+                "_Znwm10MemLabelIdmPKci"
+              ],
+              "targetByteSize": 28,
+              "releaseTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetBodySha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "releaseTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "gameTargetNormalizedShapeSha256": "7275bb5402c016f500c8785deb230e7f4fb7cf687bd369b12692ebadce24de5c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1316,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1368,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 1372,
+              "instructionKind": "BL",
+              "releaseTarget": "0x8e7f34",
+              "gameTarget": "0x6cf930",
+              "releaseSymbols": [
+                "_ZN8Material25AcquireSharedMaterialDataEv"
+              ],
+              "targetByteSize": 300,
+              "releaseTargetBodySha256": "1983da20a9353402f14ed72033ea7e0c7826c563d0d11c3bd179567b9cd33d78",
+              "gameTargetBodySha256": "840892f9a817e9e27a29c2e2835d2213018f01f0b6d403ee339ec49c8cad730a",
+              "releaseTargetNormalizedShapeSha256": "aae9c595ad121da6001066f43835e0bab013611b1eab9d1d28673b7a5de967c8",
+              "gameTargetNormalizedShapeSha256": "aae9c595ad121da6001066f43835e0bab013611b1eab9d1d28673b7a5de967c8",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1404,
+              "instructionKind": "BL",
+              "releaseTarget": "0x6aceb4",
+              "gameTarget": "0x508d8c",
+              "releaseSymbols": [
+                "_ZN4core13base_hash_mapIiP6Object22Int32HashFunctionKnuthNSt6__ndk18equal_toIiEEE4findERKi"
+              ],
+              "targetByteSize": 96,
+              "releaseTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "gameTargetBodySha256": "d1b985179fb1dc09f7d144b11be51a41e49c76ce98fbe520410c6e0dfb639864",
+              "releaseTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "gameTargetNormalizedShapeSha256": "ac12928abb57918685f0de95f1e79cd782ce75e8c3a7899c1f9530ebce7b3d2c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1456,
+              "instructionKind": "BL",
+              "releaseTarget": "0x774b8c",
+              "gameTarget": "0x5699b0",
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "targetByteSize": 80,
+              "releaseTargetBodySha256": "fd33bd8a72bf0234cc81ed88e3a33bcdbe9049d0b8dc59df8a072ad2c58a62ac",
+              "gameTargetBodySha256": "c4683f9dbc27d2a85d3b9f623bdc2f7bce797fc058ddf7db93f17410df425372",
+              "releaseTargetNormalizedShapeSha256": "880d91610ea16cb7bfd908076b7107d3b05818eddbf1884601149b8b9adfdfbe",
+              "gameTargetNormalizedShapeSha256": "54a7b751268c764f5eb64847ccdc9b6c17563aa94841f6aa90708bb633af743c",
+              "relation": "corresponding-edge-target-body-changed",
+              "status": "partial-exact-static"
+            },
+            {
+              "instructionOffset": 1488,
+              "instructionKind": "BL",
+              "releaseTarget": "0x1923250",
+              "gameTarget": "0x144f9d0",
+              "releaseSymbols": [
+                "__aarch64_ldadd4_relax"
+              ],
+              "targetByteSize": 48,
+              "releaseTargetBodySha256": "5219348a909f28d8e3847900a7373b8b4370270855b97cea435ea26a657f7299",
+              "gameTargetBodySha256": "797acebc77855f44ec71f64e02fcc848999c16d003b9ef33c618f94005d1ae30",
+              "releaseTargetNormalizedShapeSha256": "d33f51a2366eb5d41affcf0eb79c49b1c5e1f4861ea7f1f4c788fb1232734ce1",
+              "gameTargetNormalizedShapeSha256": "d33f51a2366eb5d41affcf0eb79c49b1c5e1f4861ea7f1f4c788fb1232734ce1",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1524,
+              "instructionKind": "BL",
+              "releaseTarget": "0x738718",
+              "gameTarget": "0x64d324",
+              "releaseSymbols": [
+                "_ZN4core6vectorI12VFXCPUBufferNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorI16LightProbeOffsetNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorI18EditorCurveBindingNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorI21VFXTemporaryGPUBufferNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorI24ScriptableLoopObjectDataNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorI8LineInfoNS_9allocatorIS1_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorIN10ClothScene17ClothSkinningDataENS_9allocatorIS2_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorIN13AvatarBuilder14NamedTransformENS_9allocatorIS2_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorIN16XRTextureManager14TextureRequestENS_9allocatorIS2_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorIN21XRInputTrackingFacade20VRNodeStateToManagedENS_9allocatorIS2_Lm0EEEE12reserve_implEm",
+                "_ZN4core6vectorIN8TextCore37ReverseChainingContextualSubstitutionENS_9allocatorIS2_Lm0EEEE12reserve_implEm"
+              ],
+              "targetByteSize": 180,
+              "releaseTargetBodySha256": "121c43d0db911372567c573cfed2b1d26760573fd94ee5932d28181f9284c4a6",
+              "gameTargetBodySha256": "c95dfd843d8be352028c69e5dff3009b37fcf0d44598fcb0312809ddf298c7c2",
+              "releaseTargetNormalizedShapeSha256": "4d2eebd4e341d7863e6c3e15522460268d7b08f22e0253e7a356d715fb7a1707",
+              "gameTargetNormalizedShapeSha256": "4d2eebd4e341d7863e6c3e15522460268d7b08f22e0253e7a356d715fb7a1707",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1596,
+              "instructionKind": "BL",
+              "releaseTarget": "0x85a83c",
+              "gameTarget": "0x63a760",
+              "releaseSymbols": [
+                "_ZN23ScriptableRenderContext23ShouldUseRenderPipelineEv"
+              ],
+              "targetByteSize": 156,
+              "releaseTargetBodySha256": "5c3027b49cb918073eeac9149caeb7f9ba9949ae884f54387fa538ad8ed6afd1",
+              "gameTargetBodySha256": "3fddae19ff64ddabea4ecd5acafe4b4cc0dec1ea308d99ee053e9eb1a90de17a",
+              "releaseTargetNormalizedShapeSha256": "3cd345d9b38d90ca98934cb4b2c81c8f05ab1cd3e6bfad0fc1b2ccce210cc84c",
+              "gameTargetNormalizedShapeSha256": "3cd345d9b38d90ca98934cb4b2c81c8f05ab1cd3e6bfad0fc1b2ccce210cc84c",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 1636,
+              "instructionKind": "BL",
+              "releaseTarget": "0x87aa0c",
+              "gameTarget": "0x65c39c",
+              "releaseSymbols": [
+                "_ZN18JobBatchDispatcher26ScheduleJobDependsInternalER8JobFencePFvPvES2_S0_"
+              ],
+              "targetByteSize": 280,
+              "releaseTargetBodySha256": "a2243f90dd2e75bd32750b40f10609c20f897f4f799916e46749b83dc8dde6b1",
+              "gameTargetBodySha256": "8ad90215ff04f54be28083e222498bbdd91f5071a336aef4b1040dbe483176bf",
+              "releaseTargetNormalizedShapeSha256": "f2d307ac0c1040c86a7cce75f3f0fdad4ebc3175f9af2561ef5bc4c4c1a059ec",
+              "gameTargetNormalizedShapeSha256": "f2d307ac0c1040c86a7cce75f3f0fdad4ebc3175f9af2561ef5bc4c4c1a059ec",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            }
+          ],
+          "remainingStaticTargetSemantics": [
+            {
+              "instructionOffset": 108,
+              "releaseSymbols": [
+                "_Z23CalculateRenderJobCounti"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 368,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 484,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 572,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 784,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 872,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 1036,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 1152,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 1252,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 1368,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            },
+            {
+              "instructionOffset": 1456,
+              "releaseSymbols": [
+                "_Z31ReadObjectFromPersistentManageri"
+              ],
+              "reason": "candidate helper target body differs after relocation normalization"
+            }
+          ],
+          "proofSha256": "ff008143823691854a74049b4129e17ec4ccde689e5c4480c6f425e065070e03"
+        },
+        "remainingRuntimeSemantics": [
+          "candidate stripped-global semantic identities and live contents",
+          "DrawRenderersCommand field semantics and runtime values",
+          "JobBatchDispatcher fence and callback execution"
+        ],
+        "linkageProof": [
+          {
+            "id": "object-id-map",
+            "sourceOffset": 288,
+            "status": "partial-exact-static",
+            "release": {
+              "gotSlot": "0x1998fe8",
+              "relocationType": "R_AARCH64_RELATIVE",
+              "addend": "0x19d93a0",
+              "symbol": "_ZN6Object14ms_IDToPointerE",
+              "symbolByteSize": 8
+            },
+            "game": {
+              "thunkRva": "0x1453ca8",
+              "thunkByteSize": 8,
+              "thunkBodySha256": "26069c6c28da4d8ae5e51618cee4314d731e998065b35642eb67c17faad88c56",
+              "rejoinOffset": 292,
+              "gotSlot": "0x14a3e18",
+              "relocationType": "R_AARCH64_RELATIVE",
+              "addend": "0x14deb60",
+              "candidateSemanticSymbol": null,
+              "candidateSemanticStatus": "unresolved"
+            },
+            "proved": "paired ADRP/load linkage, relative relocation and exact thunk rejoin",
+            "remainingSemantics": "stripped candidate global identity and live object-map contents",
+            "proofSha256": "6d3cc76740da98b1ff1e79a655b4d9da9434f71722f306661afd0974deb68115"
+          },
+          {
+            "id": "renderer-update-manager",
+            "sourceOffset": 1568,
+            "status": "partial-exact-static",
+            "release": {
+              "directObjectRva": "0x1a1eed0",
+              "symbol": "gRendererUpdateManager",
+              "symbolByteSize": 8
+            },
+            "game": {
+              "gotSlot": "0x14a4268",
+              "relocationType": "R_AARCH64_RELATIVE",
+              "addend": "0x1524630",
+              "candidateSemanticSymbol": null,
+              "candidateSemanticStatus": "unresolved"
+            },
+            "postLoadWindowOffset": 1572,
+            "postLoadWindowByteSize": 16,
+            "postLoadNormalizedShapeSha256": "0499828f794c3f5d8fa1beb7c0dd3342b08a2e25390d9d1c86eb77ed72200a00",
+            "proved": "release direct object address and candidate relative-relocation load feed the same normalized post-load dataflow",
+            "remainingSemantics": "stripped candidate global identity and live manager instance",
+            "proofSha256": "3115aeacf2fb65233b8c6d0fa298fa9385c228bfc1aa1c49b39138d733b0bca4"
+          }
+        ]
+      },
+      {
+        "group": "sort",
+        "id": "rendererListPrepare",
+        "symbol": "_ZL33PrepareScriptableDrawRenderersJobP26ScriptableRenderContextArg",
+        "release": {
+          "rva": "0x866640",
+          "byteSize": 156,
+          "bodySha256": "2f3e1f253eaa1fb62aadee97f5e898f30df26956ec088bce5c55a3f5054cc623",
+          "normalizedShapeSha256": "20eb0fff971d82d82b7774fed0911f13fe3fc83024ad8c3a21d8272330d3922a"
+        },
+        "status": "partial-exact-static",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x647570"
+        ],
+        "game": {
+          "rva": "0x647570",
+          "byteSize": 156,
+          "bodySha256": "2b2b16e9df981d09f66f66cacb32e376647707a66109e9550459a808f0a7bf7d",
+          "normalizedShapeSha256": "ab2e17ab8b538a749faa7a957847c7ba66256848381488f502fd56b70ac617d7",
+          "wholeBodyExact": false
+        },
+        "locationProof": {
+          "method": "address-taken-callback-from-consensus-mapped-parent",
+          "status": "exact-static-location",
+          "parentId": "prepareCommand",
+          "parentLocationProofSha256": "dabe13084c91e13568f65f18eefc245b1521143407a949610bf7b0a7f34a76ce",
+          "instructionOffset": 1608,
+          "instructionKind": "ADR",
+          "releaseTarget": "0x866640",
+          "gameTarget": "0x647570",
+          "proofSha256": "21bead2aa9a65d098f3086b7d0a055ac4f1d6ae51120ecf34fec886389a08a84"
+        },
+        "controlFlowProof": {
+          "status": "partial-exact-static",
+          "globalBranchImmediateMasking": false,
+          "allDirectBranchesClassified": true,
+          "instructionCount": 39,
+          "rawInstructionDifferenceCount": 2,
+          "normalizedResidualOffsets": [
+            132
+          ],
+          "directBranchCount": 3,
+          "edges": [
+            {
+              "instructionOffset": 64,
+              "instructionKind": "BL",
+              "releaseTarget": "0x864c58",
+              "gameTarget": "0x645b88",
+              "releaseSymbols": [
+                "_Z31PrepareScriptableLoopObjectDataRK15RenderNodeQueueRK20DrawRenderersCommandPK20OverrideMaterialInfoPK18OverrideShaderInfoPK12MaterialInfoimmRN4core6vectorI24ScriptableLoopObjectDataNSE_9allocatorISG_Lm0EEEEE"
+              ],
+              "targetByteSize": 4680,
+              "releaseTargetBodySha256": "8b26ed995887d2f4fb4cc74f862f7cbd943d0778e9b274bceda90e4addde36f1",
+              "gameTargetBodySha256": "b191fd0a6b74035c74bd757b33f88e5dfb9c39c626328b3d1ba7b9ef26cddc71",
+              "releaseTargetNormalizedShapeSha256": "a063a6e81489e03baf393d86faeb78abc681f69693359153bc481f9e1e41286f",
+              "gameTargetNormalizedShapeSha256": "a063a6e81489e03baf393d86faeb78abc681f69693359153bc481f9e1e41286f",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 88,
+              "instructionKind": "BL",
+              "releaseTarget": "0x865f60",
+              "gameTarget": "0x646e90",
+              "releaseSymbols": [
+                "_ZL37SortScriptableLoopObjectDataWithFenceR8JobFenceRK15RenderNodeQueue23RendererSortingCriteriaRN4core6vectorI24ScriptableLoopObjectDataNS5_9allocatorIS7_Lm0EEEEE"
+              ],
+              "targetByteSize": 84,
+              "releaseTargetBodySha256": "de744b515771e8ed118fce08e547530e531a8ed54b1968605c85b753998c3813",
+              "gameTargetBodySha256": "b187feae2edbc1dd90c4fc2f8e5bff0d052bddf7c9797e2679ee098f33d1be38",
+              "releaseTargetNormalizedShapeSha256": "ff943e88e844f7f3dd0721a5f631e326f21e3d286d6d9f520dfd57a3aebd2d34",
+              "gameTargetNormalizedShapeSha256": "ff943e88e844f7f3dd0721a5f631e326f21e3d286d6d9f520dfd57a3aebd2d34",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 132,
+              "instructionKind": "B",
+              "releaseTarget": "0x87bc3c",
+              "gameTarget": "0x65d5e0",
+              "releaseSymbols": [
+                "_Z26ScheduleJobDependsInternalR8JobFencePFvPvES1_S_11JobPriority"
+              ],
+              "targetByteSize": 116,
+              "releaseTargetBodySha256": "c02f31758f2f278f23b8b94ea6fbc497e2b87d16190ba382608b8d49280ba62a",
+              "gameTargetBodySha256": "c17d44521568a3f54da321448e2f86731af01464698484ec18e610ce873a245c",
+              "releaseTargetNormalizedShapeSha256": "43ba968d8c4436949e4e1b5e38219a4370e2ee6dc35a24c221d8782f1b273d55",
+              "gameTargetNormalizedShapeSha256": "43ba968d8c4436949e4e1b5e38219a4370e2ee6dc35a24c221d8782f1b273d55",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            }
+          ],
+          "remainingStaticTargetSemantics": [],
+          "proofSha256": "ebc4b0cee4ca9ba0d92ce303ab98337446b5579e496f9c8aa072901f6aed3e70"
+        },
+        "remainingRuntimeSemantics": [
+          "ScriptableRenderContextArg field semantics and runtime values",
+          "RenderNode sorting criteria and produced object-data values",
+          "scheduled job execution order and fence completion"
+        ]
+      },
+      {
+        "group": "sort",
+        "id": "stdIntrosort",
+        "symbol": "_ZNSt6__ndk111__introsortINS_17_ClassicAlgPolicyER18RenderObjectSorterP24ScriptableLoopObjectDataLb0EEEvT1_S6_T0_NS_15iterator_traitsIS6_E15difference_typeEb",
+        "release": {
+          "rva": "0x868d6c",
+          "byteSize": 944,
+          "bodySha256": "6397f9a6f0387ff55935bc796807f9cc54a0ffc68d9caaf1ec4fc94512ea8c25",
+          "normalizedShapeSha256": "9d77b9198727d57786f10884afb03602e2f6ae69690f438b90b7f3ee31573510"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x64a62c"
+        ],
+        "game": {
+          "rva": "0x64a62c",
+          "byteSize": 944,
+          "bodySha256": "2b36adbdd6c16f9d77ff9628c578c0806aaaadd3c7a9d93db4f255ad559ae15f",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "getSortingGroupId",
+        "symbol": "_ZN12BaseRenderer17GetSortingGroupIDEj",
+        "release": {
+          "rva": "0x755528",
+          "byteSize": 12,
+          "bodySha256": "0f9a89af23c331c5c57a845ee0b2b6c9f6b4af1521f972659ae874b363c6de12",
+          "normalizedShapeSha256": "34552de1fb5507d9958b825c54da917bff834faf9d46be6403d95355be8c436f"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x54c648"
+        ],
+        "game": {
+          "rva": "0x54c648",
+          "byteSize": 12,
+          "bodySha256": "0f9a89af23c331c5c57a845ee0b2b6c9f6b4af1521f972659ae874b363c6de12",
+          "wholeBodyExact": true
+        },
+        "semanticStaticProof": {
+          "status": "exact-static-semantic-shape",
+          "normalization": "mask ADRP/ADR/literal addresses only; preserve BL/B, load-store offsets and ADD/SUB immediates",
+          "releaseShapeSha256": "0f9a89af23c331c5c57a845ee0b2b6c9f6b4af1521f972659ae874b363c6de12",
+          "gameShapeSha256": "0f9a89af23c331c5c57a845ee0b2b6c9f6b4af1521f972659ae874b363c6de12",
+          "byteSize": 12,
+          "preservesLoadStoreOffsets": true,
+          "preservesAddSubImmediates": true,
+          "preservesDirectCalls": true,
+          "proved": "BaseRenderer sorting-group id field load",
+          "remaining": "live guest inputs and the produced per-frame sort output",
+          "proofSha256": "6d170970674c712737c381ba9fc1ae4feaad779201460f6e4f61da7b87c039ff"
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "getSortingGroupOrder",
+        "symbol": "_ZN12BaseRenderer20GetSortingGroupOrderEj",
+        "release": {
+          "rva": "0x755544",
+          "byteSize": 12,
+          "bodySha256": "d67a56037e351f56a968e1fbc283cf0e283ba36cfd61798f35b2303c376f5756",
+          "normalizedShapeSha256": "e5d0a4c01c163e0dda40acf99c7758995f9a83f3967d629834a0151886a749bd"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x54c664"
+        ],
+        "game": {
+          "rva": "0x54c664",
+          "byteSize": 12,
+          "bodySha256": "d67a56037e351f56a968e1fbc283cf0e283ba36cfd61798f35b2303c376f5756",
+          "wholeBodyExact": true
+        },
+        "semanticStaticProof": {
+          "status": "exact-static-semantic-shape",
+          "normalization": "mask ADRP/ADR/literal addresses only; preserve BL/B, load-store offsets and ADD/SUB immediates",
+          "releaseShapeSha256": "d67a56037e351f56a968e1fbc283cf0e283ba36cfd61798f35b2303c376f5756",
+          "gameShapeSha256": "d67a56037e351f56a968e1fbc283cf0e283ba36cfd61798f35b2303c376f5756",
+          "byteSize": 12,
+          "preservesLoadStoreOffsets": true,
+          "preservesAddSubImmediates": true,
+          "preservesDirectCalls": true,
+          "proved": "BaseRenderer sorting-group order field load",
+          "remaining": "live guest inputs and the produced per-frame sort output",
+          "proofSha256": "3eaeae44970ded3b93f4d7b167e2ca6e6593a3b709097112c5f5b689c6331a30"
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "getGlobalLayeringData",
+        "symbol": "_ZNK12BaseRenderer21GetGlobalLayeringDataEj",
+        "release": {
+          "rva": "0x755560",
+          "byteSize": 8,
+          "bodySha256": "e8ae058f68b334ee6a3eef7d22067866886c498d64e13b2fc7ed88d90477344e",
+          "normalizedShapeSha256": "e8ae058f68b334ee6a3eef7d22067866886c498d64e13b2fc7ed88d90477344e"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x54c680"
+        ],
+        "game": {
+          "rva": "0x54c680",
+          "byteSize": 8,
+          "bodySha256": "e8ae058f68b334ee6a3eef7d22067866886c498d64e13b2fc7ed88d90477344e",
+          "wholeBodyExact": true
+        },
+        "semanticStaticProof": {
+          "status": "exact-static-semantic-shape",
+          "normalization": "mask ADRP/ADR/literal addresses only; preserve BL/B, load-store offsets and ADD/SUB immediates",
+          "releaseShapeSha256": "e8ae058f68b334ee6a3eef7d22067866886c498d64e13b2fc7ed88d90477344e",
+          "gameShapeSha256": "e8ae058f68b334ee6a3eef7d22067866886c498d64e13b2fc7ed88d90477344e",
+          "byteSize": 8,
+          "preservesLoadStoreOffsets": true,
+          "preservesAddSubImmediates": true,
+          "preservesDirectCalls": true,
+          "proved": "BaseRenderer global layering-data field address",
+          "remaining": "live guest inputs and the produced per-frame sort output",
+          "proofSha256": "82e80c2b84e8cf985ea8aa5789eda44e6f64044a54477cfd9bc92d1855dc1c35"
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "rendererConstructor",
+        "symbol": "_ZN8RendererC2E12RendererType10MemLabelId18ObjectCreationMode",
+        "release": {
+          "rva": "0x7e75d8",
+          "byteSize": 192,
+          "bodySha256": "1db64777c3dd55e4e0842671e9b485b45881d32671569980c4cd679b7c6a3334",
+          "normalizedShapeSha256": "26a6412ca219a75434fae82a8ebaf9138fbe581bf28ea7853cbe68a9de2b02f4"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x5dbec4"
+        ],
+        "game": {
+          "rva": "0x5dbec4",
+          "byteSize": 192,
+          "bodySha256": "53116a547cc4da6691ddaabdcf3beef993ba9145034fc0d5700e64c46a0b1b6d",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "rendererUpdateManagerAddRenderer",
+        "symbol": "_ZN21RendererUpdateManager11AddRendererER8Renderer",
+        "release": {
+          "rva": "0x7dc85c",
+          "byteSize": 180,
+          "bodySha256": "84248cd047770f63d25d3b265503287ea2c4c9ff56b00a4a7b6ba1993b18f47e",
+          "normalizedShapeSha256": "e1fa30ad590df970c246356fd81410f9866b960d7fc3f54fb06e721d61b6e596"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x5d1f48"
+        ],
+        "game": {
+          "rva": "0x5d1f48",
+          "byteSize": 180,
+          "bodySha256": "0c05ac62dae90aea0546d9cd7c60243b2086988d1e186f811863d98e415483a1",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "isSRPBatcherCompatible",
+        "symbol": "_Z22IsSRPBatcherCompatibleRK10RenderNodeRK6Shaderii",
+        "release": {
+          "rva": "0x8645bc",
+          "byteSize": 284,
+          "bodySha256": "ef5c1de13e4551d89715650c22bee8370d2b20efc70b52003bab40d9069e4d56",
+          "normalizedShapeSha256": "91a9efd55ea09148ff1979a521a7d3a348323dd68f3cae5004f6c31c1fa1c575"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0x6454ec"
+        ],
+        "game": {
+          "rva": "0x6454ec",
+          "byteSize": 284,
+          "bodySha256": "88d4605ba6475446f4527dab7fd303c4037c21991642ddb0bb1403f6a77e2d2c",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "flattenBasicData",
+        "symbol": "_ZN12BaseRenderer16FlattenBasicDataERKS_h12LODFadeValueR10RenderNode",
+        "release": {
+          "rva": "0xf57ed4",
+          "byteSize": 236,
+          "bodySha256": "6820753a7fcb67f4b9296ba9cf3dd6819efd828bf1fd762b70e6bb7b1924def5",
+          "normalizedShapeSha256": "1d28b4bff171f3184af709dbabb4979014cbda6d4f7bc4773a2c819e7f205de9"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xbafee4"
+        ],
+        "game": {
+          "rva": "0xbafee4",
+          "byteSize": 236,
+          "bodySha256": "69b5de5a6bedd967e771ef1163cafff993ea044616d35ec8689ada5b298b42c0",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "baseRendererConstructor",
+        "symbol": "_ZN12BaseRendererC2E12RendererType",
+        "release": {
+          "rva": "0xf57d74",
+          "byteSize": 40,
+          "bodySha256": "7c04bea4b8a28734b473ae9a0ce5ed4b780590e0e16838ed6da960c59fee9146",
+          "normalizedShapeSha256": "31971c5e5d01d42f086063a99d4eea11c1ec243372d0057be475263e80951966"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xbafd98"
+        ],
+        "game": {
+          "rva": "0xbafd98",
+          "byteSize": 40,
+          "bodySha256": "5ca614888a5dc9fa8b958c2c7c550486c9498d3cfed1d45f54486d07123230a5",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "flattenLightProbeData",
+        "symbol": "_ZN12BaseRenderer21FlattenLightProbeDataE4PPtrI9TransformERisRK17LightProbeContextR10RenderNode",
+        "release": {
+          "rva": "0xf58184",
+          "byteSize": 304,
+          "bodySha256": "8986068b7eb212719e171ceb399f7fde648b71cdb5cd14277ebe69c300820b77",
+          "normalizedShapeSha256": "2acc28d1545775dc3675f5188456273054b0fdb5c2d645f028ec050169b1ab68"
+        },
+        "status": "partial-exact-static",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xbb0194"
+        ],
+        "game": {
+          "rva": "0xbb0194",
+          "byteSize": 304,
+          "bodySha256": "d3db9dd75c8fa15b3aa452db6199a961b5da18c037c1e326bf3d6f3cfc35ca5e",
+          "normalizedShapeSha256": "2a11e974c05a2151ae93bc1a486a94882f4255d7e6291e1a533e4dfb91aac710",
+          "wholeBodyExact": false
+        },
+        "locationProof": {
+          "method": "caller-edge-consensus",
+          "status": "exact-static-location",
+          "independentCallerCount": 4,
+          "callerEdges": [
+            {
+              "callerSymbol": "_ZL24PrepareSpriteRenderNodesILb0EEvR35RenderNodeQueuePrepareThreadContext",
+              "instructionOffset": 372,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0x754fc0",
+              "gameCallerRva": "0x54c0f8",
+              "releaseTarget": "0xf58184",
+              "gameTarget": "0xbb0194",
+              "releaseCallerBodySha256": "954f2837055bd07f1b0ac43b3dfea09f9138654ea298635b1aad967e7653fab6",
+              "gameCallerBodySha256": "db76cbe74ec3b1004feb0416073344ce56e2390a68faef46dbe4b51353049252",
+              "callerNormalizedShapeSha256": "4e6f05191297a3e67ff92253233452ab12002e6aed151f6eaa8ffd0f530cbcd7"
+            },
+            {
+              "callerSymbol": "_ZN8Renderer15AddAsRenderNodeER15RenderNodeQueueRK20DeprecatedSourceData",
+              "instructionOffset": 236,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0x7e9c9c",
+              "gameCallerRva": "0x5de118",
+              "releaseTarget": "0xf58184",
+              "gameTarget": "0xbb0194",
+              "releaseCallerBodySha256": "92824f2ff1e2c2903630cdacd50eff9a256625cd4c4348fa762d9162196c99c1",
+              "gameCallerBodySha256": "4527cc24c7efdc1d68a5612fdc27aaee2bdd3f51952f7ac49b4cae7632dc441a",
+              "callerNormalizedShapeSha256": "c77ac01a72d78e3889a8d668d8702e982e34fa324eb582ec5b415e217dabd91c"
+            },
+            {
+              "callerSymbol": "_ZN12BaseRenderer16FlattenProbeDataE4PPtrI9TransformERisRK17LightProbeContextR10RenderNode",
+              "instructionOffset": 28,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0xf58120",
+              "gameCallerRva": "0xbb0130",
+              "releaseTarget": "0xf58184",
+              "gameTarget": "0xbb0194",
+              "releaseCallerBodySha256": "aff6d2fa2ccc7bfe27bc873834e2825bafa3f4c5a316a39c28fa46075b0a6139",
+              "gameCallerBodySha256": "749f061b4efff540c1b5f7c469c1a645c8d71a7ba9b26df5e27b51d0c53df24d",
+              "callerNormalizedShapeSha256": "e5b3a1512cea9823c2df48504b4f18d178355cc51004755e1835069af3864326"
+            },
+            {
+              "callerSymbol": "_ZL22PrepareMeshRenderNodesILb0EEvR35RenderNodeQueuePrepareThreadContext",
+              "instructionOffset": 720,
+              "instructionKind": "BL",
+              "releaseCallerRva": "0xfff964",
+              "gameCallerRva": "0xc51994",
+              "releaseTarget": "0xf58184",
+              "gameTarget": "0xbb0194",
+              "releaseCallerBodySha256": "be6b46e8d65965482ec39297fda9c6ebffefcc1903921690f21832b731c7cb46",
+              "gameCallerBodySha256": "c07d5ad9f1f8866dd4dd7a185d41a6274171ae65ddd43546a2a3b3ca7e7ba7dc",
+              "callerNormalizedShapeSha256": "5720c7fc7c49887f929c0e59d34d62dd183d0012c3ba04c69a4fd9a78d826cc2"
+            }
+          ],
+          "consensusGameRva": "0xbb0194",
+          "proofSha256": "672be125e6ef2d0205c1e1b5f5d08eae6500e27fd757dea6c991c9c1e58b8282"
+        },
+        "controlFlowProof": {
+          "status": "partial-exact-static",
+          "globalBranchImmediateMasking": false,
+          "allDirectBranchesClassified": true,
+          "instructionCount": 76,
+          "rawInstructionDifferenceCount": 7,
+          "normalizedResidualOffsets": [
+            188
+          ],
+          "directBranchCount": 7,
+          "edges": [
+            {
+              "instructionOffset": 36,
+              "instructionKind": "BL",
+              "releaseTarget": "0x72dc44",
+              "gameTarget": "0x5e13ac",
+              "releaseSymbols": [
+                "_Z27GenericPPtrToObjectDontLoadIXadL_ZN6Object21IDToPointerThreadSafeEiEE7TerrainEPT0_RK4PPtrIS2_E",
+                "_Z27GenericPPtrToObjectDontLoadIXadL_ZN6Object21IDToPointerThreadSafeEiEE9TransformEPT0_RK4PPtrIS2_E"
+              ],
+              "targetByteSize": 136,
+              "releaseTargetBodySha256": "d4360a47dd4b6b1c36a89d5c1765bf3dbfffd5506c8b71866d9269de2166ac6d",
+              "gameTargetBodySha256": "0dbb98e0dcf8193dc8e928268518eaaa6ab657e186a16d8bdf4426c2bebc88b6",
+              "releaseTargetNormalizedShapeSha256": "a446e325aaf13fc180a7a6ce1e10b61d38cc0287597e96135ab311302b7cba8f",
+              "gameTargetNormalizedShapeSha256": "a446e325aaf13fc180a7a6ce1e10b61d38cc0287597e96135ab311302b7cba8f",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 80,
+              "instructionKind": "B",
+              "releaseTarget": "0xf581e8",
+              "gameTarget": "0xbb01f8",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 100,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 128,
+              "instructionKind": "BL",
+              "releaseTarget": "0xfb00e8",
+              "gameTarget": "0xc048a4",
+              "releaseSymbols": [
+                "_Z29GetLightProbesCoefficientTypeRK17LightProbeContext15LightProbeUsageRK15LightmapIndiceshb"
+              ],
+              "targetByteSize": 148,
+              "releaseTargetBodySha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+              "gameTargetBodySha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+              "releaseTargetNormalizedShapeSha256": "d9b5ed3d882f57f2777be3a9e10e5dde427fba3fb14dc11b7680ba4b92964b08",
+              "gameTargetNormalizedShapeSha256": "d9b5ed3d882f57f2777be3a9e10e5dde427fba3fb14dc11b7680ba4b92964b08",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 188,
+              "instructionKind": "B",
+              "releaseTarget": "0xfe70f4",
+              "gameTarget": "0xc38578",
+              "releaseSymbols": [
+                "_Z38CalculateExplicitLightProbeCoordinatesiR29LightProbeSamplingCoordinates"
+              ],
+              "targetByteSize": 16,
+              "releaseTargetBodySha256": "5702080d2deb80e88258744576f9e41c3e21285fec510aea6d8b4bf641dfc22f",
+              "gameTargetBodySha256": "5702080d2deb80e88258744576f9e41c3e21285fec510aea6d8b4bf641dfc22f",
+              "releaseTargetNormalizedShapeSha256": "ef315968436db6a789e84b64aa7fe5ca15339d733a1c43980704dbea71d3a0af",
+              "gameTargetNormalizedShapeSha256": "ef315968436db6a789e84b64aa7fe5ca15339d733a1c43980704dbea71d3a0af",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 228,
+              "instructionKind": "BL",
+              "releaseTarget": "0xf8d99c",
+              "gameTarget": "0xbe49ac",
+              "releaseSymbols": [
+                "_ZNK28ReflectionProbeAnchorManager28GetCachedProbeAnchorPositionERK9Transform"
+              ],
+              "targetByteSize": 360,
+              "releaseTargetBodySha256": "5204caa79b8d4f70373da3213500f0af00d10e110efff8ee88c3d7afc66483f6",
+              "gameTargetBodySha256": "f70519c90674f0fd6742898bb2b238792139b03664880127e78ce5165be563ae",
+              "releaseTargetNormalizedShapeSha256": "13e55a923c981f5a04b2b88a50f6d9b8222aefd6b910f70ba1f6f4d2a1689caa",
+              "gameTargetNormalizedShapeSha256": "13e55a923c981f5a04b2b88a50f6d9b8222aefd6b910f70ba1f6f4d2a1689caa",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 232,
+              "instructionKind": "B",
+              "releaseTarget": "0xf58280",
+              "gameTarget": "0xbb0290",
+              "relation": "intra-function-offset-exact",
+              "targetOffset": 252,
+              "status": "exact-static-control-flow"
+            },
+            {
+              "instructionOffset": 268,
+              "instructionKind": "BL",
+              "releaseTarget": "0xfe6c20",
+              "gameTarget": "0xc380ec",
+              "releaseSymbols": [
+                "_Z38CalculateLightProbeSamplingCoordinatesRK17LightProbeContextRK8Vector3fiR29LightProbeSamplingCoordinates"
+              ],
+              "targetByteSize": 144,
+              "releaseTargetBodySha256": "0939414f0df56ae6cf1cc26c701b3d9f0581d5bfc2f5f163259e98fb62b26963",
+              "gameTargetBodySha256": "a68919ae51d293f13347afff1e97759c18abe9771e24856083e6b3b7b01dfc4a",
+              "releaseTargetNormalizedShapeSha256": "eb6c90b93146342a8836c55be6c7848cb0ca83aaf2aaff1e917e10c70ff310e7",
+              "gameTargetNormalizedShapeSha256": "eb6c90b93146342a8836c55be6c7848cb0ca83aaf2aaff1e917e10c70ff310e7",
+              "relation": "normalized-target-shape-exact",
+              "status": "exact-static-control-flow"
+            }
+          ],
+          "remainingStaticTargetSemantics": [],
+          "proofSha256": "4c625d48b0ab2b0ea8df98fc96c091c651a63c02a714b61b80ab38d1dec0dcf0"
+        },
+        "remainingRuntimeSemantics": [
+          "RenderNode field semantic names and versioned layout",
+          "Transform PPtr resolution and LightProbeContext live contents",
+          "probe anchor, coefficient and sampling-coordinate outputs"
+        ]
+      },
+      {
+        "group": "sort-input",
+        "id": "intermediateAddAsRenderNode",
+        "symbol": "_ZN20IntermediateRenderer15AddAsRenderNodeER15RenderNodeQueueRK20DeprecatedSourceData",
+        "release": {
+          "rva": "0xfd1464",
+          "byteSize": 140,
+          "bodySha256": "cfadcc6bb0db8bb6e4573c3b4bdf092404f6641201459ca507a0c9ff51633efe",
+          "normalizedShapeSha256": "bd8b3846c214e4d3af291e8cadafbd2269f9387a6939aaec0ffa570a0afe1124"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc2387c"
+        ],
+        "game": {
+          "rva": "0xc2387c",
+          "byteSize": 140,
+          "bodySha256": "1d9abcbd0178dc0d8cea2bd9d655bdf184e593ec3aef2ee53fd90a3cea482b0b",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "sharedRendererDataConstructor",
+        "symbol": "_ZN18SharedRendererDataC2E12RendererType",
+        "release": {
+          "rva": "0xfd4860",
+          "byteSize": 112,
+          "bodySha256": "2d14780c1fef3d7bb0302fbdb0d67df030a9e733d5775bf5fc15bbdbc61f1e05",
+          "normalizedShapeSha256": "ea2265fa20299edcdaf79fc7b76fc6d458965a4f765d70d844f964f47a485c41"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc26074"
+        ],
+        "game": {
+          "rva": "0xc26074",
+          "byteSize": 112,
+          "bodySha256": "9986c3983a79b3f4c8edc01b4c93d698e4e5ba9e26f1f98fd860bfc579024e08",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "getLightProbesCoefficientType",
+        "symbol": "_Z29GetLightProbesCoefficientTypeRK17LightProbeContext15LightProbeUsageRK15LightmapIndiceshb",
+        "release": {
+          "rva": "0xfb00e8",
+          "byteSize": 148,
+          "bodySha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+          "normalizedShapeSha256": "d9b5ed3d882f57f2777be3a9e10e5dde427fba3fb14dc11b7680ba4b92964b08"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc048a4"
+        ],
+        "game": {
+          "rva": "0xc048a4",
+          "byteSize": 148,
+          "bodySha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+          "wholeBodyExact": true
+        },
+        "semanticStaticProof": {
+          "status": "exact-static-semantic-shape",
+          "normalization": "mask ADRP/ADR/literal addresses only; preserve BL/B, load-store offsets and ADD/SUB immediates",
+          "releaseShapeSha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+          "gameShapeSha256": "ac504e2bd42eaa17102938bbb0d8b6073dbbab4f6abe9f82141080bd9cf0f3e3",
+          "byteSize": 148,
+          "preservesLoadStoreOffsets": true,
+          "preservesAddSubImmediates": true,
+          "preservesDirectCalls": true,
+          "proved": "light-probe coefficient-type decision tree and input values",
+          "remaining": "live guest inputs and the produced per-frame sort output",
+          "proofSha256": "814eb7eebfaec05043d69fbba7e362cd6ed42d5ab02ecd18b8920ff9b4afbcac"
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "meshRendererAddAsRenderNode",
+        "symbol": "_ZN12MeshRenderer15AddAsRenderNodeER15RenderNodeQueueRK20DeprecatedSourceData",
+        "release": {
+          "rva": "0x1000694",
+          "byteSize": 424,
+          "bodySha256": "11221d9c71a54fc09b32e36c1e2caecba8283827f19f3bbd60f4d06c40b58f42",
+          "normalizedShapeSha256": "0460d23211c678f3e5160a4fee3c111e2043a92b6fb1a719812d4b329fbc108d"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc526c4"
+        ],
+        "game": {
+          "rva": "0xc526c4",
+          "byteSize": 424,
+          "bodySha256": "39e9f00d7014ce5720111302f601d9492abc84734d90776dabf76e99f7d06021",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "meshRendererProduce",
+        "symbol": "_ZN13ProduceHelperI12MeshRendererLb0EE7ProduceE10MemLabelId18ObjectCreationMode",
+        "release": {
+          "rva": "0xffe7a4",
+          "byteSize": 204,
+          "bodySha256": "99bc9c2b561c9b001d52266cf37ab3281af8a8c48432650f9be90f23cd163a21",
+          "normalizedShapeSha256": "31afbf10c5e77eb760c331f6b25f3eec3df0c40709ffce84b0145eb29d31d523"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc507d4"
+        ],
+        "game": {
+          "rva": "0xc507d4",
+          "byteSize": 204,
+          "bodySha256": "fbbccf9737ee544c42f7c9bbcf4ee98b6d8a497d3b5466d0e7945e4dca394829",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "prepareMeshRenderNodes",
+        "symbol": "_ZL22PrepareMeshRenderNodesILb0EEvR35RenderNodeQueuePrepareThreadContext",
+        "release": {
+          "rva": "0xfff964",
+          "byteSize": 1144,
+          "bodySha256": "be6b46e8d65965482ec39297fda9c6ebffefcc1903921690f21832b731c7cb46",
+          "normalizedShapeSha256": "5720c7fc7c49887f929c0e59d34d62dd183d0012c3ba04c69a4fd9a78d826cc2"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xc51994"
+        ],
+        "game": {
+          "rva": "0xc51994",
+          "byteSize": 1144,
+          "bodySha256": "c07d5ad9f1f8866dd4dd7a185d41a6274171ae65ddd43546a2a3b3ca7e7ba7dc",
+          "wholeBodyExact": false
+        }
+      },
+      {
+        "group": "sort-input",
+        "id": "batchUsesShader",
+        "symbol": "_ZN34BatchRendererGroupInjectionContext15BatchUsesShaderERK7BatchIDRK6Shader",
+        "release": {
+          "rva": "0xfa56ac",
+          "byteSize": 152,
+          "bodySha256": "24921179a7de0f70c76483b241c295eafae21e5bf03255e233de4867eec2a64e",
+          "normalizedShapeSha256": "b2bf5311a7278986c1d26b2723ad0c856b1919b4ea3ca4ef2c7e0d92abd54186"
+        },
+        "status": "exact-normalized-instruction-shape",
+        "candidateHitCount": 1,
+        "candidateHits": [
+          "0xbfae6c"
+        ],
+        "game": {
+          "rva": "0xbfae6c",
+          "byteSize": 152,
+          "bodySha256": "01e9ab15a82f3372a851dc3d6257a2b5ab4cecadae6e7057a67f5e36e103840f",
+          "wholeBodyExact": false
+        }
+      }
+    ],
+    "architectureChanges": [
+      {
+        "id": "localKeywordHash",
+        "baselineSymbol": "_ZNK8keywords17LocalKeywordState7GetHashEv",
+        "candidateStatus": "removed-or-inlined",
+        "replacementBoundary": "candidate sortInputBuilder bytes and runtime sort key"
+      },
+      {
+        "id": "qsortInternal",
+        "baselineSymbolPrefix": "_ZN14qsort_internal",
+        "candidateStatus": "implementation-replaced",
+        "replacementSymbol": "_ZNSt6__ndk111__introsortINS_17_ClassicAlgPolicyER18RenderObjectSorterP24ScriptableLoopObjectDataLb0EEEvT1_S6_T0_NS_15iterator_traitsIS6_E15difference_typeEb"
+      }
+    ]
+  },
+  "lifecycle": {
+    "status": "exact-candidate-native-contract",
+    "mappedFunctions": 8,
+    "requiredFunctions": 8,
+    "pause": {
+      "contract": "nativePause -> UnityPause(1)",
+      "call": {
+        "offset": 88,
+        "instructions": [
+          "and w0, w20, #1",
+          "ldp x20, x19, [sp, #0x10]",
+          "ldr x30, [sp], #0x20",
+          "ret",
+          "mov w0, #1",
+          "bl #0x827340"
+        ]
+      }
+    },
+    "resume": {
+      "contract": "nativeResume stores deferred flag 1; UnityPlayerLoop consumes it through UnityPause(2)",
+      "deferredFlag": {
+        "address": "0x1540d3d",
+        "nativeResumeStoreOffset": 72,
+        "unityPlayerLoopLoadOffset": 240,
+        "value": 1
+      },
+      "loopCall": {
+        "offset": 256,
+        "instructions": [
+          "adrp x8, #0x1540000",
+          "ldrb w8, [x8, #0xd3d]",
+          "cmp w8, #1",
+          "b.ne #0x827178",
+          "mov w0, #2",
+          "bl #0x827340"
+        ]
+      }
+    },
+    "playerPause": {
+      "contract": "UnityPause transitions through SetPlayerPause(2,true) and SetPlayerPause(0,true), committed by SetPlayerPauseDirect",
+      "stateCalls": [
+        {
+          "offset": 84,
+          "instructions": [
+            "bl #0x66f224",
+            "cmp w0, #2",
+            "b.eq #0x8274e4",
+            "mov w0, #2",
+            "mov w1, #1",
+            "bl #0x67d464"
+          ]
+        },
+        {
+          "offset": 388,
+          "instructions": [
+            "b.ne #0x8274b8",
+            "bl #0x807ad8",
+            "bl #0x96aa98",
+            "mov w0, wzr",
+            "mov w1, #1",
+            "bl #0x67d464"
+          ]
+        }
+      ],
+      "directCommit": {
+        "offset": 268,
+        "instructions": [
+          "bl #0x607e08",
+          "mov w1, #1",
+          "mov w2, #1",
+          "bl #0x608920",
+          "mov w0, w19",
+          "bl #0x66f230"
+        ]
+      }
+    },
+    "baselineUnity2022ResumeChainReused": false
+  },
+  "summary": {
+    "targetFunctionCount": 33,
+    "mappedFunctionCount": 33,
+    "unmappedFunctionCount": 0,
+    "lifecycleFunctionCount": 8,
+    "exactLifecycleFunctionCount": 8,
+    "partialExactStaticFunctionCount": 3,
+    "exactStaticLocationFunctionCount": 3,
+    "partialStaticDirectBranchCount": 52,
+    "exactStaticControlFlowEdgeCount": 40,
+    "partialStaticControlFlowEdgeCount": 12,
+    "unresolvedStrippedGlobalCount": 2,
+    "sortSemanticExactCount": 5
+  },
+  "runtimeBoundaries": [
+    {
+      "id": "sort-structure-and-field-semantics",
+      "status": "runtime-required",
+      "reason": "five address-relocation-only native functions prove sorting-distance and getter field semantics, but sortInputBuilder, comparator inputs, RenderNode, DrawRenderersCommand and ScriptableLoopObjectData live values remain unproved"
+    },
+    {
+      "id": "sort-runtime-identities",
+      "status": "runtime-required",
+      "reason": "Material InstanceID, SmallMeshID and visible-node queue indices remain guest runtime values"
+    },
+    {
+      "id": "sort-job-scheduling-and-output",
+      "status": "runtime-required",
+      "reason": "static callback and helper edges do not prove guest job fence completion, callback execution order or produced sort output"
+    },
+    {
+      "id": "prepare-command-stripped-globals",
+      "status": "runtime-required",
+      "reason": "candidate R_AARCH64_RELATIVE addends are hash-bound, but the stripped object-map and renderer-manager identities and live contents remain unresolved"
+    },
+    {
+      "id": "light-probe-runtime-context",
+      "status": "runtime-required",
+      "reason": "static helper topology does not prove Transform PPtr resolution, LightProbeContext contents, anchor state or sampling-coordinate outputs"
+    },
+    {
+      "id": "input-subsystem-callback-state",
+      "status": "runtime-required",
+      "reason": "native lifecycle mapping does not prove the guest input event stream or app foreground state"
+    }
+  ],
+  "proofSha256": "06e7d6401c98b29099e8c84ffb5c323776dc9ab7d3f1b2e11132e9997987fecf"
+}

@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = path.join(ROOT, "public", "render", "card-ui-resource-contract.json");
@@ -10,10 +11,31 @@ const PYTHON = process.env.PYTHON || "python";
 
 export function extractOfficialUGUIResources() {
   const args = ["build/extract_official_ugui_resources.py"];
-  if (process.env.PCR_DECRYPTED_ROOT) args.push("--decrypted-root", process.env.PCR_DECRYPTED_ROOT);
+  let environment = process.env;
+  if (!process.env.PCR_DECRYPTED_ROOT) {
+    const officialInputs = resolveOfficialSampleInputs({
+      verifyArtifactHashes: false,
+    });
+    environment = {
+      ...process.env,
+      ...officialInputs.environment,
+      PCR_UNITY_VERSION: officialInputs.loaded.sample.unity.serializedVersion,
+    };
+  }
+  if (environment.PCR_DECRYPTED_ROOT) {
+    args.push("--decrypted-root", environment.PCR_DECRYPTED_ROOT);
+  }
+  if (environment.PCR_UNITY_VERSION) {
+    args.push("--unity-version", environment.PCR_UNITY_VERSION);
+  }
   const result = spawnSync(PYTHON, args, {
     cwd: ROOT,
-    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+    env: {
+      ...environment,
+      PYTHONDONTWRITEBYTECODE: "1",
+      PYTHONIOENCODING: "utf-8",
+      PYTHONUTF8: "1",
+    },
     encoding: "utf8",
     maxBuffer: 2 * 1024 * 1024,
     windowsHide: true,

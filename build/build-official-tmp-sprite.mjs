@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTRACT = path.join(ROOT, "public", "render", "tmp-sprite-contract.json");
@@ -75,9 +76,8 @@ if (check) {
   assert.deepEqual(fs.readFileSync(PNG), png, "TextExSprite PNG is stale");
   console.log("Official TMP sprite contract audit OK");
 } else {
-  fs.mkdirSync(path.dirname(PNG), { recursive: true });
-  fs.writeFileSync(PNG, png);
-  fs.writeFileSync(CONTRACT, serialized);
+  atomicWriteFileSync(PNG, png);
+  atomicWriteFileSync(CONTRACT, serialized);
   console.log(`wrote ${path.relative(ROOT, CONTRACT)} and ${path.relative(ROOT, PNG)}`);
 }
 console.log(`  4 glyphs; ${extracted.texture.width}x${extracted.texture.height}; ${extracted.texture.pngSha256}`);

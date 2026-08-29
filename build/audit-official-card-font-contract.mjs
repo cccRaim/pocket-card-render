@@ -3,13 +3,32 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+const officialInputs = resolveOfficialSampleInputs({
+  verifyArtifactHashes: false,
+});
 
 const result = spawnSync(
   process.platform === "win32" ? "python" : "python3",
-  ["build/extract_official_card_font_contract.py", "--check"],
-  { cwd: root, encoding: "utf8", shell: process.platform === "win32" },
+  [
+    "build/extract_official_card_font_contract.py",
+    "--unity-version",
+    officialInputs.loaded.sample.unity.serializedVersion,
+    "--check",
+  ],
+  {
+    cwd: root,
+    encoding: "utf8",
+    shell: process.platform === "win32",
+    env: {
+      ...process.env,
+      ...officialInputs.environment,
+      PYTHONIOENCODING: "utf-8",
+      PYTHONUTF8: "1",
+    },
+  },
 );
 
 if (result.error) throw result.error;

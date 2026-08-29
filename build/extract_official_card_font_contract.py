@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Extract the card TMP font/material selection without collapsing language or text-type variants."""
 
+import argparse
 import glob
 import hashlib
 import json
@@ -10,18 +11,39 @@ import warnings
 
 import UnityPy
 
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DEFAULT_DECRYPTED_ROOT = (
+    "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted"
+)
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_OUTPUT = os.path.join(ROOT, "public", "render", "card-font-contract.json")
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--decrypted-root",
+        default=os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT),
+    )
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
+    parser.add_argument("--out", default=DEFAULT_OUTPUT)
+    parser.add_argument("--stdout", action="store_true")
+    parser.add_argument("--check", action="store_true")
+    return parser.parse_args()
+
+
+ARGS = parse_args()
+UnityPy.config.FALLBACK_UNITY_VERSION = ARGS.unity_version
 warnings.filterwarnings("ignore")
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEC = os.environ.get(
-    "PCR_DECRYPTED_ROOT",
-    "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted",
-)
+DEC = ARGS.decrypted_root
 FONT_BUNDLE = os.path.join(DEC, "Common", "Font_bundles")
 PRESET_DIR = os.path.join(DEC, "Common", "CardNew", "Common", "UI", "Settings", "Font")
 GROUP_DIR = os.path.join(DEC, "Common", "CardNew", "Template", "L", "Settings", "FontGroupSettings")
-OUT = os.path.join(ROOT, "public", "render", "card-font-contract.json")
+OUT = ARGS.out
 
 # LanguageType values used by CardTextFontSettings. European languages use the default condition.
 LOCALE_LANGUAGE = {
@@ -335,7 +357,11 @@ result["materials"] = {
 }
 
 encoded = json.dumps(result, ensure_ascii=False, indent=1) + "\n"
-if "--check" in sys.argv:
+if ARGS.stdout:
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    sys.stdout.write(encoded)
+elif ARGS.check:
     current = open(OUT, "r", encoding="utf-8").read() if os.path.exists(OUT) else ""
     if current != encoded:
         raise SystemExit("public/render/card-font-contract.json is stale")

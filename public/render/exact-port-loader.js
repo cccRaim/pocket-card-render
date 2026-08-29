@@ -4,11 +4,29 @@ import {
 } from "./webgl-position-invariance.js";
 
 const CONTRACT_SCHEMA = "pocket-card-render/official-program-port-contract@2";
+const CANDIDATE_CONTRACT_SCHEMA =
+  "pocket-card-render/candidate-program-port-contract@1";
 const STAGE_SOURCE_SCHEMA = "pocket-card-render/stage-source-runtime-contract@1";
 
 function assetPath(value) {
   if (typeof value !== "string" || !value) return null;
+  if (value.startsWith("candidate-port:")) {
+    return `/runtime/candidate-port/${value.slice("candidate-port:".length)}`;
+  }
   return value.startsWith("public/") ? value.slice("public/".length) : value;
+}
+
+function sourceAssetPath(value, manifestPath) {
+  if (typeof value !== "string" || !value) return null;
+  if (value.startsWith("public/")) return assetPath(value);
+  if (manifestPath?.startsWith("candidate-port:")) {
+    const relative = manifestPath.slice("candidate-port:".length);
+    const slash = relative.lastIndexOf("/");
+    const directory = slash < 0 ? "" : relative.slice(0, slash + 1);
+    const basename = value.split(/[\\/]/).at(-1);
+    return `/runtime/candidate-port/${directory}${basename}`;
+  }
+  return assetPath(value);
 }
 
 async function fetchJson(fetchAsset, url) {
@@ -54,13 +72,22 @@ function addSource(group, manifest, sources) {
  */
 export async function loadExactShaderPortsFromContract({
   fetchAsset = globalThis.fetch,
-  contractUrl = "shaders/official_program_port_contract.json",
+  contractUrl = "/runtime/official-program-port-contract.json",
+  fallbackContractUrl = "shaders/official_program_port_contract.json",
   exactEnabled = () => true,
   canonicalizeObjectClipPosition = true,
 } = {}) {
   if (typeof fetchAsset !== "function") throw new Error("fetchAsset must be a function");
-  const contract = await fetchJson(fetchAsset, contractUrl);
-  if (contract?.schema !== CONTRACT_SCHEMA || !Array.isArray(contract.ports)
+  let selectedContractUrl = contractUrl;
+  let contractResponse = await fetchAsset(selectedContractUrl);
+  if (!contractResponse?.ok && fallbackContractUrl && fallbackContractUrl !== contractUrl) {
+    selectedContractUrl = fallbackContractUrl;
+    contractResponse = await fetchAsset(selectedContractUrl);
+  }
+  if (!contractResponse?.ok) throw new Error(`failed to load ${selectedContractUrl}`);
+  const contract = await contractResponse.json();
+  if (![CONTRACT_SCHEMA, CANDIDATE_CONTRACT_SCHEMA].includes(contract?.schema)
+      || !Array.isArray(contract.ports)
       || !Array.isArray(contract.runtimeBound)) {
     throw new Error("official program port contract is malformed");
   }
@@ -73,8 +100,8 @@ export async function loadExactShaderPortsFromContract({
     if (!manifestCache.has(url)) manifestCache.set(url, fetchJson(fetchAsset, url));
     return manifestCache.get(url);
   };
-  const loadSource = async (declaredPath) => {
-    const url = assetPath(declaredPath);
+  const loadSource = async (declaredPath, manifestPath) => {
+    const url = sourceAssetPath(declaredPath, manifestPath);
     if (!url) throw new Error("manifest WebGL source path is invalid");
     if (!sourceCache.has(url)) sourceCache.set(url, fetchText(fetchAsset, url));
     return sourceCache.get(url);
@@ -92,8 +119,8 @@ export async function loadExactShaderPortsFromContract({
     const vertexPath = manifest?.webgl_sources?.vertex;
     const fragmentPath = manifest?.webgl_sources?.fragment;
     const [rawVert, frag] = await Promise.all([
-      loadSource(vertexPath),
-      loadSource(fragmentPath),
+      loadSource(vertexPath, row.manifest),
+      loadSource(fragmentPath, row.manifest),
     ]);
     const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition);
     let group = groups.get(key);
@@ -146,6 +173,7 @@ export async function loadExactShaderPortsFromContract({
   }
 
   for (const row of contract.runtimeBound) {
+    if (!row.manifest && row.boundary === "engine-owned runtime variant") continue;
     const manifest = await loadManifest(row.manifest);
     const runtime = manifest?.runtime_contract;
     const key = runtime?.shader_key;
@@ -158,8 +186,8 @@ export async function loadExactShaderPortsFromContract({
       throw new Error(`${key}: runtime-bound stage source conflicts with a formal port`);
     }
     const [rawVert, frag] = await Promise.all([
-      loadSource(manifest?.webgl_sources?.vertex),
-      loadSource(manifest?.webgl_sources?.fragment),
+      loadSource(manifest?.webgl_sources?.vertex, row.manifest),
+      loadSource(manifest?.webgl_sources?.fragment, row.manifest),
     ]);
     const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition);
     result[key] = {
@@ -177,6 +205,16 @@ export async function loadExactShaderPortsFromContract({
 
   Object.defineProperty(result, "sourcesByPortIdentity", {
     value: Object.freeze(sourcesByPortIdentity),
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  });
+  Object.defineProperty(result, "contractIdentity", {
+    value: Object.freeze({
+      schema: contract.schema,
+      sampleId: contract.provenance?.sampleId || null,
+      sampleManifestSha256: contract.provenance?.sampleManifestSha256 || null,
+    }),
     enumerable: false,
     configurable: false,
     writable: false,

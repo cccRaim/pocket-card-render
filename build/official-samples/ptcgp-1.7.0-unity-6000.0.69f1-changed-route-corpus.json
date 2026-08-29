@@ -19,14 +19,14 @@
     "selectionPointer": "build/official-samples/candidate.json",
     "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
     "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
-    "sampleManifestSha256": "75203a0cd38d29e6b78884cf151f62dc2132e943a0328517233fd8084cab9d15",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
     "gameVersion": "1.7.0",
     "unityVersion": "6000.0.69f1"
   },
   "inputs": {
     "shaderAnalysis": {
       "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-shader-analysis.json",
-      "sha256": "2f40c5b237388668272c9e55503ed412e4c1632be473edd0c97234686a78b0e8"
+      "sha256": "542adb1829c837f1404e9771536af483d819da133d9e5d68008559ba251c8095"
     },
     "candidateMaterialInventory": {
       "logicalSourceId": "candidate-material-program-inventory-full",
@@ -355,8 +355,8 @@
         "fullyAvailable": true,
         "publicScene": {
           "logicalPath": "public/scene.cPK_10_012330_00_MEGAABSOLex_RR.json",
-          "byteLength": 174494,
-          "sha256": "f819dea4330efd3c0f89bd2e74354891a93c9bbf9bc5138bb494fa65f431c445",
+          "byteLength": 225760,
+          "sha256": "7fa7bdaca13a98e0a360fea8848f465b41603bda8793d808294039daa29a0fcb",
           "officialDrawCount": 33,
           "declaredMissing": []
         },
@@ -413,7 +413,7 @@
           }
         ],
         "gameAssets": {
-          "referenceCount": 49,
+          "referenceCount": 50,
           "missing": [],
           "references": [
             {
@@ -577,6 +577,11 @@
               "sha256": "98f40edc85fc3735392e36e37f9818322e4dda5960ef6e54ae84653b7e32250b"
             },
             {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+              "byteLength": 153,
+              "sha256": "5bbf4b0faf0daf1ea93c0f54b71079533f9c0836b53ce722af742dd26811dd38"
+            },
+            {
               "url": "/game/Assets/PrefabHierarchyObject/cPK_10_012330_00_MEGAABSOLex_RR_L.glb",
               "byteLength": 6977808,
               "sha256": "11cbc2f76e17497296c5d83064dcc14f114f90423c803751f3b26fadfab0b813"
@@ -662,7 +667,7 @@
               "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
             }
           ],
-          "referenceSetSha256": "726ed3b503b0ffdb68c5851932f3f007bbb47c444b280e90b7e43ace9631a65a"
+          "referenceSetSha256": "0173203700398cf65bb3528d6ab247b62d99c03efb5d8a27222035335029a4d1"
         }
       }
     },
@@ -768,8 +773,8 @@
         "fullyAvailable": true,
         "publicScene": {
           "logicalPath": "public/scene.cPK_20_000360_03_LIZARDONex_SR.json",
-          "byteLength": 86732,
-          "sha256": "9557d3b2981ffc26bcaf8d78e448531ab7322bc77d5572019dbd1ae0970a97b4",
+          "byteLength": 145133,
+          "sha256": "bac00af813eaf293799a08a3d4754dc88bfa24517bf3011ee07ca4724f158e37",
           "officialDrawCount": 19,
           "declaredMissing": []
         },
@@ -826,9 +831,14 @@
           }
         ],
         "gameAssets": {
-          "referenceCount": 39,
+          "referenceCount": 40,
           "missing": [],
           "references": [
+            {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/Card_Back.png",
+              "byteLength": 954627,
+              "sha256": "58d0cf3992069fffb1ebe6c944cff2936dd7b0dc9d50b4dc8849a5dd2463ed75"
+            },
             {
               "url": "/game/Assets/Lettuce/_Data/Common/CardNew/Common/Model/Textures/Card/SimpleCard_Side02.png",
               "byteLength": 14987,
@@ -975,14 +985,14 @@
               "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
             },
             {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+              "byteLength": 153,
+              "sha256": "5bbf4b0faf0daf1ea93c0f54b71079533f9c0836b53ce722af742dd26811dd38"
+            },
+            {
               "url": "/game/Assets/PrefabHierarchyObject/cPK_20_000360_03_LIZARDONex_SR_L.glb",
               "byteLength": 2999156,
               "sha256": "ff634b3dcd4f0efec14e923bbcf107473fd8401d9272bbc2636a363513c100a9"
-            },
-            {
-              "url": "/game/Assets/Texture2D/Card_Back.png",
-              "byteLength": 27529,
-              "sha256": "e58623bb37d694ea5418796b93bca7fb23356082c61515986a2a995a4b4c7812"
             },
             {
               "url": "/game/Assets/Texture2D/cPK_20_000360_03_LIZARDONex_SR_L_BG_RELIEF_AM.png",
@@ -1025,7 +1035,7 @@
               "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
             }
           ],
-          "referenceSetSha256": "cf66f41e10d72a8b876909b2ecc433bd8ce33a8beb341e56aa68589ad7411109"
+          "referenceSetSha256": "f6ae3e93b4c0623eee179141caeca0d23a516c06df85d3fcb278cf291bdd49bf"
         }
       }
     },
@@ -1118,8 +1128,8 @@
         "fullyAvailable": true,
         "publicScene": {
           "logicalPath": "public/scene.cPK_20_010840_00_MEGAKAILIOSex_SR.json",
-          "byteLength": 198470,
-          "sha256": "d65bc2eb4c24578a184d8b61289f531e73d06aed36056000f6048c8a461831d4",
+          "byteLength": 253573,
+          "sha256": "5406a0a82776c7b4bbf9ad2f890a043e680213cf6da6ca73e9bd0927068b1d16",
           "officialDrawCount": 30,
           "declaredMissing": []
         },
@@ -1176,7 +1186,7 @@
           }
         ],
         "gameAssets": {
-          "referenceCount": 50,
+          "referenceCount": 51,
           "missing": [],
           "references": [
             {
@@ -1370,6 +1380,11 @@
               "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
             },
             {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+              "byteLength": 153,
+              "sha256": "5bbf4b0faf0daf1ea93c0f54b71079533f9c0836b53ce722af742dd26811dd38"
+            },
+            {
               "url": "/game/Assets/PrefabHierarchyObject/cPK_20_010840_00_MEGAKAILIOSex_SR_L.glb",
               "byteLength": 4737108,
               "sha256": "17908b365babdcf9965d096d0dc0eeb13db2f9dd971fd3f6bc38b3ce5c97ef64"
@@ -1430,7 +1445,7 @@
               "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
             }
           ],
-          "referenceSetSha256": "ea8ff925ba94913deb68116df3127adf347b011173dee0c9ec1b58af61ff4080"
+          "referenceSetSha256": "d1ef0b30a2eacba4727efdecd0b4d8ae5e5327be629aadb0f2f71713103f451d"
         }
       }
     },
@@ -1503,8 +1518,8 @@
         "fullyAvailable": true,
         "publicScene": {
           "logicalPath": "public/scene.cPK_20_016210_00_MEGAYADORANex_SR.json",
-          "byteLength": 159298,
-          "sha256": "d1f528430367ef75e926a46324ea9f3433b05d0fa30e7e99705f12ea69436a24",
+          "byteLength": 204725,
+          "sha256": "6460f4dfbb0b3889c8e63a4e941fb2edbb4612b61d765a960aa912886455423a",
           "officialDrawCount": 26,
           "declaredMissing": []
         },
@@ -1561,7 +1576,7 @@
           }
         ],
         "gameAssets": {
-          "referenceCount": 50,
+          "referenceCount": 51,
           "missing": [],
           "references": [
             {
@@ -1755,6 +1770,11 @@
               "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
             },
             {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+              "byteLength": 153,
+              "sha256": "5bbf4b0faf0daf1ea93c0f54b71079533f9c0836b53ce722af742dd26811dd38"
+            },
+            {
               "url": "/game/Assets/PrefabHierarchyObject/cPK_20_016210_00_MEGAYADORANex_SR_L.glb",
               "byteLength": 5230404,
               "sha256": "a276a911762c522fe15e0dceee0f7d223e146119e850bcfb775b3f0311af70fd"
@@ -1815,7 +1835,7 @@
               "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
             }
           ],
-          "referenceSetSha256": "f8a9e8646246c304cd159c3f3a4d0bb9c9c9b8e7d43eea5ff32b2f41d9870281"
+          "referenceSetSha256": "07996f1007cff069f413a8acfa88bcc57d8240270a0f4bd9333346abce09b6ad"
         }
       }
     },
@@ -1892,8 +1912,8 @@
         "fullyAvailable": true,
         "publicScene": {
           "logicalPath": "public/scene.cPK_20_016430_00_MEGAGANGARex_SR.json",
-          "byteLength": 159539,
-          "sha256": "47b53521ef1b103c5256b8992b2de236347e8dedabb72197ca5cff62e075163d",
+          "byteLength": 205022,
+          "sha256": "2e27defd9f2b71fcfd7832a5cf34e8892d9146440b1e050371ace58cd6e9c999",
           "officialDrawCount": 26,
           "declaredMissing": []
         },
@@ -1950,7 +1970,7 @@
           }
         ],
         "gameAssets": {
-          "referenceCount": 50,
+          "referenceCount": 51,
           "missing": [],
           "references": [
             {
@@ -2144,6 +2164,11 @@
               "sha256": "72c124208ff4e9f07878294dd2d20b0278e8b5e761d4d12a5030e19b967624b7"
             },
             {
+              "url": "/game/Assets/Lettuce/_Data/Common/CardNew/System/Textures/black.png",
+              "byteLength": 153,
+              "sha256": "5bbf4b0faf0daf1ea93c0f54b71079533f9c0836b53ce722af742dd26811dd38"
+            },
+            {
               "url": "/game/Assets/PrefabHierarchyObject/cPK_20_016430_00_MEGAGANGARex_SR_L.glb",
               "byteLength": 4640968,
               "sha256": "d9b1eb8f6e5f02296e51765530ef62d736e9ce2a10e1f8428020744703ae134a"
@@ -2204,7 +2229,7 @@
               "sha256": "dcdc40dcc802d5886523edb7b08e9774608a0a824a94e16b576b440da1b1d44d"
             }
           ],
-          "referenceSetSha256": "b146e2457fbe4f7af34b4ad4d0acb57cc6c36d3dc57712b14527f9feb186f3b6"
+          "referenceSetSha256": "685467f3fe3baa1f88435814e50d8fda7f51d00b6b1c787190a129eb0c7c0a34"
         }
       }
     }

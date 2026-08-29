@@ -10,7 +10,7 @@
   },
   "provenance": {
     "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
-    "sampleManifestSha256": "75203a0cd38d29e6b78884cf151f62dc2132e943a0328517233fd8084cab9d15"
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f"
   },
   "inventory": {
     "schema": "pocket-card-render/official-material-program-inventory@4",
@@ -31,7 +31,7 @@
       "pass": 0,
       "semanticExecutableId": "6c95f78863fb23a1f58ed685b719be1625cc8801ca87e4da7d72b8bbea0973bc",
       "manifest": "candidate-port:static-reuse/simple_premultiply_hologram_uniforms.json",
-      "manifestSha256": "6d5ceffde76162cdfeab9ac912911bbcf3ceaa00b8d70ad3b654ae1c727160ba",
+      "manifestSha256": "e3f0033ebfa4b628e254875cd07bedea96de8911afcdcb4fa090393d1e9341aa",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "ebd8d4f5cf4665121549b30aa05887e4ef0d97f8e4b036760c3cd66a18511977",
@@ -70,7 +70,7 @@
       "pass": 0,
       "semanticExecutableId": "68c2c9bbd907e154992444697fc43791b0e2a426885baf5d76c0d9123b55743a",
       "manifest": "candidate-port:static-reuse/transparent_ur_oklab_uniforms.json",
-      "manifestSha256": "eb5b41a5dc17d9741a25879caa3172591ec74b0bbe6822e7cee1a652326fa639",
+      "manifestSha256": "e09dd61b168f91e3315f843ae6541af41edfc0bebf2f47b5bbf4531341fa2bab",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4e5ca701d29cea4e13d73687edfaec9a8f9d2423d65b7644a1e4860e05b1c4e0",
@@ -109,7 +109,7 @@
       "pass": 0,
       "semanticExecutableId": "3b4ebcb0d36b1ccc9be66822a08f2ffad0fbbf02207780daf6b48311aae69813",
       "manifest": "candidate-port:static-reuse/transparent_hologram_tuning_uniforms.json",
-      "manifestSha256": "d0b146e9e5e4fe14f83f0713f30b9d03ca41ce34239a452fca0bfbf9fa421a44",
+      "manifestSha256": "21278d316760e0f129cf177e53a4f532b7f822b4e0061957c20b9142a2fa40e6",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
@@ -148,7 +148,7 @@
       "pass": 0,
       "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
       "manifest": "candidate-port:static-reuse/effect_eff1_uniforms.json",
-      "manifestSha256": "da5974efcbdd6aae91776067b06ddf4eb48b19da89d55a2f481fc6d301bbdf8c",
+      "manifestSha256": "9673e83391d2dc0155703745ccf2af2dfa81bb0e79195d0720ec0aaab3b3a8fd",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2e0a2c4d95cc0e961ca92519bbb81d06f30eb4dd89f493fb2a15d3e231329ea1",
@@ -187,7 +187,7 @@
       "pass": 0,
       "semanticExecutableId": "bd48d01497d2d296c68c40a40361dc9b363376460ba72626df9770f48c0768ea",
       "manifest": "candidate-port:static-reuse/circular_moving_p0_uniforms.json",
-      "manifestSha256": "6e31acbca08a63fd293356fb3175ba3ec0df7a2e4ffda1d5b111ae5c8ff549d5",
+      "manifestSha256": "d414acfb25f29593324de8a884efcc873b3174cc1b6226db0c7b9620b8ba4add",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "aa1e0c2950d9f1ea8e43a38cf34e886242cce68e159d61169593ec24c0e23ef4",
@@ -226,7 +226,7 @@
       "pass": 1,
       "semanticExecutableId": "4ea0c71982955e7a8a2c49a8caf5df641e9d9940c07df23cf20b1544f088047c",
       "manifest": "candidate-port:static-reuse/circular_moving_p1_uniforms.json",
-      "manifestSha256": "98baf61b6098e6c747957e0942f250d05972f6625736c9819f907461f48ce54b",
+      "manifestSha256": "54ab005af9af0ebb38cbfd9cc576078083b4aa42b1d633a57a211d8d4a79851a",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "aa1e0c2950d9f1ea8e43a38cf34e886242cce68e159d61169593ec24c0e23ef4",
@@ -265,7 +265,7 @@
       "pass": 0,
       "semanticExecutableId": "9ae77f5ad05c3e1231b58c3775347f84b44c0cb0818adb7125d9db4119494d15",
       "manifest": "candidate-port:static-reuse/card_parallax_marble_magnetic_uniforms.json",
-      "manifestSha256": "6550080e4d75321066bd26557b51b1de74276e5935bfcf1370506ea0a3db1d32",
+      "manifestSha256": "298eac1e8b228678d173c9e8c772c2c62e9f038e1a95ec99f3a1c487f8b01725",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
@@ -304,7 +304,7 @@
       "pass": 0,
       "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
       "manifest": "candidate-port:static-reuse/effect_eff2_uniforms.json",
-      "manifestSha256": "ada1192f09b0b3238c87973d740d7122aa81ac7fa6ce0c4f1c7227661299e648",
+      "manifestSha256": "9e20a131733845a318f24ad37a27e35dc0d106cb114153ac3c45384e6407cf9c",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2e0a2c4d95cc0e961ca92519bbb81d06f30eb4dd89f493fb2a15d3e231329ea1",
@@ -343,7 +343,7 @@
       "pass": 0,
       "semanticExecutableId": "5a590d1f1071760288b7f7daf77b7a20c80bb6c38203df8fad52aff25ea025d6",
       "manifest": "candidate-port:static-reuse/logo_opaque_uniforms.json",
-      "manifestSha256": "56f4e7795ce49516ba05ed0d4ab1812278c04101b6f3a7df6b0339c46133f88d",
+      "manifestSha256": "26e76f2fd0a3bd8e6cfd4bbf0ff56457d932625d04e783ab7251c8cb9e726e16",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "85986bdd09a67550228123f4c1aa8cb84d687814f986d20a97809bd1df2f6833",
@@ -382,7 +382,7 @@
       "pass": 0,
       "semanticExecutableId": "9d3403adc1adb31cd8882351e171646b8704baae3d87da7ed8edcb797c49933f",
       "manifest": "candidate-port:static-reuse/card_parallax_hologram_tuning_uniforms.json",
-      "manifestSha256": "8cbceb4bf3208eacf7a476e17b18b8dc785b646ca88d4f18ac6cb80c4b9768b9",
+      "manifestSha256": "766c69e3e0f7e5963883e590eb1de75e0de421b1cb5e4769f98c3e4846a34cf3",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "089d575ef8fef77e7a968bbf409a32b02d2d0644a1d834fde5d4b63b8e4e4abc",
@@ -421,7 +421,7 @@
       "pass": 0,
       "semanticExecutableId": "d36fe839904db36ee3981532e096254bcb12da61ab9ca01d813b21affbed981a",
       "manifest": "candidate-port:static-reuse/dynamic_ui_text_uniforms.json",
-      "manifestSha256": "545ab627e19fa197089b4130740c4150ee4ce861e1eab4af41d544a67e4d518d",
+      "manifestSha256": "43f307d9c3f36a479d07b81c72f24ebb62bfc9366e885f3a214b21b87efda0ad",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
@@ -460,7 +460,7 @@
       "pass": 0,
       "semanticExecutableId": "5ef8738185f2c3f61a4c3399d9b5a5a2a0ca0177b55ee03b37fb0f01781e9c8a",
       "manifest": "candidate-port:static-reuse/frame_holo_immersive_ui_uniforms.json",
-      "manifestSha256": "53cf369e3e4e5b0e7da9734ef0e46fbd7868fb713c42c2e05cf6bac9b37f1b70",
+      "manifestSha256": "bc1e22531852178e9848bf50c19f51c63267a930b9ebab36e5a97543b85d411c",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -499,7 +499,7 @@
       "pass": 0,
       "semanticExecutableId": "06314dc3b2987d8ee472cdb7f66c77c133ca13820e90830d6ef5765778fb85dd",
       "manifest": "candidate-port:static-reuse/ur_plate_uniforms.json",
-      "manifestSha256": "ce36d0121be2228bff9999ec362acf18f10cc14059c7818961802725e68dc922",
+      "manifestSha256": "dd896b883b215207c617dc294e79fd0c44a1f1b6128030bdbae2470b6f8cc117",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "3f61767d51c8525ef8e6b1f184890c3a9af1083741d8e24a7ea79aae040bbda0",
@@ -538,7 +538,7 @@
       "pass": 0,
       "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
       "manifest": "candidate-port:static-reuse/effect_eff3_uniforms.json",
-      "manifestSha256": "197d3544a8af8bfb4ac01d0041ed5733f5dc8c417befb966132555a9cbc75d29",
+      "manifestSha256": "3991657ef0eb2fccc8034f7526e1cd7c938d40d9fd086955c9d35fc29aac2917",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2e0a2c4d95cc0e961ca92519bbb81d06f30eb4dd89f493fb2a15d3e231329ea1",
@@ -577,7 +577,7 @@
       "pass": 0,
       "semanticExecutableId": "cce8935a3a49ca58526350b8c85a61ccf90010450fd14e96ed68fe73bf3ffd4c",
       "manifest": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_default_uniforms.json",
-      "manifestSha256": "390fc488f5a2e989f16db685367d4868e0cc16764f62be4e6720431b43443fd7",
+      "manifestSha256": "21b4553004e4e02330ec8e0a82a66ad8b5ba67ccc4a96764bfeb30f0d85656f8",
       "generator": "build/build-exact-shadowbox-effect-flow.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
@@ -616,7 +616,7 @@
       "pass": 0,
       "semanticExecutableId": "a9ac0b87de64594e3fa14e99572b2a1ce943778f6a9a0e7b81ebdc04b94b3582",
       "manifest": "candidate-port:static-reuse/effect_eff3_grad_uniforms.json",
-      "manifestSha256": "291f8a130b88280c10257cba417791e5c1a719158c623d564b4ee229d51af539",
+      "manifestSha256": "c6252211a18f217890c1bb71c4984231451c85cf0d953c726788318b74496eec",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2e0a2c4d95cc0e961ca92519bbb81d06f30eb4dd89f493fb2a15d3e231329ea1",
@@ -655,7 +655,7 @@
       "pass": 0,
       "semanticExecutableId": "9f54ddbb1bc8cbad72f246b5abff169f67d0d4c57a5b84385f9cadc91f4da4af",
       "manifest": "candidate-port:static-reuse/card_parallax_uniforms.json",
-      "manifestSha256": "973626cb9c99bbe87b829ae00b9b599e541ddfb4d7477c557626b5e3a1a5949c",
+      "manifestSha256": "0dab92e3101c9da351ef2cfb845eee2d405b1e2d1bf07e9b7a08e6eff08263a3",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "f5a7373875ce6fb74b3c522f2028daf1d6f6c4e05ec7a913d6f307f22029051c",
@@ -694,7 +694,7 @@
       "pass": 0,
       "semanticExecutableId": "b0ad1457820d06d4a13ab9860df60c8aa53a97937c5f6460502f370006598b77",
       "manifest": "candidate-port:static-reuse/card_parallax_marble_outside_relax_uniforms.json",
-      "manifestSha256": "8c06ee6e2680bb2f7e5a4be11a2af20dd6c8003a367f49e84c77b9bed25f74f0",
+      "manifestSha256": "53635d5d94c6a6d61af19d348ddd850569079562d860936b814fcec7851517f6",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "20ef0e7bef6f78dbd37e1d5e029f1256533c9cd09e3a05d2e4df4e27dc578bde",
@@ -733,7 +733,7 @@
       "pass": 0,
       "semanticExecutableId": "df97b2a2b354bac8bc59fc8364120f4a0efbc1fd01d7e78df6a10bc87d8286e9",
       "manifest": "candidate-port:static-reuse/shadowbox_simple_opaque_uniforms.json",
-      "manifestSha256": "5751031e4a1c2f4d8298407c74edc209635fa9d5fe69ed6d42d481becb6aa38d",
+      "manifestSha256": "9cfef26b53b16ff28b2b6c0ad6c98468657cd4b2663cc0e41f7a6a758ffc0d62",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "85986bdd09a67550228123f4c1aa8cb84d687814f986d20a97809bd1df2f6833",
@@ -772,7 +772,7 @@
       "pass": 0,
       "semanticExecutableId": "5398f6649083535283e7c2eaebf6e4ae35feb55f33a4ddde44359bce35643f15",
       "manifest": "candidate-port:static-reuse/glitter_uniforms.json",
-      "manifestSha256": "a37cf3422b52767dbf965a06d1f414ce489af4ef7141d7e6176116756f18783a",
+      "manifestSha256": "3de74a6607c4a08082847e52f7610efd9b409f98d7dc7d590850873d37b58aed",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "1af6dfd11c7da5008e4fb1819e056d86ceca72cc1fc08ef40442dc63ead61597",
@@ -811,7 +811,7 @@
       "pass": 0,
       "semanticExecutableId": "b6743d52855403117459f8d4147bce0f7353dcff6c947ea3e116324f8f743261",
       "manifest": "candidate-port:static-reuse/dynamic_ui_text_alpha_uniforms.json",
-      "manifestSha256": "cf634ad09b53df2463c478863880006225a663801bd1c6747c90e4bc3539f5ff",
+      "manifestSha256": "42443ebe7ce84c85dfcb86e548312aefb3c1d8e833748056f6a4075f3fbbb0cc",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
@@ -850,7 +850,7 @@
       "pass": 0,
       "semanticExecutableId": "f792f223b03eab35b8822d5e3e0a5dc5d91402cd7b5cb2d25a3829b1a4f7f349",
       "manifest": "candidate-port:static-reuse/simple_transparent_uniforms.json",
-      "manifestSha256": "a4ddefeb462e2ca03b37e7ec1482869dba05949d9322001bec4422536a456ecf",
+      "manifestSha256": "ae96afbabb185ddbe192a498759053a75b1926c92d28a07e0e569697a08bb1f5",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "85986bdd09a67550228123f4c1aa8cb84d687814f986d20a97809bd1df2f6833",
@@ -889,7 +889,7 @@
       "pass": 0,
       "semanticExecutableId": "0e971849d906abc0bd7c4e06bc48844f8e905fb8f364f4cdd5ad5d768a85459c",
       "manifest": "candidate-port:static-reuse/card_parallax_cardwindow_uniforms.json",
-      "manifestSha256": "6c0063f5f98e9f546db98e373ca91557088578609dc1df8e6096937d3e148f26",
+      "manifestSha256": "2baf32de3bfd32bbcf2096805d7e81cdccfb1529f26c8e1765c60065c340c6b6",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "00901fd3b737d0f90dc8ff5cd311fcdebf6eae786c8c44ed8e9185b64355682b",
@@ -928,7 +928,7 @@
       "pass": 0,
       "semanticExecutableId": "2f333f835dd0425a3740a3c8837ac80dec2a0cc38a44bac2843d79d388e2e5b7",
       "manifest": "candidate-port:static-reuse/card_parallax_emit_mask_uniforms.json",
-      "manifestSha256": "a48b24a594262ed3a36f4400f912c28874bdf353aaee3145bdd01cc45fda8101",
+      "manifestSha256": "673528e39608280e79b268093c0758cfe31ca268a1117ccba30f08575d044895",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "3766dce8d66e58feb0c204f23913e24450196a5414b465006b04fc983b095b79",
@@ -967,7 +967,7 @@
       "pass": 0,
       "semanticExecutableId": "838e84c0d67ab0467d53d3ff80db871c0707e0e87c5a54b114c418c54ffead5f",
       "manifest": "candidate-port:static-reuse/effect_emit_uniforms.json",
-      "manifestSha256": "0dbaf3c50d1c9908cbf06a270d9878c206e52c9c7fd52c64fa49b1bd92824cc6",
+      "manifestSha256": "54ae4aeca48b33524000a9760202560dbf4bd58702e52f7fa240414cff06011c",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "6520f563dfca8c1b0f51eb95799bc40fd1af34f1c0f9dc69111ac88980216826",
@@ -1006,7 +1006,7 @@
       "pass": 0,
       "semanticExecutableId": "c651ff2b829a2b25bf504d4db07470686e2ade5e5844da10805329e8c2090983",
       "manifest": "candidate-port:static-reuse/card_parallax_metal_uniforms.json",
-      "manifestSha256": "6f74d4706e3ebe219eb25f921153935c2437e41266eb5963675b6aa49e2eb5af",
+      "manifestSha256": "472b40dc760f0c1802c2b5a0b19aa13fda2e41f8ffd5dd396443c68fc58dd3d1",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "af70104d803df4275b45d5a55988551339eac6ec6b16a1734b8507321f01147c",
@@ -1045,7 +1045,7 @@
       "pass": 0,
       "semanticExecutableId": "549bd02435a783dd0c5fe7caa5f0dcef9f27cb9a33829972d8eae9d2a4b61ff5",
       "manifest": "candidate-port:static-reuse/simple_opaque_hologram_tuning_holo_alpha_uniforms.json",
-      "manifestSha256": "af226eda36f2b2c075c8f98ac9f2e9ef2f81c80dc5c0dab58adaf0c28b5bf76e",
+      "manifestSha256": "652816488eec56becf629a650e959e4cb5252ced68b96b011ce3beca1bb53185",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "0548eb74b092604a20c3f214627ac925a140eec3ed1f56de07ce67df7d4781a7",
@@ -1084,7 +1084,7 @@
       "pass": 0,
       "semanticExecutableId": "bc1ebd48e6c776b95f1fc3878f39a31982ab80c7e6c59a4594a2586eaaa8da0b",
       "manifest": "candidate-port:card-aura/card_aura_col4_uniforms.json",
-      "manifestSha256": "fc3d4c17008f1deca3197ee02740f1854cbc7378dd260e5611d5807bd04dd3d8",
+      "manifestSha256": "9e98c24f5f1c9843d081f8c803a4ef92f867d6fe2647c747670372a576acf340",
       "generator": "build/build-exact-card-aura.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "972aaad150b30373099b4bfc7a028c20317a473b7db535ea4895291cc18a56af",
@@ -1123,7 +1123,7 @@
       "pass": 0,
       "semanticExecutableId": "841596580294f8affd5ac3061ba0bc1b178fea2e290ee90fd7154891603ab529",
       "manifest": "candidate-port:static-reuse/frame_holo_immersive_uniforms.json",
-      "manifestSha256": "f3ba47ececfb4bb73e9047958c5da30eb812a74fa1b19a47813991f7a90c3e98",
+      "manifestSha256": "18b370c97d67f51260fa2fd9f5c64e4f05c3d1ae161ffd86b4446a104847a2db",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -1162,7 +1162,7 @@
       "pass": 0,
       "semanticExecutableId": "a82739ea5cffe37919d0f925ece781ce26846dea40a7ecac541df8974fdf7234",
       "manifest": "candidate-port:static-reuse/hologram_flip_outline_uniforms.json",
-      "manifestSha256": "0a08370f854a4dcb5c9cf642910c95cff980045b175b266a6ce9d1dff2c6c5dc",
+      "manifestSha256": "b017cbdf215bb055832105602eef18b43addd87b59325fc7fec91e4ce4fc3470",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "b2dd92be91ad84246505d7ba56a9031bb380149868c3dd68f9229dafdac43195",
@@ -1201,7 +1201,7 @@
       "pass": 0,
       "semanticExecutableId": "8da29a812f0ae2bfbe1b5f7f34ad4937c81905269a678c3744723b49207fcad7",
       "manifest": "candidate-port:static-reuse/transparent_hologram_uniforms.json",
-      "manifestSha256": "dedb5ac11dff6a19e43afe9026624ac8ab477489c129899a60ca8866375f02b5",
+      "manifestSha256": "f41961921354730876308f9e9b11d03ee56abdc46a706896edd1ad2184ad0a28",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "9831213ff5f4d3731f95ebe2c4eb1092aa769511f13c26a066ebd0f070eae08b",
@@ -1240,7 +1240,7 @@
       "pass": 0,
       "semanticExecutableId": "ef3c0b1f75478b53441e5957084be4a88836a48f98e358408c3473a6244990e4",
       "manifest": "candidate-port:static-reuse/ur_bg_hologram_uniforms.json",
-      "manifestSha256": "3dca6b001e64b1cd0b7793f94abfd84eafc5c6eb0775ada6eeb25a45e0d664cb",
+      "manifestSha256": "2e4cb12984d6e51fa5cd83e485ac4c63fe4dd8d99b10d5757d3e787899501bd5",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "edf422324256e22b8529b95b7fa9a1613a90d319186aa8f387b2bcd2a453c08b",
@@ -1279,7 +1279,7 @@
       "pass": 0,
       "semanticExecutableId": "71e4b60ebbf210a721c7972bf5a6c8944d077de8cb9f02584edf2271d2ac6ca2",
       "manifest": "candidate-port:static-reuse/opaque_shadowbox_hologram_tuning_uniforms.json",
-      "manifestSha256": "f409aa8c2e5591e3f71a37c1c4cc2a1b4d6b4ceaff20cc5e64748ce8c29e3134",
+      "manifestSha256": "02e51eab9a98ed490dd8d1f8b0b961cc9a92603ff79cc31e5a8ff236f0da9700",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "91c1b803b05a01edc0625b08f89ca3bb81f2e562495d92f169f725a1320fb792",
@@ -1318,7 +1318,7 @@
       "pass": 0,
       "semanticExecutableId": "80068ad1c3c2a64be356122958e0127aa0207aa2fdb9fbff4cc63d4cea6d0eff",
       "manifest": "candidate-port:card-aura/card_aura_base_uniforms.json",
-      "manifestSha256": "20c8b65e8ee74786e5e61ad52fb11964224c7afd2574a488f9499a1de87ed89e",
+      "manifestSha256": "48e8ccc32083898ebd308e943b696c332484bed945d757807bb2f3e1f4e1a925",
       "generator": "build/build-exact-card-aura.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
@@ -1357,7 +1357,7 @@
       "pass": 0,
       "semanticExecutableId": "9ee577a025326ba48f318bd635fc88d711188f9a974a8bd723fd8182cf345cca",
       "manifest": "candidate-port:static-reuse/card_parallax_cardfull_uniforms.json",
-      "manifestSha256": "01d4250f04fc1451edde35baafdf58fdb0848aa93b76652131259a8157ccb4dd",
+      "manifestSha256": "432babe46307aa3a23dcbbd33212807234cde785f29527227b80fbb89ccf72b8",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "ebe94ecc8ab07e37a6cd4aab5ed6619f4ce6f3b0345f0b1cfabdb80afd957e45",
@@ -1396,7 +1396,7 @@
       "pass": 0,
       "semanticExecutableId": "eaef42b43e9159e52a65f06fe185c0dc128b9404314e02ab84c250ee6c8d46ae",
       "manifest": "candidate-port:static-reuse/card_hologram_tuning_uniforms.json",
-      "manifestSha256": "13442f0d48c52ae37167c38862c524de08c634e6af1b2556a28ad4b892f4781e",
+      "manifestSha256": "609f694ac5f2aa0aaf5aff9dd5efc6e46fb814e24f75d633d54ea3f3cf950308",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "889e3e0ad89c44498eeeb66406ab63bea881d61cce1e2c82d7afe61783b952c3",
@@ -1435,7 +1435,7 @@
       "pass": 0,
       "semanticExecutableId": "00728cc1979e67a2a3a6e3578fc1ca44ecb39b0f63ee415d947534ec4452f311",
       "manifest": "candidate-port:shadow-holograms/card_parallax_hologram_shadow_layers_uniforms.json",
-      "manifestSha256": "e0d39bd4780bf1ca3d5c1b41b40fc3b5f639e6cbdf2aab248fb99d3ce9335cae",
+      "manifestSha256": "a119d971f155fd46062943d1448263c4b28d207f7ef4c7256240c559520da3f5",
       "generator": "build/build-exact-shadow-holograms.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "50af5cc9e758511b5368e650e4f3cda305071e022db70905221bcd99a8435280",
@@ -1474,7 +1474,7 @@
       "pass": 0,
       "semanticExecutableId": "e969d1d7645a9377c752f1a177c2431949dbeac59b9dc803aa51434ffec5607f",
       "manifest": "candidate-port:static-reuse/card_illust_double_texture_uniforms.json",
-      "manifestSha256": "04727134057fbbc035bbc40811a1bfd325179c5e45eb3141e93bc00ade875434",
+      "manifestSha256": "70fd5f7e87f3e69cf091edd1485c974a5b6038680e4532a67d6f9d82e6711770",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -1513,7 +1513,7 @@
       "pass": 0,
       "semanticExecutableId": "4616467cffa9b5eb5b3f363f0a7230509d766459d79ddca14deb1c58ceff0e1e",
       "manifest": "candidate-port:static-reuse/parallax_ur_uniforms.json",
-      "manifestSha256": "790a615735899d72a9209c267a13e02323363590cf0ff3295b9f71f9b1bb072b",
+      "manifestSha256": "8285fed2193a0f60dc7640bc8ee0b213fefcad4710db36afd9976a75098d4004",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "6c5787823d82bc7bf23a6ace66bf8e5fa8bf199476200e1dad7374ec2f58034e",
@@ -1552,7 +1552,7 @@
       "pass": 0,
       "semanticExecutableId": "dfc77dc0e742fdfbdfda5e84e1b4b5de5ac03b0f09fe7f3565a8ee0d63f2bf94",
       "manifest": "candidate-port:mega-rr/shadowbox_flash_uniforms.json",
-      "manifestSha256": "724edd548da9b0271551a41cc8fa2bfa29d67e3db1a09e8909aabd8481f3d620",
+      "manifestSha256": "d1fa59725a2c02df5f0dbf1db47bffcb0b665cfb140ff2aae6035e2646a598a0",
       "generator": "build/build-exact-mega-rr.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "13d5cea39c2cd25769e0bc3f17f74c9b4d2621f345d13444e71e2d272ce3223d",
@@ -1591,7 +1591,7 @@
       "pass": 0,
       "semanticExecutableId": "68b4f0374d4fbd908aac4f338fb030b60b9cd88c167e9d44507d50743bb7ee75",
       "manifest": "candidate-port:static-reuse/card_parallax_matcap_lighting_uniforms.json",
-      "manifestSha256": "4d62c1ae142281aa347450e039e4de88fb0e124799865de3d1ad8181477df8fb",
+      "manifestSha256": "7d75c4a33c6982e7915e55a127a1cfa74d067a7885cf0c4786687dd175323598",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "c18487e424c915ae8e53ecf9622f1d35a17e073b50ca51393f5d11f91d413369",
@@ -1630,7 +1630,7 @@
       "pass": 0,
       "semanticExecutableId": "5b254504a832d7b33e401aa417c12f17efcac4f1ce395362e74a139fab2747e4",
       "manifest": "candidate-port:static-reuse/opaque_hologram_tuning_uniforms.json",
-      "manifestSha256": "4dba60ea4ab771eee5e07d4dd4cd5c16db2e62a313f3572719c737731a4d48c9",
+      "manifestSha256": "fb2c3e24f782bd03f2bfa878fea88733430c5a21d5c9fdcbe7ced3509fc4dd84",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
@@ -1669,7 +1669,7 @@
       "pass": 0,
       "semanticExecutableId": "765d248a0a5cc866b4e71981340eedd187b26f1d9c717bd6719fe669101076af",
       "manifest": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_use_col4_uniforms.json",
-      "manifestSha256": "b7807bb8d28d4742be2c4c2e1733c3995843ed5b0e1b8784c9d322b958c4e192",
+      "manifestSha256": "eeb03cf78cfb893637b97dce59990f8b64a038af27e99725ec5bdb94d776e69f",
       "generator": "build/build-exact-shadowbox-effect-flow.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "dbf4376bbef97034b67af22245f9434bdc806afbf556f1d480668cedb2411125",
@@ -1708,7 +1708,7 @@
       "pass": 0,
       "semanticExecutableId": "5492e1e4a922cee2e1161ef4ad8001582a7e0c9fa40d8497619065e4aa1ea228",
       "manifest": "candidate-port:static-reuse/outer_stencil_uniforms.json",
-      "manifestSha256": "3874c3c0bb147914b2bdd5b12ec905dba12f7c533f0bfecacd8db2deca95debe",
+      "manifestSha256": "d5f1ad1c73cdbe7894ad800473eb179ee41ec7619f5d6527e559f2ee00792ac1",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "af26e68da9f6e614f044b27d05ca9570decabd144b59367a42ae202cb16a6b2e",
@@ -1747,7 +1747,7 @@
       "pass": 0,
       "semanticExecutableId": "c5ff1b67020c45baa37d721b62a8074195a6596da2b2140917d1f77e053a4995",
       "manifest": "candidate-port:static-reuse/simple_opaque_hologram_tuning_uniforms.json",
-      "manifestSha256": "0ef6703b4a13323e8289eefbed56ed57a4c7eebb303d207b8f1f31e329ac97da",
+      "manifestSha256": "ec7a2ec1b332e6cb9efd006526802f5f771f95efa034a052e5bf2cc53a1e2da4",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "0548eb74b092604a20c3f214627ac925a140eec3ed1f56de07ce67df7d4781a7",
@@ -1786,7 +1786,7 @@
       "pass": 0,
       "semanticExecutableId": "664d4af417af4820d94c3e7799119baf8aea0c8b9fe3d9f96ac84cf1fc519512",
       "manifest": "candidate-port:static-reuse/frame_2layer_ur_uniforms.json",
-      "manifestSha256": "9da7396ad6f800df4865b150e119ffa9617fd701e60d6c1feac9061608aebd3e",
+      "manifestSha256": "11e9c87c6d6defa865de21367f85e452db0247494d51a8f3573a74cc064b50e7",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "ca5fb5f7f87fe4558bc50e1d91c6a874d979f8bef12edb4011373c67d425144b",
@@ -1825,7 +1825,7 @@
       "pass": 0,
       "semanticExecutableId": "74f30dba711d67d5a5b1fe8325baee1f45cb8e4bc06670b0b26176a42668bf81",
       "manifest": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_use_old_noise_uniforms.json",
-      "manifestSha256": "974bc8bfc5919305ad9660b7954c9b1624609f9bf69756160aa1cc4eaebac680",
+      "manifestSha256": "afd1aeaadce1a2764664216077aadd5257d085e3dfc5813e5636ac4d423e0ed8",
       "generator": "build/build-exact-shadowbox-effect-flow.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "c3073e5a0cbc15e26aa2bcccba5845868b039a2552e91c410b49113494010829",
@@ -1864,7 +1864,7 @@
       "pass": 0,
       "semanticExecutableId": "f3ae53e17e727b7f7652590f46739d30e6cea7d6191f36f8eac7076864fe62ad",
       "manifest": "candidate-port:static-reuse/card_prism_uniforms.json",
-      "manifestSha256": "d6e342db367cecfafbb4fd8565f69858c003ee75451611a02830f9a5195a2b3b",
+      "manifestSha256": "af4cc3fbc1488d8872283d019a98fa9469838ddf3dc23e35d3cf843addc22485",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2e46039d782ddcb7a81a599a1699c9234e3c42036e2166ec47e2a551104c883d",
@@ -1903,7 +1903,7 @@
       "pass": 0,
       "semanticExecutableId": "8c0263bc7ba1e75e0466eaa0e518b61ee4476638f8f5969f8c11817ec382aa38",
       "manifest": "candidate-port:static-reuse/frame_holo_2layer_legacy_uniforms.json",
-      "manifestSha256": "cfdac827ebf92b958d7036516aa980de2a2d299ace41a3535698d0382b59b023",
+      "manifestSha256": "8f8c591f2ecd43148865d4bd69274edd84b30c65b41e5c3542df44d5cf2184db",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -1942,7 +1942,7 @@
       "pass": 0,
       "semanticExecutableId": "4910af56d4b5ec9bb46ff1f7c31d5c9285b2eb5963be096025926c90a6dab90e",
       "manifest": "candidate-port:static-reuse/ur_lens_flare_uniforms.json",
-      "manifestSha256": "c70acbcb966a916a4bfa41d67a9e286d0317571e11e31f8a0a2bed960a4fa9da",
+      "manifestSha256": "30ca3fcd029e24052ab1cff481cc4891b0bcb1e45d21ef5de4bd01135d246e67",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2f61420487c058c59b314a1baa80bff2e88c8ce81080cd0f138dab20c44dc5dc",
@@ -1981,7 +1981,7 @@
       "pass": 0,
       "semanticExecutableId": "f17512db76ee4b7bfaca8d2865268f53fece4869bf0d3c129609029d1cbb6a1a",
       "manifest": "candidate-port:shadow-holograms/card_parallax_hologram_shadow_effect_uniforms.json",
-      "manifestSha256": "fa4edfc63e04586da0e95ac0103002222c5c68d554641ab6cc7f45ba9075450c",
+      "manifestSha256": "399ac6c20c1e0e27ef61daf458796c07dfef9be5ffa5229709e66b379fb49957",
       "generator": "build/build-exact-shadow-holograms.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "50af5cc9e758511b5368e650e4f3cda305071e022db70905221bcd99a8435280",
@@ -2020,7 +2020,7 @@
       "pass": 0,
       "semanticExecutableId": "eea9bbf9bda85788f8dca7852b40132e921b5303ad6f827eee179be558ff0069",
       "manifest": "candidate-port:static-reuse/card_parallax_mrr_uniforms.json",
-      "manifestSha256": "4ecaa504d83066c20244a7debdd5d25712fb7cdb9b2350bf2fc9deaa4659c830",
+      "manifestSha256": "459d771001029a46cf5778636a62cf0c4ed60434f962784014e502932b818d62",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "3766dce8d66e58feb0c204f23913e24450196a5414b465006b04fc983b095b79",
@@ -2059,7 +2059,7 @@
       "pass": 0,
       "semanticExecutableId": "94a3e6f0701ad2e2e4797cd5e2b8f78f1400fff2f3a6ef8435c75a724c9470e4",
       "manifest": "candidate-port:static-reuse/card_parallax_transparent_translate_uniforms.json",
-      "manifestSha256": "0717f26255f433ecc9e3e1bc255b4dbacf17c06007980afcc82f20b004f35cf3",
+      "manifestSha256": "1e467afa409b556773e61c0eb4bf3e625783ab0ef85c24a63bbd1c7802af9bb8",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "e463cb3303188c28f0b06c93903aeae5b6606e6f27ea661de8620a832afdfb4e",
@@ -2098,7 +2098,7 @@
       "pass": 0,
       "semanticExecutableId": "330ca5df07ce77b2003c9dc6d89901ffcc2eff1650f09a23ca0f89ba9dfcd478",
       "manifest": "candidate-port:static-reuse/effect_eff1_grad_view_uniforms.json",
-      "manifestSha256": "39fd0267293d06db634092be342cb59c35a146cae10ddc9a89c003de16394430",
+      "manifestSha256": "4a264af1b788c92ada8601a4ec90de303387d2cf48aa9e899b2fd801511429e4",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "5874c0946075ebe8f63a0479d96f2e22abf3d9e5e215c23e85d5f8d8756cf71d",
@@ -2137,7 +2137,7 @@
       "pass": 0,
       "semanticExecutableId": "882c80e6a26199a40ed2311f79ae3820d776424748a958521ae57bd3d85ce09a",
       "manifest": "candidate-port:static-reuse/simple_opaque_uniforms.json",
-      "manifestSha256": "11b456eaa89f0a8aef34cc12f91c4e704d2e27ad5de9cb89d22f450ce730c85a",
+      "manifestSha256": "c03d576650a046a2fcc615a490a7f5e201521b7789ede5ed994725e556662a4a",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "85986bdd09a67550228123f4c1aa8cb84d687814f986d20a97809bd1df2f6833",
@@ -2176,7 +2176,7 @@
       "pass": 0,
       "semanticExecutableId": "d401c03f8919f0f3821ce8e7fbb9c7bf370b505977dcb4069a34f9632c3b1cd9",
       "manifest": "candidate-port:static-reuse/frame_holo_tuning_uniforms.json",
-      "manifestSha256": "564a358963c8b756a6ff44a914f372728ad8fe29f0cd7cb1dbac4c86917edb16",
+      "manifestSha256": "52c9e96af12e8f0ed6576d419143eb8f23bf7a19c92a0b1317e7077f0d363c6a",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -2215,7 +2215,7 @@
       "pass": 0,
       "semanticExecutableId": "883311aa854ae594df991ec6ec39143ad2638f3912c04d95be0a71019e3ebdf7",
       "manifest": "candidate-port:static-reuse/frame_holo_legacy_uniforms.json",
-      "manifestSha256": "f2fc0334a6a90706b2543eb7896cd24738d79bcfac9a8b29d66d3b538f3129a4",
+      "manifestSha256": "0715eb41ff1fce8f47fcbe6f0100b64d009be7201a6a9c3e24f6e30feb748fcf",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -2254,7 +2254,7 @@
       "pass": 0,
       "semanticExecutableId": "32d6dc9bcf139fc87760b427bb524986836bfe059173cdc7e870f050cdb9126c",
       "manifest": "candidate-port:static-reuse/card_parallax_metal_by_tilt_uniforms.json",
-      "manifestSha256": "5fb04d03c1823564b321730c46088e9f39d3607669ca5ac5c2503d01d23c36f6",
+      "manifestSha256": "c5abccfe48e6712fb9fd0ed0ccf242647f2ef43298e2a690b6e82f4207a8133c",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "9547cdf3d922d27bd935438676ae79048aee6c9a72437ffc4a66dc97fba3528f",
@@ -2293,7 +2293,7 @@
       "pass": 0,
       "semanticExecutableId": "f0efdd97dcf48158408f47118f8b24a1ec6b81f518456cf88ecec40276ae7bb0",
       "manifest": "candidate-port:static-reuse/effect_eff2_grad_view_uniforms.json",
-      "manifestSha256": "6643c5999d034ed9f52ff4d9cfa2aa09bdaddaf683f0a032cc5cec0fa6d75157",
+      "manifestSha256": "8aee555c5ad128ce21bbb2bdd8df477d00d5bfd8322625593340430e8f1e9ea8",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "5874c0946075ebe8f63a0479d96f2e22abf3d9e5e215c23e85d5f8d8756cf71d",
@@ -2332,7 +2332,7 @@
       "pass": 0,
       "semanticExecutableId": "6aa166a1160232cb770896a18f27412d2649433718ef2b9138b590127ec8c500",
       "manifest": "candidate-port:static-reuse/card_parallax_immersive_uniforms.json",
-      "manifestSha256": "e49545b69982a98a5301f743b9103ca25b8b7efc8cb36c832eb56620528e0204",
+      "manifestSha256": "77833acc76ecdd76c5b0cb1e6acea99db6b440f8aff761f96dddb4ca4d5be431",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "6c5787823d82bc7bf23a6ace66bf8e5fa8bf199476200e1dad7374ec2f58034e",
@@ -2371,7 +2371,7 @@
       "pass": 0,
       "semanticExecutableId": "b8bf3b70ec43af1713abe86201fea1a9ef7e4fd73d26b88613f3fb855ad969b0",
       "manifest": "candidate-port:shadow-holograms/opaque_hologram_shadow_uniforms.json",
-      "manifestSha256": "32f1044ac5756ce304c60396f16fd37f9d168728ba9aebc0d8c19b0f782cd95b",
+      "manifestSha256": "5f9882cefc1c888626bf406c09ff70c9d4f042705eb56d528d806f20b14134d3",
       "generator": "build/build-exact-shadow-holograms.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "5aa338a5ec63126a44f37c7cc1a85d632a81a60b9ec3d425919553884de1313d",
@@ -2410,7 +2410,7 @@
       "pass": 0,
       "semanticExecutableId": "81d6a748c03f64ade63d40ac29a13c62abee96b135955ba78bd8a4ebc6c05a1f",
       "manifest": "candidate-port:static-reuse/card_parallax_future_uniforms.json",
-      "manifestSha256": "445ca951543c127e45bb623a0876f987b43673b3c73a58d03eb973cdf6ec0bdc",
+      "manifestSha256": "e3527bba2c99466ca0533875d7529140cd3d8a5f5f8fbf218ab94fed4060e225",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "ae9304b7d3bbcdd2fac3ab90f99802a2cae016a27eb90a1c57e89eadb28fdb8d",
@@ -2449,7 +2449,7 @@
       "pass": 0,
       "semanticExecutableId": "2809384b7ac756b8a961dad3995ac4722b53245e500a9ce634082725ccb77205",
       "manifest": "candidate-port:static-reuse/opaque_ur_oklab_uniforms.json",
-      "manifestSha256": "4a812a67ce7d6f63010ba96430e513298fd1f654cbb6c5d7cff8dd1c1ff1d542",
+      "manifestSha256": "5adfd945f36e532cc9763098e82e01aa79a005eb4ef30e99fb7dc4ca9448cf52",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4e5ca701d29cea4e13d73687edfaec9a8f9d2423d65b7644a1e4860e05b1c4e0",
@@ -2488,7 +2488,7 @@
       "pass": 0,
       "semanticExecutableId": "a4c68b7bfc561e34b0ed56e91d9899ca26755655ca307e5d5791e8785fe8df0c",
       "manifest": "candidate-port:static-reuse/inner_stencil_uniforms.json",
-      "manifestSha256": "163f8c852c5fbbc4e7d7fec416263a57523a6ba95b2103d651819d368e1989ba",
+      "manifestSha256": "9c64bcab39049e89d62b7485dab66c675808e8848326c75407d865e734f83745",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
@@ -2527,7 +2527,7 @@
       "pass": 0,
       "semanticExecutableId": "4c946fea7b46791470a79f5566209226bd24bf7efa386c5172bbf3248cd18f46",
       "manifest": "candidate-port:static-reuse/transparent_ur_new_uniforms.json",
-      "manifestSha256": "57b980b1040c9536016116a88997b01cad44f4ede6abc3d844772f0aa7caebea",
+      "manifestSha256": "7362b6d5fa5fccdff188aece53c07067c517ec31bafb9a1a719f8dc487dfa64a",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "2d413a0fda9b7a80a7898f4a0e913588368098e91b3d05e8e9ab4d5ca668147c",
@@ -2566,7 +2566,7 @@
       "pass": 0,
       "semanticExecutableId": "cd4d9bc1daf7f8f18fa80d74db1ce1d6fad69c8333a562561c99629b23c509cf",
       "manifest": "candidate-port:static-reuse/card_scaling_kira_uniforms.json",
-      "manifestSha256": "3aba6083b72e05aa46cb6d76408cfcf3a27af24795eaf26cdf19a554d8bf0067",
+      "manifestSha256": "58d28d135424d3f83f1a3c6157e0276227f73d0e550868844e81ef3af46d8c72",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "49262aa55c150780ba8e29a861ba90cae1d2eef8d502894dfbc66ab4ecca9dd6",
@@ -2605,7 +2605,7 @@
       "pass": 0,
       "semanticExecutableId": "486f2bc1c83746d4ec53df65d875586a983be602cb9120f4a9bdf79fc010afc4",
       "manifest": "candidate-port:static-reuse/card_parallax_flash_uniforms.json",
-      "manifestSha256": "77fcd20ee97efef1382493585a751779c6f8a6f62fe5898e215ada67f6e114c6",
+      "manifestSha256": "fb0df84880595a6a5632473583818ff6e9c7b6a7f5a5aab7c61c3389c5927b68",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "ca47232c57b518ba25159b1de656b7986ec732549e32d6669f554beac3340d78",
@@ -2644,7 +2644,7 @@
       "pass": 0,
       "semanticExecutableId": "a1914de7b178030af7bd1bc1234f6582bae0bfddb8097ecc1e2be5745996187f",
       "manifest": "candidate-port:static-reuse/frame_holo_ur_uniforms.json",
-      "manifestSha256": "d3c64441ee00869deab6423ca50a70c4e0f513de507378e849ae34f2b7e89f7a",
+      "manifestSha256": "a912da087b8b5b6f324c06ba504a7aa11d85eb97adb1aaa9e32cf9fa222fb055",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "d92424eb171ce6605f336e2a799bfbe72474492f36051790f3cd60ba7e2b92b1",
@@ -2683,7 +2683,7 @@
       "pass": 0,
       "semanticExecutableId": "a3b86b4d621c6154a5d5f6540830d86e4f306ff6b4291300c71db3cbaeca32a1",
       "manifest": "candidate-port:static-reuse/transparent_hologram_layer_uniforms.json",
-      "manifestSha256": "bf4386748fd03660b0c44323fac1e2714f41190e47c4c423acfc704d00d97e6b",
+      "manifestSha256": "a344f18b00b865c5f608b3b21dae00b6d7883d010dee8d2056fa343865642fa7",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "8d2fc783df1992875e14e1385e8a75c9cda9adfb39aa51a86590ff2e8016c1ab",
@@ -2722,7 +2722,7 @@
       "pass": 0,
       "semanticExecutableId": "d174278e036cb72185a87d747d1a26f1bc861d5795b88f37e625bb381b1ddcde",
       "manifest": "candidate-port:static-reuse/card_illust_double_texture_gradation_uniforms.json",
-      "manifestSha256": "551550651a48b38f3ef75b61c736d90fc5063523b12232cf1705e48861a02620",
+      "manifestSha256": "3d23bf79984dc9743974c63288fb7614d5666f87fd1bf8f2f5b5a972b8578a9a",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "4515eaaf9618a9cd541debc5e611b41fc8e16d74992f9e7791865f6e26fd5e8e",
@@ -2761,7 +2761,7 @@
       "pass": 0,
       "semanticExecutableId": "fba54420bfc96aae88786583d3d6d4ed1bc449701efb0e75a1fa7b6de1f52bd5",
       "manifest": "candidate-port:card-aura/card_aura_old_noise_uniforms.json",
-      "manifestSha256": "614537f1619a5d46d33a8b0a7071ec5c34d31750ef5172acad81effd5667b945",
+      "manifestSha256": "2402968548fc8c4a642161a76abc3494e10bab0f305a8635ea9510e371a46c23",
       "generator": "build/build-exact-card-aura.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "808d8b0a97d7b5ec1607eb48babda58ac573f95c96493917e796d2d3e06bb27e",
@@ -2800,7 +2800,7 @@
       "pass": 0,
       "semanticExecutableId": "14833bbe6268ff3484687b0c760bc476ceef6f0a8df6f488bef33ad2a345c354",
       "manifest": "candidate-port:static-reuse/frame_uniforms.json",
-      "manifestSha256": "5e3964949db67c277d5cc51eeb938814481682a8bab8246c019e592935969031",
+      "manifestSha256": "fb7a755b4e696f5a7ae50d4470ae60b4c0d59134e8ee13477e99e649caeb5651",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
@@ -2839,7 +2839,7 @@
       "pass": 1,
       "semanticExecutableId": "0b0286de65f88f43761cc6fa6810c243996c88b6c88d9872c3e3b798cd4e2860",
       "manifest": "candidate-port:static-reuse/circular_trail_p1_uniforms.json",
-      "manifestSha256": "01f1d4f7cd2244e384de97e82ec4020a09255a73da63adad96adcf414fbde3ad",
+      "manifestSha256": "dc81468c792ce3b6602fb76540a1e21e3e879adcce42a6ddae88f232dba919ab",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "7ae8fed6e64fd080eadeb8c9c995324ba7ae13dd32cf322cb6b27cdaa4b5bf1c",
@@ -2878,7 +2878,7 @@
       "pass": 0,
       "semanticExecutableId": "3d18e26c41164d8fb30ccaf52f9029ab376a8212867205ddcfdea2c4fde7d5e1",
       "manifest": "candidate-port:static-reuse/circular_trail_p0_uniforms.json",
-      "manifestSha256": "bf674415bd2a38094a59b0714058e1f6a31fd53c1fd0cf40417fc018b4c7d5c4",
+      "manifestSha256": "eade480f3ac8f4e301c1a8453e15f991bdafe11efe2dcbbe09a397d1db0f9a32",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "7ae8fed6e64fd080eadeb8c9c995324ba7ae13dd32cf322cb6b27cdaa4b5bf1c",
@@ -2917,7 +2917,7 @@
       "pass": 0,
       "semanticExecutableId": "dae09f1e02987d13ab5e96c0e75e172a253b5803938f63697ebea80f354c6248",
       "manifest": "candidate-port:static-reuse/card_illust_uniforms.json",
-      "manifestSha256": "7bd2bc27a49fea1830240504927238147fb699aee56d45b255ff07c20c471073",
+      "manifestSha256": "38503c373fbb231fe93e288576827ce2da9f871d534822b6d9b9dc965f95149e",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "eff8b03479a8ed895c7dc68523ac54e4f3469e4e6aa5b8cb72982f78bb6ce7be",
@@ -2956,7 +2956,7 @@
       "pass": 0,
       "semanticExecutableId": "04a417b5867f192468ad2793148c9063e4e3654895d05478fb50f556820067f4",
       "manifest": "candidate-port:static-reuse/illust_stencil_uniforms.json",
-      "manifestSha256": "3cf30ddb0dfea26f34a127deddbaeb324f81cd3f658433e24e285052e5c680df",
+      "manifestSha256": "5f5974b20ab17cd683b176db2f577bd0aec1c0d6f8dddb706e4e3a8e7f10b268",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "215f8207c068520aa82c877d6d2a32cc7f0e46c946ee5a25729ffe2911697bae",
@@ -2995,7 +2995,7 @@
       "pass": 0,
       "semanticExecutableId": "b7c8fdd383fca1a99f2f3e3cab6b70eeae5db0135bdc4f5f1c30b3419557b97b",
       "manifest": "candidate-port:static-reuse/card_parallax_strata_uniforms.json",
-      "manifestSha256": "2b8041f5319379ff32e6ce49a4f0b1b33491619f634a31fad3d93a369bc5dad3",
+      "manifestSha256": "f643d34da9666b32b8d24b4ea12001ac1eea4b9868bd832a3f0714f37c1eea5b",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "6724e914aab718d260794a7048413003b7b7a8762f872abb3813f01d360c01a7",
@@ -3034,7 +3034,7 @@
       "pass": 0,
       "semanticExecutableId": "b3b33ad18b3c0a67134cc5ce67f9779d8d2d658827790e57cf6f7f9ad1c15a44",
       "manifest": "candidate-port:static-reuse/card_shadowbox_ui_transparent_rainbow_uniforms.json",
-      "manifestSha256": "527b6a6dd407bb62d73ff32828767a1cc4716651ee0db6a26fd70d93363367e3",
+      "manifestSha256": "289752afc52f991c9e1bea848a1da9aa98a167e9690405e10dbe9544d5affd50",
       "generator": "build/build-candidate-static-port-reuse.mjs",
       "officialIdentityFields": {
         "vertexSpirvSha256": "6d988a824fdde9d91a0384f6a475442d96e69efc5b4e8c2ff7f0187eb01f5371",

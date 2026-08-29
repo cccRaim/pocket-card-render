@@ -143,9 +143,24 @@ def collect_guest_default_obligations(rows: list[dict]) -> list[dict]:
     ]
 
 
-def run_audit(spirv_cross: str = "spirv-cross") -> dict:
-    inventory = json.loads(INVENTORY.read_text(encoding="utf-8-sig"))
-    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+def run_audit(
+    spirv_cross: str = "spirv-cross",
+    *,
+    inventory_path: Path = INVENTORY,
+    contract_path: Path = CONTRACT,
+    port_root: Path | None = None,
+    decrypted_root: Path = MESH.DEFAULT_DECRYPTED_ROOT,
+    unity_version: str | None = None,
+) -> dict:
+    inventory_path = Path(inventory_path).resolve()
+    contract_path = Path(contract_path).resolve()
+    decrypted_root = Path(decrypted_root).resolve()
+    port_root = Path(port_root).resolve() if port_root is not None else None
+    inventory = json.loads(inventory_path.read_text(encoding="utf-8-sig"))
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    selected_unity_version = unity_version or str(inventory.get("unityVersion", ""))
+    if not selected_unity_version:
+        fail("inventory has no Unity version")
     if inventory["digests"]["proofGraphSha256"] != contract["inventory"]["proofGraphSha256"]:
         fail("mesh binding audit inventory proof graph changed")
     if inventory["digests"]["portIndexSha256"] != contract["inventory"]["portIndexSha256"]:
@@ -156,7 +171,14 @@ def run_audit(spirv_cross: str = "spirv-cross") -> dict:
     for port in contract["ports"]:
         ports_by_selector[str(port["selectorId"])].append(port)
 
-    vertex = VERTEX.run_audit(spirv_cross)
+    vertex = VERTEX.run_audit(
+        spirv_cross,
+        inventory_path=inventory_path,
+        decrypted_root=decrypted_root,
+        contract_path=contract_path,
+        port_root=port_root,
+        unity_version=selected_unity_version,
+    )
     vertex_by_port = {}
     for row in vertex["rows"]:
         key = (
@@ -169,7 +191,7 @@ def run_audit(spirv_cross: str = "spirv-cross") -> dict:
             fail(f"duplicate vertex-input port row: {key}")
         vertex_by_port[key] = row
 
-    mesh = MESH.extract(MESH.DEFAULT_DECRYPTED_ROOT.resolve())
+    mesh = MESH.extract(decrypted_root, selected_unity_version)
     rows = []
     ignored_slots = Counter()
     resolution_counts = Counter()
@@ -247,6 +269,11 @@ def run_audit(spirv_cross: str = "spirv-cross") -> dict:
     default_obligations = collect_guest_default_obligations(rows)
     return {
         "schema": SCHEMA,
+        "unityVersion": selected_unity_version,
+        "contract": {
+            "path": contract_path.as_posix(),
+            "sha256": MESH.sha256_file(contract_path),
+        },
         "inventory": {
             "proofGraphSha256": inventory["digests"]["proofGraphSha256"],
             "portIndexSha256": inventory["digests"]["portIndexSha256"],
@@ -282,8 +309,24 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--spirv-cross", default="spirv-cross")
+    parser.add_argument("--inventory", type=Path, default=INVENTORY)
+    parser.add_argument("--contract", type=Path, default=CONTRACT)
+    parser.add_argument("--port-root", type=Path)
+    parser.add_argument(
+        "--decrypted-root",
+        type=Path,
+        default=MESH.DEFAULT_DECRYPTED_ROOT,
+    )
+    parser.add_argument("--unity-version")
     args = parser.parse_args()
-    report = run_audit(args.spirv_cross)
+    report = run_audit(
+        args.spirv_cross,
+        inventory_path=args.inventory,
+        contract_path=args.contract,
+        port_root=args.port_root,
+        decrypted_root=args.decrypted_root,
+        unity_version=args.unity_version,
+    )
     if args.json:
         print(json.dumps(report, ensure_ascii=True, separators=(",", ":")))
         return

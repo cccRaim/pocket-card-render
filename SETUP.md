@@ -169,8 +169,8 @@ python build/dump_recipe.py \
     --out "recipes/<illId>_render_full.json"
 ```
 
-This writes the per-material recipe (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, queue, world
-transform), plus official Renderer/Material/Shader/Mesh `CAB:pathID` identities and the serialized
+This writes the per-material recipe (`m_Floats`/`m_Colors`/`m_TexEnvs`, shader name, custom/effective
+queue, world transform), plus official Renderer/Material/Shader/Mesh `CAB:pathID` identities and the serialized
 Material/Shader keyword inputs used by native draw sorting. It also decodes compiled Shader parameter
 reflection: a decisive per-renderer property outside `UnityPerDraw` writes `srpBatcherCompatible: 0`;
 absence of that witness stays `null` rather than being guessed. The `--shared` dirs let cross-bundle
@@ -179,6 +179,12 @@ their serialized CAB owner identity from the nearest `decrypted` ancestor; this 
 cross-card Material reuse and top-level shared Logo assets without card-name aliases. Use
 `--dependency-root` only when the decrypted root cannot be inferred from the input path. (Schema: see
 [ASSETS.md](ASSETS.md).)
+
+When `m_CustomRenderQueue` is `-1`, the recipe resolves the effective queue
+from the same official Shader's serialized SubShader `Queue` tag. A missing tag
+means ShaderLab's `Geometry` default; unknown or subshader-dependent values fail
+closed. Do not use a `card_shader_state.json` extracted from another game/Unity
+version to fill this field.
 
 ### 5. Build the scene
 
@@ -248,6 +254,8 @@ not publish it as general draw-order data until repeated captures prove the requ
 - **Card renders but no art / 404 on `/game/…`** — run `npm run gather -- <export-root>` (Path A step).
 - **`dump_recipe.py` prints 0 materials** — the `--shared` dirs are wrong, or the bundles aren't
   decrypted. UnityPy must see `Material` objects.
-- **Wrong layer order** — provide a `card_shader_state.json` via `--shader-state` (optional; most
-  recipes already carry a real `renderQueue`).
+- **Wrong layer order / black card with only dynamic text visible** — regenerate
+  the recipe with the current `dump_recipe.py` and same-version `Common/Shader`
+  bundles. Recipe v2 must contain `effectiveRenderQueue` and
+  `effectiveRenderQueueSource`; the scene builder rejects unresolved queues.
 - **Text missing on a non-sample card** — expected (see step 7); the geometry/foils still render.

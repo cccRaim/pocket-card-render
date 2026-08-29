@@ -19,14 +19,16 @@ from official_sample import load_official_sample
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[1]
-UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
 DEFAULT_DECRYPTED_ROOT = Path(
     os.environ.get(
         "PCR_DECRYPTED_ROOT",
         "D:/DevProjectes/ptcgp-tools-master/masterdata_decoder/.output/decrypted",
     )
 )
-LAYOUT_CONTRACT_PATH = ROOT / "public" / "render" / "card-ui-layout-contract.json"
+DEFAULT_LAYOUT_CONTRACT_PATH = (
+    ROOT / "public" / "render" / "card-ui-layout-contract.json"
+)
 MONO_SCRIPTS_PATH = "UnityMonoScripts"
 MONO_SCRIPTS_CAB = "CAB-1e36700dd93ee778e75c5e8df73b6de5"
 PREFABS = {
@@ -92,7 +94,10 @@ RECT_FIELDS = (
     "m_Pivot",
 )
 
-UnityPy.config.FALLBACK_UNITY_VERSION = UNITY_VERSION
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
 
 
@@ -317,15 +322,21 @@ def observed_contract(prefabs: list[dict]) -> dict:
     }
 
 
-def extract(decrypted_root: Path) -> dict:
-    layout_bytes = LAYOUT_CONTRACT_PATH.read_bytes()
+def extract(
+    decrypted_root: Path,
+    layout_contract_path: Path = DEFAULT_LAYOUT_CONTRACT_PATH,
+    manifest_path: Path | None = None,
+    unity_version: str = DEFAULT_UNITY_VERSION,
+) -> dict:
+    UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
+    layout_bytes = layout_contract_path.read_bytes()
     layout_contract = json.loads(layout_bytes)
     require(layout_contract["schemaVersion"] == 3, "unsupported card UI layout contract")
-    require(layout_contract["unityVersion"] == UNITY_VERSION, "layout contract Unity version drift")
-    sample_loaded = load_official_sample()
+    require(layout_contract["unityVersion"] == unity_version, "layout contract Unity version drift")
+    sample_loaded = load_official_sample(manifest_path)
     sample = sample_loaded["sample"]
     require(
-        sample["unity"]["serializedVersion"] == UNITY_VERSION,
+        sample["unity"]["serializedVersion"] == unity_version,
         "official sample Unity version drift",
     )
     scripts, mono_source = extract_scripts(decrypted_root)
@@ -352,13 +363,13 @@ def extract(decrypted_root: Path) -> dict:
             "sampleId": sample["sampleId"],
             "sampleManifestSha256": sample_loaded["sampleManifestSha256"],
             "gameVersion": sample["game"]["versionName"],
-            "unityVersion": UNITY_VERSION,
+            "unityVersion": unity_version,
             "architecture": sample["game"]["architecture"],
             "libil2cppSha256": sample["artifacts"]["libil2cpp"]["sha256"],
         },
         "sources": {
             "cardUiLayoutContract": {
-                "logicalPath": "public/render/card-ui-layout-contract.json",
+                "logicalPath": "card-ui-layout-contract.json",
                 "byteLength": len(layout_bytes),
                 "sha256": sha256(layout_bytes),
             },
@@ -447,10 +458,30 @@ def extract(decrypted_root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--decrypted-root", type=Path, default=DEFAULT_DECRYPTED_ROOT)
+    parser.add_argument(
+        "--layout-contract",
+        type=Path,
+        default=Path(
+            os.environ.get(
+                "PCR_CARD_UI_LAYOUT_CONTRACT",
+                DEFAULT_LAYOUT_CONTRACT_PATH,
+            )
+        ),
+    )
+    parser.add_argument("--manifest", type=Path)
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
     args = parser.parse_args()
     print(
         json.dumps(
-            extract(args.decrypted_root.resolve()),
+            extract(
+                args.decrypted_root.resolve(),
+                args.layout_contract.resolve(),
+                args.manifest,
+                args.unity_version,
+            ),
             ensure_ascii=True,
             separators=(",", ":"),
         )

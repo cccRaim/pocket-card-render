@@ -829,7 +829,7 @@
     "fragment": {
       "officialSpirvSha256": "39be5822c4cee7ba26211733c1823a8ef79e23655ff41f496116217c74fa904d",
       "spirvCrossGlslSha256": "39ddbb7abbd6a22c6fe4c7a2215c0e5134068eca3504ab9f31fdf7c65b16aecb",
-      "outputSha256": "c8c0c41098df55e72a0fec9f92c6c1b1c51f0a1e23815f84628fc15a4dc41006",
+      "outputSha256": "beb0edf15fd2f36cb8682e7dee442519a2ca82642ecf63e57ede88dc6846583f",
       "operations": [
         {
           "kind": "uniform-buffer-flattening",

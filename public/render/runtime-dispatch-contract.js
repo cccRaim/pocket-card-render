@@ -2,6 +2,8 @@ import { officialPortIdentityKey } from "./official-port-identity.js";
 
 export const OFFICIAL_PROGRAM_PORT_CONTRACT_SCHEMA =
   "pocket-card-render/official-program-port-contract@2";
+export const CANDIDATE_PROGRAM_PORT_CONTRACT_SCHEMA =
+  "pocket-card-render/candidate-program-port-contract@1";
 export const RUNTIME_MATERIAL_DISPATCH_SCHEMA =
   "pocket-card-render/runtime-material-dispatch@1";
 
@@ -157,7 +159,10 @@ function sameDispatch(left, right) {
 
 export function compileRuntimeMaterialDispatchIndex(contract) {
   if (!isRecord(contract)
-      || contract.schema !== OFFICIAL_PROGRAM_PORT_CONTRACT_SCHEMA
+      || ![
+        OFFICIAL_PROGRAM_PORT_CONTRACT_SCHEMA,
+        CANDIDATE_PROGRAM_PORT_CONTRACT_SCHEMA,
+      ].includes(contract.schema)
       || contract.runtimeDispatch?.schema !== RUNTIME_MATERIAL_DISPATCH_SCHEMA
       || !Array.isArray(contract.runtimeDispatch.routes)) {
     fail("official program port contract has no supported runtime dispatch table");
@@ -266,10 +271,16 @@ export function resolveRuntimeMaterialDispatch(index, recipe) {
 
 export async function loadRuntimeMaterialDispatchFromContract({
   fetchAsset = globalThis.fetch,
-  contractUrl = "shaders/official_program_port_contract.json",
+  contractUrl = "/runtime/official-program-port-contract.json",
+  fallbackContractUrl = "shaders/official_program_port_contract.json",
 } = {}) {
   if (typeof fetchAsset !== "function") fail("fetchAsset must be a function");
-  const response = await fetchAsset(contractUrl);
-  if (!response?.ok) fail(`failed to load ${contractUrl}`);
+  let selectedContractUrl = contractUrl;
+  let response = await fetchAsset(selectedContractUrl);
+  if (!response?.ok && fallbackContractUrl && fallbackContractUrl !== contractUrl) {
+    selectedContractUrl = fallbackContractUrl;
+    response = await fetchAsset(selectedContractUrl);
+  }
+  if (!response?.ok) fail(`failed to load ${selectedContractUrl}`);
   return compileRuntimeMaterialDispatchIndex(await response.json());
 }

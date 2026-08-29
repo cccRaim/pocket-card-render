@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 2,
+  "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+  "definition": "baseline regression scenes union candidate changed/default-sensitive route witnesses",
+  "scenes": [
+    {
+      "file": "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "textStem": "PK_10_000040_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ]
+    },
+    {
+      "file": "scene.cPK_20_008900_02_HOUOUex_UR.json",
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "textStem": "PK_20_008900_02",
+      "coverageRoles": [
+        "baseline-regression"
+      ]
+    },
+    {
+      "file": "scene.cTR_20_000230_00_LEAF_SR.json",
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "textStem": "TR_20_000230_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ]
+    },
+    {
+      "file": "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json",
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "textStem": "TR_20_000670_00",
+      "coverageRoles": [
+        "baseline-regression"
+      ]
+    },
+    {
+      "file": "scene.cPK_10_012330_00_MEGAABSOLex_RR.json",
+      "cardId": "cPK_10_012330_00_MEGAABSOLex_RR",
+      "textStem": "PK_10_012330_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ]
+    },
+    {
+      "file": "scene.cPK_20_000360_03_LIZARDONex_SR.json",
+      "cardId": "cPK_20_000360_03_LIZARDONex_SR",
+      "textStem": "PK_20_000360_03",
+      "coverageRoles": [
+        "changed-route-witness"
+      ]
+    },
+    {
+      "file": "scene.cPK_20_010840_00_MEGAKAILIOSex_SR.json",
+      "cardId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+      "textStem": "PK_20_010840_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ]
+    },
+    {
+      "file": "scene.cPK_20_016210_00_MEGAYADORANex_SR.json",
+      "cardId": "cPK_20_016210_00_MEGAYADORANex_SR",
+      "textStem": "PK_20_016210_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ]
+    },
+    {
+      "file": "scene.cPK_20_016430_00_MEGAGANGARex_SR.json",
+      "cardId": "cPK_20_016430_00_MEGAGANGARex_SR",
+      "textStem": "PK_20_016430_00",
+      "coverageRoles": [
+        "changed-route-witness"
+      ]
+    }
+  ],
+  "locales": [
+    "de_DE",
+    "en_US",
+    "es_ES",
+    "fr_FR",
+    "it_IT",
+    "ja_JP",
+    "ko_KR",
+    "pt_BR",
+    "zh_TW"
+  ]
+}

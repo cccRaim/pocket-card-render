@@ -35,7 +35,10 @@ sys.path.insert(0, str(SHADERDEC))
 import smolv  # noqa: E402
 
 
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    "2022.3.62f2",
+)
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
 
 DEFAULT_DECRYPTED_ROOT = (
@@ -99,7 +102,7 @@ def enabled_keywords(material: dict) -> list[str]:
 
 
 def prefab_bundle(decrypted_root: Path, card_id: str) -> Path:
-    return (
+    legacy = (
         decrypted_root
         / "Common"
         / "CardNew"
@@ -109,6 +112,23 @@ def prefab_bundle(decrypted_root: Path, card_id: str) -> Path:
         / "Prefabs"
         / f"{card_id}_L.prefab_bundles"
     )
+    if legacy.is_file():
+        return legacy
+
+    face_root = decrypted_root / "Common" / "CardNew" / "Face"
+    matches = sorted(
+        path.resolve()
+        for path in face_root.rglob(f"{card_id}_L.prefab_bundles")
+        if path.parent.name == "Prefabs"
+        and path.parent.parent.name == "L"
+        and path.parent.parent.parent.name == card_id
+    )
+    if len(matches) != 1:
+        raise RuntimeError(
+            f"expected one official L prefab bundle for {card_id} under "
+            f"{face_root}, found {len(matches)}"
+        )
+    return matches[0]
 
 
 class OfficialBundleIndex:

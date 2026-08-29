@@ -1955,7 +1955,13 @@ async function main() {
     const updateDisplayViewport = () => {
       displayCamera.aspect = innerWidth / innerHeight;
       displayCamera.updateProjectionMatrix();
-      const containScale = Math.min(1, displayCamera.aspect);
+      const cardView = detailDisplayProfile.card_view;
+      const cardAspect = cardView.pixel_width / cardView.pixel_height;
+      const portraitScale = Math.min(
+        0.9,
+        displayCamera.aspect * 0.94 / cardAspect,
+      );
+      const containScale = displayCamera.aspect < 1 ? portraitScale : 1;
       displayMesh.scale.setScalar(displayWorldSize * containScale);
     };
     updateDisplayViewport();
@@ -2599,11 +2605,20 @@ async function main() {
 
   async function summarizeFullRuntimePixels(pixels, width, height, attachment) {
     let nonzeroPixels = 0;
+    let rgbNonzeroPixels = 0;
+    let rgbEnergy = 0;
+    let rgbMax = 0;
     let alphaNonzero = 0;
     let minX = width, minY = height, maxX = -1, maxY = -1;
     for (let pixel = 0, offset = 0; pixel < width * height; pixel += 1, offset += 4) {
       const nonzero = pixels[offset] !== 0 || pixels[offset + 1] !== 0
         || pixels[offset + 2] !== 0 || pixels[offset + 3] !== 0;
+      const rgbNonzero = pixels[offset] !== 0 || pixels[offset + 1] !== 0
+        || pixels[offset + 2] !== 0;
+      const pixelRgbMax = Math.max(pixels[offset], pixels[offset + 1], pixels[offset + 2]);
+      rgbEnergy += pixels[offset] + pixels[offset + 1] + pixels[offset + 2];
+      rgbMax = Math.max(rgbMax, pixelRgbMax);
+      if (rgbNonzero) rgbNonzeroPixels += 1;
       if (pixels[offset + 3] !== 0) alphaNonzero += 1;
       if (!nonzero) continue;
       nonzeroPixels += 1;
@@ -2620,6 +2635,9 @@ async function main() {
       height,
       pixelCount: width * height,
       nonzeroPixels,
+      rgbNonzeroPixels,
+      rgbEnergy,
+      rgbMax,
       alphaNonzero,
       bounds: nonzeroPixels ? [minX, minY, maxX, maxY] : null,
       rgbaSha256,
@@ -2693,13 +2711,17 @@ async function main() {
     const tiltedSnapshot = readFullRuntimeState("tilted");
     if (!tiltedSnapshot) return;
 
+    // The tilted pose exists only to prove transform responsiveness. Restore the
+    // inspection view before the asynchronous evidence upload leaves audit mode
+    // parked at a shader-dependent reflection angle.
+    setOfficialDebugTilt(touchRotation, [0, 0]);
     publishFullRuntimeEvidenceStatus("reading-pair");
     Promise.all([fullRuntimeNeutralSnapshot, tiltedSnapshot]).then(async ([neutral, tilted]) => {
       const runtimeSession = await fullRuntimeSessionPromise;
       const runtimeDrawingBuffer = renderer.getDrawingBufferSize(new THREE.Vector2());
       const canvasRect = canvas.getBoundingClientRect();
       const payload = {
-        schemaVersion: 5,
+        schemaVersion: 6,
         scene: sceneFile,
         locale: curLoc,
         url: runtimeSession.expectedUrl,
@@ -2712,6 +2734,7 @@ async function main() {
         },
         diagnostics: {
           scene: { file: sceneFile, id: scene_data.card.id, sha256: sceneSha256 },
+          shaderContract: cloneRuntimeValue(exactShaders.contractIdentity),
           locale: curLoc,
           quality: {
             requested: qualityParam,

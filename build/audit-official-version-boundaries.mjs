@@ -253,10 +253,23 @@ if (candidatePath) {
     const { auditCandidateMigrationReadiness } = await import(
       "./audit-candidate-migration-readiness.mjs"
     );
-    const readiness = auditCandidateMigrationReadiness({
+    const shallowReadiness = auditCandidateMigrationReadiness({
       candidateManifest: candidate.selectionPath,
-      deep: true,
+      deep: false,
     });
+    const readiness = shallowReadiness.summary.complete
+      ? auditCandidateMigrationReadiness({
+          candidateManifest: candidate.selectionPath,
+          deep: true,
+        })
+      : shallowReadiness;
+    report.migration.readinessVerification = {
+      shallowPreflight: "complete",
+      deepExecuted: shallowReadiness.summary.complete,
+      reason: shallowReadiness.summary.complete
+        ? "all shallow obligations closed; deep re-extraction executed"
+        : "deep re-extraction skipped because shallow obligations remain",
+    };
     const readinessByDomain = new Map(
       readiness.domains.map((domain) => [domain.id, domain]),
     );

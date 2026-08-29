@@ -1,0 +1,92 @@
+{
+  "schema": "pocket-card-render/candidate-vertex-binding-evidence@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "inputs": {
+    "materialProgramInventory": {
+      "logicalSourceId": "candidate-material-program-inventory-full",
+      "sha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+      "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b"
+    },
+    "candidateProgramPortContract": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-program-port-contract.json",
+      "sha256": "0e5ad3a796050b4b26bf6730eed0cd5de61d1ab2b23fec31738abf76ca342d3d"
+    },
+    "meshPayloadEvidence": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-mesh-payload.json",
+      "sha256": "02fcf960de69c03a2e1d5a626578dfee24c8bb430df3e57a7a666398abd93dc4"
+    },
+    "vertexAuditor": {
+      "logicalPath": "build/audit_official_vertex_inputs.py",
+      "sha256": "5e8181126a255860d16e7f1f572d41e2e8a901488f448d294f90f2dfd66b749d"
+    },
+    "meshVertexAuditor": {
+      "logicalPath": "build/audit_official_mesh_vertex_bindings.py",
+      "sha256": "66c49877e2e8ef432667178f49c83b055d48f8f7565dca2dffe64dfc09c5fa0f"
+    }
+  },
+  "proof": {
+    "status": "exact-static-with-runtime-boundary",
+    "extractedEvidenceSha256": "9ade50bb0a78a175319fef5748db050a71afc6337052b2e9a7a6f65a67e95cc7",
+    "selectorSemantics": "exact",
+    "localWebglAdapter": "exact",
+    "meshChannelPresence": "exact-static",
+    "officialGuestVertexBinding": "runtime-required",
+    "officialGuestDefaultBinding": "runtime-required",
+    "gameFidelity": false,
+    "officialShaderRestorationPercent": null
+  },
+  "summary": {
+    "canonicalCardCount": 4,
+    "canonicalMaterialSlotResolutions": 165,
+    "exactDirectMaterialSlots": 94,
+    "exactUniqueMaterialSlots": 71,
+    "runtimeRequiredMaterialSlots": 0,
+    "joinedInventoryUsageKeys": 94,
+    "exactPortDrawPassRows": 157,
+    "requiredChannelBindings": 524,
+    "presentChannelBindings": 523,
+    "missingChannelBindings": 1,
+    "guestDefaultBindingObligations": 1,
+    "officialGuestVertexBindingExactRows": 0,
+    "officialGuestVertexBindingRuntimeRequiredRows": 157,
+    "nonPortSelectorSlotResolutions": 8,
+    "selectorPortCount": 78,
+    "officialSemanticExactPorts": 78,
+    "localAdapterExactPorts": 78
+  },
+  "guestDefaultBindingObligations": [
+    {
+      "selectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+      "sourceName": "UV1",
+      "meshIdentity": "Common/CardNew/Face/PK/10/000000/cPK_10_000040_00_FUSHIGIBANAex_RR/L/Prefabs/cPK_10_000040_00_FUSHIGIBANAex_RR_L.prefab_bundles:-1763326467450545495",
+      "officialGuestDefault": "runtime-required",
+      "affectedDraws": [
+        {
+          "illustrationId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+          "rendererIdentity": "CAB-9681fa1b4e5481848fec58caf5f0cb69:-444135806247351974",
+          "nodePath": "cPK_10_000040_00_FUSHIGIBANAex_RR_L/cPK_10_000040_00_FUSHIGIBANAex_RR_L_SB",
+          "materialSlot": 1,
+          "materialIdentity": "CAB-9681fa1b4e5481848fec58caf5f0cb69:-9182248643752923345",
+          "candidateWitnessId": "e710254f073915bac36480d928a8cdb7248c9874e4781921436ab58433869fe7",
+          "subshader": 0,
+          "pass": 0,
+          "manifest": "candidate-port:static-reuse/simple_opaque_hologram_tuning_uniforms.json",
+          "threeAttribute": "uv1",
+          "localThreeDefault": [
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}

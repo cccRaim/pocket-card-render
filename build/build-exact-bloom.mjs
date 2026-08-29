@@ -9,6 +9,7 @@ import {
   officialSample,
   officialSampleSha256,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "shaders");
@@ -380,7 +381,7 @@ try {
         throw new Error(`${name} does not match the current pinned official Bloom generation`);
       }
     } else {
-      fs.writeFileSync(file, content);
+      atomicWriteFileSync(file, content);
     }
   }
 

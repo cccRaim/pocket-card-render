@@ -11,6 +11,7 @@ import {
   loadOfficialSample,
   officialSampleDigest,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const MODULE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
@@ -1540,8 +1541,7 @@ export function writeOrCheckOutputs(outputs, options = {}) {
     }
   } else {
     for (const { content, target } of entries) {
-      fs.mkdirSync(path.dirname(target), { recursive: true });
-      fs.writeFileSync(target, content);
+      atomicWriteFileSync(target, content);
     }
   }
   return entries.map(({ target }) => target);

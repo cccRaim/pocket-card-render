@@ -44,6 +44,8 @@ const PYTHON = process.env.PYTHON || "python";
 const FIELDS = new Set(["stageProgram", "parameterEntry", "passState", "commonBindings", "runtimeDispatch"]);
 const FULL_RUNTIME = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
 const EXPECTED_FULL_RUNTIME_SHA256 = process.env.PCR_FULL_RUNTIME_EVIDENCE_SHA256 || null;
+const BASELINE_CONTRACT_SCHEMA = "pocket-card-render/official-program-port-contract@2";
+const CANDIDATE_CONTRACT_SCHEMA = "pocket-card-render/candidate-program-port-contract@1";
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
@@ -196,6 +198,8 @@ export function createOfficialPortVerifierSession({
   contractPath = CONTRACT,
   runtimePath = FULL_RUNTIME,
   expectedRuntimeSha256 = EXPECTED_FULL_RUNTIME_SHA256,
+  candidatePortRoot = null,
+  decryptedRoot = path.resolve(SHADER_ROOT, "..", ".."),
   generatorsExternallyVerified = process.env.PCR_PROGRAM_PORT_GENERATORS_EXTERNALLY_VERIFIED === "1",
   officialExtractions = null,
   requirePreloadedExtractions = false,
@@ -204,7 +208,22 @@ export function createOfficialPortVerifierSession({
   const contractSnapshot = readJsonSnapshot(contractPath);
   const inventory = inventorySnapshot.value;
   const contract = contractSnapshot.value;
-  assert.equal(contract.schema, "pocket-card-render/official-program-port-contract@2");
+  assert.ok(
+    contract.schema === BASELINE_CONTRACT_SCHEMA
+      || contract.schema === CANDIDATE_CONTRACT_SCHEMA,
+    `unsupported official program-port contract schema: ${contract.schema}`,
+  );
+  const candidate = contract.schema === CANDIDATE_CONTRACT_SCHEMA;
+  if (candidate) {
+    assert.ok(candidatePortRoot, "candidate program-port verification requires candidatePortRoot");
+    assert.match(contract.provenance?.sampleId || "", /-candidate$/);
+    assert.match(contract.provenance?.sampleManifestSha256 || "", /^[0-9a-f]{64}$/);
+    assert.equal(
+      generatorsExternallyVerified,
+      true,
+      "candidate generators must pass audit:candidate-program-migration before port verification",
+    );
+  }
   const runtimeBytes = fs.existsSync(runtimePath) ? fs.readFileSync(runtimePath) : null;
   const runtimeEvidenceSha256 = runtimeBytes
     ? crypto.createHash("sha256").update(runtimeBytes).digest("hex")
@@ -227,6 +246,9 @@ export function createOfficialPortVerifierSession({
     runtimeEvidenceSha256,
     runtimeArtifact: runtimeBytes ? JSON.parse(runtimeBytes.toString("utf8")) : null,
     expectedRuntimeSha256,
+    candidate,
+    candidatePortRoot: candidate ? path.resolve(candidatePortRoot) : null,
+    decryptedRoot: path.resolve(decryptedRoot),
     generatorsExternallyVerified,
     contexts: new Map(),
     checkedGenerators: new Set(),
@@ -255,6 +277,49 @@ function readFullRuntimeArtifact(context) {
   return context.session.runtimeArtifact;
 }
 
+function inside(directory, target) {
+  const relative = path.relative(directory, target);
+  return relative !== ""
+    && relative !== ".."
+    && !relative.startsWith(`..${path.sep}`)
+    && !path.isAbsolute(relative);
+}
+
+function resolveManifestPath(port, session) {
+  if (!session.candidate) {
+    const target = path.resolve(ROOT, port.manifest);
+    if (!inside(path.join(ROOT, "public", "shaders"), target)) {
+      throw new Error(`manifest escapes public/shaders: ${port.manifest}`);
+    }
+    return target;
+  }
+  if (typeof port.manifest !== "string" || !port.manifest.startsWith("candidate-port:")) {
+    throw new Error(`candidate manifest has an invalid logical path: ${port.manifest}`);
+  }
+  const target = path.resolve(
+    session.candidatePortRoot,
+    port.manifest.slice("candidate-port:".length),
+  );
+  if (!inside(session.candidatePortRoot, target)) {
+    throw new Error(`candidate manifest escapes candidatePortRoot: ${port.manifest}`);
+  }
+  return target;
+}
+
+function resolveSourcePath(context, logicalPath) {
+  assert.equal(typeof logicalPath, "string");
+  if (logicalPath.startsWith("public/")) {
+    const target = path.resolve(ROOT, logicalPath);
+    assert.ok(inside(path.join(ROOT, "public", "shaders"), target));
+    return target;
+  }
+  assert.ok(context.session.candidate, `non-public shader source is not candidate-bound: ${logicalPath}`);
+  assert.equal(path.basename(logicalPath), logicalPath.split("/").at(-1));
+  const target = path.resolve(path.dirname(context.manifestPath), path.basename(logicalPath));
+  assert.ok(inside(context.session.candidatePortRoot, target));
+  return target;
+}
+
 function loadContext(field, selectorKey, session) {
   assert.ok(FIELDS.has(field));
   const { selectorId, candidateWitnessId = null, subshader = null, pass = null } = selectorKey;
@@ -274,13 +339,20 @@ function loadContext(field, selectorKey, session) {
   const official = inventory.portIndex.find((row) => row.selectorId === selectorId
     && row.subshader === port.subshader && row.pass === port.pass);
   if (!official) throw new Error(`selector is absent from official inventory: ${selectorId}`);
-  const manifestPath = path.resolve(ROOT, port.manifest);
-  if (!manifestPath.startsWith(path.join(ROOT, "public", "shaders") + path.sep)) {
-    throw new Error(`manifest escapes public/shaders: ${port.manifest}`);
-  }
+  const manifestPath = resolveManifestPath(port, session);
   const manifestSnapshot = readJsonSnapshot(manifestPath);
   const manifest = manifestSnapshot.value;
   const manifestSha256 = manifestSnapshot.sha256;
+  if (port.manifestSha256 !== undefined) {
+    assert.equal(manifestSha256, port.manifestSha256, "candidate selector manifest SHA-256 changed");
+  }
+  if (session.candidate) {
+    assert.equal(manifest.official_sample?.sampleId, contract.provenance.sampleId);
+    assert.equal(
+      manifest.official_sample?.sampleManifestSha256,
+      contract.provenance.sampleManifestSha256,
+    );
+  }
   if (session.manifestSha256ByPath.has(manifestPath)) {
     assert.equal(manifestSha256, session.manifestSha256ByPath.get(manifestPath),
       `selector manifest changed during verification session: ${manifestPath}`);
@@ -332,7 +404,7 @@ function extractOfficial(context) {
       "--candidate-witness-id", context.port.candidateWitnessId,
       "--expected-proof-graph-sha256", context.contract.inventory.proofGraphSha256,
       "--expected-port-index-sha256", context.contract.inventory.portIndexSha256,
-      "--decrypted-root", path.resolve(SHADER_ROOT, "..", ".."),
+      "--decrypted-root", context.session.decryptedRoot,
       "--out", directory,
       "--prefix", "verify",
       "--metadata", metadata,
@@ -464,13 +536,6 @@ export function verifyDynamicUniformBindings({
   return errors;
 }
 
-function sourcePath(relative) {
-  assert.equal(typeof relative, "string");
-  const resolved = path.resolve(ROOT, relative);
-  assert.ok(resolved.startsWith(path.join(ROOT, "public", "shaders") + path.sep));
-  return resolved;
-}
-
 function verifyManifestStageProgram(context) {
   const generator = path.join(ROOT, context.port.generator);
   if (!context.session.generatorsExternallyVerified
@@ -489,8 +554,14 @@ function verifyManifestStageProgram(context) {
   assert.equal(manifest.official_spirv_sha256?.fragment, official.identityFields.fragmentSpirvSha256);
   assert.equal(adaptation.vertex.officialSpirvSha256, official.identityFields.vertexSpirvSha256);
   assert.equal(adaptation.fragment.officialSpirvSha256, official.identityFields.fragmentSpirvSha256);
-  assert.equal(adaptation.vertex.outputSha256, sha256(sourcePath(manifest.webgl_sources?.vertex)));
-  assert.equal(adaptation.fragment.outputSha256, sha256(sourcePath(manifest.webgl_sources?.fragment)));
+  assert.equal(
+    adaptation.vertex.outputSha256,
+    sha256(resolveSourcePath(context, manifest.webgl_sources?.vertex)),
+  );
+  assert.equal(
+    adaptation.fragment.outputSha256,
+    sha256(resolveSourcePath(context, manifest.webgl_sources?.fragment)),
+  );
   assert.ok(compiledAdaptation.graph.vertex.length > 0);
   assert.ok(compiledAdaptation.graph.fragment.length > 0);
   return result("stageProgram", context, "source-hash-bound", [
@@ -654,7 +725,10 @@ function genericRuntimeDraws(context) {
   assert.ok(contract, "compiled WebGL runtime contract is absent");
   const expectedSelector = manifest.official_selector;
   const expectedVertex = sha256Text(prepareWebglVertexSource(
-    fs.readFileSync(sourcePath(manifest.webgl_sources?.vertex), "utf8"),
+    fs.readFileSync(
+      resolveSourcePath(context, manifest.webgl_sources?.vertex),
+      "utf8",
+    ),
     { manifest },
   ).source);
   const expectedFragment = manifest.webgl_adaptation?.fragment?.outputSha256;

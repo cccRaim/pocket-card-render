@@ -11,6 +11,7 @@ import {
   officialSample,
   officialSampleSha256,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PYTHON = process.env.PYTHON || "python";
@@ -412,8 +413,7 @@ function writeOrCheck(relativePath, bytes) {
       throw new Error(`${relativePath} drifted from official regeneration`);
     }
   } else {
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, bytes);
+    atomicWriteFileSync(target, bytes);
   }
 }
 

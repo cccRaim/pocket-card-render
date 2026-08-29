@@ -59,7 +59,11 @@ SEMANTICS = {
     "TEXCOORD_7": ("m_UV7", 2),
 }
 
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    "2022.3.62f2",
+)
+UnityPy.config.FALLBACK_UNITY_VERSION = DEFAULT_UNITY_VERSION
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
 
 
@@ -490,7 +494,12 @@ def compare_primitive(
     }
 
 
-def extract(decrypted_root: Path) -> dict:
+def extract(
+    decrypted_root: Path,
+    unity_version: str = DEFAULT_UNITY_VERSION,
+) -> dict:
+    UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
+    MRT.UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
     prefabs = [MRT.prefab_bundle(decrypted_root, card) for card in CARDS]
     index = MRT.OfficialBundleIndex(decrypted_root)
     index.build(prefabs)
@@ -665,7 +674,7 @@ def extract(decrypted_root: Path) -> dict:
 
     return {
         "schemaVersion": 2,
-        "unityVersion": "2022.3.62f2",
+        "unityVersion": unity_version,
         "scope": "four canonical L-prefabs and their AssetRipper GLBs",
         "conversion": {
             "position": "(-x, y, z)",
@@ -701,8 +710,13 @@ def extract(decrypted_root: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--decrypted-root", type=Path, default=DEFAULT_DECRYPTED_ROOT)
+    parser.add_argument("--unity-version", default=DEFAULT_UNITY_VERSION)
     args = parser.parse_args()
-    print(json.dumps(extract(args.decrypted_root.resolve()), ensure_ascii=True, separators=(",", ":")))
+    print(json.dumps(
+        extract(args.decrypted_root.resolve(), args.unity_version),
+        ensure_ascii=True,
+        separators=(",", ":"),
+    ))
 
 
 if __name__ == "__main__":

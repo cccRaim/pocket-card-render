@@ -11,10 +11,11 @@
 //                                                                  [default ../ptcg-apk-parser/apks/output]
 // Output: public/scene.<cardId>.json  { card, prefabGlb, materials{}, textures{name:/game/url}, alphaMode }
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { makeAlphaCache } from "./alpha.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 import { OFFICIAL_RENDERER_TYPE } from "../public/render/official-draw-order.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -185,6 +186,8 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   // sits UNDER the illustration/SB instead of being forced to the top.
   // optional: most recipes already carry a real renderQueue; without this file those resolve via the
   // shader-name queue tag or fall to the end. (It is a shared, one-off upstream artifact — see SETUP.md.)
+  // Recipe v2 carries the effective queue derived from the same official Shader
+  // bytes as the Material. The aggregate is only a legacy fallback for old recipes.
   let shaderState = {};
   try { shaderState = JSON.parse(readFileSync(join(OUTPUT, "card_shader_state.json"), "utf8")); }
   catch { console.warn("card_shader_state.json not found — resolving queues from the recipe only"); }
@@ -199,7 +202,30 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   };
   const shaderQ = {};
   for (const [name, info] of Object.entries(shaderState)) { const q = parseQ(info.queue); if (q != null) shaderQ[short(name)] = q; }
-  const resolveQueue = (l) => (l.renderQueue && l.renderQueue > 0) ? l.renderQueue : (shaderQ[short(l.shader)] ?? 100000);
+  const resolveQueue = (l) => {
+    if (!Number.isInteger(l.renderQueue) || l.renderQueue < -1) {
+      throw new Error(`${CARD_ID}: invalid m_CustomRenderQueue for ${l.material}`);
+    }
+    if (l.renderQueue >= 0) {
+      if (l.effectiveRenderQueue != null && l.effectiveRenderQueue !== l.renderQueue) {
+        throw new Error(`${CARD_ID}: custom/effective render queue mismatch for ${l.material}`);
+      }
+      return l.renderQueue;
+    }
+    if (Number.isInteger(l.effectiveRenderQueue)) {
+      if (l.effectiveRenderQueue < 0 || l.effectiveRenderQueue > 5000
+          || !l.effectiveRenderQueueSource) {
+        throw new Error(`${CARD_ID}: invalid effective Shader render queue for ${l.material}`);
+      }
+      return l.effectiveRenderQueue;
+    }
+    const legacyQueue = shaderQ[short(l.shader)];
+    if (Number.isInteger(legacyQueue)) return legacyQueue;
+    throw new Error(
+      `${CARD_ID}: unresolved effective render queue for ${l.material}; `
+      + "regenerate the recipe with the current build/dump_recipe.py",
+    );
+  };
 
   const texUrls = {};
   const texSlots = new Map();
@@ -695,6 +721,15 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
         || l.shaderKeywordNames.length !== l.shaderKeywordFlags.length) {
       throw new Error(`${CARD_ID}: incomplete official serialized Material state for ${mat}`);
     }
+    const materialSerialized = l.materialSerialized || null;
+    if (materialSerialized
+        && (!Number.isInteger(materialSerialized.rawByteSize)
+          || !/^[0-9a-f]{64}$/.test(materialSerialized.rawSha256 || "")
+          || !/^[0-9a-f]{64}$/.test(
+            materialSerialized.savedProperties?.digest || "",
+          ))) {
+      throw new Error(`${CARD_ID}: invalid Material byte provenance for ${mat}`);
+    }
     officialDraws.push({
       drawId: `${official.renderer}#${l.materialSlot}`,
       go,
@@ -717,11 +752,16 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
         throw new Error(`${CARD_ID}: material name ${mat} resolves to multiple official Material/Shader identities`);
       }
       if (materials[mat].official.customRenderQueue !== l.renderQueue
+          || materials[mat].official.effectiveRenderQueue !== resolveQueue(l)
           || materials[mat].official.enableInstancingVariants !== l.enableInstancingVariants
           || JSON.stringify(materials[mat].official.validKeywords) !== JSON.stringify(l.keywords)
           || JSON.stringify(materials[mat].official.invalidKeywords) !== JSON.stringify(l.invalidKeywords)
           || JSON.stringify(materials[mat].official.shaderKeywordNames) !== JSON.stringify(l.shaderKeywordNames)
-          || JSON.stringify(materials[mat].official.shaderKeywordFlags) !== JSON.stringify(l.shaderKeywordFlags)) {
+          || JSON.stringify(materials[mat].official.shaderKeywordFlags) !== JSON.stringify(l.shaderKeywordFlags)
+          || materials[mat].official.rawByteSize !== materialSerialized?.rawByteSize
+          || materials[mat].official.rawSha256 !== materialSerialized?.rawSha256
+          || JSON.stringify(materials[mat].official.savedProperties)
+            !== JSON.stringify(materialSerialized?.savedProperties)) {
         throw new Error(`${CARD_ID}: material ${mat} has inconsistent official serialized Material state`);
       }
       continue;
@@ -755,17 +795,26 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
     // their region bit only when the renderer is bound at runtime.
     const stencil = l.floats && l.floats._Stencil;
     const clip = (stencil === 2) ? "window" : (/Window/.test(go) ? "window" : "card");
-    materials[mat] = { shader, queue: resolveQueue(l), sort, official: {
+    const effectiveRenderQueue = resolveQueue(l);
+    materials[mat] = { shader, queue: effectiveRenderQueue, sort, official: {
                          material: official.material,
                          shader: official.shader,
                          customRenderQueue: l.renderQueue,
+                         effectiveRenderQueue,
+                         effectiveRenderQueueSource:
+                           l.effectiveRenderQueueSource || "legacy-card-shader-state",
+                         shaderRenderQueue: l.shaderRenderQueue || null,
                          enableInstancingVariants: l.enableInstancingVariants,
                          validKeywords: l.keywords,
                          invalidKeywords: l.invalidKeywords,
                          shaderKeywordNames: l.shaderKeywordNames,
                          shaderKeywordFlags: l.shaderKeywordFlags,
+                         rawByteSize: materialSerialized?.rawByteSize,
+                         rawSha256: materialSerialized?.rawSha256,
+                         savedProperties: materialSerialized?.savedProperties,
                        }, clip, stencil: stencil ?? null,
-                       go, floats: l.floats || {}, colors: l.colors || {}, keywords: l.keywords || [], textures };
+                       go, floats: l.floats || {}, ints: l.ints || {},
+                       colors: l.colors || {}, keywords: l.keywords || [], textures };
   }
 
   const glbAbs = join(ASSETS, "Assets/PrefabHierarchyObject", `${CARD_ID}_L.glb`);
@@ -818,7 +867,7 @@ if (process.argv[1] && process.argv[1].endsWith("build.mjs")) {
   const outName = process.argv[4] || sceneFileName(cardId);
   mkdirSync(PUB, { recursive: true });
   const scene = buildScene(cardId, recipe);
-  writeFileSync(join(PUB, outName), JSON.stringify(scene, null, 1));
+  atomicWriteFileSync(join(PUB, outName), JSON.stringify(scene, null, 1));
   console.log(`card ${cardId}: ${Object.keys(scene.materials).length} materials, ${Object.keys(scene.textures).length} textures -> public/${outName}`);
   if (scene._missing.length) console.log(`MISSING textures: ${scene._missing.join(", ")}`);
 }

@@ -224,6 +224,20 @@ function adaptFragment(source) {
   return `${source.replace(/^#version 300 es\s*/m, "").trimEnd()}\n`;
 }
 
+function adaptEmitMaskFragment(source) {
+  let output = adaptFragment(source);
+  output = output.replace(
+    /layout\(std140\) uniform _43_45\s*\{[\s\S]*?}\s*_45;\s*/,
+    "uniform highp float _EmitMasking;\n\n",
+  );
+  output = output.replaceAll("_45._m0", "_EmitMasking");
+  if (/uniform _43_45|_45\._m0/.test(output)
+      || !/uniform highp float _EmitMasking;/.test(output)) {
+    throw new Error("Card_Parallax_EmitMask fragment adaptation is incomplete");
+  }
+  return `${output.trimEnd()}\n`;
+}
+
 function buildManifest(
   metadata,
   commonBindings,
@@ -581,7 +595,7 @@ const emitMaskResult = await generateExactSelectorPort({
     assertReflection(reflection);
   },
   adaptVertex,
-  adaptFragment,
+  adaptFragment: adaptEmitMaskFragment,
   joinConstantBufferStages: true,
   passPolicy: PASS_POLICY,
   runtimeContract: emitMaskRuntimeContract,

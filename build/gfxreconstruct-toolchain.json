@@ -1,0 +1,38 @@
+{
+  "schema": "pocket-card-render/gfxreconstruct-toolchain@1",
+  "toolchainId": "gfxreconstruct-1.0.5-win32-x64-vulkan-1.4.350",
+  "platform": "win32",
+  "architecture": "x64",
+  "gfxreconstructVersion": "1.0.5",
+  "buildRevision": "ed60d45",
+  "vulkanHeaderVersion": "1.4.350",
+  "tools": {
+    "converter": {
+      "executable": "gfxrecon-convert.exe",
+      "byteLength": 13506488,
+      "sha256": "bd3e3bd593d8eab6786973ed974ea1857decf6e396bd85c5d5902523f74b648e",
+      "versionIncludes": [
+        "GFXReconstruct Version 1.0.5 (ed60d45)",
+        "Vulkan Header Version 1.4.350"
+      ]
+    },
+    "extractor": {
+      "executable": "gfxrecon-extract.exe",
+      "byteLength": 8908216,
+      "sha256": "6ed6f678a598751e8139b8d2c7b502ad72c7027a980de1dabc9093b8c6ae3aa6",
+      "versionIncludes": [
+        "GFXReconstruct Version 1.0.5 (ed60d45)",
+        "Vulkan Header Version 1.4.350"
+      ]
+    },
+    "info": {
+      "executable": "gfxrecon-info.exe",
+      "byteLength": 9307064,
+      "sha256": "00e11a1f4ea38ca66b5fd12085e0b6e055464765cafc9ee7d0e19bbf16ed738a",
+      "versionIncludes": [
+        "GFXReconstruct Version 1.0.5 (ed60d45)",
+        "Vulkan Header Version  1.4.350"
+      ]
+    }
+  }
+}

@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 import { createCipheriv, createHash } from "node:crypto";
 import {
-  copyFileSync,
   existsSync,
-  linkSync,
   mkdirSync,
   readFileSync,
-  renameSync,
-  rmSync,
   statSync,
-  writeFileSync,
 } from "node:fs";
 import path from "node:path";
 import { inflateRawSync } from "node:zlib";
@@ -18,6 +13,10 @@ import {
   loadOfficialSample,
   officialSampleDigest,
 } from "./official-sample.mjs";
+import {
+  atomicLinkFileSync,
+  atomicWriteFileSync,
+} from "./atomic-publish.mjs";
 
 function parseArgs(argv) {
   const args = {};
@@ -176,10 +175,7 @@ function persistBytes(outputRoot, relativePath, bytes, expected) {
     assertArtifact(relativePath, existing, expected);
     return destination;
   }
-  const temporary = `${destination}.part`;
-  rmSync(temporary, { force: true });
-  writeFileSync(temporary, bytes);
-  renameSync(temporary, destination);
+  atomicWriteFileSync(destination, bytes);
   return destination;
 }
 
@@ -193,12 +189,11 @@ function persistLink(outputRoot, relativePath, source, expected) {
     assertArtifact(relativePath, existing, expected);
     return destination;
   }
-  try {
-    linkSync(source, destination);
-  } catch (error) {
-    if (!["EXDEV", "EPERM", "EACCES"].includes(error.code)) throw error;
-    copyFileSync(source, destination);
-  }
+  atomicLinkFileSync(source, destination, {
+    validate(staging) {
+      assertArtifact(relativePath, readFileSync(staging), expected);
+    },
+  });
   return destination;
 }
 
@@ -335,7 +330,7 @@ function main() {
     artifacts,
   };
   const reportPath = path.join(args["output-root"], "materialized-inputs.json");
-  writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
+  atomicWriteFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
   console.log(`Materialized official sample inputs: ${reportPath}`);
 }
 

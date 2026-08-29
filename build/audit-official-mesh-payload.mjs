@@ -1,13 +1,22 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
+const officialInputs = resolveOfficialSampleInputs({
+  verifyArtifactHashes: false,
+});
 const evidence = JSON.parse(execFileSync(
   process.env.PYTHON || "python",
   ["-B", "build/extract_official_mesh_payload.py"],
   {
     encoding: "utf8",
     shell: process.platform === "win32",
-    env: { ...process.env, PYTHONDONTWRITEBYTECODE: "1" },
+    env: {
+      ...process.env,
+      ...officialInputs.environment,
+      PCR_UNITY_VERSION: officialInputs.loaded.sample.unity.serializedVersion,
+      PYTHONDONTWRITEBYTECODE: "1",
+    },
     maxBuffer: 64 * 1024 * 1024,
   },
 ).replace(/^\uFEFF/, ""));

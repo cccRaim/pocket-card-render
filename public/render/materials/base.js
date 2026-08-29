@@ -69,14 +69,36 @@ defineMaterial("sideBack", {
       vertexShader: stageSource.vert,
       fragmentShader: stageSource.frag,
       toneMapped: false,
-    }) : new THREE.ShaderMaterial({
+    }) : new THREE.RawShaderMaterial({
+      glslVersion: THREE.GLSL3,
       uniforms,
-      vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-      fragmentShader: `uniform sampler2D _BaseTex; uniform vec4 _Blend; varying vec2 vUv;
-        void main(){ vec4 t=texture2D(_BaseTex,vUv); gl_FragColor=vec4(mix(t.rgb,_Blend.rgb,_Blend.a),t.a); }`,
+      vertexShader: `
+        precision highp float;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        in vec3 position;
+        in vec2 uv;
+        out vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: `
+        precision highp float;
+        uniform sampler2D _BaseTex;
+        uniform vec4 _Blend;
+        in vec2 vUv;
+        layout(location = 0) out vec4 cardColor;
+        layout(location = 1) out vec4 bloomColor;
+        void main() {
+          vec4 texel = texture(_BaseTex, vUv);
+          cardColor = vec4(mix(texel.rgb, _Blend.rgb, _Blend.a), texel.a);
+          bloomColor = vec4(0.0);
+        }`,
       toneMapped: false,
     });
     if (stageSource) m.userData.stageSourceFallback = "Side&Back";
+    else m.userData.runtimeBoundaryFallback = "Side&Back";
     m.userData.straight = true;
     return m;
   },

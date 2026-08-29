@@ -7,7 +7,7 @@
 // Default source root = $PCR_GAME_SRC or ../ptcg-apk-parser/apks/assets. Scans ALL JSON under public/
 // (scene.*.json + text/*.json + locales/*.json) for "/game/<rel>" strings → copies each to
 // public/game/<rel>. A few UI glyphs are hardcoded in app.js (the ex badge) → always included.
-import { readFileSync, mkdirSync, readdirSync, existsSync, copyFileSync, statSync } from "node:fs";
+import { readFileSync, mkdirSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -15,6 +15,7 @@ import {
   collectGameAssetUrls,
   gameAssetRelativePath,
 } from "./scene-example-availability.mjs";
+import { atomicCopyFileSync } from "./atomic-publish.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..");
@@ -81,8 +82,7 @@ for (const rel of rels) {
     : join(SRC, rel);
   const to = join(GAME_OUT, rel);
   if (!existsSync(from)) { console.warn(`  MISSING: ${rel}`); missing++; continue; }
-  mkdirSync(dirname(to), { recursive: true });
-  copyFileSync(from, to);
+  atomicCopyFileSync(from, to);
   copied++;
 }
 console.log(`gathered ${copied} files into public/game (${missing} missing) from ${SRC}`);

@@ -1,0 +1,1294 @@
+{
+  "schema": "pocket-card-render/candidate-localized-text-corpus@2",
+  "schemaVersion": 2,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "localeSerializedSource": "exact-file-hash-bound",
+    "semanticResolution": "known-local-port",
+    "localCompose": "known-local-port",
+    "unity6RuntimeLayout": "runtime-required",
+    "runtimeCaptureUsed": false,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false
+  },
+  "inputs": {
+    "canonicalScenes": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-canonical-scenes.json",
+      "byteLength": 15808,
+      "sha256": "0e2468f0a1cc1860c3acf613eca6830d88f2230a9da49c6cceca3dbfdaa63a5c"
+    },
+    "localeProvenance": {
+      "logicalPath": "locales/locale-provenance.json",
+      "byteLength": 12380,
+      "sha256": "17e67daf3b20b2a9c951f838fa42137c451e2794e2dfd1b3ae0e084bc746723a"
+    },
+    "locales": {
+      "de_DE": {
+        "logicalPath": "locales/locale_de_DE.json",
+        "byteLength": 1200213,
+        "sha256": "ccb7430d1a92cb507b1571adc5225bee674dfe8fc7c874affbe93119c16017cc",
+        "sourceBundleByteLength": 1952553,
+        "sourceBundleSha256": "b44de2fb7ed2cc9d1febd4769954195df2670d170e9a9580fe62feaf4000830d",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "5662796257798213061",
+            "rawSha256": "3a053279c688d18c2fe1cd65f2b80212a6ba82251cbfc6635bcba4a454da3fe0",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "6321799491297883515",
+            "rawSha256": "8b8a4e6f891530bfb2ce8d332eccc2ed1aa1cfcc89d28d858af6d7d6086c019f",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "7741089211770183159",
+            "rawSha256": "84425f7c1c567e4cdb86a910e5308f7fc0892a9a351012e64bed58bb6e0e8f2b",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "en_US": {
+        "logicalPath": "locales/locale_en_US.json",
+        "byteLength": 1117441,
+        "sha256": "3af222847652e484a9ba40e95efa815c02f68bc41a9dfc9e0e9d0a52bbb0062b",
+        "sourceBundleByteLength": 1853895,
+        "sourceBundleSha256": "aa589216f5ab0ef36b9d5068ab62558c145e89f92c0a196144abf23aeb875579",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "136291997561111576",
+            "rawSha256": "c56f4e2bc54672a6fa17b2fafb3980b3e3bef3dedc8bd5087e2586ab005703e5",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "-4875219918511856281",
+            "rawSha256": "d17dd9b79b3d624ec2cf2697de1b9d0305f8d44d4512105059b595a03f5e128f",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "8315476170661565427",
+            "rawSha256": "9e81400a358c950acf8a6be471756f06f53e641c1c89fc60ac0d5c70b5e405b4",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "es_ES": {
+        "logicalPath": "locales/locale_es_ES.json",
+        "byteLength": 1168964,
+        "sha256": "55c3304e974cb450648def2ae5c0449fde302c1f6fc936f01fae73dfcb27a1dc",
+        "sourceBundleByteLength": 1910853,
+        "sourceBundleSha256": "aaeefe8628b5f3207020634a91cc905c5f4bff12a7980ef3d6c56fe8bf34a2f9",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "2849915207973887861",
+            "rawSha256": "a8f284589ce4e77fb6ecbfe5ea15748fc2839071f9f313325614e41a78b5e46a",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "-7183870732035556982",
+            "rawSha256": "3061346862cd97720bbfa09275db2488917d153b7cfd0bae0ed30df8ad5426d0",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "1617442174895983927",
+            "rawSha256": "93842439425bb6c3b897522db188908ac349d0069d253a93204c79725b8ca131",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "fr_FR": {
+        "logicalPath": "locales/locale_fr_FR.json",
+        "byteLength": 1238224,
+        "sha256": "ccda8a0c48a955d5b2b4d92e38233dacbc5fd4a41c40055892e45d037c0e7d67",
+        "sourceBundleByteLength": 1966954,
+        "sourceBundleSha256": "073f1cfc26a22979e58d602a2c26a9b2a73e57277873b6018462a7c03a323b41",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "2929138392496674664",
+            "rawSha256": "5f0518c9b1310b817ae6d6fe38b4fae970ea996cc747884027a9a1e03fc9271d",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "6863022401892792940",
+            "rawSha256": "bea7b8366773db21611eb8dd23b13d47513a5f13e8ce6a027230396dbc161290",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "-3947434004052416431",
+            "rawSha256": "9cede3629d229ea72b6ff5e2367a5850a0cddf900c2d5637e99a0f8e82d5c377",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "it_IT": {
+        "logicalPath": "locales/locale_it_IT.json",
+        "byteLength": 1180180,
+        "sha256": "9a686f1f12ae0cebf75865caf3e0d7d421e776f4dcaa2c4408c34effcd22ad1a",
+        "sourceBundleByteLength": 1918825,
+        "sourceBundleSha256": "adc780ce9ac726c697c8e398c0ce76ea4a0c004f22798260c9f528ab6aa9731a",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "1229101568287432959",
+            "rawSha256": "7f2a95b34d6f72ccd323259436dad7c7b074061000a9377dcb90fe732eb572c2",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "-5506825161019508866",
+            "rawSha256": "782fb469a52fc6e4d5fd8289c67fd5e9b9d3a4d1a2683df2cd9b44e3e9f14c20",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "6069973813329411827",
+            "rawSha256": "c77f7c7d544769ec0bb0970540897099b17e872d4cef17e043ab792e2751d887",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "ja_JP": {
+        "logicalPath": "locales/locale_ja_JP.json",
+        "byteLength": 1252539,
+        "sha256": "1a8ccee992c7f26461b5b1d344eea71c0983e8f9c8ed03f018d503c0f7712b46",
+        "sourceBundleByteLength": 1104282,
+        "sourceBundleSha256": "56db22aadd5164fefcf3669240b3ca0ce45187427123037eabce84ddbc5ad941",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "-8951323489144718509",
+            "rawSha256": "971cb6923026aea7c6648b1b2cc279a6953d87607714b4726261eaf2161ab7e4",
+            "entryCount": 10623
+          },
+          {
+            "name": "System",
+            "pathId": "-3390212072594955927",
+            "rawSha256": "5c67a2926950966b5b8c39b7995e0b8212cd36666b56776e0f0ee51f98199a47",
+            "entryCount": 9
+          },
+          {
+            "name": "UI",
+            "pathId": "3156807472254189713",
+            "rawSha256": "23e79f9c92ac79f2bb71728f8ef52d839f4536460c9e94b50c68ee05f7e5e971",
+            "entryCount": 3426
+          }
+        ]
+      },
+      "ko_KR": {
+        "logicalPath": "locales/locale_ko_KR.json",
+        "byteLength": 1170722,
+        "sha256": "72474bb8dc38129b5995210aa425121a01686b127041e316f28efb95a2cc47c2",
+        "sourceBundleByteLength": 990607,
+        "sourceBundleSha256": "197ee04934ca96877075da0cb2a8f3c6417aa4bf3644ea978e6e7132895f59fe",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "6080311668270092000",
+            "rawSha256": "3169c553feec2261b7ddded870351b7f518e0a7ad828dcc31501eac8f10035ce",
+            "entryCount": 10623
+          },
+          {
+            "name": "System",
+            "pathId": "8796773306758159093",
+            "rawSha256": "6614ee147ae622cd13886ac697c3e20313558f94baa34ffd823f4843d48fe39f",
+            "entryCount": 9
+          },
+          {
+            "name": "UI",
+            "pathId": "-5236861823373172083",
+            "rawSha256": "3408a16588de573ba1515f397c5d2faed95688bc43f431a6f6e679b51d2c1933",
+            "entryCount": 3426
+          }
+        ]
+      },
+      "pt_BR": {
+        "logicalPath": "locales/locale_pt_BR.json",
+        "byteLength": 1177974,
+        "sha256": "f55b513c5457ddbbf51410491cf227c43bfa54f144c951136802ec4874869cbe",
+        "sourceBundleByteLength": 1920974,
+        "sourceBundleSha256": "bd539fc0e49a98aff7cedd936e644926488dfb67796d5d192ec8d8d946c45964",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "-6471003095911643463",
+            "rawSha256": "e68f074d7c7f4365b32283ed1eb28ab286cd5170fbbc612ec9563c87a7b5f674",
+            "entryCount": 10745
+          },
+          {
+            "name": "System",
+            "pathId": "-5867568947811292186",
+            "rawSha256": "85844d02ab3e6fe31e2d367718c477ee54b0db51bd717f5253381a1860f71f00",
+            "entryCount": 10
+          },
+          {
+            "name": "UI",
+            "pathId": "-6282833001522713273",
+            "rawSha256": "89c77ad3e5f85665431bd6527ef4187c65a33fb9ce9da1970db4a70ab5dec2bf",
+            "entryCount": 3479
+          }
+        ]
+      },
+      "zh_TW": {
+        "logicalPath": "locales/locale_zh_TW.json",
+        "byteLength": 1081519,
+        "sha256": "ad67fdc730d01da11fa1d7589c9fcddc301cc7ed81b478642f7449cbf2f34aad",
+        "sourceBundleByteLength": 920538,
+        "sourceBundleSha256": "434307a5c77939b2ee88d8f2e7df7f716f2c7541971511a3ee604e0704b0a36f",
+        "sections": [
+          {
+            "name": "Master",
+            "pathId": "-5444139092860257926",
+            "rawSha256": "795d56b193785405f1f8f7ad4fa1cb52d848a52a8f7dcbc76e4c5dce5003f8df",
+            "entryCount": 10623
+          },
+          {
+            "name": "System",
+            "pathId": "-7730578717695812178",
+            "rawSha256": "36cad3e3492a088804f986cb73195bc19308f8170f495b89fc26da177ae5ec6a",
+            "entryCount": 9
+          },
+          {
+            "name": "UI",
+            "pathId": "-4536730235481053876",
+            "rawSha256": "bc64ca0525d495fb9545263fca281d8bf75eeb10ae3cbb19588b1456b78535f1",
+            "entryCount": 3426
+          }
+        ]
+      }
+    },
+    "masterdata": {
+      "Character": {
+        "logicalPath": "masterdata/Character.json",
+        "byteLength": 106300,
+        "sha256": "06485d0e84de0c03d777cc2af5f30de3b3d01bef0630a51be735107f0bfed511"
+      },
+      "PokemonAttackName": {
+        "logicalPath": "masterdata/PokemonAttackName.json",
+        "byteLength": 105796,
+        "sha256": "a2ad8f45a5faa26d9e892129de6c15fa040527307ee6ed27f3a914f9f07140a7"
+      },
+      "PokemonAbilityName": {
+        "logicalPath": "masterdata/PokemonAbilityName.json",
+        "byteLength": 15643,
+        "sha256": "7bfaea806d66a37a07d6b29f21e5cd45486d360897937c85d605b6ae5a5ff1dc"
+      },
+      "TrainerCard": {
+        "logicalPath": "masterdata/TrainerCard.json",
+        "byteLength": 127409,
+        "sha256": "884c6aa575085c8ac548dbd902f0657d5f98ffb1a2b214e006c0c53e433fc5b2"
+      },
+      "Trainer": {
+        "logicalPath": "masterdata/Trainer.json",
+        "byteLength": 45015,
+        "sha256": "51d2ad8f8339d3313a03d27298bf589e3b2719d2a7efb532ddb1a13a6398d12a"
+      },
+      "PokemonCard": {
+        "logicalPath": "masterdata/PokemonCard.json",
+        "byteLength": 1666259,
+        "sha256": "7f644fef50fb64f2b9988007e795af48329c90c98f302e61524dae4b51975815"
+      },
+      "Pokemon": {
+        "logicalPath": "masterdata/Pokemon.json",
+        "byteLength": 1028002,
+        "sha256": "add8a016e8377d913eac1b275e2ee6d0a34b72c6403bcf7e0668748682fd0e77"
+      },
+      "PokemonAttack": {
+        "logicalPath": "masterdata/PokemonAttack.json",
+        "byteLength": 731025,
+        "sha256": "67b4b127bf6ef4169f454fef8bb96c68cb1d01bef90f5a862e85e1edda06a688"
+      },
+      "PokemonAbility": {
+        "logicalPath": "masterdata/PokemonAbility.json",
+        "byteLength": 47451,
+        "sha256": "5becb714939bb7eb1f3d0697ba0152a3e43d1b908dddbd9674863d7bd22ea4b9"
+      }
+    },
+    "contracts": {
+      "PCR_CARD_UI_LAYOUT_CONTRACT": {
+        "logicalPath": "serialized-ui/card-ui-layout-contract.json",
+        "byteLength": 2413272,
+        "sha256": "beb0d2938a7babf8e5248637699d1e67306a83dc4f624a2188bd2a26eae344a1"
+      },
+      "PCR_CARD_UI_RESOURCE_CONTRACT": {
+        "logicalPath": "serialized-ui/card-ui-resource-contract.json",
+        "byteLength": 669200,
+        "sha256": "9135e66ea5738b2a3c11ef98c69a05fddbe3a3e466e571e6bf79cccf7d10c62c"
+      },
+      "PCR_TMP_SPRITE_CONTRACT": {
+        "logicalPath": "serialized-tmp/tmp-sprite-contract.json",
+        "byteLength": 11530,
+        "sha256": "334f372a72ca6fccce0ad5a13ed6d19bc249d79a1d7c55b9ee28cac284d65677"
+      },
+      "PCR_CARD_TEXT_DESIGN_CONTRACT": {
+        "logicalPath": "serialized-ui/card-text-design-contract.json",
+        "byteLength": 3725427,
+        "sha256": "85fa7c88d731711526d4b6b69b649dc286cc7ed53b0de17cf20d0d7449e49103"
+      },
+      "PCR_OFFICIAL_LAYOUT_FITTERS": {
+        "logicalPath": "serialized-ui/official-layout-fitters.json",
+        "byteLength": 242857,
+        "sha256": "772ce3d6660d4df1702602a4315bdd0cb24c15fd45c196cccb88cdbbec917902"
+      },
+      "PCR_TMP_SETTINGS_CONTRACT": {
+        "logicalPath": "serialized-tmp/tmp-settings-contract.json",
+        "byteLength": 4364,
+        "sha256": "d1ad2c4753707addc20c2fb6b585fc99ac71c17292f29f5d0ec092a97afea4a6"
+      },
+      "PCR_TMP_FONT_MANIFEST": {
+        "logicalPath": "serialized-tmp/tmp-font-manifest.json",
+        "byteLength": 1093306,
+        "sha256": "b9f92520238cb954327607047aed7ff82470628070a8e9a00f4c444c0164fe3b"
+      },
+      "PCR_CARD_FONT_CONTRACT": {
+        "logicalPath": "serialized-ui/card-font-contract.json",
+        "byteLength": 307867,
+        "sha256": "3cd2e82cbab3cecc882c94048b17d294af9eade5365f1935e5366312277f5fb9"
+      }
+    },
+    "candidateTmpFontEngine": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+      "byteLength": 17345,
+      "sha256": "7751441d1f95c3adebeea08dd6021436a49a2c13f9654e7205aa3ca813c92058"
+    },
+    "compose": {
+      "logicalPath": "build/compose.mjs",
+      "byteLength": 52675,
+      "sha256": "8f044ca6aad476d9b40559fbf7f5ec887a1431f44005dac3217c3ee47d2d59be"
+    },
+    "carddata": {
+      "logicalPath": "build/carddata.mjs",
+      "byteLength": 8633,
+      "sha256": "c43400d8826c0951515692f07dffe7a937443601eb51e6e626a856612da71308"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-localized-text-corpus.mjs",
+      "byteLength": 19244,
+      "sha256": "e4cdd91d84aefc63a0ea28c914f89c240f959ba02a000aa142beef5d86e77c64"
+    }
+  },
+  "artifact": {
+    "index": {
+      "logicalPath": "localized-text/index.json",
+      "byteLength": 958300,
+      "sha256": "dcf0eed056377ff2f9ea093a23f24c0c62a970b8d543ba9c437122d95b61bd4c"
+    },
+    "semanticFiles": [
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.de_DE.data.json",
+        "byteLength": 1175,
+        "sha256": "f31d7572795022f1f7f06c2a485d9819b3db6790ec5f5eb74759f0679717a9c3"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.en_US.data.json",
+        "byteLength": 1132,
+        "sha256": "09bd0de30d4ba51371c6a3d9dedba694c2c575a2fc665b90d1e6abdc4964fb88"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.es_ES.data.json",
+        "byteLength": 1168,
+        "sha256": "b142a07a3f38009a0d92f2a36063e5877b3b6d8964e553cfd01b470cb3fe9db9"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.fr_FR.data.json",
+        "byteLength": 1168,
+        "sha256": "1a3e805cf85c2fb652d27de4c95f54ce1e6cfb301a806d140736b7b8ff0accc4"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.it_IT.data.json",
+        "byteLength": 1160,
+        "sha256": "8307f5428590ca9d3a4894f5f0dfef6636d98cb58319fbcc227f49bbb2a059c7"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.ja_JP.data.json",
+        "byteLength": 1209,
+        "sha256": "2e9e98bea14229a14a761273448554646fd2893731fc3c00d6828bcecfb9dcb1"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.ko_KR.data.json",
+        "byteLength": 1162,
+        "sha256": "d041b5812d59f81cfaafccd2ff3117533d5f7df113fc50cde4d6d2a206edca09"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.pt_BR.data.json",
+        "byteLength": 1146,
+        "sha256": "8b0472b8dc03832ba244fbc7d76e58bc582f7f9be61efebeb1f1fc70e4a2e33c"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.zh_TW.data.json",
+        "byteLength": 1113,
+        "sha256": "71eafbb69357287234c7688210422c1a5bdb4ae4aaa29d8e9fca3fbd187ad8e8"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.de_DE.data.json",
+        "byteLength": 988,
+        "sha256": "6138c05bc3023ae9ad035faaab4184a52a1631f926843d4a1e0c0b00fe2eb389"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.en_US.data.json",
+        "byteLength": 948,
+        "sha256": "a78c0c212dd7224ce218a0812bd02d38d42b486e54f5605edbfd4724c9fec943"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.es_ES.data.json",
+        "byteLength": 960,
+        "sha256": "18c752ffa5995fc0019da781951189d6e5f5a199290d0fa6b0c82374b7ec3178"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.fr_FR.data.json",
+        "byteLength": 988,
+        "sha256": "4f00b78b4ec2140433db0fa2097293a239aab0600b437f080adeb9973913fcaf"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.it_IT.data.json",
+        "byteLength": 1007,
+        "sha256": "87ed0d7568a524517d98d3c17a4d38a4885d78015beaaf898945d3dfc704bb07"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.ja_JP.data.json",
+        "byteLength": 1022,
+        "sha256": "8b76559d13ec3bf08dfaf10f98911bdc0672f741c98e03ddac3d414ce9c123e6"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.ko_KR.data.json",
+        "byteLength": 978,
+        "sha256": "14d0ac9fa82e8b0bc10b66d056786e36d1700667945070957820d40e6776568f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.pt_BR.data.json",
+        "byteLength": 955,
+        "sha256": "ce476ecf2d6c5550cb5f64d6271d180f3e1fe10a585d9116c31512e4044e7446"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.zh_TW.data.json",
+        "byteLength": 932,
+        "sha256": "4ffb5624e8ee5046581fa49fa40c5388b1638f5f0afd50ce2a96ac6ed067de19"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.de_DE.data.json",
+        "byteLength": 481,
+        "sha256": "f7127a89634159fc68617aa0711bb0085bbbf8ba8c79b63986c8ad9cc2daa33e"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.en_US.data.json",
+        "byteLength": 444,
+        "sha256": "512b810acdb27b8ae5d1188be41a088a9cba74f08f06416d8f62bb18cc3e3b9d"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.es_ES.data.json",
+        "byteLength": 467,
+        "sha256": "f08ebd137ef735c35380ee9e3a3160838255043958b433a18f87f2d0311d97a2"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.fr_FR.data.json",
+        "byteLength": 489,
+        "sha256": "eca68a63bb6dc5e13ed081b7735769d0f7dc6e4c056bdd31df32ee03da2ec519"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.it_IT.data.json",
+        "byteLength": 459,
+        "sha256": "fce1c06b5756346c330858e0fe0ab480e38759adccedb5da8da0bbfd63012e1f"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.ja_JP.data.json",
+        "byteLength": 520,
+        "sha256": "4059c6794864b9088ee89755383abb17affe6e9400ebd0563f2878276b7ab321"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.ko_KR.data.json",
+        "byteLength": 506,
+        "sha256": "7f8c7ac1764d73520b4d0d0e152ee28d0d43ae37fcaef08521ec5d56b64066c0"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.pt_BR.data.json",
+        "byteLength": 458,
+        "sha256": "6e83f4cca1e38f85042f519ab7f256a24bbb2f5620bbe381f0ee5c67c7564dd0"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.zh_TW.data.json",
+        "byteLength": 482,
+        "sha256": "60d395123d87e1965567ec048aeb0e1e054b34cf8030b8356bede00f8720e2ce"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.de_DE.data.json",
+        "byteLength": 667,
+        "sha256": "42a2b97362d0e81676036caa43d0064ccb4f9ab00d912daf17d84b44eaf982a9"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.en_US.data.json",
+        "byteLength": 602,
+        "sha256": "b1433e3867630ecfd71d5c15fbd354b78ad3dc215c9488dfbb18ce2287f226fe"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.es_ES.data.json",
+        "byteLength": 671,
+        "sha256": "840632365fa371d0bbcab2a0333ce1fb69018dd5f3a6d7e3bb296bacfcac8b2e"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.fr_FR.data.json",
+        "byteLength": 665,
+        "sha256": "e560ad0c5e8584ff966965e827063cc368d39101e351c64a8310db95173868ac"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.it_IT.data.json",
+        "byteLength": 657,
+        "sha256": "f5117d48c475976db0a5b2deb9cb9edd2dc068b37f099016a6ba1f9b412a1c58"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.ja_JP.data.json",
+        "byteLength": 735,
+        "sha256": "16a993f11358132099caf93726e3730668e923b877c3826e37d3cc669fb27036"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.ko_KR.data.json",
+        "byteLength": 751,
+        "sha256": "710ff63aca89c4e5c5ddaed697e081a6eb47544248607094b2ce67b5d785319f"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.pt_BR.data.json",
+        "byteLength": 646,
+        "sha256": "63fff0a50b70fbaffec9baab64f47bf834676e0dcb452a76cb0cc8748fbe4f84"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.zh_TW.data.json",
+        "byteLength": 666,
+        "sha256": "f341b6af478ed912998ae363081d7d4cd7881916d4386925da9dce2e857deb31"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.de_DE.data.json",
+        "byteLength": 1148,
+        "sha256": "e2aa3d00214dbc72c2b6980d99f7ac49686114aec5b3b7258654bd870beeef2d"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.en_US.data.json",
+        "byteLength": 1082,
+        "sha256": "c01ed7dd88bf525c745f65f378ff7a659fb85957db59c8de776b24ac29d2098f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.es_ES.data.json",
+        "byteLength": 1126,
+        "sha256": "71d33bc0a5935b4ba6ef12236bc7d018dd5352aba49bcdcd9aca4c0c117c696b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.fr_FR.data.json",
+        "byteLength": 1140,
+        "sha256": "c10884a69e16a2b92fd4e10224ed838da78d78bb0fc2876e6e05bdb13f0fbc76"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.it_IT.data.json",
+        "byteLength": 1112,
+        "sha256": "fb4515ead708894e4f486d4d1e82187fc1742c09d1fd0744bea3ca3f72228147"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.ja_JP.data.json",
+        "byteLength": 1120,
+        "sha256": "4cc2b678a50caeba8dca3a904734eb7fb25c9e1dd3fd220ed1b4c7b3db2f941b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.ko_KR.data.json",
+        "byteLength": 1048,
+        "sha256": "7223b854da0e67d26f85326944b6ac3d46a41aa0c5fcf79a4b5f64a43a322e76"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.pt_BR.data.json",
+        "byteLength": 1128,
+        "sha256": "d3cbd0de82adb1f9ad25029f20ad8a008101ec4b6ead4c34b9dfea021626fb95"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.zh_TW.data.json",
+        "byteLength": 1021,
+        "sha256": "a90ee09db28577248af0bcbd5be35c61aa88712672b5d5f13979b0b131116aed"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.de_DE.data.json",
+        "byteLength": 1150,
+        "sha256": "39f59716bbc43d9de5b5b511260b806cb294143807c8d4112ed3f6c1c85cd347"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.en_US.data.json",
+        "byteLength": 1133,
+        "sha256": "a782963960960b3db239c16b095c85893f01d71b4e5fb176c854773617d483c9"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.es_ES.data.json",
+        "byteLength": 1165,
+        "sha256": "7489b076c67c353255170f245280fea2bc7abc45ade1ba42e633c26a808a1b42"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.fr_FR.data.json",
+        "byteLength": 1154,
+        "sha256": "d78ad45c16ec321679557703168f63c39ea2aa8d6c04f9929b6359453694e0da"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.it_IT.data.json",
+        "byteLength": 1167,
+        "sha256": "466bc536a6cb184a789b015e9a9490af1dc3e24179afdf156162502ff306376b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.ja_JP.data.json",
+        "byteLength": 1194,
+        "sha256": "6f59410ba4f4752ff7cb059a1acc8214966971e4d3cd394e5b6c4b72fa5d5aee"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.ko_KR.data.json",
+        "byteLength": 1153,
+        "sha256": "60948c240de721b449cbe2fb3421457d21252a5836a7b452b47f04528671184f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.pt_BR.data.json",
+        "byteLength": 1133,
+        "sha256": "65e54af0a58fb5f3b465257587b5a17758028ed38ec2dbd249e1ba467785ccbc"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.zh_TW.data.json",
+        "byteLength": 1110,
+        "sha256": "5d087f797205658af1df17ac9d025b8d615f4ee10d5db31870afc3fd7b42bb95"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.de_DE.data.json",
+        "byteLength": 1083,
+        "sha256": "4d247c85dbec86c75c0ec4d34f21d363faa75b448d11a4384c5e34d99980da34"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.en_US.data.json",
+        "byteLength": 1057,
+        "sha256": "8eba1ffbd6ae17eeb6fc63e034bc657912deb88b8ba24b0b8e06be4d97f6f5ff"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.es_ES.data.json",
+        "byteLength": 1084,
+        "sha256": "a9eaaaeb5d1ed47f209b6f72aeb79947dcf4a86c869608ee710d0034a6842b18"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.fr_FR.data.json",
+        "byteLength": 1097,
+        "sha256": "40a9efbb267031a87cc4311da9fc0b3b1c359f9e3f3409ee335f31700916e665"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.it_IT.data.json",
+        "byteLength": 1099,
+        "sha256": "d1b95a4d28ce64f6a73a63360de5a8a494359a725207d486efb89fdaf309ccd6"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.ja_JP.data.json",
+        "byteLength": 1059,
+        "sha256": "b2fc6f8c58848b66b9ed9af58256744353e99a161bf5ec148f4f498097eb543b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.ko_KR.data.json",
+        "byteLength": 1036,
+        "sha256": "283b0faa43840d593d4271b435eeb9edf995f38d8840c25f8f1c83c975c8c130"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.pt_BR.data.json",
+        "byteLength": 1106,
+        "sha256": "c707c1da81337c703e9784b669c05e41a45633553bd4d4d170eb8ef9e9c2928a"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.zh_TW.data.json",
+        "byteLength": 990,
+        "sha256": "864b4c959bb678d29db692aa70e4838106a6c0f6ac2f14eaf610c671120c2324"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.de_DE.data.json",
+        "byteLength": 1236,
+        "sha256": "02ce47f26ee1130dc24936439b3da0fc0c2f61ea3275a98e189e1d8d3d7a6652"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.en_US.data.json",
+        "byteLength": 1205,
+        "sha256": "a75cb7c481f0b504de64b4a14ab46b85c58342493d4f3168dade42ab08ddcf49"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.es_ES.data.json",
+        "byteLength": 1239,
+        "sha256": "2b8e0265e4ec3e9c9afc1338ae4f5988ec2f83122383997805d2ca953342f61f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.fr_FR.data.json",
+        "byteLength": 1275,
+        "sha256": "e8889bf7fddd12e2189f8b4103c6581520d1d8d957407972e50f9d95d3de97dc"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.it_IT.data.json",
+        "byteLength": 1286,
+        "sha256": "0c27075a08ca9e298435083e8062a0fd3d288201b2b6f484c25398e126f8ec06"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.ja_JP.data.json",
+        "byteLength": 1242,
+        "sha256": "d1fe2ca7c91d20d65c90c8a1bc16f6ab12c2f85c5350c48163ff93503e57adc8"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.ko_KR.data.json",
+        "byteLength": 1173,
+        "sha256": "9dd06cabe9d8906b1cc117b5ab0276d306dd232d757088350a64edd533e60965"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.pt_BR.data.json",
+        "byteLength": 1252,
+        "sha256": "c218d90a90c5af8b918681862c65be6a261f0b4124e92ad7101bcc2dec76905a"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.zh_TW.data.json",
+        "byteLength": 1158,
+        "sha256": "6de5ab9043649fca72a1c91bfce487cfd7182066e2cf77b6b6fa6c6ef7be2f6f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.de_DE.data.json",
+        "byteLength": 1251,
+        "sha256": "7b41d7d51f45405ff48f598a97833b3332c10c513e854d732da8670c9159e55f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.en_US.data.json",
+        "byteLength": 1200,
+        "sha256": "6602236bba84f41f87475842f5e0f08499177799c7032fcf27ee31e17a5c6c93"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.es_ES.data.json",
+        "byteLength": 1247,
+        "sha256": "d850d03f04ccc47c3fb772f0d99f02b76b43932f75721f308468a421f0118329"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.fr_FR.data.json",
+        "byteLength": 1285,
+        "sha256": "949fcb5ad047255df1ee3d68a9cb5ebfd6ffd54323d49d21c12716f025349292"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.it_IT.data.json",
+        "byteLength": 1264,
+        "sha256": "d5f9901cb09b1cae0e67f364f302ed7a6260c268e53bb626688699ddab62a37f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.ja_JP.data.json",
+        "byteLength": 1231,
+        "sha256": "c638a2c7cd0600bc9394e0261a52df774de312d56332b8493eb3a62a1788b6a3"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.ko_KR.data.json",
+        "byteLength": 1199,
+        "sha256": "9fb55645cb8e35d7caedd15ba792ba09db71a7d817269852d6cf7cd5141a77ad"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.pt_BR.data.json",
+        "byteLength": 1244,
+        "sha256": "c912d1616c0cc79acc9a453e92ee85f5e5c9d0dafe7b1b7bb6d9f9ac8e602e1c"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.zh_TW.data.json",
+        "byteLength": 1138,
+        "sha256": "2fc7714fda0f01c1fd0ede0a40657d40796c58953925baad3ae59ee09b7c4673"
+      }
+    ],
+    "composeFiles": [
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.de_DE.compose.json",
+        "byteLength": 69116,
+        "sha256": "1074d47950a474a71c909b36676039dfcb7a81a75f08fe2ec02ea71a510ffbbb"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.en_US.compose.json",
+        "byteLength": 69090,
+        "sha256": "da1329a8f04b0114be2e13499974e1c22bd6c214d62d58b6454d03ada382a48f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.es_ES.compose.json",
+        "byteLength": 69133,
+        "sha256": "211bc216bea46ea0f9fd73a1ad847e790a5bbe7f99058a877fa42fb3ea881394"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.fr_FR.compose.json",
+        "byteLength": 69103,
+        "sha256": "223c94e071806f0367c14b14d91f6a98da7d8b3ce582a820e7e451e9338c3b06"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.it_IT.compose.json",
+        "byteLength": 69117,
+        "sha256": "a1b03a12f89b1bdfb4debfc590de5550a7a95fc38fbb122290a094c421245ba4"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.ja_JP.compose.json",
+        "byteLength": 69103,
+        "sha256": "eccdb898dedbf732abe55f9973561356a1cb9b328549de194c95f87bba7e3a5b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.ko_KR.compose.json",
+        "byteLength": 69081,
+        "sha256": "3ca074eeb1992b02b04f3bdf37c7fa5cb5a2cf545c72fe6a10a2c0143f9dd654"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_000040_00_FUSHIGIBANAex_RR.pt_BR.compose.json",
+        "byteLength": 69097,
+        "sha256": "f701dfe4a4e0374a74d662f5af0ef74154c11d9fc6534c2c474de63914ff71f6"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.de_DE.compose.json",
+        "byteLength": 53386,
+        "sha256": "69c602d9b764575909601297af38714dbb929572c6dc6406d5c20a1af9a75aaf"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.en_US.compose.json",
+        "byteLength": 53347,
+        "sha256": "3c93016ef165f06509196debc9d0d6bca0ae4232c037e68b7f9049a9b02fd39b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.es_ES.compose.json",
+        "byteLength": 53367,
+        "sha256": "bd59082a9102686dc934d325446a9e0f5cc22f7ca1723f4e659ba7c59e772478"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.fr_FR.compose.json",
+        "byteLength": 53386,
+        "sha256": "da5cffb120ea6a5a709f8f4ff6a9ce83a6e3c43a9273d6296d9d0c25018124be"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.it_IT.compose.json",
+        "byteLength": 53405,
+        "sha256": "e9cb2822917413affd53e9ad7e9553fda1aec2edd847ac319efb443646575502"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.ja_JP.compose.json",
+        "byteLength": 53372,
+        "sha256": "d798b7295633becb938e9744209db11ad4413fc6eea8bc46134e380acc969f60"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.ko_KR.compose.json",
+        "byteLength": 53375,
+        "sha256": "2ab55b79c2bf454866aad8a2519ad877f2bf961127f4ea941f8dd06c590c82a0"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_008900_02_HOUOUex_UR.pt_BR.compose.json",
+        "byteLength": 53351,
+        "sha256": "b539dfb03810caa23e90f98e5195239221fbc624563422fc32ae675d70dee06b"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.de_DE.compose.json",
+        "byteLength": 15809,
+        "sha256": "c910d6262ee7755bba759bbc46df355d0fc87b89433195cf4d8b7cf9fdf197e3"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.en_US.compose.json",
+        "byteLength": 15781,
+        "sha256": "fbe63f1f1f2d22a9cfcc9e32ec26c41a16c66ca61a23247daa9156af245c19ec"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.es_ES.compose.json",
+        "byteLength": 15804,
+        "sha256": "339c8a256090813b4361e0b89ebb63958e94ea200d839f5c5797a3890c7d4caf"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.fr_FR.compose.json",
+        "byteLength": 15814,
+        "sha256": "46f1daf1bc8af5b5efecac44ab3a6284dd9c90a32998b7d8903ed96ba9248783"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.it_IT.compose.json",
+        "byteLength": 15793,
+        "sha256": "7e7c25f6fb490a4632c0c4e561367a203b1fb8b2860aef9c2a5d656a8fb027cc"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.ja_JP.compose.json",
+        "byteLength": 15828,
+        "sha256": "b14e58bd58c517d9ad94dab37f8515320b5fd810d96440f2e91b3be22ff04e7d"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.ko_KR.compose.json",
+        "byteLength": 15863,
+        "sha256": "8d98bb4f64d3dd0f0c94287b36b759639e0f8843c2320732bc6d17fcc78472b0"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.pt_BR.compose.json",
+        "byteLength": 15791,
+        "sha256": "316c89613c0ef28ef36472a724c2d83bf16c42b444cd667fb3a01550adf07907"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000230_00_LEAF_SR.zh_TW.compose.json",
+        "byteLength": 15849,
+        "sha256": "8a3d8f108d7ab44badd5865629eb16fc5cb2652175122099b9fcdd26fad77508"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.de_DE.compose.json",
+        "byteLength": 17728,
+        "sha256": "cf6f5a517c322610dc53499623591f1fb964dfe485cdef210c3faaefa2ac3ae9"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.en_US.compose.json",
+        "byteLength": 17672,
+        "sha256": "0da5298c456ee36439e3a87ab56b866db747468587ae8412082b8b0d775e9302"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.es_ES.compose.json",
+        "byteLength": 17737,
+        "sha256": "821869e0d923c537e795a6c0b9fafc24ef8eb92118c0acdbff1dcf2bffcaad65"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.fr_FR.compose.json",
+        "byteLength": 17717,
+        "sha256": "2858c37c5a5083e75bd95159c61dc318f7501f3572c4051076829595b069d166"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.it_IT.compose.json",
+        "byteLength": 17711,
+        "sha256": "f4570a24583108345e253feab4d4e3bb5354fcebe4aa1f2ece798624c793f50f"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.ja_JP.compose.json",
+        "byteLength": 17773,
+        "sha256": "265a94d6edfdb9a1978ad5326f9d76d42d46f9eab1a5d09a41e5d93f4d065e36"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.ko_KR.compose.json",
+        "byteLength": 17831,
+        "sha256": "cb7abab93b9ef762122c56d6e19d71da97f1c7caaf9c620e07e303b2e35e68d6"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.pt_BR.compose.json",
+        "byteLength": 17707,
+        "sha256": "dfd471dbfff8d1baac97581bc2fb3295035cb4fe5a37f4f81556dfdcb2e12ee5"
+      },
+      {
+        "logicalPath": "localized-text/cTR_20_000670_00_IIBUINOBAKKU_UR.zh_TW.compose.json",
+        "byteLength": 17765,
+        "sha256": "d7e59f4b8cf7e5e27d4dcd816e03162e9a56d4b26f702e274d0f515138d61a30"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.de_DE.compose.json",
+        "byteLength": 45931,
+        "sha256": "3ee27090cb0a5808b8c9dcabe344ab8c1f9ad143d49b8fbcb32a31f5bda201ec"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.en_US.compose.json",
+        "byteLength": 45868,
+        "sha256": "331670ab381f3cb1d9f69bf83e671b92278540a58e52869a84156606b5292b7c"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.es_ES.compose.json",
+        "byteLength": 45921,
+        "sha256": "4162dd132a3b38777eee81db354a75e74c77932bfb62780ca6d7380f7ad022fb"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.fr_FR.compose.json",
+        "byteLength": 45933,
+        "sha256": "dbcfa1684111dd8f62aa2f625c654a1f07cd8697b444930e8078587f449ec828"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.it_IT.compose.json",
+        "byteLength": 45913,
+        "sha256": "20598f0cd1a6cf0853aa357b9685c706941e1c23b812fa74d28123958a2073ad"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.ja_JP.compose.json",
+        "byteLength": 45882,
+        "sha256": "0297528dfd402fe35780df6f33c9fb90b632151d49b049a3b738658089ff50cd"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.ko_KR.compose.json",
+        "byteLength": 45867,
+        "sha256": "19367bd826834ff809aee240d159ad580407047f395e9eda2d727f95974168c6"
+      },
+      {
+        "logicalPath": "localized-text/cPK_10_012330_00_MEGAABSOLex_RR.pt_BR.compose.json",
+        "byteLength": 45878,
+        "sha256": "6259bd9943e312ffda67e904b95a91374e19f2e2c2194e165f956adc943745ec"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.de_DE.compose.json",
+        "byteLength": 71639,
+        "sha256": "af8dd63e25197f96dc19165bd3caf9b4680638dfae2922a550a94a6918a6aab6"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.en_US.compose.json",
+        "byteLength": 71624,
+        "sha256": "c6d1bb641be58e75e51ee930526e5be015f31041f6df473e6904beee25d29415"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.es_ES.compose.json",
+        "byteLength": 71663,
+        "sha256": "87a1ee19e8046b20bc060c786ad31aaad35f7f48a22d77107a41727acddd0d8b"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.fr_FR.compose.json",
+        "byteLength": 71634,
+        "sha256": "f70c9f19a34482057344353b9ec1d3f521dc6192faafcc5b3f3693a854ea6466"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.it_IT.compose.json",
+        "byteLength": 71657,
+        "sha256": "94a975bf05da3cb045e0f47a0a1ac00d90ab735bc609e9ad1ea1b78a600910ff"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.ja_JP.compose.json",
+        "byteLength": 71610,
+        "sha256": "327f6932a898af14952fb94a49702b41decf337bc37f5082f8349b3c6bf4e7e0"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.ko_KR.compose.json",
+        "byteLength": 71632,
+        "sha256": "f4931924635095c2c3dd1bd820cb5bb14e88b60842a92384c6223f8f564b2d66"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_000360_03_LIZARDONex_SR.pt_BR.compose.json",
+        "byteLength": 71617,
+        "sha256": "7758eac91db3ad60e7f39c42418d663718b66872f7efcecf09e2771351d5537c"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.de_DE.compose.json",
+        "byteLength": 50315,
+        "sha256": "5d925adbbb0bddf0fa7e494da7166c6b3e30fe352b86c7735a65cfae7d1d7ae5"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.en_US.compose.json",
+        "byteLength": 50288,
+        "sha256": "35772bbf37bc888701c8f7552be7d78c3d09e2197d94ff3ec185751bc83e684a"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.es_ES.compose.json",
+        "byteLength": 50338,
+        "sha256": "f1c3322e49bfb992ad3badca48689371a743c650af32cfdd9b8abac253cd7d70"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.fr_FR.compose.json",
+        "byteLength": 50348,
+        "sha256": "1a46b5f400d1d330e478b225d12642510a08b9af02658a736c14e99885ac0c50"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.it_IT.compose.json",
+        "byteLength": 50341,
+        "sha256": "cf219667ed43c7662004181aa2e5ff97f3e22fe272c8b274253d86f79fc08322"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.ja_JP.compose.json",
+        "byteLength": 50270,
+        "sha256": "c1decf315211ddf0346c4c61fefb832ae9f7133ebc6fb3d4a5a8b00d6335ad10"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.ko_KR.compose.json",
+        "byteLength": 50286,
+        "sha256": "6c9dcdf14bc343e468cd966c195721d1e56c7f39a56dde3d811d3fccbf591653"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_010840_00_MEGAKAILIOSex_SR.pt_BR.compose.json",
+        "byteLength": 50315,
+        "sha256": "3998dc7bba7b04907f7c6553754e5446f58b82d57137def534c4bc8ffa1feda9"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.de_DE.compose.json",
+        "byteLength": 54560,
+        "sha256": "ca07352ff0a531da1c969c04a1539fdd3af8fb913eabcd81341bef6eb0333531"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.en_US.compose.json",
+        "byteLength": 54543,
+        "sha256": "c9809473a3869c60030fb296172daea99ff52998ebac6dba4d959e44738e0d3d"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.es_ES.compose.json",
+        "byteLength": 54585,
+        "sha256": "bacaacdef4d8e59f69acd3d03c59417ea1b9cd92559ac13ed2d4385d478d1eae"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.fr_FR.compose.json",
+        "byteLength": 54598,
+        "sha256": "b8d307fd0fb698f16c00f55472dfad6cdf6593631fca84607b764c1630a26f23"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.it_IT.compose.json",
+        "byteLength": 54621,
+        "sha256": "299afcff22b6077bb65d95f909d211d621cd47dce1f65786c34dd569fe4c40db"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.ja_JP.compose.json",
+        "byteLength": 54528,
+        "sha256": "95bb784febbcd3b1bd1195065e1a26f25052ba0440fe9d4434d4441219439ca9"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.ko_KR.compose.json",
+        "byteLength": 54514,
+        "sha256": "38b7fa576aa24975cd26c12df4b00fa27b8b0dd8387088022248066b80ea85f2"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016210_00_MEGAYADORANex_SR.pt_BR.compose.json",
+        "byteLength": 54556,
+        "sha256": "f2144da925d445c0a0cf14a7a24a4a31009dcb7cb48b00e69137b9592f217125"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.de_DE.compose.json",
+        "byteLength": 54430,
+        "sha256": "13d0cdda7bf39884942174d8001b4056442399ded4096859eb34e86a373dafb1"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.en_US.compose.json",
+        "byteLength": 54408,
+        "sha256": "08030681bbbf91738314f1cc9585c2ea48f510d1bf44808764d7c1cdc24e7595"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.es_ES.compose.json",
+        "byteLength": 54446,
+        "sha256": "38373c9db4a48166197aed0cca2ac4c6a2cb5ec484b805aa92d6a9ac4e950bf7"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.fr_FR.compose.json",
+        "byteLength": 54453,
+        "sha256": "9d25d9df45156194a224c480248263adbc18c94e33259f835e9410c81c59ecca"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.it_IT.compose.json",
+        "byteLength": 54450,
+        "sha256": "d048bb0a51c0dcd69bcc9673c81b71536ae3d2ccd3ed55e6d52110075d83450f"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.ja_JP.compose.json",
+        "byteLength": 54380,
+        "sha256": "667047d3ca639524a4ed05168e07decaf2302a171426f8b5a40a7d0a607e3f03"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.ko_KR.compose.json",
+        "byteLength": 54381,
+        "sha256": "a3ad30a99b526d1f790a2874537d3d4802dd34d2aa03e6dd39fced91067581d5"
+      },
+      {
+        "logicalPath": "localized-text/cPK_20_016430_00_MEGAGANGARex_SR.pt_BR.compose.json",
+        "byteLength": 54421,
+        "sha256": "80801af7487c12f7798d59764b02afa9614204ea70abdbbbb373a91f92debedc"
+      }
+    ]
+  },
+  "summary": {
+    "sceneCount": 9,
+    "localeCount": 9,
+    "entryCount": 81,
+    "semanticDataCount": 81,
+    "localStaticComposeCount": 74,
+    "dynamicGlyphRequiredEntryCount": 7,
+    "nativeFontEngineFunctionCount": 9,
+    "exactNativeFontEngineFunctionCount": 9,
+    "unity6RuntimeLayoutExactCount": 0,
+    "unity6RuntimeLayoutRequiredCount": 81,
+    "aggregateCodePointCount": 663
+  },
+  "dynamicGlyphObligations": [
+    {
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "飛",
+      "codePoint": 39131,
+      "codePointHex": "U+98DB",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "鳳",
+      "codePoint": 40179,
+      "codePointHex": "U+9CF3",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_10_012330_00_MEGAABSOLex_RR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "暗",
+      "codePoint": 26263,
+      "codePointHex": "U+6697",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_20_000360_03_LIZARDONex_SR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "劈",
+      "codePoint": 21128,
+      "codePointHex": "U+5288",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "會",
+      "codePoint": 26371,
+      "codePointHex": "U+6703",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_20_016210_00_MEGAYADORANex_SR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "洗",
+      "codePoint": 27927,
+      "codePointHex": "U+6D17",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    },
+    {
+      "cardId": "cPK_20_016430_00_MEGAGANGARex_SR",
+      "locale": "zh_TW",
+      "status": "runtime-required",
+      "reason": "candidate serialized FontAsset has no static glyph",
+      "fontAssetId": "8286394459813532775",
+      "character": "暗",
+      "codePoint": 26263,
+      "codePointHex": "U+6697",
+      "requiredProducer": "Unity 6 dynamic FontEngine"
+    }
+  ],
+  "runtimeBoundaries": [
+    {
+      "id": "unity6-dynamic-fontengine",
+      "status": "runtime-required",
+      "entryCount": 7,
+      "baselineRuntimeGlyphsReused": false,
+      "nativeProducerStatus": "exact-candidate-native-function-bodies",
+      "nativeFunctionCount": 9,
+      "exactNativeFunctionCount": 9,
+      "requiredEvidence": [
+        "candidate dynamic atlas pixels and glyph metrics",
+        "candidate generated TMP mesh and descriptor state",
+        "candidate guest glyph draw bindings"
+      ]
+    },
+    {
+      "id": "unity6-tmp-layout",
+      "status": "runtime-required",
+      "entryCount": 81,
+      "localStaticComposeCount": 74,
+      "reason": "local compose completion does not prove Unity 6 TextGenerator layout semantics"
+    },
+    {
+      "id": "candidate-localized-text-native-resolution",
+      "status": "runtime-required",
+      "entryCount": 81,
+      "reason": "candidate locale/masterdata bytes are exact, while local resolver behavior is not candidate guest execution"
+    }
+  ]
+}

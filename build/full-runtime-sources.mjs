@@ -1,16 +1,296 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
-  officialSampleLabel,
-  officialSampleManifestRelative,
-  officialSampleSelectionRelative,
+  loadOfficialSample,
+  officialSampleDigest,
 } from "./official-sample.mjs";
+import { runtimePortContractRelative } from "./runtime-port-assets.mjs";
 
-const CANONICAL_CORPUS = JSON.parse(fs.readFileSync(new URL("./canonical-corpus.json", import.meta.url), "utf8"));
-if (CANONICAL_CORPUS.schemaVersion !== 1) throw new Error("unsupported canonical corpus schema");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const SHA256 = /^[0-9a-f]{64}$/;
 
-export const FULL_RUNTIME_SCHEMA_VERSION = 5;
-export const FULL_RUNTIME_OFFICIAL_SAMPLE = officialSampleLabel;
+function posix(relative) {
+  return relative.split(path.sep).join("/");
+}
+
+function sha256File(absolute) {
+  return crypto.createHash("sha256").update(fs.readFileSync(absolute)).digest("hex");
+}
+
+function requireRuntimeDefinition(condition, message) {
+  if (!condition) throw new Error(`full runtime official sample: ${message}`);
+}
+
+function resolvePackageFile(root, logicalPath, label) {
+  requireRuntimeDefinition(
+    typeof logicalPath === "string"
+      && logicalPath.length > 0
+      && !path.isAbsolute(logicalPath),
+    `${label} path must be package-relative`,
+  );
+  const absolute = path.resolve(root, logicalPath);
+  const relative = path.relative(root, absolute);
+  requireRuntimeDefinition(
+    relative !== ""
+      && relative !== ".."
+      && !relative.startsWith(`..${path.sep}`)
+      && !path.isAbsolute(relative),
+    `${label} path escapes the package root`,
+  );
+  requireRuntimeDefinition(fs.statSync(absolute).isFile(), `${label} is not a file`);
+  return { absolute, relative: posix(relative) };
+}
+
+export function validateFullRuntimeCanonicalCorpus(sample, {
+  root = ROOT,
+} = {}) {
+  requireRuntimeDefinition(
+    sample?.canonicalCorpus?.status !== "unresolved",
+    "canonical corpus is unresolved",
+  );
+  requireRuntimeDefinition(
+    SHA256.test(sample?.canonicalCorpus?.sha256 || ""),
+    "canonical corpus SHA-256 is invalid",
+  );
+  const resolved = resolvePackageFile(root, sample.canonicalCorpus.path, "canonical corpus");
+  const bytes = fs.readFileSync(resolved.absolute);
+  const actualSha256 = crypto.createHash("sha256").update(bytes).digest("hex");
+  requireRuntimeDefinition(
+    actualSha256 === sample.canonicalCorpus.sha256,
+    "canonical corpus hash does not match the selected manifest",
+  );
+  if (sample.canonicalCorpus.byteLength !== undefined) {
+    requireRuntimeDefinition(
+      sample.canonicalCorpus.byteLength === bytes.length,
+      "canonical corpus byteLength does not match the selected manifest",
+    );
+  }
+
+  const corpus = JSON.parse(bytes.toString("utf8"));
+  requireRuntimeDefinition(
+    corpus?.schemaVersion === 1 || corpus?.schemaVersion === 2,
+    `unsupported canonical corpus schema ${corpus?.schemaVersion}`,
+  );
+  if (sample.status === "candidate") {
+    requireRuntimeDefinition(
+      corpus.schemaVersion >= 2 && corpus.sampleId === sample.sampleId,
+      "candidate canonical corpus is not bound to the selected sampleId",
+    );
+  } else if (corpus.sampleId !== undefined) {
+    requireRuntimeDefinition(
+      corpus.sampleId === sample.sampleId,
+      "canonical corpus sampleId does not match the selected manifest",
+    );
+  }
+  requireRuntimeDefinition(
+    Array.isArray(corpus.scenes) && corpus.scenes.length > 0,
+    "canonical corpus scenes are absent",
+  );
+  requireRuntimeDefinition(
+    Array.isArray(corpus.locales) && corpus.locales.includes("zh_TW"),
+    "canonical corpus does not include zh_TW",
+  );
+
+  const files = new Set();
+  const cardIds = new Set();
+  for (const [index, scene] of corpus.scenes.entries()) {
+    const prefix = `canonical corpus scene ${index}`;
+    requireRuntimeDefinition(
+      typeof scene?.file === "string"
+        && path.basename(scene.file) === scene.file
+        && scene.file.startsWith("scene.")
+        && scene.file.endsWith(".json"),
+      `${prefix} has an invalid file`,
+    );
+    requireRuntimeDefinition(
+      typeof scene.cardId === "string" && scene.cardId.length > 0,
+      `${prefix} has an invalid cardId`,
+    );
+    requireRuntimeDefinition(
+      typeof scene.textStem === "string" && scene.textStem.length > 0,
+      `${prefix} has an invalid textStem`,
+    );
+    requireRuntimeDefinition(!files.has(scene.file), `${prefix} duplicates a scene file`);
+    requireRuntimeDefinition(!cardIds.has(scene.cardId), `${prefix} duplicates a cardId`);
+    files.add(scene.file);
+    cardIds.add(scene.cardId);
+  }
+  return Object.freeze({
+    path: resolved.relative,
+    sha256: actualSha256,
+    byteLength: bytes.length,
+    corpus: Object.freeze(corpus),
+  });
+}
+
+export function validateCandidateCanonicalScenes(sample, canonical, {
+  root = ROOT,
+} = {}) {
+  if (sample.status !== "candidate") return null;
+  const stem = sample.sampleId.replace(/-candidate$/, "");
+  const resolved = resolvePackageFile(
+    root,
+    `build/official-samples/${stem}-canonical-scenes.json`,
+    "candidate canonical scene evidence",
+  );
+  const bytes = fs.readFileSync(resolved.absolute);
+  const evidence = JSON.parse(bytes.toString("utf8"));
+  const sampleManifestSha256 = officialSampleDigest(sample);
+  requireRuntimeDefinition(
+    evidence?.schema === "pocket-card-render/candidate-canonical-scenes@3",
+    "candidate canonical scene evidence has an unsupported schema",
+  );
+  requireRuntimeDefinition(
+    evidence.candidate?.sampleId === sample.sampleId
+      && evidence.candidate?.sampleManifestSha256 === sampleManifestSha256,
+    "candidate canonical scene evidence is bound to another sample",
+  );
+  requireRuntimeDefinition(
+    evidence.inputs?.canonicalCorpus?.sha256 === canonical.sha256,
+    "candidate canonical scene evidence is bound to another corpus",
+  );
+  requireRuntimeDefinition(
+    Array.isArray(evidence.scenes)
+      && evidence.scenes.length === canonical.corpus.scenes.length,
+    "candidate canonical scene evidence has the wrong denominator",
+  );
+  const byFile = new Map(evidence.scenes.map((scene) => [scene.file, scene]));
+  requireRuntimeDefinition(
+    byFile.size === evidence.scenes.length,
+    "candidate canonical scene evidence contains duplicate files",
+  );
+  const scenes = canonical.corpus.scenes.map((scene) => {
+    const fact = byFile.get(scene.file);
+    requireRuntimeDefinition(
+      fact?.cardId === scene.cardId,
+      `candidate canonical scene ${scene.file} has the wrong card identity`,
+    );
+    requireRuntimeDefinition(
+      SHA256.test(fact.sha256 || "")
+        && Number.isInteger(fact.byteLength)
+        && fact.byteLength > 0,
+      `candidate canonical scene ${scene.file} has no byte identity`,
+    );
+    return Object.freeze({
+      ...scene,
+      sha256: fact.sha256,
+      byteLength: fact.byteLength,
+    });
+  });
+  return Object.freeze({
+    path: resolved.relative,
+    sha256: crypto.createHash("sha256").update(bytes).digest("hex"),
+    byteLength: bytes.length,
+    evidence: Object.freeze(evidence),
+    scenes: Object.freeze(scenes),
+  });
+}
+
+export function loadFullRuntimeDefinition({
+  root = ROOT,
+  manifestPath = process.env.PCR_OFFICIAL_SAMPLE_MANIFEST,
+} = {}) {
+  const loaded = loadOfficialSample(manifestPath);
+  const selection = resolvePackageFile(
+    root,
+    path.relative(root, loaded.selectionPath),
+    "official sample selection",
+  );
+  const manifest = resolvePackageFile(
+    root,
+    path.relative(root, loaded.manifestPath),
+    "official sample manifest",
+  );
+  const canonical = validateFullRuntimeCanonicalCorpus(loaded.sample, { root });
+  const sampleManifestSha256 = officialSampleDigest(loaded.sample);
+  const candidateScenes = validateCandidateCanonicalScenes(
+    loaded.sample,
+    canonical,
+    { root },
+  );
+  return Object.freeze({
+    sample: Object.freeze(loaded.sample),
+    sampleId: loaded.sample.sampleId,
+    sampleManifestSha256,
+    sampleManifestFileSha256: sha256File(manifest.absolute),
+    sampleLabel:
+      `PTCGP ${loaded.sample.game.versionName} / Unity ${loaded.sample.unity.serializedVersion}`,
+    explicitSelection: typeof manifestPath === "string" && manifestPath.length > 0,
+    selectionRelative: selection.relative,
+    manifestRelative: manifest.relative,
+    canonicalCorpusRelative: canonical.path,
+    canonicalCorpusSha256: canonical.sha256,
+    canonicalCorpusByteLength: canonical.byteLength,
+    canonicalScenesRelative: candidateScenes?.path || null,
+    canonicalScenesSha256: candidateScenes?.sha256 || null,
+    canonicalScenesByteLength: candidateScenes?.byteLength || null,
+    corpus: canonical.corpus,
+    scenes: Object.freeze(
+      (candidateScenes?.scenes || canonical.corpus.scenes)
+        .map(({ file, cardId, textStem, sha256, byteLength }) => (
+        Object.freeze({
+          file,
+          cardId,
+          textStem,
+          ...(sha256 ? { sha256, byteLength } : {}),
+        })
+      )),
+    ),
+    locales: Object.freeze([...canonical.corpus.locales]),
+  });
+}
+
+export const FULL_RUNTIME_DEFINITION = loadFullRuntimeDefinition();
+
+export const FULL_RUNTIME_SCHEMA_VERSION = 6;
+export const FULL_RUNTIME_OFFICIAL_SAMPLE = FULL_RUNTIME_DEFINITION.sampleLabel;
+export const FULL_RUNTIME_OFFICIAL_SAMPLE_ID = FULL_RUNTIME_DEFINITION.sampleId;
+export const FULL_RUNTIME_SAMPLE_MANIFEST_SHA256 =
+  FULL_RUNTIME_DEFINITION.sampleManifestSha256;
+export const FULL_RUNTIME_CANONICAL_CORPUS_PATH =
+  FULL_RUNTIME_DEFINITION.canonicalCorpusRelative;
+export const FULL_RUNTIME_CANONICAL_CORPUS_SHA256 =
+  FULL_RUNTIME_DEFINITION.canonicalCorpusSha256;
+
+export function fullRuntimeOfficialSampleIdentity(definition = FULL_RUNTIME_DEFINITION) {
+  const identity = {
+    sampleId: definition.sampleId,
+    sampleManifestSha256: definition.sampleManifestSha256,
+    canonicalCorpus: Object.freeze({
+      path: definition.canonicalCorpusRelative,
+      sha256: definition.canonicalCorpusSha256,
+    }),
+  };
+  if (definition.sample.status === "candidate") {
+    identity.canonicalScenes = Object.freeze({
+      path: definition.canonicalScenesRelative,
+      sha256: definition.canonicalScenesSha256,
+    });
+  }
+  return Object.freeze(identity);
+}
+
+export function fullRuntimeOfficialSampleIdentityMatches(
+  artifact,
+  definition = FULL_RUNTIME_DEFINITION,
+) {
+  const identity = artifact?.officialSampleIdentity;
+  if (!identity) {
+    return definition.sample.status === "baseline" && !definition.explicitSelection;
+  }
+  const common = identity.sampleId === definition.sampleId
+    && identity.sampleManifestSha256 === definition.sampleManifestSha256
+    && identity.canonicalCorpus?.path === definition.canonicalCorpusRelative
+    && identity.canonicalCorpus?.sha256 === definition.canonicalCorpusSha256;
+  if (!common) return false;
+  return definition.sample.status !== "candidate"
+    || (
+      identity.canonicalScenes?.path === definition.canonicalScenesRelative
+      && identity.canonicalScenes?.sha256 === definition.canonicalScenesSha256
+    );
+}
 
 // Schema-4 captures originally hashed these whole files even though they do
 // not produce rendered pixels.  Keep the names only for strict legacy-artifact
@@ -49,14 +329,20 @@ export const FULL_RUNTIME_LEGACY_NON_RENDER_SOURCES = Object.freeze([
 ]);
 
 export const CANONICAL_FULL_RUNTIME_SCENES = Object.freeze(
-  CANONICAL_CORPUS.scenes.map(({ file, cardId }) => Object.freeze({ file, cardId })),
+  FULL_RUNTIME_DEFINITION.scenes.map(
+    ({ file, cardId, sha256, byteLength }) => Object.freeze({
+      file,
+      cardId,
+      ...(sha256 ? { sha256, byteLength } : {}),
+    }),
+  ),
 );
 
 export const CANONICAL_CARD_TEXT_STEMS = Object.freeze(
-  CANONICAL_CORPUS.scenes.map(({ textStem }) => textStem),
+  FULL_RUNTIME_DEFINITION.scenes.map(({ textStem }) => textStem),
 );
 
-export const CANONICAL_CARD_LOCALES = Object.freeze([...CANONICAL_CORPUS.locales]);
+export const CANONICAL_CARD_LOCALES = FULL_RUNTIME_DEFINITION.locales;
 
 export const CANONICAL_LOCALIZED_TEXT_FILES = Object.freeze(
   CANONICAL_CARD_TEXT_STEMS.flatMap((stem) =>
@@ -90,16 +376,10 @@ export function fullRuntimeSourceIdentityMatches(artifact, sourceFiles, sourceHa
     && Object.keys(actualHashes).every((file) => required.has(file) || legacy.has(file));
 }
 
-const CANONICAL_TEXT = CANONICAL_CARD_TEXT_STEMS.map((stem) => `public/text/${stem}.zh_TW.json`);
-
 const FIXED_GAME_ASSETS = [
   "public/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex.png",
   "public/game/Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5/card_icn_ex_outline.png",
 ];
-
-function posix(relative) {
-  return relative.split(path.sep).join("/");
-}
 
 function walkFiles(root, directory, accept) {
   const absolute = path.join(root, directory);
@@ -114,7 +394,25 @@ function walkFiles(root, directory, accept) {
 
 function collectGameUrls(value, files) {
   if (typeof value === "string") {
-    if (value.startsWith("/game/")) files.add(`public/game/${value.slice("/game/".length)}`);
+    if (value.startsWith("/game/")) {
+      let decoded;
+      try {
+        decoded = decodeURIComponent(value.slice("/game/".length));
+      } catch (error) {
+        throw new Error(`full runtime game URL is not valid percent-encoding: ${value}`);
+      }
+      if (
+        decoded.includes("\\")
+        || path.posix.isAbsolute(decoded)
+        || path.posix.normalize(decoded) !== decoded
+        || decoded.split("/").some((segment) => (
+          segment.length === 0 || segment === "." || segment === ".."
+        ))
+      ) {
+        throw new Error(`full runtime game URL escapes its asset root: ${value}`);
+      }
+      files.add(`public/game/${decoded}`);
+    }
     return;
   }
   if (Array.isArray(value)) {
@@ -165,27 +463,45 @@ function contractRuntimeReferences(root, manifestFiles) {
   return files;
 }
 
-export function fullRuntimeSourceFiles(root) {
+export function fullRuntimeSourceFiles(root, definition = FULL_RUNTIME_DEFINITION) {
+  const canonicalScenes = definition.scenes;
+  const canonicalText = canonicalScenes.map(({ textStem }) => `public/text/${textStem}.zh_TW.json`);
   const runtimeRenderSources = walkFiles(root, "public/render", (file) => /\.(?:js|json)$/.test(file));
   const runtimeJavaScript = ["public/app.js", ...runtimeRenderSources.filter((file) => file.endsWith(".js"))];
   const runtimeShaderManifests = contractRuntimeReferences(root, runtimeJavaScript.flatMap((file) => (
     runtimeShaderManifestReferences(fs.readFileSync(path.join(root, file), "utf8"))
   )));
+  if (definition.sample.status === "candidate") {
+    runtimeShaderManifests.delete("public/shaders/official_program_port_contract.json");
+  }
   const files = new Set([
-    officialSampleSelectionRelative,
-    officialSampleManifestRelative,
+    definition.selectionRelative,
+    definition.manifestRelative,
+    ...(definition.explicitSelection || definition.sample.status === "candidate"
+      ? [definition.canonicalCorpusRelative]
+      : []),
+    ...(definition.sample.status === "candidate"
+      ? [definition.canonicalScenesRelative]
+      : []),
     ...FIXED,
-    ...CANONICAL_TEXT,
+    ...canonicalText,
     ...FIXED_GAME_ASSETS,
-    ...CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => `public/${file}`),
+    ...canonicalScenes.map(({ file }) => `public/${file}`),
     ...runtimeRenderSources,
     ...runtimeShaderManifests,
+    ...(definition.sample.status === "candidate"
+      ? [
+          runtimePortContractRelative(definition),
+          "build/runtime-port-assets.mjs",
+          "server.mjs",
+        ]
+      : []),
     ...walkFiles(root, "public/shaders", (file) => file.endsWith(".glsl")),
   ]);
 
   const dataFiles = [
-    ...CANONICAL_FULL_RUNTIME_SCENES.map(({ file }) => `public/${file}`),
-    ...CANONICAL_TEXT,
+    ...canonicalScenes.map(({ file }) => `public/${file}`),
+    ...canonicalText,
     "public/locales/card_face.zh_TW.json",
     "public/locales/card_ui.zh_TW.json",
     "public/locales/manifest.json",
@@ -197,6 +513,18 @@ export function fullRuntimeSourceFiles(root) {
   for (const relative of inventory) {
     const absolute = path.join(root, relative);
     if (!fs.statSync(absolute).isFile()) throw new Error(`full runtime evidence source is not a file: ${relative}`);
+  }
+  if (definition.sample.status === "candidate") {
+    for (const scene of canonicalScenes) {
+      const relative = `public/${scene.file}`;
+      const absolute = path.join(root, relative);
+      const bytes = fs.readFileSync(absolute);
+      if (bytes.length !== scene.byteLength || sha256File(absolute) !== scene.sha256) {
+        throw new Error(
+          `full runtime candidate scene differs from canonical evidence: ${scene.file}`,
+        );
+      }
+    }
   }
   return inventory;
 }

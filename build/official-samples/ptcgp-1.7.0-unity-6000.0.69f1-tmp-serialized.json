@@ -1,0 +1,730 @@
+{
+  "schema": "pocket-card-render/candidate-tmp-serialized-report@2",
+  "schemaVersion": 2,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "exact-serialized-and-native-producer-with-runtime-output-boundaries",
+    "evidenceSource": "serialized-assets-plus-candidate-native-fontengine",
+    "nativeCodeUsed": true,
+    "runtimeCaptureUsed": false,
+    "generatedAtlasUsed": false,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "inputs": {
+    "baseApk": {
+      "logicalName": "jp.pokemon.pokemontcgp.apk",
+      "byteLength": 46323142,
+      "sha256": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9"
+    },
+    "unityData": {
+      "entryCount": 162,
+      "inventorySha256": "90ccf98c162a5a4314c0782006f9df0bf713f05f83e7b762ea012f8350d7548f"
+    },
+    "fontBundle": {
+      "logicalPath": "Common/Font_bundles",
+      "byteLength": 79228393,
+      "sha256": "668565de6a41fecc7e14d7a06c1abf8da39c1710539d45a243ad9c4d2ea84eeb",
+      "serializedResources": [
+        {
+          "name": "CAB-31d82d0d65bdfa6728d746c34920e08d.resS",
+          "byteLength": 570784,
+          "sha256": "44ef1e8934d737166a701779027d92cfdf1edc93974d815e8dda233c0e772248"
+        }
+      ]
+    },
+    "extractor": {
+      "logicalPath": "build/extract_candidate_tmp_serialized.py",
+      "sha256": "cbb41f1d5fa302250bb5221b258d5a19fd00a7b1c2a1340d4e13783b70489ffc"
+    },
+    "builder": {
+      "logicalPath": "build/build-candidate-tmp-serialized-report.mjs",
+      "sha256": "0461d42aa74d82344c0b203707c961733d00164998d585798cb39b33962dd24b"
+    },
+    "candidateTmpFontEngine": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+      "byteLength": 17345,
+      "sha256": "7751441d1f95c3adebeea08dd6021436a49a2c13f9654e7205aa3ca813c92058",
+      "nativeFunctionCount": 9,
+      "exactNativeFunctionCount": 9
+    }
+  },
+  "artifact": {
+    "logicalPath": "serialized-tmp/tmp-settings-and-font-atlases.json",
+    "byteLength": 1486302,
+    "sha256": "53cf2674dab69d7f113a267622f13168cb80e54de0c0e7a18d701f978c966b06"
+  },
+  "runtimeInputs": {
+    "tmpSettingsContract": {
+      "logicalPath": "serialized-tmp/tmp-settings-contract.json",
+      "byteLength": 4364,
+      "sha256": "d1ad2c4753707addc20c2fb6b585fc99ac71c17292f29f5d0ec092a97afea4a6"
+    },
+    "tmpFontManifest": {
+      "logicalPath": "serialized-tmp/tmp-font-manifest.json",
+      "byteLength": 1093306,
+      "sha256": "b9f92520238cb954327607047aed7ff82470628070a8e9a00f4c444c0164fe3b"
+    }
+  },
+  "aggregateSha256": "0cbfce8682f41efa6a141ee002832fd0d9ae931468b8f756c3d7c1bfd89ce5d1",
+  "summary": {
+    "tmpSettingsObjectCount": 1,
+    "decodedTmpSettingsPayloadFieldCount": 36,
+    "lineBreakingTextAssetCount": 2,
+    "fontAssetCount": 19,
+    "sourceFontReferenceCount": 15,
+    "referencedSourceFontObjectCount": 15,
+    "sourceFontObjectCount": 18,
+    "unreferencedSourceFontObjectCount": 3,
+    "atlasTextureCount": 22,
+    "atlasTextureObjectCount": 42,
+    "unreferencedTextureObjectCount": 20,
+    "glyphCount": 1795,
+    "characterCount": 1802,
+    "referencedAtlasPayloadByteLength": 29797088,
+    "atlasPayloadSourceCounts": {
+      "serialized-inline": 19,
+      "serialized-resource": 3
+    },
+    "fontAssetTypetreeFailureCount": 0,
+    "otherMonoBehaviourTypetreeFailureCount": 0,
+    "nativeFontEngineFunctionCount": 9,
+    "exactNativeFontEngineFunctionCount": 9
+  },
+  "tmpSettings": {
+    "object": {
+      "assetFile": "3f5b5dff67a942289a9defa416b206f3",
+      "pathId": "1",
+      "type": "MonoBehaviour",
+      "name": "TMP Settings",
+      "rawByteLength": 276,
+      "rawSha256": "8d8d9366be371f69054eecf150ebaac51c72d24361b27b5029230b7dfd14e81a"
+    },
+    "monoScript": {
+      "assetFile": "globalgamemanagers.assets",
+      "pathId": "2353",
+      "type": "MonoScript",
+      "name": "TMP_Settings",
+      "rawByteLength": 88,
+      "rawSha256": "43d86e2d610d3dc0ac7dffe344cc63ea419a59d129524496381c3b87b40a61e8",
+      "className": "TMP_Settings",
+      "namespace": "TMPro",
+      "assemblyName": "Unity.TextMeshPro",
+      "executionOrder": 0,
+      "propertiesHash": "bfa9d6dfbc3c74a843a3b197bdcc6639",
+      "propertiesHashSha256": "7c7398384a63356b28be0b21a7be152076f3558c03f5ad0596509eac386d6880"
+    },
+    "resolvedPayloadReferences": [
+      {
+        "target": "LineBreaking Leading Characters",
+        "pointer": {
+          "fileId": 2,
+          "pathId": "1"
+        },
+        "objectOffset": 248,
+        "payloadOffset": 204,
+        "targetObject": {
+          "assetFile": "d82c1b31c7e74239bff1220585707d2b",
+          "pathId": "1",
+          "type": "TextAsset",
+          "name": "LineBreaking Leading Characters",
+          "rawByteLength": 136,
+          "rawSha256": "ed7456b8000739975fa0b8368776271896cdbe7ff81c923eb3f0eefa1d59a4e8"
+        }
+      },
+      {
+        "target": "LineBreaking Following Characters",
+        "pointer": {
+          "fileId": 3,
+          "pathId": "1"
+        },
+        "objectOffset": 260,
+        "payloadOffset": 216,
+        "targetObject": {
+          "assetFile": "fade42e8bc714b018fac513c043d323b",
+          "pathId": "1",
+          "type": "TextAsset",
+          "name": "LineBreaking Following Characters",
+          "rawByteLength": 316,
+          "rawSha256": "b532d78da17863828461c8333a58c4ece4e3cba001a3a327045c51948d98dad3"
+        }
+      }
+    ],
+    "serializedPayload": {
+      "offset": 44,
+      "byteLength": 232,
+      "sha256": "0eb94e12057e9b977c2ac2bb3a0c924d7947f56849b6cf8cf4b92a20a781e80d",
+      "hex": "01000000320000000100000001000000010000006e72656b000000000000000001000000010000000100000000000000010000000100000000000000000000000000000000000000000010420000003f000000400000a0410000a040000048430000484200000000000000000000000001000000010000000000000000000000000000000c000000496d616765496e546578742f01000000000000000000000017000000436f6c6f72204772616469656e7420507265736574732f000000000000000000000000000000000002000000010000000000000003000000010000000000000000000000"
+    },
+    "fieldLayout": {
+      "status": "partial-exact-metadata-derived",
+      "decodedEnvelope": true,
+      "decodedPayloadFields": 36,
+      "strictEof": true,
+      "managedFieldOrderSource": "candidate IL2CPP metadata / TMPro.TMP_Settings",
+      "reason": "the custom TypeTree is stripped; candidate metadata supplies the field order while raw payload bytes and PPtrs are parsed to strict EOF"
+    },
+    "settings": {
+      "assetVersion": "2",
+      "textWrappingMode": 1,
+      "enableKerning": true,
+      "activeFontFeatures": [
+        {
+          "value": 1801810542,
+          "tag": "kern"
+        }
+      ],
+      "enableExtraPadding": false,
+      "enableTintAllSprites": false,
+      "enableParseEscapeCharacters": true,
+      "enableRaycastTarget": true,
+      "getFontFeaturesAtRuntime": true,
+      "missingGlyphCharacter": 0,
+      "clearDynamicDataOnBuild": true,
+      "warningsDisabled": true,
+      "defaultFontAssetPPtr": {
+        "fileId": 0,
+        "pathId": "0"
+      },
+      "defaultFontAssetPath": "",
+      "defaultFontSize": 36,
+      "defaultAutoSizeMinRatio": 0.5,
+      "defaultAutoSizeMaxRatio": 2,
+      "defaultTextMeshProTextContainerSize": {
+        "x": 20,
+        "y": 5
+      },
+      "defaultTextMeshProUITextContainerSize": {
+        "x": 200,
+        "y": 50
+      },
+      "autoSizeTextContainer": false,
+      "isTextObjectScaleStatic": false,
+      "fallbackFontAssetPPtrs": [],
+      "matchMaterialPreset": true,
+      "hideSubTextObjects": true,
+      "defaultSpriteAssetPPtr": {
+        "fileId": 0,
+        "pathId": "0"
+      },
+      "defaultSpriteAssetPath": "ImageInText/",
+      "enableEmojiSupport": true,
+      "missingCharacterSpriteUnicode": 0,
+      "emojiFallbackTextAssetPPtrs": [],
+      "defaultColorGradientPresetsPath": "Color Gradient Presets/",
+      "defaultStyleSheetPPtr": {
+        "fileId": 0,
+        "pathId": "0"
+      },
+      "styleSheetsResourcePath": "",
+      "leadingCharactersPPtr": {
+        "fileId": 2,
+        "pathId": "1"
+      },
+      "followingCharactersPPtr": {
+        "fileId": 3,
+        "pathId": "1"
+      },
+      "useModernHangulLineBreakingRules": false
+    },
+    "leadingCharacters": {
+      "characterCount": 37,
+      "textSha256": "62d3f4d5f64aaf885692d2d13a8313f6918e6e4c5aeb3990a43f614652bfd89c"
+    },
+    "followingCharacters": {
+      "characterCount": 97,
+      "textSha256": "3a73e5ffe2510756dd3c2e982fdc1218b4be82c6e21abde88070d6860e1bc8e6"
+    }
+  },
+  "serializedFontAtlases": {
+    "fontAssetSerializedFieldNamesSha256": "866f24f901aa4ee30d2da7edd2b96c348a72bba682c992e6266d630a83b18974",
+    "objectTypeCounts": {
+      "AssetBundle": 1,
+      "Font": 18,
+      "Material": 126,
+      "MonoBehaviour": 22,
+      "Shader": 1,
+      "Sprite": 4,
+      "TextAsset": 3,
+      "Texture2D": 42
+    },
+    "fonts": [
+      {
+        "pathId": "-4080393176190516637",
+        "name": "YoonGothicPro760 SDF",
+        "family": "TPC Yoon Gothic 700",
+        "style": "60",
+        "atlasTextureCount": 1,
+        "glyphCount": 77,
+        "characterCount": 78,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "-2739202363678272378",
+        "name": "BO-UDShinGoStdTC-Bol SDF",
+        "family": "BO UD ShinGo Std TC",
+        "style": "B",
+        "atlasTextureCount": 1,
+        "glyphCount": 20,
+        "characterCount": 20,
+        "atlasPayloadByteLength": 4194304
+      },
+      {
+        "pathId": "-2594834333922463316",
+        "name": "YoonGothicPro790 SDF",
+        "family": "TPC Yoon Gothic 700",
+        "style": "90",
+        "atlasTextureCount": 1,
+        "glyphCount": 37,
+        "characterCount": 38,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "-2144999671638427524",
+        "name": "BO-UDShinGoSCGb4-Reg SDF",
+        "family": "BO UDShinGo SC Gb4",
+        "style": "R",
+        "atlasTextureCount": 1,
+        "glyphCount": 59,
+        "characterCount": 59,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "-757749988448016049",
+        "name": "FuturaLTPro-Heavy SDF",
+        "family": "TPC Futura LT Pro",
+        "style": "Heavy",
+        "atlasTextureCount": 1,
+        "glyphCount": 69,
+        "characterCount": 69,
+        "atlasPayloadByteLength": 262144
+      },
+      {
+        "pathId": "-396364928729778045",
+        "name": "GillSansNova-Bold SDF",
+        "family": "TPC Gill Sans Nova",
+        "style": "Bold",
+        "atlasTextureCount": 1,
+        "glyphCount": 64,
+        "characterCount": 64,
+        "atlasPayloadByteLength": 262144
+      },
+      {
+        "pathId": "1101475106157266840",
+        "name": "BattleNumHp",
+        "family": "A-OTF UD Shin Go Pr6N",
+        "style": "",
+        "atlasTextureCount": 1,
+        "glyphCount": 10,
+        "characterCount": 10,
+        "atlasPayloadByteLength": 262144
+      },
+      {
+        "pathId": "1482346930774817996",
+        "name": "TPC-MXiangHeHeiTC-Book SDF",
+        "family": "TPC M XiangHe Hei TC",
+        "style": "Book",
+        "atlasTextureCount": 1,
+        "glyphCount": 66,
+        "characterCount": 66,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "1727227129298798752",
+        "name": "BO-UDShinGoSCGb4-Bol SDF",
+        "family": "BO UDShinGo SC Gb4",
+        "style": "B",
+        "atlasTextureCount": 1,
+        "glyphCount": 9,
+        "characterCount": 9,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "1866416259400829261",
+        "name": "Pokesymbol2-regular-SDF",
+        "family": "Pokesymbol2",
+        "style": "regular",
+        "atlasTextureCount": 1,
+        "glyphCount": 18,
+        "characterCount": 18,
+        "atlasPayloadByteLength": 262144
+      },
+      {
+        "pathId": "2506655689348058510",
+        "name": "BO-GSanSrfStd-Bd SDF",
+        "family": "BO GSan Serif Std",
+        "style": "B",
+        "atlasTextureCount": 1,
+        "glyphCount": 24,
+        "characterCount": 25,
+        "atlasPayloadByteLength": 4194304
+      },
+      {
+        "pathId": "3341312650030621203",
+        "name": "FOT-RodinNTLGPro-EB SDF",
+        "family": "FOT-RodinNTLG Pro",
+        "style": "EB",
+        "atlasTextureCount": 1,
+        "glyphCount": 55,
+        "characterCount": 56,
+        "atlasPayloadByteLength": 4194304
+      },
+      {
+        "pathId": "6975828564934792292",
+        "name": "BattleNumPossession",
+        "family": "TPC Futura LT Pro",
+        "style": "",
+        "atlasTextureCount": 1,
+        "glyphCount": 10,
+        "characterCount": 10,
+        "atlasPayloadByteLength": 87408
+      },
+      {
+        "pathId": "7997069833075654224",
+        "name": "FOT-NewRodinPro-EB SDF",
+        "family": "FOT-NewRodin Pro",
+        "style": "EB",
+        "atlasTextureCount": 1,
+        "glyphCount": 232,
+        "characterCount": 233,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "8163795205098350844",
+        "name": "FOT-NewRodinPro-DB SDF",
+        "family": "TPC NewRodin Pro",
+        "style": "DB",
+        "atlasTextureCount": 4,
+        "glyphCount": 908,
+        "characterCount": 910,
+        "atlasPayloadByteLength": 4194304
+      },
+      {
+        "pathId": "8286394459813532775",
+        "name": "TPC-MXiangHeHeiTC-Black SDF",
+        "family": "TPC M XiangHe Hei TC",
+        "style": "Black",
+        "atlasTextureCount": 1,
+        "glyphCount": 22,
+        "characterCount": 22,
+        "atlasPayloadByteLength": 1048576
+      },
+      {
+        "pathId": "8608529731987509218",
+        "name": "BattleNumDmg",
+        "family": "TPC Futura LT Pro",
+        "style": "",
+        "atlasTextureCount": 1,
+        "glyphCount": 10,
+        "characterCount": 10,
+        "atlasPayloadByteLength": 87408
+      },
+      {
+        "pathId": "8634796869515325130",
+        "name": "FOTK-YDHeadRoundB SDF",
+        "family": "FOTK-YDHeadRound",
+        "style": "B",
+        "atlasTextureCount": 1,
+        "glyphCount": 20,
+        "characterCount": 20,
+        "atlasPayloadByteLength": 4194304
+      },
+      {
+        "pathId": "8884153184787638352",
+        "name": "GillSansNova-Medium SDF",
+        "family": "TPC Gill Sans Nova",
+        "style": "Medium",
+        "atlasTextureCount": 1,
+        "glyphCount": 85,
+        "characterCount": 85,
+        "atlasPayloadByteLength": 262144
+      }
+    ]
+  },
+  "nativeFontEngine": {
+    "status": "exact-candidate-native-control-flow",
+    "evidence": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+      "byteLength": 17345,
+      "sha256": "7751441d1f95c3adebeea08dd6021436a49a2c13f9654e7205aa3ca813c92058",
+      "nativeFunctionCount": 9,
+      "exactNativeFunctionCount": 9
+    },
+    "facts": {
+      "dynamicAtlasRenderMode": {
+        "decimal": 4165,
+        "hex": "0x1045",
+        "selectedInstructionChecks": [
+          {
+            "rva": "0xa2f730",
+            "relativeOffset": "0xbc",
+            "text": "mov w9, #0x1045",
+            "bytesHex": "a9088252",
+            "byteLength": 4,
+            "sha256": "8a1b6cd29c12cd3dc6c31f088083e539aa1c7b86cc00546371b5957ef09ecd97"
+          },
+          {
+            "rva": "0xa2f734",
+            "relativeOffset": "0xc0",
+            "text": "cmp w8, w9",
+            "bytesHex": "1f01096b",
+            "byteLength": 4,
+            "sha256": "a01b352d515aef1b58047c226463031d82d17219a1f63d8f6359d7e294ae3e49"
+          },
+          {
+            "rva": "0xa2f740",
+            "relativeOffset": "0xcc",
+            "text": "mov w2, #6",
+            "bytesHex": "c2008052",
+            "byteLength": 4,
+            "sha256": "6b5b29dc14919785096fb34af8608a89a4313f8b52c67dfd71ba734fa4bd7685"
+          }
+        ]
+      },
+      "glyphLoadFlags": 6,
+      "glyphSlotCopy": {
+        "dynamicAtlasTarget": "generate3x3AaEdt",
+        "freeTypeSdfTarget": "generateSdf",
+        "selectedInstructionChecks": [
+          {
+            "rva": "0xa2fa08",
+            "relativeOffset": "0x124",
+            "text": "b #0xa2fce4",
+            "bytesHex": "b7000014",
+            "byteLength": 4,
+            "sha256": "87e0f5a9f528901a1358727e06b37b78f36f836eb0ef055de5218c8a538d1aaf"
+          },
+          {
+            "rva": "0xa2fa98",
+            "relativeOffset": "0x1b4",
+            "text": "b #0xa2fab0",
+            "bytesHex": "06000014",
+            "byteLength": 4,
+            "sha256": "d9d0ef4ab4751094b71c55b6991f36ad1ac5437a4f3be46d82d552737ac4f0b5"
+          }
+        ]
+      },
+      "renderJobCallsGlyphSlotCopy": {
+        "value": true,
+        "instruction": {
+          "rva": "0xa2ff9c",
+          "relativeOffset": "0xa4",
+          "text": "bl #0xa2f8e4",
+          "bytesHex": "52feff97",
+          "byteLength": 4,
+          "sha256": "6384cca0a82f6d2cd847d76f711fb2f348be2608c6e088215a60c8edde033c86"
+        }
+      },
+      "distanceTransform": {
+        "generator": "generate3x3AaEdt",
+        "calculator": "calculate3x3AaEdt",
+        "edgeGradient": "computeEdgeGradient",
+        "edgeDelta": "approximateEdgeDelta",
+        "edgeDeltaCallCount": 9,
+        "edgeGradientCallCount": 1,
+        "edgeDeltaCalls": [
+          {
+            "rva": "0xa32b44",
+            "relativeOffset": "0x1b8",
+            "text": "bl #0xa328cc",
+            "bytesHex": "62ffff97",
+            "byteLength": 4,
+            "sha256": "941c6910823be5db1c4c2f1bced8b077cc8a4259d1b473d9be2ba660b96ec582"
+          },
+          {
+            "rva": "0xa32bc0",
+            "relativeOffset": "0x234",
+            "text": "bl #0xa328cc",
+            "bytesHex": "43ffff97",
+            "byteLength": 4,
+            "sha256": "edfcde0a0c4aafc784c80d07e9566f3395d4834652c921949b65c443d83046ac"
+          },
+          {
+            "rva": "0xa32c3c",
+            "relativeOffset": "0x2b0",
+            "text": "bl #0xa328cc",
+            "bytesHex": "24ffff97",
+            "byteLength": 4,
+            "sha256": "908c09adc4e15fd86b50cb11179c66c484dbb9977e05d3350598b0f7b557abd1"
+          },
+          {
+            "rva": "0xa32ccc",
+            "relativeOffset": "0x340",
+            "text": "bl #0xa328cc",
+            "bytesHex": "00ffff97",
+            "byteLength": 4,
+            "sha256": "f9b166ff43aebb0d70272bff2741276cd2c13c82966b737c734ffcd277326620"
+          },
+          {
+            "rva": "0xa32d3c",
+            "relativeOffset": "0x3b0",
+            "text": "bl #0xa328cc",
+            "bytesHex": "e4feff97",
+            "byteLength": 4,
+            "sha256": "f02d4541c49099f05ac3858dedd95988ad83bef17ff036eacd42dd346b5e7917"
+          },
+          {
+            "rva": "0xa32ecc",
+            "relativeOffset": "0x540",
+            "text": "bl #0xa328cc",
+            "bytesHex": "80feff97",
+            "byteLength": 4,
+            "sha256": "77d548f0bb4b3d63452a1cc34aa518189a7bbc8b6160d777206061c565ed6e1e"
+          },
+          {
+            "rva": "0xa32f74",
+            "relativeOffset": "0x5e8",
+            "text": "bl #0xa328cc",
+            "bytesHex": "56feff97",
+            "byteLength": 4,
+            "sha256": "e7638c40fbd64099cb18ff79a78c26cdda464fc2bbfb350058a033fb36a5a64f"
+          },
+          {
+            "rva": "0xa32fec",
+            "relativeOffset": "0x660",
+            "text": "bl #0xa328cc",
+            "bytesHex": "38feff97",
+            "byteLength": 4,
+            "sha256": "03d551e7a70f3009348d0045fa419ed19377fcdeda09684b6c8ffecb49cac3aa"
+          },
+          {
+            "rva": "0xa330a0",
+            "relativeOffset": "0x714",
+            "text": "bl #0xa328cc",
+            "bytesHex": "0bfeff97",
+            "byteLength": 4,
+            "sha256": "4a99ce8b731324d6d15fdb6487f899822f19a349afae1851b68d092273379868"
+          }
+        ],
+        "edgeGradientCalls": [
+          {
+            "rva": "0xa32d2c",
+            "relativeOffset": "0x3a0",
+            "text": "bl #0xa32744",
+            "bytesHex": "86feff97",
+            "byteLength": 4,
+            "sha256": "2a2db0f3fa5000dd36b64778c063b84f987ffef4328e055e5b14f33b70a98cd1"
+          }
+        ],
+        "pixelStrideBytes": 32,
+        "outputCenter": 127,
+        "outputScaleFormula": "255 / (2 * padding + 2)",
+        "rounding": "add 0.5 then fcvtzs",
+        "selectedInstructionChecks": [
+          {
+            "rva": "0xa2fe54",
+            "relativeOffset": "0x170",
+            "text": "fsqrt s3, s3",
+            "bytesHex": "63c0211e",
+            "byteLength": 4,
+            "sha256": "2f1f02a19654b7fd977b1f6db4642d293209c12faa3c69d38168cf8d10759984"
+          },
+          {
+            "rva": "0xa2fe60",
+            "relativeOffset": "0x17c",
+            "text": "fmul s3, s0, s3",
+            "bytesHex": "0308231e",
+            "byteLength": 4,
+            "sha256": "0ed682253ecb4bcd0bc5ae0d542896881bb7381ca4fbbf1e16b6f9fe3c520d1e"
+          },
+          {
+            "rva": "0xa2fe64",
+            "relativeOffset": "0x180",
+            "text": "fminnm s3, s3, s4",
+            "bytesHex": "6378241e",
+            "byteLength": 4,
+            "sha256": "bcaafcf7d74b60b32eb8dc84bfc84d1312df23e6a42967c4e5cbc56c7914c987"
+          },
+          {
+            "rva": "0xa2fe68",
+            "relativeOffset": "0x184",
+            "text": "fmaxnm s3, s3, s1",
+            "bytesHex": "6368211e",
+            "byteLength": 4,
+            "sha256": "deb9919935d35733e212d33fea57b132e4b3a76ed6deeadd59520be73477a778"
+          },
+          {
+            "rva": "0xa2fe6c",
+            "relativeOffset": "0x188",
+            "text": "fsub s3, s4, s3",
+            "bytesHex": "8338231e",
+            "byteLength": 4,
+            "sha256": "9a0cb031df63b5c0580ce8242e2540de631cc6a5f7ebfcd54f7b6418da2e745b"
+          },
+          {
+            "rva": "0xa2fe78",
+            "relativeOffset": "0x194",
+            "text": "fsqrt s3, s3",
+            "bytesHex": "63c0211e",
+            "byteLength": 4,
+            "sha256": "2f1f02a19654b7fd977b1f6db4642d293209c12faa3c69d38168cf8d10759984"
+          },
+          {
+            "rva": "0xa2fe90",
+            "relativeOffset": "0x1ac",
+            "text": "fadd s3, s3, s4",
+            "bytesHex": "6328241e",
+            "byteLength": 4,
+            "sha256": "bbb2a9b699bcd56604986df1b1b4d2a88fe569b080542b5035fc252aaaa07d8c"
+          },
+          {
+            "rva": "0xa2fe94",
+            "relativeOffset": "0x1b0",
+            "text": "fadd s3, s3, s2",
+            "bytesHex": "6328221e",
+            "byteLength": 4,
+            "sha256": "c7284f3ec66a41d7a275c4378a16d6f229d713504dabc6dc64ae3f1b266a8d58"
+          },
+          {
+            "rva": "0xa2fea4",
+            "relativeOffset": "0x1c0",
+            "text": "fcvtzs w0, s3",
+            "bytesHex": "6000381e",
+            "byteLength": 4,
+            "sha256": "61dd80c45c1918a02b02df482afbe3f81ca6bb1b1a9f136d083c4ff9d79c0d30"
+          }
+        ]
+      }
+    }
+  },
+  "runtimeBoundaries": [
+    {
+      "id": "unity6-dynamic-fontengine",
+      "status": "runtime-required",
+      "baselineNativeSdfAaReused": false,
+      "nativeSdfAaInvoked": false,
+      "requiredEvidence": [
+        "official guest dynamic glyph request order",
+        "official guest dynamic atlas allocation and mutation",
+        "official guest generated glyph metrics and mesh bindings",
+        "official guest TMP descriptor and uniform bindings"
+      ],
+      "reason": "candidate native SDFAA producer bodies are exact, but guest request order, atlas placement, generated mesh and submitted resources remain runtime-required",
+      "nativeProducerStatus": "exact-candidate-native-control-flow",
+      "nativeProducerEvidence": {
+        "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-tmp-fontengine.json",
+        "byteLength": 17345,
+        "sha256": "7751441d1f95c3adebeea08dd6021436a49a2c13f9654e7205aa3ca813c92058",
+        "nativeFunctionCount": 9,
+        "exactNativeFunctionCount": 9
+      }
+    },
+    {
+      "id": "candidate-tmp-settings-field-layout",
+      "status": "runtime-required",
+      "requiredEvidence": [
+        "candidate runtime reads that consume the decoded TMP_Settings fields",
+        "matching Unity 6 TMP package source or symbols for behavioral semantics"
+      ],
+      "reason": "the candidate APK strips the custom TMP_Settings TypeTree; candidate IL2CPP metadata supplies a strict-EOF field layout, but serialized values alone do not prove Unity 6 runtime behavior"
+    }
+  ]
+}

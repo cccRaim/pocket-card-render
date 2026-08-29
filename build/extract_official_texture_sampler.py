@@ -15,10 +15,12 @@ import json
 import math
 import os
 from pathlib import Path, PurePosixPath
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
+from urllib.parse import unquote
 import warnings
 
 try:
@@ -30,7 +32,11 @@ except ImportError as exc:
     raise SystemExit("UnityPy is required: python -m pip install UnityPy") from exc
 
 
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 warnings.filterwarnings("ignore", category=Warning, module=r"UnityPy\..*")
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,6 +56,7 @@ DEFAULT_SCENES = (
 SHARED_URL_PREFIX = "/game/Assets/Lettuce/_Data/"
 FLAT_TEXTURE_PREFIX = "/game/Assets/Texture2D/"
 TEXTURE_TYPES = {"Texture2D", "Cubemap"}
+CAB_RE = re.compile(rb"CAB-[0-9a-fA-F]{32}")
 FILTER_NAMES = {0: "Point", 1: "Bilinear", 2: "Trilinear"}
 WRAP_NAMES = {0: "Repeat", 1: "Clamp", 2: "Mirror", 3: "MirrorOnce"}
 RGBA_FALLBACK_DIR = ".official-texture-mips"
@@ -94,6 +101,37 @@ def collect_texture_urls(value: object, output: set[str]) -> None:
         and PurePosixPath(value).suffix.lower() in {".png", ".jpg", ".jpeg"}
     ):
         output.add(value)
+
+
+def collect_texture_identity_hints(scene: dict) -> dict[str, set[str]]:
+    hints: dict[str, set[str]] = {}
+    for material in (scene.get("materials") or {}).values():
+        for texture in (material.get("textures") or {}).values():
+            if not isinstance(texture, dict):
+                continue
+            url = texture.get("url")
+            identity = texture.get("textureIdentity") or {}
+            source = identity.get("source")
+            path_id = identity.get("pathId")
+            if (
+                isinstance(url, str)
+                and url.startswith("/game/")
+                and isinstance(source, str)
+                and source.startswith("CAB-")
+                and path_id is not None
+            ):
+                hints.setdefault(url, set()).add(f"{source}:{path_id}")
+    return hints
+
+
+def bundle_owner_cab(path: Path) -> str | None:
+    try:
+        with path.open("rb") as handle:
+            header = handle.read(512)
+    except OSError:
+        return None
+    match = CAB_RE.search(header)
+    return match.group(0).decode("ascii") if match else None
 
 
 def as_int(value: object, default: int = 0) -> int:
@@ -525,6 +563,7 @@ class OfficialObjectIndex:
         self.decrypted_root = decrypted_root
         self._bundle_cache: dict[Path, list[tuple[object, dict]]] = {}
         self._filename_index: dict[str, list[Path]] = {}
+        self._cab_root_index: dict[Path, dict[str, list[Path]]] = {}
 
     def load_bundle(self, bundle: Path) -> list[tuple[object, dict]]:
         bundle = bundle.resolve()
@@ -549,6 +588,17 @@ class OfficialObjectIndex:
             self._filename_index[target] = sorted(matches)
         return self._filename_index[target]
 
+    def cab_candidates(self, root: Path, cab: str) -> list[Path]:
+        root = root.resolve()
+        if root not in self._cab_root_index:
+            index: dict[str, list[Path]] = {}
+            for bundle in sorted(root.rglob("*_bundles")):
+                owner = bundle_owner_cab(bundle)
+                if owner:
+                    index.setdefault(owner, []).append(bundle)
+            self._cab_root_index[root] = index
+        return self._cab_root_index[root].get(cab, [])
+
     def evidence_from_bundle(self, bundle: Path, object_name: str) -> list[dict]:
         if not bundle.is_file():
             return []
@@ -561,7 +611,7 @@ class OfficialObjectIndex:
 
 
 def shared_bundle_for_url(url: str, decrypted_root: Path) -> Path:
-    relative = PurePosixPath(url.removeprefix(SHARED_URL_PREFIX))
+    relative = PurePosixPath(unquote(url.removeprefix(SHARED_URL_PREFIX)))
     return decrypted_root.joinpath(*relative.parts).with_name(relative.name + "_bundles")
 
 
@@ -576,7 +626,7 @@ def shared_bundle_candidates(url: str, object_name: str, decrypted_root: Path) -
 
 
 def card_prefab_bundle(card_id: str, decrypted_root: Path) -> Path:
-    return (
+    flat = (
         decrypted_root
         / "Common"
         / "CardNew"
@@ -586,14 +636,27 @@ def card_prefab_bundle(card_id: str, decrypted_root: Path) -> Path:
         / "Prefabs"
         / f"{card_id}_L.prefab_bundles"
     )
+    if flat.is_file():
+        return flat
+    matches = sorted(
+        (decrypted_root / "Common" / "CardNew" / "Face").rglob(
+            f"{card_id}/L/Prefabs/{card_id}_L.prefab_bundles"
+        )
+    )
+    if len(matches) != 1:
+        raise RuntimeError(
+            f"expected one official prefab bundle for {card_id}, found {len(matches)}"
+        )
+    return matches[0]
 
 
 def resolve_texture(
     url: str,
     contexts: list[dict],
+    identity_hints: list[str],
     index: OfficialObjectIndex,
 ) -> dict:
-    object_name = PurePosixPath(url).stem
+    object_name = PurePosixPath(unquote(url)).stem
     bundles: set[Path] = set()
     resolution_basis = ""
 
@@ -606,7 +669,17 @@ def resolve_texture(
         )
         if matching_cards:
             bundles.update(card_prefab_bundle(card_id, index.decrypted_root) for card_id in matching_cards)
-            resolution_basis = "card-scoped texture object inside the official L prefab bundle"
+            bundle_filename = PurePosixPath(unquote(url)).name + "_bundles"
+            for card_id in matching_cards:
+                card_l_root = card_prefab_bundle(card_id, index.decrypted_root).parent.parent
+                bundles.update(card_l_root.rglob(bundle_filename))
+                for identity in identity_hints:
+                    cab, _, _ = identity.partition(":")
+                    bundles.update(index.cab_candidates(card_l_root, cab))
+            resolution_basis = (
+                "scene texture CAB:pathID hint joined to its owning official card L "
+                "bundle, plus prefab/exact Texture bundle fallback"
+            )
         else:
             bundles.update(index.filename_candidates(PurePosixPath(url).name + "_bundles"))
             resolution_basis = "all exact official bundle filenames retained; no basename first-win"
@@ -619,6 +692,17 @@ def resolve_texture(
             continue
         candidates.extend(index.evidence_from_bundle(bundle, object_name))
 
+    if identity_hints:
+        expected = set(identity_hints)
+        candidates = [
+            candidate
+            for candidate in candidates
+            if (
+                f"{candidate['identity']['cab']}:"
+                f"{candidate['identity']['pathId']}"
+            )
+            in expected
+        ]
     candidates.sort(
         key=lambda item: (
             item["identity"]["bundle"],
@@ -646,6 +730,7 @@ def resolve_texture(
         "resolution": status,
         "resolutionBasis": resolution_basis,
         "contexts": contexts,
+        "identityHints": identity_hints,
         "bundle": selected["bundle"] if selected else None,
         "pathId": selected["pathId"] if selected else None,
         "format": selected["format"] if selected else None,
@@ -668,6 +753,10 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=Path(os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)),
     )
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
     parser.add_argument("--scene", action="append", type=Path, default=[])
     parser.add_argument(
         "--scene-root",
@@ -683,6 +772,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    UnityPy.config.FALLBACK_UNITY_VERSION = args.unity_version
     decrypted_root = args.decrypted_root.resolve()
     if args.scene and args.scene_root:
         raise SystemExit("--scene and --scene-root are mutually exclusive")
@@ -703,12 +793,14 @@ def main() -> int:
         raise SystemExit(f"decrypted root does not exist: {decrypted_root}")
 
     references: dict[str, list[dict]] = {}
+    identity_hints: dict[str, set[str]] = {}
     scenes = []
     for scene_path in scene_paths:
         with scene_path.open("r", encoding="utf-8") as handle:
             scene = json.load(handle)
         urls: set[str] = set()
         collect_texture_urls(scene, urls)
+        scene_identity_hints = collect_texture_identity_hints(scene)
         card_id = str(scene.get("card", {}).get("id", ""))
         rarity = str(scene.get("card", {}).get("rarityToken", ""))
         scene_record = {
@@ -720,6 +812,9 @@ def main() -> int:
         }
         scenes.append(scene_record)
         for url in urls:
+            identity_hints.setdefault(url, set()).update(
+                scene_identity_hints.get(url, set())
+            )
             references.setdefault(url, []).append(
                 {"scene": scene_path.name, "cardId": card_id, "rarity": rarity}
             )
@@ -729,6 +824,7 @@ def main() -> int:
         url: resolve_texture(
             url,
             sorted(references[url], key=lambda item: (item["scene"], item["cardId"])),
+            sorted(identity_hints.get(url, set())),
             index,
         )
         for url in sorted(references)

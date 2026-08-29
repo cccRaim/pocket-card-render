@@ -14,6 +14,7 @@ import {
   compileProgramBindings,
   joinProgramSamplerBindings,
 } from "./exact-selector-port-core.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 import { buildWebglAdaptationV2 } from "./webgl-adaptation-contract.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -365,7 +366,7 @@ try {
       if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== content) {
         throw new Error(`${name} does not match official regeneration`);
       }
-    } else fs.writeFileSync(file, content);
+    } else atomicWriteFileSync(file, content);
   }
   console.log(`${CHECK ? "verified" : "generated"} Simple-Opaque from selector-bound official SPIR-V`);
 } finally {

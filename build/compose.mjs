@@ -3,7 +3,7 @@
 // LAYOUT comes from the hash-pinned official compact prefab contract; TEXT comes from
 // carddata.mjs (masterdata+locale). Works for any card type covered by the two canonical UI prefabs.
 import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { buildCardData } from "./carddata.mjs";
 import { inlineElementTypeFromSentinel } from "./card-text-resolver.mjs";
 import { compactOfficialUIImageState } from "../public/render/official-ugui-image.js";
@@ -29,48 +29,74 @@ function firstExistingDir(paths) {
   return paths.find((p) => p && existsSync(p)) || paths[0];
 }
 
+const ROOT = join(import.meta.dirname, "..");
+function configuredPath(environmentName, fallback) {
+  const configured = process.env[environmentName];
+  return configured ? resolve(configured) : fallback;
+}
+
+function readConfiguredJson(environmentName, fallback) {
+  return JSON.parse(readFileSync(
+    configuredPath(environmentName, fallback),
+    "utf8",
+  ));
+}
+
 const OUTDIR = process.env.PCR_RECIPES || firstExistingDir([
   join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "output"),
   join(import.meta.dirname, "..", "..", "apks", "output"),
 ]);
-const ASSETS = join(OUTDIR, "..", "assets");
-const UI_LAYOUT = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "card-ui-layout-contract.json"),
-  "utf8",
-));
+const ASSETS = configuredPath("PCR_GAME_SRC", join(OUTDIR, "..", "assets"));
+function officialAssetExists(value) {
+  const relative = String(value || "")
+    .replace(/^\/game\//, "")
+    .replaceAll("\\", "/");
+  if (!relative || relative.startsWith("/") || relative.split("/").includes("..")) {
+    return false;
+  }
+  if (existsSync(join(ASSETS, ...relative.split("/")))) return true;
+  const unityPrefix = "Assets/Lettuce/_Data/";
+  if (!relative.startsWith(unityPrefix)) return false;
+  const bundleRelative = `${relative.slice(unityPrefix.length)}_bundles`;
+  return existsSync(join(ASSETS, ...bundleRelative.split("/")));
+}
+const UI_LAYOUT = readConfiguredJson(
+  "PCR_CARD_UI_LAYOUT_CONTRACT",
+  join(ROOT, "public", "render", "card-ui-layout-contract.json"),
+);
 if (UI_LAYOUT.schemaVersion !== 3) throw new Error("unsupported card UI layout contract schema");
-const UI_RESOURCES = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "card-ui-resource-contract.json"),
-  "utf8",
-));
+const UI_RESOURCES = readConfiguredJson(
+  "PCR_CARD_UI_RESOURCE_CONTRACT",
+  join(ROOT, "public", "render", "card-ui-resource-contract.json"),
+);
 if (UI_RESOURCES.schemaVersion !== 1) throw new Error("unsupported card UI resource contract schema");
-const TMP_SPRITE = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "tmp-sprite-contract.json"),
-  "utf8",
-));
+const TMP_SPRITE = readConfiguredJson(
+  "PCR_TMP_SPRITE_CONTRACT",
+  join(ROOT, "public", "render", "tmp-sprite-contract.json"),
+);
 if (TMP_SPRITE.schemaVersion !== 1) throw new Error("unsupported TMP sprite contract schema");
-const CARD_TEXT_DESIGN = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "card-text-design-contract.json"),
-  "utf8",
-));
+const CARD_TEXT_DESIGN = readConfiguredJson(
+  "PCR_CARD_TEXT_DESIGN_CONTRACT",
+  join(ROOT, "public", "render", "card-text-design-contract.json"),
+);
 if (CARD_TEXT_DESIGN.schemaVersion !== 1) {
   throw new Error("unsupported card text design contract schema");
 }
-const LAYOUT_FITTERS = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "official-layout-fitters.json"),
-  "utf8",
-));
+const LAYOUT_FITTERS = readConfiguredJson(
+  "PCR_OFFICIAL_LAYOUT_FITTERS",
+  join(ROOT, "public", "render", "official-layout-fitters.json"),
+);
 if (LAYOUT_FITTERS.schemaVersion !== 1) {
   throw new Error("unsupported official layout fitter contract schema");
 }
-const TMP_SETTINGS = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "render", "tmp-settings-contract.json"),
-  "utf8",
-));
-const TMP_FONT_MANIFEST = JSON.parse(readFileSync(
-  join(import.meta.dirname, "..", "public", "game", "tmp-fonts", "manifest.json"),
-  "utf8",
-));
+const TMP_SETTINGS = readConfiguredJson(
+  "PCR_TMP_SETTINGS_CONTRACT",
+  join(ROOT, "public", "render", "tmp-settings-contract.json"),
+);
+const TMP_FONT_MANIFEST = readConfiguredJson(
+  "PCR_TMP_FONT_MANIFEST",
+  join(ROOT, "public", "game", "tmp-fonts", "manifest.json"),
+);
 const TMP_FONTS = indexOfficialTmpFonts(TMP_FONT_MANIFEST, TMP_SETTINGS);
 
 const xy = (value) => [Number(value?.x || 0), Number(value?.y || 0)];
@@ -159,7 +185,6 @@ const DARK = [0.137, 0.094, 0.082];
 const TRAINER_UI = "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUITrainersFormat5x5";
 const POKEMON_UI5 = "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat5x5";
 const POKEMON_UI8 = "Assets/Lettuce/_Data/Common/CardNew/Common/UI/Textures/CardUIPokemonFormat8x8";
-const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
 // locale → sprite filename suffix (the sprite files use _zh/_cn/_en/_jp…, distinct from the prefab node suffix).
 const LOC_SUF = { zh_TW: "zh", zh_CN: "cn", en_US: "en", id_ID: "en", ja_JP: "jp", ko_KR: "ko", fr_FR: "fr",
                   de_DE: "de", es_ES: "es", es_419: "es", it_IT: "it", pt_BR: "pt" };
@@ -215,7 +240,10 @@ function fontRole(go) {
 // The FontGroup depends on the card LAYOUT: a full-art trainer (text
 // OVER the illustration) uses `Trainers_OverNumber` → name/rule/illustrator get a white outline but the footer
 // (`Rule`, which has no outline variant) stays plain; a windowed trainer uses `Trainers_Normal` → all plain.
-const CARD_FONT = JSON.parse(readFileSync(join(import.meta.dirname, "..", "public", "render", "card-font-contract.json"), "utf8"));
+const CARD_FONT = readConfiguredJson(
+  "PCR_CARD_FONT_CONTRACT",
+  join(ROOT, "public", "render", "card-font-contract.json"),
+);
 if (CARD_FONT.schemaVersion !== 2) throw new Error("unsupported card font contract schema");
 const resolveFontStyle = (style) => style ? {
   ...style,
@@ -558,7 +586,7 @@ function labelIcon(nodeObj, prefix, lc) {
   if (official) return official;
   for (const suf of [sufFor(lc), ""]) {
     const rel = `${TRAINER_UI}/${prefix}${suf ? "_" + suf : ""}.png`;
-    if (existsSync(join(ASSETS, rel))) return officialIcon(nodeObj, "/game/" + rel, "stretch");
+    if (officialAssetExists(rel)) return officialIcon(nodeObj, "/game/" + rel, "stretch");
   }
   return null;
 }
@@ -590,12 +618,12 @@ function officialIcon(nodeObj, url, fallbackFit = "contain", extra = {}) {
 function officialPrefabIcon(nodeObj, fit = "stretch", extra = {}) {
   const imageHash = nodeObj?.uiImage?.imageObjectSha256;
   const url = imageHash ? UI_RESOURCES.images?.[imageHash]?.sprite?.texture?.url : null;
-  if (!url || !existsSync(join(ASSETS, url.replace(/^\/game\//, "")))) return null;
+  if (!url || !officialAssetExists(url)) return null;
   return officialIcon(nodeObj, url, fit, extra);
 }
 
 function publicIcon(nodeObj, rel, fit = "contain", extra = {}) {
-  if (!nodeObj || !existsSync(join(ASSETS, rel))) return null;
+  if (!nodeObj || !officialAssetExists(rel)) return null;
   return officialIcon(nodeObj, "/game/" + rel, fit, extra);
 }
 
@@ -611,7 +639,7 @@ function pokemonUiSprite(nodeObj, prefix, lc, fit = "stretch", extra = {}) {
     `${base}.png`,
   ];
   for (const rel of candidates) {
-    if (existsSync(join(PUBLIC_GAME, rel))) return officialIcon(nodeObj, "/game/" + rel, fit, extra);
+    if (officialAssetExists(rel)) return officialIcon(nodeObj, "/game/" + rel, fit, extra);
   }
   return null;
 }

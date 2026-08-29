@@ -9,6 +9,7 @@ import {
   officialSample,
   officialSampleSha256,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = path.join(ROOT, "public", "shaders");
@@ -300,7 +301,7 @@ try {
         throw new Error(`${name} does not match pinned official FinalBlit generation`);
       }
     } else {
-      fs.writeFileSync(file, content);
+      atomicWriteFileSync(file, content);
     }
   }
   console.log(`${CHECK ? "verified" : "generated"} official FinalBlit WebGL2 program from APKM SPIR-V`);

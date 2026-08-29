@@ -212,8 +212,43 @@ def glsl_inputs(path: Path) -> dict[str, str]:
     return result
 
 
-def audit_port(port: dict, metadata: dict, vertex_spirv: Path, spirv_cross: str) -> dict:
-    manifest_path = ROOT / str(port["manifest"])
+def resolve_manifest_path(logical_path: str, port_root: Path | None) -> Path:
+    if logical_path.startswith("candidate-port:"):
+        if port_root is None:
+            fail(f"candidate port root is required for {logical_path}")
+        relative = logical_path.removeprefix("candidate-port:")
+        candidate = (port_root / relative).resolve()
+        try:
+            candidate.relative_to(port_root.resolve())
+        except ValueError:
+            fail(f"candidate port manifest escapes its root: {logical_path}")
+        return candidate
+    return (ROOT / logical_path).resolve()
+
+
+def resolve_source_path(manifest_path: Path, logical_path: str) -> Path:
+    sibling = manifest_path.parent / Path(logical_path).name
+    if sibling.is_file():
+        return sibling.resolve()
+    repository = (ROOT / logical_path).resolve()
+    if repository.is_file():
+        return repository
+    fail(f"{manifest_path.name}: cannot resolve WebGL source {logical_path}")
+
+
+def audit_port(
+    port: dict,
+    metadata: dict,
+    vertex_spirv: Path,
+    spirv_cross: str,
+    port_root: Path | None,
+) -> dict:
+    manifest_path = resolve_manifest_path(str(port["manifest"]), port_root)
+    if not manifest_path.is_file():
+        fail(f"{port['manifest']}: manifest is absent")
+    expected_manifest_hash = port.get("manifestSha256")
+    if expected_manifest_hash is not None and sha256_file(manifest_path) != expected_manifest_hash:
+        fail(f"{port['manifest']}: manifest SHA-256 changed")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     selector = manifest.get("official_selector") or {}
     for key in ("selectorId", "candidateWitnessId", "subshader", "pass"):
@@ -234,7 +269,8 @@ def audit_port(port: dict, metadata: dict, vertex_spirv: Path, spirv_cross: str)
         vertex_source = "public/shaders/" + manifest_name.removesuffix("_uniforms.json") + ".vert.glsl"
         if not (ROOT / vertex_source).is_file():
             fail(f"{port['manifest']}: conventional webgl vertex source is absent")
-    declarations = glsl_inputs(ROOT / vertex_source)
+    vertex_source_path = resolve_source_path(manifest_path, vertex_source)
+    declarations = glsl_inputs(vertex_source_path)
     if runtime_attributes is not None and declarations != runtime_attributes:
         fail(
             f"{port['manifest']}: runtime attributes differ from adapted GLSL inputs: "
@@ -275,7 +311,7 @@ def audit_port(port: dict, metadata: dict, vertex_spirv: Path, spirv_cross: str)
             "status": adapter_status,
             "attributes": attributes,
             "vertexSource": vertex_source,
-            "vertexSourceSha256": sha256_file(ROOT / vertex_source),
+            "vertexSourceSha256": sha256_file(vertex_source_path),
         },
         "officialGuestVertexBinding": {
             "status": "runtime-required" if reflection else "not-applicable",
@@ -284,15 +320,30 @@ def audit_port(port: dict, metadata: dict, vertex_spirv: Path, spirv_cross: str)
     }
 
 
-def run_audit(spirv_cross: str) -> dict:
+def run_audit(
+    spirv_cross: str,
+    *,
+    inventory_path: Path | None = None,
+    decrypted_root: Path | None = None,
+    contract_path: Path = CONTRACT,
+    port_root: Path | None = None,
+    unity_version: str | None = None,
+) -> dict:
     inventory_path = Path(
-        os.environ.get("PCR_PROGRAM_INVENTORY", DEFAULT_INVENTORY)
+        inventory_path
+        or os.environ.get("PCR_PROGRAM_INVENTORY", DEFAULT_INVENTORY)
     ).resolve()
     decrypted_root = Path(
-        os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)
+        decrypted_root
+        or os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)
     ).resolve()
-    contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+    contract_path = Path(contract_path).resolve()
+    port_root = Path(port_root).resolve() if port_root is not None else None
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
     inventory = json.loads(inventory_path.read_text(encoding="utf-8-sig"))
+    selected_unity_version = unity_version or str(inventory.get("unityVersion", ""))
+    if not selected_unity_version:
+        fail("inventory has no Unity version")
     proof_hash = inventory["digests"]["proofGraphSha256"]
     port_hash = inventory["digests"]["portIndexSha256"]
     if contract["inventory"]["proofGraphSha256"] != proof_hash:
@@ -303,6 +354,7 @@ def run_audit(spirv_cross: str) -> dict:
     session = SelectorProgramExtractionSession(
         inventory_path=inventory_path,
         decrypted_root=decrypted_root,
+        unity_version=selected_unity_version,
         expected_proof_graph_sha256=proof_hash,
         expected_port_index_sha256=port_hash,
     )
@@ -322,7 +374,15 @@ def run_audit(spirv_cross: str) -> dict:
             )
             vertex = out / metadata["artifacts"]["vertex"]["path"]
             try:
-                rows.append(audit_port(port, metadata, vertex, spirv_cross))
+                rows.append(
+                    audit_port(
+                        port,
+                        metadata,
+                        vertex,
+                        spirv_cross,
+                        port_root,
+                    )
+                )
             except RuntimeError as error:
                 errors.append(f"{port['manifest']}: {error}")
 
@@ -336,6 +396,11 @@ def run_audit(spirv_cross: str) -> dict:
         "inventory": {
             "proofGraphSha256": proof_hash,
             "portIndexSha256": port_hash,
+        },
+        "unityVersion": selected_unity_version,
+        "contract": {
+            "path": contract_path.as_posix(),
+            "sha256": sha256_file(contract_path),
         },
         "threeBackend": three_contract(),
         "summary": {
@@ -359,8 +424,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--spirv-cross", default="spirv-cross")
+    parser.add_argument("--inventory", type=Path)
+    parser.add_argument("--decrypted-root", type=Path)
+    parser.add_argument("--contract", type=Path, default=CONTRACT)
+    parser.add_argument("--port-root", type=Path)
+    parser.add_argument("--unity-version")
     args = parser.parse_args()
-    report = run_audit(args.spirv_cross)
+    report = run_audit(
+        args.spirv_cross,
+        inventory_path=args.inventory,
+        decrypted_root=args.decrypted_root,
+        contract_path=args.contract,
+        port_root=args.port_root,
+        unity_version=args.unity_version,
+    )
     if args.json:
         print(json.dumps(report, ensure_ascii=True, separators=(",", ":")))
         return

@@ -22,6 +22,10 @@ import {
   loadOfficialSample,
   officialSampleDigest,
 } from "./official-sample.mjs";
+import {
+  createStagingDirectorySync,
+  publishDirectorySync,
+} from "./atomic-publish.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BUILD = path.join(ROOT, "build");
@@ -502,15 +506,11 @@ function writeOrCheck(outputs) {
     }
     return;
   }
-  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-  for (const name of fs.readdirSync(OUTPUT_DIR)) {
-    if (name.endsWith(".json") && !outputs.has(name)) {
-      fs.rmSync(path.join(OUTPUT_DIR, name));
-    }
-  }
+  const staging = createStagingDirectorySync(OUTPUT_DIR);
   for (const [name, bytes] of outputs) {
-    fs.writeFileSync(path.join(OUTPUT_DIR, name), bytes);
+    fs.writeFileSync(path.join(staging, name), bytes);
   }
+  publishDirectorySync(staging, OUTPUT_DIR);
 }
 
 const candidateLoaded = loadOfficialSample(CANDIDATE_POINTER);

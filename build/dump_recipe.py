@@ -14,7 +14,7 @@ Usage:
       --shared <DECRYPTED>/Common/CardNew/Common --shared <DECRYPTED>/Common/Shader \\
       --out <illId>_render_full.json
 """
-import os, sys, json, glob, argparse, re
+import os, sys, json, glob, argparse, re, hashlib
 import UnityPy
 from extract_official_srp_batcher import (
     reflected_entries,
@@ -22,8 +22,31 @@ from extract_official_srp_batcher import (
     serialized_reflections,
     witness_rows,
 )
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 CAB_RE = re.compile(rb"CAB-[0-9a-fA-F]{32}")
+QUEUE_BASES = {
+    "Background": 1000,
+    "Geometry": 2000,
+    "AlphaTest": 2450,
+    "Transparent": 3000,
+    "Overlay": 4000,
+}
+
+def sha256_bytes(data):
+    return hashlib.sha256(data).hexdigest()
+
+def canonical_digest(value):
+    encoded = json.dumps(
+        value,
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("ascii")
+    return sha256_bytes(encoded)
 
 def tt(o):
     try: return o.read_typetree()
@@ -41,6 +64,46 @@ def kvlist(lst):
             continue
         out[k] = v
     return out
+
+def resolve_shader_queue_tag(tag):
+    if tag is None:
+        return QUEUE_BASES["Geometry"], "shaderlab-default-geometry"
+    match = re.fullmatch(r"([A-Za-z]+)([+-]\d+)?", str(tag))
+    if not match or match.group(1) not in QUEUE_BASES:
+        raise RuntimeError(f"unresolved serialized Shader Queue tag {tag!r}")
+    return (
+        QUEUE_BASES[match.group(1)] + int(match.group(2) or 0),
+        "serialized-shader-queue-tag",
+    )
+
+def shader_queue_evidence(shader_identity, parsed):
+    subshaders = parsed.get("m_SubShaders") or []
+    if not subshaders:
+        raise RuntimeError(f"Shader {shader_identity} has no serialized SubShader")
+    rows = []
+    for index, subshader in enumerate(subshaders):
+        tags = kvlist((subshader.get("m_Tags") or {}).get("tags") or [])
+        queue_tag = next(
+            (value for key, value in tags.items() if str(key).lower() == "queue"),
+            None,
+        )
+        effective_queue, source = resolve_shader_queue_tag(queue_tag)
+        rows.append({
+            "subshader": index,
+            "queueTag": queue_tag,
+            "effectiveRenderQueue": effective_queue,
+            "source": source,
+        })
+    effective_queues = {row["effectiveRenderQueue"] for row in rows}
+    if len(effective_queues) != 1:
+        raise RuntimeError(
+            f"Shader {shader_identity} has subshader-dependent render queues: {rows}"
+        )
+    return {
+        "effectiveRenderQueue": next(iter(effective_queues)),
+        "source": "serialized-shader-subshader-tags",
+        "subshaders": rows,
+    }
 
 def shader_srp_incompatibility_witnesses(shader_tree, parsed):
     """Return decisive official reflection witnesses; absence is not proof of compatibility."""
@@ -74,6 +137,37 @@ def pptr_identity(owner, pointer):
         "pathId": str(path_id),
         "source": source,
         "identity": f"{source}:{path_id}",
+    }
+
+def saved_properties_evidence(owner, saved):
+    ints = [[k, v] for k, v in kvlist(saved.get("m_Ints", [])).items()]
+    floats = [[k, v] for k, v in kvlist(saved.get("m_Floats", [])).items()]
+    colors = [[k, v] for k, v in kvlist(saved.get("m_Colors", [])).items()]
+    textures = []
+    for name, value in kvlist(saved.get("m_TexEnvs", [])).items():
+        value = value or {}
+        pointer = value.get("m_Texture") or {}
+        identity = pptr_identity(owner, pointer)
+        textures.append({
+            "name": name,
+            "texture": identity["identity"]
+                if identity["pathId"] != "0" else None,
+            "scale": value.get("m_Scale"),
+            "offset": value.get("m_Offset"),
+        })
+    record = {
+        "ints": ints,
+        "floats": floats,
+        "colors": colors,
+        "textures": textures,
+    }
+    return {
+        "digest": canonical_digest(record),
+        "textureBindings": len(textures),
+        "nonNullTextures": sum(row["texture"] is not None for row in textures),
+        "textureIdentitiesSha256": canonical_digest(
+            [[row["name"], row["texture"]] for row in textures]
+        ),
     }
 
 def nearest_decrypted_root(path):
@@ -188,9 +282,15 @@ def main():
     ap.add_argument("--shared", action="append", default=[], help="extra shared bundle dir(s) so PPtrs resolve (Common/CardNew/Common, Common/Shader)")
     ap.add_argument("--dependency-root", action="append", default=[],
                     help="bundle root(s) used to locate unresolved direct PPtrs by owner CAB")
+    ap.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+        help="Unity serialized version used when a bundle omits its version string",
+    )
     ap.add_argument("--out", default="card_render_full.json", help="output recipe path")
     ap.add_argument("--shader-state", default=None, help="optional card_shader_state.json to merge per-shader render state")
     args = ap.parse_args()
+    UnityPy.config.FALLBACK_UNITY_VERSION = args.unity_version
 
     # load prefab + every bundle under the card root + shared dirs so cross-bundle PPtrs resolve
     files = [args.path]
@@ -294,6 +394,7 @@ def main():
                 if field not in d:
                     raise RuntimeError(f"Material {oid} is missing official serialized field {field}")
             sp = d.get("m_SavedProperties", {}) or {}
+            raw = bytes(o.get_raw_data())
             texenvs = {}
             for k, v in kvlist(sp.get("m_TexEnvs", [])).items():
                 v = v or {}
@@ -308,6 +409,9 @@ def main():
                 "enableInstancingVariants": bool(d["m_EnableInstancingVariants"]),
                 "keywords": d["m_ValidKeywords"],
                 "invalidKeywords": d["m_InvalidKeywords"],
+                "rawByteSize": len(raw),
+                "rawSha256": sha256_bytes(raw),
+                "savedProperties": saved_properties_evidence(o, sp),
                 "floats": {k: v for k, v in kvlist(sp.get("m_Floats", [])).items()},
                 "ints": {k: v for k, v in kvlist(sp.get("m_Ints", [])).items()},
                 "colors": {k: v for k, v in kvlist(sp.get("m_Colors", [])).items()},
@@ -329,6 +433,7 @@ def main():
                 raise RuntimeError(f"Shader {oid} keyword names/flags length mismatch")
             nm = parsed.get("m_Name") or d.get("m_Name","")
             srp_witnesses = shader_srp_incompatibility_witnesses(d, parsed)
+            queue_evidence = shader_queue_evidence(oid, parsed)
             search_tags = sorted({
                 value
                 for subshader in (parsed.get("m_SubShaders") or [])
@@ -340,6 +445,7 @@ def main():
                 "keywordNames": parsed["m_KeywordNames"],
                 "keywordFlags": parsed["m_KeywordFlags"],
                 "searchTags": search_tags,
+                "renderQueue": queue_evidence,
                 "srpBatcherCompatible": 0 if srp_witnesses else None,
                 "srpBatcherEvidence": "non-UnityPerDraw-unity_ObjectToWorld" if srp_witnesses else None,
                 "srpBatcherWitnessCount": len(srp_witnesses),
@@ -1011,6 +1117,27 @@ def main():
             shader_key = shader_ref.get("identity")
             shader_info = shaders.get(shader_key) or {}
             sname = shader_info.get("name", f"pptr:{shader_key}")
+            shader_queue = shader_info.get("renderQueue")
+            if not shader_queue:
+                raise RuntimeError(
+                    f"Material {material_ref['identity']} has no serialized Shader queue evidence"
+                )
+            custom_render_queue = m.get("renderQueue")
+            if not isinstance(custom_render_queue, int) or custom_render_queue < -1:
+                raise RuntimeError(
+                    f"Material {material_ref['identity']} has invalid m_CustomRenderQueue "
+                    f"{custom_render_queue!r}"
+                )
+            effective_render_queue = (
+                custom_render_queue
+                if custom_render_queue >= 0
+                else shader_queue["effectiveRenderQueue"]
+            )
+            effective_render_queue_source = (
+                "serialized-material-custom-render-queue"
+                if custom_render_queue >= 0
+                else shader_queue["source"]
+            )
             search_tags = shader_info.get("searchTags") or []
             texenvs = {}
             for k, v in (m.get("texenvs") or {}).items():
@@ -1177,15 +1304,24 @@ def main():
                 "shaderKeywordNames": shader_info.get("keywordNames"),
                 "shaderKeywordFlags": shader_info.get("keywordFlags"),
                 "shaderSearchTags": search_tags,
+                "shaderRenderQueue": shader_queue,
                 "srpBatcherCompatible": shader_info.get("srpBatcherCompatible"),
                 "srpBatcherEvidence": shader_info.get("srpBatcherEvidence"),
                 "srpBatcherWitnessCount": shader_info.get("srpBatcherWitnessCount"),
                 "mesh": mesh_name, "meshIdentity": mesh_ref,
-                "renderQueue": m.get("renderQueue"), "keywords": m.get("keywords"),
+                "renderQueue": custom_render_queue,
+                "effectiveRenderQueue": effective_render_queue,
+                "effectiveRenderQueueSource": effective_render_queue_source,
+                "keywords": m.get("keywords"),
                 "enableInstancingVariants": m.get("enableInstancingVariants"),
                 "invalidKeywords": m.get("invalidKeywords"),
                 "world": w,
                 "rendererProperties": renderer_properties,
+                "materialSerialized": {
+                    "rawByteSize": m.get("rawByteSize"),
+                    "rawSha256": m.get("rawSha256"),
+                    "savedProperties": m.get("savedProperties"),
+                },
                 "textures": texenvs,
                 "floats": m.get("floats"), "ints": m.get("ints"), "colors": m.get("colors"),
                 "shader_state": sstate.get(sname),
@@ -1229,7 +1365,9 @@ def main():
                 )
             renderer_bindings.sort()
 
-    json.dump({"card": os.path.basename(args.path.rstrip("/\\")), "layers": layers,
+    json.dump({"schema": "pocket-card-render/material-recipe@2",
+               "schemaVersion": 2,
+               "card": os.path.basename(args.path.rstrip("/\\")), "layers": layers,
                "runtimeSettings": {
                    "kiraPuyo": kira_settings,
                    "circularKira": circular_settings,

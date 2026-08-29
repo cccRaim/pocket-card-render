@@ -129,14 +129,59 @@ function createFixture() {
     card: { id: "test-card" },
     prefabGlb: glbPath,
     materials: {
-      A: { queue: 100 },
-      B: { queue: 200 },
-      C: { queue: 300 },
+      A: {
+        queue: 100,
+        official: {
+          material: "CAB:m1",
+          shader: "CAB:s1",
+          validKeywords: [],
+        },
+      },
+      B: {
+        queue: 200,
+        official: {
+          material: "CAB:m2",
+          shader: "CAB:s2",
+          validKeywords: [],
+        },
+      },
+      C: {
+        queue: 300,
+        official: {
+          material: "CAB:m3",
+          shader: "CAB:s1",
+          validKeywords: [],
+        },
+      },
     },
     officialDraws: [
-      { rendererIdentity: "CAB:1", materialSlot: 0, drawId: "CAB:1#0", go: "A" },
-      { rendererIdentity: "CAB:2", materialSlot: 0, drawId: "CAB:2#0", go: "B" },
-      { rendererIdentity: "CAB:3", materialSlot: 0, drawId: "CAB:3#0", go: "C" },
+      {
+        rendererIdentity: "CAB:1",
+        materialSlot: 0,
+        materialIdentity: "CAB:m1",
+        shaderIdentity: "CAB:s1",
+        materialName: "A",
+        drawId: "CAB:1#0",
+        go: "A",
+      },
+      {
+        rendererIdentity: "CAB:2",
+        materialSlot: 0,
+        materialIdentity: "CAB:m2",
+        shaderIdentity: "CAB:s2",
+        materialName: "B",
+        drawId: "CAB:2#0",
+        go: "B",
+      },
+      {
+        rendererIdentity: "CAB:3",
+        materialSlot: 0,
+        materialIdentity: "CAB:m3",
+        shaderIdentity: "CAB:s1",
+        materialName: "C",
+        drawId: "CAB:3#0",
+        go: "C",
+      },
     ],
   };
   fs.writeFileSync(scenePath, JSON.stringify(scene));
@@ -169,7 +214,208 @@ function createFixture() {
       },
     ],
   };
-  return { root, captureDir, glbPath, scenePath, officialEvidence, shaderInfo };
+  const executable = (fragment, witness, semanticExecutableId) => ({
+    candidateWitnessId: witness,
+    subshader: 0,
+    pass: 0,
+    executable: {
+      semanticExecutableId,
+      identityFields: {
+        schemaVersion: 1,
+        compilerPlatform: 18,
+        gpuProgramType: 25,
+        programEntrySha256: "5".repeat(64),
+        programContainerLayoutSha256: "6".repeat(64),
+        vertexSpirvSha256: shaderInfo[2].sha256,
+        fragmentSpirvSha256: fragment.sha256,
+        parameterEntrySha256: "1".repeat(64),
+        passStateSha256: "2".repeat(64),
+        commonBindingsSha256: "3".repeat(64),
+      },
+      modules: [
+        {
+          stage: "fragment",
+          sha256: fragment.sha256,
+          byteSize: fragment.bytes.length,
+        },
+        {
+          stage: "vertex",
+          sha256: shaderInfo[2].sha256,
+          byteSize: shaderInfo[2].bytes.length,
+        },
+      ],
+    },
+  });
+  const selector = (
+    selectorId,
+    shaderIdentity,
+    fragment,
+    witness,
+    semanticExecutableId,
+  ) => ({
+    selectorId,
+    shaderIdentity,
+    keywords: [],
+    runtimeEngineVariantBoundary: false,
+    candidates: [{
+      selectorWitnessId: witness,
+      subshader: 0,
+      pass: 0,
+      programBlobIndex: 0,
+      keywordIndices: [],
+    }],
+    staticExecutables: [
+      executable(fragment, witness, semanticExecutableId),
+    ],
+  });
+  const selectorRows = [
+    selector(
+      "selector-shared",
+      "CAB:s1",
+      shaderInfo[0],
+      "witness-shared",
+      "semantic-shared",
+    ),
+    selector(
+      "selector-middle",
+      "CAB:s2",
+      shaderInfo[1],
+      "witness-middle",
+      "semantic-middle",
+    ),
+  ];
+  const materialProgramInventory = {
+    schema: "pocket-card-render/official-material-program-inventory@4",
+    digests: {
+      proofGraphSha256: "a".repeat(64),
+      portIndexSha256: "b".repeat(64),
+    },
+    proofGraph: {
+      materials: [
+        ["CAB:m1", "A", "CAB:s1"],
+        ["CAB:m2", "B", "CAB:s2"],
+        ["CAB:m3", "C", "CAB:s1"],
+      ].map(([identity, name, shaderIdentity]) => ({
+        identity,
+        name,
+        shaderIdentity,
+        keywords: [],
+        sourceBundleSha256: "c".repeat(64),
+      })),
+      shaders: [
+        { identity: "CAB:s1", name: "Shared" },
+        { identity: "CAB:s2", name: "Middle" },
+      ],
+      selectors: selectorRows,
+    },
+  };
+  const programPortContract = {
+    schema: "pocket-card-render/candidate-program-port-contract@1",
+    schemaVersion: 1,
+    inventory: {
+      inventorySha256: "d".repeat(64),
+      proofGraphSha256: "a".repeat(64),
+      portIndexSha256: "b".repeat(64),
+    },
+    ports: selectorRows.map((row) => {
+      const execution = row.staticExecutables[0];
+      const identity = execution.executable.identityFields;
+      return {
+        selectorId: row.selectorId,
+        candidateWitnessId: execution.candidateWitnessId,
+        subshader: execution.subshader,
+        pass: execution.pass,
+        semanticExecutableId: execution.executable.semanticExecutableId,
+        manifest: `candidate-port:${row.selectorId}.json`,
+        manifestSha256: "4".repeat(64),
+        officialIdentityFields: {
+          vertexSpirvSha256: identity.vertexSpirvSha256,
+          fragmentSpirvSha256: identity.fragmentSpirvSha256,
+          parameterEntrySha256: identity.parameterEntrySha256,
+          passStateSha256: identity.passStateSha256,
+          commonBindingsSha256: identity.commonBindingsSha256,
+        },
+      };
+    }),
+    runtimeBound: [],
+  };
+  const passParameter = (val, name = null) => ({ val, name });
+  const programPortManifests = new Map(
+    programPortContract.ports.map((port) => {
+      const stencil = {
+        comp: passParameter(8),
+        fail: passParameter(0),
+        pass: passParameter(0),
+        zFail: passParameter(0),
+      };
+      return [[
+        port.selectorId,
+        port.candidateWitnessId,
+        port.subshader,
+        port.pass,
+      ].join(":"), {
+        sha256: port.manifestSha256,
+        manifest: {
+          shader: port.selectorId,
+          official_selector: {
+            selectorId: port.selectorId,
+            candidateWitnessId: port.candidateWitnessId,
+            subshader: port.subshader,
+            pass: port.pass,
+          },
+          official_executable_identity:
+            JSON.parse(JSON.stringify(port.officialIdentityFields)),
+          official_shader_property_defaults: { floats: {} },
+          official_pass_runtime: {
+            source_sha256:
+              port.officialIdentityFields.passStateSha256,
+            shared_mrt_blend: true,
+            depth: {
+              test: passParameter(4),
+              write: passParameter(1),
+            },
+            culling: passParameter(0),
+            stencil: {
+              ref: passParameter(0),
+              read_mask: passParameter(255),
+              write_mask: passParameter(255),
+              generic: stencil,
+            },
+            fixed: {
+              zClip: passParameter(1),
+              conservative: passParameter(0),
+              offsetFactor: passParameter(0),
+              offsetUnits: passParameter(0),
+              alphaToMask: passParameter(0),
+            },
+            blend: {
+              src_rgb: passParameter(1),
+              dst_rgb: passParameter(0),
+              src_alpha: passParameter(1),
+              dst_alpha: passParameter(0),
+              op_rgb: passParameter(0),
+              op_alpha: passParameter(0),
+              color_mask: passParameter(15),
+            },
+          },
+        },
+      }];
+    }),
+  );
+  return {
+    root,
+    captureDir,
+    glbPath,
+    scenePath,
+    officialEvidence,
+    materialProgramInventory,
+    materialProgramInventorySha256: "d".repeat(64),
+    programPortContract,
+    programPortContractSha256: "e".repeat(64),
+    programPortManifests,
+    programPortManifestSetSha256: "f".repeat(64),
+    shaderInfo,
+  };
 }
 
 test("does not use scene queue to invent identity for same-program draws", () => {
@@ -202,6 +448,106 @@ test("does not use scene queue to invent identity for same-program draws", () =>
     assert.equal(output.scopes[0].submissions[0].queueSubmitOrdinal, 0);
     assert.equal(output.capture.successfulPresents, 1);
     assert.equal(output.capture.provenance.status, "incomplete");
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("derives candidate expected draws from the official inventory bytes", () => {
+  const fixture = createFixture();
+  try {
+    const output = importOfficialVulkanCapture({
+      ...fixture,
+      officialEvidence: undefined,
+      materialProgramInventory: fixture.materialProgramInventory,
+      materialProgramInventorySha256: "d".repeat(64),
+      programPortContract: fixture.programPortContract,
+      programPortContractSha256: "e".repeat(64),
+      programPortManifests: fixture.programPortManifests,
+      programPortManifestSetSha256: "f".repeat(64),
+    });
+    assert.equal(output.status, STATUS.UNRESOLVED);
+    assert.equal(output.capture.matchedCardScopes, 1);
+    assert.equal(output.bestSummary.expected, 3);
+    assert.equal(output.bestSummary.exact, 1);
+    assert.equal(output.bestSummary.unresolved, 2);
+    assert.deepEqual(
+      output.expectedDraws.map(({ expectedId }) => expectedId),
+      ["CAB:1#0@0/0", "CAB:2#0@0/0", "CAB:3#0@0/0"],
+    );
+    assert.deepEqual(output.source.officialEvidence, {
+      kind: "candidate-material-program-inventory",
+      sha256: "d".repeat(64),
+      proofGraphSha256: "a".repeat(64),
+      portIndexSha256: "b".repeat(64),
+      programPortContractSha256: "e".repeat(64),
+      programPortManifestSetSha256: "f".repeat(64),
+    });
+    assert.equal(
+      output.expectedDraws[0].portContract.kind,
+      "formal-port",
+    );
+    assert.equal(
+      output.evidenceCoverage.schema,
+      "pocket-card-render/official-vulkan-evidence-coverage@1",
+    );
+    assert.deepEqual(
+      Object.fromEntries(output.evidenceCoverage.requirements.map(
+        ({ id, status }) => [id, status],
+      )),
+      {
+        programDispatch: "runtime-required",
+        pipelineState: "runtime-required",
+        descriptorBindings: "runtime-required",
+        uniformValues: "runtime-required",
+        attachmentDescriptors: "runtime-required",
+        attachmentLayouts: "runtime-required",
+        vertexBindings: "runtime-required",
+        drawSubmission: "exact",
+      },
+    );
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("rejects a candidate port contract that drifts from inventory identity", () => {
+  const fixture = createFixture();
+  try {
+    fixture.programPortContract.ports[0]
+      .officialIdentityFields.passStateSha256 = "9".repeat(64);
+    assert.throws(
+      () => importOfficialVulkanCapture(fixture),
+      /candidate formal port identity differs from inventory/,
+    );
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("rejects candidate port manifest bytes that drift from the contract", () => {
+  const fixture = createFixture();
+  try {
+    const first = fixture.programPortManifests.values().next().value;
+    first.sha256 = "8".repeat(64);
+    assert.throws(
+      () => importOfficialVulkanCapture(fixture),
+      /candidate port manifest bytes are absent or stale/,
+    );
+  } finally {
+    fs.rmSync(fixture.root, { recursive: true, force: true });
+  }
+});
+
+test("rejects candidate port manifest pass identity drift", () => {
+  const fixture = createFixture();
+  try {
+    const first = fixture.programPortManifests.values().next().value;
+    first.manifest.official_pass_runtime.source_sha256 = "7".repeat(64);
+    assert.throws(
+      () => importOfficialVulkanCapture(fixture),
+      /candidate port manifest identity differs/,
+    );
   } finally {
     fs.rmSync(fixture.root, { recursive: true, force: true });
   }

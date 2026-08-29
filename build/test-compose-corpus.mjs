@@ -1,16 +1,22 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { buildCardData } from "./carddata.mjs";
-import { composeFace } from "./compose.mjs";
 import { compactOfficialUIImageState } from "../public/render/official-ugui-image.js";
 import { isIdentityUiAffine } from "../public/render/ui-affine-transform.js";
+import { resolveOfficialSampleInputs } from "./official-sample-inputs.mjs";
 
-const MASTER_ROOT = process.env.PTCG_MASTERDATA
-  || "D:/DevProjectes/ptcgp-cloudbase/cloud/src/functions/app/ptcgp-masterdata/MasterData";
-const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
+const officialInputs = resolveOfficialSampleInputs({
+  verifyArtifactHashes: false,
+});
+const MASTER_ROOT = officialInputs.masterdataRoot;
+process.env.PTCG_MASTERDATA = MASTER_ROOT;
+process.env.PTCG_LOCALE_ROOT = officialInputs.localeRoot;
 const ASSETS = process.env.PCR_GAME_SRC
   || join(import.meta.dirname, "..", "..", "ptcg-apk-parser", "apks", "assets");
+process.env.PCR_GAME_SRC = ASSETS;
+const { buildCardData } = await import("./carddata.mjs");
+const { composeFace } = await import("./compose.mjs");
+const PUBLIC_GAME = join(import.meta.dirname, "..", "public", "game");
 const LOCALES = ["de_DE", "en_US", "es_ES", "fr_FR", "it_IT", "ja_JP", "ko_KR", "pt_BR", "zh_TW"];
 const TRAINER_NODE_SUF = {
   ja_JP: "jp", en_US: "en_id", fr_FR: "fr", it_IT: "it", de_DE: "de",

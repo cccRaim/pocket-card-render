@@ -31,7 +31,11 @@ sys.path.insert(0, str(ROOT / "build" / "shaderdec"))
 import smolv  # noqa: E402
 from extract_variant_bindings import common_textures, parse_parameter_blob  # noqa: E402
 
-UnityPy.config.FALLBACK_UNITY_VERSION = "2022.3.62f2"
+DEFAULT_UNITY_VERSION = "2022.3.62f2"
+UnityPy.config.FALLBACK_UNITY_VERSION = os.environ.get(
+    "PCR_UNITY_VERSION",
+    DEFAULT_UNITY_VERSION,
+)
 warnings.filterwarnings("ignore")
 
 
@@ -187,7 +191,11 @@ def render_state(shader_pass: dict) -> dict:
     }
 
 
-def extract(decrypted_root: Path) -> dict:
+def extract(
+    decrypted_root: Path,
+    unity_version: str = DEFAULT_UNITY_VERSION,
+) -> dict:
+    UnityPy.config.FALLBACK_UNITY_VERSION = unity_version
     shader_root = decrypted_root / "Common" / "Shader"
     bundle_path, obj, shader = find_shader(shader_root)
     parsed = shader.get("m_ParsedForm", {})
@@ -224,6 +232,7 @@ def extract(decrypted_root: Path) -> dict:
     raw_object = bytes(obj.get_raw_data())
     return {
         "schemaVersion": 1,
+        "unityVersion": unity_version,
         "source": {
             "decryptedRoot": str(decrypted_root.resolve()),
             "bundle": str(bundle_path.resolve()),
@@ -270,9 +279,13 @@ def extract(decrypted_root: Path) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--decrypted-root", type=Path, default=DEFAULT_DECRYPTED)
+    parser.add_argument(
+        "--unity-version",
+        default=os.environ.get("PCR_UNITY_VERSION", DEFAULT_UNITY_VERSION),
+    )
     parser.add_argument("--pretty", action="store_true")
     args = parser.parse_args()
-    result = extract(args.decrypted_root)
+    result = extract(args.decrypted_root, args.unity_version)
     json.dump(result, sys.stdout, ensure_ascii=True, indent=2 if args.pretty else None, sort_keys=True)
     sys.stdout.write("\n")
     return 0

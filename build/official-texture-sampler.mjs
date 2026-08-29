@@ -4,10 +4,15 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-export function readOfficialTextureSampler({ scenes = [], decryptedRoot } = {}) {
+export function readOfficialTextureSampler({
+  scenes = [],
+  decryptedRoot,
+  unityVersion = process.env.PCR_UNITY_VERSION,
+} = {}) {
   const python = process.env.PYTHON || "python";
   const args = ["build/extract_official_texture_sampler.py"];
   if (decryptedRoot) args.push("--decrypted-root", decryptedRoot);
+  if (unityVersion) args.push("--unity-version", unityVersion);
   for (const scene of scenes) args.push("--scene", scene);
 
   const result = spawnSync(python, args, {

@@ -2,6 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { auditFullRuntimeEvidence } from "./audit-full-runtime-evidence.mjs";
+import {
+  FULL_RUNTIME_DEFINITION,
+  fullRuntimeOfficialSampleIdentityMatches,
+  loadFullRuntimeDefinition,
+} from "./full-runtime-sources.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_FULL_RUNTIME = path.join(ROOT, "$cache", "full-runtime-evidence.local.json");
@@ -29,7 +34,14 @@ function sameSize(left, right, tolerance = 0) {
     && left.every((value, index) => Math.abs(value - right[index]) <= tolerance);
 }
 
-function inspectHostPresentation(file) {
+function sameRuntimeDefinition(left, right) {
+  return left?.sampleId === right?.sampleId
+    && left?.sampleManifestSha256 === right?.sampleManifestSha256
+    && left?.canonicalCorpusRelative === right?.canonicalCorpusRelative
+    && left?.canonicalCorpusSha256 === right?.canonicalCorpusSha256;
+}
+
+function inspectHostPresentation(file, definition) {
   if (!fs.existsSync(file)) return { status: "missing", file, errors: ["host presentation manifest is absent"] };
   try {
     const value = readJson(file);
@@ -49,6 +61,9 @@ function inspectHostPresentation(file) {
       || !value.presentation.backbuffers.some((texture) => /_SRGB$/.test(texture.format))) {
       errors.push("sRGB host backbuffer was not observed");
     }
+    if (!fullRuntimeOfficialSampleIdentityMatches(value, definition)) {
+      errors.push("host presentation evidence is not bound to the selected official sample");
+    }
     return { status: errors.length ? "invalid" : "pass", file, value, errors };
   } catch (error) {
     return { status: "invalid", file, errors: [error.message] };
@@ -58,12 +73,71 @@ function inspectHostPresentation(file) {
 export function auditRuntimeDisplayFidelity({
   fullRuntimePath = process.env.PCR_FULL_RUNTIME_EVIDENCE || DEFAULT_FULL_RUNTIME,
   hostPresentationPath = process.env.PCR_OFFICIAL_HOST_PRESENTATION || DEFAULT_HOST_PRESENTATION,
+  officialSampleManifestPath = process.env.PCR_OFFICIAL_SAMPLE_MANIFEST,
+  officialSampleDefinition = null,
+  fullRuntimeDefinition = FULL_RUNTIME_DEFINITION,
+  auditFullRuntime = auditFullRuntimeEvidence,
 } = {}) {
-  const full = auditFullRuntimeEvidence(fullRuntimePath);
-  const host = inspectHostPresentation(hostPresentationPath);
+  const definition = officialSampleDefinition || loadFullRuntimeDefinition({
+    manifestPath: officialSampleManifestPath,
+  });
+  const canonicalSceneCount = definition.scenes.length;
+  const expectedCaptureKeys = definition.scenes
+    .map(({ file }) => `${file}|zh_TW`)
+    .sort();
+  const full = auditFullRuntime(fullRuntimePath);
+  const host = inspectHostPresentation(hostPresentationPath, definition);
   const artifact = full.status === "pass" ? readJson(fullRuntimePath) : null;
-  const captures = artifact ? Object.values(artifact.captures) : [];
-  const exactCaptureCount = full.status === "pass" ? captures.length : 0;
+  const actualCaptureKeys = Object.keys(artifact?.captures || {}).sort();
+  const definitionMatchesVerifier = sameRuntimeDefinition(
+    definition,
+    fullRuntimeDefinition,
+  );
+  const artifactIdentityMatches = artifact
+    ? fullRuntimeOfficialSampleIdentityMatches(artifact, definition)
+    : false;
+  const captureInventoryMatches = actualCaptureKeys.length === expectedCaptureKeys.length
+    && actualCaptureKeys.every((value, index) => value === expectedCaptureKeys[index]);
+  const verifiedCaptureCountMatches =
+    full.validCaptureCount === canonicalSceneCount;
+  const localRuntimeErrors = [];
+  if (full.status !== "pass") {
+    localRuntimeErrors.push(
+      ...((full.errors || []).length
+        ? full.errors
+        : ["full-runtime evidence did not pass its source/provenance verifier"]),
+    );
+  }
+  if (!definitionMatchesVerifier) {
+    localRuntimeErrors.push(
+      "full-runtime verifier was initialized for a different official sample; "
+        + "start the process with PCR_OFFICIAL_SAMPLE_MANIFEST",
+    );
+  }
+  if (artifact && !artifactIdentityMatches) {
+    localRuntimeErrors.push(
+      "artifact does not bind the selected sampleId, sample manifest digest, and canonical corpus hash",
+    );
+  }
+  if (artifact && !captureInventoryMatches) {
+    localRuntimeErrors.push(
+      `capture inventory is not exactly the selected ${canonicalSceneCount}-scene canonical corpus`,
+    );
+  }
+  if (full.status === "pass" && !verifiedCaptureCountMatches) {
+    localRuntimeErrors.push(
+      `full-runtime verifier did not validate all ${canonicalSceneCount} canonical captures`,
+    );
+  }
+  const localRuntimeEligible = full.status === "pass"
+    && definitionMatchesVerifier
+    && artifactIdentityMatches
+    && captureInventoryMatches
+    && verifiedCaptureCountMatches;
+  const captures = localRuntimeEligible
+    ? expectedCaptureKeys.map((key) => artifact.captures[key])
+    : [];
+  const exactCaptureCount = captures.length;
   const surfaceExact = captures.filter((capture) => {
     const surface = capture.diagnostics.surface;
     const ratio = Math.min(surface.devicePixelRatio, 2);
@@ -105,26 +179,44 @@ export function auditRuntimeDisplayFidelity({
       && sameSize(diagnostics.display.sourceSize, [request.width, request.height]);
   }).length;
   const hostExact = host.status === "pass" ? 1 : 0;
+  const localEvidence = (count, detail) => (
+    count > 0
+      ? [`${count}/${canonicalSceneCount} ${detail}`]
+      : []
+  );
+  const localRemaining = (count, detail) => {
+    if (!localRuntimeEligible) return [...new Set(localRuntimeErrors)];
+    return count === canonicalSceneCount ? [] : [detail];
+  };
 
   const requirements = [
-    requirement("local-runtime-inventory", "Four source-current no-screenshot browser captures", exactCaptureCount, 4,
-      exactCaptureCount ? [`${exactCaptureCount}/4 canonical captures are schema-3 and source-hash-bound`] : [],
-      exactCaptureCount === 4 ? [] : ["recapture every canonical scene with schema-3 surface diagnostics"]),
-    requirement("css-dpr-drawing-buffer", "CSS viewport, DPR, canvas backing store and WebGL drawing buffer", surfaceExact, 4,
-      surfaceExact ? [`${surfaceExact}/4 captures execute the DPR-capped physical backing-store policy`] : [],
-      surfaceExact === 4 ? [] : ["close every CSS-to-physical-pixel mismatch"]),
-    requirement("display-rt-density", "Display RT reaches the drawing buffer without an extra scale", displayExact, 4,
-      displayExact ? [`${displayExact}/4 display targets equal their drawing buffers`] : [],
-      displayExact === 4 ? [] : ["remove unintended display-target scaling"]),
-    requirement("source-rt-contract", "Runtime source RT matches the selected official quality profile", sourceContractExact, 4,
-      sourceContractExact ? [`${sourceContractExact}/4 source targets match their selected official profile dimensions`] : [],
-      sourceContractExact === 4 ? [] : ["select an official quality profile and execute its exact source RT dimensions"]),
-    requirement("dynamic-ui-density", "DynamicUI/TMP texture follows source quality with zero fallback", dynamicUiExact, 4,
-      dynamicUiExact ? [`${dynamicUiExact}/4 DynamicUI texture sizes match TMP runtime evidence`] : [],
-      dynamicUiExact === 4 ? [] : ["bind DynamicUI raster density to the source RT quality"]),
-    requirement("official-default-quality-active", "Canonical audit runtime selects official ordinary-Android Middle profile", officialProfileExact, 4,
-      officialProfileExact ? [`${officialProfileExact}/4 captures select Middle at 1122x1122`] : [],
-      officialProfileExact === 4 ? [] : ["canonical audit URLs must select the contract-derived official Middle profile"]),
+    requirement("local-runtime-inventory", `${canonicalSceneCount} source-current no-screenshot canonical captures`,
+      exactCaptureCount, canonicalSceneCount,
+      localEvidence(exactCaptureCount, "canonical captures are source/provenance-bound"),
+      localRemaining(exactCaptureCount, "recapture every selected canonical scene with surface diagnostics")),
+    requirement("css-dpr-drawing-buffer", "CSS viewport, DPR, canvas backing store and WebGL drawing buffer",
+      surfaceExact, canonicalSceneCount,
+      localEvidence(surfaceExact, "captures execute the DPR-capped physical backing-store policy"),
+      localRemaining(surfaceExact, "close every CSS-to-physical-pixel mismatch")),
+    requirement("display-rt-density", "Display RT reaches the drawing buffer without an extra scale",
+      displayExact, canonicalSceneCount,
+      localEvidence(displayExact, "display targets equal their drawing buffers"),
+      localRemaining(displayExact, "remove unintended display-target scaling")),
+    requirement("source-rt-contract", "Runtime source RT matches the selected official quality profile",
+      sourceContractExact, canonicalSceneCount,
+      localEvidence(sourceContractExact, "source targets match their selected official profile dimensions"),
+      localRemaining(sourceContractExact,
+        "select an official quality profile and execute its exact source RT dimensions")),
+    requirement("dynamic-ui-density", "DynamicUI/TMP texture follows source quality with zero fallback",
+      dynamicUiExact, canonicalSceneCount,
+      localEvidence(dynamicUiExact, "DynamicUI texture sizes match TMP runtime evidence"),
+      localRemaining(dynamicUiExact, "bind DynamicUI raster density to the source RT quality")),
+    requirement("official-default-quality-active",
+      "Canonical audit runtime selects official ordinary-Android Middle profile",
+      officialProfileExact, canonicalSceneCount,
+      localEvidence(officialProfileExact, "captures select Middle at 1122x1122"),
+      localRemaining(officialProfileExact,
+        "canonical audit URLs must select the contract-derived official Middle profile")),
     requirement("emulator-host-presentation", "BlueStacks host sampling, upscale and sRGB backbuffer chain", hostExact, 1,
       hostExact ? [
         `RenderDoc capture ${host.value.captureSha256} exposes 2 host draws and one SwapBuffers`,
@@ -141,17 +233,45 @@ export function auditRuntimeDisplayFidelity({
     schema: "pocket-card-render/runtime-display-fidelity-audit@1",
     status: requirements.every((item) => item.status === "exact") ? "exact" : "partial",
     screenshotPolicy: "No screenshots, thumbnails, image similarity, or captured pixel payloads are scored.",
+    fidelityPercent: null,
+    fidelityPercentUnavailableReason:
+      "guest Vulkan card-frame and native-device display evidence remain external/runtime-required",
     exactUnits,
     totalUnits,
-    exactPercent: totalUnits ? exactUnits / totalUnits * 100 : 0,
     requirements,
-    sources: { fullRuntimePath, hostPresentationPath },
+    officialSample: {
+      status: definition.sample.status,
+      sampleId: definition.sampleId,
+      sampleManifestSha256: definition.sampleManifestSha256,
+      selection: definition.selectionRelative,
+      manifest: definition.manifestRelative,
+      canonicalCorpus: {
+        path: definition.canonicalCorpusRelative,
+        sha256: definition.canonicalCorpusSha256,
+        sceneCount: canonicalSceneCount,
+      },
+    },
+    localRuntimeEligibility: {
+      status: localRuntimeEligible ? "pass" : "runtime-required",
+      definitionMatchesVerifier,
+      artifactIdentityMatches,
+      captureInventoryMatches,
+      verifiedCaptureCountMatches,
+      errors: [...new Set(localRuntimeErrors)],
+    },
+    sources: {
+      fullRuntimePath,
+      hostPresentationPath,
+      officialSampleManifestPath:
+        officialSampleManifestPath || definition.selectionRelative,
+    },
   };
 }
 
 function print(report) {
   console.log("Runtime display fidelity audit (no screenshots)");
-  console.log(`exact: ${report.exactUnits}/${report.totalUnits} (${report.exactPercent.toFixed(1)}%)`);
+  console.log(`exact evidence units: ${report.exactUnits}/${report.totalUnits}`);
+  console.log(`fidelity percentage: unavailable (${report.fidelityPercentUnavailableReason})`);
   for (const item of report.requirements) {
     console.log(`${item.status.padEnd(16)} ${item.id} ${item.exactUnits}/${item.totalUnits}`);
     for (const line of item.remaining) console.log(`  - ${line}`);

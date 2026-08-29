@@ -1,0 +1,119 @@
+{
+  "schema": "pocket-card-render/candidate-mesh-payload-evidence@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "inputs": {
+    "materialProgramInventory": {
+      "logicalSourceId": "candidate-material-program-inventory-full",
+      "sha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+      "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+      "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b"
+    },
+    "canonicalCorpusDefinition": {
+      "logicalPath": "build/canonical-corpus.json",
+      "sha256": "1634af0e6f00b6ddb9c2032bbcad7975b248c916092e259053d9346716e65cfd"
+    },
+    "extractor": {
+      "logicalPath": "build/extract_official_mesh_payload.py",
+      "sha256": "75a699f14ead6ce5db0db80d3765f30626a086d01f41ae0ad3c18281683a731e"
+    },
+    "bundleResolver": {
+      "logicalPath": "build/extract_official_mrt_outputs.py",
+      "sha256": "a019b2f02ac75d9116dfd5bc1ecb0538a86426af3537a7e7272d8bcff611ab8f"
+    }
+  },
+  "proof": {
+    "status": "exact-static",
+    "definition": "Unity 6 serialized Mesh payloads and local transforms expanded and compared against the canonical GLB triangle streams",
+    "extractedEvidenceSha256": "88bfb0d9ea81a30badc64adfad1a989eff74bdda76e503ea49031b967717707d",
+    "geometryReuse": "exact",
+    "runtimeGuestVertexBinding": "runtime-required",
+    "gameFidelity": false,
+    "officialShaderRestorationPercent": null
+  },
+  "summary": {
+    "cardCount": 4,
+    "meshFilterCount": 78,
+    "builtInMeshFilterCount": 4,
+    "matchedMeshNodeCount": 74,
+    "distinctOfficialMeshCount": 17,
+    "primitiveCount": 130,
+    "triangleCount": 27202,
+    "expandedVertexCount": 81606,
+    "materialSlotResolutionCount": 165,
+    "exactDirectMaterialSlotCount": 94,
+    "exactUniqueMaterialSlotCount": 71,
+    "runtimeRequiredMaterialSlotCount": 0,
+    "expandedPayloadAggregateSha256": "e3ffe8dd91b6c4a86a63c4c86d098c0ad8ab7d3c731c61584f6eb801c7f2264b",
+    "localTransformAggregateSha256": "2c8e61ca9edaac44415666fdeb1b4ec4731ad396624d1774ac505155112fe202"
+  },
+  "cards": [
+    {
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/10/000000/cPK_10_000040_00_FUSHIGIBANAex_RR/L/Prefabs/cPK_10_000040_00_FUSHIGIBANAex_RR_L.prefab_bundles",
+        "sha256": "31abca23365eee8d0beb8aab864c5dad4afd75290501e272709ac0dc6e1e7c2f"
+      },
+      "canonicalGlb": {
+        "logicalPath": "public/game/Assets/PrefabHierarchyObject/cPK_10_000040_00_FUSHIGIBANAex_RR_L.glb",
+        "byteLength": 8102032,
+        "sha256": "f43d1ee4028433b08859968a95629c296d02feae988e766d4a499488d13537a1"
+      },
+      "meshFilterCount": 23,
+      "builtInMeshFilterCount": 0,
+      "matchedMeshNodeCount": 23
+    },
+    {
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/PK/20/008000/cPK_20_008900_02_HOUOUex_UR/L/Prefabs/cPK_20_008900_02_HOUOUex_UR_L.prefab_bundles",
+        "sha256": "cd831cd458574e9959999551ac4eb16f1d6f4af452976c8d74715b83e4f889f8"
+      },
+      "canonicalGlb": {
+        "logicalPath": "public/game/Assets/PrefabHierarchyObject/cPK_20_008900_02_HOUOUex_UR_L.glb",
+        "byteLength": 8118496,
+        "sha256": "79a6baac0b373bae63f3f7e382a3130ff009d6a7d3a5974446095a23aead5a9a"
+      },
+      "meshFilterCount": 18,
+      "builtInMeshFilterCount": 2,
+      "matchedMeshNodeCount": 16
+    },
+    {
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/TR/20/000000/cTR_20_000230_00_LEAF_SR/L/Prefabs/cTR_20_000230_00_LEAF_SR_L.prefab_bundles",
+        "sha256": "e7a4b2c30e26f5eabed898ffa1e69ef8ba960727c1bb5230feaf958437f3d296"
+      },
+      "canonicalGlb": {
+        "logicalPath": "public/game/Assets/PrefabHierarchyObject/cTR_20_000230_00_LEAF_SR_L.glb",
+        "byteLength": 4187940,
+        "sha256": "2fc2dc593def98154e552b0be2ad2b470969b0cb1f43fb6bc693992c9d1de36a"
+      },
+      "meshFilterCount": 18,
+      "builtInMeshFilterCount": 0,
+      "matchedMeshNodeCount": 18
+    },
+    {
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "candidateFaceBundle": {
+        "logicalPath": "Common/CardNew/Face/TR/20/000000/cTR_20_000670_00_IIBUINOBAKKU_UR/L/Prefabs/cTR_20_000670_00_IIBUINOBAKKU_UR_L.prefab_bundles",
+        "sha256": "f5e43b4d29ee29698970f2476e70039e2bdd5cd28d4459c2a182b3529ab53990"
+      },
+      "canonicalGlb": {
+        "logicalPath": "public/game/Assets/PrefabHierarchyObject/cTR_20_000670_00_IIBUINOBAKKU_UR_L.glb",
+        "byteLength": 8214556,
+        "sha256": "7baaec8f5530af237ec4c5a1fc8f316c8417ba54da94f7c21a32ee7ae833f440"
+      },
+      "meshFilterCount": 19,
+      "builtInMeshFilterCount": 2,
+      "matchedMeshNodeCount": 17
+    }
+  ]
+}

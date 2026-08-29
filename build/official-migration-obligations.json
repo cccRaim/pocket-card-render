@@ -19,11 +19,21 @@
       ],
       "producers": [
         "build/extract_official_runtime_quality.py",
-        "build/audit-official-unity-symbol-map.mjs"
+        "build/audit-official-unity-symbol-map.mjs",
+        "build/extract_candidate_metadata_derivation.py",
+        "build/build-candidate-metadata-derivation-report.mjs",
+        "build/extract_candidate_unity_native.py",
+        "build/build-candidate-unity-native-report.mjs",
+        "build/extract_candidate_ugui_native.py"
       ],
       "auditors": [
         "build/audit-official-shader-variant-selection.mjs",
-        "build/audit-official-sort-input-producers.mjs"
+        "build/audit-official-sort-input-producers.mjs",
+        "build/audit-candidate-shader-variant-selection.mjs",
+        "build/build-candidate-metadata-derivation-report.mjs",
+        "build/build-candidate-unity-native-report.mjs",
+        "build/test_candidate_ugui_native.py",
+        "build/verify_official_sample_inputs.py"
       ],
       "action": "re-extract APK/IL2CPP metadata, relocate native functions, and regenerate native byte evidence"
     },
@@ -37,12 +47,24 @@
         "artifacts.unityReleaseSymbols"
       ],
       "producers": [
-        "build/audit-official-unity-symbol-map.mjs"
+        "build/audit-official-unity-symbol-map.mjs",
+        "build/build-candidate-unity-native-report.mjs",
+        "build/build-candidate-tmp-serialized-report.mjs",
+        "build/build-candidate-tmp-sprite-report.mjs",
+        "build/extract_candidate_tmp_fontengine.py",
+        "build/build-candidate-tmp-fontengine-report.mjs",
+        "build/build-candidate-rendertexture-report.mjs"
       ],
       "auditors": [
         "build/audit-official-android-lifecycle.mjs",
         "build/audit-official-rendertexture-contract.mjs",
-        "build/audit-official-tmp-fontengine.mjs"
+        "build/audit-official-tmp-fontengine.mjs",
+        "build/build-candidate-unity-native-report.mjs",
+        "build/build-candidate-tmp-serialized-report.mjs",
+        "build/build-candidate-tmp-sprite-report.mjs",
+        "build/build-candidate-tmp-fontengine-report.mjs",
+        "build/test-candidate-tmp-fontengine.mjs",
+        "build/build-candidate-rendertexture-report.mjs"
       ],
       "action": "rebuild Unity symbol maps and revalidate engine defaults, render state, TMP, UGUI, RT, and input contracts"
     },
@@ -58,11 +80,23 @@
       ],
       "producers": [
         "build/dump_recipe.py",
-        "build/build.mjs"
+        "build/build.mjs",
+        "build/build-candidate-mesh-payload-evidence.mjs",
+        "build/build-candidate-vertex-binding-evidence.mjs",
+        "build/extract_candidate_ugui_native.py",
+        "build/build-candidate-serialized-ui-corpus.mjs",
+        "build/build-candidate-canonical-scenes.mjs",
+        "build/build-candidate-localized-text-corpus.mjs"
       ],
       "auditors": [
         "build/audit-official-illustration-inventory.mjs",
-        "build/audit-official-mesh-payload.mjs"
+        "build/audit-official-mesh-payload.mjs",
+        "build/build-candidate-mesh-payload-evidence.mjs",
+        "build/build-candidate-vertex-binding-evidence.mjs",
+        "build/test_candidate_ugui_native.py",
+        "build/build-candidate-serialized-ui-corpus.mjs",
+        "build/build-candidate-canonical-scenes.mjs",
+        "build/build-candidate-localized-text-corpus.mjs"
       ],
       "action": "redump official bundles/materials/meshes/locales and regenerate canonical scenes"
     },
@@ -97,11 +131,29 @@
         "canonicalCorpus"
       ],
       "producers": [
-        "server.mjs"
+        "server.mjs",
+        "build/runtime-port-assets.mjs",
+        "build/build-candidate-official-guest-runtime-batch.mjs",
+        "build/gfxreconstruct-toolchain.json",
+        "build/gfxreconstruct-state-boundaries.mjs",
+        "build/convert-gfxrecon-vulkan-capture.mjs",
+        "build/import-official-vulkan-runtime-capture.mjs",
+        "build/candidate-guest-pipeline-state.mjs",
+        "build/build-candidate-guest-platform-blocker.mjs",
+        "build/probe-candidate-guest-vulkan-capture.mjs",
+        "public/render/exact-port-loader.js",
+        "public/render/runtime-dispatch-contract.js"
       ],
       "auditors": [
         "build/audit-full-runtime-evidence.mjs",
-        "build/audit-runtime-display-fidelity.mjs"
+        "build/audit-runtime-display-fidelity.mjs",
+        "build/test-runtime-port-assets.mjs",
+        "build/test-tmp-runtime-sample-selection.mjs",
+        "build/test-runtime-display-fidelity-sample-selection.mjs",
+        "build/test-candidate-official-guest-runtime-batch.mjs",
+        "build/test-gfxrecon-vulkan-capture-conversion.mjs",
+        "build/test-candidate-guest-pipeline-state.mjs",
+        "build/build-candidate-guest-platform-blocker.mjs"
       ],
       "action": "invalidate every prior runtime capture and recapture the complete canonical batch"
     },

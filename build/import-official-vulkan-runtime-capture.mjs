@@ -6,6 +6,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import {
+  compareCandidateGuestPipelineState,
+  compileCandidateGuestPipelineExpectation,
+} from "./candidate-guest-pipeline-state.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PYTHON = process.env.PYTHON || "python";
@@ -20,6 +24,16 @@ export const STATUS = Object.freeze({
   UNRESOLVED: "unresolved",
   NOT_OBSERVED: "not-observed",
 });
+export const REQUIRED_EVIDENCE_COVERAGE = Object.freeze([
+  "programDispatch",
+  "pipelineState",
+  "descriptorBindings",
+  "uniformValues",
+  "attachmentDescriptors",
+  "attachmentLayouts",
+  "vertexBindings",
+  "drawSubmission",
+]);
 
 const EXCEPTION_SHADERS = new Set([
   "Text",
@@ -48,6 +62,151 @@ function stable(value) {
     return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stable(value[key])}`).join(",")}}`;
   }
   return JSON.stringify(value);
+}
+
+const FORMAL_PORT_IDENTITY_FIELDS = Object.freeze([
+  "vertexSpirvSha256",
+  "fragmentSpirvSha256",
+  "parameterEntrySha256",
+  "passStateSha256",
+  "commonBindingsSha256",
+]);
+
+function formalPortIdentityMatches(expected, actual) {
+  return expected
+    && actual
+    && Object.keys(expected).length === FORMAL_PORT_IDENTITY_FIELDS.length
+    && FORMAL_PORT_IDENTITY_FIELDS.every((field) => (
+      /^[0-9a-f]{64}$/.test(expected[field])
+        && expected[field] === actual[field]
+    ));
+}
+
+function sameStringSet(left, right) {
+  const a = [...(left || [])].sort();
+  const b = [...(right || [])].sort();
+  return a.length === b.length
+    && a.every((value, index) => value === b[index]);
+}
+
+function evidenceUnit(id, status, reason, facts = null) {
+  return {
+    id,
+    status,
+    reason,
+    facts,
+    proofSha256: status === STATUS.EXACT
+      ? sha256(Buffer.from(stable({ id, status, facts })))
+      : null,
+  };
+}
+
+function buildEvidenceCoverage({ status, replay, matchedScopes, best }) {
+  const successfulPresents = replay.presents.filter(
+    (event) => event.result === 0,
+  ).length;
+  const submitted = matchedScopes.length > 0 && matchedScopes.every(
+    (scope) => scope.submissions.length > 0,
+  );
+  const pipelineComparisons = (best?.draws || [])
+    .filter((draw) => draw.pipelineComparison)
+    .map((draw) => ({
+      runtimeOrdinal: draw.runtimeOrdinal,
+      expectedId: draw.candidates[0]?.expectedId,
+      comparison: draw.pipelineComparison,
+    }));
+  return {
+    schema: "pocket-card-render/official-vulkan-evidence-coverage@1",
+    requirements: [
+      evidenceUnit(
+        "programDispatch",
+        status === STATUS.EXACT ? STATUS.EXACT : "runtime-required",
+        status === STATUS.EXACT
+          ? "candidate vertex/fragment modules and draw identities are unique"
+          : "candidate program/draw identity is not uniquely closed",
+        status === STATUS.EXACT
+          ? {
+              bestScopeOrdinal: best.ordinal,
+              expectedDrawCount: best.summary.expected,
+              exactDrawCount: best.summary.exact,
+              draws: best.draws.map((draw) => ({
+                runtimeOrdinal: draw.runtimeOrdinal,
+                expectedId: draw.candidates[0].expectedId,
+                portContract: draw.candidates[0].portContract,
+                pipeline: draw.runtime.pipeline,
+                vertex: draw.runtime.vertex,
+                fragment: draw.runtime.fragment,
+              })),
+            }
+          : null,
+      ),
+      evidenceUnit(
+        "pipelineState",
+        "runtime-required",
+        "candidate pass fields are compared draw-by-draw, but Vulkan pNext/backend lowering/render-pass compatibility remain runtime boundaries",
+        pipelineComparisons.length > 0
+          ? {
+            bestScopeOrdinal: best.ordinal,
+            comparedDrawCount: pipelineComparisons.length,
+            draws: pipelineComparisons,
+          }
+          : null,
+      ),
+      evidenceUnit(
+        "descriptorBindings",
+        "runtime-required",
+        "descriptor handles are recorded but active slots are not yet joined to candidate common/material binding contracts",
+      ),
+      evidenceUnit(
+        "uniformValues",
+        "runtime-required",
+        "mapped/device-local buffer contents and push-constant bytes are not reconstructed at each draw",
+      ),
+      evidenceUnit(
+        "attachmentDescriptors",
+        "runtime-required",
+        "framebuffer image/view descriptors are draw-scoped but not yet joined to the candidate RenderTexture contract",
+      ),
+      evidenceUnit(
+        "attachmentLayouts",
+        "runtime-required",
+        "recorded image barriers are draw-scoped but cross-command-buffer execution and per-subresource layouts are not yet closed",
+      ),
+      evidenceUnit(
+        "vertexBindings",
+        "runtime-required",
+        "vertex/index bindings are draw-scoped but submitted payloads and missing-attribute defaults are not yet validated",
+      ),
+      evidenceUnit(
+        "drawSubmission",
+        submitted && successfulPresents > 0 ? STATUS.EXACT : "runtime-required",
+        submitted && successfulPresents > 0
+          ? "matched draw scopes are queue-submitted and followed by a successful present"
+          : "matched submitted draw scope and successful present are required",
+        submitted && successfulPresents > 0
+          ? {
+              matchedScopeCount: matchedScopes.length,
+              successfulPresents,
+              submissions: best?.submissions || [],
+              presents: replay.presents.filter((event) => event.result === 0),
+            }
+          : null,
+      ),
+    ],
+  };
+}
+
+function selectorKey(shaderIdentity, keywords) {
+  return `${shaderIdentity}\0${[...(keywords || [])].sort().join("\0")}`;
+}
+
+function portRouteKey(row) {
+  return [
+    row.selectorId,
+    row.candidateWitnessId,
+    row.subshader,
+    row.pass,
+  ].join(":");
 }
 
 export function stableJson(value) {
@@ -128,6 +287,9 @@ function mapPush(map, key, value) {
 export function replayCapture(events, shaderModules) {
   const pipelines = new Map();
   const framebuffers = new Map();
+  const images = new Map();
+  const imageViews = new Map();
+  const renderPasses = new Map();
   const descriptorSets = new Map();
   const commandStates = new Map();
   const scopes = [];
@@ -140,7 +302,23 @@ export function replayCapture(events, shaderModules) {
   function commandState(handle) {
     let state = commandStates.get(handle);
     if (!state) {
-      state = { pipeline: null, sets: new Map(), dynamicOffsetsLE: null, viewport: null, scissor: null, scope: null };
+      state = {
+        pipeline: null,
+        sets: new Map(),
+        dynamicOffsetsLE: null,
+        viewport: null,
+        scissor: null,
+        vertexBindings: new Map(),
+        indexBinding: null,
+        pushConstants: [],
+        dynamicPipelineValues: {},
+        dynamicFrontStencil: {},
+        dynamicBackStencil: {},
+        observedDynamicStates: new Set(),
+        imageLayouts: new Map(),
+        imageBarriers: [],
+        scope: null,
+      };
       commandStates.set(handle, state);
     }
     return state;
@@ -190,14 +368,37 @@ export function replayCapture(events, shaderModules) {
           renderPass: event.renderPass,
           subpass: event.subpass,
           topology: event.topology,
+          primitiveRestart: event.primitiveRestart,
           polygonMode: event.polygonMode,
           cullMode: event.cullMode,
           frontFace: event.frontFace,
+          depthClamp: event.depthClamp,
+          rasterizerDiscard: event.rasterizerDiscard,
+          depthBias: event.depthBias,
+          depthBiasConstantFactor: event.depthBiasConstantFactor,
+          depthBiasClamp: event.depthBiasClamp,
+          depthBiasSlopeFactor: event.depthBiasSlopeFactor,
+          lineWidth: event.lineWidth,
+          rasterizationSamples: event.rasterizationSamples,
+          sampleShading: event.sampleShading,
+          minSampleShading: event.minSampleShading,
+          alphaToCoverage: event.alphaToCoverage,
+          alphaToOne: event.alphaToOne,
           depthTest: event.depthTest,
           depthWrite: event.depthWrite,
           depthCompareOp: event.depthCompareOp,
+          depthBoundsTest: event.depthBoundsTest,
+          stencilTest: event.stencilTest,
+          frontStencil: event.frontStencil,
+          backStencil: event.backStencil,
+          minDepthBounds: event.minDepthBounds,
+          maxDepthBounds: event.maxDepthBounds,
           blendAttachmentCount: event.blendAttachmentCount,
+          logicOp: event.logicOp,
+          logicOpValue: event.logicOpValue,
+          blendConstants: event.blendConstants,
           dynamicStateCount: event.dynamicStateCount,
+          dynamicStates: event.dynamicStates,
           stages: [],
           blendAttachments: [],
         };
@@ -256,6 +457,39 @@ export function replayCapture(events, shaderModules) {
         if (framebuffer) framebuffer.attachments[event.index] = event.view;
         break;
       }
+      case "image":
+        images.set(event.image, {
+          image: event.image,
+          imageType: event.imageType,
+          format: event.format,
+          extent: event.extent,
+          mipLevels: event.mipLevels,
+          arrayLayers: event.arrayLayers,
+          samples: event.samples,
+          tiling: event.tiling,
+          usage: event.usage,
+          initialLayout: event.initialLayout,
+        });
+        break;
+      case "image-view":
+        imageViews.set(event.view, {
+          view: event.view,
+          image: event.image,
+          viewType: event.viewType,
+          format: event.format,
+          components: event.components,
+          subresourceRange: event.subresourceRange,
+        });
+        break;
+      case "render-pass":
+        renderPasses.set(event.renderPass, {
+          renderPass: event.renderPass,
+          sourceCall: event.sourceCall,
+          attachments: event.attachments,
+          subpasses: event.subpasses,
+          dependencies: event.dependencies,
+        });
+        break;
       case "descriptor-image":
       case "descriptor-buffer": {
         const set = descriptorSets.get(event.set) || new Map();
@@ -305,16 +539,137 @@ export function replayCapture(events, shaderModules) {
       case "cmd-dynamic-offsets":
         commandState(event.commandBuffer).dynamicOffsetsLE = event.valuesLE;
         break;
+      case "cmd-bind-vertex-buffer":
+        commandState(event.commandBuffer).vertexBindings.set(
+          event.binding,
+          {
+            binding: event.binding,
+            buffer: event.buffer,
+            offset: event.offset,
+            size: event.size,
+            stride: event.stride,
+          },
+        );
+        break;
+      case "cmd-bind-index-buffer":
+        commandState(event.commandBuffer).indexBinding = {
+          buffer: event.buffer,
+          offset: event.offset,
+          indexType: event.indexType,
+        };
+        break;
+      case "cmd-push-constants":
+        commandState(event.commandBuffer).pushConstants.push({
+          layout: event.layout,
+          stageFlags: event.stageFlags,
+          offset: event.offset,
+          size: event.size,
+          values: event.values,
+        });
+        break;
+      case "cmd-dynamic-pipeline-state": {
+        const state = commandState(event.commandBuffer);
+        state.dynamicPipelineValues[event.state] = event.value;
+        const dynamicState = {
+          cullMode: 1000267000,
+          frontFace: 1000267001,
+          topology: 1000267002,
+          depthTest: 1000267006,
+          depthWrite: 1000267007,
+          depthCompareOp: 1000267008,
+          stencilTest: 1000267010,
+          lineWidth: 2,
+          blendConstants: 4,
+          rasterizerDiscard: 1000377001,
+          depthBias: 1000377002,
+          primitiveRestart: 1000377004,
+        }[event.state];
+        requireCondition(
+          Number.isInteger(dynamicState),
+          `unknown dynamic pipeline state ${event.state}`,
+        );
+        state.observedDynamicStates.add(dynamicState);
+        break;
+      }
+      case "cmd-dynamic-pipeline-values": {
+        const state = commandState(event.commandBuffer);
+        Object.assign(state.dynamicPipelineValues, event.values);
+        const keys = Object.keys(event.values || {}).sort().join(",");
+        const dynamicState = {
+          "depthBiasClamp,depthBiasConstantFactor,depthBiasSlopeFactor": 3,
+          "maxDepthBounds,minDepthBounds": 5,
+        }[keys];
+        requireCondition(
+          Number.isInteger(dynamicState),
+          `unknown dynamic pipeline value group ${keys}`,
+        );
+        state.observedDynamicStates.add(dynamicState);
+        break;
+      }
+      case "cmd-dynamic-stencil-state": {
+        const state = commandState(event.commandBuffer);
+        if ((event.faceMask & 0x1) !== 0) {
+          Object.assign(state.dynamicFrontStencil, event.values);
+        }
+        if ((event.faceMask & 0x2) !== 0) {
+          Object.assign(state.dynamicBackStencil, event.values);
+        }
+        const keys = Object.keys(event.values || {}).sort();
+        if (keys.some((key) => (
+          ["failOp", "passOp", "depthFailOp", "compareOp"].includes(key)
+        ))) {
+          state.observedDynamicStates.add(1000267011);
+        }
+        if (keys.includes("compareMask")) {
+          state.observedDynamicStates.add(6);
+        }
+        if (keys.includes("writeMask")) {
+          state.observedDynamicStates.add(7);
+        }
+        if (keys.includes("reference")) {
+          state.observedDynamicStates.add(8);
+        }
+        break;
+      }
+      case "cmd-image-barrier": {
+        const state = commandState(event.commandBuffer);
+        const previous = state.imageLayouts.has(event.image)
+          ? state.imageLayouts.get(event.image)
+          : images.get(event.image)?.initialLayout;
+        requireCondition(
+          previous === undefined || previous === event.oldLayout,
+          `image barrier at line ${event._line} old layout differs from recorded command state`,
+        );
+        const barrier = {
+          sourceCall: event.sourceCall,
+          index: event.index,
+          image: event.image,
+          oldLayout: event.oldLayout,
+          newLayout: event.newLayout,
+          srcQueueFamilyIndex: event.srcQueueFamilyIndex,
+          dstQueueFamilyIndex: event.dstQueueFamilyIndex,
+          subresourceRange: event.subresourceRange,
+        };
+        state.imageLayouts.set(event.image, event.newLayout);
+        state.imageBarriers.push(barrier);
+        break;
+      }
       case "cmd-viewport":
         commandState(event.commandBuffer).viewport = {
           index: event.index, x: event.x, y: event.y, width: event.width, height: event.height,
           minDepth: event.minDepth, maxDepth: event.maxDepth,
         };
+        commandState(event.commandBuffer).observedDynamicStates.add(0);
+        commandState(event.commandBuffer).observedDynamicStates
+          .add(1000267003);
         break;
       case "cmd-scissor":
         commandState(event.commandBuffer).scissor = {
           index: event.index, x: event.x, y: event.y, width: event.width, height: event.height,
         };
+        commandState(event.commandBuffer).observedDynamicStates.add(1);
+        commandState(event.commandBuffer).observedDynamicStates
+          .add(1000267004);
         break;
       case "cmd-draw-indexed":
       case "cmd-draw": {
@@ -331,6 +686,46 @@ export function replayCapture(events, shaderModules) {
             })),
           };
         });
+        const framebufferState = framebuffers.get(state.scope.framebuffer);
+        const finalPipeline = pipeline ? {
+          ...pipeline,
+          ...state.dynamicPipelineValues,
+          frontStencil: pipeline.frontStencil
+            ? {
+              ...pipeline.frontStencil,
+              ...state.dynamicFrontStencil,
+            }
+            : Object.keys(state.dynamicFrontStencil).length
+              ? { ...state.dynamicFrontStencil }
+              : null,
+          backStencil: pipeline.backStencil
+            ? {
+              ...pipeline.backStencil,
+              ...state.dynamicBackStencil,
+            }
+            : Object.keys(state.dynamicBackStencil).length
+              ? { ...state.dynamicBackStencil }
+              : null,
+        } : null;
+        const missingDynamicStates = (pipeline?.dynamicStates || [])
+          .filter((value) => !state.observedDynamicStates.has(value));
+        const attachmentDescriptors = (
+          framebufferState?.attachments || []
+        ).map((viewHandle, index) => {
+          const view = imageViews.get(viewHandle) || null;
+          const image = view ? images.get(view.image) || null : null;
+          return {
+            index,
+            viewHandle,
+            view,
+            image,
+            recordedLayout: view
+              ? state.imageLayouts.get(view.image)
+                ?? image?.initialLayout
+                ?? null
+              : null,
+          };
+        });
         state.scope.draws.push({
           ordinal: state.scope.draws.length,
           event: event.event,
@@ -345,20 +740,59 @@ export function replayCapture(events, shaderModules) {
           vertexCount: event.vertexCount ?? null,
           firstVertex: event.firstVertex ?? null,
           firstInstance: event.firstInstance,
-          pipelineState: pipeline ? {
-            topology: pipeline.topology,
-            polygonMode: pipeline.polygonMode,
-            cullMode: pipeline.cullMode,
-            frontFace: pipeline.frontFace,
-            depthTest: pipeline.depthTest,
-            depthWrite: pipeline.depthWrite,
-            depthCompareOp: pipeline.depthCompareOp,
-            blendAttachments: pipeline.blendAttachments,
+          pipelineState: finalPipeline ? {
+            layout: finalPipeline.layout,
+            renderPass: finalPipeline.renderPass,
+            subpass: finalPipeline.subpass,
+            flags: finalPipeline.flags,
+            topology: finalPipeline.topology,
+            primitiveRestart: finalPipeline.primitiveRestart,
+            polygonMode: finalPipeline.polygonMode,
+            cullMode: finalPipeline.cullMode,
+            frontFace: finalPipeline.frontFace,
+            depthClamp: finalPipeline.depthClamp,
+            rasterizerDiscard: finalPipeline.rasterizerDiscard,
+            depthBias: finalPipeline.depthBias,
+            depthBiasConstantFactor:
+              finalPipeline.depthBiasConstantFactor,
+            depthBiasClamp: finalPipeline.depthBiasClamp,
+            depthBiasSlopeFactor: finalPipeline.depthBiasSlopeFactor,
+            lineWidth: finalPipeline.lineWidth,
+            rasterizationSamples: finalPipeline.rasterizationSamples,
+            sampleShading: finalPipeline.sampleShading,
+            minSampleShading: finalPipeline.minSampleShading,
+            alphaToCoverage: finalPipeline.alphaToCoverage,
+            alphaToOne: finalPipeline.alphaToOne,
+            depthTest: finalPipeline.depthTest,
+            depthWrite: finalPipeline.depthWrite,
+            depthCompareOp: finalPipeline.depthCompareOp,
+            depthBoundsTest: finalPipeline.depthBoundsTest,
+            stencilTest: finalPipeline.stencilTest,
+            frontStencil: finalPipeline.frontStencil,
+            backStencil: finalPipeline.backStencil,
+            minDepthBounds: finalPipeline.minDepthBounds,
+            maxDepthBounds: finalPipeline.maxDepthBounds,
+            logicOp: finalPipeline.logicOp,
+            logicOpValue: finalPipeline.logicOpValue,
+            blendConstants: finalPipeline.blendConstants,
+            dynamicStates: finalPipeline.dynamicStates,
+            observedDynamicStates:
+              [...state.observedDynamicStates].sort((a, b) => a - b),
+            missingDynamicStates,
+            blendAttachments: finalPipeline.blendAttachments,
           } : null,
+          renderPassState:
+            renderPasses.get(state.scope.renderPass) || null,
+          attachmentDescriptors,
+          imageBarriers: [...state.imageBarriers],
           viewport: state.viewport,
           scissor: state.scissor,
           dynamicOffsetsLE: state.dynamicOffsetsLE,
           descriptorSets: boundSets,
+          vertexBindings: [...state.vertexBindings.values()]
+            .sort((left, right) => left.binding - right.binding),
+          indexBinding: state.indexBinding,
+          pushConstants: [...state.pushConstants],
         });
         break;
       }
@@ -509,13 +943,259 @@ export function buildExpectedDraws({ scene, glbDraws, officialEvidence }) {
   });
 }
 
+export function buildCandidateExpectedDraws({
+  scene,
+  glbDraws,
+  materialProgramInventory,
+  programPortContract,
+  programPortManifests,
+}) {
+  requireCondition(
+    materialProgramInventory?.schema
+      === "pocket-card-render/official-material-program-inventory@4",
+    "candidate Material program inventory has an unsupported schema",
+  );
+  const graph = materialProgramInventory.proofGraph;
+  requireCondition(
+    Array.isArray(graph?.materials)
+      && Array.isArray(graph?.selectors),
+    "candidate Material program proof graph is incomplete",
+  );
+  requireCondition(
+    programPortContract?.schema
+      === "pocket-card-render/candidate-program-port-contract@1",
+    "candidate program port contract has an unsupported schema",
+  );
+  requireCondition(
+    programPortContract.inventory?.inventorySha256,
+    "candidate program port contract has no inventory identity",
+  );
+  requireCondition(
+    programPortContract.inventory?.proofGraphSha256
+      === materialProgramInventory.digests?.proofGraphSha256
+      && programPortContract.inventory?.portIndexSha256
+        === materialProgramInventory.digests?.portIndexSha256,
+    "candidate program port contract differs from the Material inventory",
+  );
+  const formalPorts = new Map();
+  for (const port of programPortContract.ports || []) {
+    const key = portRouteKey(port);
+    requireCondition(
+      !formalPorts.has(key),
+      `candidate formal port identity is duplicated: ${key}`,
+    );
+    formalPorts.set(key, port);
+  }
+  const runtimePorts = new Map();
+  for (const port of programPortContract.runtimeBound || []) {
+    const key = portRouteKey(port);
+    requireCondition(
+      !runtimePorts.has(key),
+      `candidate runtime port identity is duplicated: ${key}`,
+    );
+    runtimePorts.set(key, port);
+  }
+  const materialByIdentity = new Map(
+    graph.materials.map((material) => [material.identity, material]),
+  );
+  const selectorByKey = new Map();
+  for (const selector of graph.selectors) {
+    const key = selectorKey(selector.shaderIdentity, selector.keywords);
+    requireCondition(
+      !selectorByKey.has(key),
+      `candidate selector key is duplicated: ${selector.shaderIdentity}`,
+    );
+    selectorByKey.set(key, selector);
+  }
+  const geometry = new Map();
+  for (const draw of glbDraws) {
+    mapPush(geometry, draw.materialName, draw.indexCount);
+  }
+  const expected = [];
+  for (const draw of scene.officialDraws || []) {
+    const materialName = draw.materialName;
+    const recipe = scene.materials?.[materialName];
+    requireCondition(
+      recipe,
+      `candidate scene draw has no Material recipe: ${materialName}`,
+    );
+    const material = materialByIdentity.get(draw.materialIdentity);
+    requireCondition(
+      material,
+      `candidate inventory has no Material ${draw.materialIdentity}`,
+    );
+    requireCondition(
+      material.name === materialName
+        && material.shaderIdentity === draw.shaderIdentity
+        && recipe.official?.material === draw.materialIdentity
+        && recipe.official?.shader === draw.shaderIdentity
+        && sameStringSet(material.keywords, recipe.official?.validKeywords),
+      `candidate scene Material identity differs from official inventory: ${materialName}`,
+    );
+    const selector = selectorByKey.get(
+      selectorKey(material.shaderIdentity, material.keywords),
+    );
+    requireCondition(
+      selector,
+      `candidate inventory has no selector for ${materialName}`,
+    );
+    const executions = selector.staticExecutables || [];
+    requireCondition(
+      executions.length > 0,
+      `candidate selector has no static executable: ${selector.selectorId}`,
+    );
+    const indexCounts = [
+      ...new Set(geometry.get(materialName) || []),
+    ].sort((a, b) => a - b);
+    for (const execution of executions) {
+      const modules = execution.executable?.modules || [];
+      const fragment = modules.find((module) => module.stage === "fragment");
+      const vertex = modules.find((module) => module.stage === "vertex");
+      requireCondition(
+        fragment && vertex,
+        `candidate executable has incomplete stages: ${selector.selectorId}`,
+      );
+      const candidate = (selector.candidates || []).find((row) => (
+        row.selectorWitnessId === execution.candidateWitnessId
+        && row.subshader === execution.subshader
+        && row.pass === execution.pass
+      ));
+      requireCondition(
+        candidate,
+        `candidate executable has no selector witness: ${selector.selectorId}`,
+      );
+      const runtimeVariants = selector.runtimeEngineVariantBoundary
+        ? []
+        : [{
+          compiledKeywords: [...(selector.keywords || [])],
+          keywordIndices: [...(candidate.keywordIndices || [])],
+          blobIndex: candidate.programBlobIndex,
+          fragmentSpvSha256: fragment.sha256,
+          fragmentSpvBytes: fragment.byteSize,
+          fragmentSpecializationCount: null,
+          vertexSpvSha256: vertex.sha256,
+          vertexSpvBytes: vertex.byteSize,
+          vertexSpecializationCount: null,
+          shaderBundleSha256: material.sourceBundleSha256,
+        }];
+      const route = {
+        selectorId: selector.selectorId,
+        candidateWitnessId: execution.candidateWitnessId,
+        subshader: execution.subshader,
+        pass: execution.pass,
+      };
+      const routeKey = portRouteKey(route);
+      const formalPort = formalPorts.get(routeKey);
+      const runtimePort = runtimePorts.get(routeKey);
+      if (selector.runtimeEngineVariantBoundary) {
+        requireCondition(
+          runtimePort && !formalPort,
+          `candidate runtime selector has no unique port contract: ${routeKey}`,
+        );
+      } else {
+        requireCondition(
+          formalPort && !runtimePort,
+          `candidate formal selector has no unique port contract: ${routeKey}`,
+        );
+        requireCondition(
+          formalPort.semanticExecutableId
+            === execution.executable.semanticExecutableId
+            && formalPortIdentityMatches(
+              formalPort.officialIdentityFields,
+              execution.executable.identityFields,
+            ),
+          `candidate formal port identity differs from inventory: ${routeKey}`,
+        );
+      }
+      const portContract = selector.runtimeEngineVariantBoundary
+        ? {
+          kind: "engine-runtime-variant-boundary",
+          ...route,
+          shaderIdentity: runtimePort.shaderIdentity,
+          boundary: runtimePort.boundary,
+        }
+        : {
+          kind: "formal-port",
+          ...route,
+          semanticExecutableId: formalPort.semanticExecutableId,
+          manifest: formalPort.manifest,
+          manifestSha256: formalPort.manifestSha256,
+          officialIdentityFields: formalPort.officialIdentityFields,
+        };
+      let pipelineExpectation = null;
+      if (formalPort) {
+        const manifestArtifact = programPortManifests?.get(routeKey);
+        requireCondition(
+          manifestArtifact?.manifest
+            && manifestArtifact.sha256 === formalPort.manifestSha256,
+          `candidate port manifest bytes are absent or stale: ${routeKey}`,
+        );
+        const portManifest = manifestArtifact.manifest;
+        requireCondition(
+          portRouteKey(portManifest.official_selector || {}) === routeKey
+            && formalPortIdentityMatches(
+              formalPort.officialIdentityFields,
+              portManifest.official_executable_identity,
+            )
+            && portManifest.official_pass_runtime?.source_sha256
+              === formalPort.officialIdentityFields.passStateSha256,
+          `candidate port manifest identity differs: ${routeKey}`,
+        );
+        pipelineExpectation = compileCandidateGuestPipelineExpectation({
+          manifest: portManifest,
+          recipe,
+        });
+      }
+      expected.push({
+        expectedId:
+          `${draw.rendererIdentity}#${draw.materialSlot}`
+          + `@${execution.subshader}/${execution.pass}`,
+        drawId:
+          `${draw.drawId || `${draw.rendererIdentity}#${draw.materialSlot}`}`
+          + `@${execution.subshader}/${execution.pass}`,
+        go: draw.go || null,
+        materialName,
+        materialSlot: draw.materialSlot,
+        rendererPathId: String(draw.rendererIdentity).split(":").at(-1),
+        shader: materialProgramInventory.proofGraph.shaders
+          ?.find(({ identity }) => identity === material.shaderIdentity)
+          ?.name || material.shaderIdentity,
+        fragmentSpvSha256: fragment.sha256,
+        fragmentSpvBytes: fragment.byteSize,
+        materialKeywords: [...(material.keywords || [])],
+        runtimeVariants,
+        queue: Number.isFinite(recipe.queue) ? recipe.queue : null,
+        indexCounts,
+        category: selector.runtimeEngineVariantBoundary
+          ? "engine-runtime-variant-boundary"
+          : "exact-core",
+        selectorId: selector.selectorId,
+        candidateWitnessId: execution.candidateWitnessId,
+        subshader: execution.subshader,
+        pass: execution.pass,
+        portContract,
+        pipelineExpectation,
+      });
+    }
+  }
+  requireCondition(expected.length > 0, "candidate scene has no expected draws");
+  return expected;
+}
+
 function runtimeProgramMatches(draw, variant) {
   return variant.fragmentSpvSha256 === draw.fragment?.sha256
     && variant.fragmentSpvBytes === draw.fragment?.codeSize
-    && variant.fragmentSpecializationCount === draw.fragment?.specializationCount
+    && (
+      variant.fragmentSpecializationCount === null
+      || variant.fragmentSpecializationCount
+        === draw.fragment?.specializationCount
+    )
     && variant.vertexSpvSha256 === draw.vertex?.sha256
     && variant.vertexSpvBytes === draw.vertex?.codeSize
-    && variant.vertexSpecializationCount === draw.vertex?.specializationCount;
+    && (
+      variant.vertexSpecializationCount === null
+      || variant.vertexSpecializationCount === draw.vertex?.specializationCount
+    );
 }
 
 function localCandidates(draw, expectedDraws) {
@@ -582,6 +1262,8 @@ export function solveDrawAssignments(runtimeDraws, expectedDraws, solutionLimit 
         shader: match.shader,
         queue: match.queue,
         category: match.category,
+        portContract: match.portContract,
+        pipelineExpectation: match.pipelineExpectation,
         runtimeVariants: matchingRuntimeVariants(draw, match).map((variant) => ({
           compiledKeywords: variant.compiledKeywords,
           keywordIndices: variant.keywordIndices,
@@ -641,6 +1323,12 @@ export function importOfficialVulkanCapture({
   scenePath,
   glbPath,
   officialEvidence,
+  materialProgramInventory,
+  materialProgramInventorySha256 = null,
+  programPortContract,
+  programPortContractSha256 = null,
+  programPortManifests,
+  programPortManifestSetSha256 = null,
   decryptedRoot = DEFAULT_DECRYPTED_ROOT,
 }) {
   const absoluteCaptureDir = path.resolve(captureDir);
@@ -650,12 +1338,62 @@ export function importOfficialVulkanCapture({
   const capture = readCaptureEvents(absoluteCaptureDir);
   const shaderModules = indexShaderModules(absoluteCaptureDir, capture.events);
   const replay = replayCapture(capture.events, shaderModules);
-  const evidence = officialEvidence || runOfficialExtractor(decryptedRoot);
   const glbDraws = parseGlbPrimitiveDraws(absoluteGlbPath);
-  const expectedDraws = buildExpectedDraws({ scene, glbDraws, officialEvidence: evidence });
+  const evidence = materialProgramInventory
+    ? null
+    : officialEvidence || runOfficialExtractor(decryptedRoot);
+  if (materialProgramInventory) {
+    requireCondition(
+      typeof materialProgramInventorySha256 === "string"
+        && materialProgramInventorySha256.length === 64,
+      "candidate Material inventory SHA-256 is required",
+    );
+    requireCondition(
+      programPortContract?.inventory?.inventorySha256
+        === materialProgramInventorySha256,
+      "candidate port contract inventory SHA-256 differs",
+    );
+    requireCondition(
+      typeof programPortContractSha256 === "string"
+        && programPortContractSha256.length === 64,
+      "candidate program port contract SHA-256 is required",
+    );
+    requireCondition(
+      typeof programPortManifestSetSha256 === "string"
+        && programPortManifestSetSha256.length === 64,
+      "candidate program port manifest-set SHA-256 is required",
+    );
+  }
+  const expectedDraws = materialProgramInventory
+    ? buildCandidateExpectedDraws({
+      scene,
+      glbDraws,
+      materialProgramInventory,
+      programPortContract,
+      programPortManifests,
+    })
+    : buildExpectedDraws({
+      scene,
+      glbDraws,
+      officialEvidence: evidence,
+    });
   const matchedScopes = matchCardScopes(replay.scopes, expectedDraws);
   const scopeReports = matchedScopes.map((scope) => {
     const solved = solveDrawAssignments(scope.draws, expectedDraws);
+    const draws = solved.rows.map((draw) => {
+      const expectation = draw.status === STATUS.EXACT
+        ? draw.candidates[0]?.pipelineExpectation
+        : null;
+      return {
+        ...draw,
+        pipelineComparison: expectation
+          ? compareCandidateGuestPipelineState(
+            expectation,
+            draw.runtime.pipelineState,
+          )
+          : null,
+      };
+    });
     return {
       ordinal: scope.ordinal,
       commandBuffer: scope.commandBuffer,
@@ -666,8 +1404,8 @@ export function importOfficialVulkanCapture({
       submissions: scope.submissions,
       assignmentSolutions: solved.solutions,
       assignmentSearchTruncated: solved.truncated,
-      summary: summarizeMatches(solved.rows, expectedDraws),
-      draws: solved.rows,
+      summary: summarizeMatches(draws, expectedDraws),
+      draws,
       notObserved: solved.notObserved,
     };
   });
@@ -676,6 +1414,12 @@ export function importOfficialVulkanCapture({
   const status = !best ? STATUS.NOT_OBSERVED
     : best.summary.mismatch > 0 || best.notObserved.length > 0 ? STATUS.MISMATCH
       : best.summary.unresolved > 0 ? STATUS.UNRESOLVED : STATUS.EXACT;
+  const evidenceCoverage = buildEvidenceCoverage({
+    status,
+    replay,
+    matchedScopes,
+    best,
+  });
   return {
     schema: IMPORT_SCHEMA,
     status,
@@ -691,6 +1435,20 @@ export function importOfficialVulkanCapture({
       glb: path.relative(ROOT, absoluteGlbPath).replaceAll("\\", "/"),
       glbSha256: sha256(fs.readFileSync(absoluteGlbPath)),
       card: scene.card?.id || scene.card?.illId || scene.card,
+      officialEvidence: materialProgramInventory
+        ? {
+          kind: "candidate-material-program-inventory",
+          sha256: materialProgramInventorySha256,
+          proofGraphSha256:
+            materialProgramInventory.digests?.proofGraphSha256 || null,
+          portIndexSha256:
+            materialProgramInventory.digests?.portIndexSha256 || null,
+          programPortContractSha256,
+          programPortManifestSetSha256,
+        }
+        : {
+          kind: "legacy-official-mrt-extractor",
+        },
     },
     expectedDraws: expectedDraws.map((draw) => ({
       expectedId: draw.expectedId,
@@ -704,6 +1462,8 @@ export function importOfficialVulkanCapture({
       fragmentSpvSha256: draw.fragmentSpvSha256,
       fragmentSpvBytes: draw.fragmentSpvBytes,
       runtimeVariantCount: draw.runtimeVariants.length,
+      portContract: draw.portContract || null,
+      pipelineExpectation: draw.pipelineExpectation || null,
     })),
     capture: {
       renderPassScopes: replay.scopes.length,
@@ -732,6 +1492,7 @@ export function importOfficialVulkanCapture({
       exactCore: 0,
       exactCoreExpected: expectedDraws.filter((draw) => draw.category === "exact-core").length,
     },
+    evidenceCoverage,
     scopes: scopeReports,
   };
 }

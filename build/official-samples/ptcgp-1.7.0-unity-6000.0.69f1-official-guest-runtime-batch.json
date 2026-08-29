@@ -1,0 +1,853 @@
+{
+  "schema": "pocket-card-render/candidate-official-guest-runtime-batch@1",
+  "schemaVersion": 1,
+  "candidate": {
+    "selection": "build/official-samples/candidate.json",
+    "manifest": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-candidate.json",
+    "sampleId": "ptcgp-1.7.0-unity-6000.0.69f1-candidate",
+    "sampleManifestSha256": "5a35645829c45b8dde0fb131b8b9925c744e537df4d4d36cf165a7619b92fc9f",
+    "canonicalCorpusSha256": "8e917e28f6cfd292c60068d73298c5c554fa398ec19e164d45cea5585f813e51",
+    "gameVersion": "1.7.0",
+    "unityVersion": "6000.0.69f1"
+  },
+  "scope": {
+    "status": "runtime-required",
+    "denominator": "all nine cards in the candidate canonicalCorpus",
+    "createsCaptureData": false,
+    "launchesDeviceBrowserOrCaptureTool": false,
+    "fidelityContribution": 0,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "inputs": {
+    "canonicalCorpus": {
+      "logicalPath": "build/canonical-corpus.ptcgp-1.7.0-unity-6000.0.69f1.json",
+      "byteLength": 2358,
+      "sha256": "8e917e28f6cfd292c60068d73298c5c554fa398ec19e164d45cea5585f813e51"
+    },
+    "canonicalScenes": {
+      "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-canonical-scenes.json",
+      "byteLength": 15808,
+      "sha256": "0e2468f0a1cc1860c3acf613eca6830d88f2230a9da49c6cceca3dbfdaa63a5c"
+    },
+    "officialEvidence": {
+      "materialProgramInventory": {
+        "logicalSourceId": "candidate-material-program-inventory-full",
+        "byteLength": 33986092,
+        "sha256": "e12ea7dd916e95f8e6b587fc1f2afd94f61d449603127b58ceaab2ff23d59fff",
+        "proofGraphSha256": "65acde2d29ba8c255f02f9a1eaf4e4d8cdeff9eeedf3d42b89a527cf8d99fa1a",
+        "portIndexSha256": "2c8231200339ab77a1dc191d26aa2ce83aaaceba7c97d7726d08b3f3f9f8dc2b"
+      },
+      "programPortContract": {
+        "logicalPath": "build/official-samples/ptcgp-1.7.0-unity-6000.0.69f1-program-port-contract.json",
+        "byteLength": 231084,
+        "sha256": "0e5ad3a796050b4b26bf6730eed0cd5de61d1ab2b23fec31738abf76ca342d3d"
+      },
+      "programPortManifests": {
+        "denominator": 78,
+        "manifestSetSha256": "f2e19d91662e293026cc1dcee85ef590670e9cf872e6ac32021c5ebfdccf81e5",
+        "manifests": [
+          {
+            "route": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d:1cd97cd5a35e5f321f3469d6a130766f65f257db33b77e26e1e68131f326b327:0:0",
+            "logicalPath": "candidate-port:static-reuse/simple_premultiply_hologram_uniforms.json",
+            "byteLength": 32397,
+            "sha256": "e3f0033ebfa4b628e254875cd07bedea96de8911afcdcb4fa090393d1e9341aa"
+          },
+          {
+            "route": "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2:e6df7b870ad8ef1e3593613bfca11db3f078ae4f3cd3c6068fd5b763a093cf6e:0:0",
+            "logicalPath": "candidate-port:static-reuse/transparent_ur_oklab_uniforms.json",
+            "byteLength": 62539,
+            "sha256": "e09dd61b168f91e3315f843ae6541af41edfc0bebf2f47b5bbf4531341fa2bab"
+          },
+          {
+            "route": "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2:e807f853961e6b671ea9d523f6b0b29b481a3bcf306eb7dff13876193a81e1e2:0:0",
+            "logicalPath": "candidate-port:static-reuse/transparent_hologram_tuning_uniforms.json",
+            "byteLength": 34589,
+            "sha256": "21278d316760e0f129cf177e53a4f532b7f822b4e0061957c20b9142a2fa40e6"
+          },
+          {
+            "route": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039:f761d9a4a37683acf07b2a7ad3938f12cb0b9feac49cf1881b5ba0ad7999ff3d:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff1_uniforms.json",
+            "byteLength": 24943,
+            "sha256": "9673e83391d2dc0155703745ccf2af2dfa81bb0e79195d0720ec0aaab3b3a8fd"
+          },
+          {
+            "route": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82:57263e503607d12bcef0b5134fcb84c3a4e89a25c8a5994baf5da09a7155899c:0:0",
+            "logicalPath": "candidate-port:static-reuse/circular_moving_p0_uniforms.json",
+            "byteLength": 37640,
+            "sha256": "d414acfb25f29593324de8a884efcc873b3174cc1b6226db0c7b9620b8ba4add"
+          },
+          {
+            "route": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82:5ee5767765fd56052cc3a68092d589e907cab6b9672122dc9f7990590e4c3826:0:1",
+            "logicalPath": "candidate-port:static-reuse/circular_moving_p1_uniforms.json",
+            "byteLength": 38434,
+            "sha256": "54ab005af9af0ebb38cbfd9cc576078083b4aa42b1d633a57a211d8d4a79851a"
+          },
+          {
+            "route": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6:13354238319705038515caab8f3798abbfe71ba27c6d1dda65ec174ed8812b9d:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_marble_magnetic_uniforms.json",
+            "byteLength": 48582,
+            "sha256": "298eac1e8b228678d173c9e8c772c2c62e9f038e1a95ec99f3a1c487f8b01725"
+          },
+          {
+            "route": "223dc2f97532cc74be6effcc35c7cc8cbb88e974b25206a26e9a730a4f7ebddb:7d7886ba1d8e288262cbf953f8ba6212dead481bd68e7bc48dfc50b7db2d056f:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff2_uniforms.json",
+            "byteLength": 24943,
+            "sha256": "9e20a131733845a318f24ad37a27e35dc0d106cb114153ac3c45384e6407cf9c"
+          },
+          {
+            "route": "23fba2d0f26091a424cc0b5b83a45dcf03068d57a8abf2d01ac9cd2858406637:7a9a5e243a280814db54afca957490783e9ca0c67d57d2fc30f455ca0637ae28:0:0",
+            "logicalPath": "candidate-port:static-reuse/logo_opaque_uniforms.json",
+            "byteLength": 20537,
+            "sha256": "26e76f2fd0a3bd8e6cfd4bbf0ff56457d932625d04e783ab7251c8cb9e726e16"
+          },
+          {
+            "route": "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8:d6ac9d1cdb3ad7fdf6c485d868d7bb0e937be8774385d701d87d553ec0d1d509:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_hologram_tuning_uniforms.json",
+            "byteLength": 33416,
+            "sha256": "766c69e3e0f7e5963883e590eb1de75e0de421b1cb5e4769f98c3e4846a34cf3"
+          },
+          {
+            "route": "32560a48adec5d08001f64750c1751d6e1fe95b84346c4907463cbaa2f1e2b1a:07308a831cd269183292df8cf58a72eef32536821d7708ef471bb585d5fe4cfb:0:0",
+            "logicalPath": "candidate-port:static-reuse/dynamic_ui_text_uniforms.json",
+            "byteLength": 22119,
+            "sha256": "43f307d9c3f36a479d07b81c72f24ebb62bfc9366e885f3a214b21b87efda0ad"
+          },
+          {
+            "route": "3dddf11a1dea4aad910b128a44787a6a4e5a0300c5341144d9af74b9b21421a6:1e1d58e03fc306568efea04b18265782b7d53280e78291d532f5fef11766b1a9:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_immersive_ui_uniforms.json",
+            "byteLength": 34681,
+            "sha256": "bc1e22531852178e9848bf50c19f51c63267a930b9ebab36e5a97543b85d411c"
+          },
+          {
+            "route": "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f:538a93d9cd74817bd77e3c0310f03e2cb3a3755efd65463425a4d9c1b77ca351:0:0",
+            "logicalPath": "candidate-port:static-reuse/ur_plate_uniforms.json",
+            "byteLength": 41001,
+            "sha256": "dd896b883b215207c617dc294e79fd0c44a1f1b6128030bdbae2470b6f8cc117"
+          },
+          {
+            "route": "418f6be89856a2598af04e8a57b44b7d6221f91b6423ba8fef2b3537f4fc863c:75f2d1d70c638ecd63a148aac0a72b28bacf93a1b65de5e870238b943ed91990:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff3_uniforms.json",
+            "byteLength": 24944,
+            "sha256": "3991657ef0eb2fccc8034f7526e1cd7c938d40d9fd086955c9d35fc29aac2917"
+          },
+          {
+            "route": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060:6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111:0:0",
+            "logicalPath": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_default_uniforms.json",
+            "byteLength": 53472,
+            "sha256": "21b4553004e4e02330ec8e0a82a66ad8b5ba67ccc4a96764bfeb30f0d85656f8"
+          },
+          {
+            "route": "43d3e5f021a5caec0cdbeddecd49965ee155874fb2e5bf1e9c463480e808df90:3dbd5d400239f3449eaf52b67da091fbff558ee4b85a7411a1a4ec80c8592ef3:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff3_grad_uniforms.json",
+            "byteLength": 25773,
+            "sha256": "c6252211a18f217890c1bb71c4984231451c85cf0d953c726788318b74496eec"
+          },
+          {
+            "route": "4416645d0bbeb3d037161525bdcf9aa7ed9e6b39e284c6ed446f09184b38532f:f47a5ad699a5afd82c35500ea9e3a4fc76ac9dc77bc32174e146b89c2b77df9f:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_uniforms.json",
+            "byteLength": 25181,
+            "sha256": "0dab92e3101c9da351ef2cfb845eee2d405b1e2d1bf07e9b7a08e6eff08263a3"
+          },
+          {
+            "route": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2:0beddb479416af4b577bea5b2f002ce5d3f030606e4f99b45559fc7287b42b3b:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_marble_outside_relax_uniforms.json",
+            "byteLength": 51542,
+            "sha256": "53635d5d94c6a6d61af19d348ddd850569079562d860936b814fcec7851517f6"
+          },
+          {
+            "route": "47c914ef7efdabdb9ee66f2512db54ba7ce752cb00d43456e15a8c4a6a5558df:b4ad73ce82376afafa3f7c8a4834bf540e5fcbb03cb5856c05b0a353d995515b:0:0",
+            "logicalPath": "candidate-port:static-reuse/shadowbox_simple_opaque_uniforms.json",
+            "byteLength": 20852,
+            "sha256": "9cfef26b53b16ff28b2b6c0ad6c98468657cd4b2663cc0e41f7a6a758ffc0d62"
+          },
+          {
+            "route": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4:d98b5f95ce632832d413ce274a76375259253995c575e91dc315c43c55ce49c6:0:0",
+            "logicalPath": "candidate-port:static-reuse/glitter_uniforms.json",
+            "byteLength": 35862,
+            "sha256": "3de74a6607c4a08082847e52f7610efd9b409f98d7dc7d590850873d37b58aed"
+          },
+          {
+            "route": "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f:b07f89174c8b04ccdc3779586971bd39884c7f681c9d4f2b0ddaa3133836028a:0:0",
+            "logicalPath": "candidate-port:static-reuse/dynamic_ui_text_alpha_uniforms.json",
+            "byteLength": 22201,
+            "sha256": "42443ebe7ce84c85dfcb86e548312aefb3c1d8e833748056f6a4075f3fbbb0cc"
+          },
+          {
+            "route": "4d69b686fb131f9a98fd78a7a9954d02acece8221a1d6c859050903f5492ba5e:690f2f2e3dffda52a27b7c3bd153b100947149a7122a4d3256d94f4897258381:0:0",
+            "logicalPath": "candidate-port:static-reuse/simple_transparent_uniforms.json",
+            "byteLength": 20297,
+            "sha256": "ae96afbabb185ddbe192a498759053a75b1926c92d28a07e0e569697a08bb1f5"
+          },
+          {
+            "route": "4eddbe42b3aad7a33c0087927e44803a97149e772bbec502e662d535be411cf9:f723f602d010d47d0d9d63b344f2575dfab34145921e1ee9a02fc55f0a231edf:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_cardwindow_uniforms.json",
+            "byteLength": 25392,
+            "sha256": "2baf32de3bfd32bbcf2096805d7e81cdccfb1529f26c8e1765c60065c340c6b6"
+          },
+          {
+            "route": "5086e6fa4eca3e1e047f50850e5baf5109dffc922add1f24fe5e8cc7b92b5e49:42ec060b34f86564fa8de992bdcee366fde7e7f3c47995faa2efa2937f140d8c:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_emit_mask_uniforms.json",
+            "byteLength": 25779,
+            "sha256": "673528e39608280e79b268093c0758cfe31ca268a1117ccba30f08575d044895"
+          },
+          {
+            "route": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02:f2fd1d27774133c221aa11f70dae2308c7d5220cbce65d7e24d9a25c2abd3aa8:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_emit_uniforms.json",
+            "byteLength": 31746,
+            "sha256": "54ae4aeca48b33524000a9760202560dbf4bd58702e52f7fa240414cff06011c"
+          },
+          {
+            "route": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0:a75619c6701832240e109b72ce57f3a3cf73c9efb710ac33b5cd386a08d189a2:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_metal_uniforms.json",
+            "byteLength": 30045,
+            "sha256": "472b40dc760f0c1802c2b5a0b19aa13fda2e41f8ffd5dd396443c68fc58dd3d1"
+          },
+          {
+            "route": "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d:aa63b45cf67b563e5593d688fe45a2a0ceaa816c2a13b58b5f7f4b069a33c0eb:0:0",
+            "logicalPath": "candidate-port:static-reuse/simple_opaque_hologram_tuning_holo_alpha_uniforms.json",
+            "byteLength": 34478,
+            "sha256": "652816488eec56becf629a650e959e4cb5252ced68b96b011ce3beca1bb53185"
+          },
+          {
+            "route": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2:d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249:0:0",
+            "logicalPath": "candidate-port:card-aura/card_aura_col4_uniforms.json",
+            "byteLength": 43919,
+            "sha256": "9e98c24f5f1c9843d081f8c803a4ef92f867d6fe2647c747670372a576acf340"
+          },
+          {
+            "route": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c:02601f6c0b76c782d762a81ee2722f710f3557d9903100107ea6ba19dae4aa6b:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_immersive_uniforms.json",
+            "byteLength": 42542,
+            "sha256": "18b370c97d67f51260fa2fd9f5c64e4f05c3d1ae161ffd86b4446a104847a2db"
+          },
+          {
+            "route": "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c:13cd8a2030afc8eced7ca31c097c1c2491e9c512c133a0530e5e6b82ff95fab2:0:0",
+            "logicalPath": "candidate-port:static-reuse/hologram_flip_outline_uniforms.json",
+            "byteLength": 50175,
+            "sha256": "b017cbdf215bb055832105602eef18b43addd87b59325fc7fec91e4ce4fc3470"
+          },
+          {
+            "route": "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1:0ec9c9a3f1124b5af74f330032d5399964b2120d10e4f35ec23afaac2e61ba31:0:0",
+            "logicalPath": "candidate-port:static-reuse/transparent_hologram_uniforms.json",
+            "byteLength": 43613,
+            "sha256": "f41961921354730876308f9e9b11d03ee56abdc46a706896edd1ad2184ad0a28"
+          },
+          {
+            "route": "66a7cb5f20f3617a45802722879bae65f2a18e2824167bb4e0a124a8d240bd9e:9da5b140cb5e1202f1a013afbefbc7ee72d6bc07b99c4e40b5efeb7e706b0715:0:0",
+            "logicalPath": "candidate-port:static-reuse/ur_bg_hologram_uniforms.json",
+            "byteLength": 38535,
+            "sha256": "2e4cb12984d6e51fa5cd83e485ac4c63fe4dd8d99b10d5757d3e787899501bd5"
+          },
+          {
+            "route": "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64:9c87599aa5cfd41057c34d24b948c3cb90905ef8dee996419363dc6c4e4e6565:0:0",
+            "logicalPath": "candidate-port:static-reuse/opaque_shadowbox_hologram_tuning_uniforms.json",
+            "byteLength": 41969,
+            "sha256": "02e51eab9a98ed490dd8d1f8b0b961cc9a92603ff79cc31e5a8ff236f0da9700"
+          },
+          {
+            "route": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24:a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5:0:0",
+            "logicalPath": "candidate-port:card-aura/card_aura_base_uniforms.json",
+            "byteLength": 42846,
+            "sha256": "48e8ccc32083898ebd308e943b696c332484bed945d757807bb2f3e1f4e1a925"
+          },
+          {
+            "route": "6b15110734185fce59434bc48692e2daa7801971bf0065926698b465b50c1977:fc6e66cfccfbddc5250c7b0dde8f011470e071bdfd978d835e91a7acfc44fcf9:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_cardfull_uniforms.json",
+            "byteLength": 25382,
+            "sha256": "432babe46307aa3a23dcbbd33212807234cde785f29527227b80fbb89ccf72b8"
+          },
+          {
+            "route": "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380:15ac8df77b789704c1db407bd67278e6bcde49187f49089bde3734930089009e:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_hologram_tuning_uniforms.json",
+            "byteLength": 36667,
+            "sha256": "609f694ac5f2aa0aaf5aff9dd5efc6e46fb814e24f75d633d54ea3f3cf950308"
+          },
+          {
+            "route": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4:c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41:0:0",
+            "logicalPath": "candidate-port:shadow-holograms/card_parallax_hologram_shadow_layers_uniforms.json",
+            "byteLength": 54930,
+            "sha256": "a119d971f155fd46062943d1448263c4b28d207f7ef4c7256240c559520da3f5"
+          },
+          {
+            "route": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0:75f46d7da4425de6135bc6e03e3c38ae00a68147a89b3e2f71193350cfad5b9f:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_illust_double_texture_uniforms.json",
+            "byteLength": 45199,
+            "sha256": "70fd5f7e87f3e69cf091edd1485c974a5b6038680e4532a67d6f9d82e6711770"
+          },
+          {
+            "route": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a:bbec92ec0d4596560b6385f569c173596185a6454f43644ca4663993e350b095:0:0",
+            "logicalPath": "candidate-port:static-reuse/parallax_ur_uniforms.json",
+            "byteLength": 26275,
+            "sha256": "8285fed2193a0f60dc7640bc8ee0b213fefcad4710db36afd9976a75098d4004"
+          },
+          {
+            "route": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c:7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1:0:0",
+            "logicalPath": "candidate-port:mega-rr/shadowbox_flash_uniforms.json",
+            "byteLength": 39181,
+            "sha256": "d1fa59725a2c02df5f0dbf1db47bffcb0b665cfb140ff2aae6035e2646a598a0"
+          },
+          {
+            "route": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931:6fb618e8f04e0c4347ac20782088b8786b68d1b565582cd977c05792e8d26c3f:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_matcap_lighting_uniforms.json",
+            "byteLength": 29923,
+            "sha256": "7d75c4a33c6982e7915e55a127a1cfa74d067a7885cf0c4786687dd175323598"
+          },
+          {
+            "route": "871457e8f364eeed14f609dc84a84b493b61ea71128a66b8849c721e7ae5e6d4:4d5b63dab94cbd1972f9bacd6365612445244d5f122ec8cbb3bc1f5c4b5e9fef:0:0",
+            "logicalPath": "candidate-port:static-reuse/opaque_hologram_tuning_uniforms.json",
+            "byteLength": 33432,
+            "sha256": "fb2c3e24f782bd03f2bfa878fea88733430c5a21d5c9fdcbe7ced3509fc4dd84"
+          },
+          {
+            "route": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2:e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513:0:0",
+            "logicalPath": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_use_col4_uniforms.json",
+            "byteLength": 54660,
+            "sha256": "eeb03cf78cfb893637b97dce59990f8b64a038af27e99725ec5bdb94d776e69f"
+          },
+          {
+            "route": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6:abcd3f173af8af498056f14773c624acbaa328edbdc5529cc58e05caeb688e45:0:0",
+            "logicalPath": "candidate-port:static-reuse/outer_stencil_uniforms.json",
+            "byteLength": 18681,
+            "sha256": "d5f1ad1c73cdbe7894ad800473eb179ee41ec7619f5d6527e559f2ee00792ac1"
+          },
+          {
+            "route": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6:e710254f073915bac36480d928a8cdb7248c9874e4781921436ab58433869fe7:0:0",
+            "logicalPath": "candidate-port:static-reuse/simple_opaque_hologram_tuning_uniforms.json",
+            "byteLength": 33837,
+            "sha256": "ec7a2ec1b332e6cb9efd006526802f5f771f95efa034a052e5bf2cc53a1e2da4"
+          },
+          {
+            "route": "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e:f04eee1c0e3c33fdf7a2d128194ae20ddc00a5eb93876c66b3de0a55ba55a316:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_2layer_ur_uniforms.json",
+            "byteLength": 51995,
+            "sha256": "11e9c87c6d6defa865de21367f85e452db0247494d51a8f3573a74cc064b50e7"
+          },
+          {
+            "route": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8:9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7:0:0",
+            "logicalPath": "candidate-port:shadowbox-effect-flow/shadowbox_effect_flow_use_old_noise_uniforms.json",
+            "byteLength": 53542,
+            "sha256": "afd1aeaadce1a2764664216077aadd5257d085e3dfc5813e5636ac4d423e0ed8"
+          },
+          {
+            "route": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018:a2db62d36bfb449cc9bc34103e8c83b3708ba1083fa67c142d16ca0441bd2d41:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_prism_uniforms.json",
+            "byteLength": 30584,
+            "sha256": "af4cc3fbc1488d8872283d019a98fa9469838ddf3dc23e35d3cf843addc22485"
+          },
+          {
+            "route": "a9ecd9600fcbad72d48f2a364c224375e92811abd07d0d0b7e11c8e702dee08f:d8fcc71e1968349be2e7b4431e9362c77d59b657d54015e4497f9182acd3a557:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_2layer_legacy_uniforms.json",
+            "byteLength": 45100,
+            "sha256": "8f8c591f2ecd43148865d4bd69274edd84b30c65b41e5c3542df44d5cf2184db"
+          },
+          {
+            "route": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62:5de5f555115c6f76574558abb1c48c51634be6223d621a24715ae086011bf800:0:0",
+            "logicalPath": "candidate-port:static-reuse/ur_lens_flare_uniforms.json",
+            "byteLength": 32415,
+            "sha256": "30ca3fcd029e24052ab1cff481cc4891b0bcb1e45d21ef5de4bd01135d246e67"
+          },
+          {
+            "route": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402:02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd:0:0",
+            "logicalPath": "candidate-port:shadow-holograms/card_parallax_hologram_shadow_effect_uniforms.json",
+            "byteLength": 52511,
+            "sha256": "399ac6c20c1e0e27ef61daf458796c07dfef9be5ffa5229709e66b379fb49957"
+          },
+          {
+            "route": "b29c4ba1a2496615aacd7565709c049b2deb3ec072529c40484baa5958ae655b:e578dbb6557389709b3000ce3163fab49d20ec0c4c744d95ca66047e942c487a:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_mrr_uniforms.json",
+            "byteLength": 32388,
+            "sha256": "459d771001029a46cf5778636a62cf0c4ed60434f962784014e502932b818d62"
+          },
+          {
+            "route": "b64f842cf9933438d2646de74af54cf71a7f49c6c180f66ed733c006f8b523b5:2d21404dc38f3a8cc9fba45a867d2aa46636187000c9377cbe662728775168b3:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_transparent_translate_uniforms.json",
+            "byteLength": 36307,
+            "sha256": "1e467afa409b556773e61c0eb4bf3e625783ab0ef85c24a63bbd1c7802af9bb8"
+          },
+          {
+            "route": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb:44c61ec705cfab11f8706ebecc8e3b2a8bf83a32bf3649c97d31107b5f237cb6:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff1_grad_view_uniforms.json",
+            "byteLength": 29505,
+            "sha256": "4a264af1b788c92ada8601a4ec90de303387d2cf48aa9e899b2fd801511429e4"
+          },
+          {
+            "route": "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13:3c7bf027e82dd6ca62eaee84642d90713a17f0e28a105ccf3ba65dfa3eebe429:0:0",
+            "logicalPath": "candidate-port:static-reuse/simple_opaque_uniforms.json",
+            "byteLength": 20271,
+            "sha256": "c03d576650a046a2fcc615a490a7f5e201521b7789ede5ed994725e556662a4a"
+          },
+          {
+            "route": "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292:f061c45e88441195b5cb636859f255b91486436f806cd55fc182f470648e13dd:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_tuning_uniforms.json",
+            "byteLength": 39237,
+            "sha256": "52c9e96af12e8f0ed6576d419143eb8f23bf7a19c92a0b1317e7077f0d363c6a"
+          },
+          {
+            "route": "bcb60b22bef8badefd443c779615ba8418fbf9be6d959747838cb91b1f825ec5:855cdb803c9ceff3c5dbffacfe3f39b75029a21d677173236c19f67ca95d016a:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_legacy_uniforms.json",
+            "byteLength": 40724,
+            "sha256": "0715eb41ff1fce8f47fcbe6f0100b64d009be7201a6a9c3e24f6e30feb748fcf"
+          },
+          {
+            "route": "bd90afa8536d13c9107d8badccf43919ab387c61b52833e06a5654b1859816c2:eb124f1a132ad66a7842eb1f87d5f83594ce130cb602a2d1ef1d912eebc4450d:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_metal_by_tilt_uniforms.json",
+            "byteLength": 31607,
+            "sha256": "c5abccfe48e6712fb9fd0ed0ccf242647f2ef43298e2a690b6e82f4207a8133c"
+          },
+          {
+            "route": "be2fa01af3260bcb40dd21c0a1d3f58df18f764c5de649bbc4213c828565580d:8ebbea72e4f15b43f100abac110d1570213be44c29706389280d327d8d9091b7:0:0",
+            "logicalPath": "candidate-port:static-reuse/effect_eff2_grad_view_uniforms.json",
+            "byteLength": 29505,
+            "sha256": "8aee555c5ad128ce21bbb2bdd8df477d00d5bfd8322625593340430e8f1e9ea8"
+          },
+          {
+            "route": "bf76a81655b9ff3dd32548cf62d529426eb40486470b291799c191ccccb60659:dc76ddb5db3d23539f7a84d69d2afd557bc1ca04f99530b0d274e472977b82aa:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_immersive_uniforms.json",
+            "byteLength": 25160,
+            "sha256": "77833acc76ecdd76c5b0cb1e6acea99db6b440f8aff761f96dddb4ca4d5be431"
+          },
+          {
+            "route": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e:7d1be6707c591282f8e1af7ca47fa2ae839e6b15e45e11af5d26ac359e4affa6:0:0",
+            "logicalPath": "candidate-port:shadow-holograms/opaque_hologram_shadow_uniforms.json",
+            "byteLength": 49377,
+            "sha256": "5f9882cefc1c888626bf406c09ff70c9d4f042705eb56d528d806f20b14134d3"
+          },
+          {
+            "route": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d:ec656d0015989845a88372ac9d3cf0fbe247a4001981ab0e22ee546d7718552c:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_future_uniforms.json",
+            "byteLength": 33594,
+            "sha256": "e3527bba2c99466ca0533875d7529140cd3d8a5f5f8fbf218ab94fed4060e225"
+          },
+          {
+            "route": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a:56ce2e59eaa541313880a1573ec30c192037c39411adc692aa743e56838a5d42:0:0",
+            "logicalPath": "candidate-port:static-reuse/opaque_ur_oklab_uniforms.json",
+            "byteLength": 62511,
+            "sha256": "5adfd945f36e532cc9763098e82e01aa79a005eb4ef30e99fb7dc4ca9448cf52"
+          },
+          {
+            "route": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee:c4deae40c665b8824a37ce7d7706815916e23908efb384f260a809fa83f6e6f3:0:0",
+            "logicalPath": "candidate-port:static-reuse/inner_stencil_uniforms.json",
+            "byteLength": 21639,
+            "sha256": "9c64bcab39049e89d62b7485dab66c675808e8848326c75407d865e734f83745"
+          },
+          {
+            "route": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249:fc136482a2ab9f4c5285962f0ec02812c45d91ac0f7697da995fed3f6882078d:0:0",
+            "logicalPath": "candidate-port:static-reuse/transparent_ur_new_uniforms.json",
+            "byteLength": 39952,
+            "sha256": "7362b6d5fa5fccdff188aece53c07067c517ec31bafb9a1a719f8dc487dfa64a"
+          },
+          {
+            "route": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c:510d608e3f5231070ed7b2f1988532f7a3a369c1207d0aeb28ba80c7745b6b60:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_scaling_kira_uniforms.json",
+            "byteLength": 27513,
+            "sha256": "58d28d135424d3f83f1a3c6157e0276227f73d0e550868844e81ef3af46d8c72"
+          },
+          {
+            "route": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd:75e09a8fc22a584f2d1e14428181d6ee3a34ad3c4d88212857712a5555c4c246:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_flash_uniforms.json",
+            "byteLength": 30448,
+            "sha256": "fb0df84880595a6a5632473583818ff6e9c7b6a7f5a5aab7c61c3389c5927b68"
+          },
+          {
+            "route": "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6:7ab49aa57ad486c6845e910cdece188eb4cd4cc82879ae65e9b912f562e278c1:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_holo_ur_uniforms.json",
+            "byteLength": 42551,
+            "sha256": "a912da087b8b5b6f324c06ba504a7aa11d85eb97adb1aaa9e32cf9fa222fb055"
+          },
+          {
+            "route": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c:c12b649ea6ed8cfd33f06067dab790b7fe7c2a8b6d366a392b1cd07bb40d1a59:0:0",
+            "logicalPath": "candidate-port:static-reuse/transparent_hologram_layer_uniforms.json",
+            "byteLength": 34885,
+            "sha256": "a344f18b00b865c5f608b3b21dae00b6d7883d010dee8d2056fa343865642fa7"
+          },
+          {
+            "route": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77:352081cbea49f0301799150f952a626e4004830e894c78b81b093d66b2ce3728:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_illust_double_texture_gradation_uniforms.json",
+            "byteLength": 44286,
+            "sha256": "3d23bf79984dc9743974c63288fb7614d5666f87fd1bf8f2f5b5a972b8578a9a"
+          },
+          {
+            "route": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33:e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b:0:0",
+            "logicalPath": "candidate-port:card-aura/card_aura_old_noise_uniforms.json",
+            "byteLength": 42907,
+            "sha256": "2402968548fc8c4a642161a76abc3494e10bab0f305a8635ea9510e371a46c23"
+          },
+          {
+            "route": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2:bcdd7e6918cfa5f2734bc728e17d7ee748c326d35ccda96bfdd6dd52a2b05049:0:0",
+            "logicalPath": "candidate-port:static-reuse/frame_uniforms.json",
+            "byteLength": 21771,
+            "sha256": "fb7a755b4e696f5a7ae50d4470ae60b4c0d59134e8ee13477e99e649caeb5651"
+          },
+          {
+            "route": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9:41c433f707550fb175d6d84e5fcd6cf66ad58d7dfa7cb727f5623eb04e9205f7:0:1",
+            "logicalPath": "candidate-port:static-reuse/circular_trail_p1_uniforms.json",
+            "byteLength": 29158,
+            "sha256": "dc81468c792ce3b6602fb76540a1e21e3e879adcce42a6ddae88f232dba919ab"
+          },
+          {
+            "route": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9:58ddb5f5a32f7e4cac70af3cd89aa1aaa592a8e222a03be7ca3d1591ada9f9c0:0:0",
+            "logicalPath": "candidate-port:static-reuse/circular_trail_p0_uniforms.json",
+            "byteLength": 28813,
+            "sha256": "eade480f3ac8f4e301c1a8453e15f991bdafe11efe2dcbbe09a397d1db0f9a32"
+          },
+          {
+            "route": "f8644f04a9862f3b698729e1ae0853eaba21dee2bb87946b6e5e1941e547d723:4ab2306c07edd8ba6e5322d6fe74ad038f22363c06f94dd06256827735bbc890:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_illust_uniforms.json",
+            "byteLength": 20987,
+            "sha256": "38503c373fbb231fe93e288576827ce2da9f871d534822b6d9b9dc965f95149e"
+          },
+          {
+            "route": "f953cc26992425f821a93cc76e31fe72136496d658a2968d988d776c922794b7:241359e3f35c806e8a713c5d7cf19553b9c38153a822f61c5fcc0c745dbea074:0:0",
+            "logicalPath": "candidate-port:static-reuse/illust_stencil_uniforms.json",
+            "byteLength": 21645,
+            "sha256": "5f5974b20ab17cd683b176db2f577bd0aec1c0d6f8dddb706e4e3a8e7f10b268"
+          },
+          {
+            "route": "f972087746bf2b351267b5816d259f913b2fb9fa050ad41e11979f4cdcbea51e:c4ca3c26badcf8796d93daec339dd36021ae70adad33bf53a21c088df9768349:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_parallax_strata_uniforms.json",
+            "byteLength": 27602,
+            "sha256": "f643d34da9666b32b8d24b4ea12001ac1eea4b9868bd832a3f0714f37c1eea5b"
+          },
+          {
+            "route": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a:f668811dcdd5dbede09ba683fa0dcce19ccdefcc7180144f2d79a9dde52e373c:0:0",
+            "logicalPath": "candidate-port:static-reuse/card_shadowbox_ui_transparent_rainbow_uniforms.json",
+            "byteLength": 34203,
+            "sha256": "289752afc52f991c9e1bea848a1da9aa98a167e9690405e10dbe9544d5affd50"
+          }
+        ]
+      },
+      "importer": {
+        "logicalPath": "build/import-official-vulkan-runtime-capture.mjs",
+        "byteLength": 59708,
+        "sha256": "01bec275648487a9ec50127ef88651513fc437dd8bcb0f5f2920a415fef7922f"
+      }
+    },
+    "packageAndNativeSha256": {
+      "baseApk": "fb09819b39d41bcfe131842cb1388cfecdadd83f344852ebf4fd251ef687fdb9",
+      "arm64Split": "9e0fab783399760b74346fc7e13e4c8cf060f03288e510769394951a51504984",
+      "bundledTreeSplit": "462cf966a3ebc0c5fb18485e6fc609ec2951f540f784fdff2e0f15a5923b8839",
+      "libunity": "19c80a4222a4543ddc20a7feedb01ad7ef3a7b9a1e9fd863e86711d6a0bfc067",
+      "libil2cpp": "0a1ea598b11f3ea7732c80a6f4c80b8d939222b2ea87cf8707f35db26f1799d3"
+    },
+    "artifactLayout": {
+      "rootEnvironment": "PCR_CANDIDATE_OFFICIAL_GUEST_RUNTIME_ROOT",
+      "captureManifest": "<cardId>/capture-manifest.json",
+      "importArtifact": "<cardId>/import.json",
+      "rawCapture": "<cardId>/capture/**"
+    },
+    "generator": {
+      "logicalPath": "build/build-candidate-official-guest-runtime-batch.mjs",
+      "byteLength": 56115,
+      "sha256": "de130377e7a08439962e718c4fedb219c634eda0281127b54fca80ee3b56d73b"
+    }
+  },
+  "cards": [
+    {
+      "cardId": "cPK_10_000040_00_FUSHIGIBANAex_RR",
+      "sceneFile": "scene.cPK_10_000040_00_FUSHIGIBANAex_RR.json",
+      "sceneSha256": "c5ce04d80b647709fc7881516cd49aabd24945eb0b187260cc8dca3727b7e2c0",
+      "glbSha256": "f43d1ee4028433b08859968a95629c296d02feae988e766d4a499488d13537a1",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 30,
+        "formalPortDrawCount": 28,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 28,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_10_000040_00_FUSHIGIBANAex_RR/capture-manifest.json",
+        "importArtifact": "cPK_10_000040_00_FUSHIGIBANAex_RR/import.json",
+        "rawCapture": "cPK_10_000040_00_FUSHIGIBANAex_RR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_20_008900_02_HOUOUex_UR",
+      "sceneFile": "scene.cPK_20_008900_02_HOUOUex_UR.json",
+      "sceneSha256": "7c7839b9da6cdbbc28bfa9f221dcde34846c0ba9193c2252128ff39030eede08",
+      "glbSha256": "79a6baac0b373bae63f3f7e382a3130ff009d6a7d3a5974446095a23aead5a9a",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 22,
+        "formalPortDrawCount": 20,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 20,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_20_008900_02_HOUOUex_UR/capture-manifest.json",
+        "importArtifact": "cPK_20_008900_02_HOUOUex_UR/import.json",
+        "rawCapture": "cPK_20_008900_02_HOUOUex_UR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cTR_20_000230_00_LEAF_SR",
+      "sceneFile": "scene.cTR_20_000230_00_LEAF_SR.json",
+      "sceneSha256": "b3634ba9f1cfbf31829bba69c18a62504be648b51d52d4a96a8a5c4df575abfa",
+      "glbSha256": "2fc2dc593def98154e552b0be2ad2b470969b0cb1f43fb6bc693992c9d1de36a",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 23,
+        "formalPortDrawCount": 21,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 21,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cTR_20_000230_00_LEAF_SR/capture-manifest.json",
+        "importArtifact": "cTR_20_000230_00_LEAF_SR/import.json",
+        "rawCapture": "cTR_20_000230_00_LEAF_SR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cTR_20_000670_00_IIBUINOBAKKU_UR",
+      "sceneFile": "scene.cTR_20_000670_00_IIBUINOBAKKU_UR.json",
+      "sceneSha256": "8949a57ba2bd8617ae2cf1475fce9cdc24cd58d9f9ede91696bc734d5c154390",
+      "glbSha256": "7baaec8f5530af237ec4c5a1fc8f316c8417ba54da94f7c21a32ee7ae833f440",
+      "coverageRoles": [
+        "baseline-regression"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 23,
+        "formalPortDrawCount": 21,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 21,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cTR_20_000670_00_IIBUINOBAKKU_UR/capture-manifest.json",
+        "importArtifact": "cTR_20_000670_00_IIBUINOBAKKU_UR/import.json",
+        "rawCapture": "cTR_20_000670_00_IIBUINOBAKKU_UR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_10_012330_00_MEGAABSOLex_RR",
+      "sceneFile": "scene.cPK_10_012330_00_MEGAABSOLex_RR.json",
+      "sceneSha256": "7fa7bdaca13a98e0a360fea8848f465b41603bda8793d808294039daa29a0fcb",
+      "glbSha256": "11cbc2f76e17497296c5d83064dcc14f114f90423c803751f3b26fadfab0b813",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 33,
+        "formalPortDrawCount": 31,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 31,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_10_012330_00_MEGAABSOLex_RR/capture-manifest.json",
+        "importArtifact": "cPK_10_012330_00_MEGAABSOLex_RR/import.json",
+        "rawCapture": "cPK_10_012330_00_MEGAABSOLex_RR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_20_000360_03_LIZARDONex_SR",
+      "sceneFile": "scene.cPK_20_000360_03_LIZARDONex_SR.json",
+      "sceneSha256": "bac00af813eaf293799a08a3d4754dc88bfa24517bf3011ee07ca4724f158e37",
+      "glbSha256": "ff634b3dcd4f0efec14e923bbcf107473fd8401d9272bbc2636a363513c100a9",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 19,
+        "formalPortDrawCount": 17,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 17,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_20_000360_03_LIZARDONex_SR/capture-manifest.json",
+        "importArtifact": "cPK_20_000360_03_LIZARDONex_SR/import.json",
+        "rawCapture": "cPK_20_000360_03_LIZARDONex_SR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_20_010840_00_MEGAKAILIOSex_SR",
+      "sceneFile": "scene.cPK_20_010840_00_MEGAKAILIOSex_SR.json",
+      "sceneSha256": "5406a0a82776c7b4bbf9ad2f890a043e680213cf6da6ca73e9bd0927068b1d16",
+      "glbSha256": "17908b365babdcf9965d096d0dc0eeb13db2f9dd971fd3f6bc38b3ce5c97ef64",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 30,
+        "formalPortDrawCount": 28,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 28,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_20_010840_00_MEGAKAILIOSex_SR/capture-manifest.json",
+        "importArtifact": "cPK_20_010840_00_MEGAKAILIOSex_SR/import.json",
+        "rawCapture": "cPK_20_010840_00_MEGAKAILIOSex_SR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_20_016210_00_MEGAYADORANex_SR",
+      "sceneFile": "scene.cPK_20_016210_00_MEGAYADORANex_SR.json",
+      "sceneSha256": "6460f4dfbb0b3889c8e63a4e941fb2edbb4612b61d765a960aa912886455423a",
+      "glbSha256": "a276a911762c522fe15e0dceee0f7d223e146119e850bcfb775b3f0311af70fd",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 26,
+        "formalPortDrawCount": 24,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 24,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_20_016210_00_MEGAYADORANex_SR/capture-manifest.json",
+        "importArtifact": "cPK_20_016210_00_MEGAYADORANex_SR/import.json",
+        "rawCapture": "cPK_20_016210_00_MEGAYADORANex_SR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    },
+    {
+      "cardId": "cPK_20_016430_00_MEGAGANGARex_SR",
+      "sceneFile": "scene.cPK_20_016430_00_MEGAGANGARex_SR.json",
+      "sceneSha256": "2e27defd9f2b71fcfd7832a5cf34e8892d9146440b1e050371ace58cd6e9c999",
+      "glbSha256": "d9b1eb8f6e5f02296e51765530ef62d736e9ce2a10e1f8428020744703ae134a",
+      "coverageRoles": [
+        "changed-route-witness"
+      ],
+      "staticExpectedDraws": {
+        "expectedDrawCount": 26,
+        "formalPortDrawCount": 24,
+        "runtimeBoundaryDrawCount": 2,
+        "pipelineExpectationDrawCount": 24,
+        "unresolvedPipelineExpectationDrawCount": 0,
+        "unresolvedReasons": []
+      },
+      "requiredArtifacts": {
+        "captureManifest": "cPK_20_016430_00_MEGAGANGARex_SR/capture-manifest.json",
+        "importArtifact": "cPK_20_016430_00_MEGAGANGARex_SR/import.json",
+        "rawCapture": "cPK_20_016430_00_MEGAGANGARex_SR/capture/**"
+      },
+      "observedCaptureIdentity": null,
+      "status": "runtime-required",
+      "missing": [
+        "capture-manifest.json",
+        "import.json"
+      ],
+      "evidence": null,
+      "fidelityContribution": 0
+    }
+  ],
+  "summary": {
+    "requiredCardCount": 9,
+    "completeCardCount": 0,
+    "runtimeRequiredCardCount": 9,
+    "captureManifestCount": 0,
+    "importArtifactCount": 0,
+    "fidelityContribution": 0
+  },
+  "runtimeBoundaries": [
+    {
+      "id": "candidate-official-guest-vulkan-capture-batch",
+      "status": "runtime-required",
+      "required": 9,
+      "complete": 0,
+      "remaining": 9,
+      "reason": "each canonical card requires a separately captured, imported and composite-identity-bound official guest Vulkan frame"
+    },
+    {
+      "id": "vulkan-to-webgl-semantic-equivalence",
+      "status": "runtime-required",
+      "reason": "a complete guest capture batch does not prove Vulkan-to-WebGL instruction, resource, attachment or display equivalence"
+    },
+    {
+      "id": "native-device-display-transfer",
+      "status": "runtime-required",
+      "reason": "capture provenance does not prove Android compositor, color management or physical display transfer"
+    }
+  ],
+  "claims": {
+    "fidelityContribution": 0,
+    "officialShaderRestorationPercent": null,
+    "gameFidelity": false,
+    "runtimeFidelity": false
+  },
+  "proofSha256": "f1f63d6b20d4c772db0e1b0d447f4f97948391286c015d846419a811db0f3c64"
+}

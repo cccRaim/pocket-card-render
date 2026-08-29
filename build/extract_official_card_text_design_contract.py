@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 from collections import Counter
 import hashlib
 import json
@@ -553,12 +554,20 @@ def build_cards(
 ) -> tuple[dict, list]:
     cards = {}
     environments = []
-    for card_directory in sorted((decrypted_root / CARD_ROOT).iterdir()):
-        if not card_directory.is_dir():
-            continue
-        settings_path = card_directory / "CardSettings.asset_bundles"
-        if not settings_path.is_file():
-            raise ValueError(f"{card_directory.name} has no CardSettings bundle")
+    settings_paths = sorted(
+        path.resolve()
+        for path in (decrypted_root / CARD_ROOT).rglob(
+            "CardSettings.asset_bundles"
+        )
+        if path.is_file()
+    )
+    for settings_path in settings_paths:
+        card_directory = settings_path.parent
+        illustration_id = card_directory.name
+        if illustration_id in cards:
+            raise ValueError(
+                f"duplicate CardSettings bundle for {illustration_id}"
+            )
         environment = UnityPy.load(str(settings_path))
         environments.append(environment)
         matches = []
@@ -568,23 +577,23 @@ def build_cards(
                 matches.append((obj, tree))
         if len(matches) != 1:
             raise ValueError(
-                f"{card_directory.name} has {len(matches)} CardSettings objects"
+                f"{illustration_id} has {len(matches)} CardSettings objects"
             )
         obj, tree = matches[0]
         design_key = pointer_key(obj, tree["_cardDesignSettings"])
         design = designs_by_key.get(design_key)
         if design is None:
             raise ValueError(
-                f"{card_directory.name} design is unresolved: {design_key}"
+                f"{illustration_id} design is unresolved: {design_key}"
             )
-        masterdata = masterdata_cards.get(card_directory.name)
+        masterdata = masterdata_cards.get(illustration_id)
         if masterdata is None:
             raise ValueError(
-                f"{card_directory.name} is absent from official masterdata"
+                f"{illustration_id} is absent from official masterdata"
             )
         if str(tree.get("_id", "")) != masterdata["cardId"]:
             raise ValueError(
-                f"{card_directory.name} CardSettings id {tree.get('_id')} "
+                f"{illustration_id} CardSettings id {tree.get('_id')} "
                 f"does not match masterdata {masterdata['cardId']}"
             )
         values = {
@@ -602,7 +611,7 @@ def build_cards(
             font_condition,
             values["energyType"],
         )
-        cards[card_directory.name] = {
+        cards[illustration_id] = {
             **values,
             "masterdataRarity": masterdata["rarity"],
             "seriesId": masterdata["seriesId"],
@@ -631,14 +640,28 @@ def compact_bundle_roots(items: dict) -> list:
 
 
 def main() -> None:
-    loaded = load_official_sample()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--manifest")
+    parser.add_argument(
+        "--decrypted-root",
+        type=Path,
+        default=DEFAULT_DECRYPTED_ROOT,
+    )
+    parser.add_argument(
+        "--masterdata-root",
+        type=Path,
+        default=DEFAULT_MASTERDATA_ROOT,
+    )
+    parser.add_argument("--static-only", action="store_true")
+    args = parser.parse_args()
+    loaded = load_official_sample(args.manifest)
     sample = loaded["sample"]
     UnityPy.config.FALLBACK_UNITY_VERSION = sample["unity"]["serializedVersion"]
     decrypted_root = Path(
-        os.environ.get("PCR_DECRYPTED_ROOT", DEFAULT_DECRYPTED_ROOT)
+        os.environ.get("PCR_DECRYPTED_ROOT", args.decrypted_root)
     ).resolve()
     masterdata_root = Path(
-        os.environ.get("PCR_MASTERDATA_ROOT", DEFAULT_MASTERDATA_ROOT)
+        os.environ.get("PCR_MASTERDATA_ROOT", args.masterdata_root)
     ).resolve()
 
     groups, groups_by_key, group_environments = build_font_groups(decrypted_root)
@@ -712,6 +735,20 @@ def main() -> None:
         }
         for key, values in bundle_roots.items()
     }
+    native_producers = (
+        {
+            "status": "runtime-required",
+            "reason":
+                "candidate IL2CPP producer methods must be relocated and "
+                "hash-bound before runtime selection semantics can be exact",
+            "requiredMethods": [
+                {"key": key, "name": name}
+                for key, name, *_ in NATIVE_PRODUCERS
+            ],
+        }
+        if args.static_only
+        else native_producer_contract(sample)
+    )
     report = {
         "schema": "pocket-card-render/card-text-design-contract@1",
         "schemaVersion": 1,
@@ -726,7 +763,9 @@ def main() -> None:
             "fontConditionOrder": "serialized-first-match-then-default",
             "dynamicUI": "CardDynamicUIView label to selected GameObject",
         },
-        "nativeProducers": native_producer_contract(sample),
+        "nativeProducerStatus":
+            "runtime-required" if args.static_only else "exact",
+        "nativeProducers": native_producers,
         "summary": {
             "masterdataIllustrationCount": len(masterdata_cards),
             "cardSettingsCount": len(cards),

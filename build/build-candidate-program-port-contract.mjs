@@ -8,6 +8,7 @@ import {
   loadOfficialSample,
   officialSampleDigest,
 } from "./official-sample.mjs";
+import { atomicWriteFileSync } from "./atomic-publish.mjs";
 import { SHADER } from "../public/render/rarities.js";
 import {
   compileRuntimeMaterialDispatch,
@@ -365,7 +366,7 @@ if (CHECK) {
     + ` + ${runtimeBound.length} runtime-bound`,
   );
 } else {
-  fs.writeFileSync(OUTPUT, encoded);
+  atomicWriteFileSync(OUTPUT, encoded);
   console.log(
     `Wrote ${path.relative(ROOT, OUTPUT).replaceAll("\\", "/")}:`
     + ` ${ports.length} formal + ${runtimeBound.length} runtime-bound`,
