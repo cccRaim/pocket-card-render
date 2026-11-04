@@ -1,0 +1,264 @@
+{
+  "official_selector": {
+    "selectorId": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039",
+    "candidateWitnessId": "f761d9a4a37683acf07b2a7ad3938f12cb0b9feac49cf1881b5ba0ad7999ff3d",
+    "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+    "shaderName": "Lettuce/Common/CardNew/Effect",
+    "keywords": [
+      "_LAYER_EFF1"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWriteParam",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": "_CullMode",
+      "val": 0
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": "_SrcFactor",
+        "val": 0
+      },
+      "dst_rgb": {
+        "name": "_DstFactor",
+        "val": 0
+      },
+      "src_alpha": {
+        "name": "_SrcFactorA",
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": "_DstFactorA",
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseViewMask": 0,
+      "_Stencil": 0,
+      "_ZTest": 4,
+      "_ZWriteParam": 0,
+      "_CullMode": 0,
+      "_Edge": 0,
+      "_Progress": 0,
+      "_MainPower": 1,
+      "_MaskPower": 0,
+      "_AnglePower": 0,
+      "_UseGradationMap": 0,
+      "_Layer": 0,
+      "_DepthOffset": 0,
+      "_AlphaBlend": 1,
+      "_BlendMode": 0,
+      "_SrcFactor": 5,
+      "_DstFactor": 10,
+      "_SrcFactorA": 0,
+      "_DstFactorA": 10
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ViewMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_GradationMap": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Effect",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_MainPower",
+        "_AlphaBlend",
+        "_DepthOffset"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "texture_coordinates": {
+      "vertex": {
+        "transforms": [
+          {
+            "uniform": "_MainTex_ST",
+            "slot": "_MainTex",
+            "conversion": "unity-texenv"
+          }
+        ]
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "5fba1e0d51d2024b5351f7f7fc6e55f78a7c67869aa53b36d1fc9cee6bd247b1",
+        "outputSourceSha256": "01de49758b47bb10764e8c7c6ea1f26b70c80036ebdd655d94c15ce2cc43bb0a",
+        "inputs": [
+          "position",
+          "uv",
+          "modelViewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "0cdfd3114f3670945824148de54f18c8f28f3e8ec29fb21e182de0b8dc229091",
+        "outputSourceSha256": "5db43148ffa27ed99a4a2cfe7536119ab28a49cb526153ec41b1eb35bf1dfd7c",
+        "inputs": [],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_13",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/effect_basic.vert.glsl",
+    "fragment": "public/shaders/effect_basic.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "zero"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "texture-coordinate-basis-conversion"
+        },
+        {
+          "kind": "view-depth-offset"
+        },
+        {
+          "kind": "matrix-expression-fold"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

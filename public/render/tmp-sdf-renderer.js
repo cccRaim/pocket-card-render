@@ -231,7 +231,7 @@ function splitAtlasRuns(draw) {
     }
     current.glyphs.push({
       ...glyph,
-      sdfScale: draw.sdfScale ?? glyph.scale,
+      sdfScale: glyph.scale * Number(glyph.widthScale ?? 1),
       vertexColor: draw.vertexColor,
     });
   }
@@ -395,7 +395,7 @@ export async function renderOfficialTmpDynamicTexture({
     }, ...imageDraws];
   }
   for (const draw of imageDraws) {
-    const unityLayer = requireDynamicUILayer(draw.unityLayer, draw.layoutPath || draw.role || "Image");
+    const unityLayer = requireDynamicUILayer(draw.captureUnityLayer ?? draw.unityLayer, draw.layoutPath || draw.role || "Image");
     const geometry = createOfficialUIImageQuadGeometry(draw);
     const material = createOfficialUIRTMaterial(uiRTPrograms.toRT, {
       texture: textureForSource(draw.source),
@@ -412,7 +412,8 @@ export async function renderOfficialTmpDynamicTexture({
       kind: "Image",
       role: draw.role || "image",
       layoutPath: draw.layoutPath || null,
-      unityLayer,
+      unityLayer: Number(draw.unityLayer),
+      captureUnityLayer: unityLayer,
       hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
       sequence: Number(draw.sequence ?? 0),
     });
@@ -422,7 +423,7 @@ export async function renderOfficialTmpDynamicTexture({
   }
   for (const draw of tmpSpriteDraws) {
     const unityLayer = requireDynamicUILayer(
-      draw.unityLayer,
+      draw.captureUnityLayer ?? draw.unityLayer,
       draw.layoutPath || draw.role || "TMP-Sprite",
     );
     const geometry = createOfficialUIImageQuadGeometry(draw);
@@ -442,7 +443,8 @@ export async function renderOfficialTmpDynamicTexture({
       kind: "TMP-Sprite",
       role: draw.role || "inline-sprite",
       layoutPath: draw.layoutPath || null,
-      unityLayer,
+      unityLayer: Number(draw.unityLayer),
+      captureUnityLayer: unityLayer,
       hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
       sequence: Number(draw.sequence ?? 0),
     });
@@ -452,7 +454,7 @@ export async function renderOfficialTmpDynamicTexture({
   let glyphCount = 0;
   const bindingCounts = new Map();
   for (const draw of draws) {
-    const unityLayer = requireDynamicUILayer(draw.unityLayer, draw.layoutPath || draw.role || "TMP");
+    const unityLayer = requireDynamicUILayer(draw.captureUnityLayer ?? draw.unityLayer, draw.layoutPath || draw.role || "TMP");
     const padding = officialTmpMaterialPadding(draw.sdf);
     for (const run of splitAtlasRuns(draw)) {
       const atlasTexture = await loadOfficialTmpAtlasTexture(fonts, run.atlas);
@@ -477,7 +479,8 @@ export async function renderOfficialTmpDynamicTexture({
         kind: "TMP",
         role: draw.role || "text",
         layoutPath: draw.layoutPath || null,
-        unityLayer,
+        unityLayer: Number(draw.unityLayer),
+        captureUnityLayer: unityLayer,
         hierarchyOrder: Number(draw.hierarchyOrder ?? 0),
         sequence: Number(draw.sequence ?? 0),
       });
@@ -510,7 +513,8 @@ export async function renderOfficialTmpDynamicTexture({
         role: record.role,
         layoutPath: record.layoutPath,
         unityLayer: record.unityLayer,
-        dynamicUIType: dynamicUITypeForLayer(record.unityLayer),
+        ...(record.captureUnityLayer !== record.unityLayer ? { captureUnityLayer: record.captureUnityLayer } : {}),
+        dynamicUIType: dynamicUITypeForLayer(record.captureUnityLayer),
         hierarchyOrder: record.hierarchyOrder,
         sequence: record.sequence,
       };

@@ -1,0 +1,334 @@
+{
+  "official_selector": {
+    "selectorId": "dd793ca27284828846f39a5334fffb3e18a6b116e8c90dc2b04a6cabeea4aa82",
+    "candidateWitnessId": "dc820111e68a5cbb6802626b2621ee44c7f4e31add2ebc995cf7d03a14869b77",
+    "shaderIdentity": "CAB-a691829b394c536bab15c37d10d9b6f3:-2803090270879666180",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_NormalOnAdditive",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "7f823d7418a7192ac7abbe2a6a9879a713c66cd319d7ecfccc794d90cb57b0e9"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseHologram": 0,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_PhaseScale": 1,
+      "_PhaseRotate": 0,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_RampScale": 1,
+      "_RampRotate": 0,
+      "_FrontMaskPower": 64,
+      "_UseUv": 0,
+      "_UseMaskUv": 0,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_AdditiveTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramFrontMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_NormalOnAdditive",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_PhaseScale",
+        "_PhaseRotate",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_RampScale",
+        "_RampRotate",
+        "_FrontMaskPower"
+      ],
+      "ints": [
+        "_UseUv",
+        "_UseMaskUv",
+        "_UseHologram"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_Rotation": {
+        "type": "vec3",
+        "source": "pocket-card-render/card-behaviour-hologram-rotation-arm64-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "2b463a7dc6cc393a7d5a426455f044c8831c35b0f7908bbab4ad1e11af8b938b",
+        "outputSourceSha256": "e38857c0be28751072032798398077c5f40b81265389834474de90aad43bca8c",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "8dab800af0606aa16b50987b2bb2d70e86c22ab305d827822a8f1873dfbe3b0e",
+        "outputSourceSha256": "22f74dadb5a7967ae993fe61f4ddcec10ebc49381837cff4cafaae83dd9ef458",
+        "inputs": [
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 7
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_AdditiveTex",
+      "spirvName": "_21",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_366",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_371",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_518",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramFrontMaskTex",
+      "spirvName": "_532",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_579",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_normal_on_additive.vert.glsl",
+    "fragment": "public/shaders/card_parallax_normal_on_additive.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "zero",
+    "emissive": "_608"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  },
+  "official_executable_identity": {
+    "schemaVersion": 1,
+    "compilerPlatform": 18,
+    "gpuProgramType": 25,
+    "programEntrySha256": "22e2ec78d5e47c6bad0d7a70abc83e3524a20a1d06a1f3c10f98758ec8e1590e",
+    "programContainerLayoutSha256": "03ba84a019e9adac32a3c38cb98300a34ac17fd124c50a13788ab6f235223c99",
+    "vertexSpirvSha256": "089d575ef8fef77e7a968bbf409a32b02d2d0644a1d834fde5d4b63b8e4e4abc",
+    "fragmentSpirvSha256": "74b8eba993c812ed5e3b7a84d30fbc7709e051cb469dee94301a2caa99d0052d",
+    "parameterEntrySha256": "4466bb57a641b2687b4e5279367cc387a2b278418698eeecf4d6067d9eaaed91",
+    "passStateSha256": "76eab580723f9f5d1e9e2359c5c308fadbd70e6844bbe1fd8c161cd81aefc873",
+    "commonBindingsSha256": "4e487bec50c8893b088e7f59337637d327f2331bf986ea93ae99ab9c40433321"
+  }
+}

@@ -10,6 +10,13 @@ const N1 = "\x07";
 const EX = "\x03";
 const FIRE = "\uE102";
 
+const scaledName = parseOfficialTmpRuns("\x0e\uf74a阿羅拉\x0f\x0e\uf74b \x0f椰蛋樹");
+assert.deepEqual(scaledName.map(({ t, scale }) => [t, scale]), [
+  ["阿羅拉", 0.74], [" ", 0.75], ["椰蛋樹", undefined],
+]);
+assert.throws(() => parseOfficialTmpRuns("\x0eA"), /size percentage/);
+assert.throws(() => parseOfficialTmpRuns("\x0e"), /size percentage/);
+
 assert.deepEqual(
   parseOfficialTmpRuns(`${B0}A${B0}B${B1}C${B1}D`),
   [

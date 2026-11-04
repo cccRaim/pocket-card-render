@@ -1,0 +1,212 @@
+{
+  "official_selector": {
+    "selectorId": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee",
+    "candidateWitnessId": "c4deae40c665b8824a37ce7d7706815916e23908efb384f260a809fa83f6e6f3",
+    "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+    "shaderName": "Lettuce/Common/CardNew/Stencil/InnerStencil",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "a4c68b7bfc561e34b0ed56e91d9899ca26755655ca307e5d5791e8785fe8df0c"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 8
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 2
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 2
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 2
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_AlphaThreshold": 0.10000000149011612
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "InnerStencil",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_AlphaThreshold"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "6125d2e51a380122677489dea575e13517b4e2e2738b49d8d922298effc99119",
+        "outputSourceSha256": "2050a75b1ee477fd4612b38386a435047ea771157503cc6e59bd7df569714d62",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "23747b804ecda77eaeabd1e1f5dc7d10e6e5b5294179e609c9f5b6c4fbd266f3",
+        "outputSourceSha256": "0935014a565518023ad8d47929a74ab7499702e68542171d6a27f160b0cd2f09",
+        "inputs": [],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_12",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/inner_stencil.vert.glsl",
+    "fragment": "public/shaders/inner_stencil.frag.glsl"
+  },
+  "mrt": {},
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

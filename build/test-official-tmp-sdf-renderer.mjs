@@ -132,6 +132,14 @@ const fromRTMaterial = createOfficialUIRTMaterial({
   manifest: fromRTManifest,
 }, { texture });
 assert.equal(toRTMaterial.blendSrc, THREE.SrcAlphaFactor);
+assert.equal(toRTMaterial.blendSrcAlpha, THREE.SrcAlphaFactor);
+const coverageUI = createOfficialUIRTMaterial({
+  ...shader, manifest: toRTManifest, preserveSourceAlpha: true,
+}, { texture });
+assert.equal(coverageUI.blendSrc, THREE.SrcAlphaFactor);
+assert.equal(coverageUI.blendSrcAlpha, THREE.OneFactor);
+assert.equal(coverageUI.blendDstAlpha, THREE.OneMinusSrcAlphaFactor);
+coverageUI.dispose();
 assert.equal(toRTMaterial.blendDst, THREE.OneMinusSrcAlphaFactor);
 assert.equal(fromRTMaterial.blendSrc, THREE.OneFactor);
 assert.equal(fromRTMaterial.blendDst, THREE.OneMinusSrcAlphaFactor);

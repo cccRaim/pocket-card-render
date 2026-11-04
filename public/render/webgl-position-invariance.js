@@ -60,6 +60,52 @@ export function canonicalizeWebglObjectClipPosition(source) {
   return `${source.slice(0, closingBrace)}    ${CANONICAL_OBJECT_CLIP_WRITE}\n${source.slice(closingBrace)}`;
 }
 
+// Follow the flattened vertex program through local temporaries and conditional writes.
+// Position overrides would discard any contribution from a non-transform shader input.
+function usesOnlyObjectTransformInputs(source) {
+  const inputs = new Set(Array.from(source.matchAll(
+    /\b(?:uniform|in)\s+(?:flat\s+)?(?:(?:highp|mediump|lowp)\s+)?\w+\s+(\w+)(?:\[[^\]]*\])?\s*;/g,
+  ), match => match[1]));
+  const standard = new Set(["position", "modelMatrix", "viewMatrix", "projectionMatrix"]);
+  const main = /\bvoid\s+main\s*\(\s*\)\s*\{/.exec(source);
+  if (!main) return false;
+  const body = source.slice(main.index + main[0].length, findMainClosingBrace(source))
+    .replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
+  let positionDependsOnOther = null;
+  const tokens = (body.match(/[^;{}]+[;{]|}/g) || []).map(token => token.trim());
+  let cursor = 0;
+  function walk(state) {
+    const depends = expression => (expression.match(/\b[A-Za-z_]\w*/g) || [])
+      .some(name => state.get(name) ?? (inputs.has(name) && !standard.has(name)));
+    while (cursor < tokens.length) {
+      const statement = tokens[cursor++];
+      if (statement === "}") break;
+      if (statement.endsWith("{")) {
+        if (!/^if\s*\(/.test(statement)) return null;
+        const condition = depends(statement);
+        const left = walk(new Map(state));
+        const hasElse = /^else\s*\{/.test(tokens[cursor] || "");
+        if (hasElse) cursor++;
+        const right = hasElse ? walk(new Map(state)) : state;
+        if (!left || !right) return null;
+        for (const name of new Set([...left.keys(), ...right.keys()])) {
+          const fromBranch = left.get(name) || right.get(name) || false;
+          state.set(name, fromBranch || (condition && !state.has(name)));
+        }
+        continue;
+      }
+      const write = /^(?:(?:highp|mediump|lowp)\s+)?(?:\w+\s+)?(\w+)((?:\.\w+|\[[^\]]*\])*)\s*([+*/-]?=)\s*([\s\S]*);$/.exec(statement);
+      if (!write) continue;
+      const [, target, member, operator, expression] = write;
+      const other = depends(expression);
+      if (target === "gl_Position") positionDependsOnOther = other;
+      else state.set(target, other || Boolean((member || operator !== "=") && state.get(target)));
+    }
+    return state;
+  }
+  if (!walk(new Map())) return false;
+  return positionDependsOnOther === false;
+}
 function formalPortUsesStandardObjectClipPosition(manifest) {
   const runtime = manifest?.runtime_contract;
   const operations = manifest?.webgl_adaptation?.vertex?.operations;
@@ -112,9 +158,11 @@ export function enforceWebglPositionInvariance(source) {
 export function prepareWebglVertexSource(source, {
   manifest = null,
   canonicalizeObjectClipPosition = true,
+  inspectPositionInputs = false,
 } = {}) {
   const shouldCanonicalize = canonicalizeObjectClipPosition
-    && manifestUsesStandardObjectClipPosition(manifest);
+    && manifestUsesStandardObjectClipPosition(manifest)
+    && (!inspectPositionInputs || usesOnlyObjectTransformInputs(source));
   const positioned = shouldCanonicalize
     ? canonicalizeWebglObjectClipPosition(source)
     : source;

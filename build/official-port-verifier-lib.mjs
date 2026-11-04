@@ -30,7 +30,7 @@ import {
   parseWebglRuntimeUniformType,
 } from "./webgl-runtime-port-contract.mjs";
 import { DYNAMIC_UNIFORM_PRODUCER_SCHEMA } from "../public/render/dynamic-uniform-producer.js";
-import { unityTexEnvToThreeGltfSt } from "../public/render/texture-transform.js";
+import { textureTransformForBasis } from "../public/render/texture-transform.js";
 import { prepareWebglVertexSource } from "../public/render/webgl-position-invariance.js";
 import { resolveStencilRegionFloats } from "../public/render/stencil-region.js";
 
@@ -924,7 +924,8 @@ function verifyGenericRuntimePort(field, context) {
       const uniform = uniforms.get(transform.uniform);
       let expected = null;
       try {
-        expected = unityTexEnvToThreeGltfSt(
+        expected = textureTransformForBasis(
+          transform.conversion,
           recipe?.textures?.[transform.slot],
           manifest.official_shader_property_defaults?.textureDescriptors?.[transform.slot],
         );

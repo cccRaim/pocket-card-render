@@ -33,7 +33,7 @@ function validateProgram(program, role) {
   return program;
 }
 
-export async function loadOfficialUIRTPrograms() {
+export async function loadOfficialUIRTPrograms({ preserveSourceAlpha = false } = {}) {
   const [toVertex, toFragment, toManifest, fromVertex, fromFragment, fromManifest] = await Promise.all([
     fetchText("shaders/ui_default_to_rt.vert.glsl", "official UI ToRT vertex shader"),
     fetchText("shaders/ui_default_to_rt.frag.glsl", "official UI ToRT fragment shader"),
@@ -47,6 +47,7 @@ export async function loadOfficialUIRTPrograms() {
       vertexShader: toVertex,
       fragmentShader: toFragment,
       manifest: toManifest,
+      preserveSourceAlpha,
     }, "producer-to-render-texture"),
     fromRT: validateProgram({
       vertexShader: fromVertex,
@@ -94,7 +95,7 @@ export function createOfficialUIRTMaterial(program, {
     blendEquation: THREE.AddEquation,
     blendSrc: blend.source,
     blendDst: blend.destination,
-    blendSrcAlpha: blend.source,
+    blendSrcAlpha: program.preserveSourceAlpha ? THREE.OneFactor : blend.source,
     blendDstAlpha: blend.destination,
     toneMapped: false,
   });

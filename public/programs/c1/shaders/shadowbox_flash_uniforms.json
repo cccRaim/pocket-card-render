@@ -1,0 +1,355 @@
+{
+  "official_selector": {
+    "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+    "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+    "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/Flash",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "dfc77dc0e742fdfbdfda5e84e1b4b5de5ac03b0f09fe7f3565a8ee0d63f2bf94"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": "_BlendSrcColor",
+        "val": 0
+      },
+      "dst_rgb": {
+        "name": "_BlendDstColor",
+        "val": 0
+      },
+      "src_alpha": {
+        "name": "_BlendSrcAlpha",
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": "_BlendDstAlpha",
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 7
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 4
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 2
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_ChangeColor": 0,
+      "_LightEmitIntensity": 0,
+      "_LightPower": 1,
+      "_GradationPower": 2.299999952316284,
+      "_FlashIntensity": 1.2000000476837158,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_TiltEnabled": 1,
+      "_TiltPower": 2,
+      "_TiltOffset": 0,
+      "_TiltIntensity": 1,
+      "_EmissiveIntensity": 1,
+      "_Stencil": 0,
+      "_LightAreaAlphaBlend": 0,
+      "_Transparent": 0,
+      "_BlendSrcColor": 1,
+      "_BlendDstColor": 10,
+      "_BlendSrcAlpha": 0,
+      "_BlendDstAlpha": 10,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {
+      "_FlashBrightColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_FlashDarkColor": [
+        1,
+        0,
+        0.6000000238418579,
+        1
+      ]
+    },
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ChangeColorTex": {
+        "defaultName": "",
+        "dimension": 2
+      },
+      "_FlashMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Flash",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_GradationPower",
+        "_FlashIntensity",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_TiltPower",
+        "_TiltOffset",
+        "_TiltIntensity",
+        "_LightAreaAlphaBlend"
+      ],
+      "ints": [
+        "_TiltEnabled",
+        "_Transparent"
+      ],
+      "vectors": {
+        "_FlashBrightColor": "vec3",
+        "_FlashDarkColor": "vec3",
+        "_Rotation": "vec3"
+      }
+    },
+    "dynamic_uniforms": {
+      "_ChangeColor": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      },
+      "_LightColorIntensity": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      },
+      "_LightEmitIntensity": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      },
+      "_LightPower": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "23b8f64dc3cba507091125327549630524ee8215a6cacf45e1a7e4f1a0ef2f39",
+        "outputSourceSha256": "fce6d706ba9ee8e907b3777a54c7d0f3e0b2e881a32d0412fa367f2bdcab1d73",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "08a7b163baca8244c30ac0dc85832ac81b8e8d97777a66df4ad5604ac1c0ea6f",
+        "outputSourceSha256": "2fbef00de01e467635c6fcda76fe8fb5a7a412469de1544bd82516f2f591b478",
+        "inputs": [
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 7
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_625",
+      "dimension": 2
+    },
+    {
+      "slot": "_ChangeColorTex",
+      "spirvName": "_505",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_358",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_424",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_482",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_315",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlashMaskTex",
+      "spirvName": "_1006",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/shadowbox_flash.vert.glsl",
+    "fragment": "public/shaders/shadowbox_flash.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_1142"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

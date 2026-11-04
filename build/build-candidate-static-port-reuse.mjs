@@ -254,6 +254,7 @@ function adaptationOperationsForRebind(operations) {
     "producerContractSha256",
     "clockContractSha256",
     "basisContractSha256",
+    "dataStageContractSha256",
     "textureCoordinateContractSha256",
   ]);
   return operations.map((operation) => Object.fromEntries(

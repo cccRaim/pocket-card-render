@@ -1,0 +1,66 @@
+uniform highp mat4 modelMatrix;
+uniform highp mat4 viewMatrix;
+uniform highp mat4 projectionMatrix;
+precision highp float;
+precision highp int;
+uniform float _BoundsRotation;
+in vec3 position;
+out vec3 vs_TEXCOORD1;
+in vec2 uv;
+out vec4 vs_TEXCOORD0;
+in vec3 normal;
+out vec3 vs_TEXCOORD2;
+vec4 _9;
+vec4 _44;
+mediump float _104;
+mediump float _108;
+mediump vec3 _113;
+vec2 _132;
+float _175;
+
+const highp mat4 pcrUnityFromThreeWorld = mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+const highp mat4 pcrUnityFromGlbObject = mat4(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+highp vec2 pcrStoredUv(highp vec2 value) { return vec2(value.x, 1.0 - value.y); }
+void main() {
+    highp vec3 pcrUnityInput_position = vec3(-position.x, position.yz);
+    highp vec3 pcrUnityInput_normal = vec3(-normal.x, normal.yz);
+    highp vec2 pcrUnityInput_uv = vec2(uv.x, 1.0 - uv.y);
+    highp mat4 pcrUnityInput_modelMatrix = pcrUnityFromThreeWorld * modelMatrix * pcrUnityFromGlbObject;
+    highp mat4 pcrUnityInput_viewMatrix = viewMatrix * pcrUnityFromThreeWorld;
+vec4 _11 = vec4(pcrUnityInput_position, 1.0);
+vec2 _119 = pcrUnityInput_uv;
+vec3 _156 = pcrUnityInput_normal;
+mat4 _ObjectToWorld = pcrUnityInput_modelMatrix;
+mat4 _WorldToObject = inverse(pcrUnityInput_modelMatrix);
+mat4 _ViewProjection = projectionMatrix * pcrUnityInput_viewMatrix;
+    _9 = _11.yyyy * _ObjectToWorld[1];
+    _9 = (_ObjectToWorld[0] * _11.xxxx) + _9;
+    _9 = (_ObjectToWorld[2] * _11.zzzz) + _9;
+    _44 = _9 + _ObjectToWorld[3];
+    vs_TEXCOORD1 = (_ObjectToWorld[3].xyz * _11.www) + _9.xyz;
+    _9 = _44.yyyy * _ViewProjection[1];
+    _9 = (_ViewProjection[0] * _44.xxxx) + _9;
+    _9 = (_ViewProjection[2] * _44.zzzz) + _9;
+    _9 = (_ViewProjection[3] * _44.wwww) + _9;
+    gl_Position = _9;
+    _9.x = _BoundsRotation * 0.01745329238474369049072265625;
+    _104 = sin(_9.x);
+    _108 = cos(_9.x);
+    _113.x = -_104;
+    vec2 _123 = _119 + vec2(-0.5);
+    _9 = vec4(_123.x, _123.y, _9.z, _9.w);
+    _113.y = _108;
+    _113.z = _104;
+    _132.y = dot(_113.zy, _9.xy);
+    _132.x = dot(_113.yx, _9.xy);
+    vec2 _149 = _132 + vec2(0.5);
+    vs_TEXCOORD0 = vec4(vs_TEXCOORD0.x, vs_TEXCOORD0.y, _149.x, _149.y);
+    vs_TEXCOORD0 = vec4(_119.x, _119.y, vs_TEXCOORD0.z, vs_TEXCOORD0.w);
+    _9.x = dot(_156, _WorldToObject[0].xyz);
+    _9.y = dot(_156, _WorldToObject[1].xyz);
+    _9.z = dot(_156, _WorldToObject[2].xyz);
+    _175 = dot(_9.xyz, _9.xyz);
+    _175 = inversesqrt(_175);
+    vs_TEXCOORD2 = vec3(_175) * _9.xyz;
+
+}

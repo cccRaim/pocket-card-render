@@ -70,6 +70,11 @@ assertRegionBinding(
 const unboundRecipe = structuredClone(
   venusaur.materials.cPK_10_000040_00_FUSHIGIBANAex_RR_L_PAR1,
 );
+const explicitRecipe = { ...unboundRecipe, clip: "window", floats: { ...unboundRecipe.floats, _StencilRef: 1 } };
+const explicit = new THREE.MeshBasicMaterial();
+assert.equal(applyOfficialPassState(explicit, explicitRecipe, parallax.official_pass_runtime), true);
+assert.equal(explicit.stencilRef, 1);
+assert.equal(explicit.stencilFuncMask, 1);
 delete unboundRecipe.clip;
 const unbound = new THREE.MeshBasicMaterial();
 assert.equal(applyOfficialPassState(

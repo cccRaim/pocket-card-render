@@ -128,6 +128,15 @@ test("active MRT1 producers enable bloom without shader-name or material-color g
   ), false, "an exact zero-MRT port must suppress the legacy emissive-property guess");
 
   const mismatched = structuredClone(zeroSecondary.material);
+  const withInventory = (emissiveObjects) => sceneUsesBloomProducer(
+    { moving: circular.material }, circular.exactShaders, circular.dispatchIndex,
+    { officialDraws: [{ drawId: "renderer#0" }], emissiveObjects },
+  );
+  assert.equal(withInventory([]), false);
+  assert.equal(withInventory([{ drawIds: ["renderer#0"] }]), true);
+  assert.throws(() => withInventory([{ drawIds: ["other#0"] }]), /unknown draw/);
+  assert.throws(() => withInventory(null), /inventory/);
+
   mismatched.official.shader = "unmatched-identity";
   assert.equal(sceneUsesBloomProducer(
     { flat: mismatched },

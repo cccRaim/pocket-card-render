@@ -1,4 +1,5 @@
 import { compileRendererPropertyBlockContract } from "./renderer-property-block-contract.mjs";
+import { compileUnityDataStageContract } from "./unity-data-stage.mjs";
 import {
   compileBasisConversionContract,
   compileTextureCoordinateContract,
@@ -20,6 +21,7 @@ const CONTRACT_FIELDS = new Set([
   "stencil_normalization",
   "stencil_face_mode",
   "backend_basis_conversions",
+  "backend_data_stages",
   "backend_texture_defaults",
   "backend_uniforms",
   "dynamic_uniforms",
@@ -212,6 +214,18 @@ export function compileWebglRuntimePortContract(raw, { samplerBindings } = {}) {
   }
 
   const textureCoordinates = {};
+  const backendDataStages = {};
+  if (raw.backend_data_stages !== undefined) {
+    if (!isRecord(raw.backend_data_stages)) fail("backend_data_stages must be an object");
+    rejectUnknownFields(raw.backend_data_stages, new Set(["vertex", "fragment"]), "backend_data_stages");
+    for (const [stage, value] of Object.entries(raw.backend_data_stages)) {
+      backendDataStages[stage] = compileUnityDataStageContract(value);
+      if (backendDataStages[stage].stage !== stage
+          || raw.backend_basis_conversions?.[stage] || raw.texture_coordinates?.[stage]) {
+        fail(`${stage} Unity data-stage has mismatched or duplicate basis conversions`);
+      }
+    }
+  }
   if (raw.texture_coordinates !== undefined) {
     if (!isRecord(raw.texture_coordinates)) fail("texture_coordinates must be an object");
     rejectUnknownFields(raw.texture_coordinates, new Set(["vertex"]), "texture_coordinates");
@@ -254,6 +268,7 @@ export function compileWebglRuntimePortContract(raw, { samplerBindings } = {}) {
     ...(Object.keys(backendBasisConversions).length > 0
       ? { backend_basis_conversions: backendBasisConversions }
       : {}),
+    ...(Object.keys(backendDataStages).length > 0 ? { backend_data_stages: backendDataStages } : {}),
     ...(Object.keys(backendTextureDefaults).length > 0
       ? { backend_texture_defaults: backendTextureDefaults }
       : {}),

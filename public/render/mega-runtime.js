@@ -26,11 +26,13 @@ import {
   THREE_PERSPECTIVE_ZBUFFER_PRODUCER_SCHEMA,
   threePerspectiveZBufferParams,
 } from "./projection-depth.js";
+import { createExtendedCardFrame, extendedCardUniforms } from "./card-extended-runtime.js";
 
 const DYNAMIC_RUNTIME_AUDIT_SCHEMA =
   "pocket-card-render/dynamic-port-runtime-audit@1";
 const FLOW_COMPONENT_SOURCE =
   "Card_ShadowBox_Effect_Flow component runtime (unresolved)";
+const UNSUBMITTED_ZERO_SOURCE = "pocket-card-render/native-unsubmitted-uniform-zero@1";
 const OFFICIAL_COMMON_VALUE_SOURCE =
   "pocket-card-render/official-guest-common-value-unresolved@1";
 
@@ -77,10 +79,16 @@ export function updateMegaRuntime(
   globalTime = 0,
   camera = null,
   deltaTime = 0,
+  worldQuaternion = null,
 ) {
   const msrValuesByState = new Map();
   const mrrValuesByState = new Map();
+  const asArray = (value) => value?.toArray ? value.toArray()
+    : Array.isArray(value) || ArrayBuffer.isView(value) ? Array.from(value)
+    : value ? [value.x, value.y, value.z, value.w] : null;
+  const extendedFrame = createExtendedCardFrame(asArray(quaternion), globalTime, deltaTime, asArray(worldQuaternion));
   for (const material of materials) {
+    const applyExtended = extendedCardUniforms(material, extendedFrame);
     const dynamic = material.userData.dynamicPortUniforms
       || material.userData.megaDynamicUniforms
       || [];
@@ -99,7 +107,19 @@ export function updateMegaRuntime(
       const uniform = material.uniforms[name];
       if (!uniform) throw new Error(`${material.userData.exactShader}: missing dynamic uniform ${name}`);
       const source = specs[name]?.source;
-      if (source === FLOW_COMPONENT_SOURCE) {
+      if (applyExtended(name, source)) {
+        audit[name] = uniform.value;
+        continue;
+      } else if (source === UNSUBMITTED_ZERO_SOURCE) {
+        // Reproduce the declared host default. Guest submission remains unobserved.
+        if (name === "_CutOff" && specs[name].type === "float" && typeof uniform.value === "number") {
+          uniform.value = 0;
+        } else if (name === "_ShadowUVTranslate" && specs[name].type === "vec2" && uniform.value?.isVector2) {
+          uniform.value.set(0, 0);
+        } else {
+          throw new Error(`Unsupported unsubmitted uniform ${name} (${specs[name].type})`);
+        }
+      } else if (source === FLOW_COMPONENT_SOURCE) {
         uniform.value = name === "_TimeParam" ? globalTime : defaults[name] ?? 0;
       } else if (source === THREE_PERSPECTIVE_ZBUFFER_PRODUCER_SCHEMA
           && name === "_ZBufferParams") {
@@ -269,17 +289,25 @@ export function updateMegaRuntime(
     }
     material.userData.dynamicPortRuntimeAudit = {
       schema: DYNAMIC_RUNTIME_AUDIT_SCHEMA,
-      status: Object.values(specs).some((spec) =>
+      status: material.userData.cardProducerEvidenceScope === "reference-only" ? "reference-only"
+        : Object.values(specs).some((spec) =>
         spec.source === FLOW_COMPONENT_SOURCE
+        || spec.source === UNSUBMITTED_ZERO_SOURCE
         || spec.source === OFFICIAL_COMMON_VALUE_SOURCE)
         ? "runtime-required"
         : "known-implementation",
       globalTime,
       deltaTime,
       uniforms: audit,
+      ...(material.userData.cardProducerEvidenceScope ? {
+        evidenceScope: material.userData.cardProducerEvidenceScope,
+        runtimeEvidence: false,
+        backendSemanticEquivalence: false,
+      } : {}),
       runtimeRequiredUniforms: Object.entries(specs)
         .filter(([, spec]) =>
           spec.source === FLOW_COMPONENT_SOURCE
+          || spec.source === UNSUBMITTED_ZERO_SOURCE
           || spec.source === OFFICIAL_COMMON_VALUE_SOURCE)
         .map(([name]) => name),
       ...(futureValues ? {

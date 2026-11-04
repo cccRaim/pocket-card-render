@@ -1,0 +1,281 @@
+{
+  "official_selector": {
+    "selectorId": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb",
+    "candidateWitnessId": "44c61ec705cfab11f8706ebecc8e3b2a8bf83a32bf3649c97d31107b5f237cb6",
+    "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+    "shaderName": "Lettuce/Common/CardNew/Effect",
+    "keywords": [
+      "_LAYER_EFF1",
+      "_UseGradationMap",
+      "_UseViewMask"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "330ca5df07ce77b2003c9dc6d89901ffcc2eff1650f09a23ca0f89ba9dfcd478"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWriteParam",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": "_CullMode",
+      "val": 0
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": "_SrcFactor",
+        "val": 0
+      },
+      "dst_rgb": {
+        "name": "_DstFactor",
+        "val": 0
+      },
+      "src_alpha": {
+        "name": "_SrcFactorA",
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": "_DstFactorA",
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseViewMask": 0,
+      "_Stencil": 0,
+      "_ZTest": 4,
+      "_ZWriteParam": 0,
+      "_CullMode": 0,
+      "_Edge": 0,
+      "_Progress": 0,
+      "_MainPower": 1,
+      "_MaskPower": 0,
+      "_AnglePower": 0,
+      "_UseGradationMap": 0,
+      "_Layer": 0,
+      "_DepthOffset": 0,
+      "_AlphaBlend": 1,
+      "_BlendMode": 0,
+      "_SrcFactor": 5,
+      "_DstFactor": 10,
+      "_SrcFactorA": 0,
+      "_DstFactorA": 10
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ViewMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_GradationMap": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Effect",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_MainPower",
+        "_MaskPower",
+        "_AnglePower",
+        "_Edge",
+        "_Progress",
+        "_AlphaBlend",
+        "_DepthOffset"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "texture_coordinates": {
+      "vertex": {
+        "transforms": [
+          {
+            "uniform": "_MainTex_ST",
+            "slot": "_MainTex",
+            "conversion": "unity-texenv"
+          }
+        ]
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "b462ea46f17e593e3a47918bb6e64137e5d63950954d4fd3522c05703ecafc6b",
+        "outputSourceSha256": "ad4078299a25760f80afa97e63411d4bbf7d3dfcc22d3e524a269656781b3ba4",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "0898c9ed3fe928ea79737d5202d267638aa0bd33ef561e9d35b909533a4d29a0",
+        "outputSourceSha256": "b0a3990978edc186f77620a86d1f5785def201ccfd3db15a8c93fcb00c4531b7",
+        "inputs": [],
+        "storedVSampleCount": 3
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_GradationMap",
+      "spirvName": "_115",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/effect_view.vert.glsl",
+    "fragment": "public/shaders/effect_grad_view_eff1.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "zero"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "texture-coordinate-basis-conversion"
+        },
+        {
+          "kind": "view-depth-offset"
+        },
+        {
+          "kind": "matrix-expression-fold"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

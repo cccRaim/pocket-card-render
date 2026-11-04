@@ -175,7 +175,7 @@ function evaluateAnimation(state, progress) {
   );
 }
 
-function updateTilt(state, threeQuaternion) {
+export function updateCardMSRTilt(state, threeQuaternion) {
   const unityQuaternion = normalizeQuaternion(
     threeQuaternionToUnity(threeQuaternion),
   );
@@ -281,7 +281,7 @@ function updateAnimation(state) {
   state.lastTiltDegree = state.tiltDegree;
 }
 
-function updateSpring(position, speed, target, spring, damping, deltaTime) {
+export function updateCardMSRSpring(position, speed, target, spring, damping, deltaTime) {
   const projectedDifference = f32(
     f32(target - position) - f32(deltaTime * speed),
   );
@@ -333,7 +333,7 @@ function updateReflection(state) {
   }
 
   if (state.reflectPDState === ReflectPDState.Play) {
-    const next = updateSpring(
+    const next = updateCardMSRSpring(
       state.reflectFlipBookSpeed,
       state.reflectPDSpeed,
       1,
@@ -344,7 +344,7 @@ function updateReflection(state) {
     state.reflectFlipBookSpeed = next.position;
     state.reflectPDSpeed = next.speed;
   } else if (state.reflectPDState === ReflectPDState.Idle) {
-    const next = updateSpring(
+    const next = updateCardMSRSpring(
       state.reflectFlipBookSpeed,
       state.reflectPDSpeed,
       0,
@@ -419,7 +419,7 @@ export function updateCardMSR(state, {
   if (dt < 0) throw new RangeError("CardMSRObject.deltaTime must be >= 0");
   state.deltaTime = f32(dt);
   state.elapsedTime = f32(state.elapsedTime + state.deltaTime);
-  updateTilt(state, threeQuaternion);
+  updateCardMSRTilt(state, threeQuaternion);
   updateTranslateLayer(state);
   updateAnimation(state);
   updateReflection(state);

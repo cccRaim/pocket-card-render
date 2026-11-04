@@ -1,0 +1,359 @@
+{
+  "official_selector": {
+    "selectorId": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249",
+    "candidateWitnessId": "fc136482a2ab9f4c5285962f0ec02812c45d91ac0f7697da995fed3f6882078d",
+    "shaderIdentity": "CAB-0f8a4fefd290f3d02db2ccfd68a62da8:-3567610437707568368",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Transparent-UR-New",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "4c946fea7b46791470a79f5566209226bd24bf7efa386c5172bbf3248cd18f46"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "shader_property_defaults": {
+      "_ZTest": 4,
+      "_ZWrite": 1,
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_FakeSpecularMaskScale": 1,
+      "_FakeSpecularIntensity": 1,
+      "_FakeSpecularPower": 1,
+      "_FakeSpecularCornerPower": 0,
+      "_FakeSpecularNotCornerOffset": 0,
+      "_DarknessOffset": 0
+    },
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_ZTest": 4,
+      "_ZWrite": 1,
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_FakeSpecularMaskScale": 1,
+      "_FakeSpecularIntensity": 1,
+      "_FakeSpecularPower": 1,
+      "_FakeSpecularCornerPower": 0,
+      "_FakeSpecularNotCornerOffset": 0,
+      "_DarknessOffset": 0
+    },
+    "colors": {
+      "_FakeSpecularColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_DarknessColor": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_DynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PhaseMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_FakeSpecularMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Transparent-UR-New",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeSpecularMaskScale",
+        "_FakeSpecularIntensity",
+        "_FakeSpecularPower",
+        "_FakeSpecularCornerPower",
+        "_FakeSpecularNotCornerOffset",
+        "_Shininess",
+        "_BaseColorIntensity",
+        "_SpecularIntensity",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_DarknessOffset"
+      ],
+      "ints": [],
+      "vectors": {
+        "_FakeSpecularColor": "vec3",
+        "_DarknessColor": "vec3",
+        "_Rotation": "vec3"
+      }
+    },
+    "backend_uniforms": {},
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "2b23160423bb861f53f7c1f148fabd7c279c7b14098f8a55588aaaa39ef1fc7a",
+        "outputSourceSha256": "625dbb0e1608d77d0e2d4160c41dff3b61cfd1a8fcaf993ecf53e626d0025667",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "3fb2c50459619ea1a549b08811dbc6adf7cd2d9ecc5558538271945544464c98",
+        "outputSourceSha256": "aa2d70ab4720a37a091af031558c96c9ccdd6622cbc9d1b4819a01a159fa0e85",
+        "inputs": [
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 7
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_DynamicUITex",
+      "spirvName": "_581",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_609",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_528",
+      "dimension": 4
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseMaskTex",
+      "spirvName": "_361",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_379",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_428",
+      "dimension": 2
+    },
+    {
+      "slot": "_FakeSpecularMask",
+      "spirvName": "_800",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/transparent_ur_new.vert.glsl",
+    "fragment": "public/shaders/transparent_ur_new.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "zero"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

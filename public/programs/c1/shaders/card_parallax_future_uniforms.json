@@ -1,0 +1,329 @@
+{
+  "official_selector": {
+    "selectorId": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d",
+    "candidateWitnessId": "ec656d0015989845a88372ac9d3cf0fbe247a4001981ab0e22ee546d7718552c",
+    "shaderIdentity": "CAB-96b5bb98e306735ecc529cd496a65316:-7728916917211820233",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Future",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "81d6a748c03f64ade63d40ac29a13c62abee96b135955ba78bd8a4ebc6c05a1f"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_CrossFilterIntensity": 0.5,
+      "_CrossFilterUVScale": 1,
+      "_CrossFilterPrimScale": 1,
+      "_CellCount": 999,
+      "_CellAnimFrameCount": 240,
+      "_SwitchFade": 0.20000000298023224,
+      "_Color1Threshold": 0.28200000524520874,
+      "_Color2Threshold": 0.3700000047683716,
+      "_Color3Threshold": 0.41999998688697815,
+      "_EmissiveIntensity": 0,
+      "_CrossFilterEmissiveIntensity": 0,
+      "_StencilRef": 0,
+      "_ZOffset": 0.03999999910593033,
+      "_BlendMode": 0,
+      "_SrcFactor": 5,
+      "_DstFactor": 10,
+      "_SrcFactorA": 0,
+      "_DstFactorA": 10
+    },
+    "colors": {
+      "_BaseColor": [
+        0.30000001192092896,
+        0.30000001192092896,
+        0.30000001192092896,
+        1
+      ],
+      "_OffColor": [
+        0.30000001192092896,
+        0.30000001192092896,
+        0.30000001192092896,
+        1
+      ],
+      "_OnColor1": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_OnColor2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_OnColor3": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_EmitColor1": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_EmitColor2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_EmitColor3": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {},
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_CrossFilterTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_CellAnimTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_Future",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_Color1Threshold",
+        "_Color2Threshold",
+        "_Color3Threshold",
+        "_CrossFilterEmissiveIntensity",
+        "_CrossFilterIntensity",
+        "_CrossFilterPrimScale",
+        "_CrossFilterUVScale",
+        "_EmissiveIntensity",
+        "_SwitchFade",
+        "_ZOffset"
+      ],
+      "ints": [
+        "_CellAnimFrameCount",
+        "_CellCount"
+      ],
+      "vectors": {
+        "_BaseColor": "vec4",
+        "_EmitColor1": "vec4",
+        "_EmitColor2": "vec4",
+        "_EmitColor3": "vec4",
+        "_OffColor": "vec4",
+        "_OnColor1": "vec4",
+        "_OnColor2": "vec4",
+        "_OnColor3": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "_AnimFrame": {
+        "type": "float",
+        "source": "pocket-card-render/card-future-object-arm64-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "8084d2415146694a00176475e6b763df189bfb13c5e570e54772db9b7e7e0006",
+        "outputSourceSha256": "4f40c6b668f9f31fb2167597c36b0961fa6cb066226173228d5f088c1b1ee247",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "99d0222aa02e0550236e6eb26abec97f3db8e6206fd2143042c40b28137bd2a4",
+        "outputSourceSha256": "8c273e86baf82f511d3812914f40ecd6bd9f0feb23095bf5f7cc179a2640ac1d",
+        "inputs": [],
+        "storedVSampleCount": 4
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_CellAnimTex",
+      "spirvName": "_76",
+      "dimension": 2
+    },
+    {
+      "slot": "_MainTex",
+      "spirvName": "_145",
+      "dimension": 2
+    },
+    {
+      "slot": "_CrossFilterTex",
+      "spirvName": "_449",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_future.vert.glsl",
+    "fragment": "public/shaders/card_parallax_future.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_529"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

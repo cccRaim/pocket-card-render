@@ -14,6 +14,7 @@ import {
 } from "./webgl-adaptation-contract.mjs";
 import { compileRendererPropertyBlockContract } from "./renderer-property-block-contract.mjs";
 import { compileWebglRuntimePortContract } from "./webgl-runtime-port-contract.mjs";
+import { validateUnityDataStageSourceText } from "./unity-data-stage.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SHADER_ROOT = path.join(ROOT, "public", "shaders");
@@ -206,11 +207,20 @@ export function auditWebglAdaptationContract() {
         "renderer-property-block-binding": "producerContractSha256",
         "object-basis-conversion": "basisContractSha256",
         "texture-coordinate-basis-conversion": "textureCoordinateContractSha256",
+        "unity-data-stage-boundary": "dataStageContractSha256",
       };
       for (const stage of ["vertex", "fragment"]) {
         for (const operation of compiled.graph[stage]) {
           const field = evidenceField[operation.kind];
-          const expected = operation.kind === "object-basis-conversion"
+          if (operation.kind === "unity-data-stage-boundary"
+              && compiled.graph[stage].some((entry) => ["object-basis-conversion", "texture-coordinate-basis-conversion"].includes(entry.kind))) {
+            fail(`${port.manifest} ${stage} combines incompatible basis operations`);
+          }
+          const expected = operation.kind === "unity-data-stage-boundary"
+            ? canonicalJsonSha256(validateUnityDataStageSourceText(
+              fs.readFileSync(resolveRepositoryPath(manifest.webgl_sources?.[stage], "Unity data-stage source"), "utf8"),
+              manifest.runtime_contract?.backend_data_stages?.[stage],
+            )) : operation.kind === "object-basis-conversion"
             ? validateBasisConversionSource(manifest, port.manifest, stage)
             : expectedEvidence[operation.kind];
           if (field && operation[field] !== expected) {

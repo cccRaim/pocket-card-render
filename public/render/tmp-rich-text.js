@@ -15,9 +15,11 @@ export function parseOfficialTmpRuns(text, inlineSprites = {}, inlineEx = null) 
   let boldDepth = 0;
   let italicDepth = 0;
   let noBreak = false;
+  let scale = null;
+  let expectsPercent = false;
   let current = "";
 
-  const style = () => ({ bold: boldDepth > 0, italic: italicDepth > 0, noBreak });
+  const style = () => ({ bold: boldDepth > 0, italic: italicDepth > 0, noBreak, ...(scale === null ? {} : { scale }) });
   const flush = () => {
     if (!current) return;
     runs.push({ t: current, ...style() });
@@ -25,7 +27,16 @@ export function parseOfficialTmpRuns(text, inlineSprites = {}, inlineEx = null) 
   };
 
   for (const character of String(text || "")) {
-    if (character === BOLD_START) {
+    if (expectsPercent) {
+      const percent = character.codePointAt(0) - 0xf700;
+      if (percent < 1 || percent > 1000) throw new Error("Invalid TMP run size percentage");
+      scale = percent / 100;
+      expectsPercent = false;
+    } else if (character === "\x0e" || character === "\x0f") {
+      flush();
+      expectsPercent = character === "\x0e";
+      scale = null;
+    } else if (character === BOLD_START) {
       flush(); boldDepth = Math.min(255, boldDepth + 1);
     } else if (character === BOLD_END) {
       flush(); boldDepth = Math.max(0, boldDepth - 1);
@@ -50,6 +61,7 @@ export function parseOfficialTmpRuns(text, inlineSprites = {}, inlineEx = null) 
       current += character;
     }
   }
+  if (expectsPercent) throw new Error("Missing TMP run size percentage");
   flush();
   return runs;
 }

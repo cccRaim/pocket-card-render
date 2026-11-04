@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { compileUnityDataStageContract } from "./unity-data-stage.mjs";
 
 export const WEBGL_ADAPTATION_SCHEMA_V1 = "pocket-card-render/webgl-stage-adaptation@1";
 export const WEBGL_ADAPTATION_SCHEMA_V2 = "pocket-card-render/webgl-stage-adaptation@2";
@@ -84,6 +85,13 @@ fdcb7cbf31ff3774b9f6c8706da9a14adc714aff71707da5713a24f2cc9e313b
 `.trim().split(/\s+/));
 const STAGES = ["vertex", "fragment"];
 const OPERATION_SCHEMAS = {
+  "unity-data-stage-boundary": {
+    stages: STAGES,
+    fields: {
+      contract: ["unity-flattened-to-three-input-and-storage"],
+      dataStageContractSha256: "sha256",
+    },
+  },
   "vertex-input-binding": {
     stages: ["vertex"],
     fields: {
@@ -315,7 +323,7 @@ export function compileTextureCoordinateContract(raw) {
         fail(`texture-coordinate transforms[${index}].${field} must be a GLSL identifier`);
       }
     }
-    if (row.conversion !== "unity-texenv-to-three-gltf-v"
+    if (!["unity-texenv", "unity-texenv-to-three-gltf-v"].includes(row.conversion)
         || uniforms.has(row.uniform) || outputs.has(row.output)) {
       fail(`texture-coordinate transforms[${index}] is duplicated or has an unsupported conversion`);
     }
@@ -696,6 +704,11 @@ export function compileWebglAdaptationContract(adaptation, { sourceHashes } = {}
   if (clipOperations.length !== 1) fail("vertex stage must declare exactly one clip-space Y conversion");
   if (adaptation.schema === WEBGL_ADAPTATION_SCHEMA_V2) {
     for (const stage of STAGES) {
+      const dataStages = operations[stage].filter((entry) => entry.kind === "unity-data-stage-boundary");
+      if (dataStages.length > 1 || dataStages.length && operations[stage].some((entry) =>
+        ["object-basis-conversion", "texture-coordinate-basis-conversion"].includes(entry.kind))) {
+        fail(`${stage} has duplicate or incompatible Unity data-stage operations`);
+      }
       const versionOwners = operations[stage].filter((entry) => entry.kind === "glsl-version-ownership");
       if (versionOwners.length !== 1) {
         fail(`${stage} stage must declare exactly one GLSL version owner`);
@@ -775,6 +788,20 @@ export function buildWebglAdaptationV2({
     if (!Array.isArray(rawStage.operations)) fail(`${stage}.operations must be an array`);
     const operations = rawStage.operations.map((raw, index) => {
       if (!isRecord(raw)) fail(`${stage}.operations[${index}] must be an object`);
+      if (raw.kind === "unity-data-stage-boundary") {
+        const contract = compileUnityDataStageContract(runtimeContract.backend_data_stages?.[stage]);
+        if (contract.stage !== stage || contract.outputSourceSha256 !== rawStage.outputSha256) {
+          fail(`${stage} Unity data-stage source/stage mismatch`);
+        }
+        if (rawStage.operations.some((entry) => ["object-basis-conversion", "texture-coordinate-basis-conversion"].includes(entry.kind))) {
+          fail(`${stage} Unity data-stage boundary cannot be combined with prior basis conversions`);
+        }
+        const dataStageContractSha256 = canonicalJsonSha256(contract);
+        if (Object.hasOwn(raw, "dataStageContractSha256") && raw.dataStageContractSha256 !== dataStageContractSha256) {
+          fail(`${stage}.operations[${index}].dataStageContractSha256 does not match generated contract evidence`);
+        }
+        return { ...raw, dataStageContractSha256 };
+      }
       if (raw.kind === "object-basis-conversion") {
         const rawBasisContract = runtimeContract.backend_basis_conversions?.[stage];
         if (!isRecord(rawBasisContract)) {

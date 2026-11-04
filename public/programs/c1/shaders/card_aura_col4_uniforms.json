@@ -1,0 +1,352 @@
+{
+  "official_selector": {
+    "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+    "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+    "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
+    "shaderName": "Lettuce/Common/CardNew/Card_Aura",
+    "keywords": [
+      "_USE_COL4"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "bc1ebd48e6c776b95f1fc3878f39a31982ab80c7e6c59a4594a2586eaaa8da0b"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseOldNoise": 1,
+      "_AuraMaskPower": 1,
+      "_FlowIntensity": 0.5,
+      "_AuraSpeed": 1,
+      "_AuraDetail": 1,
+      "_AuraMowamowaPower": 1.5,
+      "_BureNoiseSpeed": 0.20000000298023224,
+      "_BureNoiseIntensity": 0.30000001192092896,
+      "_BureNoiseDetail": 4,
+      "_NoiseMoveUpSpeed": 0.07999999821186066,
+      "_VisualizeUpVector": 0,
+      "_BlendFlowMapUpVector": 0.30000001192092896,
+      "_UpVectorNoiseStrength": 1,
+      "_UpVectorNoiseDetail": 10,
+      "_UpVectorNoiseSpeed": 1,
+      "_VisualizeAuraMask": 0,
+      "_AuraMaskOffset": 0,
+      "_AuraMaskNoiseDetail": 10,
+      "_AuraMaskNoiseSpeed": 1,
+      "_AuraMask2Power": 1,
+      "_UseCol4": 0,
+      "_AuraColorIntensity": 1,
+      "_AuraAlphaIntensity": 1,
+      "_AuraCol4Threshold": 1,
+      "_AuraCol4ThresholdWidth": 1,
+      "_AuraEdgeBorder": 0.699999988079071,
+      "_AuraEdgeBorderSmooth": 0.05000000074505806,
+      "_AuraEdgePow": 1.2000000476837158,
+      "_EmissiveIntensity": 0,
+      "_AlphaBlend": 1,
+      "_BaseTransparency": 0,
+      "_Transparency": 0,
+      "_ZOffset": 0,
+      "_Stencil": 0,
+      "_ZTest": 4
+    },
+    "colors": {
+      "_Col1": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col3": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col4": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_AuraScale": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "_AuraPosOffset": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "textureDescriptors": {
+      "_AuraMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FBMTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FlowTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Aura",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_AuraMaskPower",
+        "_FlowIntensity",
+        "_AuraSpeed",
+        "_AuraDetail",
+        "_AuraMowamowaPower",
+        "_BureNoiseIntensity",
+        "_BureNoiseSpeed",
+        "_BureNoiseDetail",
+        "_NoiseMoveUpSpeed",
+        "_BlendFlowMapUpVector",
+        "_UpVectorNoiseStrength",
+        "_UpVectorNoiseDetail",
+        "_UpVectorNoiseSpeed",
+        "_AuraMaskOffset",
+        "_AuraMaskNoiseDetail",
+        "_AuraMaskNoiseSpeed",
+        "_AuraMask2Power",
+        "_AuraCol4ThresholdWidth",
+        "_AuraCol4Threshold",
+        "_AuraColorIntensity",
+        "_AuraAlphaIntensity",
+        "_AuraEdgeBorder",
+        "_AuraEdgeBorderSmooth",
+        "_AuraEdgePow",
+        "_EmissiveIntensity",
+        "_AlphaBlend",
+        "_BaseTransparency"
+      ],
+      "ints": [],
+      "vectors": {
+        "_AuraScale": "vec2",
+        "_AuraPosOffset": "vec2",
+        "_Col1": "vec4",
+        "_Col2": "vec4",
+        "_Col3": "vec4",
+        "_Col4": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "_TimeParam": {
+        "type": "float",
+        "source": "pocket-card-render/card-msr-object-arm64-state-port@1"
+      },
+      "_Transparency": {
+        "type": "float",
+        "source": "pocket-card-render/card-msr-object-arm64-state-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "7a15ba0e79282cdefa67ba6f8550c1d51bdc7dcf59333df5c24e86ba72432331",
+        "outputSourceSha256": "64a129d97cde1735165d5d6c523569aa86b4b11c39830f267b5044ab766fb76f",
+        "inputs": [
+          "position",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "1212cd19cf9d4a3f7017b247bc65544b54a52ce826533cba2627bc6c91e92ff5",
+        "outputSourceSha256": "eb64095639ff6d8670f23274453c5cf2548055eebce8ce922558244fa33f9053",
+        "inputs": [],
+        "storedVSampleCount": 12
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_AuraMask",
+      "spirvName": "_60",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlowTex",
+      "spirvName": "_87",
+      "dimension": 2
+    },
+    {
+      "slot": "_FBMTex",
+      "spirvName": "_2527",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_aura_col4.vert.glsl",
+    "fragment": "public/shaders/card_aura_col4.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_3580"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

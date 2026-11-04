@@ -16,7 +16,7 @@ import {
   officialPortIdentityKey,
   orderOfficialPasses,
 } from "./official-port-identity.js";
-import { unityTexEnvToThreeGltfSt } from "./texture-transform.js";
+import { textureTransformForBasis } from "./texture-transform.js";
 
 // Unity blend-factor enum → three.js factor (card_shader_state.json uses these indices).
 export const BF = {
@@ -212,6 +212,7 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
     clear: makeDefaultTex([0, 0, 0, 0], "shaderlab-clear"),
     bump: makeDefaultTex([128, 128, 255, 255], "shaderlab-bump"),
   };
+  defaultTex.grey = defaultTex.gray;
   const makeDefaultCube = (rgba, backendTextureDefault, name) => {
     const texture = new THREE.CubeTexture(
       Array.from({ length: 6 }, () => makeDefaultTex(rgba, backendTextureDefault))
@@ -345,10 +346,8 @@ export function makeRenderContext({ texInfo, envCubeTex, exactShaders = {}, anim
       uniforms[name] = { value: vector };
     }
     for (const transform of contract.texture_coordinates?.vertex?.transforms || []) {
-      if (transform.conversion !== "unity-texenv-to-three-gltf-v") {
-        throw new Error(`${manifest.shader}: unsupported texture-coordinate conversion ${transform.conversion}`);
-      }
-      const value = unityTexEnvToThreeGltfSt(
+      const value = textureTransformForBasis(
+        transform.conversion,
         recipe?.textures?.[transform.slot],
         defaults.textureDescriptors?.[transform.slot],
       );

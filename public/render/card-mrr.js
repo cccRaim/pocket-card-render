@@ -149,7 +149,7 @@ function curve(state, name, progress) {
   ));
 }
 
-function evaluateAnimation(state, progress) {
+export function evaluateCardMRRAnimation(state, progress) {
   state.changeColor = curve(state, "ChangeColorCurve", progress);
   state.lightColorIntensity = curve(
     state,
@@ -276,7 +276,7 @@ function updateAnimation(state) {
     state.elapsedAnimationTime = f32(
       state.elapsedAnimationTime + f32(state.deltaTime * speed),
     );
-    evaluateAnimation(
+    evaluateCardMRRAnimation(
       state,
       f32(
         state.elapsedAnimationTime / f32(state.config.animTimeScale),
@@ -327,7 +327,7 @@ export function createCardMRRState(config, animationSettings) {
     maxRadialScaling: f32(radialKeys.at(-1).value),
     frameCount: 0,
   };
-  evaluateAnimation(state, f32(0));
+  evaluateCardMRRAnimation(state, f32(0));
   return state;
 }
 

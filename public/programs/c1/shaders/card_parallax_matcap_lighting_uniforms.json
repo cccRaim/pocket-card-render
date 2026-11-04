@@ -1,0 +1,275 @@
+{
+  "official_selector": {
+    "selectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+    "candidateWitnessId": "6fb618e8f04e0c4347ac20782088b8786b68d1b565582cd977c05792e8d26c3f",
+    "shaderIdentity": "CAB-448e21eabc30a251873b2458fa3dc612:6962791336545764085",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_MatCap_Lighting",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "68b4f0374d4fbd908aac4f338fb030b60b9cd88c167e9d44507d50743bb7ee75"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseUv2": 0,
+      "_LightSensitive": 0.10000000149011612,
+      "_LightCurvePower": 2,
+      "_Debug": 0,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_EmissiveEnabled": 0,
+      "_EmissiveIntensity": 1,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {
+      "_LightingColor": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "_EmissiveColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {},
+    "textureDescriptors": {
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_MatCapLightTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_LightingMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_MatCap_Lighting",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_LightSensitive",
+        "_LightCurvePower",
+        "_EmissiveIntensity"
+      ],
+      "ints": [
+        "_UseUv2",
+        "_Debug",
+        "_EmissiveEnabled"
+      ],
+      "vectors": {
+        "_LightingColor": "vec4",
+        "_EmissiveColor": "vec4"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "963c9facadf4c5c62712c09f7bee954b3d52b246c638e2be29eda2f322585a2f",
+        "outputSourceSha256": "d8089895895fd237d9d550ce9ee94c84d8c6f5310fa2defb0641aeec6a95f80b",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "f8a06ab1dd27894dcdd7c76b85b53eac4fe80b9b49837e3ccc9dd8385e6e3e26",
+        "outputSourceSha256": "0befafb52452c7c42dc2b99962daea513b17ce73b1ef96b30cfddf2cd935c42f",
+        "inputs": [
+          "modelMatrix"
+        ],
+        "storedVSampleCount": 3
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MatCapLightTex",
+      "spirvName": "_56",
+      "dimension": 2
+    },
+    {
+      "slot": "_LightingMask",
+      "spirvName": "_63",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_matcap_lighting.vert.glsl",
+    "fragment": "public/shaders/card_parallax_matcap_lighting.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_230"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

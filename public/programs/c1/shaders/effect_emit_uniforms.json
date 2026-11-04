@@ -1,0 +1,294 @@
+{
+  "official_selector": {
+    "selectorId": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02",
+    "candidateWitnessId": "f2fd1d27774133c221aa11f70dae2308c7d5220cbce65d7e24d9a25c2abd3aa8",
+    "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+    "shaderName": "Lettuce/Common/CardNew/Effect_Emit",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "838e84c0d67ab0467d53d3ff80db871c0707e0e87c5a54b114c418c54ffead5f"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UVScale": 1,
+      "_Switch": 0,
+      "_UseColor3Mask": 1,
+      "_OnColor1Area": 0,
+      "_AdditiveIntensity": 0,
+      "_UseColor3Blend": 0,
+      "_Color3BlendMax": 1,
+      "_UseEmissive": 0,
+      "_UseEmissiveMask": 1,
+      "_EmissiveIntensity": 0,
+      "_DepthOffset": 0,
+      "_Color1AlphaBlend": 1,
+      "_NotColor1AreaAlphaBlend": 1,
+      "_Stencil": 0,
+      "_ZTest": 4
+    },
+    "colors": {
+      "_Color3": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {},
+    "textureDescriptors": {
+      "_Color1Tex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_Color2Tex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_Color3Mask": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_EmissiveMask": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Effect_Emit",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_UVScale",
+        "_Color3BlendMax",
+        "_Color1AlphaBlend",
+        "_NotColor1AreaAlphaBlend"
+      ],
+      "ints": [
+        "_UseColor3Mask",
+        "_OnColor1Area",
+        "_UseColor3Blend",
+        "_UseEmissive",
+        "_UseEmissiveMask"
+      ],
+      "vectors": {
+        "_Color3": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "_Switch": {
+        "type": "float",
+        "source": "pocket-card-render/material-with-optional-card-mrr-object-arm64-override@1"
+      },
+      "_AdditiveIntensity": {
+        "type": "float",
+        "source": "pocket-card-render/material-with-optional-card-mrr-object-arm64-override@1"
+      },
+      "_Color3Blend": {
+        "type": "float",
+        "source": "pocket-card-render/material-with-optional-card-mrr-object-arm64-override@1"
+      },
+      "_EmissiveIntensity": {
+        "type": "float",
+        "source": "pocket-card-render/material-with-optional-card-mrr-object-arm64-override@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "00ee611169b22ad70a03a1bf7cdeda90fe0d05eb05aedab69083773ad01f51ab",
+        "outputSourceSha256": "92293a463c49faaa03d8afaec9416ac1440d9a2a8d873264bb9b9224615d73e9",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "850c643b3f920965efa695344c850f617962794b3524ca38aff74fcfef85ac9f",
+        "outputSourceSha256": "1893b11971049cd39de3ca4b2980f4ecbac45e800003f94b46898da70eb8836d",
+        "inputs": [],
+        "storedVSampleCount": 4
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_Color1Tex",
+      "spirvName": "_76",
+      "dimension": 2
+    },
+    {
+      "slot": "_Color2Tex",
+      "spirvName": "_71",
+      "dimension": 2
+    },
+    {
+      "slot": "_Color3Mask",
+      "spirvName": "_31",
+      "dimension": 2
+    },
+    {
+      "slot": "_EmissiveMask",
+      "spirvName": "_245",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/effect_emit.vert.glsl",
+    "fragment": "public/shaders/effect_emit.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_272"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

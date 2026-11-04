@@ -1,0 +1,355 @@
+{
+  "official_selector": {
+    "selectorId": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c",
+    "candidateWitnessId": "02601f6c0b76c782d762a81ee2722f710f3557d9903100107ea6ba19dae4aa6b",
+    "shaderIdentity": "CAB-56a0afc0b0b625f348b86e3a72f4caeb:7535980877961637181",
+    "shaderName": "Lettuce/Common/CardNew/Face/Frame-Holo-Immersive",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "841596580294f8affd5ac3061ba0bc1b178fea2e290ee90fd7154891603ab529"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": "_BlendSrcColor",
+        "val": 0
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseDiffuseColor": 1,
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_PhaseScale": 1,
+      "_PhaseRotate": 0,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampUVOffset": 0,
+      "_RampUVTiltOffset": 0,
+      "_RampInterval": 0,
+      "_RampScale": 1,
+      "_RampRotate": 0,
+      "_RemoveMetallic": 0,
+      "_TiltDiffractionEnabled": 0,
+      "_MinDiffractionIntensity": 0.5,
+      "_MaxDiffractionIntensity": 0.5,
+      "_TiltPower": 1,
+      "_TiltOffset": 0,
+      "_TiltIntensity": 1,
+      "_TiltSaturationEnabled": 0,
+      "_MinSaturation": 0,
+      "_MaxSaturation": 1,
+      "_SatTiltPower": 1,
+      "_SatTiltOffset": 0,
+      "_SatTiltIntensity": 1,
+      "_BlendSrcColor": 5,
+      "_ZTest": 4,
+      "_ZWrite": 1
+    },
+    "colors": {
+      "_OffDiffuseColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_ImmersiveEffectMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Frame-Holo-Immersive",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_Shininess",
+        "_BaseColorIntensity",
+        "_SpecularIntensity",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_RampUVOffset",
+        "_RampUVTiltOffset",
+        "_PhaseScale",
+        "_RampScale",
+        "_PhaseRotate",
+        "_RampRotate",
+        "_RemoveMetallic",
+        "_MinDiffractionIntensity",
+        "_MaxDiffractionIntensity",
+        "_TiltPower",
+        "_TiltOffset",
+        "_TiltIntensity",
+        "_MinSaturation",
+        "_MaxSaturation",
+        "_SatTiltPower",
+        "_SatTiltOffset",
+        "_SatTiltIntensity"
+      ],
+      "ints": [
+        "_UseDiffuseColor",
+        "_TiltDiffractionEnabled",
+        "_TiltSaturationEnabled"
+      ],
+      "vectors": {
+        "_OffDiffuseColor": "vec4",
+        "_Rotation": "vec3"
+      }
+    },
+    "backend_texture_defaults": {
+      "_CubeMap": "neutral-gray-cube"
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "d4f78d7e3052b32e520c9360824b73e65a04d219f9fb72050e67b5effaaf370d",
+        "outputSourceSha256": "59f20fe2e4ba42fae9d0cf23c0697849a5d3bca25fc8a9bb146f210feb2f452c",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "c489744f1fcdcb4a5c6d1d26bb9efcce50861aa3d94bfeabe14ec3752ebeae46",
+        "outputSourceSha256": "ef789994a305144fe0c3e52dd03e1a89180fd8322bb56a75e7cb90ab03978252",
+        "inputs": [
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 6
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_385",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_419",
+      "dimension": 4
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_655",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_661",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_829",
+      "dimension": 2
+    },
+    {
+      "slot": "_ImmersiveEffectMaskTex",
+      "spirvName": "_1221",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/frame_holo_immersive.vert.glsl",
+    "fragment": "public/shaders/frame_holo_immersive.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_1243"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

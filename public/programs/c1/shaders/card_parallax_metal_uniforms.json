@@ -1,0 +1,265 @@
+{
+  "official_selector": {
+    "selectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+    "candidateWitnessId": "a75619c6701832240e109b72ce57f3a3cf73c9efb710ac33b5cd386a08d189a2",
+    "shaderIdentity": "CAB-d1582aca8a9778d6408528fab4637fc4:-3392042766667377368",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Metal",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "c651ff2b829a2b25bf504d4db07470686e2ade5e5844da10805329e8c2090983"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 2
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_BaseColorIntensity": 0.5,
+      "_Shininess": 32,
+      "_SpecularIntensity": 1,
+      "_UseUv2": 0,
+      "_MetalMaskIntensity": 1,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_UseUv": 0,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_MetalMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_Metal",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_BaseColorIntensity",
+        "_Shininess",
+        "_SpecularIntensity",
+        "_MetalMaskIntensity"
+      ],
+      "ints": [
+        "_UseUv"
+      ],
+      "vectors": {
+        "_Rotation": "vec3"
+      }
+    },
+    "backend_texture_defaults": {
+      "_CubeMap": "neutral-gray-cube"
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "0208447928ffd7d80cc79f99bbbbdba85348a9acbb27ac44f6cf60ccac922e74",
+        "outputSourceSha256": "0fcea26620080e1be4f9654d19b939fbcd5ef0e092c7113197e25c82e60702fc",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "32d9b857f72a4249bd60b1eb9029757117dc5605fc87b4787cfc14b8f77d75fb",
+        "outputSourceSha256": "796d05735ad425eae154932b8d6112a43081aa1b1d706e89ebb221e19e59186f",
+        "inputs": [
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_238",
+      "dimension": 4
+    },
+    {
+      "slot": "_MetalMaskTex",
+      "spirvName": "_277",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_metal.vert.glsl",
+    "fragment": "public/shaders/card_parallax_metal.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_305"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

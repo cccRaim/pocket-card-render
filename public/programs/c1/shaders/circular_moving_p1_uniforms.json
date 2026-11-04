@@ -1,0 +1,342 @@
+{
+  "official_selector": {
+    "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+    "candidateWitnessId": "5ee5767765fd56052cc3a68092d589e907cab6b9672122dc9f7990590e4c3826",
+    "shaderIdentity": "CAB-7c5dedb63d40a00ec1730072ec235e03:-3547658824311513007",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Moving_Kira",
+    "keywords": [],
+    "selectionMode": "ordered-multipass-structure",
+    "subshader": 0,
+    "pass": 1,
+    "semanticExecutableId": "4ea0c71982955e7a8a2c49a8caf5df641e9d9940c07df23cf20b1544f088047c"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_AdjustAlphaBlendAlpha": 0.5,
+      "_AdjustAddAlpha": 1,
+      "_AdjustAddMinAlpha": 0,
+      "_FlickerNoiseScale": 2,
+      "_ZRotateInverse": 0.20000000298023224,
+      "_PrimScalingXMin": 0.8999999761581421,
+      "_PrimScalingXMax": 1.100000023841858,
+      "_PrimScalingYMin": 0.8999999761581421,
+      "_PrimScalingYMax": 1.100000023841858,
+      "_IntensityAnimMin": 0.8999999761581421,
+      "_IntensityAnimMax": 1.100000023841858,
+      "_CircularRadius": 1,
+      "_CenterMoveByTilt": 0,
+      "_EmissiveIntensity": 1,
+      "_AdjustEmissiveAlpha": 1,
+      "_PrimCount": 0,
+      "_PrimDelete": 0
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_PrimATex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimBTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimCTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimAMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimBMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PrimCMorphTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Circular_Moving_Kira",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FlickerNoiseScale",
+        "_CircularRadius",
+        "_CenterMoveByTilt",
+        "_AdjustAddAlpha",
+        "_AdjustAddMinAlpha",
+        "_EmissiveIntensity",
+        "_AdjustEmissiveAlpha"
+      ],
+      "ints": [
+        "_PrimCount",
+        "_PrimDelete"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_Tilt": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateTilt"
+      },
+      "_CircularDefaultAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.Initialize/UpdateCircularParams"
+      },
+      "_MoveAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateCircularParams"
+      },
+      "_PrimAngles": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimBaseScales": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimBaseIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimMinIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimMaxIntensities": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimFlickerScaling": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.Initialize"
+      },
+      "_PrimFlickerAnimOffsets": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimMorphing": {
+        "type": "float[20]",
+        "source": "CircularKiraObject.UpdateParticleParams"
+      },
+      "_PrimTypes": {
+        "type": "int[20]",
+        "source": "CircularKiraObject.Initialize"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "d7b8dfe50d4a511c6b68696b8ec72441b54c872f5e284fd8d5f7470b2e552340",
+        "outputSourceSha256": "ddcf9273cf704d1ec5c808873818ce049cbcea58fdc1050c821ab2cb4b116ece",
+        "inputs": [
+          "position",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "2da0f02d403d46af4e38fec5a000717e1c80e2eeac2cf3ed75d8dd69fee8aaea",
+        "outputSourceSha256": "86ae92ee308129c8a26606c9fcaa6652ca251a85ad31d5593b1022b7940bd867",
+        "inputs": [],
+        "storedVSampleCount": 6
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_PrimATex",
+      "spirvName": "_110",
+      "dimension": 2
+    },
+    {
+      "slot": "_PrimAMorphTex",
+      "spirvName": "_105",
+      "dimension": 2
+    },
+    {
+      "slot": "_PrimBTex",
+      "spirvName": "_23",
+      "dimension": 2
+    },
+    {
+      "slot": "_PrimBMorphTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_PrimCTex",
+      "spirvName": "_62",
+      "dimension": 2
+    },
+    {
+      "slot": "_PrimCMorphTex",
+      "spirvName": "_56",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/circular_moving_p1.vert.glsl",
+    "fragment": "public/shaders/circular_moving_p1.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_183"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "dynamic-uniform-producer-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

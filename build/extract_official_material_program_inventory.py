@@ -330,6 +330,29 @@ def shader_record(obj: object, bundle: Path, decrypted_root: Path) -> tuple[dict
     return compact, tree
 
 
+def selector_witness_id(shader_identity: str, shader_hash: str, selection: str, candidate: dict) -> str:
+    witness_fields = {
+        "shaderIdentity": shader_identity,
+        "shaderObjectSha256": shader_hash,
+        "platformIndex": 0,
+        "platformValue": 18,
+        "segmentIndex": 0,
+        "subshaderIndex": candidate["subshader"],
+        "passIndex": candidate["pass"],
+        "stageContainers": candidate["stages"],
+        "keywordIndices": candidate["keywordIndices"],
+        "keywords": candidate["keywords"],
+        "gpuProgramType": candidate["gpuProgramType"],
+        "shaderRequirements": candidate["shaderRequirements"],
+        "programBlobIndex": candidate["programBlobIndex"],
+        "parameterBlobIndex": candidate["parameterBlobIndex"],
+    }
+    if selection == "native-best-match":
+        witness_fields["serializedOrder"] = candidate["serializedOrder"]
+        witness_fields["nativeBestMatch"] = candidate["nativeBestMatch"]
+    return canonical_digest(witness_fields)
+
+
 def static_vulkan_candidates(shader: dict, keywords: tuple[str, ...]) -> tuple[list[dict], list[str]]:
     parsed = shader.get("m_ParsedForm") or {}
     keyword_names = [str(value) for value in (parsed.get("m_KeywordNames") or [])]
@@ -1143,26 +1166,10 @@ def extract(decrypted_root: Path, include_full: bool = False) -> dict:
         row["instancingMaterialCount"] = len(instancing_material_ids)
         row["runtimeEngineVariantBoundary"] = bool(instancing_material_ids)
         for candidate in row["candidates"]:
-            witness_fields = {
-                "shaderIdentity": row["shaderIdentity"],
-                "shaderObjectSha256": shader_by_identity[row["shaderIdentity"]]["rawSha256"],
-                "platformIndex": 0,
-                "platformValue": 18,
-                "segmentIndex": 0,
-                "subshaderIndex": candidate["subshader"],
-                "passIndex": candidate["pass"],
-                "stageContainers": candidate["stages"],
-                "keywordIndices": candidate["keywordIndices"],
-                "keywords": candidate["keywords"],
-                "gpuProgramType": candidate["gpuProgramType"],
-                "shaderRequirements": candidate["shaderRequirements"],
-                "programBlobIndex": candidate["programBlobIndex"],
-                "parameterBlobIndex": candidate["parameterBlobIndex"],
-            }
-            if row["candidateSelection"] == "native-best-match":
-                witness_fields["serializedOrder"] = candidate["serializedOrder"]
-                witness_fields["nativeBestMatch"] = candidate["nativeBestMatch"]
-            candidate["selectorWitnessId"] = canonical_digest(witness_fields)
+            candidate["selectorWitnessId"] = selector_witness_id(
+                row["shaderIdentity"], shader_by_identity[row["shaderIdentity"]]["rawSha256"],
+                row["candidateSelection"], candidate,
+            )
         row["selectorWitnessId"] = (
             row["candidates"][0]["selectorWitnessId"]
             if len(row["candidates"]) == 1 else None

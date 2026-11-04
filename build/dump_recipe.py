@@ -173,7 +173,7 @@ def saved_properties_evidence(owner, saved):
 def nearest_decrypted_root(path):
     current = os.path.abspath(path)
     while True:
-        if os.path.basename(current).lower() == "decrypted":
+        if os.path.basename(current).lower() in ("decrypted", "decrypted-full"):
             return current
         parent = os.path.dirname(current)
         if parent == current:
@@ -289,11 +289,22 @@ def main():
     )
     ap.add_argument("--out", default="card_render_full.json", help="output recipe path")
     ap.add_argument("--shader-state", default=None, help="optional card_shader_state.json to merge per-shader render state")
+    ap.add_argument("--mono-scripts", help="Matching UnityMonoScripts bundle for component class resolution")
     args = ap.parse_args()
     UnityPy.config.FALLBACK_UNITY_VERSION = args.unity_version
 
     # load prefab + every bundle under the card root + shared dirs so cross-bundle PPtrs resolve
     files = [args.path]
+    inferred_root = nearest_decrypted_root(args.path)
+    mono_scripts = args.mono_scripts
+    if mono_scripts is None and inferred_root:
+        candidate = os.path.join(inferred_root, "UnityMonoScripts")
+        if os.path.isfile(candidate):
+            mono_scripts = candidate
+    if mono_scripts is not None:
+        if not os.path.isfile(mono_scripts):
+            raise FileNotFoundError(f"UnityMonoScripts bundle is missing: {mono_scripts}")
+        files.append(mono_scripts)
     card_bundles = glob.glob(os.path.join(args.path, "**", "*_bundles"), recursive=True)
     files += card_bundles
     for sd in args.shared:
@@ -305,7 +316,6 @@ def main():
         p = getattr(getattr(o, "assets_file", None), "parent", None)
         return getattr(p, "name", None)
     dependency_roots = [os.path.abspath(root) for root in args.dependency_root]
-    inferred_root = nearest_decrypted_root(args.path)
     if inferred_root and inferred_root not in dependency_roots:
         dependency_roots.append(inferred_root)
     env = None
@@ -346,13 +356,16 @@ def main():
 
     gos, trans, rends, mats, texs = {}, {}, {}, {}, {}
     mono_behaviours = {}
+    script_classes = {}
     shaders = {}  # official Shader identity -> serialized name/keyword space
     meshes = {}   # path_id -> mesh name
     mf_by_go = {} # go path_id -> official Mesh PPtr identity (from MeshFilter)
     mesh_filters = {} # official MeshFilter identity -> GameObject/Mesh binding
     for o in objs:
         t = o.type.name; d = tt(o); oid = object_identity(o)["identity"]
-        if t == "GameObject":
+        if t == "MonoScript":
+            script_classes[oid] = (d.get("m_Namespace"), d.get("m_ClassName"))
+        elif t == "GameObject":
             gos[oid] = {"name": d.get("m_Name","")}
         elif t == "MeshFilter":
             mesh_pointer = d.get("m_Mesh") or {}
@@ -1071,6 +1084,105 @@ def main():
             f = tv.get("father"); cur = (f, trans[f]) if f in trans else None
         return {"x":x,"y":y,"z":z,"sx":sx,"sy":sy,"sz":sz,"rot":rot}
 
+    def transform_chain(go):
+        seen = set()
+        while go:
+            if go in seen or go not in tr_by_go:
+                raise RuntimeError(f"unresolved component Transform hierarchy at {go}")
+            seen.add(go)
+            transform = tr_by_go[go][1]
+            yield go, transform
+            father = transform["father"]
+            go = trans[father]["go"] if father else None
+
+    def prefab_rotation(chain):
+        x, y, z, w = 0., 0., 0., 1.
+        for _, transform in reversed(chain):
+            a, b, c, d = (transform["rot"][axis] for axis in "xyzw")
+            x, y, z, w = (w*a+x*d+y*c-z*b, w*b-x*c+y*d+z*a,
+                          w*c+x*b-y*a+z*d, w*d-x*a-y*b-z*c)
+        return [x, y, z, w]
+
+    component_specs = {
+        "CardRGBObject": ("cardRGB", "Card-RGB"),
+        "CardUVShadow": ("cardUVShadow", "Card-UVShadow"),
+    }
+    tagged_components = {}
+    animation_specs = {
+        "CardDualMRRObject": ("cardDualMRR", "dualMrrAnimation", "DualMRRAnimationSettings", {
+            "MRR-ChangeColor-Lighting": "main", "Frame-Holo-2Layer": "main",
+            "Card-Effect-Emit": "effect", "MRR-Parallax-Flash": "flash",
+            "Dual-ShadowBoxUI-TypeIcon": "typeIcon", "Card-Dual-Transition": "transition"}),
+        "CardDualMSRObject": ("cardDualMSR", "dualMsrAnimation", "DualMSRAnimationSettings", {
+            "ShadowBox_MSR": "shadowbox", "Card-Dual-Transition": "transition",
+            "Card-Dual-Transition-Frame": "frame", "Dual-ShadowBoxUI-TypeIcon": "typeIcon",
+            "Card-Effect-Emit": "effect"}),
+        "CardDualNoParallaxObject": ("cardDualMSR", "dualMsrAnimation", "DualNoParallaxAnimationSettings", {
+            "Dual-ShadowBoxUI-TypeIcon": "typeIcon"}),
+        "CardMReliefSRObject": ("cardMReliefSR", "reliefMSRAnimationSettings", "ReliefMSRAnimationSettings", {
+            "MRR-ChangeColor-Lighting": "main", "Frame-Holo-2Layer": "main",
+            "Card-UVShadow": "shadow", "Card-Effect-Emit": "effect"}),
+    }
+    animated_bindings = []
+    dynamic_ui_by_renderer = {}
+    emissive_class = ("Lettuce.Graphics.PostProcessing.Bloom", "EmissiveObject")
+    emissive_inventory_known = mono_scripts is not None and emissive_class in script_classes.values()
+    emissive_objects = []
+    for identity, (owner, tree) in mono_behaviours.items():
+        if src_bundle(owner) not in card_bundle_names:
+            continue
+        script = pptr_identity(owner, tree.get("m_Script"))["identity"]
+        namespace, class_name = script_classes.get(script, (None, None))
+        if not class_name:
+            emissive_inventory_known = False
+        if (namespace, class_name) == emissive_class and tree["m_Enabled"]:
+            renderer = pptr_identity(owner, tree["_renderer"])["identity"]
+            if renderer not in rends:
+                raise RuntimeError(f"EmissiveObject {identity} has unresolved Renderer {renderer}")
+            if rends[renderer]["enabled"]:
+                go = pptr_identity(owner, tree["m_GameObject"])["identity"]
+                emissive_objects.append({"componentIdentity": identity, "goPath": go_path(go),
+                                         "rendererIdentity": renderer})
+        if namespace == "Lettuce.Infrastructure.Card.Core" and class_name == "DynamicUI" and tree.get("m_Enabled"):
+            slot = {0: "_DynamicUITex", 3: "_AdditionalDynamicUITex"}.get(tree["_dynamicPropertyType"])
+            if slot:
+                renderer = pptr_identity(owner, tree["_renderer"])["identity"]
+                slots = dynamic_ui_by_renderer.setdefault(renderer, {})
+                if slot in slots:
+                    raise RuntimeError(f"duplicate DynamicUI binding for {renderer}.{slot}")
+                slots[slot] = tree["_dynamicUIType"]
+        if namespace != "Lettuce.Infrastructure.Card.Core" or class_name not in (component_specs | animation_specs):
+            continue
+        family = (component_specs | animation_specs)[class_name][0]
+        go = pptr_identity(owner, tree["m_GameObject"])["identity"]
+        config = {"componentIdentity": identity, "componentGoIdentity": go,
+                  "componentGoPath": go_path(go), "scriptIdentity": script, "rendererBindings": []}
+        if class_name in ("CardUVShadow", "CardMReliefSRObject"):
+            config.update(translateOffset=[tree["_translateOffset"][k] for k in "xy"],
+                          lightDir=[tree["_lightDir"][k] for k in "xyz"],
+                          localRotation=prefab_rotation(list(transform_chain(go))))
+        if class_name in animation_specs:
+            _, table, expected_type, tags = animation_specs[class_name]
+            settings_id = pptr_identity(owner, tree["_settings"])["identity"]
+            settings_owner, settings_tree = mono_behaviours[settings_id]
+            settings_script = pptr_identity(settings_owner, settings_tree["m_Script"])["identity"]
+            if script_classes.get(settings_script, (None, None))[1] != expected_type:
+                raise RuntimeError(f"{class_name} has unexpected settings type at {settings_id}")
+            curves = {key: {"keys": [{f: entry[f] for f in curve_fields} for entry in value["m_Curve"]],
+                            "preInfinity": value.get("m_PreInfinity"), "postInfinity": value.get("m_PostInfinity"),
+                            "rotationOrder": value.get("m_RotationOrder")}
+                      for key, value in settings_tree.items() if isinstance(value, dict) and "m_Curve" in value}
+            tagged_components.setdefault(table, {})[settings_id] = {
+                "identity": settings_id, "scriptIdentity": settings_script, "name": settings_tree["m_Name"], "curves": curves}
+            config.update({key[1:]: value for key, value in tree.items()
+                           if key.startswith("_") and isinstance(value, (int, float))})
+            config["animationSettingsIdentity"] = settings_id
+            config["rendererBindings"] = {role: [] for role in tags.values()}
+            if family == "cardDualMSR":
+                config["kind"] = "dualMSR" if class_name == "CardDualMSRObject" else "dualNoParallax"
+            animated_bindings.append((family, config, tags))
+        tagged_components.setdefault(family, {})[identity] = config
+
     for config in circular_settings.values():
         component_go_identity = config["componentGoIdentity"]
         if component_go_identity not in gos:
@@ -1153,6 +1265,36 @@ def main():
             mesh_key = mesh_ref.get("identity") if mesh_ref else None
             mesh_name = meshes.get(mesh_key) or (f"pptr:{mesh_key}" if mesh_key else None)
             renderer_properties = {}
+            if animated_bindings:
+                ancestors = {go for go, _ in transform_chain(r["go"])}
+                for family, config, tags in animated_bindings:
+                    if config["componentGoIdentity"] not in ancestors:
+                        continue
+                    matched = [tag for tag in search_tags if tag in tags]
+                    if not matched:
+                        continue
+                    if len(matched) != 1 or family in renderer_properties:
+                        raise RuntimeError(f"ambiguous {family} binding for {renderer_key}")
+                    tag = matched[0]
+                    bindings = config["rendererBindings"][tags[tag]]
+                    if renderer_key not in bindings:
+                        bindings.append(renderer_key)
+                    renderer_properties[family] = {"componentIdentity": config["componentIdentity"],
+                        "rendererIdentity": renderer_key, "role": tags[tag], "searchTag": tag}
+            for family, tag in component_specs.values():
+                if tag not in search_tags or family not in tagged_components:
+                    continue
+                ancestors = {go for go, _ in transform_chain(r["go"])}
+                matches = [c for c in tagged_components[family].values()
+                           if c["componentGoIdentity"] in ancestors]
+                if len(matches) > 1:
+                    raise RuntimeError(f"ambiguous {family} owners for renderer {renderer_key}")
+                if matches:
+                    config = matches[0]
+                    if renderer_key not in config["rendererBindings"]:
+                        config["rendererBindings"].append(renderer_key)
+                    renderer_properties[family] = {"componentIdentity": config["componentIdentity"],
+                                                   "rendererIdentity": renderer_key, "searchTag": tag}
             if renderer_key in kira_by_renderer:
                 renderer_properties["kiraPuyo"] = kira_by_renderer[renderer_key]
             if renderer_key in circular_by_renderer:
@@ -1209,6 +1351,8 @@ def main():
                     "componentIdentity": config["componentIdentity"],
                     "rendererIdentity": renderer_key,
                 }
+            if "cardRGB" in renderer_properties and renderer_key in dynamic_ui_by_renderer:
+                renderer_properties["dynamicUISlots"] = dynamic_ui_by_renderer[renderer_key]
             msr_roles = {
                 "Card-Aura": "aura",
                 "Card_Parallax_Transparent_Translate": "parallax",
@@ -1222,7 +1366,7 @@ def main():
                     f"renderer {renderer_key} material {m.get('name')} matches multiple "
                     f"CardMSRObject SearchTags: {matching_msr_roles}"
                 )
-            if matching_msr_roles:
+            if matching_msr_roles and "cardDualMSR" not in renderer_properties:
                 renderer_path = go_path(r["go"])
                 candidates = [
                     config for config in msr_settings.values()
@@ -1260,7 +1404,7 @@ def main():
                     f"renderer {renderer_key} material {m.get('name')} matches multiple "
                     f"CardMRRObject SearchTags: {matching_mrr_roles}"
                 )
-            if matching_mrr_roles:
+            if matching_mrr_roles and not {"cardDualMRR", "cardDualMSR", "cardMReliefSR"}.intersection(renderer_properties):
                 renderer_path = go_path(r["go"])
                 candidates = [
                     config for config in mrr_settings.values()
@@ -1365,10 +1509,22 @@ def main():
                 )
             renderer_bindings.sort()
 
+    if emissive_inventory_known:
+        for component in emissive_objects:
+            renderer = component["rendererIdentity"]
+            component["drawIds"] = sorted(
+                f"{renderer}#{layer['materialSlot']}" for layer in layers
+                if layer["rendererIdentity"]["identity"] == renderer and layer["renderer_enabled"]
+            )
+            if not component["drawIds"]:
+                raise RuntimeError(f"EmissiveObject {component['componentIdentity']} has no exported draw")
+        emissive_objects.sort(key=lambda component: component["componentIdentity"])
     json.dump({"schema": "pocket-card-render/material-recipe@2",
+               **({"emissiveObjects": emissive_objects} if emissive_inventory_known else {}),
                "schemaVersion": 2,
                "card": os.path.basename(args.path.rstrip("/\\")), "layers": layers,
                "runtimeSettings": {
+                   **tagged_components,
                    "kiraPuyo": kira_settings,
                    "circularKira": circular_settings,
                    "cardFuture": future_settings,

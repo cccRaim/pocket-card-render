@@ -1,0 +1,108 @@
+precision highp float;
+precision highp int;
+
+uniform highp mat4 modelMatrix;
+uniform highp mat4 viewMatrix;
+uniform highp mat4 projectionMatrix;
+uniform highp vec3 cameraPosition;
+uniform highp float _FakeCameraHeight;
+uniform highp float _Height;
+uniform highp float _HeightPower;
+uniform highp float _Scale;
+uniform highp vec2 _ScaleCenter;
+uniform highp float _RadialScaling;
+
+in vec3 position;
+in vec3 normal;
+in vec4 tangent;
+in vec2 uv1;
+out vec2 vs_TEXCOORD0;
+vec4 _9;
+vec4 _51;
+mediump vec3 _106;
+float _206;
+mediump vec2 _250;
+vec2 _294;
+vec2 _312;
+
+const highp mat4 pcrUnityFromThreeWorld = mat4(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+const highp mat4 pcrUnityFromGlbObject = mat4(-1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+highp vec2 pcrStoredUv(highp vec2 value) { return vec2(value.x, 1.0 - value.y); }
+void main()
+{
+    highp vec3 pcrUnityInput_position = vec3(-position.x, position.yz);
+    highp vec3 pcrUnityInput_normal = vec3(-normal.x, normal.yz);
+    highp vec4 pcrUnityInput_tangent = vec4(-tangent.x, tangent.yz, -tangent.w);
+    highp vec2 pcrUnityInput_uv1 = vec2(uv1.x, 1.0 - uv1.y);
+    highp mat4 pcrUnityInput_modelMatrix = pcrUnityFromThreeWorld * modelMatrix * pcrUnityFromGlbObject;
+    highp mat4 pcrUnityInput_viewMatrix = viewMatrix * pcrUnityFromThreeWorld;
+    highp vec3 pcrUnityInput_cameraPosition = vec3(cameraPosition.xy, -cameraPosition.z);
+    vec4 _11 = vec4(pcrUnityInput_position, 1.0);
+    vec3 _87 = pcrUnityInput_normal;
+    vec4 _107 = pcrUnityInput_tangent;
+    vec2 _317 = pcrUnityInput_uv1;
+
+    mat4 _WorldToObject = inverse(pcrUnityInput_modelMatrix);
+    mat4 _ViewProjection = projectionMatrix * pcrUnityInput_viewMatrix;
+    _9 = _11.yyyy * pcrUnityInput_modelMatrix[1];
+    _9 = (pcrUnityInput_modelMatrix[0] * _11.xxxx) + _9;
+    _9 = (pcrUnityInput_modelMatrix[2] * _11.zzzz) + _9;
+    _9 += pcrUnityInput_modelMatrix[3];
+    _51 = _9.yyyy * _ViewProjection[1];
+    _51 = (_ViewProjection[0] * _9.xxxx) + _51;
+    _51 = (_ViewProjection[2] * _9.zzzz) + _51;
+    _9 = (_ViewProjection[3] * _9.wwww) + _51;
+    gl_Position = _9;
+    _9.x = dot(_87, _87);
+    _9.x = inversesqrt(_9.x);
+    vec3 _102 = _9.xxx * _87.zxy;
+    _9 = vec4(_102.x, _102.y, _102.z, _9.w);
+    _106.x = dot(_107.xyz, _107.xyz);
+    _106.x = inversesqrt(_106.x);
+    _106 = _106.xxx * _107.yzx;
+    vec3 _126 = _9.xyz * _106;
+    _51 = vec4(_126.x, _126.y, _126.z, _51.w);
+    vec3 _137 = (_9.zxy * _106.yzx) + (-_51.xyz);
+    _9 = vec4(_137.x, _137.y, _137.z, _9.w);
+    vec3 _144 = _9.xyz * _107.www;
+    _9 = vec4(_144.x, _144.y, _144.z, _9.w);
+    vec3 _154 = pcrUnityInput_cameraPosition.yyy * _WorldToObject[1].xyz;
+    _51 = vec4(_154.x, _154.y, _154.z, _51.w);
+    vec3 _166 = (_WorldToObject[0].xyz * pcrUnityInput_cameraPosition.xxx) + _51.xyz;
+    _51 = vec4(_166.x, _166.y, _166.z, _51.w);
+    vec3 _178 = (_WorldToObject[2].xyz * pcrUnityInput_cameraPosition.zzz) + _51.xyz;
+    _51 = vec4(_178.x, _178.y, _178.z, _51.w);
+    vec3 _186 = _51.xyz + _WorldToObject[3].xyz;
+    _51 = vec4(_186.x, _186.y, _186.z, _51.w);
+    _51.w = _51.y + _FakeCameraHeight;
+    vec3 _203 = _51.xwz + (-_11.xyz);
+    _51 = vec4(_203.x, _203.y, _203.z, _51.w);
+    _206 = dot(_51.xyz, _51.xyz);
+    _206 = inversesqrt(_206);
+    vec3 _218 = vec3(_206) * _51.xyz;
+    _51 = vec4(_218.x, _218.y, _218.z, _51.w);
+    _9.y = dot(_9.xyz, _51.xyz);
+    _9.x = dot(_107.xyz, _51.xyz);
+    _9.z = dot(_87, _51.xyz);
+    _106.x = dot(_9.xyz, _9.xyz);
+    _106.x = inversesqrt(_106.x);
+    _250 = _9.xy * _106.xx;
+    _9.x = (_9.z * _106.x) + 0.4199999868869781494140625;
+    vec2 _267 = _250 / _9.xx;
+    _9 = vec4(_267.x, _267.y, _9.z, _9.w);
+    _106.x = _HeightPower * 0.5;
+    _106.x = (_Height * _HeightPower) + (-_106.x);
+    vec2 _291 = _9.xy * _106.xx;
+    _9 = vec4(_291.x, _291.y, _9.z, _9.w);
+    _294.x = (-_RadialScaling) + 2.0;
+    vec2 _309 = vec2(_ScaleCenter.x, _ScaleCenter.y) + vec2(0.5);
+    _51 = vec4(_309.x, _309.y, _51.z, _51.w);
+    _312 = (-_51.xy) + _317;
+    _294 = (_312 * _294.xx) + _51.xy;
+    _294 = (_294 * vec2(2.0)) + vec2(-1.0);
+    _294 /= vec2(vec2(_Scale, _Scale));
+    vec2 _348 = (_294 * vec2(0.5)) + _9.xy;
+    _9 = vec4(_348.x, _348.y, _9.z, _9.w);
+    vs_TEXCOORD0 = _9.xy + vec2(0.5);
+
+}

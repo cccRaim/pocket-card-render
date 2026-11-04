@@ -1,0 +1,273 @@
+{
+  "official_selector": {
+    "selectorId": "56dd84638d23b5cb87fd78032a2ad4d75dc22005a541a2baa1885265fb4700d9",
+    "candidateWitnessId": "39a8a92c0f16df689b565940632f144d5c9366ce57baf617c07ceb0d9fa6b418",
+    "shaderIdentity": "CAB-fca3c4e95042d2cac650b541946e5cb6:1218441454634594357",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Card_ShadowBoxUI_Transparent_Flash",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "71d15f25485eb4f6a638167b19009a35d4531fb69bd61817966a984241dacb9c"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_Switch": 0,
+      "_HighlightRotate": 0,
+      "_HighlightScale": 1,
+      "_HighlightColorPower": 1,
+      "_HighlightEmissiveIntensity": 0,
+      "_AlphaBlend": 0,
+      "_EmitMasking": 0,
+      "_EmissiveIntensity": 0,
+      "_ZTest": 0,
+      "_ZWrite": 0
+    },
+    "colors": {
+      "_HighlightColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_HighlightTranslate": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_HighlightTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HighlightMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_ShadowBoxUI_Transparent_Flash",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_HighlightRotate",
+        "_HighlightScale",
+        "_HighlightColorPower",
+        "_HighlightEmissiveIntensity",
+        "_AlphaBlend",
+        "_EmissiveIntensity"
+      ],
+      "ints": [],
+      "vectors": {
+        "_HighlightTranslate": "vec2",
+        "_HighlightColor": "vec4"
+      }
+    },
+    "dynamic_uniforms": {},
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "e79e8b24799ed7b8d403cc102447f8350b940aaf614d9b378fc9eeee45af06e3",
+        "outputSourceSha256": "20a978df1e2a55a4000a91ce784bfdc1ee8fc111a3b27f7acb9e3925f936c559",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "3619e99bdca0444a4553acffbdcfd43165072c9526df423b0b6f9366c53aa5f9",
+        "outputSourceSha256": "ad89c1c91cec25fd8e34577abcdba230c952bd72701a8c26331a1fe8d5de6cc6",
+        "inputs": [],
+        "storedVSampleCount": 2
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_HighlightMask",
+      "spirvName": "_25",
+      "dimension": 2
+    },
+    {
+      "slot": "_HighlightTex",
+      "spirvName": "_13",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_shadowboxui_transparent_flash.vert.glsl",
+    "fragment": "public/shaders/card_shadowboxui_transparent_flash.frag.glsl"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  },
+  "official_executable_identity": {
+    "schemaVersion": 1,
+    "compilerPlatform": 18,
+    "gpuProgramType": 25,
+    "programEntrySha256": "d57e29c22cc1e6dcd79a5a3c184f940e3babe6887110adfac556b97b6ab59c72",
+    "programContainerLayoutSha256": "a320fb404e3fff99cd0ec614b3d0b83211df08d6f7376415917c9ad99085628e",
+    "vertexSpirvSha256": "207965809951154e42e9d1d49e0911fe43cdb43a9aadc2092fdc9829f5f411f4",
+    "fragmentSpirvSha256": "165c8e3948419f44298ceb172b4cf29bf8b332985f35cd739261acedce0dd809",
+    "parameterEntrySha256": "673964fbdab9ad8a9b38260d549cbe6f7cbf4c0250204a7443c0af0ded81096e",
+    "passStateSha256": "915fdd4b58e7ab63ec4856926ad84f68c5c8a90aa94fcc19fab62627c9c93c8e",
+    "commonBindingsSha256": "a5b130442a19d15d7d1ba676b917398975982bd1f2796b8ea01d9c2a685c3473"
+  }
+}

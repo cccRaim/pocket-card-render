@@ -1,0 +1,302 @@
+{
+  "official_selector": {
+    "selectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+    "candidateWitnessId": "c12b649ea6ed8cfd33f06067dab790b7fe7c2a8b6d366a392b1cd07bb40d1a59",
+    "shaderIdentity": "CAB-ff1f54b99c3cbd88ceab7164162bd41d:-2814824103247948085",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Transparent_HologramLayer",
+    "keywords": [
+      "_USE_DYNAMIC_UI_AS_HOLO_MASK",
+      "_USE_DYNAMIC_UI_AS_METALLIC_MASK"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "a3b86b4d621c6154a5d5f6540830d86e4f306ff6b4291300c71db3cbaeca32a1"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_USE_DYNAMIC_UI_AS_METALLIC_MASK": 1,
+      "_MetallicMaskPower": 1,
+      "_USE_DYNAMIC_UI_AS_HOLO_MASK": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_AlphaBlend": 0,
+      "_ZTest": 4,
+      "_ZWrite": 1
+    },
+    "colors": {},
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_DynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "white",
+        "dimension": 4
+      },
+      "_MetalMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Transparent_HologramLayer",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_MetallicMaskPower",
+        "_Shininess",
+        "_BaseColorIntensity",
+        "_SpecularIntensity",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_AlphaBlend"
+      ],
+      "ints": [],
+      "vectors": {
+        "_Rotation": "vec3"
+      }
+    },
+    "backend_texture_defaults": {
+      "_CubeMap": "shaderlab-white"
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "e1dd76d2668141dd8347bbb3dc3cdf626b9249d9b1fbdbac5b0684d77564d5ce",
+        "outputSourceSha256": "83654913a6588ae6600361560e29fc570b9b9a2c96b8a0efa041d0344cfde277",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "8c5bd6fd020d469b4b31f63fa7ba38c88b924fe1fd1abc557724b9e1de1df4e8",
+        "outputSourceSha256": "bc0f6d78ce0e13cc08df886563bee5e8fd436745ff390c272aea7c72eb2a9921",
+        "inputs": [
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 4
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_DynamicUITex",
+      "spirvName": "_316",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_268",
+      "dimension": 4
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_462",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_564",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_620",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/transparent_hologram_layer.vert.glsl",
+    "fragment": "public/shaders/transparent_hologram_layer.frag.glsl"
+  },
+  "mrt": {},
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

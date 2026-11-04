@@ -1,0 +1,196 @@
+{
+  "official_selector": {
+    "selectorId": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6",
+    "candidateWitnessId": "abcd3f173af8af498056f14773c624acbaa328edbdc5529cc58e05caeb688e45",
+    "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+    "shaderName": "Lettuce/Common/CardNew/Stencil/OuterStencil",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "5492e1e4a922cee2e1161ef4ad8001582a7e0c9fa40d8497619065e4aa1ea228"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 8
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 1
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 1
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 2
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {},
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {}
+  },
+  "runtime_contract": {
+    "shader_key": "OuterStencil",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [],
+      "ints": [],
+      "vectors": {}
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "a0d1883d9339910431f3a57a7b842967ad152e079b68182929ff33ed7a2e6aa7",
+        "outputSourceSha256": "2ceaa3815f0c9c604c6f367558f668dbd917d8aa1fc1accd073b26cb983f8eaf",
+        "inputs": [
+          "position",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "29f30b0dc9d2ba2057eb5304c0696031ad8803a6b681d21b7367f12b25fc4813",
+        "outputSourceSha256": "c9137edeea61c34d6c0e6d1fa9cdb086e7d321efe3cbd2f8d7219409791b2b4a",
+        "inputs": [],
+        "storedVSampleCount": 0
+      }
+    }
+  },
+  "sampler_bindings": [],
+  "webgl_sources": {
+    "vertex": "public/shaders/outer_stencil.vert.glsl",
+    "fragment": "public/shaders/outer_stencil.frag.glsl"
+  },
+  "mrt": {},
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

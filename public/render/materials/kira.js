@@ -88,6 +88,7 @@ function circularMaterials(recipe, ctx, dynamicUniforms) {
     material.userData.officialExecutableIdentity = port.manifest?.official_executable_identity || null;
     material.userData.circularKiraState = component.state;
     material.userData.circularKiraRole = component.binding.role;
+    material.userData.circularTrailFlipsV = port.manifest?.runtime_contract?.backend_data_stages?.vertex?.inputs.includes("uv") === true;
     bindDynamicUniformProducerContract(material, port.manifest);
     component.state.materials.add(material);
     return material;

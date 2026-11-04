@@ -1,0 +1,240 @@
+{
+  "official_selector": {
+    "selectorId": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c",
+    "candidateWitnessId": "510d608e3f5231070ed7b2f1988532f7a3a369c1207d0aeb28ba80c7745b6b60",
+    "shaderIdentity": "CAB-d8439f101228f0c26d4c8e328829118d:-2001110329425035683",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Scaling_Kira",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "cd4d9bc1daf7f8f18fa80d74db1ce1d6fad69c8333a562561c99629b23c509cf"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_RampRotation": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_ScrollLayerMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Scaling_Kira",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_RampRotation"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "d337a364fdaa0a2c3541250af6477ae7cbf48e6f20191dd11cfd78f729ea2062",
+        "outputSourceSha256": "47ea0cc9c47650dac829e935c8d3f49e783fbb0eae2ef9985cb90e44e4dcc2b4",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "4a5a539a5beffe4b62617589cea257fa0c11d272994bdd34584be668b108c770",
+        "outputSourceSha256": "7f51b3e79dcd7bab6300ebdcd34d901a15b1b7fb1972a2def8bc8e3cabcecc68",
+        "inputs": [],
+        "storedVSampleCount": 3
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_48",
+      "dimension": 2
+    },
+    {
+      "slot": "_ScrollLayerMask",
+      "spirvName": "_85",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_39",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_scaling_kira.vert.glsl",
+    "fragment": "public/shaders/card_scaling_kira.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "alpha-only"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "renderer-property-block-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

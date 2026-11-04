@@ -1,0 +1,335 @@
+{
+  "official_selector": {
+    "selectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+    "candidateWitnessId": "f668811dcdd5dbede09ba683fa0dcce19ccdefcc7180144f2d79a9dde52e373c",
+    "shaderIdentity": "CAB-2d26115c8d7b0e19ac650f71bbdc7525:-7286864420773527812",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/UI/Card_ShadowBoxUI_Transparent_Rainbow",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "b3b33ad18b3c0a67134cc5ce67f9779d8d2d658827790e57cf6f7f9ad1c15a44"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_AlphaBlend": 0,
+      "_EmitMasking": 0,
+      "_ZTest": 4,
+      "_ZWrite": 1
+    },
+    "colors": {
+      "_RainbowTintColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_RainbowAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_RainbowOutlineAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_RainbowBGAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_DynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_AdditionalDynamicUITex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowOutlineTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowBGTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowTintMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RainbowBGTintMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_ShadowBoxUI_Transparent_Rainbow",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_EmitMasking"
+      ],
+      "ints": [],
+      "vectors": {
+        "_RainbowTintColor": "vec4",
+        "_RainbowAnimationScale": "vec2",
+        "_RainbowOutlineAnimationScale": "vec2",
+        "_RainbowBGAnimationScale": "vec2",
+        "_Rotation": "vec3"
+      }
+    },
+    "texture_coordinates": {
+      "vertex": {
+        "transforms": [
+          {
+            "uniform": "_RainbowTintMask_ST",
+            "slot": "_RainbowTintMask",
+            "conversion": "unity-texenv"
+          },
+          {
+            "uniform": "_RainbowTex_ST",
+            "slot": "_RainbowTex",
+            "conversion": "unity-texenv"
+          },
+          {
+            "uniform": "_RainbowOutlineTex_ST",
+            "slot": "_RainbowOutlineTex",
+            "conversion": "unity-texenv"
+          },
+          {
+            "uniform": "_RainbowBGTex_ST",
+            "slot": "_RainbowBGTex",
+            "conversion": "unity-texenv"
+          }
+        ]
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "e8ff6930a471be4876ca2a374e2586e0cf7169bfd8d646228d2174490a906eac",
+        "outputSourceSha256": "12c9c8d089fc0d428d3160c0681e1f9fbf7e1d2eff0836bfe8bf4a3e1447b405",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "71ba4c1e69d6e99101f16be136b37fe31f331f212a0459a6ecd1385a81a4adc8",
+        "outputSourceSha256": "d473f548e87e494e13c30473d50f9ee885f68223902610e803d702bb8acbe7d0",
+        "inputs": [],
+        "storedVSampleCount": 6
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_DynamicUITex",
+      "spirvName": "_226",
+      "dimension": 2
+    },
+    {
+      "slot": "_RainbowTex",
+      "spirvName": "_188",
+      "dimension": 2
+    },
+    {
+      "slot": "_RainbowOutlineTex",
+      "spirvName": "_143",
+      "dimension": 2
+    },
+    {
+      "slot": "_RainbowTintMask",
+      "spirvName": "_208",
+      "dimension": 2
+    },
+    {
+      "slot": "_RainbowBGTintMask",
+      "spirvName": "_280",
+      "dimension": 2
+    },
+    {
+      "slot": "_RainbowBGTex",
+      "spirvName": "_172",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_shadowbox_ui_transparent_rainbow.vert.glsl",
+    "fragment": "public/shaders/card_shadowbox_ui_transparent_rainbow.frag.glsl"
+  },
+  "mrt": {},
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "texture-coordinate-basis-conversion"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

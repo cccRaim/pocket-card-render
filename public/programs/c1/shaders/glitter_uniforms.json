@@ -1,0 +1,313 @@
+{
+  "official_selector": {
+    "selectorId": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+    "candidateWitnessId": "d98b5f95ce632832d413ce274a76375259253995c575e91dc315c43c55ce49c6",
+    "shaderIdentity": "CAB-100635daf899a0d0b5cd9053d315b351:-7420289119115703173",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_UR_Glitter_FlowMaps",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "5398f6649083535283e7c2eaebf6e4ae35feb55f33a4ddde44359bce35643f15"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_FadeDuration": 0.20000000298023224,
+      "_FlowAPower": 1,
+      "_FlowBPower": 1,
+      "_LightTime": 0.10000000149011612,
+      "_EmitThreshold": 0.009999999776482582,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_FlowScale": 1.399999976158142,
+      "_FakeCameraHeightB": 0,
+      "_HeightB": -1,
+      "_HeightPowerB": 0,
+      "_ScaleB": 1,
+      "_FlowScaleB": 1.399999976158142,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {
+      "_LightColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {},
+    "textureDescriptors": {
+      "_ABaseTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ALightTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_FlowAMap": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_BBaseTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_BLightTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_FlowBMap": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_UR_Glitter_FlowMaps",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FadeDuration",
+        "_FlowAPower",
+        "_FlowBPower",
+        "_LightTime",
+        "_EmitThreshold",
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale",
+        "_FlowScale",
+        "_FakeCameraHeightB",
+        "_HeightB",
+        "_HeightPowerB",
+        "_ScaleB",
+        "_FlowScaleB"
+      ],
+      "ints": [],
+      "vectors": {
+        "_LightColor": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "_FlowParams": {
+        "type": "vec4[2]",
+        "source": "GlitterFlowMaps.Update/Material.SetVectorArray"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "d77199ec35f7a2e32acb5e0c54d7f9c29b8e275ae30632b48db5c15c138e300f",
+        "outputSourceSha256": "3ae9a50e308dd28f5f487e2e35a00ab7054088fc972f68dcdebf9e2d8e164db0",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "e52f06fee6e345cbc736aa51d37a89d688afb5bcadcc27cacdb29fcf1f3349f2",
+        "outputSourceSha256": "bbed76a8805edbb111dfc02c4bf0f1c436efa971f3e9bb1d497894a310ec9a61",
+        "inputs": [],
+        "storedVSampleCount": 10
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_FlowAMap",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_ALightTex",
+      "spirvName": "_205",
+      "dimension": 2
+    },
+    {
+      "slot": "_ABaseTex",
+      "spirvName": "_404",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlowBMap",
+      "spirvName": "_644",
+      "dimension": 2
+    },
+    {
+      "slot": "_BLightTex",
+      "spirvName": "_690",
+      "dimension": 2
+    },
+    {
+      "slot": "_BBaseTex",
+      "spirvName": "_843",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/glitter.vert.glsl",
+    "fragment": "public/shaders/glitter.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_1092"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "dynamic-uniform-producer-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

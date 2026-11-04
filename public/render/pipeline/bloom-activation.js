@@ -36,6 +36,17 @@ export function sceneUsesExactBloomProducer(materials, exactShaders, runtimeDisp
   });
 }
 
-export function sceneUsesBloomProducer(materials, exactShaders, runtimeDispatchIndex) {
+export function sceneUsesBloomProducer(materials, exactShaders, runtimeDispatchIndex, scene = {}) {
+  if (scene.emissiveObjects !== undefined) {
+    if (!Array.isArray(scene.emissiveObjects)) throw new Error("Invalid EmissiveObject inventory");
+    const drawIds = new Set((scene.officialDraws || []).map(draw => draw.drawId));
+    for (const component of scene.emissiveObjects) {
+      if (!Array.isArray(component?.drawIds) || !component.drawIds.length
+          || component.drawIds.some(id => typeof id !== "string" || !drawIds.has(id))) {
+        throw new Error("EmissiveObject references an unknown draw");
+      }
+    }
+    if (!scene.emissiveObjects.length) return false;
+  }
   return sceneUsesExactBloomProducer(materials, exactShaders, runtimeDispatchIndex);
 }

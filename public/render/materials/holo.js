@@ -3,6 +3,7 @@
 // hologram body. All byte-traced from the game's fragment SPIR-V (see the per-function notes).
 import * as THREE from "three";
 import { defineMaterial } from "../registry.js";
+import { buildExactRuntimeMaterial } from "./exact-runtime.js";
 import { EMISSIVE_MRT_RGB, VIEW_BASIS_WORLD_VS } from "../glsl.js";
 
 const V3 = (c, d) => (c ? new THREE.Vector3(c.r, c.g, c.b) : d);
@@ -175,7 +176,9 @@ function frameHoloMaterial(r, ctx, mode) {
         _FrontMaskPower: { value: f._FrontMaskPower ?? 64 },
         _AlphaBlend: { value: f._AlphaBlend ?? 0 },
         _MaskEmissive: { value: f._MaskEmissive ?? 0 },
-        _CutOut: { value: f._CutOut ?? 0.009999999776482582 },
+        ...(exactFrame.manifest?.runtime_contract?.material_uniforms?.floats?.includes("_CutOff")
+          ? { _CutOff: { value: f._CutOff ?? 0 } }
+          : { _CutOut: { value: f._CutOut ?? 0.009999999776482582 } }),
         _Rotation: { value: new THREE.Vector3(rot.r || 0, rot.g || 0, rot.b || 0) },
       },
       vertexShader: exactFrame.vert,
@@ -419,6 +422,9 @@ defineMaterial("cardHologram", {
 });
 
 function exactHologramMaterial(r, ctx) {
+  if (r.rendererProperties?.cardUVShadow || r.rendererProperties?.cardMReliefSR) {
+    return buildExactRuntimeMaterial(r, ctx, { side: THREE.DoubleSide });
+  }
   const exact = ctx.exactShaderPort(r);
   if (!exact) return null;
   const material = new THREE.RawShaderMaterial({

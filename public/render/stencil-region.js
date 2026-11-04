@@ -28,7 +28,7 @@ function selectorUsesStencilRef(contract) {
 export function resolveStencilRegionBinding(recipe, officialPassRuntime = null) {
   const region = recipe?.clip;
   const bit = STENCIL_REGION_BITS[region];
-  if (!bit || !Object.hasOwn(recipe?.floats || {}, "_StencilRef")
+  if (!bit || recipe?.floats?._StencilRef !== 0
       || !selectorUsesStencilRef(officialPassRuntime)) {
     return null;
   }

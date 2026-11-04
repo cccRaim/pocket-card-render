@@ -101,6 +101,9 @@ function serializedLocalKeywordState(layer, label) {
 function recipeFor(cardId) {
   const per = `${cardId}_render_full.json`;
   if (existsSync(join(OUTPUT, per))) return per;
+  if (process.env.PCR_PROGRAM_PORT_PACKAGE) {
+    throw new Error(`Scene program package requires the card's own recipe: ${join(OUTPUT, per)}`);
+  }
   const fallback = /^cTR/.test(cardId) ? "tr_render_full.json" : "card_render_full.json";
   console.warn(`no recipe ${per} in ${OUTPUT} → falling back to ${fallback} (text/materials may be wrong)`);
   return fallback;
@@ -611,6 +614,22 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
       throw new Error(`${CARD_ID}: missing or inconsistent official GameObject path for ${mat}:${go}`);
     }
     const rendererProperties = l.rendererProperties || {};
+    for (const [family, settingsTable] of Object.entries({
+      cardDualMRR: "dualMrrAnimation", cardDualMSR: "dualMsrAnimation",
+      cardMReliefSR: "reliefMSRAnimationSettings", cardRGB: null, cardUVShadow: null,
+    })) {
+      const binding = rendererProperties[family];
+      if (!binding) continue;
+      const config = runtimeSettings[family]?.[binding.componentIdentity];
+      const renderers = settingsTable ? config?.rendererBindings?.[binding.role] : config?.rendererBindings;
+      if (!config || binding.componentIdentity !== config.componentIdentity
+          || binding.rendererIdentity !== official.renderer || !Array.isArray(renderers)
+          || !renderers.includes(official.renderer) || !l.shaderSearchTags?.includes(binding.searchTag)
+          || (settingsTable && (!config.animationSettingsIdentity ||
+            runtimeSettings[settingsTable]?.[config.animationSettingsIdentity]?.identity !== config.animationSettingsIdentity))) {
+        throw new Error(`${CARD_ID}: inconsistent ${family} binding for ${mat}:${go}`);
+      }
+    }
     if ((shader === "Card_Circular_Moving_Kira" || shader === "Card_Circular_Trail_Kira")
         && !rendererProperties.circularKira) {
       throw new Error(`${CARD_ID}: CircularKiraObject renderer contract is missing for ${mat}:${go}; regenerate the recipe`);
@@ -678,7 +697,7 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
     if (msrSearchTags.length > 1) {
       throw new Error(`${CARD_ID}: multiple CardMSRObject SearchTags for ${mat}:${go}`);
     }
-    if (msrSearchTags.length === 1) {
+    if (msrSearchTags.length === 1 && !rendererProperties.cardDualMSR) {
       const binding = rendererProperties.cardMSR;
       const config = binding && cardMSRSettings[binding.componentIdentity];
       const role = msrTagRoles[msrSearchTags[0]];
@@ -702,7 +721,8 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
     if (mrrSearchTags.length > 1) {
       throw new Error(`${CARD_ID}: multiple CardMRRObject SearchTags for ${mat}:${go}`);
     }
-    if (mrrSearchTags.length === 1) {
+    if (mrrSearchTags.length === 1 && !rendererProperties.cardDualMRR
+        && !rendererProperties.cardDualMSR && !rendererProperties.cardMReliefSR) {
       const binding = rendererProperties.cardMRR;
       const config = binding && cardMRRSettings[binding.componentIdentity];
       const role = mrrTagRoles[mrrSearchTags[0]];
@@ -830,6 +850,8 @@ export function buildScene(cardId, recipeName = recipeFor(cardId)) {
   for (const name of Object.keys(texUrls)) textureColorSpace[name] = textureColorSpaceFor(texPaths.get(name), texSlots.get(name));
 
   return { officialDrawSchemaVersion: 2, card, prefabGlb: toUrl(glbAbs), materials, officialDraws, runtimeSettings,
+    ...(full.emissiveObjects === undefined ? {} : { emissiveObjects: full.emissiveObjects }),
+    ...(process.env.PCR_PROGRAM_PORT_PACKAGE ? { programPortPackage: process.env.PCR_PROGRAM_PORT_PACKAGE } : {}),
            textures: texUrls, alphaMode, textureColorSpace, _missing: [...missing] };
 }
 

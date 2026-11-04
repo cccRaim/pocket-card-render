@@ -1,0 +1,3367 @@
+{
+  "schema": "pocket-card-render/scene-program-package@1",
+  "ports": [
+    {
+      "selectorId": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d",
+      "candidateWitnessId": "1cd97cd5a35e5f321f3469d6a130766f65f257db33b77e26e1e68131f326b327",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "6c95f78863fb23a1f58ed685b719be1625cc8801ca87e4da7d72b8bbea0973bc",
+      "manifest": "public/shaders/simple_premultiply_hologram_uniforms.json"
+    },
+    {
+      "selectorId": "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2",
+      "candidateWitnessId": "e6df7b870ad8ef1e3593613bfca11db3f078ae4f3cd3c6068fd5b763a093cf6e",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "68c2c9bbd907e154992444697fc43791b0e2a426885baf5d76c0d9123b55743a",
+      "manifest": "public/shaders/transparent_ur_oklab_uniforms.json"
+    },
+    {
+      "selectorId": "0d37d2823669f71fbdeed12796e1629e70481743d1e4095d2494e8319e80e0dd",
+      "candidateWitnessId": "50f23d9b99f498b97d00909c44a3a1952e1118b8caf2d95b9a8516c63c65acaa",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "0aa5e7a8fb8fd4c709972dbe49c60f9f0270e1961cee98a914544dba42586af2",
+      "manifest": "public/shaders/opaque_hologram_shadow_rainbow_uniforms.json"
+    },
+    {
+      "selectorId": "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2",
+      "candidateWitnessId": "e807f853961e6b671ea9d523f6b0b29b481a3bcf306eb7dff13876193a81e1e2",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "3b4ebcb0d36b1ccc9be66822a08f2ffad0fbbf02207780daf6b48311aae69813",
+      "manifest": "public/shaders/transparent_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "16717843d35280c3f42c6cc4079209055685c1be5641a3da93507e50252b30eb",
+      "candidateWitnessId": "9d99b1a49863c8aea2d6b41365b520024f0c8665b2fb1c2cde8d537acea38fea",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "6437f24be27745e3fd98a27c5a823151e6ef010719ebda0d36453c73af9fcf55",
+      "manifest": "public/shaders/card_illust_transitiontexture_uniforms.json"
+    },
+    {
+      "selectorId": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039",
+      "candidateWitnessId": "f761d9a4a37683acf07b2a7ad3938f12cb0b9feac49cf1881b5ba0ad7999ff3d",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+      "manifest": "public/shaders/effect_eff1_uniforms.json"
+    },
+    {
+      "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+      "candidateWitnessId": "57263e503607d12bcef0b5134fcb84c3a4e89a25c8a5994baf5da09a7155899c",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "bd48d01497d2d296c68c40a40361dc9b363376460ba72626df9770f48c0768ea",
+      "manifest": "public/shaders/circular_moving_p0_uniforms.json"
+    },
+    {
+      "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+      "candidateWitnessId": "5ee5767765fd56052cc3a68092d589e907cab6b9672122dc9f7990590e4c3826",
+      "subshader": 0,
+      "pass": 1,
+      "semanticExecutableId": "4ea0c71982955e7a8a2c49a8caf5df641e9d9940c07df23cf20b1544f088047c",
+      "manifest": "public/shaders/circular_moving_p1_uniforms.json"
+    },
+    {
+      "selectorId": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6",
+      "candidateWitnessId": "13354238319705038515caab8f3798abbfe71ba27c6d1dda65ec174ed8812b9d",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "9ae77f5ad05c3e1231b58c3775347f84b44c0cb0818adb7125d9db4119494d15",
+      "manifest": "public/shaders/card_parallax_marble_magnetic_uniforms.json"
+    },
+    {
+      "selectorId": "223dc2f97532cc74be6effcc35c7cc8cbb88e974b25206a26e9a730a4f7ebddb",
+      "candidateWitnessId": "7d7886ba1d8e288262cbf953f8ba6212dead481bd68e7bc48dfc50b7db2d056f",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+      "manifest": "public/shaders/effect_eff2_uniforms.json"
+    },
+    {
+      "selectorId": "23fba2d0f26091a424cc0b5b83a45dcf03068d57a8abf2d01ac9cd2858406637",
+      "candidateWitnessId": "7a9a5e243a280814db54afca957490783e9ca0c67d57d2fc30f455ca0637ae28",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "5a590d1f1071760288b7f7daf77b7a20c80bb6c38203df8fad52aff25ea025d6",
+      "manifest": "public/shaders/logo_opaque_uniforms.json"
+    },
+    {
+      "selectorId": "28671d68a67d20d1cb8a2076f4a7d81cb3733a2f56b0b83d3c760ada31aa2848",
+      "candidateWitnessId": "baf25908a2a59aa02bd5f3b9ab7e55e3b6bcd2483f0ae1cfb36d26ece43a16b2",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "6601fff66a741d88748b55ec72000a09fa00e115130e3914f17e210779eeec17",
+      "manifest": "public/shaders/card_rgb_hologram_stripe_uniforms.json"
+    },
+    {
+      "selectorId": "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
+      "candidateWitnessId": "d6ac9d1cdb3ad7fdf6c485d868d7bb0e937be8774385d701d87d553ec0d1d509",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "9d3403adc1adb31cd8882351e171646b8704baae3d87da7ed8edcb797c49933f",
+      "manifest": "public/shaders/card_parallax_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "32560a48adec5d08001f64750c1751d6e1fe95b84346c4907463cbaa2f1e2b1a",
+      "candidateWitnessId": "07308a831cd269183292df8cf58a72eef32536821d7708ef471bb585d5fe4cfb",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "d36fe839904db36ee3981532e096254bcb12da61ab9ca01d813b21affbed981a",
+      "manifest": "public/shaders/dynamic_ui_text_uniforms.json"
+    },
+    {
+      "selectorId": "357810ef9673d1603bbe967c0b9fd4c43ac3a3da07486a6e0122b9e0ada5735b",
+      "candidateWitnessId": "f811fbdff9ccb97e0ed7559d94296e4093ee928d8ee9008f8eb5f80d188b77be",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "e77f4517523f7e181e6627b29639a0fab50d1f4e82887ed87699c4c6bbdec74d",
+      "manifest": "public/shaders/card_rgb_hologram_uniforms.json"
+    },
+    {
+      "selectorId": "3dddf11a1dea4aad910b128a44787a6a4e5a0300c5341144d9af74b9b21421a6",
+      "candidateWitnessId": "1e1d58e03fc306568efea04b18265782b7d53280e78291d532f5fef11766b1a9",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "5ef8738185f2c3f61a4c3399d9b5a5a2a0ca0177b55ee03b37fb0f01781e9c8a",
+      "manifest": "public/shaders/frame_holo_immersive_ui_uniforms.json"
+    },
+    {
+      "selectorId": "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f",
+      "candidateWitnessId": "538a93d9cd74817bd77e3c0310f03e2cb3a3755efd65463425a4d9c1b77ca351",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "06314dc3b2987d8ee472cdb7f66c77c133ca13820e90830d6ef5765778fb85dd",
+      "manifest": "public/shaders/ur_plate_uniforms.json"
+    },
+    {
+      "selectorId": "418f6be89856a2598af04e8a57b44b7d6221f91b6423ba8fef2b3537f4fc863c",
+      "candidateWitnessId": "75f2d1d70c638ecd63a148aac0a72b28bacf93a1b65de5e870238b943ed91990",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+      "manifest": "public/shaders/effect_eff3_uniforms.json"
+    },
+    {
+      "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+      "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "cce8935a3a49ca58526350b8c85a61ccf90010450fd14e96ed68fe73bf3ffd4c",
+      "manifest": "public/shaders/shadowbox_effect_flow_default_uniforms.json"
+    },
+    {
+      "selectorId": "43d3e5f021a5caec0cdbeddecd49965ee155874fb2e5bf1e9c463480e808df90",
+      "candidateWitnessId": "3dbd5d400239f3449eaf52b67da091fbff558ee4b85a7411a1a4ec80c8592ef3",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a9ac0b87de64594e3fa14e99572b2a1ce943778f6a9a0e7b81ebdc04b94b3582",
+      "manifest": "public/shaders/effect_eff3_grad_uniforms.json"
+    },
+    {
+      "selectorId": "4416645d0bbeb3d037161525bdcf9aa7ed9e6b39e284c6ed446f09184b38532f",
+      "candidateWitnessId": "f47a5ad699a5afd82c35500ea9e3a4fc76ac9dc77bc32174e146b89c2b77df9f",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "9f54ddbb1bc8cbad72f246b5abff169f67d0d4c57a5b84385f9cadc91f4da4af",
+      "manifest": "public/shaders/card_parallax_uniforms.json"
+    },
+    {
+      "selectorId": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2",
+      "candidateWitnessId": "0beddb479416af4b577bea5b2f002ce5d3f030606e4f99b45559fc7287b42b3b",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "b0ad1457820d06d4a13ab9860df60c8aa53a97937c5f6460502f370006598b77",
+      "manifest": "public/shaders/card_parallax_marble_outside_relax_uniforms.json"
+    },
+    {
+      "selectorId": "47c914ef7efdabdb9ee66f2512db54ba7ce752cb00d43456e15a8c4a6a5558df",
+      "candidateWitnessId": "b4ad73ce82376afafa3f7c8a4834bf540e5fcbb03cb5856c05b0a353d995515b",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "df97b2a2b354bac8bc59fc8364120f4a0efbc1fd01d7e78df6a10bc87d8286e9",
+      "manifest": "public/shaders/shadowbox_simple_opaque_uniforms.json"
+    },
+    {
+      "selectorId": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+      "candidateWitnessId": "d98b5f95ce632832d413ce274a76375259253995c575e91dc315c43c55ce49c6",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "5398f6649083535283e7c2eaebf6e4ae35feb55f33a4ddde44359bce35643f15",
+      "manifest": "public/shaders/glitter_uniforms.json"
+    },
+    {
+      "selectorId": "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f",
+      "candidateWitnessId": "b07f89174c8b04ccdc3779586971bd39884c7f681c9d4f2b0ddaa3133836028a",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "b6743d52855403117459f8d4147bce0f7353dcff6c947ea3e116324f8f743261",
+      "manifest": "public/shaders/dynamic_ui_text_alpha_uniforms.json"
+    },
+    {
+      "selectorId": "4d69b686fb131f9a98fd78a7a9954d02acece8221a1d6c859050903f5492ba5e",
+      "candidateWitnessId": "690f2f2e3dffda52a27b7c3bd153b100947149a7122a4d3256d94f4897258381",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "f792f223b03eab35b8822d5e3e0a5dc5d91402cd7b5cb2d25a3829b1a4f7f349",
+      "manifest": "public/shaders/simple_transparent_uniforms.json"
+    },
+    {
+      "selectorId": "4eddbe42b3aad7a33c0087927e44803a97149e772bbec502e662d535be411cf9",
+      "candidateWitnessId": "f723f602d010d47d0d9d63b344f2575dfab34145921e1ee9a02fc55f0a231edf",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "0e971849d906abc0bd7c4e06bc48844f8e905fb8f364f4cdd5ad5d768a85459c",
+      "manifest": "public/shaders/card_parallax_cardwindow_uniforms.json"
+    },
+    {
+      "selectorId": "5086e6fa4eca3e1e047f50850e5baf5109dffc922add1f24fe5e8cc7b92b5e49",
+      "candidateWitnessId": "42ec060b34f86564fa8de992bdcee366fde7e7f3c47995faa2efa2937f140d8c",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "2f333f835dd0425a3740a3c8837ac80dec2a0cc38a44bac2843d79d388e2e5b7",
+      "manifest": "public/shaders/card_parallax_emit_mask_uniforms.json"
+    },
+    {
+      "selectorId": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02",
+      "candidateWitnessId": "f2fd1d27774133c221aa11f70dae2308c7d5220cbce65d7e24d9a25c2abd3aa8",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "838e84c0d67ab0467d53d3ff80db871c0707e0e87c5a54b114c418c54ffead5f",
+      "manifest": "public/shaders/effect_emit_uniforms.json"
+    },
+    {
+      "selectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+      "candidateWitnessId": "a75619c6701832240e109b72ce57f3a3cf73c9efb710ac33b5cd386a08d189a2",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "c651ff2b829a2b25bf504d4db07470686e2ade5e5844da10805329e8c2090983",
+      "manifest": "public/shaders/card_parallax_metal_uniforms.json"
+    },
+    {
+      "selectorId": "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d",
+      "candidateWitnessId": "aa63b45cf67b563e5593d688fe45a2a0ceaa816c2a13b58b5f7f4b069a33c0eb",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "549bd02435a783dd0c5fe7caa5f0dcef9f27cb9a33829972d8eae9d2a4b61ff5",
+      "manifest": "public/shaders/simple_opaque_hologram_tuning_holo_alpha_uniforms.json"
+    },
+    {
+      "selectorId": "56dd84638d23b5cb87fd78032a2ad4d75dc22005a541a2baa1885265fb4700d9",
+      "candidateWitnessId": "39a8a92c0f16df689b565940632f144d5c9366ce57baf617c07ceb0d9fa6b418",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "71d15f25485eb4f6a638167b19009a35d4531fb69bd61817966a984241dacb9c",
+      "manifest": "public/shaders/card_shadowboxui_transparent_flash_uniforms.json"
+    },
+    {
+      "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+      "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "bc1ebd48e6c776b95f1fc3878f39a31982ab80c7e6c59a4594a2586eaaa8da0b",
+      "manifest": "public/shaders/card_aura_col4_uniforms.json"
+    },
+    {
+      "selectorId": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c",
+      "candidateWitnessId": "02601f6c0b76c782d762a81ee2722f710f3557d9903100107ea6ba19dae4aa6b",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "841596580294f8affd5ac3061ba0bc1b178fea2e290ee90fd7154891603ab529",
+      "manifest": "public/shaders/frame_holo_immersive_uniforms.json"
+    },
+    {
+      "selectorId": "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c",
+      "candidateWitnessId": "13cd8a2030afc8eced7ca31c097c1c2491e9c512c133a0530e5e6b82ff95fab2",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a82739ea5cffe37919d0f925ece781ce26846dea40a7ecac541df8974fdf7234",
+      "manifest": "public/shaders/hologram_flip_outline_uniforms.json"
+    },
+    {
+      "selectorId": "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1",
+      "candidateWitnessId": "0ec9c9a3f1124b5af74f330032d5399964b2120d10e4f35ec23afaac2e61ba31",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "8da29a812f0ae2bfbe1b5f7f34ad4937c81905269a678c3744723b49207fcad7",
+      "manifest": "public/shaders/transparent_hologram_uniforms.json"
+    },
+    {
+      "selectorId": "66a7cb5f20f3617a45802722879bae65f2a18e2824167bb4e0a124a8d240bd9e",
+      "candidateWitnessId": "9da5b140cb5e1202f1a013afbefbc7ee72d6bc07b99c4e40b5efeb7e706b0715",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "ef3c0b1f75478b53441e5957084be4a88836a48f98e358408c3473a6244990e4",
+      "manifest": "public/shaders/ur_bg_hologram_uniforms.json"
+    },
+    {
+      "selectorId": "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64",
+      "candidateWitnessId": "9c87599aa5cfd41057c34d24b948c3cb90905ef8dee996419363dc6c4e4e6565",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "71e4b60ebbf210a721c7972bf5a6c8944d077de8cb9f02584edf2271d2ac6ca2",
+      "manifest": "public/shaders/opaque_shadowbox_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+      "candidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "80068ad1c3c2a64be356122958e0127aa0207aa2fdb9fbff4cc63d4cea6d0eff",
+      "manifest": "public/shaders/card_aura_base_uniforms.json"
+    },
+    {
+      "selectorId": "6b15110734185fce59434bc48692e2daa7801971bf0065926698b465b50c1977",
+      "candidateWitnessId": "fc6e66cfccfbddc5250c7b0dde8f011470e071bdfd978d835e91a7acfc44fcf9",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "9ee577a025326ba48f318bd635fc88d711188f9a974a8bd723fd8182cf345cca",
+      "manifest": "public/shaders/card_parallax_cardfull_uniforms.json"
+    },
+    {
+      "selectorId": "6b3fb2de16a0f9a8e715471cff73681e5d8e7cb61e1530a5395e004d1eb82b3a",
+      "candidateWitnessId": "d0804441908c2846b68f6ede868e4ae18e715808d925878bc5acdc4a94cc4bb7",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "c34b451a18ca16dc51298132d9ce93ec8f4042340e66db6fccc350d2b1a6fbf9",
+      "manifest": "public/shaders/frame_holo_with_shadow_uniforms.json"
+    },
+    {
+      "selectorId": "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380",
+      "candidateWitnessId": "ba841631178a590d90fc21f0fbeac690118dc9ce063e3350aafc8521fe2a90cf",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "4c67592e562d459ea5150dc03fe31626d4528358a739081e53815880469cfab0",
+      "manifest": "public/shaders/card_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+      "candidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "00728cc1979e67a2a3a6e3578fc1ca44ecb39b0f63ee415d947534ec4452f311",
+      "manifest": "public/shaders/card_parallax_hologram_shadow_layers_uniforms.json"
+    },
+    {
+      "selectorId": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0",
+      "candidateWitnessId": "75f46d7da4425de6135bc6e03e3c38ae00a68147a89b3e2f71193350cfad5b9f",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "e969d1d7645a9377c752f1a177c2431949dbeac59b9dc803aa51434ffec5607f",
+      "manifest": "public/shaders/card_illust_double_texture_uniforms.json"
+    },
+    {
+      "selectorId": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a",
+      "candidateWitnessId": "bbec92ec0d4596560b6385f569c173596185a6454f43644ca4663993e350b095",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "4616467cffa9b5eb5b3f363f0a7230509d766459d79ddca14deb1c58ceff0e1e",
+      "manifest": "public/shaders/parallax_ur_uniforms.json"
+    },
+    {
+      "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+      "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "dfc77dc0e742fdfbdfda5e84e1b4b5de5ac03b0f09fe7f3565a8ee0d63f2bf94",
+      "manifest": "public/shaders/shadowbox_flash_uniforms.json"
+    },
+    {
+      "selectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+      "candidateWitnessId": "6fb618e8f04e0c4347ac20782088b8786b68d1b565582cd977c05792e8d26c3f",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "68b4f0374d4fbd908aac4f338fb030b60b9cd88c167e9d44507d50743bb7ee75",
+      "manifest": "public/shaders/card_parallax_matcap_lighting_uniforms.json"
+    },
+    {
+      "selectorId": "83fe7adef4bf734e5ae549cf9ad325b5478458989d073779275cc33219425dd4",
+      "candidateWitnessId": "1e22ad68be14d6f7c2a75f8ba4fdd1a45aff860ac0b3b2206c1d01ee8fb2840e",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "ffa68f5a40d4639ef948cd00fb57566e4846851aba5bf4732001a9553346cd52",
+      "manifest": "public/shaders/card_hologram_with_shadow_uniforms.json"
+    },
+    {
+      "selectorId": "871457e8f364eeed14f609dc84a84b493b61ea71128a66b8849c721e7ae5e6d4",
+      "candidateWitnessId": "4d5b63dab94cbd1972f9bacd6365612445244d5f122ec8cbb3bc1f5c4b5e9fef",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "5b254504a832d7b33e401aa417c12f17efcac4f1ce395362e74a139fab2747e4",
+      "manifest": "public/shaders/opaque_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+      "candidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "765d248a0a5cc866b4e71981340eedd187b26f1d9c717bd6719fe669101076af",
+      "manifest": "public/shaders/shadowbox_effect_flow_use_col4_uniforms.json"
+    },
+    {
+      "selectorId": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6",
+      "candidateWitnessId": "abcd3f173af8af498056f14773c624acbaa328edbdc5529cc58e05caeb688e45",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "5492e1e4a922cee2e1161ef4ad8001582a7e0c9fa40d8497619065e4aa1ea228",
+      "manifest": "public/shaders/outer_stencil_uniforms.json"
+    },
+    {
+      "selectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+      "candidateWitnessId": "e710254f073915bac36480d928a8cdb7248c9874e4781921436ab58433869fe7",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "c5ff1b67020c45baa37d721b62a8074195a6596da2b2140917d1f77e053a4995",
+      "manifest": "public/shaders/simple_opaque_hologram_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e",
+      "candidateWitnessId": "f04eee1c0e3c33fdf7a2d128194ae20ddc00a5eb93876c66b3de0a55ba55a316",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "664d4af417af4820d94c3e7799119baf8aea0c8b9fe3d9f96ac84cf1fc519512",
+      "manifest": "public/shaders/frame_2layer_ur_uniforms.json"
+    },
+    {
+      "selectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+      "candidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "74f30dba711d67d5a5b1fe8325baee1f45cb8e4bc06670b0b26176a42668bf81",
+      "manifest": "public/shaders/shadowbox_effect_flow_use_old_noise_uniforms.json"
+    },
+    {
+      "selectorId": "9db730e67790e3993aa4acab0121e82ad771763c54241037a9e28719828a2d97",
+      "candidateWitnessId": "d9697704127d6558e52a84503bb49bdbd78148c552bd85760a12403a9b96e943",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "8da39e1888c4839d47a4e303d45f88b4c3eef9fceb5177bef6ba89bb847aa1fb",
+      "manifest": "public/shaders/card_illust_switchtexture_uniforms.json"
+    },
+    {
+      "selectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+      "candidateWitnessId": "a2db62d36bfb449cc9bc34103e8c83b3708ba1083fa67c142d16ca0441bd2d41",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "f3ae53e17e727b7f7652590f46739d30e6cea7d6191f36f8eac7076864fe62ad",
+      "manifest": "public/shaders/card_prism_uniforms.json"
+    },
+    {
+      "selectorId": "a7b9546f24dfd7b94b30ec4d66d4cb13b525167f1406d115d332607358b225c4",
+      "candidateWitnessId": "75753e6802157c99ec5d1007560d7076e2a16f78d5f91be4ff5c2e7b601258db",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "670254ff0615c94aa7f6128f8d4294e3ff572ed9c1c43e2938b3ea213cfa4da5",
+      "manifest": "public/shaders/card_rgb_hologram_rainbow_uniforms.json"
+    },
+    {
+      "selectorId": "a9ecd9600fcbad72d48f2a364c224375e92811abd07d0d0b7e11c8e702dee08f",
+      "candidateWitnessId": "d8fcc71e1968349be2e7b4431e9362c77d59b657d54015e4497f9182acd3a557",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "8c0263bc7ba1e75e0466eaa0e518b61ee4476638f8f5969f8c11817ec382aa38",
+      "manifest": "public/shaders/frame_holo_2layer_legacy_uniforms.json"
+    },
+    {
+      "selectorId": "abbff13f6bbc233b4f79f301187d6fcf5b4743de124f602e9bb44ad7c58371f4",
+      "candidateWitnessId": "ea414c29616335622205490d6f686dde2b08918413de0eefbb21d41b7f58fbaa",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "9c66e4890dd1db65ffcb40a01b98faf313c78b6dd2d8963f7c652f0d8ced66ff",
+      "manifest": "public/shaders/card_aura_col4_old_noise_uniforms.json"
+    },
+    {
+      "selectorId": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62",
+      "candidateWitnessId": "5de5f555115c6f76574558abb1c48c51634be6223d621a24715ae086011bf800",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "4910af56d4b5ec9bb46ff1f7c31d5c9285b2eb5963be096025926c90a6dab90e",
+      "manifest": "public/shaders/ur_lens_flare_uniforms.json"
+    },
+    {
+      "selectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+      "candidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "f17512db76ee4b7bfaca8d2865268f53fece4869bf0d3c129609029d1cbb6a1a",
+      "manifest": "public/shaders/card_parallax_hologram_shadow_effect_uniforms.json"
+    },
+    {
+      "selectorId": "b29c4ba1a2496615aacd7565709c049b2deb3ec072529c40484baa5958ae655b",
+      "candidateWitnessId": "e578dbb6557389709b3000ce3163fab49d20ec0c4c744d95ca66047e942c487a",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "eea9bbf9bda85788f8dca7852b40132e921b5303ad6f827eee179be558ff0069",
+      "manifest": "public/shaders/card_parallax_mrr_uniforms.json"
+    },
+    {
+      "selectorId": "b55a138a3043e15e5fec3f73ddaa04a9acb66ba7c87e0d2d1d0f262e3616438f",
+      "candidateWitnessId": "0e91ff5082fa7cc78c90858b5751e5eb676a654af123e15266403d3bc0ed26e4",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "82698ac6f337d40fcf6d95278ad1e60cf4517bf5b91d6ef3b1b5dd9343e779b6",
+      "manifest": "public/shaders/card_dual_msr_uniforms.json"
+    },
+    {
+      "selectorId": "b64f842cf9933438d2646de74af54cf71a7f49c6c180f66ed733c006f8b523b5",
+      "candidateWitnessId": "2d21404dc38f3a8cc9fba45a867d2aa46636187000c9377cbe662728775168b3",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "94a3e6f0701ad2e2e4797cd5e2b8f78f1400fff2f3a6ef8435c75a724c9470e4",
+      "manifest": "public/shaders/card_parallax_transparent_translate_uniforms.json"
+    },
+    {
+      "selectorId": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb",
+      "candidateWitnessId": "44c61ec705cfab11f8706ebecc8e3b2a8bf83a32bf3649c97d31107b5f237cb6",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "330ca5df07ce77b2003c9dc6d89901ffcc2eff1650f09a23ca0f89ba9dfcd478",
+      "manifest": "public/shaders/effect_eff1_grad_view_uniforms.json"
+    },
+    {
+      "selectorId": "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13",
+      "candidateWitnessId": "3c7bf027e82dd6ca62eaee84642d90713a17f0e28a105ccf3ba65dfa3eebe429",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "882c80e6a26199a40ed2311f79ae3820d776424748a958521ae57bd3d85ce09a",
+      "manifest": "public/shaders/simple_opaque_uniforms.json"
+    },
+    {
+      "selectorId": "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292",
+      "candidateWitnessId": "f061c45e88441195b5cb636859f255b91486436f806cd55fc182f470648e13dd",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "d401c03f8919f0f3821ce8e7fbb9c7bf370b505977dcb4069a34f9632c3b1cd9",
+      "manifest": "public/shaders/frame_holo_tuning_uniforms.json"
+    },
+    {
+      "selectorId": "bcb60b22bef8badefd443c779615ba8418fbf9be6d959747838cb91b1f825ec5",
+      "candidateWitnessId": "855cdb803c9ceff3c5dbffacfe3f39b75029a21d677173236c19f67ca95d016a",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "883311aa854ae594df991ec6ec39143ad2638f3912c04d95be0a71019e3ebdf7",
+      "manifest": "public/shaders/frame_holo_legacy_uniforms.json"
+    },
+    {
+      "selectorId": "bd90afa8536d13c9107d8badccf43919ab387c61b52833e06a5654b1859816c2",
+      "candidateWitnessId": "eb124f1a132ad66a7842eb1f87d5f83594ce130cb602a2d1ef1d912eebc4450d",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "32d6dc9bcf139fc87760b427bb524986836bfe059173cdc7e870f050cdb9126c",
+      "manifest": "public/shaders/card_parallax_metal_by_tilt_uniforms.json"
+    },
+    {
+      "selectorId": "be2fa01af3260bcb40dd21c0a1d3f58df18f764c5de649bbc4213c828565580d",
+      "candidateWitnessId": "8ebbea72e4f15b43f100abac110d1570213be44c29706389280d327d8d9091b7",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "f0efdd97dcf48158408f47118f8b24a1ec6b81f518456cf88ecec40276ae7bb0",
+      "manifest": "public/shaders/effect_eff2_grad_view_uniforms.json"
+    },
+    {
+      "selectorId": "bf3da9771e1a262a5cae4c0c41f489b8901d0c5f9cea365ed1821cadcd1a53a6",
+      "candidateWitnessId": "4299da48ec9c7f6bbf07d605c65c5aef7e8da8191427a2ce8059459cb0b48399",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "502945fa85755d96e48b76090494746e00852e8936523227d84c90733c395cbb",
+      "manifest": "public/shaders/shadowbox_effect_flow_use_col4_old_noise_uniforms.json"
+    },
+    {
+      "selectorId": "bf76a81655b9ff3dd32548cf62d529426eb40486470b291799c191ccccb60659",
+      "candidateWitnessId": "dc76ddb5db3d23539f7a84d69d2afd557bc1ca04f99530b0d274e472977b82aa",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "6aa166a1160232cb770896a18f27412d2649433718ef2b9138b590127ec8c500",
+      "manifest": "public/shaders/card_parallax_immersive_uniforms.json"
+    },
+    {
+      "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+      "candidateWitnessId": "924c285309887b39f800a18d3dae6ec03adff28ffb6b590b3d721ae7fe1406d6",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "89bc7f6cb3640a140b456bfc1803dc51b4894e7085fc09b34becdf868673ba04",
+      "manifest": "public/shaders/opaque_hologram_shadow_uniforms.json"
+    },
+    {
+      "selectorId": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d",
+      "candidateWitnessId": "ec656d0015989845a88372ac9d3cf0fbe247a4001981ab0e22ee546d7718552c",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "81d6a748c03f64ade63d40ac29a13c62abee96b135955ba78bd8a4ebc6c05a1f",
+      "manifest": "public/shaders/card_parallax_future_uniforms.json"
+    },
+    {
+      "selectorId": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+      "candidateWitnessId": "56ce2e59eaa541313880a1573ec30c192037c39411adc692aa743e56838a5d42",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "2809384b7ac756b8a961dad3995ac4722b53245e500a9ce634082725ccb77205",
+      "manifest": "public/shaders/opaque_ur_oklab_uniforms.json"
+    },
+    {
+      "selectorId": "d1f5735783c69fe7649331c186b7a648ec31301d22a3d22ab114c52dc95b2564",
+      "candidateWitnessId": "74c7535cdb853b56d91c7d18b5277230914ce3ea0753a1a706c8da396f76b0a3",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "32dfa05ae21b0e3ccad22ae21a58fd5d46af1cc684fffc5758f624550d05513e",
+      "manifest": "public/shaders/card_parallax_native_best_match_uniforms.json"
+    },
+    {
+      "selectorId": "d38d3780d65a668f8a218d1849e102210e239b4043261fa64914f8561218fe2b",
+      "candidateWitnessId": "318901e7b6b9029c84b5670c63a7dfa8593f965aca419bc14fd910796675e1d9",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "705aa702076512c5b6394f31695a6c3f6e626edc22ada0322a822cc35bfc303b",
+      "manifest": "public/shaders/frame_holo_transition_uniforms.json"
+    },
+    {
+      "selectorId": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee",
+      "candidateWitnessId": "c4deae40c665b8824a37ce7d7706815916e23908efb384f260a809fa83f6e6f3",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a4c68b7bfc561e34b0ed56e91d9899ca26755655ca307e5d5791e8785fe8df0c",
+      "manifest": "public/shaders/inner_stencil_uniforms.json"
+    },
+    {
+      "selectorId": "dd793ca27284828846f39a5334fffb3e18a6b116e8c90dc2b04a6cabeea4aa82",
+      "candidateWitnessId": "dc820111e68a5cbb6802626b2621ee44c7f4e31add2ebc995cf7d03a14869b77",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "7f823d7418a7192ac7abbe2a6a9879a713c66cd319d7ecfccc794d90cb57b0e9",
+      "manifest": "public/shaders/card_parallax_normal_on_additive_uniforms.json"
+    },
+    {
+      "selectorId": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249",
+      "candidateWitnessId": "fc136482a2ab9f4c5285962f0ec02812c45d91ac0f7697da995fed3f6882078d",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "4c946fea7b46791470a79f5566209226bd24bf7efa386c5172bbf3248cd18f46",
+      "manifest": "public/shaders/transparent_ur_new_uniforms.json"
+    },
+    {
+      "selectorId": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c",
+      "candidateWitnessId": "510d608e3f5231070ed7b2f1988532f7a3a369c1207d0aeb28ba80c7745b6b60",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "cd4d9bc1daf7f8f18fa80d74db1ce1d6fad69c8333a562561c99629b23c509cf",
+      "manifest": "public/shaders/card_scaling_kira_uniforms.json"
+    },
+    {
+      "selectorId": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd",
+      "candidateWitnessId": "75e09a8fc22a584f2d1e14428181d6ee3a34ad3c4d88212857712a5555c4c246",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "486f2bc1c83746d4ec53df65d875586a983be602cb9120f4a9bdf79fc010afc4",
+      "manifest": "public/shaders/card_parallax_flash_uniforms.json"
+    },
+    {
+      "selectorId": "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6",
+      "candidateWitnessId": "7ab49aa57ad486c6845e910cdece188eb4cd4cc82879ae65e9b912f562e278c1",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a1914de7b178030af7bd1bc1234f6582bae0bfddb8097ecc1e2be5745996187f",
+      "manifest": "public/shaders/frame_holo_ur_uniforms.json"
+    },
+    {
+      "selectorId": "e4b31c1fda7d65c893e2423ef5b6ec8f4788a22a0ffb9eb4674d86f82b017fcd",
+      "candidateWitnessId": "08987aae2287af4af30d990ac463df890d51551c777a5e17acee38cda88563b7",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "f08e919b26cdec02a0a346fe77b01c5207d9fb8b6b9ae9868bef4572fff5a834",
+      "manifest": "public/shaders/effect_emit_with_hologram_shadow_uniforms.json"
+    },
+    {
+      "selectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+      "candidateWitnessId": "c12b649ea6ed8cfd33f06067dab790b7fe7c2a8b6d366a392b1cd07bb40d1a59",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "a3b86b4d621c6154a5d5f6540830d86e4f306ff6b4291300c71db3cbaeca32a1",
+      "manifest": "public/shaders/transparent_hologram_layer_uniforms.json"
+    },
+    {
+      "selectorId": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77",
+      "candidateWitnessId": "352081cbea49f0301799150f952a626e4004830e894c78b81b093d66b2ce3728",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "d174278e036cb72185a87d747d1a26f1bc861d5795b88f37e625bb381b1ddcde",
+      "manifest": "public/shaders/card_illust_double_texture_gradation_uniforms.json"
+    },
+    {
+      "selectorId": "f20623855421b8e0dd10ae57a0ce0bab372a26d5cd19df84e7fd411ee5c695d3",
+      "candidateWitnessId": "db79a74cd0269978ad2443c331306481ac93c87af7f2750df624cef135db36f9",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "fa78875e25a94b345fc1583484c13b7f0fd8ebe1a9b25f2710a2fdb979b871ed",
+      "manifest": "public/shaders/card_illust_switchtexture_useftex_on_uniforms.json"
+    },
+    {
+      "selectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+      "candidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "fba54420bfc96aae88786583d3d6d4ed1bc449701efb0e75a1fa7b6de1f52bd5",
+      "manifest": "public/shaders/card_aura_old_noise_uniforms.json"
+    },
+    {
+      "selectorId": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2",
+      "candidateWitnessId": "bcdd7e6918cfa5f2734bc728e17d7ee748c326d35ccda96bfdd6dd52a2b05049",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "14833bbe6268ff3484687b0c760bc476ceef6f0a8df6f488bef33ad2a345c354",
+      "manifest": "public/shaders/frame_uniforms.json"
+    },
+    {
+      "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+      "candidateWitnessId": "41c433f707550fb175d6d84e5fcd6cf66ad58d7dfa7cb727f5623eb04e9205f7",
+      "subshader": 0,
+      "pass": 1,
+      "semanticExecutableId": "0b0286de65f88f43761cc6fa6810c243996c88b6c88d9872c3e3b798cd4e2860",
+      "manifest": "public/shaders/circular_trail_p1_uniforms.json"
+    },
+    {
+      "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+      "candidateWitnessId": "58ddb5f5a32f7e4cac70af3cd89aa1aaa592a8e222a03be7ca3d1591ada9f9c0",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "3d18e26c41164d8fb30ccaf52f9029ab376a8212867205ddcfdea2c4fde7d5e1",
+      "manifest": "public/shaders/circular_trail_p0_uniforms.json"
+    },
+    {
+      "selectorId": "f8644f04a9862f3b698729e1ae0853eaba21dee2bb87946b6e5e1941e547d723",
+      "candidateWitnessId": "4ab2306c07edd8ba6e5322d6fe74ad038f22363c06f94dd06256827735bbc890",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "dae09f1e02987d13ab5e96c0e75e172a253b5803938f63697ebea80f354c6248",
+      "manifest": "public/shaders/card_illust_uniforms.json"
+    },
+    {
+      "selectorId": "f953cc26992425f821a93cc76e31fe72136496d658a2968d988d776c922794b7",
+      "candidateWitnessId": "241359e3f35c806e8a713c5d7cf19553b9c38153a822f61c5fcc0c745dbea074",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "04a417b5867f192468ad2793148c9063e4e3654895d05478fb50f556820067f4",
+      "manifest": "public/shaders/illust_stencil_uniforms.json"
+    },
+    {
+      "selectorId": "f972087746bf2b351267b5816d259f913b2fb9fa050ad41e11979f4cdcbea51e",
+      "candidateWitnessId": "c4ca3c26badcf8796d93daec339dd36021ae70adad33bf53a21c088df9768349",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "b7c8fdd383fca1a99f2f3e3cab6b70eeae5db0135bdc4f5f1c30b3419557b97b",
+      "manifest": "public/shaders/card_parallax_strata_uniforms.json"
+    },
+    {
+      "selectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+      "candidateWitnessId": "f668811dcdd5dbede09ba683fa0dcce19ccdefcc7180144f2d79a9dde52e373c",
+      "subshader": 0,
+      "pass": 0,
+      "semanticExecutableId": "b3b33ad18b3c0a67134cc5ce67f9779d8d2d658827790e57cf6f7f9ad1c15a44",
+      "manifest": "public/shaders/card_shadowbox_ui_transparent_rainbow_uniforms.json"
+    }
+  ],
+  "runtimeBound": [
+    {
+      "manifest": "public/shaders/side_back_program.json",
+      "boundary": "engine-owned INSTANCING_ON runtime variant"
+    }
+  ],
+  "runtimeDispatch": {
+    "schema": "pocket-card-render/runtime-material-dispatch@1",
+    "routes": [
+      {
+        "selectorId": "098442249c67e59493c894726abb769128c8429b2021d6d665424f72f8ae3814",
+        "candidateWitnessId": "b72a542ce2da332012aaf0b3ae9d5d8e03407502f8a86cb2425706abfdc651d6",
+        "semanticExecutableId": "0d7e8a8234f12806c86125e706caceef2ae576a1cca7a0ec8647a2c5839ce118",
+        "shaderIdentity": "CAB-e4993e14922158e59579dd588a7a33d2:5701574008984223828",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": true,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Side&Back",
+          "strategy": "sideBack",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": true,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "69a242db5757a6f9cda2155c9dc10c314c7524efc4af645b63b018713d341f24",
+        "candidateWitnessId": "a026ec8f3a7d7e9681167b2f928da372cd9a2daa6760f22d1b2a5526e0e6c8c5",
+        "semanticExecutableId": "80068ad1c3c2a64be356122958e0127aa0207aa2fdb9fbff4cc63d4cea6d0eff",
+        "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Aura",
+          "strategy": "megaAura",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "abbff13f6bbc233b4f79f301187d6fcf5b4743de124f602e9bb44ad7c58371f4",
+        "candidateWitnessId": "ea414c29616335622205490d6f686dde2b08918413de0eefbb21d41b7f58fbaa",
+        "semanticExecutableId": "9c66e4890dd1db65ffcb40a01b98faf313c78b6dd2d8963f7c652f0d8ced66ff",
+        "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
+        "keywords": [
+          "_USE_COL4",
+          "_USE_OLD_NOISE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Aura",
+          "strategy": "megaAura",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "57792f8e8a215efb2b8f69ed1a4e9cd7033ac24a78940658160c58459aecced2",
+        "candidateWitnessId": "d5f636d6f59ef28fb457d5897ede6815f1bb87b5f4c9c2f3398509a60157e249",
+        "semanticExecutableId": "bc1ebd48e6c776b95f1fc3878f39a31982ab80c7e6c59a4594a2586eaaa8da0b",
+        "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
+        "keywords": [
+          "_USE_COL4"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Aura",
+          "strategy": "megaAura",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f3024a9274300e44a416f8e90a4557253d4861837dc8925093dc43dad5c9ef33",
+        "candidateWitnessId": "e4105d5f8bea3e72dd9572d119ac9cb86d5cdcc3d824b63269039b175953954b",
+        "semanticExecutableId": "fba54420bfc96aae88786583d3d6d4ed1bc449701efb0e75a1fa7b6de1f52bd5",
+        "shaderIdentity": "CAB-5ced508ac0196ce54fc27ff162e5e3a4:4889011790250279620",
+        "keywords": [
+          "_USE_OLD_NOISE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Aura",
+          "strategy": "megaAura",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "b55a138a3043e15e5fec3f73ddaa04a9acb66ba7c87e0d2d1d0f262e3616438f",
+        "candidateWitnessId": "0e91ff5082fa7cc78c90858b5751e5eb676a654af123e15266403d3bc0ed26e4",
+        "semanticExecutableId": "82698ac6f337d40fcf6d95278ad1e60cf4517bf5b91d6ef3b1b5dd9343e779b6",
+        "shaderIdentity": "CAB-b433b07effdc9908f93aac9e3fed71d4:8324437942837790794",
+        "keywords": [
+          "_UVASPECTRATIO_CARDFULL"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_DualMSR",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "782e751eb65ac33e9e7e197acbbe0808e47da620c49de39f13ef173100723380",
+        "candidateWitnessId": "ba841631178a590d90fc21f0fbeac690118dc9ce063e3350aafc8521fe2a90cf",
+        "semanticExecutableId": "4c67592e562d459ea5150dc03fe31626d4528358a739081e53815880469cfab0",
+        "shaderIdentity": "CAB-862ac57a79e07c4fc42c3b8fe0d2b8ce:-4614034991828446706",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Hologram_Tuning",
+          "strategy": "cardHologram",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "83fe7adef4bf734e5ae549cf9ad325b5478458989d073779275cc33219425dd4",
+        "candidateWitnessId": "1e22ad68be14d6f7c2a75f8ba4fdd1a45aff860ac0b3b2206c1d01ee8fb2840e",
+        "semanticExecutableId": "ffa68f5a40d4639ef948cd00fb57566e4846851aba5bf4732001a9553346cd52",
+        "shaderIdentity": "CAB-b8853b7ffc9c11badbc70e1fc218cb4d:-6219252229285238098",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Hologram_With_Shadow",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "e8237752a8ea484b2617cc40e805471be76d1ef2b96170809d9b2ebfbc8dcc77",
+        "candidateWitnessId": "352081cbea49f0301799150f952a626e4004830e894c78b81b093d66b2ce3728",
+        "semanticExecutableId": "d174278e036cb72185a87d747d1a26f1bc861d5795b88f37e625bb381b1ddcde",
+        "shaderIdentity": "CAB-cf5d8819979a0655496f9db913e931ee:5991589351999993912",
+        "keywords": [
+          "_USEGRADATIONTEXTURE_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust_DoubleTexture",
+          "strategy": "sarDoubleTexture",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "7dae42622712e1b4ed3d0fed49274e9e0bbd37ad63d058db1e151f9c2736d7c0",
+        "candidateWitnessId": "75f46d7da4425de6135bc6e03e3c38ae00a68147a89b3e2f71193350cfad5b9f",
+        "semanticExecutableId": "e969d1d7645a9377c752f1a177c2431949dbeac59b9dc803aa51434ffec5607f",
+        "shaderIdentity": "CAB-cf5d8819979a0655496f9db913e931ee:5991589351999993912",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust_DoubleTexture",
+          "strategy": "sarDoubleTexture",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "9db730e67790e3993aa4acab0121e82ad771763c54241037a9e28719828a2d97",
+        "candidateWitnessId": "d9697704127d6558e52a84503bb49bdbd78148c552bd85760a12403a9b96e943",
+        "semanticExecutableId": "8da39e1888c4839d47a4e303d45f88b4c3eef9fceb5177bef6ba89bb847aa1fb",
+        "shaderIdentity": "CAB-eb00c087cbe9870f5a659b669e6717c6:-8440590870873542326",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust_SwitchTexture",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f20623855421b8e0dd10ae57a0ce0bab372a26d5cd19df84e7fd411ee5c695d3",
+        "candidateWitnessId": "db79a74cd0269978ad2443c331306481ac93c87af7f2750df624cef135db36f9",
+        "semanticExecutableId": "fa78875e25a94b345fc1583484c13b7f0fd8ebe1a9b25f2710a2fdb979b871ed",
+        "shaderIdentity": "CAB-eb00c087cbe9870f5a659b669e6717c6:-8440590870873542326",
+        "keywords": [
+          "_USEFTEX_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust_SwitchTexture",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "16717843d35280c3f42c6cc4079209055685c1be5641a3da93507e50252b30eb",
+        "candidateWitnessId": "9d99b1a49863c8aea2d6b41365b520024f0c8665b2fb1c2cde8d537acea38fea",
+        "semanticExecutableId": "6437f24be27745e3fd98a27c5a823151e6ef010719ebda0d36453c73af9fcf55",
+        "shaderIdentity": "CAB-a6751b0aa5c6d5c9be7532233fb143b4:4674353869802774263",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust_TransitionTexture",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f8644f04a9862f3b698729e1ae0853eaba21dee2bb87946b6e5e1941e547d723",
+        "candidateWitnessId": "4ab2306c07edd8ba6e5322d6fe74ad038f22363c06f94dd06256827735bbc890",
+        "semanticExecutableId": "dae09f1e02987d13ab5e96c0e75e172a253b5803938f63697ebea80f354c6248",
+        "shaderIdentity": "CAB-dacac64c95b70409ad52b4bce1b63ad3:6715688836837633753",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Illust",
+          "strategy": "illustTextured",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "6b15110734185fce59434bc48692e2daa7801971bf0065926698b465b50c1977",
+        "candidateWitnessId": "fc6e66cfccfbddc5250c7b0dde8f011470e071bdfd978d835e91a7acfc44fcf9",
+        "semanticExecutableId": "9ee577a025326ba48f318bd635fc88d711188f9a974a8bd723fd8182cf345cca",
+        "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+        "keywords": [
+          "_UVASPECTRATIO_CARDFULL"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax",
+          "strategy": "depthParallax",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "card-parallax",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "4eddbe42b3aad7a33c0087927e44803a97149e772bbec502e662d535be411cf9",
+        "candidateWitnessId": "f723f602d010d47d0d9d63b344f2575dfab34145921e1ee9a02fc55f0a231edf",
+        "semanticExecutableId": "0e971849d906abc0bd7c4e06bc48844f8e905fb8f364f4cdd5ad5d768a85459c",
+        "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+        "keywords": [
+          "_UVASPECTRATIO_CARDWINDOW"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax",
+          "strategy": "depthParallax",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "card-parallax",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "5086e6fa4eca3e1e047f50850e5baf5109dffc922add1f24fe5e8cc7b92b5e49",
+        "candidateWitnessId": "42ec060b34f86564fa8de992bdcee366fde7e7f3c47995faa2efa2937f140d8c",
+        "semanticExecutableId": "2f333f835dd0425a3740a3c8837ac80dec2a0cc38a44bac2843d79d388e2e5b7",
+        "shaderIdentity": "CAB-bf0d6a0ab7795a38321362b083d60cf5:1163017447140888083",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_EmitMask",
+          "strategy": "emitMaskParallax",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd",
+        "candidateWitnessId": "75e09a8fc22a584f2d1e14428181d6ee3a34ad3c4d88212857712a5555c4c246",
+        "semanticExecutableId": "486f2bc1c83746d4ec53df65d875586a983be602cb9120f4a9bdf79fc010afc4",
+        "shaderIdentity": "CAB-eeb3b28a77923ed00deaaa1baf8678a9:5677331643493683988",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Flash",
+          "strategy": "megaParallaxFlash",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "cad05315c5090f5875de36d0ecb30eb5e7976e4ef960ad4d388fe3b8c8267d7d",
+        "candidateWitnessId": "ec656d0015989845a88372ac9d3cf0fbe247a4001981ab0e22ee546d7718552c",
+        "semanticExecutableId": "81d6a748c03f64ade63d40ac29a13c62abee96b135955ba78bd8a4ebc6c05a1f",
+        "shaderIdentity": "CAB-96b5bb98e306735ecc529cd496a65316:-7728916917211820233",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Future",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "ad9a07def8770d203c8834ef924234f99da1b625e2f267bae78ca0a1681e3402",
+        "candidateWitnessId": "02c30418efd2ec515fd989244b3c1a9f6765bf3f7be229d4844206b930e7c6fd",
+        "semanticExecutableId": "f17512db76ee4b7bfaca8d2865268f53fece4869bf0d3c129609029d1cbb6a1a",
+        "shaderIdentity": "CAB-96406d55a6ee7e659277ec3f9671df13:5408654229050402091",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Hologram_Shadow",
+          "strategy": "shadowParallaxHologram",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "7c4ddaec18170d0786d031ff44fb6d09f781e5962e7f8786a1b912e918782cc4",
+        "candidateWitnessId": "c23d0f37b6943c17316531a38f41e9baa6d408fe8bb82ac9fde229aba3113e41",
+        "semanticExecutableId": "00728cc1979e67a2a3a6e3578fc1ca44ecb39b0f63ee415d947534ec4452f311",
+        "shaderIdentity": "CAB-96406d55a6ee7e659277ec3f9671df13:5408654229050402091",
+        "keywords": [
+          "_USESHADOWLAYERG_ON",
+          "_USESHADOWLAYERR_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Hologram_Shadow",
+          "strategy": "shadowParallaxHologram",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "2c378a737b197b514a16e029e5ee7ea8d327e86912b305495b49e3b52523f7d8",
+        "candidateWitnessId": "d6ac9d1cdb3ad7fdf6c485d868d7bb0e937be8774385d701d87d553ec0d1d509",
+        "semanticExecutableId": "9d3403adc1adb31cd8882351e171646b8704baae3d87da7ed8edcb797c49933f",
+        "shaderIdentity": "CAB-a9ff84e8c58ed394bfc86fbba120d22a:-1402989987002036257",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Hologram_Tuning",
+          "strategy": "holo",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "bf76a81655b9ff3dd32548cf62d529426eb40486470b291799c191ccccb60659",
+        "candidateWitnessId": "dc76ddb5db3d23539f7a84d69d2afd557bc1ca04f99530b0d274e472977b82aa",
+        "semanticExecutableId": "6aa166a1160232cb770896a18f27412d2649433718ef2b9138b590127ec8c500",
+        "shaderIdentity": "CAB-91ceb3cd689822907b4a21a281ca42ff:-3305916838435510193",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Immersive",
+          "strategy": "immersiveParallax",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6",
+        "candidateWitnessId": "13354238319705038515caab8f3798abbfe71ba27c6d1dda65ec174ed8812b9d",
+        "semanticExecutableId": "9ae77f5ad05c3e1231b58c3775347f84b44c0cb0818adb7125d9db4119494d15",
+        "shaderIdentity": "CAB-6e711b3844abcee2209d2134bf847067:-7556975018971663688",
+        "keywords": [
+          "_USEMAGNETIC_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Marble",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "46d3045fc119dd373c8a35dad147987c6e5c91816a44807ede65ad025011dcc2",
+        "candidateWitnessId": "0beddb479416af4b577bea5b2f002ce5d3f030606e4f99b45559fc7287b42b3b",
+        "semanticExecutableId": "b0ad1457820d06d4a13ab9860df60c8aa53a97937c5f6460502f370006598b77",
+        "shaderIdentity": "CAB-6e711b3844abcee2209d2134bf847067:-7556975018971663688",
+        "keywords": [
+          "_USEOUTSIDERELAX_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Marble",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "82d74793623781f7ff66286bbd165df6b62567ccb9dd5bdd3594133d19e29931",
+        "candidateWitnessId": "6fb618e8f04e0c4347ac20782088b8786b68d1b565582cd977c05792e8d26c3f",
+        "semanticExecutableId": "68b4f0374d4fbd908aac4f338fb030b60b9cd88c167e9d44507d50743bb7ee75",
+        "shaderIdentity": "CAB-448e21eabc30a251873b2458fa3dc612:6962791336545764085",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_MatCap_Lighting",
+          "strategy": "matCapLighting",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "bd90afa8536d13c9107d8badccf43919ab387c61b52833e06a5654b1859816c2",
+        "candidateWitnessId": "eb124f1a132ad66a7842eb1f87d5f83594ce130cb602a2d1ef1d912eebc4450d",
+        "semanticExecutableId": "32d6dc9bcf139fc87760b427bb524986836bfe059173cdc7e870f050cdb9126c",
+        "shaderIdentity": "CAB-784d78f38098669325b93721a1499982:3799478132957095255",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_MetalByTilt",
+          "strategy": "metalByTilt",
+          "blend": "multiply",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "544f051f64a5292f13cef7ef205e59652f7884369fe33ea752e2bd6999ea56d0",
+        "candidateWitnessId": "a75619c6701832240e109b72ce57f3a3cf73c9efb710ac33b5cd386a08d189a2",
+        "semanticExecutableId": "c651ff2b829a2b25bf504d4db07470686e2ade5e5844da10805329e8c2090983",
+        "shaderIdentity": "CAB-d1582aca8a9778d6408528fab4637fc4:-3392042766667377368",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Metal",
+          "strategy": "metal",
+          "blend": "multiply",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "b29c4ba1a2496615aacd7565709c049b2deb3ec072529c40484baa5958ae655b",
+        "candidateWitnessId": "e578dbb6557389709b3000ce3163fab49d20ec0c4c744d95ca66047e942c487a",
+        "semanticExecutableId": "eea9bbf9bda85788f8dca7852b40132e921b5303ad6f827eee179be558ff0069",
+        "shaderIdentity": "CAB-c39994707095a808526076cfa10aa332:4085261867850344489",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_MRR",
+          "strategy": "megaParallaxMrr",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "d1f5735783c69fe7649331c186b7a648ec31301d22a3d22ab114c52dc95b2564",
+        "candidateWitnessId": "74c7535cdb853b56d91c7d18b5277230914ce3ea0753a1a706c8da396f76b0a3",
+        "semanticExecutableId": "32dfa05ae21b0e3ccad22ae21a58fd5d46af1cc684fffc5758f624550d05513e",
+        "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+        "keywords": [],
+        "selectionMode": "native-best-match",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax",
+          "strategy": "depthParallax",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "card-parallax",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "dd793ca27284828846f39a5334fffb3e18a6b116e8c90dc2b04a6cabeea4aa82",
+        "candidateWitnessId": "dc820111e68a5cbb6802626b2621ee44c7f4e31add2ebc995cf7d03a14869b77",
+        "semanticExecutableId": "7f823d7418a7192ac7abbe2a6a9879a713c66cd319d7ecfccc794d90cb57b0e9",
+        "shaderIdentity": "CAB-a691829b394c536bab15c37d10d9b6f3:-2803090270879666180",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_NormalOnAdditive",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f972087746bf2b351267b5816d259f913b2fb9fa050ad41e11979f4cdcbea51e",
+        "candidateWitnessId": "c4ca3c26badcf8796d93daec339dd36021ae70adad33bf53a21c088df9768349",
+        "semanticExecutableId": "b7c8fdd383fca1a99f2f3e3cab6b70eeae5db0135bdc4f5f1c30b3419557b97b",
+        "shaderIdentity": "CAB-6b3ca9b9ddcd8252674ceb0d227f1eb1:183461332386314860",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Strata",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "b64f842cf9933438d2646de74af54cf71a7f49c6c180f66ed733c006f8b523b5",
+        "candidateWitnessId": "2d21404dc38f3a8cc9fba45a867d2aa46636187000c9377cbe662728775168b3",
+        "semanticExecutableId": "94a3e6f0701ad2e2e4797cd5e2b8f78f1400fff2f3a6ef8435c75a724c9470e4",
+        "shaderIdentity": "CAB-feca102e2ab42d700bc7d72a39330454:8147289495056524436",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Transparent_Translate",
+          "strategy": "megaParallaxTranslate",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "4416645d0bbeb3d037161525bdcf9aa7ed9e6b39e284c6ed446f09184b38532f",
+        "candidateWitnessId": "f47a5ad699a5afd82c35500ea9e3a4fc76ac9dc77bc32174e146b89c2b77df9f",
+        "semanticExecutableId": "9f54ddbb1bc8cbad72f246b5abff169f67d0d4c57a5b84385f9cadc91f4da4af",
+        "shaderIdentity": "CAB-19a54f819b06a903fd5a6a6ec2fe1c2b:9208903488593729229",
+        "keywords": [
+          "_UVASPECTRATIO_SQUARE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax",
+          "strategy": "depthParallax",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "card-parallax",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+        "candidateWitnessId": "a2db62d36bfb449cc9bc34103e8c83b3708ba1083fa67c142d16ca0441bd2d41",
+        "semanticExecutableId": "f3ae53e17e727b7f7652590f46739d30e6cea7d6191f36f8eac7076864fe62ad",
+        "shaderIdentity": "CAB-9a0ceb86d06dab6e91ed10f319f1b6d4:3691811751576115235",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Prism",
+          "strategy": "prism",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "a7b9546f24dfd7b94b30ec4d66d4cb13b525167f1406d115d332607358b225c4",
+        "candidateWitnessId": "75753e6802157c99ec5d1007560d7076e2a16f78d5f91be4ff5c2e7b601258db",
+        "semanticExecutableId": "670254ff0615c94aa7f6128f8d4294e3ff572ed9c1c43e2938b3ea213cfa4da5",
+        "shaderIdentity": "CAB-18bf41415dd04ee226be0ba269c2f073:1003451295955649434",
+        "keywords": [
+          "_USE_ADDITIONAL_DYNAMICUI_AS_AREAA",
+          "_USE_OVER_EXPOSURE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_RGB_Hologram",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "28671d68a67d20d1cb8a2076f4a7d81cb3733a2f56b0b83d3c760ada31aa2848",
+        "candidateWitnessId": "baf25908a2a59aa02bd5f3b9ab7e55e3b6bcd2483f0ae1cfb36d26ece43a16b2",
+        "semanticExecutableId": "6601fff66a741d88748b55ec72000a09fa00e115130e3914f17e210779eeec17",
+        "shaderIdentity": "CAB-18bf41415dd04ee226be0ba269c2f073:1003451295955649434",
+        "keywords": [
+          "_BASECOLOR_OUTSIDE_AREA",
+          "_B_USE_SHADER_STRIPE",
+          "_USE_OVER_EXPOSURE",
+          "_USE_SHADER_STRIPE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_RGB_Hologram",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "357810ef9673d1603bbe967c0b9fd4c43ac3a3da07486a6e0122b9e0ada5735b",
+        "candidateWitnessId": "f811fbdff9ccb97e0ed7559d94296e4093ee928d8ee9008f8eb5f80d188b77be",
+        "semanticExecutableId": "e77f4517523f7e181e6627b29639a0fab50d1f4e82887ed87699c4c6bbdec74d",
+        "shaderIdentity": "CAB-18bf41415dd04ee226be0ba269c2f073:1003451295955649434",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_RGB_Hologram",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "e0627f293de1e7b45c711517b097677c54d856bd973eb457902193f502db2e9c",
+        "candidateWitnessId": "510d608e3f5231070ed7b2f1988532f7a3a369c1207d0aeb28ba80c7745b6b60",
+        "semanticExecutableId": "cd4d9bc1daf7f8f18fa80d74db1ce1d6fad69c8333a562561c99629b23c509cf",
+        "shaderIdentity": "CAB-d8439f101228f0c26d4c8e328829118d:-2001110329425035683",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Scaling_Kira",
+          "strategy": "scalingKira",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "fa259d9df52a3143db1333fa064f07819aeff7f7b4c034bfeb31341a96e1bc4a",
+        "candidateWitnessId": "f668811dcdd5dbede09ba683fa0dcce19ccdefcc7180144f2d79a9dde52e373c",
+        "semanticExecutableId": "b3b33ad18b3c0a67134cc5ce67f9779d8d2d658827790e57cf6f7f9ad1c15a44",
+        "shaderIdentity": "CAB-2d26115c8d7b0e19ac650f71bbdc7525:-7286864420773527812",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBoxUI_Transparent_Rainbow",
+          "strategy": "sarMegaRainbow",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "56dd84638d23b5cb87fd78032a2ad4d75dc22005a541a2baa1885265fb4700d9",
+        "candidateWitnessId": "39a8a92c0f16df689b565940632f144d5c9366ce57baf617c07ceb0d9fa6b418",
+        "semanticExecutableId": "71d15f25485eb4f6a638167b19009a35d4531fb69bd61817966a984241dacb9c",
+        "shaderIdentity": "CAB-fca3c4e95042d2cac650b541946e5cb6:1218441454634594357",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBoxUI_Transparent_Flash",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "candidateWitnessId": "57263e503607d12bcef0b5134fcb84c3a4e89a25c8a5994baf5da09a7155899c",
+        "semanticExecutableId": "bd48d01497d2d296c68c40a40361dc9b363376460ba72626df9770f48c0768ea",
+        "shaderIdentity": "CAB-7c5dedb63d40a00ec1730072ec235e03:-3547658824311513007",
+        "keywords": [],
+        "selectionMode": "ordered-multipass-structure",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Circular_Moving_Kira",
+          "strategy": "circularMovingKira",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "19f10144fca7186211d868c3fa5ebe1bd185fc5ebb06f6b42c2dc0658b159d82",
+        "candidateWitnessId": "5ee5767765fd56052cc3a68092d589e907cab6b9672122dc9f7990590e4c3826",
+        "semanticExecutableId": "4ea0c71982955e7a8a2c49a8caf5df641e9d9940c07df23cf20b1544f088047c",
+        "shaderIdentity": "CAB-7c5dedb63d40a00ec1730072ec235e03:-3547658824311513007",
+        "keywords": [],
+        "selectionMode": "ordered-multipass-structure",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 1,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Circular_Moving_Kira",
+          "strategy": "circularMovingKira",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "candidateWitnessId": "58ddb5f5a32f7e4cac70af3cd89aa1aaa592a8e222a03be7ca3d1591ada9f9c0",
+        "semanticExecutableId": "3d18e26c41164d8fb30ccaf52f9029ab376a8212867205ddcfdea2c4fde7d5e1",
+        "shaderIdentity": "CAB-b91ee530ef520e839ef1482231693d1d:3418664917731838456",
+        "keywords": [],
+        "selectionMode": "ordered-multipass-structure",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Circular_Trail_Kira",
+          "strategy": "circularTrailKira",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+        "candidateWitnessId": "41c433f707550fb175d6d84e5fcd6cf66ad58d7dfa7cb727f5623eb04e9205f7",
+        "semanticExecutableId": "0b0286de65f88f43761cc6fa6810c243996c88b6c88d9872c3e3b798cd4e2860",
+        "shaderIdentity": "CAB-b91ee530ef520e839ef1482231693d1d:3418664917731838456",
+        "keywords": [],
+        "selectionMode": "ordered-multipass-structure",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 1,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Circular_Trail_Kira",
+          "strategy": "circularTrailKira",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "4c74f7da95caf28e8e41316669ad358f3123d30184d9f5180265cc402258ed3f",
+        "candidateWitnessId": "b07f89174c8b04ccdc3779586971bd39884c7f681c9d4f2b0ddaa3133836028a",
+        "semanticExecutableId": "b6743d52855403117459f8d4147bce0f7353dcff6c947ea3e116324f8f743261",
+        "shaderIdentity": "CAB-83aea9720cd3468183e668285215b9f1:-5762260332842654373",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Text_Alpha",
+          "strategy": "dynamicTextAlpha",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "32560a48adec5d08001f64750c1751d6e1fe95b84346c4907463cbaa2f1e2b1a",
+        "candidateWitnessId": "07308a831cd269183292df8cf58a72eef32536821d7708ef471bb585d5fe4cfb",
+        "semanticExecutableId": "d36fe839904db36ee3981532e096254bcb12da61ab9ca01d813b21affbed981a",
+        "shaderIdentity": "CAB-8a93e31cb5e318823fe7c18ec9b8c0f9:2245828404536736759",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Text",
+          "strategy": "dynamicText",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "b7f1037bc99fabb5b5542028d377a1c70692bc63f026e754e33a914727049abb",
+        "candidateWitnessId": "44c61ec705cfab11f8706ebecc8e3b2a8bf83a32bf3649c97d31107b5f237cb6",
+        "semanticExecutableId": "330ca5df07ce77b2003c9dc6d89901ffcc2eff1650f09a23ca0f89ba9dfcd478",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF1",
+          "_UseGradationMap",
+          "_UseViewMask"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "1964481cf978f6d764a8ae5537452c1e9f073c780dfcc712c7273b8e89d5d039",
+        "candidateWitnessId": "f761d9a4a37683acf07b2a7ad3938f12cb0b9feac49cf1881b5ba0ad7999ff3d",
+        "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF1"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "be2fa01af3260bcb40dd21c0a1d3f58df18f764c5de649bbc4213c828565580d",
+        "candidateWitnessId": "8ebbea72e4f15b43f100abac110d1570213be44c29706389280d327d8d9091b7",
+        "semanticExecutableId": "f0efdd97dcf48158408f47118f8b24a1ec6b81f518456cf88ecec40276ae7bb0",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF2",
+          "_UseGradationMap",
+          "_UseViewMask"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "223dc2f97532cc74be6effcc35c7cc8cbb88e974b25206a26e9a730a4f7ebddb",
+        "candidateWitnessId": "7d7886ba1d8e288262cbf953f8ba6212dead481bd68e7bc48dfc50b7db2d056f",
+        "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF2"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "43d3e5f021a5caec0cdbeddecd49965ee155874fb2e5bf1e9c463480e808df90",
+        "candidateWitnessId": "3dbd5d400239f3449eaf52b67da091fbff558ee4b85a7411a1a4ec80c8592ef3",
+        "semanticExecutableId": "a9ac0b87de64594e3fa14e99572b2a1ce943778f6a9a0e7b81ebdc04b94b3582",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF3",
+          "_UseGradationMap"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "418f6be89856a2598af04e8a57b44b7d6221f91b6423ba8fef2b3537f4fc863c",
+        "candidateWitnessId": "75f2d1d70c638ecd63a148aac0a72b28bacf93a1b65de5e870238b943ed91990",
+        "semanticExecutableId": "79888bdd4ec13cfb28cf08680eae4afe765ef9de1cdab38773d742adf7ae249f",
+        "shaderIdentity": "CAB-e7fafa662a615f78f64375446fe9462e:623047812646010241",
+        "keywords": [
+          "_LAYER_EFF3"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect",
+          "strategy": "effect",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": true,
+          "cull": 0,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "544caf61fc34579c64a93d58a9aa3419cb919a178d12771de701042e3de2bd02",
+        "candidateWitnessId": "f2fd1d27774133c221aa11f70dae2308c7d5220cbce65d7e24d9a25c2abd3aa8",
+        "semanticExecutableId": "838e84c0d67ab0467d53d3ff80db871c0707e0e87c5a54b114c418c54ffead5f",
+        "shaderIdentity": "CAB-3bcca3ad31dec4415b63ba1eef387789:-8142363382816375908",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect_Emit",
+          "strategy": "megaEffectEmit",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "e4b31c1fda7d65c893e2423ef5b6ec8f4788a22a0ffb9eb4674d86f82b017fcd",
+        "candidateWitnessId": "08987aae2287af4af30d990ac463df890d51551c777a5e17acee38cda88563b7",
+        "semanticExecutableId": "f08e919b26cdec02a0a346fe77b01c5207d9fb8b6b9ae9868bef4572fff5a834",
+        "shaderIdentity": "CAB-4031f0896c28261a80cfee2a9c390d69:-2074417177342131176",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Effect_Emit_With_Hologram_Shadow",
+          "strategy": "exactRuntime",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "8d7280508a05ee3104722b0a82d72ec265aed22d540b17feacbadedaf1d6030e",
+        "candidateWitnessId": "f04eee1c0e3c33fdf7a2d128194ae20ddc00a5eb93876c66b3de0a55ba55a316",
+        "semanticExecutableId": "664d4af417af4820d94c3e7799119baf8aea0c8b9fe3d9f96ac84cf1fc519512",
+        "shaderIdentity": "CAB-4ed678d9fc642c0b2d467873a1f48df3:-8800920728771236283",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-2Layer-UR",
+          "strategy": "frame2LayerUR",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false,
+            "fakeSpecIntensityDefault": 1
+          }
+        }
+      },
+      {
+        "selectorId": "a9ecd9600fcbad72d48f2a364c224375e92811abd07d0d0b7e11c8e702dee08f",
+        "candidateWitnessId": "d8fcc71e1968349be2e7b4431e9362c77d59b657d54015e4497f9182acd3a557",
+        "semanticExecutableId": "8c0263bc7ba1e75e0466eaa0e518b61ee4476638f8f5969f8c11817ec382aa38",
+        "shaderIdentity": "CAB-b69d132787e6b446783c630e4f5170ed:-324863385430330581",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-2Layer",
+          "strategy": "exactRuntime",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "3dddf11a1dea4aad910b128a44787a6a4e5a0300c5341144d9af74b9b21421a6",
+        "candidateWitnessId": "1e1d58e03fc306568efea04b18265782b7d53280e78291d532f5fef11766b1a9",
+        "semanticExecutableId": "5ef8738185f2c3f61a4c3399d9b5a5a2a0ca0177b55ee03b37fb0f01781e9c8a",
+        "shaderIdentity": "CAB-fecc9924d61e6a7e0587b79df0a658d3:-7033804723186748221",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-ImmersiveUI",
+          "strategy": "immersiveFrame",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "57a743aa6b935ec3433ceeb68223e1f64e06b20c1633c1289e6ccc3311a3f41c",
+        "candidateWitnessId": "02601f6c0b76c782d762a81ee2722f710f3557d9903100107ea6ba19dae4aa6b",
+        "semanticExecutableId": "841596580294f8affd5ac3061ba0bc1b178fea2e290ee90fd7154891603ab529",
+        "shaderIdentity": "CAB-56a0afc0b0b625f348b86e3a72f4caeb:7535980877961637181",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-Immersive",
+          "strategy": "immersiveFrame",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "bcb60b22bef8badefd443c779615ba8418fbf9be6d959747838cb91b1f825ec5",
+        "candidateWitnessId": "855cdb803c9ceff3c5dbffacfe3f39b75029a21d677173236c19f67ca95d016a",
+        "semanticExecutableId": "883311aa854ae594df991ec6ec39143ad2638f3912c04d95be0a71019e3ebdf7",
+        "shaderIdentity": "CAB-404a78dcd0cf6ab10018bb32bf8242a6:904886703495107247",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo",
+          "strategy": "exactRuntime",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "d38d3780d65a668f8a218d1849e102210e239b4043261fa64914f8561218fe2b",
+        "candidateWitnessId": "318901e7b6b9029c84b5670c63a7dfa8593f965aca419bc14fd910796675e1d9",
+        "semanticExecutableId": "705aa702076512c5b6394f31695a6c3f6e626edc22ada0322a822cc35bfc303b",
+        "shaderIdentity": "CAB-fd7bafa98062cb0880e5103602caafcf:-8326529614411862333",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-Transition",
+          "strategy": "exactRuntime",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "bafdb2df6a2b5f7ba30d7940ca995a21e61b7c84d85f24645a835d1ce4d36292",
+        "candidateWitnessId": "f061c45e88441195b5cb636859f255b91486436f806cd55fc182f470648e13dd",
+        "semanticExecutableId": "d401c03f8919f0f3821ce8e7fbb9c7bf370b505977dcb4069a34f9632c3b1cd9",
+        "shaderIdentity": "CAB-9b1fddc69a06018d6cd2d88f6347b41d:1941244596869971441",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-Tuning",
+          "strategy": "frameHoloClassic",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "e462cdf6c44efae612e966adf8b062a6a158d60133a8910714d5529c9e4920b6",
+        "candidateWitnessId": "7ab49aa57ad486c6845e910cdece188eb4cd4cc82879ae65e9b912f562e278c1",
+        "semanticExecutableId": "a1914de7b178030af7bd1bc1234f6582bae0bfddb8097ecc1e2be5745996187f",
+        "shaderIdentity": "CAB-62d0fe26e15b81d6acb219fc4e4d8a94:-1788317573349155880",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-UR-New",
+          "strategy": "frameHoloUR",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false,
+            "fakeSpecEnabledDefault": 0
+          }
+        }
+      },
+      {
+        "selectorId": "6b3fb2de16a0f9a8e715471cff73681e5d8e7cb61e1530a5395e004d1eb82b3a",
+        "candidateWitnessId": "d0804441908c2846b68f6ede868e4ae18e715808d925878bc5acdc4a94cc4bb7",
+        "semanticExecutableId": "c34b451a18ca16dc51298132d9ce93ec8f4042340e66db6fccc350d2b1a6fbf9",
+        "shaderIdentity": "CAB-90e9763c1fdedfa670d826c2795b4305:5248054878303980540",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame-Holo-With-Shadow",
+          "strategy": "exactRuntime",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "f50f3d9fd9854ef19bc1de211901dd2f3306ee29a45045cdd6d10888c5f302e2",
+        "candidateWitnessId": "bcdd7e6918cfa5f2734bc728e17d7ee748c326d35ccda96bfdd6dd52a2b05049",
+        "semanticExecutableId": "14833bbe6268ff3484687b0c760bc476ceef6f0a8df6f488bef33ad2a345c354",
+        "shaderIdentity": "CAB-8a7c2ce4bb6aacc8ea3c27998a6709d1:1611494417526887254",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Frame",
+          "strategy": "textured",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "4a38649c034968a639962150c1ef03d19f9fd4571ef5b496c5facec8076ed6b4",
+        "candidateWitnessId": "d98b5f95ce632832d413ce274a76375259253995c575e91dc315c43c55ce49c6",
+        "semanticExecutableId": "5398f6649083535283e7c2eaebf6e4ae35feb55f33a4ddde44359bce35643f15",
+        "shaderIdentity": "CAB-100635daf899a0d0b5cd9053d315b351:-7420289119115703173",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_UR_Glitter_FlowMaps",
+          "strategy": "glitter",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "599cd58d4e4c89a95a63869807d919fdf9a574b31a3b5447080d351e056d9f4c",
+        "candidateWitnessId": "13cd8a2030afc8eced7ca31c097c1c2491e9c512c133a0530e5e6b82ff95fab2",
+        "semanticExecutableId": "a82739ea5cffe37919d0f925ece781ce26846dea40a7ecac541df8974fdf7234",
+        "shaderIdentity": "CAB-357d390f82e81058a0bb8f4f50dd2880:-336364313305745452",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Hologram-FlipOutline",
+          "strategy": "megaFlipOutline",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "f953cc26992425f821a93cc76e31fe72136496d658a2968d988d776c922794b7",
+        "candidateWitnessId": "241359e3f35c806e8a713c5d7cf19553b9c38153a822f61c5fcc0c745dbea074",
+        "semanticExecutableId": "04a417b5867f192468ad2793148c9063e4e3654895d05478fb50f556820067f4",
+        "shaderIdentity": "CAB-d2eee03d934a8dca5a2dfd1194c0d206:-4357900850690044614",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "IllustStencil",
+          "strategy": "illustStencil",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "dab7a400138dbfa74ef7b3bb8d280be4bb7fe03c2fd4aec8fdd3159eb2f030ee",
+        "candidateWitnessId": "c4deae40c665b8824a37ce7d7706815916e23908efb384f260a809fa83f6e6f3",
+        "semanticExecutableId": "a4c68b7bfc561e34b0ed56e91d9899ca26755655ca307e5d5791e8785fe8df0c",
+        "shaderIdentity": "CAB-42293d6a7a7fce02db50cb055655fd03:-4162825296486987532",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "InnerStencil",
+          "strategy": "innerStencil",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "23fba2d0f26091a424cc0b5b83a45dcf03068d57a8abf2d01ac9cd2858406637",
+        "candidateWitnessId": "7a9a5e243a280814db54afca957490783e9ca0c67d57d2fc30f455ca0637ae28",
+        "semanticExecutableId": "5a590d1f1071760288b7f7daf77b7a20c80bb6c38203df8fad52aff25ea025d6",
+        "shaderIdentity": "CAB-596cc0831b33693ae475c2f8be0b7768:-7670412818071714871",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque",
+          "strategy": "exactRuntime",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "0d37d2823669f71fbdeed12796e1629e70481743d1e4095d2494e8319e80e0dd",
+        "candidateWitnessId": "50f23d9b99f498b97d00909c44a3a1952e1118b8caf2d95b9a8516c63c65acaa",
+        "semanticExecutableId": "0aa5e7a8fb8fd4c709972dbe49c60f9f0270e1961cee98a914544dba42586af2",
+        "shaderIdentity": "CAB-0a0242cb4f635ce4a2ab08da1fa826d4:6307084205635357077",
+        "keywords": [
+          "_USERAINBOW_ON",
+          "_USESHADOWLAYERR_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque-Hologram_Shadow",
+          "strategy": "shadowOpaqueHologram",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+        "candidateWitnessId": "924c285309887b39f800a18d3dae6ec03adff28ffb6b590b3d721ae7fe1406d6",
+        "semanticExecutableId": "89bc7f6cb3640a140b456bfc1803dc51b4894e7085fc09b34becdf868673ba04",
+        "shaderIdentity": "CAB-0a0242cb4f635ce4a2ab08da1fa826d4:6307084205635357077",
+        "keywords": [
+          "_USESHADOWLAYERR_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque-Hologram_Shadow",
+          "strategy": "shadowOpaqueHologram",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "871457e8f364eeed14f609dc84a84b493b61ea71128a66b8849c721e7ae5e6d4",
+        "candidateWitnessId": "4d5b63dab94cbd1972f9bacd6365612445244d5f122ec8cbb3bc1f5c4b5e9fef",
+        "semanticExecutableId": "5b254504a832d7b33e401aa417c12f17efcac4f1ce395362e74a139fab2747e4",
+        "shaderIdentity": "CAB-6a38ada553ef67a03d56b1ac5e7136e4:-6803783916199376897",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque_Hologram_Tuning",
+          "strategy": "rarity",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "679871d58b95523eaa3f25c7d6740ba099755a16a8e0fbfb5b7271cb592b7d64",
+        "candidateWitnessId": "9c87599aa5cfd41057c34d24b948c3cb90905ef8dee996419363dc6c4e4e6565",
+        "semanticExecutableId": "71e4b60ebbf210a721c7972bf5a6c8944d077de8cb9f02584edf2271d2ac6ca2",
+        "shaderIdentity": "CAB-8e1aefff56e426989d247ccc004f8b74:-7649023482242642590",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque-Hologram_Tuning",
+          "strategy": "sbHoloTrainer",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "alphaTest": 0.5,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+        "candidateWitnessId": "56ce2e59eaa541313880a1573ec30c192037c39411adc692aa743e56838a5d42",
+        "semanticExecutableId": "2809384b7ac756b8a961dad3995ac4722b53245e500a9ce634082725ccb77205",
+        "shaderIdentity": "CAB-182e9ce244efe632677862310eb737a4:3059412248834019778",
+        "keywords": [
+          "_DARKNESSENABLED_ON",
+          "_FAKESPECULARENABLED_ON",
+          "_HOLOGRAM2ENABLED_ON",
+          "_REFLECTIONENABLED_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Opaque-UR-Oklab",
+          "strategy": "sbHoloUr",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "alphaTest": 0.5,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true,
+            "fakeSpecEnabledDefault": 0
+          }
+        }
+      },
+      {
+        "selectorId": "8baacfbd517a97322703ddfdab20a15dae73453c4baa153385b2695a4ce625a6",
+        "candidateWitnessId": "abcd3f173af8af498056f14773c624acbaa328edbdc5529cc58e05caeb688e45",
+        "semanticExecutableId": "5492e1e4a922cee2e1161ef4ad8001582a7e0c9fa40d8497619065e4aa1ea228",
+        "shaderIdentity": "CAB-a60950da1ef13de49f88e8a1bfed565a:-2646869007466365342",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "OuterStencil",
+          "strategy": "outerStencil",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "7dd368f662278328017cedf6f7dd2845e729a52df5f71468d42646a045bb6d4a",
+        "candidateWitnessId": "bbec92ec0d4596560b6385f569c173596185a6454f43644ca4663993e350b095",
+        "semanticExecutableId": "4616467cffa9b5eb5b3f363f0a7230509d766459d79ddca14deb1c58ceff0e1e",
+        "shaderIdentity": "CAB-4285471b7bd990cfd933a8e2d262bc38:-1305398088173066062",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_UR",
+          "strategy": "parallaxUR",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+        "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+        "semanticExecutableId": "cce8935a3a49ca58526350b8c85a61ccf90010450fd14e96ed68fe73bf3ffd4c",
+        "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBox_Effect_Flow",
+          "strategy": "megaShadowboxEffectFlow",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "bf3da9771e1a262a5cae4c0c41f489b8901d0c5f9cea365ed1821cadcd1a53a6",
+        "candidateWitnessId": "4299da48ec9c7f6bbf07d605c65c5aef7e8da8191427a2ce8059459cb0b48399",
+        "semanticExecutableId": "502945fa85755d96e48b76090494746e00852e8936523227d84c90733c395cbb",
+        "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
+        "keywords": [
+          "_USE_COL4",
+          "_USE_OLD_NOISE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBox_Effect_Flow",
+          "strategy": "megaShadowboxEffectFlow",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "89a632ae626217ecdd90d278467a40b0f4b1a9bde1238e8231efa9ce9c29f1c2",
+        "candidateWitnessId": "e8abb8bb2cc8f902906adb2f9547ac7b3eefeb1bcd50aa8f5087f2a2c8ffa513",
+        "semanticExecutableId": "765d248a0a5cc866b4e71981340eedd187b26f1d9c717bd6719fe669101076af",
+        "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
+        "keywords": [
+          "_USE_COL4"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBox_Effect_Flow",
+          "strategy": "megaShadowboxEffectFlow",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "9ae669c08046817c74b735b69c311d42ceb754cf25b9df26581f090f069697d8",
+        "candidateWitnessId": "9bebcd6df0aa0b968b89814a5c4fe481759d726ec30dbb86609c666009e1fba7",
+        "semanticExecutableId": "74f30dba711d67d5a5b1fe8325baee1f45cb8e4bc06670b0b26176a42668bf81",
+        "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
+        "keywords": [
+          "_USE_OLD_NOISE"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_ShadowBox_Effect_Flow",
+          "strategy": "megaShadowboxEffectFlow",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "82528f3915b2b361479e0df196542fbf1ee40311c5b45fd2651300216150dd9c",
+        "candidateWitnessId": "7e163d22f08dc70773f66920293b530c37d7f5af1136edf3d24887e75fcae3c1",
+        "semanticExecutableId": "dfc77dc0e742fdfbdfda5e84e1b4b5de5ac03b0f09fe7f3565a8ee0d63f2bf94",
+        "shaderIdentity": "CAB-a0908b9b0270c1f22f25cb97c702e2fe:4414619660851596902",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Flash",
+          "strategy": "megaShadowFlash",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "47c914ef7efdabdb9ee66f2512db54ba7ce752cb00d43456e15a8c4a6a5558df",
+        "candidateWitnessId": "b4ad73ce82376afafa3f7c8a4834bf540e5fcbb03cb5856c05b0a353d995515b",
+        "semanticExecutableId": "df97b2a2b354bac8bc59fc8364120f4a0efbc1fd01d7e78df6a10bc87d8286e9",
+        "shaderIdentity": "CAB-9bafea9576b11bf9460f39298990d24f:-1926954714643589246",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-Opaque",
+          "strategy": "frameOutline",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "55ec8b288993628c3cf7f6756f92c49b053532bad778d3f40a8e4c62f054131d",
+        "candidateWitnessId": "aa63b45cf67b563e5593d688fe45a2a0ceaa816c2a13b58b5f7f4b069a33c0eb",
+        "semanticExecutableId": "549bd02435a783dd0c5fe7caa5f0dcef9f27cb9a33829972d8eae9d2a4b61ff5",
+        "shaderIdentity": "CAB-74ba0c16769e2b6097c7a33b39bcc4b4:-3906370691938728043",
+        "keywords": [
+          "_USEHOLOALPHABLEND_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-Opaque-Hologram_Tuning",
+          "strategy": "sbHoloSimple",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "alphaTest": 0.5,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "8d4b8f484cb64d66e456e463875ca1fd2e1c9680f81e9cd1be4a2d5b5ddf49b6",
+        "candidateWitnessId": "e710254f073915bac36480d928a8cdb7248c9874e4781921436ab58433869fe7",
+        "semanticExecutableId": "c5ff1b67020c45baa37d721b62a8074195a6596da2b2140917d1f77e053a4995",
+        "shaderIdentity": "CAB-74ba0c16769e2b6097c7a33b39bcc4b4:-3906370691938728043",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-Opaque-Hologram_Tuning",
+          "strategy": "sbHoloSimple",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "alphaTest": 0.5,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "ba9f1662214113f55fc89c0657dcb826bc418dff969484de83ed08d9e0b65a13",
+        "candidateWitnessId": "3c7bf027e82dd6ca62eaee84642d90713a17f0e28a105ccf3ba65dfa3eebe429",
+        "semanticExecutableId": "882c80e6a26199a40ed2311f79ae3820d776424748a958521ae57bd3d85ce09a",
+        "shaderIdentity": "CAB-b3f4ea5059ec42ce1ecf4c58effc0d97:8188686027359771149",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-Opaque",
+          "strategy": "frameOutline",
+          "blend": "opaque",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "019ab096cef0a08f6e6736d6d6894ab88493fe8cbbe349dee3fd850f1f8b479d",
+        "candidateWitnessId": "1cd97cd5a35e5f321f3469d6a130766f65f257db33b77e26e1e68131f326b327",
+        "semanticExecutableId": "6c95f78863fb23a1f58ed685b719be1625cc8801ca87e4da7d72b8bbea0973bc",
+        "shaderIdentity": "CAB-02a141675d6b3d87702eeee6ccb0a9ba:4329679624396401671",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-PreMultiply-Hologram",
+          "strategy": "simplePremultiplyHologram",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "4d69b686fb131f9a98fd78a7a9954d02acece8221a1d6c859050903f5492ba5e",
+        "candidateWitnessId": "690f2f2e3dffda52a27b7c3bd153b100947149a7122a4d3256d94f4897258381",
+        "semanticExecutableId": "f792f223b03eab35b8822d5e3e0a5dc5d91402cd7b5cb2d25a3829b1a4f7f349",
+        "shaderIdentity": "CAB-7efdbcb7962b5d2093ce6dd2dad20d6e:1141155577802926370",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Simple-Transparent",
+          "strategy": "simpleTransparent",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": true,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "e4dd72dbfb23c06de8ea03b949f04c83899f83e5ca8026a64a2e5e61613cd53c",
+        "candidateWitnessId": "c12b649ea6ed8cfd33f06067dab790b7fe7c2a8b6d366a392b1cd07bb40d1a59",
+        "semanticExecutableId": "a3b86b4d621c6154a5d5f6540830d86e4f306ff6b4291300c71db3cbaeca32a1",
+        "shaderIdentity": "CAB-ff1f54b99c3cbd88ceab7164162bd41d:-2814824103247948085",
+        "keywords": [
+          "_USE_DYNAMIC_UI_AS_HOLO_MASK",
+          "_USE_DYNAMIC_UI_AS_METALLIC_MASK"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Transparent_HologramLayer",
+          "strategy": "sarHologramLayer",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "0fe1d8427061f16237a00867b4f4398f62a01d6ac39168111b70332cb1142bf2",
+        "candidateWitnessId": "e807f853961e6b671ea9d523f6b0b29b481a3bcf306eb7dff13876193a81e1e2",
+        "semanticExecutableId": "3b4ebcb0d36b1ccc9be66822a08f2ffad0fbbf02207780daf6b48311aae69813",
+        "shaderIdentity": "CAB-a19350d90bad9bf70f2b6d1349b69bc9:5721436585460533703",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Transparent_Hologram_Tuning",
+          "strategy": "exHolo",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "669e3b52608a44ebcab14e07f21f89ba0c9f1c0384d3b86568ca6a9b8cd8b0e1",
+        "candidateWitnessId": "0ec9c9a3f1124b5af74f330032d5399964b2120d10e4f35ec23afaac2e61ba31",
+        "semanticExecutableId": "8da29a812f0ae2bfbe1b5f7f34ad4937c81905269a678c3744723b49207fcad7",
+        "shaderIdentity": "CAB-e165f2516807e6c4371c9f6f3ac808ca:112061908518923161",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Transparent-Hologram",
+          "strategy": "shadowboxTransparentHologram",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true
+          }
+        }
+      },
+      {
+        "selectorId": "deaf77dab8730160b12bd2896a3aa41513666b24b517adb6a8f5ded95331d249",
+        "candidateWitnessId": "fc136482a2ab9f4c5285962f0ec02812c45d91ac0f7697da995fed3f6882078d",
+        "semanticExecutableId": "4c946fea7b46791470a79f5566209226bd24bf7efa386c5172bbf3248cd18f46",
+        "shaderIdentity": "CAB-0f8a4fefd290f3d02db2ccfd68a62da8:-3567610437707568368",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Transparent-UR-New",
+          "strategy": "exHoloUR",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false,
+            "fakeSpecIntensityDefault": 1
+          }
+        }
+      },
+      {
+        "selectorId": "035ec785cd0d567ca70f2333a19b4cee2f6b60c8ecd1bc7a32197ec81fe4c5b2",
+        "candidateWitnessId": "e6df7b870ad8ef1e3593613bfca11db3f078ae4f3cd3c6068fd5b763a093cf6e",
+        "semanticExecutableId": "68c2c9bbd907e154992444697fc43791b0e2a426885baf5d76c0d9123b55743a",
+        "shaderIdentity": "CAB-7455af9b753c3c52607e8038fad1952f:8703123513832916124",
+        "keywords": [
+          "_DARKNESSENABLED_ON",
+          "_FAKESPECULARENABLED_ON",
+          "_HOLOGRAM2ENABLED_ON",
+          "_REFLECTIONENABLED_ON"
+        ],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Transparent-UR-Oklab",
+          "strategy": "sbHoloUr",
+          "blend": "premult",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "shadowbox",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": true,
+            "fakeSpecEnabledDefault": 0
+          }
+        }
+      },
+      {
+        "selectorId": "66a7cb5f20f3617a45802722879bae65f2a18e2824167bb4e0a124a8d240bd9e",
+        "candidateWitnessId": "9da5b140cb5e1202f1a013afbefbc7ee72d6bc07b99c4e40b5efeb7e706b0715",
+        "semanticExecutableId": "ef3c0b1f75478b53441e5957084be4a88836a48f98e358408c3473a6244990e4",
+        "shaderIdentity": "CAB-6a491f85d3c37da07ba6f8a96cc9b961:-356332429511851309",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_Parallax_Hologram_UR_New",
+          "strategy": "urBgHolo",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false,
+            "fakeSpecEnabledDefault": 0
+          }
+        }
+      },
+      {
+        "selectorId": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62",
+        "candidateWitnessId": "5de5f555115c6f76574558abb1c48c51634be6223d621a24715ae086011bf800",
+        "semanticExecutableId": "4910af56d4b5ec9bb46ff1f7c31d5c9285b2eb5963be096025926c90a6dab90e",
+        "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_UR_LensFlare",
+          "strategy": "flare",
+          "blend": "add_a",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "none",
+            "builtinGeometry": "unity-quad",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false
+          }
+        }
+      },
+      {
+        "selectorId": "3e1cd33844c0b10485117226df1e7033f4bf70e71481389930adfd310807520f",
+        "candidateWitnessId": "538a93d9cd74817bd77e3c0310f03e2cb3a3755efd65463425a4d9c1b77ca351",
+        "semanticExecutableId": "06314dc3b2987d8ee472cdb7f66c77c133ca13820e90830d6ef5765778fb85dd",
+        "shaderIdentity": "CAB-e65669e15e6ed7528f7ba8b71a18cf11:1642448172641222702",
+        "keywords": [],
+        "selectionMode": "unique-exact-keywords",
+        "runtimeEngineVariantBoundary": false,
+        "subshader": 0,
+        "pass": 0,
+        "dispatch": {
+          "support": "implemented",
+          "shaderKey": "Card_UR_Plate",
+          "strategy": "plate",
+          "blend": "over",
+          "defer": false,
+          "materialBlend": false,
+          "materialCull": false,
+          "capabilities": {
+            "stencil": "read-stencil-ref",
+            "builtinGeometry": "none",
+            "diagnostic": "none",
+            "fixedShadowboxDepth": false,
+            "fakeSpecIntensityDefault": 1
+          }
+        }
+      }
+    ]
+  }
+}

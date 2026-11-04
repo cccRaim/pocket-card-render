@@ -91,6 +91,7 @@ const justifiedItems = unitItems("A B");
 assert.deepEqual(computeOfficialTmpJustificationOffsets(justifiedItems, 3, 13, 1), [0, 0, 10]);
 assert.deepEqual(computeOfficialTmpJustificationOffsets(justifiedItems, 3, 13, 0.4), [0, 6, 10]);
 assert.deepEqual(computeOfficialTmpJustificationOffsets(unitItems("AB"), 2, 12, 0.4), [0, 10]);
+assert.deepEqual(computeOfficialTmpJustificationOffsets(justifiedItems, 13, 3, 0.4), [0, -6, -10]);
 
 console.log("Official TMP font data/layout test OK");
 console.log(`  FontAssets=${index.fonts.size}; runtime glyph U+8449 -> ${leaf.glyph.glyphIndex}; inline Pokesymbol atlas exact`);

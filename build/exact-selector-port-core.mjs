@@ -12,6 +12,7 @@ import {
   officialSampleDigest,
 } from "./official-sample.mjs";
 import { atomicWriteFileSync } from "./atomic-publish.mjs";
+import { validateUnityDataStageSourceText } from "./unity-data-stage.mjs";
 
 const MODULE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH_PATTERN = /^[0-9a-f]{64}$/;
@@ -1634,6 +1635,11 @@ export async function generateExactSelectorPort(options) {
     const callbackContext = { ...bundle, officialVertex, officialFragment };
     const vertex = nonEmptyString(await adaptVertex(officialVertex, callbackContext), "adapted vertex source");
     const fragment = nonEmptyString(await adaptFragment(officialFragment, callbackContext), "adapted fragment source");
+    for (const [stage, source] of [["vertex", vertex], ["fragment", fragment]]) {
+      if (runtimeContract.backend_data_stages?.[stage]) {
+        validateUnityDataStageSourceText(source, runtimeContract.backend_data_stages[stage]);
+      }
+    }
     await validateWebGlStage(vertex, "vert", callbackContext);
     await validateWebGlStage(fragment, "frag", callbackContext);
 

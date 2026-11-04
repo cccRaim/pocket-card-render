@@ -16,7 +16,14 @@ import {
   validateBasisConversionSourceText,
   validateTextureCoordinateSourceText,
 } from "./webgl-adaptation-contract.mjs";
-import { unityTexEnvToThreeGltfSt } from "../public/render/texture-transform.js";
+import { textureTransformForBasis, unityTexEnvToThreeGltfSt } from "../public/render/texture-transform.js";
+
+test("Unity-space TexEnv keeps the serialized V offset for a flipped, tiled layer", () => {
+  const texture = { scale: { x: 2, y: -3 }, offset: { x: -0.25, y: 0.75 } };
+  assert.deepEqual(textureTransformForBasis("unity-texenv", texture), [2, -3, -0.25, 0.75]);
+  assert.deepEqual(unityTexEnvToThreeGltfSt(texture), [2, -3, -0.25, 3.25]);
+  assert.throws(() => textureTransformForBasis(undefined, texture), /unsupported texture-coordinate conversion/);
+});
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HASH = "1".repeat(64);

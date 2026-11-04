@@ -1,0 +1,1824 @@
+{
+  "card_aura_col4_old_noise_uniforms.json": {
+    "bundleSha256": "19e0eaf745412f09f7966984695b699f84dc88485f1893acd28b6f36b321ff86",
+    "shaderObjectSha256": "55d1dea10e5f78010e3c937ad8fa7d12e05d6e5d130abce11863cb43f67ecd47",
+    "stages": {
+      "vertex": {
+        "crossSha256": "938e1da6a8cb0f1e1209154bb516c1e076272f8c1924fa287267a382912f5fec",
+        "members": {
+          "_24._m0": "modelMatrix",
+          "_58._m0": "pcrViewProjection",
+          "_58._m1": "_Col4"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\n"
+          ],
+          [
+            2,
+            45,
+            "uniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\nuniform mediump vec4 _Col4;\nin vec3 position;\n"
+          ],
+          [
+            47,
+            48,
+            "out vec3 vAuraCol4;\n"
+          ],
+          [
+            56,
+            56,
+            "    vec4 _11 = vec4(position, 1.0);\n    mat4 pcrViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            97,
+            101,
+            "    vAuraCol4.x = dot(_9.xyz, vec3(0.2104542553424835205078125, 0.793617784976959228515625, 0.004072046838700771331787109375));\n    vAuraCol4.y = dot(_9.xyz, vec3(1.9779984951019287109375, -2.428592205047607421875, 0.4505937099456787109375));\n    vAuraCol4.z = dot(_9.xyz, vec3(0.025904037058353424072265625, 0.782771766185760498046875, -0.8086757659912109375));\n"
+          ],
+          [
+            102,
+            103,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "a05257e906bac8787f3a106a6f2bf78fbe64278e40e7d9f6098a02cbdf8093bb",
+        "members": {
+          "_23._m0": "_TimeParam",
+          "_23._m1": "_AuraMaskPower",
+          "_23._m10": "_BureNoiseDetail",
+          "_23._m11": "_NoiseMoveUpSpeed",
+          "_23._m14": "_UpVectorNoiseDetail",
+          "_23._m16": "_AuraMaskOffset",
+          "_23._m17": "_AuraMaskNoiseDetail",
+          "_23._m18": "_AuraMaskNoiseSpeed",
+          "_23._m19": "_AuraMask2Power",
+          "_23._m2": "_AuraScale",
+          "_23._m20": "_Col1",
+          "_23._m21": "_Col2",
+          "_23._m22": "_Col3",
+          "_23._m23": "_AuraCol4ThresholdWidth",
+          "_23._m24": "_AuraCol4Threshold",
+          "_23._m25": "_AuraColorIntensity",
+          "_23._m26": "_AuraAlphaIntensity",
+          "_23._m27": "_AuraEdgeBorder",
+          "_23._m28": "_AuraEdgeBorderSmooth",
+          "_23._m29": "_AuraEdgePow",
+          "_23._m3": "_AuraPosOffset",
+          "_23._m30": "_EmissiveIntensity",
+          "_23._m31": "_AlphaBlend",
+          "_23._m32": "_BaseTransparency",
+          "_23._m33": "_Transparency",
+          "_23._m4": "_FlowIntensity",
+          "_23._m5": "_AuraSpeed",
+          "_23._m6": "_AuraDetail",
+          "_23._m7": "_AuraMowamowaPower",
+          "_23._m8": "_BureNoiseIntensity"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            41,
+            "uniform highp float _TimeParam;\nuniform highp float _AuraMaskPower;\nuniform highp vec2 _AuraScale;\nuniform highp vec2 _AuraPosOffset;\nuniform highp float _FlowIntensity;\nuniform highp float _AuraSpeed;\nuniform highp float _AuraDetail;\nuniform highp float _AuraMowamowaPower;\nuniform highp float _BureNoiseIntensity;\nuniform highp float _BureNoiseSpeed;\nuniform highp float _BureNoiseDetail;\nuniform highp float _NoiseMoveUpSpeed;\nuniform highp float _BlendFlowMapUpVector;\nuniform highp float _UpVectorNoiseStrength;\nuniform highp float _UpVectorNoiseDetail;\nuniform highp float _UpVectorNoiseSpeed;\nuniform highp float _AuraMaskOffset;\nuniform highp float _AuraMaskNoiseDetail;\nuniform highp float _AuraMaskNoiseSpeed;\nuniform highp float _AuraMask2Power;\nuniform vec4 _Col1;\nuniform vec4 _Col2;\nuniform vec4 _Col3;\nuniform highp float _AuraCol4ThresholdWidth;\nuniform highp float _AuraCol4Threshold;\nuniform highp float _AuraColorIntensity;\nuniform highp float _AuraAlphaIntensity;\nuniform highp float _AuraEdgeBorder;\nuniform highp float _AuraEdgeBorderSmooth;\nuniform highp float _AuraEdgePow;\nuniform highp float _EmissiveIntensity;\nuniform float _AlphaBlend;\nuniform float _BaseTransparency;\nuniform float _Transparency;\n"
+          ],
+          [
+            47,
+            48,
+            "in highp vec3 vAuraCol4;\n"
+          ],
+          [
+            102,
+            103,
+            "        _113.x = _TimeParam * _UpVectorNoiseSpeed;\n"
+          ],
+          [
+            139,
+            141,
+            "        _97 *= _UpVectorNoiseStrength;\n        _97 *= _BlendFlowMapUpVector;\n"
+          ],
+          [
+            146,
+            147,
+            "        _113.x = _TimeParam * _BureNoiseSpeed;\n"
+          ],
+          [
+            482,
+            483,
+            "            highp vec3 _1893 = (-_132.yzw) + vAuraCol4;\n"
+          ],
+          [
+            537,
+            538,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_dual_msr_uniforms.json": {
+    "bundleSha256": "cfa8db8a5fce1d5cc3c94dfeaf4e8ccf0784d6e0ce8d476fae75e69fba72f533",
+    "shaderObjectSha256": "83e9aad6d36f84855cb7c5335e49644539ddf0d5b4fbde687d31bfd24c331f0d",
+    "stages": {
+      "vertex": {
+        "crossSha256": "e5c889b633999520e4c079b4f3946f9cec85a31abd8589786496576d3cca4752",
+        "members": {
+          "_23._m0": "cameraPosition",
+          "_23._m1": "_ObjectToWorld",
+          "_23._m2": "_WorldToObject",
+          "_23._m3": "_ViewProjection",
+          "_23._m4": "_FakeCameraHeight",
+          "_23._m5": "_Height",
+          "_23._m6": "_HeightPower",
+          "_23._m7": "_Scale",
+          "_23._m8": "_UseUv",
+          "_23._m9": "_UseMaskUv"
+        },
+        "edits": [
+          [
+            0,
+            17,
+            "uniform highp mat4 modelMatrix;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\nprecision highp float;\nprecision highp int;\nuniform highp vec3 cameraPosition;\nuniform mediump float _FakeCameraHeight;\nuniform mediump float _Height;\nuniform mediump float _HeightPower;\nuniform mediump float _Scale;\nuniform int _UseUv;\nuniform int _UseMaskUv;\nin vec3 position;\n"
+          ],
+          [
+            18,
+            22,
+            "in vec3 normal;\nin vec4 tangent;\nin vec2 uv;\nin vec2 uv1;\n"
+          ],
+          [
+            34,
+            36,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec3 _97 = normal;\nvec4 _117 = tangent;\nvec2 _326 = uv;\nvec2 _330 = uv1;\nmat4 _ObjectToWorld = modelMatrix;\nmat4 _WorldToObject = inverse(modelMatrix);\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            105,
+            106,
+            "\n"
+          ],
+          [
+            107,
+            108,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "bceecfd90a3eced600d806e756a380a369876d2077c09d7650c9364572c6de21",
+        "members": {
+          "_189._m0": "cameraPosition",
+          "_189._m1": "viewMatrix",
+          "_189._m10": "_DiffractionIntensity",
+          "_189._m11": "_DiffractionPower",
+          "_189._m12": "_RampRepeat",
+          "_189._m13": "_RampSpeed",
+          "_189._m14": "_RampOffset",
+          "_189._m15": "_RampInterval",
+          "_189._m16": "_BaseColorIntensity",
+          "_189._m18": "_SpecularIntensity",
+          "_189._m19": "_MetalMaskIntensity",
+          "_189._m2": "_BlackOutMultiplier",
+          "_189._m20": "_AlphaBlend",
+          "_189._m21": "_Rotation",
+          "_189._m4": "_TransitionPatternOffset",
+          "_189._m5": "_TransitionBandWidth",
+          "_189._m6": "_TransitionSwitch",
+          "_189._m7": "_IsLeft",
+          "_189._m8": "_HologranBlackOutMultiplier"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            4,
+            30,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp float _BlackOutMultiplier;\nuniform highp float _BlackOutPower;\nuniform highp float _TransitionPatternOffset;\nuniform highp float _TransitionBandWidth;\nuniform highp float _TransitionSwitch;\nuniform int _IsLeft;\nuniform highp float _HologranBlackOutMultiplier;\nuniform highp float _HologramBlackOutPower;\nuniform float _DiffractionIntensity;\nuniform float _DiffractionPower;\nuniform float _RampRepeat;\nuniform float _RampSpeed;\nuniform float _RampOffset;\nuniform float _RampInterval;\nuniform float _BaseColorIntensity;\nuniform float _Shininess;\nuniform float _SpecularIntensity;\nuniform float _MetalMaskIntensity;\nuniform float _AlphaBlend;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            117,
+            118,
+            "    _77.x *= _BlackOutPower;\n"
+          ],
+          [
+            266,
+            267,
+            "    _625 *= _Shininess;\n"
+          ],
+          [
+            323,
+            324,
+            "    _625 *= _HologramBlackOutPower;\n"
+          ],
+          [
+            345,
+            346,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_hologram_with_shadow_uniforms.json": {
+    "bundleSha256": "11c98be9f6083aeec36c670c66941de6f61ca8bda3e6e0876e6987d8da7894d6",
+    "shaderObjectSha256": "8c7db3c9afb097cea42e8cdfa508baa734089193b0fcc6f83df10ec287a51634",
+    "stages": {
+      "vertex": {
+        "crossSha256": "16a44e22f42114a04e3c8333771f0f6e6e03b78a3f3a9a1f84e32f17615d8f61",
+        "members": {
+          "_22._m0": "modelMatrix",
+          "_22._m1": "_WorldToObject",
+          "_22._m2": "_ViewProjection",
+          "_22._m3": "_UseUv",
+          "_22._m4": "_UseMaskUv"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            2,
+            10,
+            "uniform highp mat4 modelMatrix;\nuniform int _UseUv;\nuniform int _UseMaskUv;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\n"
+          ],
+          [
+            11,
+            12,
+            "in vec3 position;\n"
+          ],
+          [
+            13,
+            15,
+            "in vec2 uv;\nin vec2 uv1;\n"
+          ],
+          [
+            16,
+            17,
+            "in vec3 normal;\n"
+          ],
+          [
+            24,
+            24,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec2 _116 = uv;\n    vec2 _120 = uv1;\n    vec3 _144 = normal;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            48,
+            49,
+            "\n"
+          ],
+          [
+            50,
+            51,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "b5787f83ffc0b52acd373aefffd66da9aa3b3b1f43a915664b13c056d5b36f8b",
+        "members": {
+          "_34._m0": "viewMatrix",
+          "_34._m1": "_DiffractionIntensity",
+          "_34._m10": "_RampScale",
+          "_34._m11": "_PhaseRotate",
+          "_34._m12": "_RampRotate",
+          "_34._m13": "_LayerTexScale",
+          "_34._m14": "_ShadowLayerHeight",
+          "_34._m15": "_ShadowUVTranslate",
+          "_34._m16": "_ShadowColor",
+          "_34._m17": "_ShadowCoveredHoloPower",
+          "_34._m18": "_ShadowCoveredHoloIntensity",
+          "_34._m19": "_ShadowCoveredHoloColorThreshold",
+          "_34._m2": "_DiffractionPower",
+          "_34._m20": "_ShadowDecay",
+          "_34._m21": "_DecayRate",
+          "_34._m22": "_AlphaBlend",
+          "_34._m23": "_MaskPower",
+          "_34._m24": "_CutOut",
+          "_34._m25": "_Rotation",
+          "_34._m26": "_UseAlphaAsAlphaBlendMask",
+          "_34._m27": "_UseReflectionAlpha",
+          "_34._m3": "_RampRepeat",
+          "_34._m4": "_RampSpeed",
+          "_34._m5": "_RampOffset",
+          "_34._m6": "_RampInterval",
+          "_34._m7": "_RampUVOffset",
+          "_34._m8": "_RampUVTiltOffset",
+          "_34._m9": "_PhaseScale"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            35,
+            "uniform highp mat4 viewMatrix;\nuniform float _DiffractionIntensity;\nuniform float _DiffractionPower;\nuniform float _RampRepeat;\nuniform float _RampSpeed;\nuniform float _RampOffset;\nuniform float _RampInterval;\nuniform float _RampUVOffset;\nuniform float _RampUVTiltOffset;\nuniform float _PhaseScale;\nuniform float _RampScale;\nuniform float _PhaseRotate;\nuniform float _RampRotate;\nuniform highp float _LayerTexScale;\nuniform highp vec3 _ShadowLayerHeight;\nuniform highp vec2 _ShadowUVTranslate;\nuniform highp vec4 _ShadowColor;\nuniform float _ShadowCoveredHoloPower;\nuniform float _ShadowCoveredHoloIntensity;\nuniform float _ShadowCoveredHoloColorThreshold;\nuniform highp float _ShadowDecay;\nuniform float _DecayRate;\nuniform float _AlphaBlend;\nuniform float _MaskPower;\nuniform float _CutOut;\nuniform vec3 _Rotation;\nuniform int _UseAlphaAsAlphaBlendMask;\nuniform int _UseReflectionAlpha;\n"
+          ],
+          [
+            252,
+            253,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_illust_switchtexture_uniforms.json": {
+    "bundleSha256": "095937513cd8224384a386cd229742c7ce10d02d71526a7c22f2103860e43897",
+    "shaderObjectSha256": "5f8e4767a7ecd74b3823a0dd77b84920fe6ae10441bdb67556ea29c6fcf175f1",
+    "stages": {
+      "vertex": {
+        "crossSha256": "84c38d3b3591aa1709172e4367a33ba067939fe740825d5e1909639619c99794",
+        "members": {
+          "_20._m0": "modelMatrix",
+          "_20._m1": "_ViewProjection"
+        },
+        "edits": [
+          [
+            0,
+            9,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\n"
+          ],
+          [
+            10,
+            11,
+            "in vec2 uv;\n"
+          ],
+          [
+            14,
+            16,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _87 = uv;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            26,
+            27,
+            "\n"
+          ],
+          [
+            28,
+            29,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "39f81be3380b7de40902ee7a9ad8248d5b4ad4207b0aeca40c3cdf808b3898b9",
+        "members": {
+          "_36._m2": "_AlphaBlend",
+          "_36._m3": "_TextureSwitch",
+          "_36._m4": "_FrontType"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            13,
+            "uniform int _IconRTypeAdditiveLayer;\nuniform int _IconLTypeAdditiveLayer;\nuniform float _AlphaBlend;\nuniform highp float _TextureSwitch;\nuniform int _FrontType;\n"
+          ],
+          [
+            34,
+            36,
+            "void main() {\n\n"
+          ],
+          [
+            39,
+            40,
+            "    switch (_IconRTypeAdditiveLayer)\n"
+          ],
+          [
+            74,
+            75,
+            "    switch (_IconLTypeAdditiveLayer)\n"
+          ],
+          [
+            117,
+            118,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_illust_switchtexture_useftex_on_uniforms.json": {
+    "bundleSha256": "095937513cd8224384a386cd229742c7ce10d02d71526a7c22f2103860e43897",
+    "shaderObjectSha256": "5f8e4767a7ecd74b3823a0dd77b84920fe6ae10441bdb67556ea29c6fcf175f1",
+    "stages": {
+      "vertex": {
+        "crossSha256": "84c38d3b3591aa1709172e4367a33ba067939fe740825d5e1909639619c99794",
+        "members": {
+          "_20._m0": "modelMatrix",
+          "_20._m1": "_ViewProjection"
+        },
+        "edits": [
+          [
+            0,
+            9,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\n"
+          ],
+          [
+            10,
+            11,
+            "in vec2 uv;\n"
+          ],
+          [
+            14,
+            16,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _87 = uv;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            26,
+            27,
+            "\n"
+          ],
+          [
+            28,
+            29,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "87851a9059bf104a4074a7c2a9d8ecae6949b744624d412b57307560c395a2e0",
+        "members": {
+          "_37._m3": "_AlphaBlend",
+          "_37._m4": "_TextureSwitch"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            13,
+            "uniform int _IconRTypeAdditiveLayer;\nuniform int _IconLTypeAdditiveLayer;\nuniform int _FTypeAdditiveLayer;\nuniform float _AlphaBlend;\nuniform highp float _TextureSwitch;\n"
+          ],
+          [
+            39,
+            41,
+            "void main() {\n\n"
+          ],
+          [
+            45,
+            46,
+            "    switch (_IconRTypeAdditiveLayer)\n"
+          ],
+          [
+            81,
+            82,
+            "    switch (_IconLTypeAdditiveLayer)\n"
+          ],
+          [
+            116,
+            117,
+            "    switch (_FTypeAdditiveLayer)\n"
+          ],
+          [
+            162,
+            163,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_illust_transitiontexture_uniforms.json": {
+    "bundleSha256": "fbc42418876650f961416943692f5cd6ccf91d5f50ea7b2df544e4f7777d7c4c",
+    "shaderObjectSha256": "27cfd1c04302f9d70381651a69521457903ae9608369c4f2c1249503af0e315d",
+    "stages": {
+      "vertex": {
+        "crossSha256": "69dfc01c36147ee08a227b89f6bca81d3867a6e1d5141064dc6faf0ce98d6d5a",
+        "members": {
+          "_20._m0": "modelMatrix",
+          "_20._m1": "_ViewProjection",
+          "_20._m2": "_GradationRotation"
+        },
+        "edits": [
+          [
+            0,
+            11,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform float _GradationRotation;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\nin vec2 uv;\n"
+          ],
+          [
+            19,
+            21,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _107 = uv;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            43,
+            44,
+            "\n"
+          ],
+          [
+            45,
+            46,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "cdacb4be746cd8425fc2296c823f0bdf12acc7760cdd7d87851e2821415ddb40",
+        "members": {
+          "_30._m0": "_GradationBounds",
+          "_30._m1": "_GradationBoundsOffset",
+          "_30._m10": "_TransitionPatternPower2",
+          "_30._m2": "_GradationRange",
+          "_30._m3": "_GradationPower",
+          "_30._m4": "_AlphaBlend",
+          "_30._m5": "_IsLeft",
+          "_30._m6": "_TransitionType",
+          "_30._m7": "_TransitionPatternContrast1",
+          "_30._m8": "_TransitionPatternPower1",
+          "_30._m9": "_TransitionPatternContrast2"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            19,
+            "uniform highp float _GradationBounds;\nuniform highp float _GradationBoundsOffset;\nuniform highp float _GradationRange;\nuniform highp float _GradationPower;\nuniform float _AlphaBlend;\nuniform int _IsLeft;\nuniform int _TransitionType;\nuniform highp float _TransitionPatternContrast1;\nuniform highp float _TransitionPatternPower1;\nuniform highp float _TransitionPatternContrast2;\nuniform highp float _TransitionPatternPower2;\n"
+          ],
+          [
+            41,
+            43,
+            "void main() {\n\n"
+          ],
+          [
+            190,
+            191,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_parallax_normal_on_additive_uniforms.json": {
+    "bundleSha256": "d13e38ada56c60c826ce8ee4b77fcecfc98c978e2ddbcd599babf5c5fe527322",
+    "shaderObjectSha256": "431e144dc3822d58154ea40c7b604877d751c022f65014ae350e3085f7fc7638",
+    "stages": {
+      "vertex": {
+        "crossSha256": "0034ca5eb4df2f31abdd6867362ba2dc7967738f81b3af12f8586b596655de07",
+        "members": {
+          "_23._m0": "cameraPosition",
+          "_23._m1": "_ObjectToWorld",
+          "_23._m2": "_WorldToObject",
+          "_23._m3": "_ViewProjection",
+          "_23._m4": "_FakeCameraHeight",
+          "_23._m5": "_Height",
+          "_23._m6": "_HeightPower",
+          "_23._m7": "_Scale",
+          "_23._m8": "_UseUv",
+          "_23._m9": "_UseMaskUv"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            2,
+            15,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 modelMatrix;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\nuniform mediump float _FakeCameraHeight;\nuniform mediump float _Height;\nuniform mediump float _HeightPower;\nuniform mediump float _Scale;\nuniform int _UseUv;\nuniform int _UseMaskUv;\n"
+          ],
+          [
+            16,
+            21,
+            "in vec3 position;\nin vec3 normal;\nin mediump vec4 tangent;\nin vec2 uv;\nin vec2 uv1;\n"
+          ],
+          [
+            34,
+            34,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec3 _86 = normal;\n    mediump vec4 _106 = tangent;\n    vec2 _306 = uv;\n    vec2 _310 = uv1;\n    mat4 _ObjectToWorld = modelMatrix;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            97,
+            98,
+            "\n"
+          ],
+          [
+            99,
+            100,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "7d79c90bba6648a0465d4cc251386dba2a7c4c48c6bd46892cb82bc134cee153",
+        "members": {
+          "_50._m0": "viewMatrix",
+          "_50._m1": "_UseHologram",
+          "_50._m10": "_RampScale",
+          "_50._m11": "_RampRotate",
+          "_50._m12": "_FrontMaskPower",
+          "_50._m13": "_Rotation",
+          "_50._m2": "_DiffractionIntensity",
+          "_50._m3": "_DiffractionPower",
+          "_50._m4": "_PhaseScale",
+          "_50._m5": "_PhaseRotate",
+          "_50._m6": "_RampRepeat",
+          "_50._m7": "_RampSpeed",
+          "_50._m8": "_RampOffset",
+          "_50._m9": "_RampInterval"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            21,
+            "uniform highp mat4 viewMatrix;\nuniform int _UseHologram;\nuniform float _DiffractionIntensity;\nuniform float _DiffractionPower;\nuniform float _PhaseScale;\nuniform float _PhaseRotate;\nuniform float _RampRepeat;\nuniform float _RampSpeed;\nuniform float _RampOffset;\nuniform float _RampInterval;\nuniform float _RampScale;\nuniform float _RampRotate;\nuniform float _FrontMaskPower;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            182,
+            183,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_rgb_hologram_rainbow_uniforms.json": {
+    "bundleSha256": "7bfe6f447135899054cdc135c14c80d4c64d7ddc48f193a3e20ad7a2e1207432",
+    "shaderObjectSha256": "54d15f2156298b0a850b78917e5f7fe7536106eb3f22b381bf6740c91d969d74",
+    "stages": {
+      "vertex": {
+        "crossSha256": "73e47e2ebef2a71e8a5a409c9cd2d8c1941908c69372a2db591e537afe9e1ad9",
+        "members": {
+          "_21._m0": "modelMatrix",
+          "_21._m1": "_WorldToObject",
+          "_21._m2": "_ViewProjection"
+        },
+        "edits": [
+          [
+            0,
+            10,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\n"
+          ],
+          [
+            12,
+            14,
+            "in vec2 uv;\nin vec3 normal;\n"
+          ],
+          [
+            21,
+            23,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _99 = uv;\nvec3 _114 = normal;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\nmat4 _WorldToObject = inverse(modelMatrix);\n"
+          ],
+          [
+            44,
+            45,
+            "\n"
+          ],
+          [
+            46,
+            47,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "d9b027fc3e19a53297816efa8b2a1c9e943f584e9b97b1dd25b80632683bf973",
+        "members": {
+          "_50._m0": "cameraPosition",
+          "_50._m1": "viewMatrix",
+          "_50._m10": "_UseUIMaskLeftTopAdjust",
+          "_50._m11": "_UIMaskLeftTopPow",
+          "_50._m12": "_UILeftTopUV",
+          "_50._m13": "_UIAdjustThreshold",
+          "_50._m14": "_A_HologramFrontMaskOnAll",
+          "_50._m15": "_A_HologramFrontMask",
+          "_50._m16": "_A_DiffractionIntensity",
+          "_50._m17": "_A_DiffractionPower",
+          "_50._m18": "_A_RampRepeat",
+          "_50._m19": "_A_RampSpeed",
+          "_50._m2": "_AreaAColorOklab",
+          "_50._m20": "_A_RampOffset",
+          "_50._m22": "_A_RampUVOffset",
+          "_50._m23": "_A_RampUVTiltOffset",
+          "_50._m24": "_A_PhaseScale",
+          "_50._m25": "_A_RampScale",
+          "_50._m26": "_A_PhaseRotate",
+          "_50._m27": "_A_CardTiltOffset",
+          "_50._m28": "_A_RampRotate",
+          "_50._m29": "_A_MaskPower",
+          "_50._m3": "_AreaBColorOklab",
+          "_50._m30": "_A_FrontMaskRangeUVY",
+          "_50._m31": "_A_FrontMaskRangeSmooth",
+          "_50._m32": "_A_CardTiltScale",
+          "_50._m33": "_A_Blend_AlphaBlend",
+          "_50._m34": "_A_Blend_AlphaBlendScaleByDist",
+          "_50._m35": "_A_Blend_Add",
+          "_50._m36": "_A_Blend_Emissive",
+          "_50._m37": "_B_HologramFrontMaskOnAll",
+          "_50._m38": "_B_HologramFrontMask",
+          "_50._m39": "_B_DiffractionIntensity",
+          "_50._m4": "_UIColorROklab",
+          "_50._m40": "_B_DiffractionPower",
+          "_50._m41": "_B_RampRepeat",
+          "_50._m42": "_B_RampSpeed",
+          "_50._m45": "_B_RampUVOffset",
+          "_50._m47": "_B_PhaseScale",
+          "_50._m48": "_B_RampScale",
+          "_50._m49": "_B_PhaseRotate",
+          "_50._m5": "_UIColorGOklab",
+          "_50._m50": "_B_CardTiltOffset",
+          "_50._m51": "_B_RampRotate",
+          "_50._m53": "_B_FrontMaskRangeUVY",
+          "_50._m54": "_B_FrontMaskRangeSmooth",
+          "_50._m55": "_B_CardTiltScale",
+          "_50._m56": "_B_Blend_AlphaBlend",
+          "_50._m57": "_B_Blend_AlphaBlendScaleByDist",
+          "_50._m58": "_B_Blend_Add",
+          "_50._m59": "_B_Blend_Emissive",
+          "_50._m6": "_UIHoloMaskR",
+          "_50._m60": "_OverExposurePow",
+          "_50._m61": "_OverExposureEmissiveIntensity",
+          "_50._m62": "_BaseColorIntensity",
+          "_50._m63": "_MetallicShininess",
+          "_50._m64": "_MetallicSpecularIntensity",
+          "_50._m65": "_EmissiveFrontMask",
+          "_50._m66": "_EmissiveFrontMaskPower",
+          "_50._m67": "_CutOut",
+          "_50._m68": "_Rotation",
+          "_50._m7": "_UIHoloMaskG",
+          "_50._m8": "_UIMetallicMaskR",
+          "_50._m9": "_UIMetallicMaskG"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            77,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp vec3 _AreaAColorOklab;\nuniform highp vec3 _AreaBColorOklab;\nuniform highp vec3 _UIColorROklab;\nuniform highp vec3 _UIColorGOklab;\nuniform float _UIHoloMaskR;\nuniform float _UIHoloMaskG;\nuniform float _UIMetallicMaskR;\nuniform float _UIMetallicMaskG;\nuniform int _UseUIMaskLeftTopAdjust;\nuniform highp float _UIMaskLeftTopPow;\nuniform highp vec2 _UILeftTopUV;\nuniform highp float _UIAdjustThreshold;\nuniform highp float _A_HologramFrontMaskOnAll;\nuniform highp float _A_HologramFrontMask;\nuniform highp float _A_DiffractionIntensity;\nuniform highp float _A_DiffractionPower;\nuniform highp float _A_RampRepeat;\nuniform highp float _A_RampSpeed;\nuniform highp float _A_RampOffset;\nuniform highp float _A_RampInterval;\nuniform highp float _A_RampUVOffset;\nuniform highp float _A_RampUVTiltOffset;\nuniform highp float _A_PhaseScale;\nuniform highp float _A_RampScale;\nuniform highp float _A_PhaseRotate;\nuniform highp float _A_CardTiltOffset;\nuniform highp float _A_RampRotate;\nuniform highp float _A_MaskPower;\nuniform highp float _A_FrontMaskRangeUVY;\nuniform highp float _A_FrontMaskRangeSmooth;\nuniform highp float _A_CardTiltScale;\nuniform highp float _A_Blend_AlphaBlend;\nuniform highp float _A_Blend_AlphaBlendScaleByDist;\nuniform highp float _A_Blend_Add;\nuniform highp float _A_Blend_Emissive;\nuniform highp float _B_HologramFrontMaskOnAll;\nuniform highp float _B_HologramFrontMask;\nuniform highp float _B_DiffractionIntensity;\nuniform highp float _B_DiffractionPower;\nuniform highp float _B_RampRepeat;\nuniform highp float _B_RampSpeed;\nuniform highp float _B_RampOffset;\nuniform highp float _B_RampInterval;\nuniform highp float _B_RampUVOffset;\nuniform highp float _B_RampUVTiltOffset;\nuniform highp float _B_PhaseScale;\nuniform highp float _B_RampScale;\nuniform highp float _B_PhaseRotate;\nuniform highp float _B_CardTiltOffset;\nuniform highp float _B_RampRotate;\nuniform highp float _B_MaskPower;\nuniform highp float _B_FrontMaskRangeUVY;\nuniform highp float _B_FrontMaskRangeSmooth;\nuniform highp float _B_CardTiltScale;\nuniform highp float _B_Blend_AlphaBlend;\nuniform highp float _B_Blend_AlphaBlendScaleByDist;\nuniform highp float _B_Blend_Add;\nuniform highp float _B_Blend_Emissive;\nuniform highp float _OverExposurePow;\nuniform highp float _OverExposureEmissiveIntensity;\nuniform float _BaseColorIntensity;\nuniform float _MetallicShininess;\nuniform float _MetallicSpecularIntensity;\nuniform highp float _EmissiveFrontMask;\nuniform highp float _EmissiveFrontMaskPower;\nuniform float _CutOut;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            129,
+            131,
+            "void main() {\n\n"
+          ],
+          [
+            335,
+            337,
+            "        _726.x = _A_RampInterval + 1.0;\n        _990 = _A_RampInterval * 0.5;\n"
+          ],
+          [
+            403,
+            404,
+            "        _29.x = (_29.x * _B_RampUVTiltOffset) + _B_RampOffset;\n"
+          ],
+          [
+            439,
+            441,
+            "        _726.x = _B_RampInterval + 1.0;\n        _990 = _B_RampInterval * 0.5;\n"
+          ],
+          [
+            462,
+            463,
+            "        _43 *= _B_MaskPower;\n"
+          ],
+          [
+            666,
+            667,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_rgb_hologram_stripe_uniforms.json": {
+    "bundleSha256": "7bfe6f447135899054cdc135c14c80d4c64d7ddc48f193a3e20ad7a2e1207432",
+    "shaderObjectSha256": "54d15f2156298b0a850b78917e5f7fe7536106eb3f22b381bf6740c91d969d74",
+    "stages": {
+      "vertex": {
+        "crossSha256": "c66b3751d2624b472992ab4381d50fbe11307ca3a2c54af91c22bda5197b4b25",
+        "members": {
+          "_22._m0": "modelMatrix",
+          "_22._m1": "_WorldToObject",
+          "_22._m2": "_ViewProjection",
+          "_22._m3": "_A_PhaseScale",
+          "_22._m4": "_A_PhaseRotate",
+          "_22._m5": "_B_PhaseScale",
+          "_22._m6": "_B_PhaseRotate",
+          "_22._m7": "_B_StripeUVOffset",
+          "_22._m8": "_StripeUVOffset"
+        },
+        "edits": [
+          [
+            0,
+            16,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform float _A_PhaseScale;\nuniform float _A_PhaseRotate;\nuniform float _B_PhaseScale;\nuniform float _B_PhaseRotate;\nuniform vec2 _B_StripeUVOffset;\nuniform vec2 _StripeUVOffset;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\n"
+          ],
+          [
+            18,
+            20,
+            "in vec2 uv;\nin vec3 normal;\n"
+          ],
+          [
+            33,
+            35,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _99 = uv;\nvec3 _114 = normal;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\nmat4 _WorldToObject = inverse(modelMatrix);\n"
+          ],
+          [
+            94,
+            95,
+            "\n"
+          ],
+          [
+            96,
+            97,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "27974276373c4c9e3fce6bec47f02a3cd20aea67384b2aca7c41c0aa09111aa6",
+        "members": {
+          "_56._m0": "cameraPosition",
+          "_56._m1": "viewMatrix",
+          "_56._m10": "_UseUIMaskLeftTopAdjust",
+          "_56._m11": "_UIMaskLeftTopPow",
+          "_56._m12": "_UILeftTopUV",
+          "_56._m13": "_UIAdjustThreshold",
+          "_56._m14": "_A_HologramFrontMaskOnAll",
+          "_56._m15": "_A_HologramFrontMask",
+          "_56._m16": "_A_DiffractionIntensity",
+          "_56._m17": "_A_DiffractionPower",
+          "_56._m18": "_A_RampRepeat",
+          "_56._m19": "_A_RampAlphaRepeat",
+          "_56._m2": "_AreaAColorOklab",
+          "_56._m20": "_A_RampSpeed",
+          "_56._m21": "_A_RampOffset",
+          "_56._m22": "_A_RampInterval",
+          "_56._m23": "_A_RampUVOffset",
+          "_56._m24": "_A_CardTiltOffset",
+          "_56._m25": "_A_UseRampFade",
+          "_56._m26": "_A_RampFadeLength",
+          "_56._m27": "_A_MaskPower",
+          "_56._m28": "_A_FrontMaskRangeUVY",
+          "_56._m29": "_A_FrontMaskRangeSmooth",
+          "_56._m3": "_AreaBColorOklab",
+          "_56._m30": "_A_Blend_AlphaBlend",
+          "_56._m31": "_A_Blend_AlphaBlendScaleByDist",
+          "_56._m32": "_A_Blend_Add",
+          "_56._m33": "_A_Blend_Emissive",
+          "_56._m34": "_B_HologramFrontMaskOnAll",
+          "_56._m35": "_B_HologramFrontMask",
+          "_56._m36": "_B_DiffractionIntensity",
+          "_56._m37": "_B_DiffractionPower",
+          "_56._m38": "_B_RampRepeat",
+          "_56._m39": "_B_RampAlphaRepeat",
+          "_56._m4": "_UIColorROklab",
+          "_56._m40": "_B_RampSpeed",
+          "_56._m41": "_B_RampOffset",
+          "_56._m42": "_B_RampInterval",
+          "_56._m43": "_B_RampUVOffset",
+          "_56._m44": "_B_CardTiltOffset",
+          "_56._m45": "_B_MaskPower",
+          "_56._m46": "_B_FrontMaskRangeUVY",
+          "_56._m47": "_B_FrontMaskRangeSmooth",
+          "_56._m48": "_B_OneStripeBlockCount",
+          "_56._m49": "_B_ZureBlockCount",
+          "_56._m5": "_UIColorGOklab",
+          "_56._m50": "_B_StripeLoopLength",
+          "_56._m51": "_B_RampLoopLength",
+          "_56._m52": "_B_Blend_AlphaBlend",
+          "_56._m53": "_B_Blend_AlphaBlendScaleByDist",
+          "_56._m54": "_B_Blend_Add",
+          "_56._m55": "_B_Blend_Emissive",
+          "_56._m56": "_OverExposurePow",
+          "_56._m57": "_OverExposureEmissiveIntensity",
+          "_56._m58": "_OneStripeBlockCount",
+          "_56._m59": "_ZureBlockCount",
+          "_56._m6": "_UIHoloMaskR",
+          "_56._m60": "_StripeLoopLength",
+          "_56._m61": "_RampLoopLength",
+          "_56._m62": "_A_HoloCrossPower",
+          "_56._m63": "_B_HoloCrossPower",
+          "_56._m64": "_A_InnerBlockDiffractionIntensity",
+          "_56._m65": "_A_InnerBlockDiffractionPower",
+          "_56._m66": "_A_InnerBlockDiffractionWidthPower",
+          "_56._m67": "_A_InnerBlockRampOffsetScale",
+          "_56._m68": "_A_InnerBlockPosOffsetX",
+          "_56._m69": "_A_InnerBlockPosOffsetY",
+          "_56._m7": "_UIHoloMaskG",
+          "_56._m70": "_B_InnerBlockDiffractionIntensity",
+          "_56._m71": "_B_InnerBlockDiffractionPower",
+          "_56._m72": "_B_InnerBlockDiffractionWidthPower",
+          "_56._m73": "_B_InnerBlockRampOffsetScale",
+          "_56._m74": "_A_Multi1LightDir",
+          "_56._m75": "_A_Multi1StripePosOffsetX",
+          "_56._m76": "_A_Multi1StripePosOffsetY",
+          "_56._m77": "_A_Multi1DiffractionIntensityRatio",
+          "_56._m78": "_B_Multi1LightDir",
+          "_56._m79": "_B_Multi1StripePosOffsetX",
+          "_56._m8": "_UIMetallicMaskR",
+          "_56._m80": "_B_Multi1StripePosOffsetY",
+          "_56._m81": "_B_Multi1DiffractionIntensityRatio",
+          "_56._m82": "_BaseColorIntensity",
+          "_56._m83": "_MetallicShininess",
+          "_56._m84": "_MetallicSpecularIntensity",
+          "_56._m85": "_EmissiveFrontMask",
+          "_56._m86": "_EmissiveFrontMaskPower",
+          "_56._m87": "_A_InnerBlockUseRampAlpha",
+          "_56._m88": "_Rotation",
+          "_56._m9": "_UIMetallicMaskG"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            97,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp vec3 _AreaAColorOklab;\nuniform highp vec3 _AreaBColorOklab;\nuniform highp vec3 _UIColorROklab;\nuniform highp vec3 _UIColorGOklab;\nuniform float _UIHoloMaskR;\nuniform float _UIHoloMaskG;\nuniform float _UIMetallicMaskR;\nuniform float _UIMetallicMaskG;\nuniform int _UseUIMaskLeftTopAdjust;\nuniform highp float _UIMaskLeftTopPow;\nuniform highp vec2 _UILeftTopUV;\nuniform highp float _UIAdjustThreshold;\nuniform highp float _A_HologramFrontMaskOnAll;\nuniform highp float _A_HologramFrontMask;\nuniform highp float _A_DiffractionIntensity;\nuniform highp float _A_DiffractionPower;\nuniform highp float _A_RampRepeat;\nuniform highp float _A_RampAlphaRepeat;\nuniform highp float _A_RampSpeed;\nuniform highp float _A_RampOffset;\nuniform highp float _A_RampInterval;\nuniform highp float _A_RampUVOffset;\nuniform highp float _A_CardTiltOffset;\nuniform int _A_UseRampFade;\nuniform highp float _A_RampFadeLength;\nuniform highp float _A_MaskPower;\nuniform highp float _A_FrontMaskRangeUVY;\nuniform highp float _A_FrontMaskRangeSmooth;\nuniform highp float _A_Blend_AlphaBlend;\nuniform highp float _A_Blend_AlphaBlendScaleByDist;\nuniform highp float _A_Blend_Add;\nuniform highp float _A_Blend_Emissive;\nuniform highp float _B_HologramFrontMaskOnAll;\nuniform highp float _B_HologramFrontMask;\nuniform highp float _B_DiffractionIntensity;\nuniform highp float _B_DiffractionPower;\nuniform highp float _B_RampRepeat;\nuniform highp float _B_RampAlphaRepeat;\nuniform highp float _B_RampSpeed;\nuniform highp float _B_RampOffset;\nuniform highp float _B_RampInterval;\nuniform highp float _B_RampUVOffset;\nuniform highp float _B_CardTiltOffset;\nuniform highp float _B_MaskPower;\nuniform highp float _B_FrontMaskRangeUVY;\nuniform highp float _B_FrontMaskRangeSmooth;\nuniform int _B_OneStripeBlockCount;\nuniform int _B_ZureBlockCount;\nuniform int _B_StripeLoopLength;\nuniform highp float _B_RampLoopLength;\nuniform highp float _B_Blend_AlphaBlend;\nuniform highp float _B_Blend_AlphaBlendScaleByDist;\nuniform highp float _B_Blend_Add;\nuniform highp float _B_Blend_Emissive;\nuniform highp float _OverExposurePow;\nuniform highp float _OverExposureEmissiveIntensity;\nuniform int _OneStripeBlockCount;\nuniform int _ZureBlockCount;\nuniform int _StripeLoopLength;\nuniform highp float _RampLoopLength;\nuniform highp float _A_HoloCrossPower;\nuniform highp float _B_HoloCrossPower;\nuniform highp float _A_InnerBlockDiffractionIntensity;\nuniform highp float _A_InnerBlockDiffractionPower;\nuniform highp float _A_InnerBlockDiffractionWidthPower;\nuniform highp float _A_InnerBlockRampOffsetScale;\nuniform int _A_InnerBlockPosOffsetX;\nuniform int _A_InnerBlockPosOffsetY;\nuniform highp float _B_InnerBlockDiffractionIntensity;\nuniform highp float _B_InnerBlockDiffractionPower;\nuniform highp float _B_InnerBlockDiffractionWidthPower;\nuniform highp float _B_InnerBlockRampOffsetScale;\nuniform highp vec3 _A_Multi1LightDir;\nuniform int _A_Multi1StripePosOffsetX;\nuniform int _A_Multi1StripePosOffsetY;\nuniform highp float _A_Multi1DiffractionIntensityRatio;\nuniform highp vec3 _B_Multi1LightDir;\nuniform int _B_Multi1StripePosOffsetX;\nuniform int _B_Multi1StripePosOffsetY;\nuniform highp float _B_Multi1DiffractionIntensityRatio;\nuniform float _BaseColorIntensity;\nuniform float _MetallicShininess;\nuniform float _MetallicSpecularIntensity;\nuniform highp float _EmissiveFrontMask;\nuniform highp float _EmissiveFrontMaskPower;\nuniform highp float _A_InnerBlockUseRampAlpha;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            195,
+            197,
+            "void main() {\n\n"
+          ],
+          [
+            1537,
+            1538,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_rgb_hologram_uniforms.json": {
+    "bundleSha256": "7bfe6f447135899054cdc135c14c80d4c64d7ddc48f193a3e20ad7a2e1207432",
+    "shaderObjectSha256": "54d15f2156298b0a850b78917e5f7fe7536106eb3f22b381bf6740c91d969d74",
+    "stages": {
+      "vertex": {
+        "crossSha256": "73e47e2ebef2a71e8a5a409c9cd2d8c1941908c69372a2db591e537afe9e1ad9",
+        "members": {
+          "_21._m0": "modelMatrix",
+          "_21._m1": "_WorldToObject",
+          "_21._m2": "_ViewProjection"
+        },
+        "edits": [
+          [
+            0,
+            10,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\n"
+          ],
+          [
+            12,
+            14,
+            "in vec2 uv;\nin vec3 normal;\n"
+          ],
+          [
+            21,
+            23,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _99 = uv;\nvec3 _114 = normal;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\nmat4 _WorldToObject = inverse(modelMatrix);\n"
+          ],
+          [
+            44,
+            45,
+            "\n"
+          ],
+          [
+            46,
+            47,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "8db6fea0e63ca582bb9c1045dfc21ae69adf27be2ad67f562e181ea50b4a94eb",
+        "members": {
+          "_42._m0": "cameraPosition",
+          "_42._m1": "viewMatrix",
+          "_42._m10": "_UseUIMaskLeftTopAdjust",
+          "_42._m11": "_UIMaskLeftTopPow",
+          "_42._m12": "_UILeftTopUV",
+          "_42._m13": "_UIAdjustThreshold",
+          "_42._m14": "_A_HologramFrontMaskOnAll",
+          "_42._m15": "_A_HologramFrontMask",
+          "_42._m16": "_A_DiffractionIntensity",
+          "_42._m17": "_A_DiffractionPower",
+          "_42._m18": "_A_RampRepeat",
+          "_42._m19": "_A_RampSpeed",
+          "_42._m2": "_AreaAColorOklab",
+          "_42._m20": "_A_RampOffset",
+          "_42._m22": "_A_RampUVOffset",
+          "_42._m23": "_A_RampUVTiltOffset",
+          "_42._m24": "_A_PhaseScale",
+          "_42._m25": "_A_RampScale",
+          "_42._m26": "_A_PhaseRotate",
+          "_42._m27": "_A_CardTiltOffset",
+          "_42._m28": "_A_RampRotate",
+          "_42._m29": "_A_MaskPower",
+          "_42._m3": "_AreaBColorOklab",
+          "_42._m30": "_A_FrontMaskRangeUVY",
+          "_42._m31": "_A_FrontMaskRangeSmooth",
+          "_42._m32": "_A_CardTiltScale",
+          "_42._m33": "_A_Blend_AlphaBlend",
+          "_42._m34": "_A_Blend_AlphaBlendScaleByDist",
+          "_42._m35": "_A_Blend_Add",
+          "_42._m36": "_A_Blend_Emissive",
+          "_42._m37": "_B_HologramFrontMaskOnAll",
+          "_42._m38": "_B_HologramFrontMask",
+          "_42._m39": "_B_DiffractionIntensity",
+          "_42._m4": "_UIColorROklab",
+          "_42._m40": "_B_DiffractionPower",
+          "_42._m41": "_B_RampRepeat",
+          "_42._m42": "_B_RampSpeed",
+          "_42._m45": "_B_RampUVOffset",
+          "_42._m47": "_B_PhaseScale",
+          "_42._m48": "_B_RampScale",
+          "_42._m49": "_B_PhaseRotate",
+          "_42._m5": "_UIColorGOklab",
+          "_42._m50": "_B_CardTiltOffset",
+          "_42._m51": "_B_RampRotate",
+          "_42._m53": "_B_FrontMaskRangeUVY",
+          "_42._m54": "_B_FrontMaskRangeSmooth",
+          "_42._m55": "_B_CardTiltScale",
+          "_42._m56": "_B_Blend_AlphaBlend",
+          "_42._m57": "_B_Blend_AlphaBlendScaleByDist",
+          "_42._m58": "_B_Blend_Add",
+          "_42._m59": "_B_Blend_Emissive",
+          "_42._m6": "_UIHoloMaskR",
+          "_42._m60": "_BaseColorIntensity",
+          "_42._m61": "_MetallicShininess",
+          "_42._m62": "_MetallicSpecularIntensity",
+          "_42._m63": "_EmissiveFrontMask",
+          "_42._m64": "_EmissiveFrontMaskPower",
+          "_42._m65": "_CutOut",
+          "_42._m66": "_Rotation",
+          "_42._m7": "_UIHoloMaskG",
+          "_42._m8": "_UIMetallicMaskR",
+          "_42._m9": "_UIMetallicMaskG"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            75,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp vec3 _AreaAColorOklab;\nuniform highp vec3 _AreaBColorOklab;\nuniform highp vec3 _UIColorROklab;\nuniform highp vec3 _UIColorGOklab;\nuniform float _UIHoloMaskR;\nuniform float _UIHoloMaskG;\nuniform float _UIMetallicMaskR;\nuniform float _UIMetallicMaskG;\nuniform int _UseUIMaskLeftTopAdjust;\nuniform highp float _UIMaskLeftTopPow;\nuniform highp vec2 _UILeftTopUV;\nuniform highp float _UIAdjustThreshold;\nuniform highp float _A_HologramFrontMaskOnAll;\nuniform highp float _A_HologramFrontMask;\nuniform highp float _A_DiffractionIntensity;\nuniform highp float _A_DiffractionPower;\nuniform highp float _A_RampRepeat;\nuniform highp float _A_RampSpeed;\nuniform highp float _A_RampOffset;\nuniform highp float _A_RampInterval;\nuniform highp float _A_RampUVOffset;\nuniform highp float _A_RampUVTiltOffset;\nuniform highp float _A_PhaseScale;\nuniform highp float _A_RampScale;\nuniform highp float _A_PhaseRotate;\nuniform highp float _A_CardTiltOffset;\nuniform highp float _A_RampRotate;\nuniform highp float _A_MaskPower;\nuniform highp float _A_FrontMaskRangeUVY;\nuniform highp float _A_FrontMaskRangeSmooth;\nuniform highp float _A_CardTiltScale;\nuniform highp float _A_Blend_AlphaBlend;\nuniform highp float _A_Blend_AlphaBlendScaleByDist;\nuniform highp float _A_Blend_Add;\nuniform highp float _A_Blend_Emissive;\nuniform highp float _B_HologramFrontMaskOnAll;\nuniform highp float _B_HologramFrontMask;\nuniform highp float _B_DiffractionIntensity;\nuniform highp float _B_DiffractionPower;\nuniform highp float _B_RampRepeat;\nuniform highp float _B_RampSpeed;\nuniform highp float _B_RampOffset;\nuniform highp float _B_RampInterval;\nuniform highp float _B_RampUVOffset;\nuniform highp float _B_RampUVTiltOffset;\nuniform highp float _B_PhaseScale;\nuniform highp float _B_RampScale;\nuniform highp float _B_PhaseRotate;\nuniform highp float _B_CardTiltOffset;\nuniform highp float _B_RampRotate;\nuniform highp float _B_MaskPower;\nuniform highp float _B_FrontMaskRangeUVY;\nuniform highp float _B_FrontMaskRangeSmooth;\nuniform highp float _B_CardTiltScale;\nuniform highp float _B_Blend_AlphaBlend;\nuniform highp float _B_Blend_AlphaBlendScaleByDist;\nuniform highp float _B_Blend_Add;\nuniform highp float _B_Blend_Emissive;\nuniform float _BaseColorIntensity;\nuniform float _MetallicShininess;\nuniform float _MetallicSpecularIntensity;\nuniform highp float _EmissiveFrontMask;\nuniform highp float _EmissiveFrontMaskPower;\nuniform float _CutOut;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            127,
+            129,
+            "void main() {\n\n"
+          ],
+          [
+            334,
+            336,
+            "        _726.x = _A_RampInterval + 1.0;\n        _994 = _A_RampInterval * 0.5;\n"
+          ],
+          [
+            400,
+            401,
+            "        _9.x = (_9.x * _B_RampUVTiltOffset) + _B_RampOffset;\n"
+          ],
+          [
+            436,
+            438,
+            "        _726.x = _B_RampInterval + 1.0;\n        _994 = _B_RampInterval * 0.5;\n"
+          ],
+          [
+            459,
+            460,
+            "        _34 *= _B_MaskPower;\n"
+          ],
+          [
+            611,
+            612,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "card_shadowboxui_transparent_flash_uniforms.json": {
+    "bundleSha256": "893702e0ffdb99bea36b89233fed56459fe8c89194cca6c5fb9e62105e61339a",
+    "shaderObjectSha256": "f9ff914a3cf7915076ca738468b8f6e6d933cad74c7b29068f3e3497ae4a5b82",
+    "stages": {
+      "vertex": {
+        "crossSha256": "58c9e36b6484d334ac1fef25207b85f58b87198a3ca73c9f7ac84781b9c6b307",
+        "members": {
+          "_21._m0": "modelMatrix",
+          "_21._m1": "_ViewProjection",
+          "_21._m2": "_HighlightRotate",
+          "_21._m3": "_HighlightScale",
+          "_21._m4": "_HighlightTranslate"
+        },
+        "edits": [
+          [
+            0,
+            13,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\nuniform float _HighlightRotate;\nuniform float _HighlightScale;\nuniform vec2 _HighlightTranslate;\nuniform highp mat4 projectionMatrix;\nuniform highp mat4 viewMatrix;\nin vec3 position;\nin vec2 uv;\n"
+          ],
+          [
+            21,
+            23,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _85 = uv;\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            49,
+            50,
+            "\n"
+          ],
+          [
+            51,
+            52,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "67bea926a53351c5def63b4be1f72927f9c9f0dd5cd62e5011206775ea8fe6c9",
+        "members": {
+          "_49._m0": "_HighlightColor",
+          "_49._m1": "_HighlightColorPower",
+          "_49._m2": "_HighlightEmissiveIntensity",
+          "_49._m3": "_AlphaBlend",
+          "_49._m4": "_EmissiveIntensity"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            3,
+            13,
+            "uniform highp vec4 _HighlightColor;\nuniform highp float _HighlightColorPower;\nuniform highp float _HighlightEmissiveIntensity;\nuniform float _AlphaBlend;\nuniform float _EmissiveIntensity;\n"
+          ],
+          [
+            28,
+            30,
+            "void main() {\n\n"
+          ],
+          [
+            54,
+            55,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "effect_emit_with_hologram_shadow_uniforms.json": {
+    "bundleSha256": "478c4d89522a685aa5ad61f6b3c4269c5dba21547d8cf5e0c3acf51eee1ad840",
+    "shaderObjectSha256": "1b8e38e1151d0463ce8dc269d77d7152adc2ada238a7aa506754495ca289c3ed",
+    "stages": {
+      "vertex": {
+        "crossSha256": "08dbecb1db75cd8effd9ee996e0d83b616f87444894f931abe27f4e7182a53ca",
+        "members": {
+          "_22._m0": "cameraPosition",
+          "_22._m1": "modelMatrix",
+          "_22._m2": "_WorldToObject",
+          "_22._m3": "_ViewProjection",
+          "_22._m4": "_FakeCameraHeight",
+          "_22._m5": "_Height",
+          "_22._m6": "_HeightPower",
+          "_22._m8": "_MainTexScale"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            2,
+            14,
+            "uniform vec3 cameraPosition;\nuniform highp mat4 modelMatrix;\nuniform mediump float _FakeCameraHeight;\nuniform mediump float _Height;\nuniform mediump float _HeightPower;\nuniform mediump float _Scale;\nuniform float _MainTexScale;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\n"
+          ],
+          [
+            15,
+            16,
+            "in vec3 position;\n"
+          ],
+          [
+            17,
+            20,
+            "in vec3 normal;\nin vec4 tangent;\nin vec2 uv;\n"
+          ],
+          [
+            32,
+            32,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec3 _97 = normal;\n    vec4 _117 = tangent;\n    vec2 _307 = uv;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            84,
+            85,
+            "    _305 /= vec2(vec2(_Scale, _Scale));\n"
+          ],
+          [
+            92,
+            93,
+            "    _305 /= vec2(vec2(_Scale, _Scale));\n"
+          ],
+          [
+            102,
+            103,
+            "\n"
+          ],
+          [
+            104,
+            105,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "ce08ff6e1b198b6cbd4832e71011a547db1e5fa60f2e2254e402fb6056ba55dd",
+        "members": {
+          "_54._m0": "cameraPosition",
+          "_54._m1": "viewMatrix",
+          "_54._m10": "_SpecularIntensity",
+          "_54._m11": "_DiffractionPower",
+          "_54._m12": "_OrientationU",
+          "_54._m13": "_OrientationV",
+          "_54._m14": "_ChangeSpeed",
+          "_54._m15": "_RampOffset",
+          "_54._m17": "_DiffractionIntensity2",
+          "_54._m18": "_DiffractionPower2",
+          "_54._m19": "_RampRepeat2",
+          "_54._m2": "_ShadowUVTranslate",
+          "_54._m20": "_RampSpeed2",
+          "_54._m21": "_RampOffset2",
+          "_54._m22": "_RampInterval2",
+          "_54._m23": "_Switch",
+          "_54._m25": "_AdditiveIntensity",
+          "_54._m26": "_UseFlashBlend",
+          "_54._m27": "_FlashBlend",
+          "_54._m28": "_FlashBlendMax",
+          "_54._m29": "_UseEmissive",
+          "_54._m3": "_OutlineHeight",
+          "_54._m31": "_EmissiveIntensity",
+          "_54._m32": "_ColorAlphaBlend",
+          "_54._m33": "_NotColorAreaAlphaBlend",
+          "_54._m34": "_TiltEnabled",
+          "_54._m36": "_TiltOffset",
+          "_54._m38": "_Rotation",
+          "_54._m4": "_OutlineShadowIntensity",
+          "_54._m5": "_OutlineShadowUVOffset",
+          "_54._m6": "_HoloCoverPower",
+          "_54._m7": "_OutlineHoloCoverPower",
+          "_54._m8": "_DiffuseIntensity",
+          "_54._m9": "_Shininess"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            46,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp vec2 _ShadowUVTranslate;\nuniform highp float _OutlineHeight;\nuniform float _OutlineShadowIntensity;\nuniform highp vec2 _OutlineShadowUVOffset;\nuniform highp float _HoloCoverPower;\nuniform highp float _OutlineHoloCoverPower;\nuniform float _DiffuseIntensity;\nuniform float _Shininess;\nuniform float _SpecularIntensity;\nuniform float _DiffractionPower;\nuniform float _OrientationU;\nuniform float _OrientationV;\nuniform float _ChangeSpeed;\nuniform float _RampOffset;\nuniform int _UsePositionAsUV;\nuniform float _DiffractionIntensity2;\nuniform float _DiffractionPower2;\nuniform float _RampRepeat2;\nuniform float _RampSpeed2;\nuniform float _RampOffset2;\nuniform float _RampInterval2;\nuniform highp float _Switch;\nuniform int _UseFlashMask;\nuniform highp float _AdditiveIntensity;\nuniform int _UseFlashBlend;\nuniform highp float _FlashBlend;\nuniform highp float _FlashBlendMax;\nuniform int _UseEmissive;\nuniform int _UseEmissiveMask;\nuniform highp float _EmissiveIntensity;\nuniform float _ColorAlphaBlend;\nuniform float _NotColorAreaAlphaBlend;\nuniform int _TiltEnabled;\nuniform float _TiltPower;\nuniform float _TiltOffset;\nuniform float _TiltIntensity;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            193,
+            194,
+            "    _236.x *= _TiltPower;\n"
+          ],
+          [
+            196,
+            197,
+            "    _236.x *= _TiltIntensity;\n"
+          ],
+          [
+            296,
+            297,
+            "    if (_UsePositionAsUV != 0)\n"
+          ],
+          [
+            333,
+            334,
+            "    _124.x = float(_UseFlashMask);\n"
+          ],
+          [
+            361,
+            362,
+            "    _124.x = float(_UseEmissiveMask);\n"
+          ],
+          [
+            366,
+            367,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "frame_holo_transition_uniforms.json": {
+    "bundleSha256": "46656e8505fb8871bed369f4fdff816289d577ce83fb937a9a9638a213938301",
+    "shaderObjectSha256": "8561a4e201fa992212c56bbaf966ee73424d3b1ea6f7a6f9cd599cd153338dee",
+    "stages": {
+      "vertex": {
+        "crossSha256": "109dce3f2d98ecd56f70c69048588790964e9f67692713bb2e205addbd6b936b",
+        "members": {
+          "_21._m0": "_ObjectToWorld",
+          "_21._m1": "_WorldToObject",
+          "_21._m2": "_ViewProjection",
+          "_21._m3": "_BoundsRotation"
+        },
+        "edits": [
+          [
+            0,
+            11,
+            "uniform highp mat4 modelMatrix;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\nprecision highp float;\nprecision highp int;\nuniform float _BoundsRotation;\nin vec3 position;\n"
+          ],
+          [
+            12,
+            13,
+            "in vec2 uv;\n"
+          ],
+          [
+            14,
+            15,
+            "in vec3 normal;\n"
+          ],
+          [
+            24,
+            26,
+            "void main() {\nvec4 _11 = vec4(position, 1.0);\nvec2 _119 = uv;\nvec3 _156 = normal;\nmat4 _ObjectToWorld = modelMatrix;\nmat4 _WorldToObject = inverse(modelMatrix);\nmat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            55,
+            56,
+            "\n"
+          ],
+          [
+            57,
+            58,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "3052b33c5a521530c7e2493d08035ebff592ea55f215f443b862386895aabd7b",
+        "members": {
+          "_34._m0": "cameraPosition",
+          "_34._m1": "viewMatrix",
+          "_34._m10": "_RampInterval",
+          "_34._m11": "_RampUVOffset",
+          "_34._m12": "_RampUVTiltOffset",
+          "_34._m13": "_PhaseScale",
+          "_34._m14": "_RampScale",
+          "_34._m15": "_PhaseRotate",
+          "_34._m16": "_RampRotate",
+          "_34._m18": "_IconLTypeDiffractionIntensity",
+          "_34._m19": "_IconLTypeDiffractionPower",
+          "_34._m2": "_Bounds",
+          "_34._m20": "_IconLTypeAlphaBlend",
+          "_34._m21": "_IconRTypeDiffractionIntensity",
+          "_34._m22": "_IconRTypeDiffractionPower",
+          "_34._m23": "_IconRTypeAlphaBlend",
+          "_34._m24": "_MaskEmissive",
+          "_34._m25": "_CutOff",
+          "_34._m26": "_Rotation",
+          "_34._m3": "_TransitionSwitch",
+          "_34._m5": "_BaseColorIntensity",
+          "_34._m6": "_SpecularIntensity",
+          "_34._m7": "_RampRepeat",
+          "_34._m8": "_RampSpeed",
+          "_34._m9": "_RampOffset"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            4,
+            35,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp float _Bounds;\nuniform highp float _TransitionSwitch;\nuniform float _Shininess;\nuniform float _BaseColorIntensity;\nuniform float _SpecularIntensity;\nuniform float _RampRepeat;\nuniform float _RampSpeed;\nuniform float _RampOffset;\nuniform float _RampInterval;\nuniform float _RampUVOffset;\nuniform float _RampUVTiltOffset;\nuniform float _PhaseScale;\nuniform float _RampScale;\nuniform float _PhaseRotate;\nuniform float _RampRotate;\nuniform float _FrontMaskPower;\nuniform float _IconLTypeDiffractionIntensity;\nuniform float _IconLTypeDiffractionPower;\nuniform float _IconLTypeAlphaBlend;\nuniform float _IconRTypeDiffractionIntensity;\nuniform float _IconRTypeDiffractionPower;\nuniform float _IconRTypeAlphaBlend;\nuniform float _MaskEmissive;\nuniform float _CutOff;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            228,
+            229,
+            "    _420 *= _Shininess;\n"
+          ],
+          [
+            250,
+            251,
+            "    _420 *= _FrontMaskPower;\n"
+          ],
+          [
+            372,
+            373,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "frame_holo_with_shadow_uniforms.json": {
+    "bundleSha256": "4757bea892833787bd6431a52edc9c876b4ccb274676676bd9f3b393599986c6",
+    "shaderObjectSha256": "5cd0b8d155942fdb6c382168a415fca97322e64ca4e3232e71977588efae7442",
+    "stages": {
+      "vertex": {
+        "crossSha256": "bececdcb6616f7b70ac74b66a679f8f46d626c05a2386438118f43a06bcb61e3",
+        "members": {
+          "_21._m0": "modelMatrix",
+          "_21._m1": "_WorldToObject",
+          "_21._m2": "_ViewProjection"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            2,
+            8,
+            "uniform highp mat4 modelMatrix;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\n"
+          ],
+          [
+            9,
+            10,
+            "in vec3 position;\n"
+          ],
+          [
+            12,
+            14,
+            "in vec2 uv;\nin vec3 normal;\n"
+          ],
+          [
+            21,
+            21,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec2 _99 = uv;\n    vec3 _115 = normal;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            40,
+            41,
+            "\n"
+          ],
+          [
+            42,
+            43,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "dc421aa7de7cdbeb208017c14303830a28e752fc6ccef88965d7c2fde785d69e",
+        "members": {
+          "_21._m0": "cameraPosition",
+          "_21._m1": "viewMatrix",
+          "_21._m10": "_RampInterval",
+          "_21._m11": "_RampUVOffset",
+          "_21._m12": "_RampUVTiltOffset",
+          "_21._m13": "_PhaseScale",
+          "_21._m14": "_RampScale",
+          "_21._m15": "_PhaseRotate",
+          "_21._m16": "_RampRotate",
+          "_21._m17": "_FrontMaskPower",
+          "_21._m18": "_LayerTexScale",
+          "_21._m19": "_ShadowLayerHeight",
+          "_21._m2": "_Shininess",
+          "_21._m20": "_ShadowUVTranslate",
+          "_21._m21": "_ShadowColor",
+          "_21._m22": "_ShadowCoveredHoloPower",
+          "_21._m23": "_ShadowCoveredHoloIntensity",
+          "_21._m24": "_ShadowCoveredHoloColorThreshold",
+          "_21._m25": "_ShadowDecay",
+          "_21._m26": "_DecayRate",
+          "_21._m27": "_AlphaBlend",
+          "_21._m28": "_MaskEmissive",
+          "_21._m29": "_Rotation",
+          "_21._m3": "_BaseColorIntensity",
+          "_21._m4": "_SpecularIntensity",
+          "_21._m5": "_DiffractionIntensity",
+          "_21._m6": "_DiffractionPower",
+          "_21._m7": "_RampRepeat",
+          "_21._m8": "_RampSpeed",
+          "_21._m9": "_RampOffset"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            37,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform float _Shininess;\nuniform float _BaseColorIntensity;\nuniform float _SpecularIntensity;\nuniform float _DiffractionIntensity;\nuniform float _DiffractionPower;\nuniform float _RampRepeat;\nuniform float _RampSpeed;\nuniform float _RampOffset;\nuniform float _RampInterval;\nuniform float _RampUVOffset;\nuniform float _RampUVTiltOffset;\nuniform float _PhaseScale;\nuniform float _RampScale;\nuniform float _PhaseRotate;\nuniform float _RampRotate;\nuniform float _FrontMaskPower;\nuniform highp float _LayerTexScale;\nuniform highp vec3 _ShadowLayerHeight;\nuniform highp vec2 _ShadowUVTranslate;\nuniform highp vec4 _ShadowColor;\nuniform float _ShadowCoveredHoloPower;\nuniform float _ShadowCoveredHoloIntensity;\nuniform float _ShadowCoveredHoloColorThreshold;\nuniform highp float _ShadowDecay;\nuniform highp float _DecayRate;\nuniform float _AlphaBlend;\nuniform float _MaskEmissive;\nuniform vec3 _Rotation;\n"
+          ],
+          [
+            283,
+            284,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "opaque_hologram_shadow_rainbow_uniforms.json": {
+    "bundleSha256": "b28aad48a58f2d599b462c70153892f9e2526ccff8d54fdc470124721639900e",
+    "shaderObjectSha256": "f22f5f5f24495e68e5d0dee5ad3364e8e3f27090106ff82e57b0b91a4f1aede9",
+    "stages": {
+      "vertex": {
+        "crossSha256": "5e0876def4217cafb62caee0531f130c659617ee893700f95d83c39073857e00",
+        "members": {
+          "_21._m0": "modelMatrix",
+          "_21._m1": "_WorldToObject",
+          "_21._m2": "_ViewProjection",
+          "_21._m3": "_RainbowTex_ST",
+          "_21._m4": "_RainbowRotation"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\n"
+          ],
+          [
+            2,
+            10,
+            "uniform highp mat4 modelMatrix;\nuniform vec4 _RainbowTex_ST;\nuniform float _RainbowRotation;\nuniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\n"
+          ],
+          [
+            11,
+            12,
+            "in vec3 position;\n"
+          ],
+          [
+            14,
+            16,
+            "in vec2 uv;\nin vec3 normal;\n"
+          ],
+          [
+            26,
+            26,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec2 _99 = uv;\n    vec3 _115 = normal;\n    mat4 _WorldToObject = inverse(modelMatrix);\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            54,
+            55,
+            "\n"
+          ],
+          [
+            56,
+            57,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "13c7470687292eda8089376b9560dc4c5297b14b64b910909e7238fd0f86779c",
+        "members": {
+          "_22._m0": "cameraPosition",
+          "_22._m1": "viewMatrix",
+          "_22._m11": "_ShadowDecay",
+          "_22._m12": "_DecayRate",
+          "_22._m13": "_DiffuseIntensity",
+          "_22._m14": "_Shininess",
+          "_22._m15": "_SpecularIntensity",
+          "_22._m16": "_DiffractionPower",
+          "_22._m17": "_OrientationU",
+          "_22._m18": "_OrientationV",
+          "_22._m19": "_ChangeSpeed",
+          "_22._m2": "_ShadowUVTranslate",
+          "_22._m20": "_RampOffset",
+          "_22._m22": "_DiffractionIntensity2",
+          "_22._m23": "_DiffractionPower2",
+          "_22._m24": "_RampRepeat2",
+          "_22._m25": "_RampSpeed2",
+          "_22._m26": "_RampOffset2",
+          "_22._m27": "_RampInterval2",
+          "_22._m28": "_TiltEnabled",
+          "_22._m3": "_OutlineHeight",
+          "_22._m30": "_TiltOffset",
+          "_22._m32": "_Rotation",
+          "_22._m33": "_RainbowAnimationScale",
+          "_22._m4": "_OutlineShadowIntensity",
+          "_22._m5": "_OutlineShadowUVOffset",
+          "_22._m6": "_LayerTexScale",
+          "_22._m7": "_ShadowLayerHeight",
+          "_22._m8": "_ShadowIntensity",
+          "_22._m9": "_HoloCoverPower"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            41,
+            "uniform highp vec3 cameraPosition;\nuniform highp mat4 viewMatrix;\nuniform highp vec2 _ShadowUVTranslate;\nuniform highp float _OutlineHeight;\nuniform float _OutlineShadowIntensity;\nuniform highp vec2 _OutlineShadowUVOffset;\nuniform highp float _LayerTexScale;\nuniform highp vec3 _ShadowLayerHeight;\nuniform highp vec3 _ShadowIntensity;\nuniform highp float _HoloCoverPower;\nuniform highp float _OutlineHoloCoverPower;\nuniform highp float _ShadowDecay;\nuniform highp float _DecayRate;\nuniform float _DiffuseIntensity;\nuniform float _Shininess;\nuniform float _SpecularIntensity;\nuniform float _DiffractionPower;\nuniform float _OrientationU;\nuniform float _OrientationV;\nuniform float _ChangeSpeed;\nuniform float _RampOffset;\nuniform int _UsePositionAsUV;\nuniform float _DiffractionIntensity2;\nuniform float _DiffractionPower2;\nuniform float _RampRepeat2;\nuniform float _RampSpeed2;\nuniform float _RampOffset2;\nuniform float _RampInterval2;\nuniform int _TiltEnabled;\nuniform float _TiltPower;\nuniform float _TiltOffset;\nuniform float _TiltIntensity;\nuniform vec3 _Rotation;\nuniform highp vec2 _RainbowAnimationScale;\n"
+          ],
+          [
+            157,
+            158,
+            "    _9.x *= _TiltPower;\n"
+          ],
+          [
+            160,
+            161,
+            "    _9.x *= _TiltIntensity;\n"
+          ],
+          [
+            198,
+            199,
+            "    _507 = (-_HoloCoverPower) + _OutlineHoloCoverPower;\n"
+          ],
+          [
+            281,
+            282,
+            "    if (_UsePositionAsUV != 0)\n"
+          ],
+          [
+            351,
+            352,
+            ""
+          ]
+        ]
+      }
+    }
+  },
+  "shadowbox_effect_flow_use_col4_old_noise_uniforms.json": {
+    "bundleSha256": "0ab9bfed329b477ab0d7d2386f65d963d7cbaa072b0419581bb886b8d2acfb69",
+    "shaderObjectSha256": "0e6c535746e7e0950ef1cab07f3cfac9ab11037ba9c67fa4a45dbadc21ff8cc7",
+    "stages": {
+      "vertex": {
+        "crossSha256": "c63c0784bde95bbd030aa7d545e8e2378953816d9760cbf34c57dd60e25759f7",
+        "members": {
+          "_24._m0": "modelMatrix",
+          "_58._m0": "_ZBufferParams",
+          "_58._m1": "_ViewProjection",
+          "_58._m2": "_Col4",
+          "_58._m3": "_ZOffset"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            "precision highp float;\nprecision highp int;\nuniform highp mat4 modelMatrix;\n"
+          ],
+          [
+            2,
+            47,
+            "uniform highp mat4 viewMatrix;\nuniform highp mat4 projectionMatrix;\nuniform highp vec4 _ZBufferParams;\nuniform mediump vec4 _Col4;\nuniform highp float _ZOffset;\nin vec3 position;\n"
+          ],
+          [
+            50,
+            53,
+            "in vec2 uv;\nin vec4 color;\nout vec3 _2298;\n"
+          ],
+          [
+            63,
+            63,
+            "    vec4 _11 = vec4(position, 1.0);\n    vec2 _159 = uv;\n    vec3 _164 = color.xyz;\n    mat4 _ViewProjection = projectionMatrix * viewMatrix;\n"
+          ],
+          [
+            115,
+            119,
+            "    _2298.x = dot(_9.xyz, vec3(0.2104542553424835205078125, 0.793617784976959228515625, 0.004072046838700771331787109375));\n    _2298.y = dot(_9.xyz, vec3(1.9779984951019287109375, -2.428592205047607421875, 0.4505937099456787109375));\n    _2298.z = dot(_9.xyz, vec3(0.025904037058353424072265625, 0.782771766185760498046875, -0.8086757659912109375));\n\n"
+          ],
+          [
+            120,
+            121,
+            ""
+          ]
+        ]
+      },
+      "fragment": {
+        "crossSha256": "280081c2b09cbc2600c653eace2655c6c0f017f5a7f97edabe0b59f3260c269f",
+        "members": {
+          "_28._m0": "_TimeParam",
+          "_28._m1": "_ParticleDetail",
+          "_28._m10": "_ParticleColorIntensity",
+          "_28._m11": "_AuraAreaMasking",
+          "_28._m12": "_AuraDistancePower",
+          "_28._m13": "_AuraFlowIntensity",
+          "_28._m14": "_AuraSpeed",
+          "_28._m15": "_AuraDetail",
+          "_28._m16": "_AuraMowamowaPower",
+          "_28._m17": "_BureNoiseIntensity",
+          "_28._m18": "_BureNoiseSpeed",
+          "_28._m19": "_BureNoiseDetail",
+          "_28._m2": "_ParticleMove",
+          "_28._m20": "_NoiseMoveUpSpeed",
+          "_28._m23": "_UpVectorNoiseDetail",
+          "_28._m26": "_NoiseMaskOffset",
+          "_28._m27": "_NoiseMaskDetail",
+          "_28._m28": "_NoiseMaskNoiseSpeed",
+          "_28._m3": "_ParticleUVOffset",
+          "_28._m30": "_Col1",
+          "_28._m31": "_Col2",
+          "_28._m32": "_Col3",
+          "_28._m33": "_AuraColorIntensity",
+          "_28._m34": "_AuraAlphaIntensity",
+          "_28._m35": "_AuraCol4ThresholdWidth",
+          "_28._m36": "_AuraCol4Threshold",
+          "_28._m37": "_AuraEmissiveIntensity",
+          "_28._m38": "_ParticleEmissiveIntensity",
+          "_28._m39": "_ParticleAlphaBlend",
+          "_28._m40": "_Transparency",
+          "_28._m41": "_AuraBaseTransparency",
+          "_28._m42": "_ParticleBaseTransparency",
+          "_28._m43": "_AlphaBlend",
+          "_28._m5": "_ParticleDistancePower",
+          "_28._m7": "_ParticleSpeed",
+          "_28._m9": "_ParticleColor"
+        },
+        "edits": [
+          [
+            0,
+            1,
+            ""
+          ],
+          [
+            4,
+            51,
+            "uniform highp float _TimeParam;\nuniform highp float _ParticleDetail;\nuniform highp float _ParticleMove;\nuniform highp vec2 _ParticleUVOffset;\nuniform highp float _ParticleShapeDetail;\nuniform highp float _ParticleDistancePower;\nuniform highp float _ParticleFlowIntensity;\nuniform highp float _ParticleSpeed;\nuniform highp float _BlendAuraFlowMapByShape;\nuniform highp vec3 _ParticleColor;\nuniform highp float _ParticleColorIntensity;\nuniform highp float _AuraAreaMasking;\nuniform highp float _AuraDistancePower;\nuniform highp float _AuraFlowIntensity;\nuniform highp float _AuraSpeed;\nuniform highp float _AuraDetail;\nuniform highp float _AuraMowamowaPower;\nuniform highp float _BureNoiseIntensity;\nuniform highp float _BureNoiseSpeed;\nuniform highp float _BureNoiseDetail;\nuniform highp float _NoiseMoveUpSpeed;\nuniform highp float _BlendFlowMapUpVector;\nuniform highp float _UpVectorNoiseStrength;\nuniform highp float _UpVectorNoiseDetail;\nuniform highp float _UpVectorNoiseSpeed;\nuniform highp float _NoiseMaskIntensity;\nuniform highp float _NoiseMaskOffset;\nuniform highp float _NoiseMaskDetail;\nuniform highp float _NoiseMaskNoiseSpeed;\nuniform highp float _NoiseMaskPower;\nuniform vec4 _Col1;\nuniform vec4 _Col2;\nuniform vec4 _Col3;\nuniform highp float _AuraColorIntensity;\nuniform highp float _AuraAlphaIntensity;\nuniform highp float _AuraCol4ThresholdWidth;\nuniform highp float _AuraCol4Threshold;\nuniform highp float _AuraEmissiveIntensity;\nuniform highp float _ParticleEmissiveIntensity;\nuniform float _ParticleAlphaBlend;\nuniform float _Transparency;\nuniform float _AuraBaseTransparency;\nuniform float _ParticleBaseTransparency;\nuniform float _AlphaBlend;\n"
+          ],
+          [
+            126,
+            127,
+            "        _119 = _104.xy * vec2(vec2(_ParticleShapeDetail, _ParticleShapeDetail));\n"
+          ],
+          [
+            149,
+            150,
+            "        _235 = _TimeParam * _UpVectorNoiseSpeed;\n"
+          ],
+          [
+            188,
+            190,
+            "        _152 *= _UpVectorNoiseStrength;\n        _152 *= _BlendFlowMapUpVector;\n"
+          ],
+          [
+            204,
+            205,
+            "        _119.x *= _BlendAuraFlowMapByShape;\n"
+          ],
+          [
+            247,
+            248,
+            "        _119 *= vec2(vec2(_ParticleFlowIntensity, _ParticleFlowIntensity));\n"
+          ],
+          [
+            412,
+            413,
+            "        _49.x *= _NoiseMaskPower;\n"
+          ],
+          [
+            454,
+            455,
+            "        _1588 *= _NoiseMaskPower;\n"
+          ],
+          [
+            458,
+            459,
+            "        _49.x *= _NoiseMaskIntensity;\n"
+          ],
+          [
+            645,
+            646,
+            ""
+          ]
+        ]
+      }
+    }
+  }
+}

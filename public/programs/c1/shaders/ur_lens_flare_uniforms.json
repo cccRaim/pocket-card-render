@@ -1,0 +1,290 @@
+{
+  "official_selector": {
+    "selectorId": "ad61a11641dec609c1db5167c36442a541cda00a632bfd13f96986e41064ef62",
+    "candidateWitnessId": "5de5f555115c6f76574558abb1c48c51634be6223d621a24715ae086011bf800",
+    "shaderIdentity": "CAB-c7fa68f660e9c1603b1809a9e0229f8d:-6862042248905613889",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_UR_LensFlare",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "4910af56d4b5ec9bb46ff1f7c31d5c9285b2eb5963be096025926c90a6dab90e"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_BaseColorRGBIntensity": 1,
+      "_TexPixelsX": 1024,
+      "_TexPixelsY": 256,
+      "_RemoveTextureArtifact": 0,
+      "_TexScale": 1,
+      "_ScaleX": 1,
+      "_ScaleY": 1,
+      "_Offset": 0,
+      "_IsBack": 0,
+      "_TiltThreshold": 0.5,
+      "_TiltPower": 2,
+      "_CornerPower": 2,
+      "_NotCornerOffset": 0,
+      "_ShouldDoFlicker": 1,
+      "_FlickerAnimSpeed": 5,
+      "_TiltFlickerAnimSpeed": 3,
+      "_FlickerTimeDelay": 0,
+      "_FlickResultIntensityLowestPoint": 0.5,
+      "_EmissivePattern": 1,
+      "_ZTest": 4,
+      "_ZWrite": 1
+    },
+    "colors": {
+      "_BaseColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_EmissiveColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {},
+    "textureDescriptors": {
+      "_BaseMap": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FlareVAT": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_UR_LensFlare",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_TexScale",
+        "_ScaleX",
+        "_ScaleY",
+        "_BaseColorRGBIntensity",
+        "_TiltThreshold",
+        "_TiltPower",
+        "_CornerPower",
+        "_NotCornerOffset",
+        "_FlickerAnimSpeed",
+        "_TiltFlickerAnimSpeed",
+        "_FlickerTimeDelay",
+        "_FlickResultIntensityLowestPoint",
+        "_ShouldDoFlicker",
+        "_RemoveTextureArtifact"
+      ],
+      "ints": [
+        "_TexPixelsX",
+        "_TexPixelsY",
+        "_IsBack",
+        "_EmissivePattern"
+      ],
+      "vectors": {
+        "_BaseColor": "vec4",
+        "_EmissiveColor": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "uTime": {
+        "type": "float",
+        "source": "official-clock"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "14266613959ed7410613af49cd4ad5ca2aa780e4e4a36aa1d3ec3105b99648ee",
+        "outputSourceSha256": "16ea0ad4d8b3a520367f2b98bb75a6948a97efbe0d9d2e756a3d84ba83d6e9db",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 1
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "3f56e7cac074947cfff22157c8983813945abbed97a983782d3ffc7c1a1a29f9",
+        "outputSourceSha256": "68060e8c4cdc1e933a77fff79d772306664b418c5647527f8c9d01202845373f",
+        "inputs": [],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseMap",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlareVAT",
+      "spirvName": "_288",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/ur_lens_flare.vert.glsl",
+    "fragment": "public/shaders/ur_lens_flare.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_72"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "official-clock-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

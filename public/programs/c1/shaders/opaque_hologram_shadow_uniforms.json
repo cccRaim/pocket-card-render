@@ -1,0 +1,422 @@
+{
+  "official_selector": {
+    "selectorId": "c35aa0fb11f9991703f338404890df4f14e83eca4e1bb7bae9728f3a0575b15e",
+    "candidateWitnessId": "924c285309887b39f800a18d3dae6ec03adff28ffb6b590b3d721ae7fe1406d6",
+    "shaderIdentity": "CAB-0a0242cb4f635ce4a2ab08da1fa826d4:6307084205635357077",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-Hologram_Shadow",
+    "keywords": [
+      "_USESHADOWLAYERR_ON"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "89bc7f6cb3640a140b456bfc1803dc51b4894e7085fc09b34becdf868673ba04"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 7
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 4
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 2
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_LayerTexScale": 1,
+      "_UseShadowLayerR": 0,
+      "_UseShadowLayerG": 0,
+      "_HoloCoverPower": 2,
+      "_OutlineHoloCoverPower": 1,
+      "_ShadowCoverPower": 2,
+      "_ShadowDecay": 0,
+      "_DecayRate": 1,
+      "_OutlineHeight": 0.009999999776482582,
+      "_OutlineShadowIntensity": 0.5,
+      "_RampOffset": 0,
+      "_DiffuseIntensity": 0.5,
+      "_Shininess": 32,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 32,
+      "_OrientationU": 1,
+      "_OrientationV": 1,
+      "_ChangeSpeed": 3,
+      "_UsePositionAsUV": 0,
+      "_DiffractionIntensity2": 0.5,
+      "_DiffractionPower2": 64,
+      "_RampRepeat2": 2,
+      "_RampSpeed2": 1,
+      "_RampOffset2": 0,
+      "_RampInterval2": 0,
+      "_TiltEnabled": 0,
+      "_TiltPower": 2,
+      "_TiltOffset": 0,
+      "_TiltIntensity": 1,
+      "_UseRainbow": 0,
+      "_RainbowRotation": 0,
+      "_Stencil": 0
+    },
+    "colors": {
+      "_ShadowColor": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "vectors": {
+      "_ShadowLayerHeight": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "_ShadowIntensity": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "_OutlineShadowUVOffset": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "_RainbowAnimationScale": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "grey",
+        "dimension": 2
+      },
+      "_MaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ShadowLayer": {
+        "defaultName": "",
+        "dimension": 2
+      },
+      "_OutlineShadowTex": {
+        "defaultName": "",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_PhaseTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PhaseTex2": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex2": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex2": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RainbowTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Opaque-Hologram_Shadow",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_LayerTexScale",
+        "_OutlineHeight",
+        "_OutlineShadowIntensity",
+        "_HoloCoverPower",
+        "_OutlineHoloCoverPower",
+        "_DiffuseIntensity",
+        "_Shininess",
+        "_SpecularIntensity",
+        "_DiffractionPower",
+        "_OrientationU",
+        "_OrientationV",
+        "_ChangeSpeed",
+        "_RampOffset",
+        "_DiffractionIntensity2",
+        "_DiffractionPower2",
+        "_RampRepeat2",
+        "_RampSpeed2",
+        "_RampOffset2",
+        "_RampInterval2",
+        "_TiltPower",
+        "_TiltOffset",
+        "_TiltIntensity",
+        "_ShadowDecay",
+        "_DecayRate"
+      ],
+      "ints": [
+        "_UsePositionAsUV",
+        "_TiltEnabled"
+      ],
+      "vectors": {
+        "_OutlineShadowUVOffset": "vec2",
+        "_Rotation": "vec3",
+        "_ShadowLayerHeight": "vec3",
+        "_ShadowIntensity": "vec3"
+      }
+    },
+    "backend_texture_defaults": {
+      "_CubeMap": "neutral-gray-cube"
+    },
+    "backend_uniforms": {
+      "_ShadowUVTranslate": {
+        "type": "vec2",
+        "value": [
+          0,
+          0
+        ]
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "421d9be3fa1ca3c8e3abb54104b15ddb2170ee9ddcf1d84b540c141e177c1c11",
+        "outputSourceSha256": "a64ef1a12c1bbdc4fbdf03acda6226f869898e2a017d9d1f99b7a11655d34a07",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "1aea18e92a5c55dcd188334ddc7668ba54742c3ecd4087742e70b5c16a3a2548",
+        "outputSourceSha256": "10cae78834887120d2cdbe514f3d4a9b7aebee92b26a4db0498bdb77b3a65309",
+        "inputs": [
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 9
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_MaskTex",
+      "spirvName": "_183",
+      "dimension": 2
+    },
+    {
+      "slot": "_ShadowLayer",
+      "spirvName": "_213",
+      "dimension": 2
+    },
+    {
+      "slot": "_OutlineShadowTex",
+      "spirvName": "_255",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_640",
+      "dimension": 4
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_836",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_914",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseTex2",
+      "spirvName": "_1014",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex2",
+      "spirvName": "_957",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex2",
+      "spirvName": "_1003",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/opaque_hologram_shadow.vert.glsl",
+    "fragment": "public/shaders/opaque_hologram_shadow.frag.glsl"
+  },
+  "mrt": {
+    "secondary_value": "zero",
+    "emissive": "_1130"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

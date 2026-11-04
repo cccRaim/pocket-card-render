@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import { adaptUnityDataStage } from "./unity-data-stage.mjs";
 import {
   compileWebglRuntimePortContract,
   parseWebglRuntimeUniformType,
@@ -40,6 +41,15 @@ test("runtime contract normalizes a declarative port without shader-specific ide
   assert.equal(compiled.shader_key, "Fixture");
   assert.equal(compiled.backend_texture_defaults._MainTex, "shaderlab-white");
   assert.equal(compiled.stencil_normalization, "disable-when-always-keep");
+});
+
+test("runtime contract keeps data-stage identities and rejects duplicate coordinate conversion", () => {
+  const { contract } = adaptUnityDataStage("in vec3 position; void main() { gl_Position = vec4(position, 1.0); }", { stage: "vertex", inputBasis: "unity-flattened" });
+  const raw = { ...fixture(), backend_data_stages: { vertex: contract } };
+  assert.deepEqual(compileWebglRuntimePortContract(raw).backend_data_stages.vertex, contract);
+  assert.throws(() => compileWebglRuntimePortContract({ ...raw, backend_data_stages: { fragment: contract } }), /mismatched or duplicate/);
+  assert.throws(() => compileWebglRuntimePortContract({ ...raw, texture_coordinates: { vertex: {} } }), /mismatched or duplicate/);
+  assert.throws(() => compileWebglRuntimePortContract({ ...raw, backend_data_stages: { compute: contract } }), /unknown field/);
 });
 
 test("runtime contract rejects silent schema and binding drift", () => {

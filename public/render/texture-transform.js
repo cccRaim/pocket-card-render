@@ -7,7 +7,10 @@ function finitePair(value, label) {
   return [x, y];
 }
 
-export function unityTexEnvToThreeGltfSt(texture, shaderTextureDescriptor = null) {
+export function textureTransformForBasis(conversion, texture, shaderTextureDescriptor = null) {
+  if (conversion !== "unity-texenv" && conversion !== "unity-texenv-to-three-gltf-v") {
+    throw new Error(`unsupported texture-coordinate conversion ${conversion}`);
+  }
   if (texture == null) {
     if (shaderTextureDescriptor?.dimension !== 2
         || typeof shaderTextureDescriptor?.defaultName !== "string") {
@@ -17,5 +20,9 @@ export function unityTexEnvToThreeGltfSt(texture, shaderTextureDescriptor = null
   }
   const [scaleX, scaleY] = finitePair(texture?.scale, "Unity texture scale");
   const [offsetX, offsetY] = finitePair(texture?.offset, "Unity texture offset");
-  return [scaleX, scaleY, offsetX, 1 - scaleY - offsetY];
+  return [scaleX, scaleY, offsetX, conversion === "unity-texenv" ? offsetY : 1 - scaleY - offsetY];
+}
+
+export function unityTexEnvToThreeGltfSt(texture, shaderTextureDescriptor = null) {
+  return textureTransformForBasis("unity-texenv-to-three-gltf-v", texture, shaderTextureDescriptor);
 }

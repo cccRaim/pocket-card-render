@@ -1,0 +1,279 @@
+{
+  "official_selector": {
+    "selectorId": "e1578d63c26c429b7e823788110d258348305c88a706bd2b78c70b21d9b89cdd",
+    "candidateWitnessId": "75e09a8fc22a584f2d1e14428181d6ee3a34ad3c4d88212857712a5555c4c246",
+    "shaderIdentity": "CAB-eeb3b28a77923ed00deaaa1baf8678a9:5677331643493683988",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Flash",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "486f2bc1c83746d4ec53df65d875586a983be602cb9120f4a9bdf79fc010afc4"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_VisualizeCenter": 0,
+      "_RadialScaling": 1,
+      "_RadialFlashRange": 0.25,
+      "_RadialFlashPow": 1,
+      "_RadialAnim": 0,
+      "_FlashIntensityByMat": 1,
+      "_FakeCameraHeight": 0,
+      "_Height": -1,
+      "_HeightPower": 0,
+      "_Scale": 1,
+      "_EmissiveIntensity": 0,
+      "_AlphaBlend": 0,
+      "_StencilRef": 0,
+      "_ZTest": 4
+    },
+    "colors": {
+      "_BrightColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_DarkColor": [
+        1,
+        0,
+        0.6000000238418579,
+        1
+      ]
+    },
+    "vectors": {
+      "_ScaleCenter": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_RadialTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_Flash",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_RadialFlashPow",
+        "_RadialFlashRange",
+        "_FlashIntensityByMat",
+        "_AlphaBlend",
+        "_EmissiveIntensity",
+        "_FakeCameraHeight",
+        "_Height",
+        "_HeightPower",
+        "_Scale"
+      ],
+      "ints": [],
+      "vectors": {
+        "_ScaleCenter": "vec2",
+        "_BrightColor": "vec3",
+        "_DarkColor": "vec3"
+      }
+    },
+    "dynamic_uniforms": {
+      "_FlashIntensity": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      },
+      "_RadialScaling": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      },
+      "_RadialAnim": {
+        "type": "float",
+        "source": "pocket-card-render/card-mrr-object-arm64-state-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "85f963b2e3d6cbcc1b7b0df594f56d3b1f8361e1c9d7829ac3d4a7101ef7464a",
+        "outputSourceSha256": "a24a810c481a10222fdcebc98fc13fbddd3f15c3d7d3d1e561ac0606f94d4a2d",
+        "inputs": [
+          "position",
+          "normal",
+          "tangent",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "31a50fb21fff51601a8d83a70bb22a6d2311830efba2ae9812b8b4ff6f2b4312",
+        "outputSourceSha256": "7146d0ef034548b58d69a22d615c3532f4194c4c22116f5fd0a5f48c60399fb2",
+        "inputs": [],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_RadialTex",
+      "spirvName": "_82",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_flash.vert.glsl",
+    "fragment": "public/shaders/card_parallax_flash.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_182"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

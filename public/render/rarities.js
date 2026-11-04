@@ -135,4 +135,18 @@ const IM = {
 };
 
 // merge all rarity groups into the lookup the renderer uses
-export const SHADER = { ...BASE, ...SR, ...UR, ...SAR, ...IM };
+const EXTENDED = {
+  Card_DualMSR: { blend: "premult", kind: "exactRuntime" },
+  Card_Hologram_With_Shadow: { blend: "premult", kind: "exactRuntime" },
+  Card_Illust_SwitchTexture: { blend: "premult", kind: "exactRuntime" },
+  Card_Illust_TransitionTexture: { blend: "premult", kind: "exactRuntime" },
+  Card_Parallax_NormalOnAdditive: { blend: "premult", kind: "exactRuntime",
+    capabilities: { stencil: "read-stencil-ref" } },
+  Card_RGB_Hologram: { blend: "premult", kind: "exactRuntime" },
+  Card_ShadowBoxUI_Transparent_Flash: { blend: "premult", kind: "exactRuntime" },
+  Effect_Emit_With_Hologram_Shadow: { blend: "premult", kind: "exactRuntime" },
+  "Frame-Holo-Transition": { blend: "over", kind: "exactRuntime" },
+  "Frame-Holo-With-Shadow": { blend: "over", kind: "exactRuntime" },
+};
+
+export const SHADER = { ...BASE, ...SR, ...UR, ...SAR, ...IM, ...EXTENDED };

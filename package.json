@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "serve": "node server.mjs",
+    "build:c1-webgl-stages": "node build/build-c1-webgl-stages.mjs",
     "serve:candidate": "node build/serve-candidate.mjs 8127",
     "build:vercel-package": "node build/build-vercel-package.mjs",
     "test:atomic-publish": "node --test build/test-atomic-publish.mjs",
@@ -25,6 +26,9 @@
     "test:dynamic-ui-texture": "node build/test-dynamic-ui-texture.mjs",
     "test:quality-profile": "node build/test-quality-profile.mjs",
     "test:display-density-integration": "node build/test-display-density-integration.mjs",
+    "test:unity-data-stage": "node --test build/test-unity-data-stage.mjs",
+    "test:card-parameter-producers": "node --test build/test-card-parameter-producers.mjs",
+    "test:card-dual": "node --test build/test-card-dual.mjs",
     "audit:official-version-boundaries": "node build/audit-official-version-boundaries.mjs",
     "report:official-version-migration": "node build/audit-official-version-boundaries.mjs --candidate build/official-samples/candidate.json",
     "audit:official-version-migration": "node build/audit-official-version-boundaries.mjs --candidate build/official-samples/candidate.json --require-complete",

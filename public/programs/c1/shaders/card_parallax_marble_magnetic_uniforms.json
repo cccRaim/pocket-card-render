@@ -1,0 +1,349 @@
+{
+  "official_selector": {
+    "selectorId": "1fdbe0eb8d0712cfb7195e524947b1b4936f99b22ea26be1074f182fc3e52bf6",
+    "candidateWitnessId": "13354238319705038515caab8f3798abbfe71ba27c6d1dda65ec174ed8812b9d",
+    "shaderIdentity": "CAB-6e711b3844abcee2209d2134bf847067:-7556975018971663688",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Parallax_Marble",
+    "keywords": [
+      "_USEMAGNETIC_ON"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "9ae77f5ad05c3e1231b58c3775347f84b44c0cb0818adb7125d9db4119494d15"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_StrengthOffset": 0,
+      "_StrengthMultiply": 1,
+      "_DistPower": 1,
+      "_UseOutsideRelax": 0,
+      "_OutsideStartRadius": 0.44999998807907104,
+      "_OutsideEndRadius": 0.7200000286102295,
+      "_OutsideRelax": 0.699999988079071,
+      "_OutsideRelaxPower": 1,
+      "_RelaxLU": 0,
+      "_RelaxRU": 0,
+      "_RelaxLD": 0,
+      "_RelaxRD": 0,
+      "_DistLimit": 1.5,
+      "_UseMagnetic": 0,
+      "_MagneticMoveMax": 0,
+      "_MagneticMovePower": 1,
+      "_MagneticRange": 0,
+      "_SpherizeStrength": 0,
+      "_SpherizeOffsetX": 0,
+      "_SpherizeOffsetY": 0,
+      "_RadialShearStrength": 0,
+      "_RadialShearTiltStrength": 0,
+      "_ShearStrength": 1,
+      "_ShearDefaultDegree": 0,
+      "_ShearTiltDegree": 0,
+      "_EmissiveIntensity": 2,
+      "_EmissiveIntensityTiltPower": 1,
+      "_EmissiveByForceLoopCount": 0.5,
+      "_EmissiveByForcePower": 4,
+      "_NoisyMaskScale": 1,
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1
+    },
+    "colors": {},
+    "vectors": {
+      "_RadialShearCenterDefault": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_RadialShearCenterTiltMove": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "textureDescriptors": {
+      "_BaseRampTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_NoisyMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Parallax_Marble",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_BaseColorIntensity",
+        "_DistLimit",
+        "_DistPower",
+        "_EmissiveByForceLoopCount",
+        "_EmissiveByForcePower",
+        "_EmissiveIntensity",
+        "_EmissiveIntensityTiltPower",
+        "_NoisyMaskScale",
+        "_RadialShearStrength",
+        "_RadialShearTiltStrength",
+        "_ShearDefaultDegree",
+        "_ShearStrength",
+        "_ShearTiltDegree",
+        "_Shininess",
+        "_SpecularIntensity",
+        "_SpherizeOffsetX",
+        "_SpherizeOffsetY",
+        "_SpherizeStrength",
+        "_StrengthMultiply",
+        "_StrengthOffset",
+        "_WorldFrontPower",
+        "_MagneticMovePower",
+        "_MagneticRange"
+      ],
+      "ints": [],
+      "vectors": {
+        "_RadialShearCenterDefault": "vec2",
+        "_RadialShearCenterTiltMove": "vec2"
+      }
+    },
+    "dynamic_uniforms": {
+      "_Attributes": {
+        "type": "vec4[4]",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_Front": {
+        "type": "vec2",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_PointCount": {
+        "type": "int",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_Rotation": {
+        "type": "vec3",
+        "source": "pocket-card-render/card-behaviour-hologram-rotation-arm64-port@1"
+      },
+      "_Tilt": {
+        "type": "float",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_TiltRotation": {
+        "type": "float",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_WorldFront": {
+        "type": "vec3",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      },
+      "_561": {
+        "type": "sampler2D",
+        "source": "pocket-card-render/card-marble-layer-arm64-state-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "5dca9d3a96facf9f63cc8577b0afd3c5a36835b90b65c05c75b920a529da4678",
+        "outputSourceSha256": "fa48f8d768fa5862b86bd8ce33706a7389fd554c8e2639d45321d7429d1c8d6e",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "8b6019cb9b178ca492e7991c192874e0dc991a38bab93843c6eb8a97009cf7fd",
+        "outputSourceSha256": "9df068f92bd97e2814ce284fecdaf0c38ded96f4b765b79fb9e7c84cb3ede15f",
+        "inputs": [
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 3
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseRampTex",
+      "spirvName": "_412",
+      "dimension": 2
+    },
+    {
+      "slot": "_NoisyMask",
+      "spirvName": "_550",
+      "dimension": 2
+    },
+    {
+      "slot": "_DefaultNoiseRemapCurveTexture",
+      "spirvName": "_561",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_759",
+      "dimension": 4
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_parallax_marble_magnetic.vert.glsl",
+    "fragment": "public/shaders/card_parallax_marble_magnetic.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_519"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

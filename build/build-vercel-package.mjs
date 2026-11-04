@@ -10,6 +10,7 @@ import {
   publishDirectorySync,
 } from "./atomic-publish.mjs";
 import { gameAssetRelativePath } from "./scene-example-availability.mjs";
+import { sceneProgramPackageOptions } from "../public/render/scene-program-package.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUBLIC = path.join(ROOT, "public");
@@ -485,8 +486,16 @@ function buildPackage(options) {
   const fontIds = new Set();
   const gameUrls = new Set();
   const scenes = [];
+  const programPackages = new Set();
   for (const row of CORPUS.scenes) {
     const scene = JSON.parse(fs.readFileSync(path.join(PUBLIC, row.file), "utf8"));
+    if (scene.programPortPackage !== undefined && !programPackages.has(scene.programPortPackage)) {
+      sceneProgramPackageOptions(scene.programPortPackage);
+      const relative = path.join(scene.programPortPackage, "shaders");
+      assert(fs.statSync(path.join(PUBLIC, relative, "official_program_port_contract.json")).isFile());
+      copyTree(path.join(PUBLIC, relative), path.join(options.output, relative));
+      programPackages.add(scene.programPortPackage);
+    }
     copyRelative(PUBLIC, options.output, row.file);
     collectStrings(scene, strings);
     collectGameUrls(scene, gameUrls);

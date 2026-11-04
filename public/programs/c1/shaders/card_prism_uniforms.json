@@ -1,0 +1,267 @@
+{
+  "official_selector": {
+    "selectorId": "a01892fdbd252e9cdc56213dda6655a9b10269c11fc68e2fefd5ae179be5f018",
+    "candidateWitnessId": "a2db62d36bfb449cc9bc34103e8c83b3708ba1083fa67c142d16ca0441bd2d41",
+    "shaderIdentity": "CAB-9a0ceb86d06dab6e91ed10f319f1b6d4:3691811751576115235",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Prism",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "f3ae53e17e727b7f7652590f46739d30e6cea7d6191f36f8eac7076864fe62ad"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": "_BlendSrcColor",
+        "val": 0
+      },
+      "dst_rgb": {
+        "name": "_BlendDstColor",
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_ColorIntensity": 1,
+      "_AdjustAlphaIntensity": 1,
+      "_ExpandScale": 1,
+      "_ExpandTiming": 1,
+      "_ExpandAlphaPower": 1,
+      "_CenterMoveIntensity": 0,
+      "_ColoringMethod": 0,
+      "_ShiftU": 0,
+      "_ShiftV": 0,
+      "_ShiftTiming": 2,
+      "_ShiftUOffsetByTilt": 0,
+      "_ShiftUOffsetIntensity": 0,
+      "_ShiftVOffsetByTilt": 0,
+      "_ShiftVOffsetIntensity": 0,
+      "_OkLabBlend": 0,
+      "_UseRotate": 0,
+      "_RotateSpeed": 1,
+      "_EmissiveIntensity": 1,
+      "_BlendSrcColor": 5,
+      "_BlendDstColor": 10,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Prism",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_ExpandScale",
+        "_ExpandTiming",
+        "_ExpandAlphaPower",
+        "_CenterMoveIntensity",
+        "_RotateSpeed",
+        "_ShiftTiming",
+        "_ColorIntensity",
+        "_AdjustAlphaIntensity",
+        "_ShiftU",
+        "_ShiftV",
+        "_ShiftUOffsetIntensity",
+        "_ShiftVOffsetIntensity",
+        "_EmissiveIntensity"
+      ],
+      "ints": [
+        "_UseRotate",
+        "_ColoringMethod",
+        "_ShiftUOffsetByTilt",
+        "_ShiftVOffsetByTilt",
+        "_OkLabBlend"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "uTime": {
+        "type": "float",
+        "source": "official-clock"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "b7a458fa680ce8c86f3449842c9ccd52815890e2e1dc63049ff8978ada5215d5",
+        "outputSourceSha256": "70c661b143a0197a07a3698fdf246fe5676bb0a059e5af70a3a355c5c608f307",
+        "inputs": [
+          "position",
+          "uv",
+          "uv1",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "094ce0c9e6445aeb42745167efd3951d7790165fedda85580d35ba37ec9c21c7",
+        "outputSourceSha256": "b0751a91d3b2c00f0b074fe49376d5c480b885858cc481c7763fe56de3dc0fe5",
+        "inputs": [],
+        "storedVSampleCount": 4
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_29",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_prism.vert.glsl",
+    "fragment": "public/shaders/card_prism.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_361"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "official-clock-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

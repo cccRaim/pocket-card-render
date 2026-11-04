@@ -39,7 +39,8 @@ state.materials.add({ uniforms });
 const geometry = new THREE.BufferGeometry();
 geometry.setAttribute("uv", new THREE.Float32BufferAttribute(new Float32Array(402 * 2), 2));
 const trailA = new THREE.Mesh(geometry);
-const trailB = new THREE.Mesh(geometry);
+const trailB = new THREE.Mesh(geometry.clone());
+trailB.material.userData.circularTrailFlipsV = true;
 bindCircularKiraMesh(state, "trailA", trailA);
 bindCircularKiraMesh(state, "trailB", trailB);
 bindCircularKiraMesh(state, "movingA", new THREE.Object3D());
@@ -63,6 +64,10 @@ assert.equal(state.lastTrailIndex, 200, "first frame initializes at the current 
 updateCircularKira(state, [0.1, 0, Math.sqrt(0.99)], 0.1);
 assert.ok(Array.from({ length: uv.count }, (_, index) => uv.getY(index)).some((value) => value > 0));
 assert.ok(Array.from({ length: uv.count }, (_, index) => uv.getY(index)).every(Number.isFinite));
+const flippedUv = trailB.geometry.getAttribute("uv");
+for (let index = 0; index < uv.count; index++) {
+  assert.equal(flippedUv.getY(index), Math.fround(1 - uv.getY(index)));
+}
 
 for (let index = 0; index < 3; index++) updateCircularKira(state, [1, 0, 0], 0.1);
 assert.ok(Math.abs(state.tilt - 1) < 1e-6);

@@ -1,0 +1,282 @@
+{
+  "official_selector": {
+    "selectorId": "16717843d35280c3f42c6cc4079209055685c1be5641a3da93507e50252b30eb",
+    "candidateWitnessId": "9d99b1a49863c8aea2d6b41365b520024f0c8665b2fb1c2cde8d537acea38fea",
+    "shaderIdentity": "CAB-a6751b0aa5c6d5c9be7532233fb143b4:4674353869802774263",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Illust_TransitionTexture",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "6437f24be27745e3fd98a27c5a823151e6ef010719ebda0d36453c73af9fcf55"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": "_ZWrite",
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_StencilRef",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_GradationBounds": 0.6000000238418579,
+      "_GradationBoundsOffset": 0,
+      "_GradationRange": 0,
+      "_GradationPower": 1,
+      "_GradationRotation": 0,
+      "_TransitionType": 0,
+      "_TransitionPatternContrast1": 1,
+      "_TransitionPatternPower1": 1,
+      "_TransitionPatternContrast2": 1,
+      "_TransitionPatternPower2": 1,
+      "_UseV2": 0,
+      "_AlphaBlend": 1,
+      "_StencilRef": 0,
+      "_ZTest": 4,
+      "_ZWrite": 0
+    },
+    "colors": {},
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_IconLTypeBGTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_IconRTypeBGTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_TransitionPatternTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Illust_TransitionTexture",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_GradationRotation",
+        "_GradationBounds",
+        "_GradationBoundsOffset",
+        "_GradationRange",
+        "_GradationPower",
+        "_AlphaBlend",
+        "_TransitionPatternContrast1",
+        "_TransitionPatternPower1",
+        "_TransitionPatternContrast2",
+        "_TransitionPatternPower2"
+      ],
+      "ints": [
+        "_TransitionType"
+      ],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_IsLeft": {
+        "type": "int",
+        "source": "pocket-card-render/card-dual-mrr-object-arm64-state-port@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "8ceeef43c936c03a8dd3f7d3d9f4a01ea23f9ac12feebf27922d6fc724d79679",
+        "outputSourceSha256": "854121728ceeae1878e2bad256b88551403eca32d79413f4336d25005f9fe7bd",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "912727072a600d6addb3fc3184654986278ce6755d550d8c62ba1657d73d8e3e",
+        "outputSourceSha256": "9023338ef803b56789be27e33c4cd778ff33ceb78af84744261eeea658f62e63",
+        "inputs": [],
+        "storedVSampleCount": 3
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_TransitionPatternTex",
+      "spirvName": "_12",
+      "dimension": 2
+    },
+    {
+      "slot": "_IconLTypeBGTex",
+      "spirvName": "_82",
+      "dimension": 2
+    },
+    {
+      "slot": "_IconRTypeBGTex",
+      "spirvName": "_88",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/card_illust_transitiontexture.vert.glsl",
+    "fragment": "public/shaders/card_illust_transitiontexture.frag.glsl"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  },
+  "official_executable_identity": {
+    "schemaVersion": 1,
+    "compilerPlatform": 18,
+    "gpuProgramType": 25,
+    "programEntrySha256": "243d32b953d9d482a771de83bbef08c05b7e8a735601f16c9c7099e4a115710b",
+    "programContainerLayoutSha256": "c260fc692eca2480566a58a590353c7be1f7e0b5dd1bfb8466315c0385d0edc9",
+    "vertexSpirvSha256": "59afe0dd7099a077655246c466fd572162eadeb1d760bfcd16664d5ad8a53e5c",
+    "fragmentSpirvSha256": "fa90f57b64a3c827873aecc42cc230450fad729d7aa2a9b8c3e21f7ca437ed4e",
+    "parameterEntrySha256": "8281284b0de6081fb1d4625acea1d44679ee636432bc6e1f7b4555aa9b23c656",
+    "passStateSha256": "1ee616bdf85359c501dfc2fb91ef188bba6ecc4c9f2582fd096b80c4cef18ea0",
+    "commonBindingsSha256": "b1cc98a06f6c7369efc07480f1052003c66cc611c6c6a2f73513b417cb277e46"
+  }
+}

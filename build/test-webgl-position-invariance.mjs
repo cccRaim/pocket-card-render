@@ -80,6 +80,11 @@ test("manifest-proven standard object transforms receive one canonical final pos
     canonicalizeObjectClipPosition: true,
   });
   assert.equal(prepared.canonicalObjectClipPosition, true);
+  const withShake = source.replace("void main()", "uniform float shake;\nvoid main()")
+    .replace("gl_Position = vec4(0.0);", "vec3 p = position; p.x += shake; gl_Position = vec4(p, 1.0);");
+  assert.equal(prepareWebglVertexSource(withShake, {
+    manifest, inspectPositionInputs: true,
+  }).canonicalObjectClipPosition, false);
   assert.match(
     prepared.source,
     /gl_Position = projectionMatrix \* viewMatrix \* modelMatrix \* vec4\(position, 1\.0\);\n}/,

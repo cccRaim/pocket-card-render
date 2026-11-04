@@ -1,0 +1,256 @@
+{
+  "official_selector": {
+    "selectorId": "f7177bf3d5bac65d15ca8f8d2ecf0396a3acdb831bff2ce74563b2fd984fa8c9",
+    "candidateWitnessId": "41c433f707550fb175d6d84e5fcd6cf66ad58d7dfa7cb727f5623eb04e9205f7",
+    "shaderIdentity": "CAB-b91ee530ef520e839ef1482231693d1d:3418664917731838456",
+    "shaderName": "Lettuce/Common/CardNew/Face/Card_Circular_Trail_Kira",
+    "keywords": [],
+    "selectionMode": "ordered-multipass-structure",
+    "subshader": 0,
+    "pass": 1,
+    "semanticExecutableId": "0b0286de65f88f43761cc6fa6810c243996c88b6c88d9872c3e3b798cd4e2860"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 5
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 1
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 0
+      },
+      "read_mask": {
+        "name": null,
+        "val": 255
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 8
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_BaseColorIntensity": 1,
+      "_AdjustAlphaBlendAlpha": 0.5,
+      "_AdjustAlphaBlendColor": 0.5,
+      "_AdjustAddAlpha": 1,
+      "_AdjustAddMinAlpha": 0,
+      "_BaseScaleAdjust": 1,
+      "_UVOffset": 0,
+      "_MeshDivideCount": 0,
+      "_AdjustRadiusScale": 1,
+      "_CenterMoveByTilt": 0,
+      "_BrightnessPower": 1,
+      "_BrightnessAffectIntensity": 1,
+      "_FlickerScale": 0.14000000059604645,
+      "_FlickerSpeed": 1,
+      "_EmissiveIntensity": 1
+    },
+    "colors": {},
+    "vectors": {},
+    "textureDescriptors": {
+      "_BaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_Circular_Trail_Kira",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_AdjustRadiusScale",
+        "_CenterMoveByTilt",
+        "_BaseColorIntensity",
+        "_AdjustAddAlpha",
+        "_AdjustAddMinAlpha",
+        "_BaseScaleAdjust",
+        "_UVOffset",
+        "_BrightnessPower",
+        "_BrightnessAffectIntensity",
+        "_EmissiveIntensity",
+        "_FlickerScale",
+        "_FlickerSpeed"
+      ],
+      "ints": [],
+      "vectors": {}
+    },
+    "dynamic_uniforms": {
+      "_CircularDefaultAngle": {
+        "type": "float",
+        "source": "CircularKiraObject.Initialize/UpdateCircularParams"
+      },
+      "_NoiseTime": {
+        "type": "float",
+        "source": "CircularKiraObject.UpdateTrailParams"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "9cb84a98be650dc733a575113d50af3ac8bb59db62d6b8d728e25ef406ab2462",
+        "outputSourceSha256": "51d46e01e9dd6c2ae7177e791bb92d74aa778f8e950139ecdb0f25fa86e73bcc",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "d1473f01364b3152a80f7f6129ec376864230f75aaf0d9b38d8be49437c97384",
+        "outputSourceSha256": "a1e1c686c8870d82fcf775dd64ca67aa2c21ac05d6570df6de7cfb7fcc6bf2d1",
+        "inputs": [],
+        "storedVSampleCount": 1
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_BaseTex",
+      "spirvName": "_149",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/circular_trail_p1.vert.glsl",
+    "fragment": "public/shaders/circular_trail_p1.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_229"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "dynamic-uniform-producer-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

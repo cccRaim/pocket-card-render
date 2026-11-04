@@ -84,6 +84,8 @@ import {
 } from "./render/official-draw-identity.js";
 import { orderOfficialPasses } from "./render/official-port-identity.js";
 import { loadExactShaderPortsFromContract } from "./render/exact-port-loader.js";
+import { sceneProgramPackageOptions } from "./render/scene-program-package.js";
+import { createCardCoveragePresenter } from "./render/pipeline/card-coverage.js";
 import {
   loadRuntimeMaterialDispatchFromContract,
   resolveRuntimeMaterialDispatch,
@@ -181,7 +183,7 @@ const isFoilSprite = (e) => typeof e.sprite === "string" && e.sprite.startsWith(
 // reflection vector — NOT a flat 2D matcap (which plastered the env photo on = the "mirror" artifact).
 // L_001_ENV ships as a 128×768 VERTICAL STRIP = 6 stacked 128×128 cube faces (+X,-X,+Y,-Y,+Z,-Z, the
 // three.js CubeTexture order). Slice it into a CubeTexture so the reflection moves with the surface.
-function loadEnvCube(url, samplerState) {
+function loadEnvCube(url, samplerState, unityStrip) {
   return new Promise((res) => {
     const img = new Image(); img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -189,7 +191,15 @@ function loadEnvCube(url, samplerState) {
       const faces = [];
       for (let i = 0; i < 6; i++) {
         const c = document.createElement("canvas"); c.width = fw; c.height = fh;
-        c.getContext("2d").drawImage(img, 0, i * fh, fw, fh, 0, 0, fw, fh);
+        const context = c.getContext("2d");
+        let sourceFace = i;
+        if (unityStrip) {
+          // Y changes handedness between the strip and the sampled cube. Exchange
+          // the two pole faces and reflect the vertical axis of the other four.
+          if (i === 2 || i === 3) sourceFace = 5 - i;
+          else context.setTransform(1, 0, 0, -1, 0, fh);
+        }
+        context.drawImage(img, 0, sourceFace * fh, fw, fh, 0, 0, fw, fh);
         faces.push(c);
       }
       const cube = new THREE.CubeTexture(faces);
@@ -264,6 +274,7 @@ function buildDynamicUITexture(
       color,
       role,
       unityLayer: Number(element?.unityLayer),
+      captureUnityLayer: element?.captureUnityLayer,
       hierarchyOrder: hierarchyOrderOf(element),
       sequence: drawSequence++,
       uiTransform: element?.uiTransform || IDENTITY_UI_AFFINE,
@@ -285,6 +296,7 @@ function buildDynamicUITexture(
       textureSampleAdd,
       role,
       unityLayer: Number(element?.unityLayer),
+      captureUnityLayer: element?.captureUnityLayer,
       hierarchyOrder: hierarchyOrderOf(element),
       sequence: drawSequence++,
       uiTransform: element?.uiTransform || IDENTITY_UI_AFFINE,
@@ -375,6 +387,8 @@ function buildDynamicUITexture(
     characterSpacing: Number(e.characterSpacing || 0),
     wordSpacing: Number(e.wordSpacing || 0),
     charWidthAdjustment: Number(e.charWidthAdjustment || 0),
+    textWidthScale: Number(e.textWidthScale ?? 1),
+    measureOverflowWidth: !!e.tmpMeasureOverflowWidth,
     kerning: e.kerning !== false,
   });
   function measureRun(e, text, fs, bold = false, italic = false) {
@@ -485,7 +499,7 @@ function buildDynamicUITexture(
     });
     return layout;
   }
-  function fitOfficialTmpAutoSize(e, text, requestedSize, maxWidth) {
+  function fitOfficialTmpAutoSize(e, text, requestedSize, maxWidth, maxHeight) {
     if (!e.autosize || !(maxWidth > 0) || !tmpFonts || !e.sdf?.fontId) {
       return { fontSize: requestedSize, charWidthAdjustment: 0, lineSpacingDelta: 0 };
     }
@@ -497,12 +511,16 @@ function buildDynamicUITexture(
       lineSpacingMax: Number(e.lineSpacingMax || 0),
       overflowMode: Number(e.overflowMode || 0),
       maxWidth,
-    }, ({ fontSize, charWidthAdjustment }) => ({
-      width: measureRun({ ...e, charWidthAdjustment }, text, fontSize),
-      height: 0,
-      lineCount: 1,
-      baseScale: 1,
-    }));
+      maxHeight,
+    }, ({ fontSize, charWidthAdjustment }) => {
+      const bounds = inkBounds(e, text, fontSize);
+      return {
+        width: measureRun({ ...e, charWidthAdjustment }, text, fontSize),
+        height: bounds.ascent + bounds.descent,
+        lineCount: 1,
+        baseScale: 1,
+      };
+    });
   }
   // word-wrap over runs: latin words stay whole, CJK breaks per char; first line shortened by `indent`.
   // an image run (inline ex glyph) is one non-breaking token sized fs·exAR wide.
@@ -525,13 +543,13 @@ function buildDynamicUITexture(
       const image = item.img === "ex" ? imap?.get(EX_GLYPH) : imap?.get(item.url);
       return image?.height ? image.width / image.height : 1;
     };
-    const measure = (lineItems) => {
+    const measure = (lineItems, overflow = false) => {
       let width = 0;
       let text = "";
       let bold = null;
       let italic = null;
-      const flush = () => {
-        if (text) width += measureRun(e, text, fs, bold, italic);
+      const flush = (last = false) => {
+        if (text) width += measureRun(last && overflow ? { ...e, tmpMeasureOverflowWidth: true } : e, text, fs, bold, italic);
         text = "";
       };
       for (const item of lineItems) {
@@ -567,12 +585,14 @@ function buildDynamicUITexture(
           italic = item.italic;
         }
       }
-      flush();
+      flush(true);
       return width;
     };
     return wrapOfficialTmpItems(tmpFonts, items, {
       maxWidth: maxW,
       firstLineWidth: maxW - indent,
+      justifiedOrFlush: e.horizontalAlignment === 8 || e.horizontalAlignment === 16,
+      measureOverflow: items => measure(items, true),
       measure,
     }).map((line) => ({ ...line, width: measure(line.items) }));
   }
@@ -665,10 +685,10 @@ function buildDynamicUITexture(
         tmpDraws.push({
           layout,
           sdf: resolvedSdf,
-          sdfScale: layout.scale,
           vertexColor: componentColor,
           role: e.tmpRole || "text",
           unityLayer: Number(e.unityLayer),
+          captureUnityLayer: e.captureUnityLayer,
           layoutPath: e.layoutPath || null,
           uiTransform: e.uiTransform || IDENTITY_UI_AFFINE,
           hierarchyOrder: hierarchyOrderOf(e),
@@ -698,12 +718,12 @@ function buildDynamicUITexture(
     ));
     const exImg = imap && imap.get(EX_GLYPH);                          // inline ex glyph (for [Img:ex] in body text)
     const exSpriteSheet = e.inlineEx?.textureUrl && imap?.get(e.inlineEx.textureUrl);
-    if (e.wrap) {                                       // multi-line: wrap to box width, shrink to fit box height
-      const margin = e.margin || [0, 0, 0, 0];
-      const boxLeft = b.l * W + Number(margin[0] || 0);
-      const boxRight = b.r * W - Number(margin[2] || 0);
-      const boxTop = b.t * H + Number(margin[1] || 0);
-      const boxBottom = b.b * H - Number(margin[3] || 0);
+    const margin = e.margin || [0, 0, 0, 0];
+    const boxLeft = b.l * W + Number(margin[0] || 0);
+    const boxRight = b.r * W - Number(margin[2] || 0);
+    const boxTop = b.t * H + Number(margin[1] || 0);
+    const boxBottom = b.b * H - Number(margin[3] || 0);
+    if (e.wrap || runs.some(run => /[\n\v\u2028\u2029]/.test(run.t || ""))) {
       const boxW = boxRight - boxLeft, boxH = boxBottom - boxTop, indentPx = (e.indent || 0) * W;
       const c = e.color; ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
       ctx.textAlign = "left"; ctx.textBaseline = "top";
@@ -758,8 +778,8 @@ function buildDynamicUITexture(
         let xx = boxLeft + (i === 0 ? indentPx : 0);
         if (e.align === "right") xx += available - line.width;
         else if (e.align === "center") xx += (available - line.width) / 2;
-        const justify = (e.horizontalAlignment === 16 || (e.horizontalAlignment === 8 && i < lines.length - 1))
-          && !line.hardBreak;
+        const justify = e.horizontalAlignment === 16 || (e.horizontalAlignment === 8 &&
+          ((!line.hardBreak && i < lines.length - 1) || line.width > available));
         const offsets = justify
           ? computeOfficialTmpJustificationOffsets(line.items, line.width, available, Number(e.wordWrappingRatios ?? 0.4))
           : new Array(line.items.length).fill(0);
@@ -814,7 +834,7 @@ function buildDynamicUITexture(
       }
       return;
     }
-    const hasMixedRuns = runs.some((run) => run.img || run.sprite || run.symbol || run.bold || run.italic || run.noBreak);
+    const hasMixedRuns = runs.some((run) => run.img || run.sprite || run.symbol || run.bold || run.italic || run.noBreak || run.scale);
     if (hasMixedRuns) {
       const metricsAt = (size, charWidthAdjustment = 0) => {
         const layoutElement = { ...e, charWidthAdjustment };
@@ -853,9 +873,10 @@ function buildDynamicUITexture(
             ascent = Math.max(ascent, size * 0.88);
             descent = Math.max(descent, size * 0.12);
           } else if (run.t) {
-            const bounds = inkBounds(layoutElement, run.t, size, run.bold, run.italic);
-            const advance = measureRun(layoutElement, run.t, size, run.bold, run.italic);
-            segments.push({ ...run, size, advance });
+            const runSize = size * (run.scale ?? 1);
+            const bounds = inkBounds(layoutElement, run.t, runSize, run.bold, run.italic);
+            const advance = measureRun(layoutElement, run.t, runSize, run.bold, run.italic);
+            segments.push({ ...run, size: runSize, advance });
             width += advance;
             ascent = Math.max(ascent, bounds.ascent);
             descent = Math.max(descent, bounds.descent);
@@ -863,7 +884,7 @@ function buildDynamicUITexture(
         }
         return { width, ascent, descent, segments };
       };
-      const boxW = (b.r - b.l) * W;
+      const boxW = Math.min(boxRight - boxLeft, e.nameExLayout ? e.nameExLayout.maxW * W : Infinity);
       let mixed = metricsAt(fs);
       if (e.autosize && boxW > 1) {
         const fitted = resolveOfficialTmpAutoSize({
@@ -874,6 +895,7 @@ function buildDynamicUITexture(
           lineSpacingMax: Number(e.lineSpacingMax || 0),
           overflowMode: Number(e.overflowMode || 0),
           maxWidth: boxW,
+          maxHeight: boxBottom - boxTop,
         }, ({ fontSize, charWidthAdjustment }) => {
           const metrics = metricsAt(fontSize, charWidthAdjustment);
           return { ...metrics, height: metrics.ascent + metrics.descent, lineCount: 1, baseScale: 1 };
@@ -883,12 +905,12 @@ function buildDynamicUITexture(
         mixed = fitted.evaluation;
       }
       let baseline;
-      if (va === "bottom") baseline = b.b * H - mixed.descent;
-      else if (va === "top") baseline = b.t * H + mixed.ascent;
-      else baseline = (b.t + b.b) / 2 * H + (mixed.ascent - mixed.descent) / 2;
-      let cursor = e.align === "right" ? b.r * W - mixed.width
-        : e.align === "center" ? (b.l + b.r) / 2 * W - mixed.width / 2
-        : b.l * W;
+      if (va === "bottom") baseline = boxBottom - mixed.descent;
+      else if (va === "top") baseline = boxTop + mixed.ascent;
+      else baseline = (boxTop + boxBottom) / 2 + (mixed.ascent - mixed.descent) / 2;
+      let cursor = e.align === "right" ? boxRight - mixed.width
+        : e.align === "center" ? (boxLeft + boxRight) / 2 - mixed.width / 2
+        : boxLeft;
       const c = e.color;
       ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
       for (const segment of mixed.segments) {
@@ -915,40 +937,43 @@ function buildDynamicUITexture(
             }
           }
         } else {
-          drawSdfText(ctx, e, segment.t, cursor, baseline, fs, segment.bold, segment.italic);
+          drawSdfText(ctx, e, segment.t, cursor, baseline, segment.size, segment.bold, segment.italic);
         }
         cursor += segment.advance;
+      }
+      if (e.nameExLayout) {
+        nameExParentDeltas.set(e.layoutPath, computeOfficialNameExParentDelta(e.nameExLayout, mixed.width, W));
       }
       return;
     }
     // TMP auto-sizing: shrink the font from fs down to fsmin so the text fits its box width (long translations)
     if (e.autosize) {
-      const boxW = (b.r - b.l) * W;
+      const boxW = Math.min(boxRight - boxLeft, e.nameExLayout ? e.nameExLayout.maxW * W : Infinity);
       if (boxW > 1) {
-        const fitted = fitOfficialTmpAutoSize(e, e.text, fs, boxW);
+        const fitted = fitOfficialTmpAutoSize(e, e.text, fs, boxW, boxBottom - boxTop);
         fs = fitted.fontSize;
         e = { ...e, charWidthAdjustment: fitted.charWidthAdjustment };
       }
     }
     ctx.font = faceFont(e.font, fs);
-    const x = e.align === "right" ? b.r * W : e.align === "center" ? (b.l + b.r) / 2 * W : b.l * W;
+    const x = e.align === "right" ? boxRight : e.align === "center" ? (boxLeft + boxRight) / 2 : boxLeft;
     // TMP vertical alignment: Middle centres the GLYPH INK bounds at the box centre (NOT the em box — canvas
     // "middle" uses the em box, which drops symbols like "+" below the digit line). Compute the baseline from
     // the actual ink metrics so "+" and "20" (and all numerals) sit consistently.
     let y;
     const mm = inkBounds(e, e.text, fs);
-    if (va === "bottom") y = b.b * H - mm.descent;
-    else if (va === "top") y = b.t * H + mm.ascent;
+    if (va === "bottom") y = boxBottom - mm.descent;
+    else if (va === "top") y = boxTop + mm.ascent;
     else {
       const ia = mm.ascent, id = mm.descent;
-      y = (b.t + b.b) / 2 * H + (ia - id) / 2;          // ink-centre at the box centre
+      y = (boxTop + boxBottom) / 2 + (ia - id) / 2;          // ink-centre at the box centre
     }
     const c = e.color;
     ctx.fillStyle = `rgba(${(c[0]*255)|0},${(c[1]*255)|0},${(c[2]*255)|0},${c[3] ?? 1})`;
     drawSdfText(ctx, e, e.text, x, y, fs, false, false, e.align);
     if (e.nameExLayout) {                               // PokemonCardNameView.UpdateExLayout (byte-traced):
       const mn = inkBounds(e, e.text, fs);              //   ex.anchoredPosition.x = min(nameWidth, _textMaxWidthForEx)
-      const nameWidth = mn.right > 0 ? mn.right : mn.advance;
+      const nameWidth = mn.advance;
       nameExParentDeltas.set(
         e.layoutPath,
         computeOfficialNameExParentDelta(e.nameExLayout, nameWidth, W),
@@ -1184,7 +1209,7 @@ async function main() {
     })
     : null;
   const officialUIRTPrograms = exactEnabled("UI_RT")
-    ? await loadOfficialUIRTPrograms().catch((error) => {
+    ? await loadOfficialUIRTPrograms({ preserveSourceAlpha: scene_data.programPortPackage === "programs/c1" }).catch((error) => {
       console.warn("official UI ToRT/FromRT programs unavailable; retaining Canvas texture fallback", error);
       return null;
     })
@@ -1283,16 +1308,18 @@ async function main() {
 
   // The generated contract is the only browser port inventory. Adding or migrating a port updates
   // the contract and its manifest; app.js owns no parallel shader/manifest/source list.
+  const packageOptions = sceneProgramPackageOptions(scene_data.programPortPackage, { audit: fullRuntimeAudit });
   const [exactShaders, runtimeDispatchIndex] = await Promise.all([
     loadExactShaderPortsFromContract({
+      ...packageOptions,
       exactEnabled,
       canonicalizeObjectClipPosition: !logicBisectCase.disableCanonicalObjectClipPosition,
     }),
-    loadRuntimeMaterialDispatchFromContract(),
+    loadRuntimeMaterialDispatchFromContract(packageOptions),
   ]);
   hasBloomProducer = !qp.has("nobloom")
     && !logicBisectCase.disableBloom
-    && sceneUsesBloomProducer(scene_data.materials, exactShaders, runtimeDispatchIndex);
+    && sceneUsesBloomProducer(scene_data.materials, exactShaders, runtimeDispatchIndex, scene_data);
   const [officialBloomPrograms, officialFinalBlitProgram, cardDisplayContract, homographyDisplayProgram] = await Promise.all([
     loadOfficialBloomPrograms(),
     loadOfficialFinalBlitProgram(),
@@ -1378,7 +1405,9 @@ async function main() {
   let foilTex = dynTex && dynTex.foil;      // ex-foil mask (only the ex glyph + ex-rule banner)
   // real environment cubemap for the holo/foil reflections (samplerCube, not a 2D matcap)
   const envCubeUrl = (Object.values(scene_data.materials).find((m) => m.textures && m.textures._CubeMap) || {}).textures?._CubeMap?.url;
-  const envCubeTex = envCubeUrl ? await loadEnvCube(envCubeUrl, officialSamplerMap[envCubeUrl]) : null;
+  const envCubeTex = envCubeUrl ? await loadEnvCube(
+    envCubeUrl, officialSamplerMap[envCubeUrl], scene_data.programPortPackage === "programs/c1",
+  ) : null;
   const exactGlitMats = [];   // RawShaderMaterials driven by the native GlitterFlowMaps state machine
 
   // The official Android player uses Unity's Gamma color-space workflow. In that workflow texture samples,
@@ -1389,6 +1418,8 @@ async function main() {
   renderer.setClearColor(0x14161c, 1);
 
   const scene = new THREE.Scene();
+  const coverageSources = new Set();
+  let presentWithCoverage;
   const displayScene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     cardDisplayContract.camera.field_of_view_degrees,
@@ -1543,7 +1574,10 @@ async function main() {
       try {
         const tex = await loadOfficialTexture(url, officialSamplerMap[url]);
         texInfo.set(name, { tex, straight: alphaMode[name] === "straight" });
-      } catch {
+      } catch (error) {
+        if (scene_data.programPortPackage) {
+          throw new Error(`Scene texture ${name} could not be loaded from ${url}`, { cause: error });
+        }
         console.warn("tex fail", url);
       } finally {
         tick();
@@ -1831,6 +1865,7 @@ async function main() {
         const selector = mat.userData.officialSelector;
         const passLabel = selector ? `  p${selector.subshader}:${selector.pass}` : "";
         mesh.userData.label = `${matName}  ·  ${r.shader}  ·  q${mesh.renderOrder}${passLabel}`;
+        if (matName === "OuterStencil" || cfg.strategy === "sideBack") coverageSources.add(mesh);
         stagedMeshes.push(mesh);
       }
       if (invalidQueue) {
@@ -1839,7 +1874,7 @@ async function main() {
         return;
       }
       for (const material of passMaterials) {
-        if (material.userData.dynamicUIRole === "text") {
+        if (material.userData.dynamicUIRole === "text" || material.userData.dynamicUISamplers) {
           dynamicUITextMaterials.add(material);
         }
       }
@@ -1952,6 +1987,9 @@ async function main() {
     const displayMesh = new THREE.Mesh(displayGeometry, displayMaterial);
     displayMesh.frustumCulled = false;
     displayScene.add(displayMesh);
+    if (scene_data.programPortPackage) {
+      presentWithCoverage = createCardCoveragePresenter(scene, camera, displayCamera, displayMesh, coverageSources);
+    }
     const updateDisplayViewport = () => {
       displayCamera.aspect = innerWidth / innerHeight;
       displayCamera.updateProjectionMatrix();
@@ -2010,6 +2048,12 @@ async function main() {
     function replaceDynamicUITextures(t) {
       if (!t) return;
       for (const material of dynamicUITextMaterials) {
+        if (material.userData.dynamicUISamplers) {
+          for (const [name, type] of Object.entries(material.userData.dynamicUISamplers)) {
+            material.uniforms[name].value = type === 0 ? t.ui : t.holo;
+          }
+          continue;
+        }
         const uniformName = material.userData.dynamicUIUniform;
         if (!uniformName || !material.uniforms[uniformName]) {
           throw new Error(`${material.userData.exactShader}: missing exact DynamicUI sampler binding`);
@@ -2099,14 +2143,21 @@ async function main() {
     }
     async function switchLocale(lc, selEl) {
       if (switching) return;
+      const previousFonts = curFonts, previousWeights = curWeights;
       switching = true; busy(true, "Switching…"); if (selEl) selEl.disabled = true;
       try {
         await loadLocaleData(lc);                          // sets curFonts + loads that locale's fonts
         const t = await buildFace(lc);                     // rebuild the DynamicUI for the new locale (any card)
+        if (!t) throw new Error(`Card text missing for ${mdId} in ${lc}`);
         replaceDynamicUITextures(t);
         curLoc = lc;
         refreshCardSelectLabels();
-      } catch (e) { console.warn("switchLocale", e); }
+      } catch (e) {
+        curFonts = previousFonts;
+        curWeights = previousWeights;
+        if (selEl) selEl.value = curLoc;
+        console.warn("switchLocale", e);
+      }
       finally {
         switching = false; busy(false); if (selEl) selEl.disabled = false;
         const next = new URL(location.href);
@@ -2571,6 +2622,7 @@ async function main() {
   const identityQ = new THREE.Quaternion();
   const targetQ = new THREE.Quaternion();
   const glitterWorldQ = new THREE.Quaternion();
+  const shadowWorldQ = new THREE.Quaternion();
   const cardForward = new THREE.Vector3();
   let lastRender = -Infinity;
   const officialClock = new OfficialClock();
@@ -2820,12 +2872,15 @@ async function main() {
     if (window.__tilt) window.__tilt.quaternion.copy(targetQ);
     if (clockFrame.shouldUpdate) {
       for (const am of animMats) am.uniforms.uTime.value = clockFrame.globalTime;
+      window.__tilt?.updateWorldMatrix(true, true);
+      window.__tilt?.getWorldQuaternion(shadowWorldQ);
       updateMegaRuntime(
         megaDynamicMats,
         targetQ,
         clockFrame.globalTime,
         camera,
         clockFrame.scaledDeltaTime,
+        window.__tilt ? shadowWorldQ : null,
       );
       window.__tilt?.updateWorldMatrix(true, true);
       for (const em of exactGlitMats) {
@@ -2909,7 +2964,8 @@ async function main() {
         const viewportPoints = cardDisplay.projectedKeypoints();
         const matrices = setHomographyDisplayPoints(cardDisplay.material, viewportPoints);
         const displayPost = window.__displayPost;
-        renderer.setClearColor(0x14161c, 1);
+        if (presentWithCoverage) renderer.setClearColor(0, 0);
+        else renderer.setClearColor(0x14161c, 1);
         drainFrameWebglErrors("before-homography-render");
         renderer.setRenderTarget(displayPost.sceneRT);
         renderer.render(displayScene, displayCamera);
@@ -2917,7 +2973,8 @@ async function main() {
         renderer.setRenderTarget(null);
         drainFrameWebglErrors("after-display-target-detach");
         const pixelProbe = shotMode ? readCenterProbe(displayPost.sceneRT) : null;
-        displayPost.present();
+        if (presentWithCoverage) presentWithCoverage(renderer, post.sceneRT, displayPost.sceneRT);
+        else displayPost.present();
         drainFrameWebglErrors("after-display-present");
         window.__displayDiagnostics = {
           mode: detailDisplayProfile.display_mode.selected_material,

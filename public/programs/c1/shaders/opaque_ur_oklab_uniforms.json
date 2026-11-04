@@ -1,0 +1,516 @@
+{
+  "official_selector": {
+    "selectorId": "ce8eb1eedf6bf5f01f87e7913fcef909edee8a0439dc037515df134f5269b26a",
+    "candidateWitnessId": "56ce2e59eaa541313880a1573ec30c192037c39411adc692aa743e56838a5d42",
+    "shaderIdentity": "CAB-182e9ce244efe632677862310eb737a4:3059412248834019778",
+    "shaderName": "Lettuce/Common/CardNew/ShadowBox/Opaque-UR-Oklab",
+    "keywords": [
+      "_DARKNESSENABLED_ON",
+      "_FAKESPECULARENABLED_ON",
+      "_HOLOGRAM2ENABLED_ON",
+      "_REFLECTIONENABLED_ON"
+    ],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "2809384b7ac756b8a961dad3995ac4722b53245e500a9ce634082725ccb77205"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "shader_property_defaults": {
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_UsePositionAsUV": 0,
+      "_Hologram2Enabled": 0,
+      "_DiffractionIntensity2": 0.5,
+      "_DiffractionPower2": 64,
+      "_RampRepeat2": 2,
+      "_RampSpeed2": 1,
+      "_RampOffset2": 0,
+      "_RampInterval2": 0,
+      "_RemoveBase": 0,
+      "_TiltPower2": 2,
+      "_TiltOffset2": 0,
+      "_TiltIntensity2": 1,
+      "_ReflectionEnabled": 0,
+      "_ReflectionIntensity": 1,
+      "_ReflectionPower": 0,
+      "_ReflectionCenterAdjust": 0.4000000059604645,
+      "_RefTiltEnabled": 1,
+      "_RefTiltPower": 2,
+      "_RefTiltOffset": 0,
+      "_RefTiltIntensity": 1,
+      "_FakeSpecularEnabled": 0,
+      "_FakeSpecularMaskScale": 1,
+      "_FakeSpecularIntensity": 1,
+      "_FakeSpecularPower": 1,
+      "_FakeSpecularCornerPower": 0,
+      "_FakeSpecularNotCornerOffset": 0,
+      "_FakeSpecularMaskScale_Outline": 1,
+      "_FakeSpecularIntensity_Outline": 1,
+      "_FakeSpecularPower_Outline": 1,
+      "_DarknessEnabled": 0,
+      "_DarknessOffset": 0,
+      "_Stencil": 0,
+      "_Tilt": 0
+    },
+    "depth": {
+      "test": {
+        "name": null,
+        "val": 4
+      },
+      "write": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": null,
+        "val": 7
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 4
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 2
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_Shininess": 32,
+      "_BaseColorIntensity": 0.5,
+      "_SpecularIntensity": 1,
+      "_DiffractionIntensity": 0.5,
+      "_DiffractionPower": 64,
+      "_RampRepeat": 2,
+      "_RampSpeed": 1,
+      "_RampOffset": 0,
+      "_RampInterval": 0,
+      "_UsePositionAsUV": 0,
+      "_Hologram2Enabled": 0,
+      "_DiffractionIntensity2": 0.5,
+      "_DiffractionPower2": 64,
+      "_RampRepeat2": 2,
+      "_RampSpeed2": 1,
+      "_RampOffset2": 0,
+      "_RampInterval2": 0,
+      "_RemoveBase": 0,
+      "_TiltPower2": 2,
+      "_TiltOffset2": 0,
+      "_TiltIntensity2": 1,
+      "_ReflectionEnabled": 0,
+      "_ReflectionIntensity": 1,
+      "_ReflectionPower": 0,
+      "_ReflectionCenterAdjust": 0.4000000059604645,
+      "_RefTiltEnabled": 1,
+      "_RefTiltPower": 2,
+      "_RefTiltOffset": 0,
+      "_RefTiltIntensity": 1,
+      "_FakeSpecularEnabled": 0,
+      "_FakeSpecularMaskScale": 1,
+      "_FakeSpecularIntensity": 1,
+      "_FakeSpecularPower": 1,
+      "_FakeSpecularCornerPower": 0,
+      "_FakeSpecularNotCornerOffset": 0,
+      "_FakeSpecularMaskScale_Outline": 1,
+      "_FakeSpecularIntensity_Outline": 1,
+      "_FakeSpecularPower_Outline": 1,
+      "_DarknessEnabled": 0,
+      "_DarknessOffset": 0,
+      "_Stencil": 0,
+      "_Tilt": 0
+    },
+    "colors": {
+      "_OutlineColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_ReflectionColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_FakeSpecularColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_FakeSpecularColor_Outline": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_DarknessColor": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "_EmissiveColor": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_Rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "_Front": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "textureDescriptors": {
+      "_MainTex": {
+        "defaultName": "",
+        "dimension": 2
+      },
+      "_CubeMap": {
+        "defaultName": "",
+        "dimension": 4
+      },
+      "_PhaseTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_PhaseMaskTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_HologramMaskTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_PhaseTex2": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_RampMaskTex2": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_RampTex2": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_NormalMap2": {
+        "defaultName": "bump",
+        "dimension": 2
+      },
+      "_ReflectionMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FakeSpecularMask": {
+        "defaultName": "white",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Opaque-UR-Oklab",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_FakeSpecularMaskScale",
+        "_FakeSpecularIntensity",
+        "_FakeSpecularPower",
+        "_FakeSpecularCornerPower",
+        "_FakeSpecularNotCornerOffset",
+        "_FakeSpecularMaskScale_Outline",
+        "_FakeSpecularIntensity_Outline",
+        "_FakeSpecularPower_Outline",
+        "_Shininess",
+        "_BaseColorIntensity",
+        "_SpecularIntensity",
+        "_DiffractionIntensity",
+        "_DiffractionPower",
+        "_RampRepeat",
+        "_RampSpeed",
+        "_RampOffset",
+        "_RampInterval",
+        "_DiffractionIntensity2",
+        "_DiffractionPower2",
+        "_RampRepeat2",
+        "_RampSpeed2",
+        "_RampOffset2",
+        "_RampInterval2",
+        "_RemoveBase",
+        "_TiltPower2",
+        "_TiltOffset2",
+        "_TiltIntensity2",
+        "_ReflectionIntensity",
+        "_ReflectionPower",
+        "_ReflectionCenterAdjust",
+        "_RefTiltPower",
+        "_RefTiltOffset",
+        "_RefTiltIntensity",
+        "_DarknessOffset",
+        "_Tilt"
+      ],
+      "ints": [
+        "_UsePositionAsUV",
+        "_RefTiltEnabled"
+      ],
+      "vectors": {
+        "_ReflectionColor": "vec3",
+        "_FakeSpecularColor": "vec3",
+        "_FakeSpecularColor_Outline": "vec3",
+        "_DarknessColor": "vec3",
+        "_OutlineColor": "vec3",
+        "_EmissiveColor": "vec4",
+        "_Rotation": "vec3"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "62258ead7d62e90b1b478c5b82e8a9cf4d4c584e66316c7268e79b52a9723517",
+        "outputSourceSha256": "8d388555142aa5a256052280fb6b2c4b0565496e627ce1c0434f83cd30aeff6b",
+        "inputs": [
+          "position",
+          "normal",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "e9ca874efaeca6db8d546a8a5ecb20707e9f889c59ce213391bef42a6e0b0bcb",
+        "outputSourceSha256": "c59d6bcfc22143e78e36e1e3a1c71dff97d6f6dc5c8615c9e084bebf57fc8be4",
+        "inputs": [
+          "modelMatrix",
+          "viewMatrix",
+          "cameraPosition"
+        ],
+        "storedVSampleCount": 14
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_MainTex",
+      "spirvName": "_13",
+      "dimension": 2
+    },
+    {
+      "slot": "_HologramMaskTex",
+      "spirvName": "_291",
+      "dimension": 2
+    },
+    {
+      "slot": "_CubeMap",
+      "spirvName": "_354",
+      "dimension": 4
+    },
+    {
+      "slot": "_PhaseTex",
+      "spirvName": "_419",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseMaskTex",
+      "spirvName": "_428",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex",
+      "spirvName": "_435",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex",
+      "spirvName": "_607",
+      "dimension": 2
+    },
+    {
+      "slot": "_PhaseTex2",
+      "spirvName": "_705",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampMaskTex2",
+      "spirvName": "_719",
+      "dimension": 2
+    },
+    {
+      "slot": "_RampTex2",
+      "spirvName": "_862",
+      "dimension": 2
+    },
+    {
+      "slot": "_FakeSpecularMask",
+      "spirvName": "_926",
+      "dimension": 2
+    },
+    {
+      "slot": "_NormalMap2",
+      "spirvName": "_1609",
+      "dimension": 2
+    },
+    {
+      "slot": "_ReflectionMask",
+      "spirvName": "_1775",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/opaque_ur_oklab.vert.glsl",
+    "fragment": "public/shaders/opaque_ur_oklab.frag.glsl"
+  },
+  "mrt": {
+    "secondary_rgb": "active",
+    "emissive": "_2004"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}

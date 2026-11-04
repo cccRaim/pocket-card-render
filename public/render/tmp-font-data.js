@@ -156,6 +156,7 @@ export function layoutOfficialTmpRun(
   const scale = Number(fontSize) / Number(font.face.pointSize) * Number(font.face.scale || 1);
   const emScale = Number(fontSize) * 0.01;
   const widthScale = 1 - Number(options.charWidthAdjustment || 0);
+  const textWidthScale = Number(options.textWidthScale ?? 1);
   const characterSpacing = Number(options.characterSpacing || 0);
   const wordSpacing = Number(options.wordSpacing || 0);
   const entries = [...text].map((character) => {
@@ -168,31 +169,36 @@ export function layoutOfficialTmpRun(
   let carried = ZERO_ADJUSTMENT;
   let carriedIgnoreSpacing = false;
   let lastSpacing = 0;
+  let overflowWidth = 0;
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
     const next = entries[i + 1];
-    const pair = options.kerning === false || !next
+    const glyphFont = entry.font;
+    const glyphScale = Number(fontSize) / glyphFont.face.pointSize * (glyphFont.face.scale ?? 1)
+      * (entry.characterRecord.scale ?? 1) * (entry.glyph.scale ?? 1);
+    const pair = options.kerning === false || !next || entry.fontId !== next.fontId
       ? null
-      : font.pairs.get(`${entry.glyph.index ?? entry.glyph.glyphIndex}:${next.glyph.index ?? next.glyph.glyphIndex}`);
+      : glyphFont.pairs.get(`${entry.glyph.index ?? entry.glyph.glyphIndex}:${next.glyph.index ?? next.glyph.glyphIndex}`);
     const current = addAdjustment(carried, pair?.first || ZERO_ADJUSTMENT);
     const ignoreSpacing = carriedIgnoreSpacing || Boolean(Number(pair?.lookupFlags || 0) & 0x100);
     const metrics = entry.glyph.metrics;
-    const x = penX + (metrics.horizontalBearingX + current.xPlacement) * scale * widthScale;
-    const y = baselineY - (metrics.horizontalBearingY + current.yPlacement) * scale;
+    overflowWidth = penX - Number(startX) + metrics.horizontalAdvance * glyphScale * widthScale;
+    const x = penX + (metrics.horizontalBearingX * textWidthScale + current.xPlacement) * glyphScale * widthScale;
+    const y = baselineY - (metrics.horizontalBearingY + current.yPlacement) * glyphScale;
     output.push({
       ...entry,
       x,
       y,
-      width: metrics.width * scale * widthScale,
-      height: metrics.height * scale,
-      scale,
+      width: metrics.width * textWidthScale * glyphScale * widthScale,
+      height: metrics.height * glyphScale,
+      scale: glyphScale,
       widthScale,
       penX,
       adjustment: current,
     });
-    const spacing = (Number(font.normalSpacingOffset || 0) + (ignoreSpacing ? 0 : characterSpacing)) * emScale;
+    const spacing = (Number(glyphFont.normalSpacingOffset || 0) + (ignoreSpacing ? 0 : characterSpacing)) * emScale;
     lastSpacing = spacing;
-    penX += ((metrics.horizontalAdvance + current.xAdvance) * scale + spacing) * widthScale;
+    penX += ((metrics.horizontalAdvance * textWidthScale + current.xAdvance) * glyphScale + spacing) * widthScale;
     if (/\s/u.test(entry.character) || entry.character.codePointAt(0) === 0x200b) {
       penX += wordSpacing * emScale;
     }
@@ -201,11 +207,12 @@ export function layoutOfficialTmpRun(
   }
   const trailingSpacing = entries.length ? lastSpacing * widthScale : 0;
   const advance = penX - Number(startX) - trailingSpacing;
-  return { glyphs: output, advance, endX: Number(startX) + advance, scale, widthScale };
+  return { glyphs: output, advance, overflowWidth, endX: Number(startX) + advance, scale, widthScale };
 }
 
 export function measureOfficialTmpText(index, fontId, text, fontSize, options = {}) {
-  return layoutOfficialTmpRun(index, fontId, text, fontSize, 0, 0, options).advance;
+  const layout = layoutOfficialTmpRun(index, fontId, text, fontSize, 0, 0, options);
+  return options.measureOverflowWidth ? layout.overflowWidth : layout.advance;
 }
 
 const NON_BREAKING = new Set([0x00A0, 0x2007, 0x2011, 0x202F, 0x2060]);
@@ -254,6 +261,8 @@ export function wrapOfficialTmpItems(index, items, {
   maxWidth,
   firstLineWidth = maxWidth,
   measure,
+  measureOverflow = measure,
+  justifiedOrFlush = false,
 } = {}) {
   if (!(maxWidth > 0) || typeof measure !== "function") throw new Error("invalid TMP wrap options");
   const leading = index?.settings?.leadingCharacters || new Set();
@@ -294,9 +303,10 @@ export function wrapOfficialTmpItems(index, items, {
       continue;
     }
 
-    const width = measure(items.slice(lineStart, i + 1));
+    const width = measureOverflow(items.slice(lineStart, i + 1));
     const available = lineIndex === 0 ? firstLineWidth : maxWidth;
-    if (width > available + 0.0001 && i > lineStart) {
+    if ((character === "\t" || !isBreakWhitespace(character))
+        && width > available * (justifiedOrFlush ? 1.05 : 1) + 0.0001 && i > lineStart) {
       let breakAt = savedWordBreak > lineStart ? savedWordBreak : i;
       let breakKind = "word";
       if (firstWordOfLine && savedSoftBreak > lineStart && savedSoftBreak !== lastSoftBreak) {
@@ -354,7 +364,7 @@ function isJustificationSeparator(item) {
 
 export function computeOfficialTmpJustificationOffsets(items, lineWidth, availableWidth, ratio = 0.4) {
   const offsets = new Array(items.length).fill(0);
-  const gap = Math.max(0, Number(availableWidth) - Number(lineWidth));
+  const gap = Number(availableWidth) - Number(lineWidth);
   let separators = items.filter(isJustificationSeparator).length;
   let visible = items.filter((item) => item.img || item.sprite || item.symbol || !isBreakWhitespace(item.character || "\uFFFC")).length - 1;
   if (items.length && isJustificationSeparator(items[0])) {

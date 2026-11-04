@@ -4,6 +4,8 @@ export const OFFICIAL_PROGRAM_PORT_CONTRACT_SCHEMA =
   "pocket-card-render/official-program-port-contract@2";
 export const CANDIDATE_PROGRAM_PORT_CONTRACT_SCHEMA =
   "pocket-card-render/candidate-program-port-contract@1";
+export const SCENE_PROGRAM_PACKAGE_SCHEMA =
+  "pocket-card-render/scene-program-package@1";
 export const RUNTIME_MATERIAL_DISPATCH_SCHEMA =
   "pocket-card-render/runtime-material-dispatch@1";
 
@@ -162,6 +164,7 @@ export function compileRuntimeMaterialDispatchIndex(contract) {
       || ![
         OFFICIAL_PROGRAM_PORT_CONTRACT_SCHEMA,
         CANDIDATE_PROGRAM_PORT_CONTRACT_SCHEMA,
+        SCENE_PROGRAM_PACKAGE_SCHEMA,
       ].includes(contract.schema)
       || contract.runtimeDispatch?.schema !== RUNTIME_MATERIAL_DISPATCH_SCHEMA
       || !Array.isArray(contract.runtimeDispatch.routes)) {

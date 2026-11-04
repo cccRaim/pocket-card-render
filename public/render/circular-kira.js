@@ -336,7 +336,8 @@ function applyTrailUvs(state) {
         throw new Error(`${role}: CircularKira trail UV topology drifted after binding`);
       }
       for (let i = 0; i < state.brightnesses.length; i++) {
-        const value = state.brightnesses[i];
+        const brightness = state.brightnesses[i];
+        const value = mesh.material?.userData?.circularTrailFlipsV ? 1 - brightness : brightness;
         const first = uv.count - 2 - i * 2;
         uv.setY(first, value);
         uv.setY(first + 1, value);

@@ -1,4 +1,5 @@
 import { officialPortIdentityKey } from "./official-port-identity.js";
+import { SCENE_PROGRAM_PACKAGE_SCHEMA } from "./runtime-dispatch-contract.js";
 import {
   prepareWebglVertexSource,
 } from "./webgl-position-invariance.js";
@@ -41,9 +42,10 @@ async function fetchText(fetchAsset, url) {
   return response.text();
 }
 
-function runtimeVertexSource(source, manifest, canonicalizeObjectClipPosition) {
+function runtimeVertexSource(source, manifest, canonicalizeObjectClipPosition, inspectPositionInputs) {
   return prepareWebglVertexSource(source, {
     manifest,
+    inspectPositionInputs,
     canonicalizeObjectClipPosition,
   });
 }
@@ -86,7 +88,7 @@ export async function loadExactShaderPortsFromContract({
   }
   if (!contractResponse?.ok) throw new Error(`failed to load ${selectedContractUrl}`);
   const contract = await contractResponse.json();
-  if (![CONTRACT_SCHEMA, CANDIDATE_CONTRACT_SCHEMA].includes(contract?.schema)
+  if (![CONTRACT_SCHEMA, CANDIDATE_CONTRACT_SCHEMA, SCENE_PROGRAM_PACKAGE_SCHEMA].includes(contract?.schema)
       || !Array.isArray(contract.ports)
       || !Array.isArray(contract.runtimeBound)) {
     throw new Error("official program port contract is malformed");
@@ -122,7 +124,7 @@ export async function loadExactShaderPortsFromContract({
       loadSource(vertexPath, row.manifest),
       loadSource(fragmentPath, row.manifest),
     ]);
-    const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition);
+    const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition, contract.schema === SCENE_PROGRAM_PACKAGE_SCHEMA);
     let group = groups.get(key);
     if (!group) {
       group = {
@@ -189,7 +191,7 @@ export async function loadExactShaderPortsFromContract({
       loadSource(manifest?.webgl_sources?.vertex, row.manifest),
       loadSource(manifest?.webgl_sources?.fragment, row.manifest),
     ]);
-    const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition);
+    const vertex = runtimeVertexSource(rawVert, manifest, canonicalizeObjectClipPosition, contract.schema === SCENE_PROGRAM_PACKAGE_SCHEMA);
     result[key] = {
       vert: vertex.source,
       frag,

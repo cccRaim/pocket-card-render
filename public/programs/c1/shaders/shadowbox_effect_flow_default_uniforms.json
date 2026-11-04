@@ -1,0 +1,400 @@
+{
+  "official_selector": {
+    "selectorId": "42a33355c120a274480dfdf35d6de73f344434d6ac60e5730b72bb377113b060",
+    "candidateWitnessId": "6ca6b786996e717558fcccf546dc56ed9d98ac2f08c42341a99eb22b91710111",
+    "shaderIdentity": "CAB-b06ae8ddb8beaf64b3c2c0d09cc03e3b:2362128481372052300",
+    "shaderName": "Lettuce/Common/CardNew/Card_ShadowBox_Effect_Flow",
+    "keywords": [],
+    "selectionMode": "unique-exact-keywords",
+    "subshader": 0,
+    "pass": 0,
+    "semanticExecutableId": "cce8935a3a49ca58526350b8c85a61ccf90010450fd14e96ed68fe73bf3ffd4c"
+  },
+  "official_pass_runtime": {
+    "shared_mrt_blend": true,
+    "depth": {
+      "test": {
+        "name": "_ZTest",
+        "val": 0
+      },
+      "write": {
+        "name": null,
+        "val": 0
+      }
+    },
+    "culling": {
+      "name": null,
+      "val": 2
+    },
+    "fixed": {
+      "offsetFactor": {
+        "name": null,
+        "val": 0
+      },
+      "offsetUnits": {
+        "name": null,
+        "val": 0
+      },
+      "alphaToMask": {
+        "name": null,
+        "val": 0
+      },
+      "conservative": {
+        "name": null,
+        "val": 0
+      },
+      "zClip": {
+        "name": null,
+        "val": 1
+      }
+    },
+    "blend": {
+      "src_rgb": {
+        "name": null,
+        "val": 1
+      },
+      "dst_rgb": {
+        "name": null,
+        "val": 10
+      },
+      "src_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "dst_alpha": {
+        "name": null,
+        "val": 10
+      },
+      "op_rgb": {
+        "name": null,
+        "val": 0
+      },
+      "op_alpha": {
+        "name": null,
+        "val": 0
+      },
+      "color_mask": {
+        "name": null,
+        "val": 15
+      }
+    },
+    "stencil": {
+      "ref": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "read_mask": {
+        "name": "_Stencil",
+        "val": 0
+      },
+      "write_mask": {
+        "name": null,
+        "val": 255
+      },
+      "generic": {
+        "comp": {
+          "name": null,
+          "val": 3
+        },
+        "fail": {
+          "name": null,
+          "val": 0
+        },
+        "pass": {
+          "name": null,
+          "val": 0
+        },
+        "zFail": {
+          "name": null,
+          "val": 0
+        }
+      }
+    }
+  },
+  "official_shader_property_defaults": {
+    "floats": {
+      "_UseOldNoise": 1,
+      "_ParticleDetail": 2.5,
+      "_ParticleMove": 0.0010000000474974513,
+      "_ParticleFlowIntensity": 0.5,
+      "_ParticleSpeed": 1,
+      "_BlendAuraFlowMapByShape": 1,
+      "_ParticleDistancePower": 1,
+      "_ParticleShapeDetail": 1,
+      "_AuraAreaMasking": 1,
+      "_ParticleColorIntensity": 1,
+      "_ParticleAlphaBlend": 0,
+      "_ParticleBaseTransparency": 0,
+      "_AuraFlowIntensity": 0.5,
+      "_AuraSpeed": 1,
+      "_AuraDetail": 1,
+      "_UseCol4": 0,
+      "_AuraColorIntensity": 1,
+      "_AuraAlphaIntensity": 1,
+      "_AuraBaseTransparency": 0,
+      "_AuraCol4Threshold": 1,
+      "_AuraCol4ThresholdWidth": 1,
+      "_AuraMowamowaPower": 1.5,
+      "_AuraDistancePower": 1,
+      "_BureNoiseSpeed": 0.20000000298023224,
+      "_BureNoiseIntensity": 0.30000001192092896,
+      "_BureNoiseDetail": 4,
+      "_NoiseMoveUpSpeed": 0.07999999821186066,
+      "_VisualizeUpVector": 0,
+      "_BlendFlowMapUpVector": 0.30000001192092896,
+      "_UpVectorNoiseStrength": 1,
+      "_UpVectorNoiseDetail": 10,
+      "_UpVectorNoiseSpeed": 1,
+      "_VisualizeNoiseMask": 0,
+      "_NoiseMaskIntensity": 1,
+      "_NoiseMaskOffset": 0,
+      "_NoiseMaskDetail": 10,
+      "_NoiseMaskSpeed": 1,
+      "_NoiseMaskPower": 1,
+      "_AuraEmissiveIntensity": 0,
+      "_ParticleEmissiveIntensity": 0,
+      "_AlphaBlend": 1,
+      "_ZOffset": 0,
+      "_Stencil": 0,
+      "_ZTest": 4
+    },
+    "colors": {
+      "_ParticleColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col1": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col2": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col3": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "_Col4": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "vectors": {
+      "_ParticleUVOffset": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "textureDescriptors": {
+      "_DistanceMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_ParticleTex": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_FlowMap": {
+        "defaultName": "black",
+        "dimension": 2
+      },
+      "_ParticleShapeMask": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FBMTex": {
+        "defaultName": "white",
+        "dimension": 2
+      },
+      "_FlowTex": {
+        "defaultName": "black",
+        "dimension": 2
+      }
+    }
+  },
+  "runtime_contract": {
+    "shader_key": "Card_ShadowBox_Effect_Flow",
+    "attributes": {
+      "position": "vec3"
+    },
+    "engine_uniforms": {
+      "modelMatrix": "mat4",
+      "viewMatrix": "mat4",
+      "projectionMatrix": "mat4"
+    },
+    "material_uniforms": {
+      "floats": [
+        "_ParticleDetail",
+        "_ParticleMove",
+        "_ParticleShapeDetail",
+        "_ParticleDistancePower",
+        "_ParticleFlowIntensity",
+        "_ParticleSpeed",
+        "_BlendAuraFlowMapByShape",
+        "_ParticleColorIntensity",
+        "_AuraAreaMasking",
+        "_AuraDistancePower",
+        "_AuraFlowIntensity",
+        "_AuraSpeed",
+        "_AuraDetail",
+        "_AuraMowamowaPower",
+        "_BureNoiseIntensity",
+        "_BureNoiseSpeed",
+        "_BureNoiseDetail",
+        "_NoiseMoveUpSpeed",
+        "_BlendFlowMapUpVector",
+        "_UpVectorNoiseStrength",
+        "_UpVectorNoiseDetail",
+        "_UpVectorNoiseSpeed",
+        "_NoiseMaskIntensity",
+        "_NoiseMaskOffset",
+        "_NoiseMaskDetail",
+        "_NoiseMaskPower",
+        "_AuraColorIntensity",
+        "_AuraAlphaIntensity",
+        "_AuraEmissiveIntensity",
+        "_ParticleEmissiveIntensity",
+        "_ParticleAlphaBlend",
+        "_AuraBaseTransparency",
+        "_ParticleBaseTransparency",
+        "_AlphaBlend",
+        "_ZOffset"
+      ],
+      "ints": [],
+      "vectors": {
+        "_ParticleUVOffset": "vec2",
+        "_ParticleColor": "vec3",
+        "_Col1": "vec4",
+        "_Col2": "vec4",
+        "_Col3": "vec4",
+        "_Col4": "vec4"
+      }
+    },
+    "dynamic_uniforms": {
+      "_TimeParam": {
+        "type": "float",
+        "source": "pocket-card-render/card-msr-object-arm64-state-port@1"
+      },
+      "_NoiseMaskNoiseSpeed": {
+        "type": "float",
+        "source": "Card_ShadowBox_Effect_Flow component runtime (unresolved)"
+      },
+      "_Transparency": {
+        "type": "float",
+        "source": "pocket-card-render/card-msr-object-arm64-state-port@1"
+      },
+      "_ZBufferParams": {
+        "type": "vec4",
+        "source": "pocket-card-render/three-perspective-zbuffer-adaptation@1"
+      }
+    },
+    "backend_data_stages": {
+      "vertex": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "vertex",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "ba70c952d2a36396e54b2447864dbdb2e7a593583dbab15eba894cc6aac02b59",
+        "outputSourceSha256": "522c4f94410f99c26bbe5e9e4d6cc59b6e92d5d1921525d0b123baca041611be",
+        "inputs": [
+          "position",
+          "uv",
+          "modelMatrix",
+          "viewMatrix"
+        ],
+        "storedVSampleCount": 0
+      },
+      "fragment": {
+        "schema": "pocket-card-render/unity-data-stage@1",
+        "stage": "fragment",
+        "inputBasis": "unity-flattened",
+        "inputSourceSha256": "def55a2a496628d5467119e0267b74fdff2cf273b75cf3046bf48451ba147072",
+        "outputSourceSha256": "73eb4f5423ae2fa6ebbdd0c065f05a52f644ad0c25a594491920edffa555cb03",
+        "inputs": [],
+        "storedVSampleCount": 17
+      }
+    }
+  },
+  "sampler_bindings": [
+    {
+      "slot": "_ParticleShapeMask",
+      "spirvName": "_136",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlowMap",
+      "spirvName": "_187",
+      "dimension": 2
+    },
+    {
+      "slot": "_FlowTex",
+      "spirvName": "_210",
+      "dimension": 2
+    },
+    {
+      "slot": "_FBMTex",
+      "spirvName": "_1490",
+      "dimension": 2
+    },
+    {
+      "slot": "_ParticleTex",
+      "spirvName": "_3079",
+      "dimension": 2
+    }
+  ],
+  "webgl_sources": {
+    "vertex": "public/shaders/shadowbox_effect_flow_default.vert.glsl",
+    "fragment": "public/shaders/shadowbox_effect_flow_default.frag.glsl"
+  },
+  "mrt": {
+    "emissive": "_3517"
+  },
+  "webgl_adaptation": {
+    "vertex": {
+      "operations": [
+        {
+          "kind": "vertex-input-binding"
+        },
+        {
+          "kind": "engine-uniform-binding"
+        },
+        {
+          "kind": "uniform-buffer-flattening"
+        },
+        {
+          "kind": "dynamic-uniform-producer-binding"
+        },
+        {
+          "kind": "clip-space-y-conversion"
+        },
+        {
+          "kind": "glsl-version-ownership"
+        },
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    },
+    "fragment": {
+      "operations": [
+        {
+          "kind": "unity-data-stage-boundary",
+          "contract": "unity-flattened-to-three-input-and-storage"
+        }
+      ]
+    }
+  }
+}
