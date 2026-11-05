@@ -156,8 +156,10 @@ export function buildCardData(cardId, lc = "zh_TW") {
   });
 
   const ui = {
-    weakLabel: resolve(M.common_card_detail_column_status_04 || UI.common_card_detail_column_status_04 || ""),
-    retreatLabel: resolve(M.common_card_detail_column_status_05 || UI.common_card_detail_column_status_05 || ""),
+    // Card labels use LocalizedLabelFile.Card, not the detail-panel UI labels.
+    // Keep TMP <space> markup: it is an advance command, not characterSpacing.
+    weakLabel: UI.weakness || M.weakness || "",
+    retreatLabel: UI.retreat || M.retreat || "",
     hpLabel: resolve(UI.hp || M.common_card_detail_column_status_03 || "HP"),
   };
   if (isEx) {

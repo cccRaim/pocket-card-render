@@ -12,6 +12,7 @@
 
 import "./render/page-errors.js";
 import { withCardLabelSpacing } from "./render/card-label-spacing.js";
+import { layoutCanvasTmpSpaceText } from "./render/tmp-space.js";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { getMaterial } from "./render/registry.js";
@@ -400,7 +401,7 @@ function buildDynamicUITexture(
     }
     ctx.font = runFont(e, bold, fs, italic);
     ctx.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
-    return ctx.measureText(text).width;
+    return layoutCanvasTmpSpaceText(ctx, text, fs).width;
   }
   function inkBounds(e, text, fs, bold = false, italic = false) {
     const sdf = runSdf(e, bold);
@@ -419,7 +420,13 @@ function buildDynamicUITexture(
     }
     ctx.font = runFont(e, bold, fs, italic);
     ctx.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
-    const metrics = ctx.measureText(text);
+    const canvasLayout = layoutCanvasTmpSpaceText(ctx, text, fs);
+    const metrics = {
+      width: canvasLayout.width,
+      actualBoundingBoxRight: Math.max(0, ...canvasLayout.runs.map(run => run.x + run.metrics.actualBoundingBoxRight)),
+      actualBoundingBoxAscent: Math.max(0, ...canvasLayout.runs.map(run => run.metrics.actualBoundingBoxAscent)),
+      actualBoundingBoxDescent: Math.max(0, ...canvasLayout.runs.map(run => run.metrics.actualBoundingBoxDescent)),
+    };
     return {
       advance: metrics.width,
       right: metrics.actualBoundingBoxRight || metrics.width,
@@ -702,16 +709,19 @@ function buildDynamicUITexture(
     }
     const style = sdfStyleFor(e, fs, bold);
     target.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
-    target.textAlign = align;
+    const canvasLayout = layoutCanvasTmpSpaceText(target, text, fs);
+    const startX = align === "right" ? x - canvasLayout.width
+      : align === "center" ? x - canvasLayout.width / 2 : x;
+    target.textAlign = "left";
     target.textBaseline = "alphabetic";
     if (style?.outerLineWidth > 0) {
       target.lineWidth = style.outerLineWidth;
       target.strokeStyle = style.outlineCss;
       target.lineJoin = "round";
       target.miterLimit = 2;
-      target.strokeText(text, x, y);
+      for (const run of canvasLayout.runs) target.strokeText(run.text, startX + run.x, y);
     }
-    target.fillText(text, x, y);
+    for (const run of canvasLayout.runs) target.fillText(run.text, startX + run.x, y);
   }
   function drawText(e, imap) {
     e = withCardLabelSpacing(e);

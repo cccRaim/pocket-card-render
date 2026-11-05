@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { tmpTextTokens, tmpSpaceAdvance } from "./tmp-space.js";
 
 function adjustmentValues(record) {
   const value = record?.m_GlyphValueRecord || {};
@@ -159,7 +160,9 @@ export function layoutOfficialTmpRun(
   const textWidthScale = Number(options.textWidthScale ?? 1);
   const characterSpacing = Number(options.characterSpacing || 0);
   const wordSpacing = Number(options.wordSpacing || 0);
-  const entries = [...text].map((character) => {
+  const entries = tmpTextTokens(text).map((token) => {
+    if (token.space !== undefined) return token;
+    const { character } = token;
     const resolved = resolveOfficialTmpTextElement(index, fontId, character.codePointAt(0));
     if (!resolved) throw new Error(`FontAsset ${fontId} lacks ${JSON.stringify(character)}`);
     return { character, ...resolved };
@@ -172,6 +175,13 @@ export function layoutOfficialTmpRun(
   let overflowWidth = 0;
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
+    if (entry.space !== undefined) {
+      penX += tmpSpaceAdvance(entry, Number(fontSize));
+      overflowWidth = penX - Number(startX);
+      carried = ZERO_ADJUSTMENT;
+      carriedIgnoreSpacing = false;
+      continue;
+    }
     const next = entries[i + 1];
     const glyphFont = entry.font;
     const glyphScale = Number(fontSize) / glyphFont.face.pointSize * (glyphFont.face.scale ?? 1)
