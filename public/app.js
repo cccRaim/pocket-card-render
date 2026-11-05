@@ -11,6 +11,7 @@
 // Layer dispatch is implementation coverage; official-runtime and visual parity need separate evidence.
 
 import "./render/page-errors.js";
+import { withCardLabelSpacing } from "./render/card-label-spacing.js";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { getMaterial } from "./render/registry.js";
@@ -398,6 +399,7 @@ function buildDynamicUITexture(
       catch (error) { tmpFallbackCount += 1; console.warn("TMP metric fallback", error); }
     }
     ctx.font = runFont(e, bold, fs, italic);
+    ctx.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
     return ctx.measureText(text).width;
   }
   function inkBounds(e, text, fs, bold = false, italic = false) {
@@ -416,6 +418,7 @@ function buildDynamicUITexture(
       } catch (error) { tmpFallbackCount += 1; console.warn("TMP ink fallback", error); }
     }
     ctx.font = runFont(e, bold, fs, italic);
+    ctx.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
     const metrics = ctx.measureText(text);
     return {
       advance: metrics.width,
@@ -698,6 +701,7 @@ function buildDynamicUITexture(
       } catch (error) { tmpFallbackCount += 1; console.warn("TMP glyph fallback", error); }
     }
     const style = sdfStyleFor(e, fs, bold);
+    target.letterSpacing = `${Number(e.characterSpacing || 0) * fs * 0.01}px`;
     target.textAlign = align;
     target.textBaseline = "alphabetic";
     if (style?.outerLineWidth > 0) {
@@ -710,6 +714,7 @@ function buildDynamicUITexture(
     target.fillText(text, x, y);
   }
   function drawText(e, imap) {
+    e = withCardLabelSpacing(e);
     let fs = e.fs; const b = e.box, va = e.valign || "middle";
     const runs = parseOfficialTmpRuns(e.text, e.inlineSprites, e.inlineEx).map((run) => (
       run.img || run.sprite || run.symbol
